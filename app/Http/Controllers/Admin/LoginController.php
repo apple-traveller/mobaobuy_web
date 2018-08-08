@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\AdminService;
@@ -46,16 +47,21 @@ class LoginController extends Controller
 
         try{
             $user_info = AdminService::loginValidate($username, $password);
-            session()->put('_admin_info', $user_info);
-            session()->put('theme', 'default');
-            $adminLog['admin_id'] = $user_info['id'];
-            $adminLog['real_name'] = $user_info['real_name'];
-            $adminLog['log_time'] = date("Y-m-d H:i:s",time());
-            $adminLog['ip_address'] = $request->getClientIp();
+
+            $adminLog=[
+                'admin_id'=>1,
+                'real_name'=>$user_info['real_name'],
+                'log_time'=>Carbon::now(),
+                'ip_address'=>$request->getClientIp()
+            ];
+            //print_r($adminLog);die;
             $flag = AdminLogService::create($adminLog);
+
             if(!$flag){
                 return $this->result('','0',"登录失败");
             }
+            session()->put('_admin_info', $user_info);
+            session()->put('theme', 'default');
         }catch(\Exception $e){
             return $this->result('','0',$e->getMessage());
         }

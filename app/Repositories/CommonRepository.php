@@ -58,9 +58,10 @@ trait CommonRepository
         $clazz = self::getBaseModel();
         $info = new $clazz();
         foreach ($data as $k => $v) {
-            $info->$k = $v;
+            $info->$k ='"'.$v.'"';
         }
         $info->save();
+
         return $info->toArray();
     }
 
