@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//后台
+Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
+Route::post('/admin/login', 'Admin\LoginController@login');
+
+Route::group(['middleware'=>'admin.auth'],function(){
+    Route::get('/admin/index', 'Admin\IndexController@index');
+});
