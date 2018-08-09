@@ -9,6 +9,8 @@ class IndexController extends Controller
 {
     public function index()
     {
-        echo "Hello world!";
+        return $this->display('admin.index');
     }
+
+
 }
