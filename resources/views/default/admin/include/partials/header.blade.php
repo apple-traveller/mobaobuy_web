@@ -1,6 +1,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>这里是标题</title>
+<title>大商创</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="shortcut icon" href="{{asset(themePath('/').'favicon.ico')}}" />
 <link rel="icon" href="{{asset(themePath('/').'animated_favicon.gif')}}" type="image/gif" />
@@ -27,7 +27,7 @@
 <script src="{{asset(themePath('/').'js/lib_ecmobanFunc.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery-ui/jquery-ui.min.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/common.js')}}" ></script>
-<script src="{{asset(themePath('/').'js/listtable.js.js')}}" ></script>
+<script src="{{asset(themePath('/').'js/listtable.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/listtable_pb.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
