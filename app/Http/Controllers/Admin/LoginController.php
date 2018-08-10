@@ -70,4 +70,13 @@ class LoginController extends Controller
 
         return $this->result('',1,'登录成功');
     }
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        session()->forget('_admin_info');
+        return $this->success('退出登录成功！', route('admin_login'));
+    }
 }

@@ -15,9 +15,10 @@
 //后台
 Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
 Route::post('/admin/login', 'Admin\LoginController@login');
-
+Route::get('/admin/logout', 'Admin\LoginController@logout');
 Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/index', 'Admin\IndexController@index');
+    Route::get('/user/list', 'Admin\UserController@list');
 });
 
 

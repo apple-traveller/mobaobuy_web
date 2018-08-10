@@ -1,11 +1,11 @@
 <div class="admin-main-left">
     <div class="admincj_nav">
-        <div class="navLeftTab" id="adminNavTabs_home" style="display: none;">
-            <div class="item">
+        <div class="navLeftTab" id="adminNavTabs_home" style="display:block;">
+            <div class="item current">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_00_home"></i><h4>首页</h4></a></div>
                 <div class="sub-menu" style="display: none; top: 0px;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="index.php?act=main" data-param="home|01_admin_core" target="workspace">管理中心</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="home|01_admin_core" target="workspace">管理中心</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="index.php?act=operation_flow" data-param="home|02_operation_flow" target="workspace">业务流程</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="index.php?act=novice_guide" data-param="home|03_novice_guide" target="workspace">新手向导</a></li>
                     </ul>
@@ -134,7 +134,7 @@
                 </div>
             </div>
         </div>
-        <div class="navLeftTab" id="adminNavTabs_menushopping" style="display: none;">
+        <div class="navLeftTab" id="adminNavTabs_menushopping" style="display:none;">
             <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_cat_and_goods"></i><h4>商品管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
@@ -159,13 +159,13 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_promotion"></i><h4>促销管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class=""><s></s><a href="javascript:void(0);" data-url="favourable.php?act=marketing_center" data-param="menushopping|02_marketing_center" target="workspace">营销中心</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="favourable.php?act=marketing_center" data-param="menushopping|02_marketing_center" target="workspace">营销中心</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="snatch.php?act=list" data-param="menushopping|02_snatch_list" target="workspace">夺宝奇兵</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="seckill.php?act=list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="bonus.php?act=list" data-param="menushopping|04_bonustype_list" target="workspace">红包类型</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="group_buy.php?act=list" data-param="menushopping|08_group_buy" target="workspace">团购活动</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="topic.php?act=list" data-param="menushopping|09_topic" target="workspace">专题管理</a></li>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="auction.php?act=list" data-param="menushopping|10_auction" target="workspace">拍卖活动</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="auction.php?act=list" data-param="menushopping|10_auction" target="workspace">拍卖活动</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="favourable.php?act=list" data-param="menushopping|12_favourable" target="workspace">优惠活动</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="wholesale.php?act=list" data-param="menushopping|13_wholesale" target="workspace">批发管理</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="package.php?act=list" data-param="menushopping|14_package_list" target="workspace">超值礼包</a></li>
@@ -177,7 +177,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="item current">
+            <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_03_goods_storage"></i><h4>库存管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
@@ -227,7 +227,7 @@
             </div>
             <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_17_merchants"></i><h4>店铺管理</h4></a></div>
-                <div class="sub-menu" style="top: -52px; display: none;">
+                <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="merchants_steps.php?act=step_up" data-param="menushopping|01_seller_stepup" target="workspace">店铺设置</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="merchants_users_list.php?act=list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺列表</a></li>
@@ -241,8 +241,8 @@
                 </div>
             </div>
         </div>
-        <div class="navLeftTab" id="adminNavTabs_finance" style="display: none;">
-            <div class="item current">
+        <div class="navLeftTab" id="adminNavTabs_finance" style="display:none;">
+            <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_06_stats"></i><h4>统计</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
@@ -256,8 +256,8 @@
                 </div>
             </div>
         </div>
-        <div class="navLeftTab" id="adminNavTabs_third_party" style="">
-            <div class="item current">
+        <div class="navLeftTab" id="adminNavTabs_third_party" style="display:none;">
+            <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_24_sms"></i><h4>短信管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>

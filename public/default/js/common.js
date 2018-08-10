@@ -6,19 +6,19 @@ var NEW_ORDER_INTERVAL = 180000;
 /* *
  * 开始检查新订单；
  */
-function startCheckOrder()
-{
-  checkOrder();
-  window.setInterval("checkOrder()", NEW_ORDER_INTERVAL);
-}
+// function startCheckOrder()
+// {
+//   checkOrder();
+//   window.setInterval("checkOrder()", NEW_ORDER_INTERVAL);
+// }
 
 /*
  * 检查订单
  */
-function checkOrder()
-{
-	Ajax.call('index.php?is_ajax=1&act=check_order','', checkOrderResponse, 'GET', 'JSON');
-}
+// function checkOrder()
+// {
+// 	Ajax.call('index.php?is_ajax=1&act=check_order','', checkOrderResponse, 'GET', 'JSON');
+// }
 
 /* *
  * 处理检查订单的反馈信息

@@ -11,8 +11,9 @@
     <div class="top-border"></div>
     @include(themePath('.').'admin.include.partials.left')
     <div class="admin-main-right">
+        {{--<iframe src="index.php?act=main" id="workspace" name="workspace" frameborder="0" width="100%" height="95%" scrolling="yes"></iframe>--}}
+        @yield('iframe')
 
-        <iframe src="{{url('admin/indedx')}}" id="workspace" name="workspace" frameborder="0" width="100%" height="95%" scrolling="yes"></iframe>
     </div>
 </div>
 <script type="text/javascript" src="{{asset(themePath('/').'js/jquery.purebox.js')}}"></script>
