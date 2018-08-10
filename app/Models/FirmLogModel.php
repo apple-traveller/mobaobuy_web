@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-class UserModel extends BaseModel
+class FirmLogModel extends BaseModel
 {
 
-     protected $table = 'user';
-     public $timestamps = false;
+     protected $table = 'firm_log';
 
 }

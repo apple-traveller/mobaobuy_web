@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\UserLoginService;
 
@@ -14,52 +13,45 @@ class UserLoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+    public function __construct(){
+        session()->put('theme','default');
+    }
 
     //用户注册
     public function userRegister(Request $request){
         if($request->isMethod('get')){
-            return view('default.user.register');
+            return $this->display('web.user.register');
         }else{
             $rule = [
                 'user_name'=>'required|numeric|min:11',
                 'nick_name'=>'required',
                 'password'=>'required|confirmed|min:6',
-                'email'=>'required|email|unique:user|max:100'
+                'email'=>'nullable|email|unique:user'
             ];
             $data = $this->validate($request,$rule);
-            $data['front_of_id_card'] = 123;
-            $data['reverse_of_id_card'] = 100;
-//            $data['birthday'] = date('y-m-d',time());
-            $data['birthday'] = '2018-10-10';
-            $data['password'] = bcrypt($data['password']);
+            $data['front_of_id_card'] = '123';
+            $data['reverse_of_id_card'] = '666';
             try{
-                 UserLoginService::userRegister($data);
-                return '1111';
-//                return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
+                UserLoginService::userRegister($data);
+                return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
             } catch (\Exception $e){
-//                return $this->error($e->getMessage());
-                print $e->getMessage();
-                exit();
-                return '222';
+                return $this->error($e->getMessage());
             }
         }
 
     }
 
     //用户登录
-
     public function showLoginForm($account='')
     {
-
-//        if (!empty(session('_admin_user_info'))) {
-//            return redirect('/login');
-//        }
-        return view('default.user.login');
+        if (!empty(session('_web_info'))) {
+            return redirect('/');
+        }
+        return view('default.web.login.login');
     }
 
     public function login(Request $request)
     {
-//       dump($request->all());
         $username = $request->input('user_name');
         $password = $request->input('password');
 
@@ -81,17 +73,16 @@ class UserLoginController extends Controller
 
         try{
             $user_info = UserLoginService::loginValidate($username, $password, $other_params);
-            session()->put('_admin_user_info', $user_info);
-            return $this->redirect('/');
-//            return $this->success('登录成功，正在进入系统...',  $this->redirectTo);
+            session()->put('_web_info', $user_info);
+            return $this->success('登录成功，正在进入系统...',  $this->redirectTo);
         }catch (\Exception $e){
-//            return $this->error($e->getMessage());
+            return $this->error($e->getMessage());
         }
     }
 
     public function logout()
     {
-        session()->forget('_admin_user_info');
+        session()->forget('_web_info');
         return $this->success('退出登录成功！', route('login'));
     }
 }

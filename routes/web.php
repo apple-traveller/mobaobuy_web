@@ -15,15 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//用户
+//用户注册
 Route::get('/userRegister','UserLoginController@userRegister');
 Route::post('/userRegister','UserLoginController@userRegister');
-Route::get('/userLogin','UserLoginController@showLoginForm');
-Route::post('/userLogin','UserLoginController@login');
 
-//公司
+//公司注册
 Route::get('/firmRegister','FirmLoginController@firmRegister');
 Route::post('/firmRegister','FirmLoginController@firmRegister');
-Route::get('/firmLogin','FirmLoginController@showLoginForm');
-Route::post('/firmLogin','FirmLoginController@login');
+
+//登陆
+Route::get('/webLogin','UserLoginController@showLoginForm')->name('login');
+Route::post('/webLogin','UserLoginController@login');
+
+Route::group(['middleware'=>'web.auth'],function(){
+
+});
+
+
+
+
 

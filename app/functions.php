@@ -6,10 +6,11 @@
  * Time: 10:40
  */
 if(!function_exists('themePath')){
-    function themePath($joint = ''){
-        $theme = session('theme');
+    function themePath($joint = '',$pro = '', $default = 'default'){
+        $theme_name = empty($pro)?'theme':$pro.'_theme';
+        $theme = session($theme_name);
         if(empty($theme)){
-            return '';
+            return $default;
         }
         return $theme.$joint;
     }

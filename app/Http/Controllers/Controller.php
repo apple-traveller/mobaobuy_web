@@ -12,16 +12,17 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected function display($view, $data = [], $mergeData = []){
+        //web.user.login
         return view(themePath('.').$view, $data, $mergeData);
     }
     /**
-     * ²Ù×÷³É¹¦Ìø×ªµÄ¿ì½Ý·½·¨
+     * ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½×ªï¿½Ä¿ï¿½Ý·ï¿½ï¿½ï¿½
      * @access protected
-     * @param mixed     $msg ÌáÊ¾ÐÅÏ¢
-     * @param string    $url Ìø×ªµÄURLµØÖ·
-     * @param mixed     $data ·µ»ØµÄÊý¾Ý
-     * @param integer   $wait Ìø×ªµÈ´ýÊ±¼ä
-     * @param array     $header ·¢ËÍµÄHeaderÐÅÏ¢
+     * @param mixed     $msg ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢
+     * @param string    $url ï¿½ï¿½×ªï¿½ï¿½URLï¿½ï¿½Ö·
+     * @param mixed     $data ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param integer   $wait ï¿½ï¿½×ªï¿½È´ï¿½Ê±ï¿½ï¿½
+     * @param array     $header ï¿½ï¿½ï¿½Íµï¿½Headerï¿½ï¿½Ï¢
      * @return void
      */
     protected function success($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
@@ -43,13 +44,13 @@ class Controller extends BaseController
     }
 
     /**
-     * ²Ù×÷´íÎóÌø×ªµÄ¿ì½Ý·½·¨
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½Ä¿ï¿½Ý·ï¿½ï¿½ï¿½
      * @access protected
-     * @param mixed     $msg ÌáÊ¾ÐÅÏ¢
-     * @param string    $url Ìø×ªµÄURLµØÖ·
-     * @param mixed     $data ·µ»ØµÄÊý¾Ý
-     * @param integer   $wait Ìø×ªµÈ´ýÊ±¼ä
-     * @param array     $header ·¢ËÍµÄHeaderÐÅÏ¢
+     * @param mixed     $msg ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢
+     * @param string    $url ï¿½ï¿½×ªï¿½ï¿½URLï¿½ï¿½Ö·
+     * @param mixed     $data ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param integer   $wait ï¿½ï¿½×ªï¿½È´ï¿½Ê±ï¿½ï¿½
+     * @param array     $header ï¿½ï¿½ï¿½Íµï¿½Headerï¿½ï¿½Ï¢
      * @return void
      */
     protected function error($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
@@ -75,12 +76,12 @@ class Controller extends BaseController
     }
 
     /**
-     * ·µ»Ø·â×°ºóµÄAPIÊý¾Ýµ½¿Í»§¶Ë
+     * ï¿½ï¿½ï¿½Ø·ï¿½×°ï¿½ï¿½ï¿½APIï¿½ï¿½ï¿½Ýµï¿½ï¿½Í»ï¿½ï¿½ï¿½
      * @access protected
-     * @param mixed     $data Òª·µ»ØµÄÊý¾Ý
-     * @param integer   $code ·µ»ØµÄcode
-     * @param mixed     $msg ÌáÊ¾ÐÅÏ¢
-     * @param array     $header ·¢ËÍµÄHeaderÐÅÏ¢
+     * @param mixed     $data Òªï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param integer   $code ï¿½ï¿½ï¿½Øµï¿½code
+     * @param mixed     $msg ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢
+     * @param array     $header ï¿½ï¿½ï¿½Íµï¿½Headerï¿½ï¿½Ï¢
      * @return void
      */
     protected function result($data, $code = 0, $msg = '', array $header = [])
@@ -94,12 +95,12 @@ class Controller extends BaseController
     }
 
     /**
-     * ·µ»Ø·â×°ºóµÄAPIÊý¾Ýµ½¿Í»§¶Ë
+     * ï¿½ï¿½ï¿½Ø·ï¿½×°ï¿½ï¿½ï¿½APIï¿½ï¿½ï¿½Ýµï¿½ï¿½Í»ï¿½ï¿½ï¿½
      * @access protected
-     * @param mixed     $data Òª·µ»ØµÄÊý¾Ý
-     * @param integer   $code ·µ»ØµÄcode
-     * @param mixed     $msg ÌáÊ¾ÐÅÏ¢
-     * @param array     $header ·¢ËÍµÄHeaderÐÅÏ¢
+     * @param mixed     $data Òªï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+     * @param integer   $code ï¿½ï¿½ï¿½Øµï¿½code
+     * @param mixed     $msg ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢
+     * @param array     $header ï¿½ï¿½ï¿½Íµï¿½Headerï¿½ï¿½Ï¢
      * @return void
      */
     protected function jsonResult($data, array $header = [])
@@ -108,12 +109,12 @@ class Controller extends BaseController
     }
 
     /**
-     * URLÖØ¶¨Ïò
+     * URLï¿½Ø¶ï¿½ï¿½ï¿½
      * @access protected
-     * @param string         $url Ìø×ªµÄURL±í´ïÊ½
-     * @param array|integer  $params ÆäËüURL²ÎÊý
+     * @param string         $url ï¿½ï¿½×ªï¿½ï¿½URLï¿½ï¿½ï¿½Ê½
+     * @param array|integer  $params ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½
      * @param integer        $code http code
-     * @param array          $with ÒþÊ½´«²Î
+     * @param array          $with ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½
      * @return void
      */
     protected function redirect($url, $params = [], $code = 302, $with = [])
@@ -122,7 +123,7 @@ class Controller extends BaseController
     }
 
     /**
-     * »ñÈ¡µ±Ç°µÄresponse Êä³öÀàÐÍ
+     * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½response ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @access protected
      * @return string
      */

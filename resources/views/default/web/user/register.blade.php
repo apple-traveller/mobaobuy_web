@@ -10,7 +10,6 @@
 <body>
 <h1>用户注册</h1>
 <form action="/userRegister" method="post">
-    {{--{{ csrf_field() }}--}}
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 手机号<input type="text" name="user_name" placeholder="请输入手机号"><br>
 昵　称<input type="text" name="nick_name" placeholder=""><br>
