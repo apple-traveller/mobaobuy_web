@@ -61,6 +61,7 @@ trait CommonRepository
             $info->$k = $v;
         }
         $info->save();
+
         return $info->toArray();
     }
 

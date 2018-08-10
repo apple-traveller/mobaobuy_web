@@ -11,11 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+//后台
+Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
+Route::post('/admin/login', 'Admin\LoginController@login');
+Route::get('/admin/logout', 'Admin\LoginController@logout');
+Route::group(['middleware'=>'admin.auth'],function(){
+    Route::get('/admin/index', 'Admin\IndexController@index');
+    Route::get('/user/list', 'Admin\UserController@list');
 });
 
-//用户注册
+//用户
 Route::get('/userRegister','UserLoginController@userRegister');
 Route::post('/userRegister','UserLoginController@userRegister');
 
@@ -30,6 +36,7 @@ Route::post('/webLogin','UserLoginController@login');
 Route::group(['middleware'=>'web.auth'],function(){
 
 });
+
 
 
 
