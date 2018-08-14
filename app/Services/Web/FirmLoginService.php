@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Web;
 use App\Repositories\FirmRepository;
 use App\Services\BaseService;
 use Carbon\Carbon;

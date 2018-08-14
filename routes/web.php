@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function(){
+    return '111';
+});
 
 //后台
 Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
@@ -22,17 +24,20 @@ Route::group(['middleware'=>'admin.auth'],function(){
 });
 
 //用户
-Route::get('/userRegister','UserLoginController@userRegister');
-Route::post('/userRegister','UserLoginController@userRegister');
+Route::get('/userRegister','Web\UserLoginController@userRegister');
+Route::post('/userRegister','Web\UserLoginController@userRegister');
+
 
 //公司注册
-Route::get('/firmRegister','FirmLoginController@firmRegister');
-Route::post('/firmRegister','FirmLoginController@firmRegister');
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
+//验证码
+Route::post('/messageCode','Web\UserLoginController@getMessageCode');
 //登陆
-Route::get('/webLogin','UserLoginController@showLoginForm')->name('login');
-Route::post('/webLogin','UserLoginController@login');
-
+Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
+Route::post('/webLogin','Web\UserLoginController@login');
+Route::get('/logout','Web\UserLoginController@logout');
 Route::group(['middleware'=>'web.auth'],function(){
 
 });

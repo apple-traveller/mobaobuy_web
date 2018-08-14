@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
-use App\Services\FirmLoginService;
+use App\Services\Web\FirmLoginService;
+use App\Http\Controllers\Controller;
 
 
 class FirmLoginController extends Controller
@@ -13,6 +14,10 @@ class FirmLoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+    public function __construct()
+    {
+        session()->put('theme','default');
+    }
 
     //公司注册
     public function firmRegister(Request $request){
@@ -21,7 +26,7 @@ class FirmLoginController extends Controller
         }else{
             $rule = [
                 'firm_name'=>'required',
-                'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:firm',
+                'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:firm|unique:user',
                 'password'=>'required|confirmed|min:6',
                 'contactPhone'=>'required|min:11|numeric',
                 'contactName'=>'required'

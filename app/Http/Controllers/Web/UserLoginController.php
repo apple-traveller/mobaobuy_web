@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
-use App\Services\UserLoginService;
+use App\Services\Web\UserLoginService;
+use App\Http\Controllers\Controller;
 
 class UserLoginController extends Controller
 {
@@ -23,10 +24,11 @@ class UserLoginController extends Controller
             return $this->display('web.user.register');
         }else{
             $rule = [
-                'user_name'=>'required|numeric|min:11',
+                'user_name'=>'required|regex:/^1[34578]\d{9}$/|numeric|unique:user|unique:firm|min:11',
                 'nick_name'=>'required',
                 'password'=>'required|confirmed|min:6',
-                'email'=>'nullable|email|unique:user'
+                'email'=>'nullable|email|unique:user',
+                'mobile_code'=>'required|numeric'
             ];
             $data = $this->validate($request,$rule);
             $data['front_of_id_card'] = '123';
@@ -78,6 +80,17 @@ class UserLoginController extends Controller
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    //获取手机验证码
+    public function getMessageCode(Request $request){
+        echo json_encode(array('code'=>1,'msg'=>'success'));exit;
+        $mobile = $request->input('user_name');
+        $code = UserLoginService::sendCode($mobile);
+        if($code){
+            echo json_encode(array('code'=>1,'msg'=>'success'));exit;
+        }
+        echo json_encode(array('code'=>0,'msg'=>'error'));exit;
     }
 
     public function logout()
