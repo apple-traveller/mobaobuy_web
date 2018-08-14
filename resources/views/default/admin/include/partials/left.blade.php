@@ -5,7 +5,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_00_home"></i><h4>首页</h4></a></div>
                 <div class="sub-menu" style="display: none; top: 0px;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="home|01_admin_core" target="workspace">管理中心</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/home" data-param="home|01_admin_core" target="workspace">管理中心</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="index.php?act=operation_flow" data-param="home|02_operation_flow" target="workspace">业务流程</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="index.php?act=novice_guide" data-param="home|03_novice_guide" target="workspace">新手向导</a></li>
                     </ul>
@@ -17,7 +17,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_01_system"></i><h4>设置</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="shop_config.php?act=list_edit" data-param="menuplatform|01_shop_config" target="workspace">商店设置</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="" data-param="menuplatform|01_shop_config" target="workspace">商店设置</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="payment.php?act=list" data-param="menuplatform|02_payment_list" target="workspace">支付方式</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="shipping.php?act=list" data-param="menuplatform|03_area_shipping" target="workspace">地区&amp;配送</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="cron.php?act=list" data-param="menuplatform|07_cron_schcron" target="workspace">计划任务</a></li>
@@ -57,8 +57,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_08_members"></i><h4>会员</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="users.php?act=list" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="integrate.php?act=list" data-param="menuplatform|06_list_integrate" target="workspace">会员整合</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="{{url('/firm/list')}}" data-param="menuplatform|06_list_integrate" target="workspace">企业列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_msg.php?act=list_all" data-param="menuplatform|08_unreply_msg" target="workspace">会员留言</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_account.php?act=list" data-param="menuplatform|09_user_account" target="workspace">充值和提现申请</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_account_manage.php?act=list" data-param="menuplatform|10_user_account_manage" target="workspace">资金管理</a></li>

@@ -90,10 +90,10 @@
 
             $.post('{{url('/admin/login')}}', $("#form1").serialize(), function (res) {
                 if (res.code == 1) {
-                    layer.msg(res.msg, {icon: 1});
+                   // layer.msg(res.msg, {icon: 1});
                     setTimeout(function(){
                         window.location.href = "{{url('/admin/index')}}"
-                    }, 2000);
+                    }, 1000);
 
                 } else {
                     layer.msg(res.msg, {icon: 5});

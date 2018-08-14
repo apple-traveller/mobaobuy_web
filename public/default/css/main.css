@@ -49,7 +49,7 @@ input[type='submit']{ outline:0 none;}
 .relative{ position:relative;}
 .mauto{ margin:0 auto;}
 .no_record{ text-align:center; height:150px !important;}
-.delete{ width:11px; height:11px; display:inline-block; background:url(../images/admin-icon.png) -141px -456px no-repeat; margin:6px 0 0 7px;}
+.delete{ width:11px; height:11px; display:inline-block; background:url('/default/images/admin-icon.png') -141px -456px no-repeat; margin:6px 0 0 7px;}
 .delete:hover { background-position: -117px -455px;}
 .no-records{ height:100px; text-align:center;}
 .trash{ font-size:16px;}
@@ -83,21 +83,21 @@ input.btn30{ height:30px;}
 input.btn32{ height:32px;}
 input.btn35{ height:35px;}
 
-.ui-checkbox,.ui-radio,.ui-radio-16x16{ display:none;}
-.ui-label{ padding-left: 20px; background: url(../images/input_checkbox.png) 2px 2px no-repeat;}
-.ui-checkbox:checked+label { background: url(../images/input_checked.png) 2px 2px no-repeat;}
+.ui-checkbox,.ui-radio,.ui-radio-16x16{ display:none;}/*{{asset(themePath('/').'images/input_checkbox.png')}}*/
+.ui-label{ padding-left: 20px; background: url('/default/images/input_checkbox.png') 2px 2px no-repeat;}
+.ui-checkbox:checked+label { background: url('/default/images/input_checked.png') 2px 2px no-repeat;}
 
-.ui-checkbox:disabled+label{ background: url(../images/input_checkbox_disabled.png) 2px 2px no-repeat;}
-.ui-checkbox:disabled:checked+label{ background: url(../images/input_checkbox_disabled.png) 2px 2px no-repeat;}
+.ui-checkbox:disabled+label{ background: url('/default/images/input_checkbox_disabled.png') 2px 2px no-repeat;}
+.ui-checkbox:disabled:checked+label{ background: url('/default/images/input_checkbox_disabled.png') 2px 2px no-repeat;}
 
-.ui-radio-label{ padding-left:20px; background: url(../images/input_radio.png) 2px 2px no-repeat;}
-.ui-radio:checked+label { background: url(../images/input_radioed.png) 2px 2px no-repeat;}
+.ui-radio-label{ padding-left:20px; background: url('/default//images/input_radio.png') 2px 2px no-repeat;}
+.ui-radio:checked+label { background: url('/default/images/input_radioed.png') 2px 2px no-repeat;}
 
-.ui-radio:disabled+label{ background: url(../images/input_radio_disabled.png) 2px 2px no-repeat;}
-.ui-radio:disabled:checked+label{ background: url(../images/input_radioed_disabled.png) 2px 2px no-repeat;}
+.ui-radio:disabled+label{ background: url('/default/images/input_radio_disabled.png') 2px 2px no-repeat;}
+.ui-radio:disabled:checked+label{ background: url('/default/images/input_radioed_disabled.png') 2px 2px no-repeat;}
 
-.ui-radio-label-16x16{ padding-left:25px; background:url(../images/input_radio_16x16.png) 2px 2px no-repeat; font-size:14px;}
-.ui-radio-16x16:checked+label{ background:url(../images/input_radioed_16x16.png) 2px 2px no-repeat;}
+.ui-radio-label-16x16{ padding-left:25px; background:url('/default/images/input_radio_16x16.png') 2px 2px no-repeat; font-size:14px;}
+.ui-radio-16x16:checked+label{ background:url('/default/images/input_radioed_16x16.png') 2px 2px no-repeat;}
 
 .nofocus:focus{ border:0 !important;}
 
@@ -875,7 +875,7 @@ i.ice_b{ background-position:-336px -214px;}
 }
 .setup_span:hover ul{ display:block;}
 
-.list-page{ float:right; color:#7c7c7c; margin-right:5px; padding:5px 0;}
+.list-page{ text-align:center;color:#7c7c7c; margin-right:5px; padding:5px 0;}
 .list-page .page:nth-child(2),.list-page .page:nth-child(3){ margin-right:20px;}
 .list-page .page i{ margin-right:5px;}
 .list-page .page input[type="text"]{ border:1px solid #c9c9c9; text-align:center; color:#7c7c7c;}
@@ -2664,7 +2664,7 @@ font-size: 40px;
 /* 模块设置盒子 end */
 
 /* 分页 start */
-.pagination { text-align: center; display:block; margin: 0 auto; padding: 15px 0;}
+.pagination { text-align: center; display:inline-block; margin: 0 auto; padding: 15px 0;overflow: hidden;}
 .pagination ul { font-size: 0; *word-spacing:-1px;}
 .pagination ul li{ vertical-align: top; letter-spacing: normal; word-spacing: normal; display: inline-block; margin: 0 0 0 -1px; *display: inline; *zoom:1;}
 .pagination li span { font: 600 12px/20px Verdana, Tahoma, Arial; color: #AAA; background-color: #FFF; text-align: center; display: block; min-width: 20px; padding: 4px; border: 1px solid #E6E6E6; position: relative; z-index: 1;}

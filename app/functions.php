@@ -8,6 +8,7 @@
 if(!function_exists('themePath')){
     function themePath($joint = ''){
         $theme = session('theme');
+        //dd($theme);
         if(empty($theme)){
             return '';
         }

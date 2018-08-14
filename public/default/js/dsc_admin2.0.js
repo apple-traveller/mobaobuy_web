@@ -628,8 +628,7 @@ $(function(){
 	
 	//列表页刷新 by wu start
 	$(".refresh .refresh_tit").click(function(){
-		var page = $("#gotoPage").val();
-		listTable.gotoPage(page);
+		window.location.reload();
 	})
 	//列表页刷新 by wu end	
 	

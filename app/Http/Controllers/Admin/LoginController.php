@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Admin\AdminService;
 use App\Services\Admin\AdminLogService;
+use Illuminate\Support\Facades\Cookie;
+
 class LoginController extends Controller
 {
     /**
@@ -42,6 +44,7 @@ class LoginController extends Controller
         }
 
         if(!empty($errorMsg)){
+
             return $this->result('','0',implode('<br/>',$errorMsg));
         }
 
@@ -62,13 +65,15 @@ class LoginController extends Controller
             }
             session()->put('_admin_info', $user_info);
             session()->put('theme', 'default');
+            return $this->result('',1,'登录成功');
+
         }catch(\Exception $e){
             return $this->result('','0',$e->getMessage());
         }
 
 
 
-        return $this->result('',1,'登录成功');
+
     }
 
     /**
@@ -77,6 +82,9 @@ class LoginController extends Controller
     public function logout()
     {
         session()->forget('_admin_info');
+        //Cookie::forget('dscUrl');
         return $this->success('退出登录成功！', route('admin_login'));
+
+
     }
 }

@@ -35,6 +35,25 @@ class FirmRepository
         return $clazz->toArray();
     }
 
+    //获取企业列表，查询分页
+    public static function search($pageSize,$firm_name)
+    {
+        $clazz = self::getBaseModel();
+        $info = '';
+        if($firm_name){
+            $info = $clazz::where('firm_name','like',"%".$firm_name."%")->orderBy('reg_time','desc')->paginate($pageSize);
+        }else{
+            $info = $clazz::orderBy('reg_time','desc')->paginate($pageSize);
+        }
+
+        if($info)
+        {
+            return $info;
+        }
+        return [];
+
+    }
+
 
 
 

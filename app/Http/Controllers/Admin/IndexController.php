@@ -7,9 +7,15 @@ use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
         return $this->display('admin.index');
+    }
+
+    public function home()
+    {
+        return $this->display('admin.home');
     }
 
 

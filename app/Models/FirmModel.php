@@ -6,5 +6,6 @@ class FirmModel extends BaseModel
 {
 
      protected $table = 'firm';
+     public $timestamps = false;
 
 }

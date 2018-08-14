@@ -13,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/spectrum-master/spectrum.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/perfect-scrollbar/perfect-scrollbar.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/calendar/calendar.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
 
 <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.json.js')}}" ></script>
@@ -31,3 +32,4 @@
 <script src="{{asset(themePath('/').'js/listtable_pb.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
+<script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
