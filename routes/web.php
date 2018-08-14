@@ -36,11 +36,8 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
 });
 
-<<<<<<< HEAD
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
-=======
->>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
 //用户
 Route::get('/userRegister','Web\UserLoginController@userRegister');
 Route::post('/userRegister','Web\UserLoginController@userRegister');

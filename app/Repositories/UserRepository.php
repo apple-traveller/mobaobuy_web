@@ -12,7 +12,7 @@ class UserRepository
 {
     use CommonRepository;
 
-<<<<<<< HEAD
+
     //获取所有用户信息
     public static function getUsers($fields)
     {
@@ -24,10 +24,8 @@ class UserRepository
         return [];
     }
 
-    public static function getInfoByLoginName($login_name){
-=======
+
     public static function getInfoByUserName($user_name){
->>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
         $model = self::getBaseModel();
         $info = $model::where('user_name', $user_name)->first();
         if ($info) {
@@ -35,7 +33,7 @@ class UserRepository
         }
         return [];
     }
-<<<<<<< HEAD
+
 
     public static function createLog($userLog){
         $clazz = new UserLogModel();
@@ -77,7 +75,7 @@ class UserRepository
 
     }
 
-    //添加数据
+
     public static function create($data)
     {
         $clazz = self::getBaseModel();
@@ -90,13 +88,11 @@ class UserRepository
         return $info->toArray();
     }
 
-    //
 
 
 
 
 
 
-=======
->>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
+
 }
