@@ -6,6 +6,5 @@ class UserModel extends BaseModel
 {
 
      protected $table = 'user';
-     public $timestamps = false;
 
 }

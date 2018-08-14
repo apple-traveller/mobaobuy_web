@@ -16,8 +16,7 @@ class FirmRepository
 {
     use CommonRepository;
 
-
-    public static function getInfoByLoginName($login_name){
+    public static function getInfoByUserName($login_name){
         $model = self::getBaseModel();
         $info = $model::where('user_name', $login_name)->first();
         if ($info) {
@@ -25,6 +24,7 @@ class FirmRepository
         }
         return [];
     }
+<<<<<<< HEAD
 
     public static function createLog($userLog){
         $clazz = new UserLogModel();
@@ -59,4 +59,6 @@ class FirmRepository
 
 
 
+=======
+>>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
 }

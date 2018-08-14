@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function(){
+    return '111';
+});
 
 //后台
 Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
@@ -34,18 +36,32 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
 });
 
+<<<<<<< HEAD
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
+=======
+>>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
 //用户
-Route::get('/userRegister','UserLoginController@userRegister');
-Route::post('/userRegister','UserLoginController@userRegister');
-Route::get('/userLogin','UserLoginController@showLoginForm');
-Route::post('/userLogin','UserLoginController@login');
+Route::get('/userRegister','Web\UserLoginController@userRegister');
+Route::post('/userRegister','Web\UserLoginController@userRegister');
 
-//公司
-Route::get('/firmRegister','FirmLoginController@firmRegister');
-Route::post('/firmRegister','FirmLoginController@firmRegister');
-Route::get('/firmLogin','FirmLoginController@showLoginForm');
-Route::post('/firmLogin','FirmLoginController@login');
+
+//公司注册
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+
+//验证码
+Route::post('/messageCode','Web\UserLoginController@getMessageCode');
+//登陆
+Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
+Route::post('/webLogin','Web\UserLoginController@login');
+Route::get('/logout','Web\UserLoginController@logout');
+Route::group(['middleware'=>'web.auth'],function(){
+
+});
+
+
+
+
 
 

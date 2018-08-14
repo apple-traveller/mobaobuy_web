@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>用户登陆</h1>
-<form action="/userLogin" method="post">
+<form action="/webLogin" method="post">
     {{--{{ csrf_field() }}--}}
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 手机号<input type="text" name="user_name" placeholder="请输入手机号"><br>

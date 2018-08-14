@@ -8,14 +8,11 @@
 
 namespace App\Repositories;
 
-use App\Models\UserModel;
-use App\Models\UserLogModel;
-
-
 class UserRepository
 {
     use CommonRepository;
 
+<<<<<<< HEAD
     //获取所有用户信息
     public static function getUsers($fields)
     {
@@ -28,13 +25,17 @@ class UserRepository
     }
 
     public static function getInfoByLoginName($login_name){
+=======
+    public static function getInfoByUserName($user_name){
+>>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
         $model = self::getBaseModel();
-        $info = $model::where('user_name', $login_name)->first();
+        $info = $model::where('user_name', $user_name)->first();
         if ($info) {
             return $info->toArray();
         }
         return [];
     }
+<<<<<<< HEAD
 
     public static function createLog($userLog){
         $clazz = new UserLogModel();
@@ -96,4 +97,6 @@ class UserRepository
 
 
 
+=======
+>>>>>>> 4639a564bad61f79a5689e4cefe58e25a48f73f7
 }

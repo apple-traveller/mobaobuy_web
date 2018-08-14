@@ -72,7 +72,6 @@
 <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.purebox.js')}}" ></script>
 <script type="text/javascript">
-
     $("#sunBtn").click(function(){
         layui.use(['layer','form'], function(){
             var form = layui.form,
