@@ -12,13 +12,7 @@
                     <li><a href="account_log.php?act=list&amp;user_id=18">账目明细</a></li>
                 </ul>
             </div>
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
-                    <li>编辑会员账号信息请根据提示慎重操作，避免出现不必要的问题。</li>
-                </ul>
-            </div>
+
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
@@ -27,30 +21,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;会员名称：</div>
                                 <div class="label_value font14">{{$info['user_name']}}</div>
                             </div>
-                            <div class="item">
-                                <div class="label">可用资金：</div>
-                                <div class="label_value">
-                                    <div class="b-price blue font14 mr20"><em>¥</em>0.00</div>
-                                    <div class="label_label">等级积分：</div>
-                                    <div class="b-price blue font14 mr20 pl10">0</div>
-                                    <div class="notic">等级积分是一种累计的积分，系统根据该积分来判定用户的会员等级。</div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label">冻结资金：</div>
-                                <div class="label_value">
-                                    <div class="b-price blue font14 mr20"><em>¥</em>0.00</div>
-                                    <div class="label_label">消费积分：</div>
-                                    <div class="b-price blue font14 mr20 pl10">0</div>
-                                    <div class="notic">消费积分是一种站内货币，允许用户在购物时支付一定比例的积分。</div>
-                                </div>
-                            </div>
+
                             <div class="item">
                                 <div class="label">邮件地址：</div>
                                 <div class="label_value">
                                     <input type="text" name="email" class="text" autocomplete="off" value="{{$info['email']}}" id="email">
                                     <div class="form_prompt"></div>
-                                    <div class="notic">请输入常用的邮箱，将用来找回密码、接受订单通知等。</div>
+
                                 </div>
                             </div>
 
@@ -124,12 +101,7 @@
                                 </div>
                             </div>
                             <!---->
-                            <div class="item">
-                                <div class="label">&nbsp;</div>
-                                <div class="label_value info_btn">
-                                    <a href="javascript:;" class="button" id="submitBtn"> 确定 </a>
-                                </div>
-                            </div>
+
                         </form>
                     </div>
                 </div>

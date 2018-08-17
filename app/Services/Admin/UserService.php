@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User;
 
 class UserService extends BaseService
 {
-    //获取用户列表
+    //获取用户列表(导出excel表)
     public static function getUsers($fields)
     {
         $info = UserRepository::getUsers($fields);
@@ -48,11 +48,13 @@ class UserService extends BaseService
         return UserRepository::getInfo($id);
     }
 
-    //获取日志信息
-    public static function getLogInfo($id,$pageSize)
+
+    //获取总条数
+    public static function getCount($user_name)
     {
-        return UserRepository::getLogInfo($id,$pageSize);
+        return UserRepository::getCount($user_name);
     }
+
 
 
 }

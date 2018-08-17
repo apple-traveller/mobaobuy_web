@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\Admin\FirmService;
+use App\Services\Admin\FirmLogService;
 use App\Http\Controllers\ExcelController;
 class FirmController extends Controller
 {
-    //用户列表
+    //企业列表
     public function list(Request $request)
     {
         $firm_name = $request->input('firm_name','');
         $pageSize = config('website.pageSize');
         $firms = FirmService::getFirmList($pageSize,$firm_name);
-        //dd($firms);
-        return $this->display('admin.firm.list',['firms'=>$firms,'firm_name'=>$firm_name]);
+        $firmCount = FirmService::getCount($firm_name);
+        //dd($firmCount);
+        return $this->display('admin.firm.list',['firms'=>$firms,'firm_name'=>$firm_name,"firmCount"=>$firmCount]);
     }
 
     //编辑(修改状态)
@@ -41,26 +42,29 @@ class FirmController extends Controller
         return $this->display('admin.firm.detail',['info'=>$info]);
     }
 
+
+
+
     //查询用户日志
     public function log(Request $request)
     {
         $pageSize = config('website.pageSize');
         $id = $request->input('id');
-        $logs = UserService::getLogInfo($id,$pageSize);
-        //dd($logs);
-        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id]);
+        $logs = FirmLogService::getLogInfo($id,$pageSize);
+        $logCount = FirmLogService::getLogCount($id);
+        return $this->display('admin.firm.log',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount]);
     }
 
 
-    //导出用户表
+    //导出企业表
     public static function export()
     {
         $excel = new ExcelController();
         $data = array();
         $data = [
-            ['ID','用户名','昵称','邮箱','性别','注册时间','身份证号']
+            ['ID','企业名称','账号','联系人','联系方式','注册时间','访问次数']
         ];
-        $users = UserService::getUsers(['id','user_name','nick_name','email','sex','reg_time','id_card']);
+        $users = FirmService::exportExcel(['id','firm_name','user_name','contactName','contactPhone','reg_time','visit_count']);
         foreach($users as $item){
             $data[]=$item;
         }

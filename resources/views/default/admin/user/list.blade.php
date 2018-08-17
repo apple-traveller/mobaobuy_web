@@ -36,7 +36,7 @@
 
                 <div class="refresh">
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
-                    <div class="refresh_span">刷新 - 共{{$users['total']}}条记录</div>
+                    <div class="refresh_span">刷新 - 共{{$userCount}}条记录</div>
                 </div>
 
                 <div class="search">
@@ -171,13 +171,6 @@
         //导出会员
         function download_userlist()
         {
-            var args = '';
-            for (var i in listTable.filter)
-            {
-                if(typeof(listTable.filter[i]) != "function" && typeof(listTable.filter[i]) != "undefined"){
-                    args += "&" + i + "=" + encodeURIComponent(listTable.filter[i]);
-                }
-            }
             location.href = "/user/export";
         }
 

@@ -27,7 +27,7 @@
 
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
-                        <div class="refresh_span">刷新 - 共{{$firms['total']}}条记录</div>
+                        <div class="refresh_span">刷新 - 共{{$firmCount}}条记录</div>
                     </div>
 
                     <div class="search">
@@ -47,8 +47,8 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list"><label for="all_list" class="checkbox_stars"></label></div></th>
-                                    <th width="5%"><div class="tDiv"><a href="javascript:listTable.sort('user_id'); ">编号</a><img src="{{asset(themePath('/').'images/sort_desc.gif')}}"></div></th>
+
+                                    <th width="5%"><div class="tDiv">编号</div></th>
                                     <th width="10%"><div class="tDiv">企业名称</div></th>
                                     <th width="10%"><div class="tDiv">账号</div></th>
                                     <th width="10%"><div class="tDiv">联系人姓名</div></th>
@@ -65,7 +65,7 @@
                                 <tbody>
                                 @foreach($firms as $firm)
                                     <tr class="">
-                                        <td class="sign"><div class="tDiv"><input type="checkbox" name="checkboxes[]" value="{{$firm->id}}" class="checkbox" id="checkbox_{{$firm->id}}"><label for="checkbox_{{$firm->id}}" class="checkbox_stars"></label></div></td>
+
                                         <td><div class="tDiv">{{$firm->id}}</div></td>
                                         <td><div class="tDiv">{{$firm->firm_name}}</div></td>
                                         <td><div class="tDiv">{{$firm->user_name}}</div></td>
@@ -96,13 +96,8 @@
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
-                                            <div class="tfoot_btninfo">
-                                                <input type="hidden" name="act" value="batch_remove">
-                                                <input type="submit" value="删除" name="remove" ectype="btnSubmit" class="btn btn_disabled" disabled="disabled">
-                                            </div>
-                                            <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
+                                            <div class="list-page">
 
                                                 {{$firms->links()}}
 
@@ -160,14 +155,8 @@
         //导出会员
         function download_userlist()
         {
-            var args = '';
-            for (var i in listTable.filter)
-            {
-                if(typeof(listTable.filter[i]) != "function" && typeof(listTable.filter[i]) != "undefined"){
-                    args += "&" + i + "=" + encodeURIComponent(listTable.filter[i]);
-                }
-            }
-            location.href = "/user/export";
+
+            location.href = "/firm/export";
         }
 
     </script>

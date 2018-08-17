@@ -4,12 +4,14 @@ namespace App\Services\Admin;
 
 use App\Services\BaseService;
 use App\Repositories\FirmRepository;
+use App\Repositories\FirmPointsFlowRepository;
 class FirmService extends BaseService
 {
     //获取企业列表（excel导出）
-    public static function getFirms($fields)
+    public static function exportExcel($fields)
     {
-
+        $info = FirmRepository::getFirms($fields);
+        return $info;
     }
 
     //获取企业列表（分页）
@@ -30,14 +32,26 @@ class FirmService extends BaseService
     //查询一条数据
     public static function getInfo($id)
     {
-        return FirmRepository::getInfo($id);
+        $firm = FirmRepository::getInfo($id);
+        //查询企业积分
+        //$points = FirmPointsFlowRepository::getPointByfirmId($id)['points'];
+        $points = FirmPointsFlowRepository::getPointByfirmId($id);
+        if($points){
+            $firm['points']=$points['points'];
+        }else{
+            $firm['points']= 0 ;
+        }
+
+        return $firm;
     }
 
-    //获取日志信息
-    public static function getLogInfo($id,$pageSize)
+    //获取总条数
+    public static function getCount($firm_name)
     {
-
+        return FirmRepository::getCount($firm_name);
     }
+
+
 
 
 }

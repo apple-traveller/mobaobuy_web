@@ -24,112 +24,54 @@
                     <div class="switch_info user_basic" style="display:block;">
                         <form  name="theForm" id="user_update" novalidate="novalidate">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;公司名称：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;企业名称：</div>
                                 <div class="label_value font14">{{$info['firm_name']}}</div>
                             </div>
                             <div class="item">
-                                <div class="label">可用资金：</div>
-                                <div class="label_value">
-                                    <div class="b-price blue font14 mr20"><em>¥</em>0.00</div>
-                                    <div class="label_label">等级积分：</div>
-                                    <div class="b-price blue font14 mr20 pl10">0</div>
-                                    <div class="notic">等级积分是一种累计的积分，系统根据该积分来判定用户的会员等级。</div>
-                                </div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;账号：</div>
+                                <div class="label_value font14">{{$info['user_name']}}</div>
                             </div>
                             <div class="item">
-                                <div class="label">冻结资金：</div>
-                                <div class="label_value">
-                                    <div class="b-price blue font14 mr20"><em>¥</em>0.00</div>
-                                    <div class="label_label">消费积分：</div>
-                                    <div class="b-price blue font14 mr20 pl10">0</div>
-                                    <div class="notic">消费积分是一种站内货币，允许用户在购物时支付一定比例的积分。</div>
-                                </div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;联系人：</div>
+                                <div class="label_value font14">{{$info['contactName']}}</div>
                             </div>
                             <div class="item">
-                                <div class="label">邮件地址：</div>
-                                <div class="label_value">
-                                    <input type="text" name="email" class="text" autocomplete="off" value="{{$info['email']}}" id="email">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic">请输入常用的邮箱，将用来找回密码、接受订单通知等。</div>
-                                </div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;联系方式：</div>
+                                <div class="label_value font14">{{$info['contactPhone']}}</div>
                             </div>
+                            <div class="item">
+                                <div class="label">积分：</div>
+                                <div class="label_value">
+                                    <div class="b-price blue font14 mr20"><em>¥</em>{{$info['points']}}</div>
 
-{{--
-                            <div class="item">
-                                <div class="label">会员等级：</div>
-                                <div class="label_value">
-                                    <div id="user_grade" class="imitate_select select_w320">
-                                        <div class="cite">非特殊等级</div>
-                                        <ul style="display: none;">
-                                            <li><a href="javascript:;" data-value="0" class="ftx-01">非特殊等级</a></li>
-                                            <li><a href="javascript:;" data-value="3" class="ftx-01">代销用户</a></li>
-                                        </ul>
-                                        <input name="user_rank" type="hidden" value="0" id="user_grade_val">
-                                    </div>
-                                    <input type="hidden" name="old_user_rank" value="0">
-                                </div>
-                            </div>--}}
-                            <div class="item">
-                                <div class="label">性别：</div>
-                                <div class="label_value">
-                                    <div class="checkbox_items">
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==2)checked @endif class="ui-radio" name="sex" id="sex_0" value="0">
-                                            <label for="sex_0" class="ui-radio-label">保密</label>
-                                        </div>
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==1)checked @endif class="ui-radio" name="sex" id="sex_1" value="1">
-                                            <label for="sex_1" class="ui-radio-label">男</label>
-                                        </div>
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==0)checked @endif class="ui-radio" name="sex" id="sex_2" value="2" >
-                                            <label for="sex_2" class="ui-radio-label">女</label>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="old_sex" value="2">
                                 </div>
                             </div>
-
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;出生日期：</div>
-                                <div class="label_value font14">{{$info['birthday']}}</div>
-                            </div>
-                            <input type="hidden" name="old_birthday" value="0000-00-00">
-                           {{-- <div class="item">
-                                <div class="label">信用额度：</div>
-                                <div class="label_value">
-                                    <input type="text" name="credit_line" id="credit_line" value="0.00" class="text" autocomplete="off">
-                                    <input type="hidden" name="old_credit_line" value="0.00">
-                                </div>
-                            </div>--}}
-                            <div class="item">
-                                <div class="label">身份证信息：</div>
+                                <div class="label">法律凭证：</div>
                                 <div class="label_value">
                                     <div class="type-file-box">
-                                            <span class="show">正面：
-                                            	<a href="" target="_blank" class="nyroModal"><i class="icon icon-picture" data-tooltipimg="{{$info['front_of_id_card']}}" ectype="tooltip" title="tooltip"></i></a>
+                                            <span class="show">查看大图：
+                                            	<a href="" target="_blank" class="nyroModal"><i class="icon icon-picture" data-tooltipimg="{{$info['attorney_letter_fileImg']}}" ectype="tooltip" title="tooltip"></i></a>
                                             </span>
-                                        <span class="show">反面：
-                                            	<a href="" target="_blank" class="nyroModal"><i class="icon icon-picture" data-tooltipimg="{{$info['reverse_of_id_card']}}" ectype="tooltip" title="tooltip"></i></a>
-                                            </span>
+
                                     </div>
                                 </div>
                             </div>
-                            <!--  -->
                             <div class="item">
-                                <div class="label">手机：</div>
-                                <div class="label_value">
-                                    <input type="text" name="extend_field5" class="text" value="{{$info['user_name']}}" autocomplete="off">
+                                <div class="label"><span class="require-field">*</span>&nbsp;注册时间：</div>
+                                <div class="label_value font14">{{$info['reg_time']}}</div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否已经通过验证：</div>
+                                <div class="label_value font14">@if($info['is_validated'])通过@else不通过 @endif</div>
+                            </div>
 
-                                </div>
-                            </div>
-                            <!---->
                             <div class="item">
-                                <div class="label">&nbsp;</div>
-                                <div class="label_value info_btn">
-                                    <a href="javascript:;" class="button" id="submitBtn"> 确定 </a>
-                                </div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;最近一次拜登录地址：</div>
+                                <div class="label_value font14">{{$info['last_ip']}}</div>
                             </div>
+                            <input type="hidden" name="old_birthday" value="0000-00-00">
+
                         </form>
                     </div>
                 </div>

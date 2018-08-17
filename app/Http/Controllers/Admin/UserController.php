@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\Admin\UserService;
+use App\Services\Admin\UserLogService;
 use App\Http\Controllers\ExcelController;
 class UserController extends Controller
 {
@@ -15,8 +16,9 @@ class UserController extends Controller
         $user_name = $request->input('user_name','');
         $pageSize =config('website.pageSize');
         $users = UserService::getUserList($pageSize,$user_name);
+        $userCount = UserService::getCount($user_name);
         //dd($users);
-        return $this->display('admin.user.list',['users'=>$users,'user_name'=>$user_name]);
+        return $this->display('admin.user.list',['users'=>$users,'user_name'=>$user_name,'userCount'=>$userCount]);
     }
 
     //编辑(修改状态)
@@ -46,9 +48,10 @@ class UserController extends Controller
     {
         $pageSize = config('website.pageSize');
         $id = $request->input('id');
-        $logs = UserService::getLogInfo($id,$pageSize);
+        $logs = UserLogService::getLogs($id,$pageSize);
+        $logCount = UserLogService::getLogCount($id);
         //dd($logs);
-        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id]);
+        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount]);
     }
 
     //用户添加

@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="{{url('/user/list')}}" class="s-back">返回</a>会员 - 操作记录</div>
+        <div class="title"><a href="{{url('/firm/list')}}" class="s-back">返回</a>企业- 操作记录</div>
         <div class="content">
 
             <div class="flexilist">
@@ -13,9 +13,9 @@
                     </div>
                 </div>
                 <div class="common-content">
-                    <form method="post" >
+                    <form method="post" action="users.php" name="listForm" onsubmit="return confirm(remove_log_confirm);">
                         <div class="list-div" id="listDiv">
-
+                            、
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>

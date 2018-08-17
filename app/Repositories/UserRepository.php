@@ -35,14 +35,6 @@ class UserRepository
     }
 
 
-    public static function createLog($userLog){
-        $clazz = new UserLogModel();
-        foreach ($userLog as $k => $v) {
-            $clazz->$k = $v;
-        }
-        $clazz->save();
-        return $clazz->toArray();
-    }
 
     //获取日志信息
     public static function getLogInfo($user_id,$pageSize)
@@ -88,7 +80,18 @@ class UserRepository
         return $info->toArray();
     }
 
-
+    //获取用户总条数
+    public static  function  getCount($user_name)
+    {
+        $model = self::getBaseModel();
+        $count = 0;
+        if($user_name){
+            $count = $model::where('user_name','like','%'.$user_name.'%')->count();
+        }else{
+            $count = $model::count();
+        }
+        return $count;
+    }
 
 
 

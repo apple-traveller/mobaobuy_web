@@ -45,8 +45,8 @@ class LoginController extends Controller
 
         if(!empty($errorMsg)){
 
-            return $this->result('','0',implode('<br/>',$errorMsg));
-        }
+        return $this->result('','0',implode('<br/>',$errorMsg));
+    }
 
         try{
             $user_info = AdminService::loginValidate($username, $password);
