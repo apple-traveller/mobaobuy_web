@@ -78,11 +78,15 @@ class RegionController extends Controller
         $region_id = $request->input('region_id');
         $region_name = $request->input('region_name');
         $parent_id = $request->input('parent_id');
-        $flag = RegionService::modify($region_id,$region_name);
-        if($flag){
-            return $this->result("/region/list?parent_id=".$parent_id,1,"修改成功");
-        }else {
-            return $this->result("", 0, "修改失败");
+        try{
+            $flag = RegionService::modify($region_id,$region_name);
+            if($flag){
+                return $this->result("/region/list?parent_id=".$parent_id,1,"修改成功");
+            }else {
+                return $this->result("", 0, "修改失败");
+            }
+        }catch(\Exception $e){
+            return  $this->result('','0',$e->getMessage());
         }
     }
 

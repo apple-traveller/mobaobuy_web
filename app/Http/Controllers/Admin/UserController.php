@@ -26,13 +26,18 @@ class UserController extends Controller
     {
         $id = $request->input("id");
         $is_freeze = $request->input("is_freeze");
-        $user = UserService::modify($id,['is_freeze'=>$is_freeze]);
-        //print_r($flag);die;
-        if($user){
-            return $this->result($user['is_freeze'],'1',"修改成功");
-        }else{
-           return  $this->result('','0',"修改失败");
+
+        try{
+            $user = UserService::modify($id,['is_freeze'=>$is_freeze]);
+            if($user){
+                return $this->result($user['is_freeze'],'1',"修改成功");
+            }else{
+                return  $this->result('','0',"修改失败");
+            }
+        }catch(\Exception $e){
+            return  $this->result('','0',$e->getMessage());
         }
+
     }
 
     //查看详情信息
@@ -54,47 +59,8 @@ class UserController extends Controller
         return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount]);
     }
 
-    //用户添加
-    public function addForm()
-    {
-        return $this->display('admin.user.add');
-    }
 
-    //用户添加
-    public function add(Request $request)
-    {
-        $data = array();
-        $errorMsg = array();
-        $data['user_name']=$request->input('user_name');
-        $data['nick_name']=$request->input('nick_name');
-        $data['email']=$request->input('email');
-        $data['birthday']=$request->input('birthday');
-        $data['password']=bcrypt($request->input('password'));
-        $data['id_card']=$request->input('id_card');
-        $data['front_of_id_card']=$request->input('front_of_id_card');
-        $data['reverse_of_id_card']=$request->input('reverse_of_id_card');
-        $data['sex']=$request->input('sex');
-        $data['is_freeze']=0;
-        $data['reg_time']=Carbon::now();
-        if(empty($data['user_name'])){
-            $errorMsg[] = '账号不能为空';
-        }
-        if(empty($data['password'])){
-            $errorMsg[] = '密码不能为空';
-        }
 
-        try{
-            $userInfo = UserService::create($data);
-            if(!$userInfo){
-                return $this->error('添加失败');
-            }else{
-                return $this->success('添加成功',url('/user/list'));
-            }
-        }catch(\Exception $e){
-            return $this->error($e->getMessage());
-        }
-
-    }
 
     //导出用户表
     public static function export()

@@ -29,12 +29,6 @@ class UserService extends BaseService
         return $info;
     }
 
-    //添加
-    public static function create($data)
-    {
-        $flag = UserRepository::create($data);
-        return $flag;
-    }
 
     //修改
     public static function modify($id,$data)

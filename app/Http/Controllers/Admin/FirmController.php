@@ -25,12 +25,16 @@ class FirmController extends Controller
     {
         $id = $request->input("id");
         $is_freeze = $request->input("is_freeze");
-        $firm = FirmService::modify($id,['is_freeze'=>$is_freeze]);
-        //print_r($firm);die;
-        if($firm){
-            return $this->result($firm['is_freeze'],'1',"修改成功");
-        }else{
-           return  $this->result('','0',"修改失败");
+
+        try{
+            $firm = FirmService::modify($id,['is_freeze'=>$is_freeze]);
+            if($firm){
+                return $this->result($firm['is_freeze'],'1',"修改成功");
+            }else{
+                return  $this->result('','0',"修改失败");
+            }
+        }catch(\Exception $e){
+            return  $this->result('','0',$e->getMessage());
         }
     }
 

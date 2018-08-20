@@ -47,6 +47,14 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/region/add', 'Admin\RegionController@add');//地区添加
     Route::get('/region/delete', 'Admin\RegionController@delete');//地区删除
     Route::post('/region/modify', 'Admin\RegionController@modify');//地区修改
+
+    Route::get('/goodscategory/list', 'Admin\GoodsCategoryController@list');//商品分类列表
+    Route::get('/goodscategory/addForm', 'Admin\GoodsCategoryController@addForm');//商品分类添加
+    Route::post('/goodscategory/save', 'Admin\GoodsCategoryController@save');//商品分类保存
+    Route::get('/goodscategory/delete', 'Admin\GoodsCategoryController@delete');//商品分类删除
+    Route::get('/goodscategory/editForm', 'Admin\GoodsCategoryController@editForm');//商品分类编辑
+    Route::post('/goodscategory/sort', 'Admin\GoodsCategoryController@sort');//商品分类排序
+    Route::post('/goodscategory/upload', 'Admin\GoodsCategoryController@upload');//上传自定义图标
 });
 
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传

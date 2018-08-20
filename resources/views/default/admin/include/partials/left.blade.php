@@ -139,9 +139,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_cat_and_goods"></i><h4>商品管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="goods.php?act=step_up" data-param="menushopping|001_goods_setting" target="workspace">商品设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="goods.php?act=list" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="category.php?act=list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/home" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="comment_manage.php?act=list" data-param="menushopping|05_comment_manage" target="workspace">用户评论</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="brand.php?act=list" data-param="menushopping|06_goods_brand" target="workspace">品牌管理</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="goods_type.php?act=manage" data-param="menushopping|08_goods_type" target="workspace">商品类型</a></li>

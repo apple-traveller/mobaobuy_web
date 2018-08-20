@@ -31,7 +31,6 @@
             <div class="common-head">
                 <div class="fl">
                     <a href="javascript:download_userlist();"><div class="fbutton"><div class="csv" title="导出会员列表"><span><i class="icon icon-download-alt"></i>导出会员列表</span></div></div></a>
-                    <a href="/user/addForm"><div class="fbutton"><div class="add" title="添加会员"><span><i class="icon icon-plus"></i>添加会员</span></div></div></a>
                 </div>
 
                 <div class="refresh">
@@ -56,8 +55,8 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
-                                <th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list"><label for="all_list" class="checkbox_stars"></label></div></th>
-                                <th width="5%"><div class="tDiv"><a href="javascript:listTable.sort('user_id'); ">编号</a><img src="{{asset(themePath('/').'images/sort_desc.gif')}}"></div></th>
+
+                                <th width="5%"><div class="tDiv">编号</div></th>
                                 <th width="10%"><div class="tDiv">会员名称</div></th>
                                 <th width="10%"><div class="tDiv">昵称</div></th>
                                 <th width="8%"><div class="tDiv">真实姓名</div></th>
@@ -73,7 +72,7 @@
                             <tbody>
                             @foreach($users as $user)
                             <tr class="">
-                                <td class="sign"><div class="tDiv"><input type="checkbox" name="checkboxes[]" value="{{$user->id}}" class="checkbox" id="checkbox_{{$user->id}}"><label for="checkbox_{{$user->id}}" class="checkbox_stars"></label></div></td>
+
                                 <td><div class="tDiv">{{$user->id}}</div></td>
                                 <td><div class="tDiv">{{$user->user_name}}</div></td>
                                 <td><div class="tDiv">{{$user->nick_name}}</div></td>
@@ -106,10 +105,7 @@
                             <tr>
                                 <td colspan="12">
                                     <div class="tDiv">
-                                        <div class="tfoot_btninfo">
-                                            <input type="hidden" name="act" value="batch_remove">
-                                            <input type="submit" value="删除" name="remove" ectype="btnSubmit" class="btn btn_disabled" disabled="disabled">
-                                        </div>
+
                                         <div class="list-page">
                                             <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
