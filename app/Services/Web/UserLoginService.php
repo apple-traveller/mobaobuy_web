@@ -7,6 +7,7 @@ use App\Repositories\FirmLogRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepository;
+use App\Services\BaseService;
 
 class UserLoginService extends BaseService
 {
@@ -49,6 +50,11 @@ class UserLoginService extends BaseService
             curl_close($curl);
             return $return_str;
      }
+
+     //
+    public static function getInfo($id){
+         return UserRepository::getInfo($id);
+    }
 
     //用户登录
     public static function loginValidate($username, $psw, $other_params = [])
@@ -97,6 +103,12 @@ class UserLoginService extends BaseService
             FirmLogRepository::create($firmLog);
         }
         return $info;
+    }
+
+
+    //完善信息
+    public static function updateUserInfo($id,$data){
+        return UserRepository::modify($id,$data);
     }
 
 }

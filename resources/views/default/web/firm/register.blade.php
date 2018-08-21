@@ -10,6 +10,13 @@
 </head>
 <body>
 <h1>企业注册</h1>
+@if(count($errors)>0)
+    <div class="alert alert-warning" role="alert">
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </div>
+@endif
 <form action="/firmRegister" method="post" enctype="multipart/form-data">
     {{--{{ csrf_field() }}--}}
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />

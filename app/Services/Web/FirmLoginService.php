@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Web;
+use App\Repositories\FirmBlacklistRepository;
 use App\Repositories\FirmRepository;
 use App\Services\BaseService;
 use Carbon\Carbon;
@@ -11,8 +12,16 @@ class FirmLoginService extends BaseService
 {
     //用户注册
     public static function firmRegister($data){
+        //查找黑名单表是否存在
+        $firmBlack = FirmBlacklistRepository::getInfoByFields(['firm_name'=>$data['user_name']]);
+        if($firmBlack){
+            return 'error';
+        }
+
         $data['password'] = bcrypt($data['password']);
-        $data['attorney_letter_fileImg'] = Storage::putFile('public', $data['attorney_letter_fileImg']);
+        $filePath = Storage::putFile('public', $data['attorney_letter_fileImg']);
+        $filePath = explode('/',$filePath);
+        $data['attorney_letter_fileImg'] = '/storage/'.$filePath[1];
         $data['reg_time'] = Carbon::now();
         return FirmRepository::create($data);
     }

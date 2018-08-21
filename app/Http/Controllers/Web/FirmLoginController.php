@@ -29,13 +29,18 @@ class FirmLoginController extends Controller
                 'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:firm|unique:user',
                 'password'=>'required|confirmed|min:6',
                 'contactPhone'=>'required|min:11|numeric',
-                'contactName'=>'required'
+                'contactName'=>'required',
+                'attorney_letter_fileImg'=>'file'
             ];
             $data = $this->validate($request,$rule);
             $data['attorney_letter_fileImg'] = $request->file('attorney_letter_fileImg');
             try{
-                 FirmLoginService::firmRegister($data);
-                return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
+                 $result = FirmLoginService::firmRegister($data);
+                 if($result == 'error'){
+                     return $this->error('注册失败');
+                 }else{
+                     return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
+                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }

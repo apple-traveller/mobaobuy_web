@@ -106,4 +106,14 @@ trait CommonRepository
         }
         return [];
     }
+
+    public static function delete($id)
+    {
+        $model = self::getBaseModel();
+        $info = $model::destroy($id);
+        if ($info) {
+            return true;
+        }
+        return false;
+    }
 }

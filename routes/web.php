@@ -38,8 +38,12 @@ Route::post('/messageCode','Web\UserLoginController@getMessageCode');
 Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
 Route::post('/webLogin','Web\UserLoginController@login');
 Route::get('/logout','Web\UserLoginController@logout');
-Route::group(['middleware'=>'web.auth'],function(){
 
+//产品分类
+Route::resource('goodsCate','Web\GoodsCategoryController');
+Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
+    Route::get('/updateUserInfo','UserLoginController@userUpdate');
+    Route::post('/updateUserInfo','UserLoginController@userUpdate');
 });
 
 

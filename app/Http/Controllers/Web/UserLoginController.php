@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use App\Services\Web\UserLoginService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
 
 class UserLoginController extends Controller
 {
@@ -31,8 +33,6 @@ class UserLoginController extends Controller
                 'mobile_code'=>'required|numeric'
             ];
             $data = $this->validate($request,$rule);
-            $data['front_of_id_card'] = '123';
-            $data['reverse_of_id_card'] = '666';
             try{
                 UserLoginService::userRegister($data);
                 return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
@@ -72,12 +72,14 @@ class UserLoginController extends Controller
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
-
+        DB::beginTransaction();
         try{
             $user_info = UserLoginService::loginValidate($username, $password, $other_params);
             session()->put('_web_info', $user_info);
+            DB::commit();
             return $this->success('登录成功，正在进入系统...',  $this->redirectTo);
         }catch (\Exception $e){
+            DB::rollBack();
             return $this->error($e->getMessage());
         }
     }
@@ -91,6 +93,40 @@ class UserLoginController extends Controller
             echo json_encode(array('code'=>1,'msg'=>'success'));exit;
         }
         echo json_encode(array('code'=>0,'msg'=>'error'));exit;
+    }
+
+
+
+
+    //完善用户信息
+    public function userUpdate(Request $request){
+        if(empty(session('_web_info'))){
+            $this->error('登陆失效,请重新登陆');exit;
+        }else if($request->method('post')){
+            $rule = [
+                'email'=>'nullable|email|unique:user',
+                'sex'=>'nullable|numeric|max:1',
+                'birthday'=>'nullable|numeric',
+                'qq'=>'nullable|numeric',
+                'avatar'=>'nullable|image',
+                'id_card'=>'nullable|numeric',
+                'front_of_id_card'=>'nullable|image',
+                'reverse_of_id_card'=>'nullable|image'
+            ];
+            $data = $this->validate($request,$rule);
+            if(empty($data)){
+                return $this->error('');
+            }
+            try{
+                UserLoginService::updateUserInfo(session('_web_info')['id'],$data);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+        }else if($request->method('get')){
+                $userInfo = UserLoginService::getInfo(session('_web_info')['id']);
+                return $this->display('web.user.info',compact('userInfo'));
+        }
     }
 
     public function logout()

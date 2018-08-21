@@ -12,6 +12,7 @@ class UserRepository
 {
     use CommonRepository;
 
+    //根据用户名称查
     public static function getInfoByUserName($user_name){
         $model = self::getBaseModel();
         $info = $model::where('user_name', $user_name)->first();
@@ -20,4 +21,6 @@ class UserRepository
         }
         return [];
     }
+
+
 }

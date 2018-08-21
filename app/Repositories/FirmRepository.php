@@ -24,4 +24,25 @@ class FirmRepository
         }
         return [];
     }
+
+    //更新积分
+    public static function updatePoints($id,$type,$points){
+        $model = self::getBaseModel();
+        $info = $model::find($id); //模型实例
+        if ($info) {
+            if($type == 2){
+                $firmInfo = $info->toAarray();
+                $info->points = $firmInfo['points'] - $points;
+                $info->save();
+            }elseif ($type == 1){
+                $firmInfo = $info->toAarray();
+                $info->points = $firmInfo['points'] + $points;
+                $info->save();
+            }else{
+                return false;
+            }
+            return $info->toArray();
+        }
+        return false;
+    }
 }
