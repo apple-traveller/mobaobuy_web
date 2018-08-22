@@ -227,8 +227,8 @@ CREATE TABLE `user` (
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
   `real_name` varchar(60) NOT NULL DEFAULT '' COMMENT '真实姓名',
   `id_card` varchar(255) NOT NULL DEFAULT '' COMMENT '身份证号',
-  `front_of_id_card` varchar(60) NOT NULL COMMENT '身份证正面',
-  `reverse_of_id_card` varchar(60) NOT NULL COMMENT '身份证反面',
+  `front_of_id_card` varchar(60) NOT NULL DEFAULT '' COMMENT '身份证正面',
+  `reverse_of_id_card` varchar(60) NOT NULL DEFAULT '' COMMENT '身份证反面',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='个人会员表';

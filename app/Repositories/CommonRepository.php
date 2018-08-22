@@ -58,9 +58,10 @@ trait CommonRepository
         $clazz = self::getBaseModel();
         $info = new $clazz();
         foreach ($data as $k => $v) {
-            $info->$k ='"'.$v.'"';
+            $info->$k = $v;
         }
         $info->save();
+
         return $info->toArray();
     }
 
@@ -104,5 +105,15 @@ trait CommonRepository
             return $info->toArray();
         }
         return [];
+    }
+
+    public static function delete($id)
+    {
+        $model = self::getBaseModel();
+        $info = $model::destroy($id);
+        if ($info) {
+            return true;
+        }
+        return false;
     }
 }
