@@ -17,19 +17,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_01_system"></i><h4>设置</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="" data-param="menuplatform|01_shop_config" target="workspace">商店设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="payment.php?act=list" data-param="menuplatform|02_payment_list" target="workspace">支付方式</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="shipping.php?act=list" data-param="menuplatform|03_area_shipping" target="workspace">地区&amp;配送</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="cron.php?act=list" data-param="menuplatform|07_cron_schcron" target="workspace">计划任务</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="friend_link.php?act=list" data-param="menuplatform|08_friendlink_list" target="workspace">友情链接</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="friend_partner.php?act=list" data-param="menuplatform|09_partnerlink_list" target="workspace">合作伙伴</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="captcha_manage.php?act=main" data-param="menuplatform|captcha_manage" target="workspace">验证码设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="check_file_priv.php?act=check" data-param="menuplatform|check_file_priv" target="workspace">文件权限检测</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="navigator.php?act=list" data-param="menuplatform|navigator" target="workspace">自定义导航栏</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="tp_api.php?act=order_print_setting" data-param="menuplatform|order_print_setting" target="workspace">打印设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="seo.php?act=index" data-param="menuplatform|seo" target="workspace">SEO设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="sitemap.php" data-param="menuplatform|sitemap" target="workspace">站点地图</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="keywords_manage.php?act=list" data-param="menuplatform|user_keywords_list" target="workspace">用户检索记录</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/sysconfig/index" data-param="" target="workspace">商店设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/link/list" data-param="" target="workspace">友情链接</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/seo/index" data-param="" target="workspace">SEO设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/nav/list" data-param="" target="workspace">自定义导航栏</a></li>
                     </ul>
                 </div>
             </div>
@@ -60,9 +51,7 @@
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="menuplatform|" target="workspace">会员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="{{url('/firm/list')}}" data-param="menuplatform|" target="workspace">企业列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/blacklist/list" data-param="menuplatform|" target="workspace">企业黑名单</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="user_account.php?act=list" data-param="menuplatform|09_user_account" target="workspace">充值和提现申请</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="user_account_manage.php?act=list" data-param="menuplatform|10_user_account_manage" target="workspace">资金管理</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/region/list" data-param="menuplatform|12_user_address_list" target="workspace">收货地址列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_baitiao_log.php?act=list" data-param="menuplatform|13_user_baitiao_info" target="workspace">会员白条</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_vat.php?act=list" data-param="menuplatform|15_user_vat_info" target="workspace">会员增票资质</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="reg_fields.php?act=list" data-param="menuplatform|16_reg_fields" target="workspace">注册项设置</a></li>

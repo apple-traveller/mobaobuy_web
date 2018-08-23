@@ -25,15 +25,12 @@ class GoodsCategoryRepository
         return self::searchQuery($paper,$query);
     }
 
-    //根据栏目名称获取数据
-    public static function getInfoByCatname($cat_name)
+
+    //存在验证
+    public static function exist($cat_name)
     {
         $model = self::getBaseModel();
-        $info = $model::where('cat_name',$cat_name)->select('id')->first();
-        if($info){
-            return $info->asArray();
-        }
-        return [];
+        return $model::where('cat_name',$cat_name)->exists();
     }
 
     //删除
