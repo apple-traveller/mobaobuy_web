@@ -10,17 +10,7 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="explanation" id="explanation">
-                <div class="ex_tit">
-                    <i class="sc_icon"></i>
-                    <h4>操作提示</h4>
-                    <span id="explanationZoom" title="收起提示"></span>
-                </div>
-                <ul>
-                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
-                    <li>商店相关信息设置，请谨慎填写信息。</li>
-                </ul>
-            </div>
+
             <div class="flexilist visible">
                 <div class="mian-info visible">
                     <form enctype="multipart/form-data" name="theForm" action="/seo/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">

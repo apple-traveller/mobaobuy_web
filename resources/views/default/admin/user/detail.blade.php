@@ -6,10 +6,7 @@
             <div class="tabs_info">
                 <ul>
                     <li class="curr"><a href="users.php?act=edit&amp;id=18">基本信息</a></li>
-                    <li><a href="users.php?act=address_list&amp;id=18">收货地址</a></li>
-                    <li><a href="order.php?act=list&amp;user_id=18">查看订单</a></li>
-                    <li><a href="user_baitiao_log.php?act=bt_add_tp&amp;user_id=18">设置白条</a></li>
-                    <li><a href="account_log.php?act=list&amp;user_id=18">账目明细</a></li>
+
                 </ul>
             </div>
 

@@ -126,14 +126,11 @@ class GoodsCategoryController extends Controller
             if(empty($id)){
                 GoodsCategoryService::uniqueValidate($data['cat_name']);//唯一性验证
                 $info = GoodsCategoryService::create($data);
-                if(!$info){
-                    return $this->error('保存失败');
-                }
             }else{
                 $info = GoodsCategoryService::modify($id,$data);
-                if(!$info){
-                    return $this->error('保存失败');
-                }
+            }
+            if(!$info){
+                return $this->error('保存失败');
             }
             return $this->success('保存成功！',url("/goodscategory/list")."?parent_id=".$data['parent_id']);
         }catch(\Exception $e){

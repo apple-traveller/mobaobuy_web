@@ -79,6 +79,21 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/nav/sort', 'Admin\NavController@sort');//导航栏排序
 
 
+    Route::get('/articlecat/list', 'Admin\ArticleCatController@list');//文章分类列表
+    Route::get('/articlecat/addForm', 'Admin\ArticleCatController@addForm');//文章分类添加
+    Route::get('/articlecat/editForm', 'Admin\ArticleCatController@editForm');//文章分类编辑
+    Route::post('/articlecat/save', 'Admin\ArticleCatController@save');//文章分类保存
+    Route::post('/articlecat/sort', 'Admin\ArticleCatController@sort');//文章分类排序（ajax）
+    Route::get('/articlecat/delete', 'Admin\ArticleCatController@delete');//文章分类删除
+
+    Route::get('/article/list', 'Admin\ArticleController@list');//文章列表
+    Route::get('/article/addForm', 'Admin\ArticleController@addForm');//文章添加
+    Route::get('/article/editForm', 'Admin\ArticleController@editForm');//文章编辑
+    Route::post('/article/save', 'Admin\ArticleController@save');//文章保存
+    Route::get('/article/detail', 'Admin\ArticleController@detail');//文章详情
+    Route::post('/article/sort', 'Admin\ArticleController@sort');//文章排序（ajax）
+    Route::get('/article/delete', 'Admin\ArticleController@delete');//文章删除
+    Route::post('/article/status', 'Admin\ArticleController@status');//ajax修改状态
 });
 
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传

@@ -37,8 +37,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_07_content"></i><h4>文章管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="articlecat.php?act=list" data-param="menuplatform|02_articlecat_list" target="workspace">文章分类</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="article.php?act=list" data-param="menuplatform|03_article_list" target="workspace">文章列表</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/articlecat/list" data-param="menuplatform|02_articlecat_list" target="workspace">文章分类</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/article/list" data-param="menuplatform|03_article_list" target="workspace">文章列表</a></li>
                         <li><s></s><a href="visualnews.php?act=visual" target="_blank">CMS可视化</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="article_auto.php?act=list" data-param="menuplatform|article_auto" target="workspace">文章自动发布</a></li>
                     </ul>
@@ -48,9 +48,9 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_08_members"></i><h4>会员</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="menuplatform|" target="workspace">会员列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="{{url('/firm/list')}}" data-param="menuplatform|" target="workspace">企业列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/blacklist/list" data-param="menuplatform|" target="workspace">企业黑名单</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="{{url('/firm/list')}}" data-param="menuplatform|06_list_integrate" target="workspace">企业列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/blacklist/list" data-param="menuplatform|08_unreply_msg" target="workspace">企业黑名单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_baitiao_log.php?act=list" data-param="menuplatform|13_user_baitiao_info" target="workspace">会员白条</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="user_vat.php?act=list" data-param="menuplatform|15_user_vat_info" target="workspace">会员增票资质</a></li>

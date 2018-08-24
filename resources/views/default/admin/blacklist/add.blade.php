@@ -9,14 +9,7 @@
                     <li class="curr"><a href="javascript:;">添加企业黑名单</a></li>
                 </ul>
             </div>
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>可从管理平台手动添加一名新会员，并填写相关信息。</li>
-                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
-                    <li>新增会员后可从会员列表中找到该条数据，并再次进行编辑操作，但该会员名称不可变。</li>
-                </ul>
-            </div>
+
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
