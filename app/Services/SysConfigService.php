@@ -1,6 +1,4 @@
 <?php
-
-<<<<<<< HEAD
 namespace App\Services\Web;
 use App\Repositories\SysConfigRepository;
 use App\Services\BaseService;
@@ -10,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SysConfigService
 {
-    use BaseService;
+    use CommonService;
     public static function sysCacheSet($where=[]){
 //         $where['code'] = 'individual_reg_closed';
 //         if(empty($where)){}
@@ -34,13 +32,7 @@ class SysConfigService
 
 
 
-=======
-namespace App\Services;
 
-use App\Services\BaseService;
-use App\Repositories\SysConfigRepo;
-class SysConfigService extends BaseService
-{
     //根据parent_id获取配置信息
     public static function getInfo($parent_id)
     {
@@ -61,6 +53,6 @@ class SysConfigService extends BaseService
         self::commit();
         return true;
     }
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf
+
 
 }

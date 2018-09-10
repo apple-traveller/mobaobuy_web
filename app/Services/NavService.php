@@ -6,7 +6,7 @@ use App\Services\BaseService;
 use App\Repositories\NavRepo;
 class NavService
 {
-    use BaseService;
+    use CommonService;
     //列表(分页)
     public static function getList($pageSize)
     {

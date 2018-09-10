@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepo;
 use App\Services\CommonService;
 
-<<<<<<< HEAD:app/Services/UserLoginService.php
+
 class UserLoginService
-=======
-class UserLoginService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Web/UserLoginService.php
 {
-    use BaseService;
+    use CommonService;
     //用户注册
     public static function userRegister($data){
         $data['reg_time'] = Carbon::now();

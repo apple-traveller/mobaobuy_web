@@ -6,7 +6,7 @@ use App\Services\BaseService;
 use App\Repositories\FriendLinkRepo;
 class FriendLinkService
 {
-    use BaseService;
+     use CommonService;
     //分页获取链接列表
     public static function getLinks($pageSize)
     {

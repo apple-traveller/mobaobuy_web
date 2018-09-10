@@ -8,13 +8,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-<<<<<<< HEAD:app/Services/FirmPointsFlowService.php
+
 class FirmPointsFlowService
-=======
-class FirmPointsFlowService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Web/FirmPointsFlowService.php
 {
-    use BaseService;
+    use CommonService;
 
     //增加积分流水
     public static function createPoints($data){

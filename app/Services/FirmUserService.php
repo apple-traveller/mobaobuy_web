@@ -7,14 +7,9 @@ use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-
-<<<<<<< HEAD:app/Services/FirmUserService.php
 class FirmUserService
-=======
-class FirmUserService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Web/FirmUserService.php
 {
-    use BaseService;
+    use CommonService;
     public static function firmUserList(){
 
     }

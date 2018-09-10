@@ -4,11 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 
-<<<<<<< HEAD:app/Services/BaseService.php
-trait BaseService
-=======
+
 trait CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/CommonService.php
 {
     protected static function throwBizError($msg, $code = 0){
         throw new \Exception($msg, $code);

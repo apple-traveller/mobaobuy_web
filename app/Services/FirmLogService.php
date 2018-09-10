@@ -2,17 +2,11 @@
 
 namespace App\Services\Admin;
 
-<<<<<<< HEAD:app/Services/FirmLogService.php
-use App\Services\BaseService;
-use App\Repositories\FirmLogRepository;
-class FirmLogService
-=======
 use App\Services\CommonService;
 use App\Repositories\FirmLogRepo;
-class FirmLogService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/FirmLogService.php
+class FirmLogService
 {
-    use BaseService;
+    use CommonService;
     //获取日志信息
     public static function getLogInfo($id,$pageSize)
     {

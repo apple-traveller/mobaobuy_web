@@ -6,7 +6,7 @@ use App\Services\BaseService;
 use App\Repositories\ArticleCatRepo;
 class ArticleCatService
 {
-    use BaseService;
+    use CommonService;
     //获取列表数据
     public static function getList($parent_id)
     {

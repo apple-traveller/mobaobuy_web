@@ -1,23 +1,13 @@
 <?php
 
 namespace App\Services\Admin;
-
-<<<<<<< HEAD:app/Services/FirmService.php
-use App\Services\BaseService;
-use App\Repositories\FirmRepository;
-use App\Repositories\FirmPointsFlowRepository;
-class FirmService
-=======
 use App\Services\CommonService;
 use App\Repositories\FirmRepo;
 use App\Repositories\FirmPointsFlowRepo;
-
 use App\Repositories\FirmUserRepo;
-class FirmService extends BaseService
-
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/FirmService.php
+class FirmService
 {
-    use BaseService;
+    use CommonService;
     //获取企业列表（excel导出）
     public static function exportExcel($fields)
     {

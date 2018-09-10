@@ -1,23 +1,11 @@
 <?php
-
-<<<<<<< HEAD:app/Services/GoodsCategoryService.php
-namespace App\Services\Web;
-use App\Repositories\GoodsCategoryRepository;
-use App\Services\BaseService;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
-class GoodsCategoryService
-=======
 namespace App\Services\Admin;
 
 use App\Services\CommonService;
 use App\Repositories\GoodsCategoryRepo;
-class GoodsCategoryService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/GoodsCategoryService.php
+class GoodsCategoryService
 {
-    use BaseService;
+    use CommonService;
     public static function GoodsCategoryInfo($where=[]){
         return GoodsCategoryRepository::search([],$where);
     }

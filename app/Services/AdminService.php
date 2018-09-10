@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminService
 {
-    use BaseService;
+    use CommonService;
     public static function loginValidate($username, $psw)
     {
         $info = AdminRepo::getInfoByLoginName($username);

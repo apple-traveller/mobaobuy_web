@@ -6,7 +6,7 @@ use App\Services\BaseService;
 use App\Repositories\ArticleRepo;
 class ArticleService
 {
-    use BaseService;
+    use CommonService;
     //分页获取数据
     public static function getList($cat_id,$pageSize,$title)
     {

@@ -7,17 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-<<<<<<< HEAD:app/Services/UserService.php
 class UserService
-=======
-use App\Services\CommonService;
-use App\Repositories\UserRepo;
-use Illuminate\Foundation\Auth\User;
-
-class UserService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/UserService.php
 {
-    use BaseService;
+    use CommonService;
 
     //更新收获地
     public static function updateShopAdderss(){
@@ -88,9 +80,4 @@ class UserService extends CommonService
     {
         return UserRepo::getCount($user_name);
     }
-
-
-
-
-
 }

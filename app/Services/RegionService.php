@@ -1,18 +1,11 @@
 <?php
 
 namespace App\Services\Admin;
-
-<<<<<<< HEAD:app/Services/RegionService.php
-use App\Services\BaseService;
-use App\Repositories\RegionRepository;
-class RegionService
-=======
 use App\Services\CommonService;
 use App\Repositories\RegionRepo;
-class RegionService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/RegionService.php
+class RegionService
 {
-    use BaseService;
+    use CommonService;
 
     //获取地区列表
     public static function getRegionList($parent_id)

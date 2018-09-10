@@ -1,18 +1,11 @@
 <?php
 
 namespace App\Services\Admin;
-
-<<<<<<< HEAD:app/Services/FirmBlacklistService.php
-use App\Services\BaseService;
-use App\Repositories\FirmBlacklistRepository;
-class FirmBlacklistService
-=======
 use App\Services\CommonService;
 use App\Repositories\FirmBlacklistRepo;
-class FirmBlacklistService extends CommonService
->>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/FirmBlacklistService.php
+class FirmBlacklistService
 {
-    use BaseService;
+    use CommonService;
 
     //获取黑名单列表(导出excel表)
     public static function getBlacklists($fields)
