@@ -5,22 +5,7 @@
         <div class="title">
             商品 - 平台商品分类        </div>
         <div class="content">
-            <div class="tabs_info">
-                <ul>
-                    <li class="curr"><a href="category.php?act=list">平台商品分类</a></li>
-                    <li><a href="category_store.php?act=list">店铺商品分类</a></li>
-                </ul>
-            </div>
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>展示了平台所有的商品分类。</li>
-                    <li>可在列表直接增加下一级分类。</li>
-                    <li>可在商品分类列表进行转移分类下的商品。</li>
-                    <li>鼠标移动“设置”位置，可新增下一级分类、查看下一级分类、转移商品等操作。</li>
-                    <li><span class="red">设置分类显示会同步操作分类及子分类下所有商品是否显示，请谨慎操作</span></li>
-                </ul>
-            </div>
+
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">

@@ -33,10 +33,9 @@ class GoodsCategoryController extends Controller
     public function sort(Request $request)
     {
         $id = $request->input('id');
-        $info = GoodsCategoryService::getInfo($id);
         $sort_order = $request->input('sort_order');
         try{
-            $info = GoodsCategoryService::update($id,['sort_order'=>$sort_order]);
+            $info = GoodsCategoryService::modify($id,['sort_order'=>$sort_order]);
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
@@ -63,7 +62,7 @@ class GoodsCategoryController extends Controller
         return $this->display('admin.goodscategory.add',
             ['icons'=>$icons,
               'catesTree'=>$catesTree,
-                'parent_id'=>$goodsCategory['id']
+                'parent_id'=>empty($goodsCategory['id'])?0:$goodsCategory['id']
             ]);
     }
 
@@ -71,7 +70,7 @@ class GoodsCategoryController extends Controller
     {
         $id = $request->input('id');
         $cate= GoodsCategoryService::getInfo($id);//根据id获取信息
-        //dd($cate);
+        //dd(substr($cate['cat_icon'],0,7));
         //获取图标库文件
         $icons = GoodsCategoryService::getIcons();
         //获取所有的栏目
@@ -127,14 +126,11 @@ class GoodsCategoryController extends Controller
             if(empty($id)){
                 GoodsCategoryService::uniqueValidate($data['cat_name']);//唯一性验证
                 $info = GoodsCategoryService::create($data);
-                if(!$info){
-                    return $this->error('保存失败');
-                }
             }else{
                 $info = GoodsCategoryService::modify($id,$data);
-                if(!$info){
-                    return $this->error('保存失败');
-                }
+            }
+            if(!$info){
+                return $this->error('保存失败');
             }
             return $this->success('保存成功！',url("/goodscategory/list")."?parent_id=".$data['parent_id']);
         }catch(\Exception $e){

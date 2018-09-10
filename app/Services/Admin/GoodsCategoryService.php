@@ -40,7 +40,7 @@ class GoodsCategoryService extends CommonService
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = GoodsCategoryRepository::getInfoByCatname($cat_name);
+        $info = GoodsCategoryRepository::exist($cat_name);
         if(!empty($info)){
             self::throwError('分类名称已经存在！');
         }

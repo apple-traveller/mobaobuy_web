@@ -4,21 +4,13 @@
         <div class="title">系统设置 - 地区列表</div>
         <div class="content">
             <div class="tabs_info">
-                <ul>
-                    <li><a href="shipping.php?act=list">配送方式</a></li>
-                    <li><a href="goods_transport.php?act=list">运费管理</a></li>
-                    <li class="curr"><a href="/region/list">地区列表</a></li>
-                    <li><a href="region_area.php?act=list">区域管理</a></li>
-                    <li><a href="warehouse.php?act=list">仓库管理</a></li>
-                    <li><a href="shipping.php?act=date_list">自提时间段</a></li>
-                </ul>
+
             </div>
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>在新增一级地区点击管理进入下一级地区，可进行删除和编辑。</li>
                     <li>地区用于商城定位，请根据商城实际情况谨慎设置。</li>
-                    <li>生成地区首字母是方便根据地区首字母搜索相对应的地区</li>
                     <li>地区层级关系必须为中国→省/直辖市→市→县，地区暂只支持到四级地区其后不显示，暂不支持国外</li>
                 </ul>
             </div>
@@ -27,12 +19,12 @@
                     <div class="fl mt2">
 
                         @if($parent_id==0)
-                        <a href="area_manage.php?act=create_region_initial"><div class="fbutton"><div class="add_region" title="生成地区首字母"><span><i class="icon icon-plus"></i>生成地区首字母</span></div></div></a>
+
                         @else
                         <a href="/region/list?parent_id={{$last_parent_id}}" ><div class="fbutton"><div class="add_region" title="返回上一级"><span><span><i class="icon icon-reply"></i>返回上一级</span></div></div></a>
                         @endif
 
-                        <a href="javascript:void(0);" class="restore_btn"><div class="fbutton"><div class="cog" title="恢复默认设置"><span><i class="icon icon-cog"></i>恢复默认设置</span></div></div></a>
+
                     </div>
                     <div class="add_area fr">
                         <form method="post" action="/region/add" name="theForm">

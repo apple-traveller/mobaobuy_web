@@ -48,7 +48,7 @@
                                 <div class="item">
                                     <div class="label">排序：</div>
                                     <div class="label_value">
-                                        <input type="text" class="text text_4 valid" name="sort_order" id="sort_order" value="{{$cates['sort_order']}}" size="15" autocomplete="off" aria-invalid="false">
+                                        <input type="text" class="text text_4 valid" name="sort_order" id="sort_order" value="{{$cate['sort_order']}}" size="15" autocomplete="off" aria-invalid="false">
                                     </div>
                                 </div>
 
@@ -139,7 +139,7 @@
                                                     </div>
                                                 </div>
                                                 自定义：<button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                                <input type="radio" class="text" id="cat_icon" name="cat_icon"  style="display:none;" >
+                                                <input type="radio" class="text" <?php if(substr($cate['cat_icon'],0,7)=="/upload") echo "checked";?> value="{{$cate['cat_icon']}}"  id="cat_icon" name="cat_icon"  style="display:none;" >
                                                 <img style="width:50px;height:50px;display:none;"  class="layui-upload-img" id="demo1" ><br/>
                                                 <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
