@@ -31,7 +31,9 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/user/export', 'Admin\UserController@export');//用户导出excel
 
     Route::any('/firm/list', 'Admin\FirmController@list');//企业列表
+    Route::get('/firm/firmuser', 'Admin\FirmController@firmuser');//企业列表
     Route::get('/firm/log', 'Admin\FirmController@log');//查看企业日志信息
+    Route::get('/firm/pointflow', 'Admin\FirmController@pointflow');//查看企业积分信息
     Route::get('/firm/detail', 'Admin\FirmController@detail');//查看企业详情信息
     Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
     Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel
@@ -94,6 +96,16 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/article/sort', 'Admin\ArticleController@sort');//文章排序（ajax）
     Route::get('/article/delete', 'Admin\ArticleController@delete');//文章删除
     Route::post('/article/status', 'Admin\ArticleController@status');//ajax修改状态
+
+    Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
+    Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板
+    Route::post('/template/saveTemplate', 'Admin\TemplateController@saveTemplate');//模板缓存
+    Route::post('/template/publish', 'Admin\TemplateController@publish');//确认发布
+    Route::post('/template/partEdit', 'Admin\TemplateController@partEdit');//模板编辑
+    Route::get('/template/preview', 'Admin\TemplateController@preview');//模板预览
+    Route::get('/template/decoratetest', 'Admin\TemplateController@decoratetest');//装修模板(测试)
+    Route::get('/template/getPics', 'Admin\TemplateController@getPics');//测试方法
+
 });
 
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传

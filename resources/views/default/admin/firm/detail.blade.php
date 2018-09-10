@@ -3,22 +3,8 @@
     <div class="warpper">
         <div class="title"><a href="{{url('/firm/list')}}" class="s-back">返回</a>企业 - 企业详情信息</div>
         <div class="content">
-            <div class="tabs_info">
-                <ul>
-                    <li class="curr"><a href="users.php?act=edit&amp;id=18">基本信息</a></li>
-                    <li><a href="users.php?act=address_list&amp;id=18">收货地址</a></li>
-                    <li><a href="order.php?act=list&amp;user_id=18">查看订单</a></li>
-                    <li><a href="user_baitiao_log.php?act=bt_add_tp&amp;user_id=18">设置白条</a></li>
-                    <li><a href="account_log.php?act=list&amp;user_id=18">账目明细</a></li>
-                </ul>
-            </div>
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
-                    <li>编辑会员账号信息请根据提示慎重操作，避免出现不必要的问题。</li>
-                </ul>
-            </div>
+
+
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
@@ -40,9 +26,9 @@
                                 <div class="label_value font14">{{$info['contactPhone']}}</div>
                             </div>
                             <div class="item">
-                                <div class="label">积分：</div>
+                                <div class="label">总积分：</div>
                                 <div class="label_value">
-                                    <div class="b-price blue font14 mr20"><em>¥</em>{{$info['points']}}</div>
+                                    <div class="b-price blue font14 mr20"><em>¥{{$info['points']}}</em></div>
 
                                 </div>
                             </div>

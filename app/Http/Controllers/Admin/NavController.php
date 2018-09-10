@@ -74,10 +74,19 @@ class NavController extends Controller
         $data = $request->all();
         unset($data['_token']);
         $id = $request->input('id');
+        //dd($data);
+        //dd(array_key_exists('opennew',$data));
         try{
             $info = NavService::modify($id,$data);
+
             if($info){
-                return $this->result($info['is_show'],200,"修改成功");
+                if(!array_key_exists('opennew',$data)){
+                    return $this->result($info['is_show'],200,"修改成功");
+                }else{
+                    //return "123";
+                    return $this->result($info['opennew'],200,"修改成功");
+                }
+
             }else{
                 return  $this->result('',400,"修改失败");
             }

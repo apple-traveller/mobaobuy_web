@@ -444,6 +444,7 @@ var Transport =
 
 /* 定义两个别名 */
 var Ajax = Transport;
+
 Ajax.call = Transport.run;
 
 /*

@@ -7,7 +7,7 @@
             <div class="tabs_info">
                 <ul>
                     <li class="curr"><a href="javascript:void(0);">通用信息</a></li>
-                    <li class=""><a href="javascript:void(0);">文章内容</a></li>
+
                 </ul>
             </div>
 

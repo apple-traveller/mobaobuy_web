@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 use App\Services\BaseService;
 use App\Repositories\FirmRepository;
 use App\Repositories\FirmPointsFlowRepository;
+use App\Repositories\FirmUserRepository;
 class FirmService extends BaseService
 {
     //获取企业列表（excel导出）
@@ -21,8 +22,6 @@ class FirmService extends BaseService
         return $info;
     }
 
-
-
     //修改
     public static function modify($id,$data)
     {
@@ -33,15 +32,6 @@ class FirmService extends BaseService
     public static function getInfo($id)
     {
         $firm = FirmRepository::getInfo($id);
-        //查询企业积分
-        //$points = FirmPointsFlowRepository::getPointByfirmId($id)['points'];
-        $points = FirmPointsFlowRepository::getPointByfirmId($id);
-        if($points){
-            $firm['points']=$points['points'];
-        }else{
-            $firm['points']= 0 ;
-        }
-
         return $firm;
     }
 
@@ -49,6 +39,18 @@ class FirmService extends BaseService
     public static function getCount($firm_name)
     {
         return FirmRepository::getCount($firm_name);
+    }
+
+    //根据firmid获取当前企业的积分列表
+    public static function getPointsByFirmid($firm_id)
+    {
+        return FirmPointsFlowRepository::getPointsByFirmid($firm_id);
+    }
+
+    //根据firmid获取企业用户
+    public static function getFirmUser($firm_id)
+    {
+        return FirmUserRepository::getFirmUser($firm_id);
     }
 
 

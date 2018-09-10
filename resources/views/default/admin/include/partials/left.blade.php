@@ -76,7 +76,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_12_template"></i><h4>模板管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="visualhome.php?act=list" data-param="menuplatform|01_visualhome" target="workspace">首页可视化</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/template/index" data-param="menuplatform|01_visualhome" target="workspace">首页可视化</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="template.php?act=list" data-param="menuplatform|02_template_select" target="workspace">模板选择</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="template.php?act=setup" data-param="menuplatform|03_template_setup" target="workspace">设置模板</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="template.php?act=library" data-param="menuplatform|04_template_library" target="workspace">库项目管理</a></li>
