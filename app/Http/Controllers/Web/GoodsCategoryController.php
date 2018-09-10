@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Services\Web\GoodsCategoryService;
+use App\Services\GoodsCategoryService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

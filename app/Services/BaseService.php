@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 
-class BaseService
+trait BaseService
 {
     protected static function throwError($msg, $code = 0){
         throw new \Exception($msg, $code);

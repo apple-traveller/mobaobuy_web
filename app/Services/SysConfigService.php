@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Services\Web;
+use App\Repositories\SysConfigRepository;
+use App\Services\BaseService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
+class SysConfigService
+{
+    use BaseService;
+    public static function sysCacheSet($where=[]){
+//         $where['code'] = 'individual_reg_closed';
+//         if(empty($where)){}
+         $sysCache = SysConfigRepository::search([],$where);
+         $arr = [];
+         foreach ($sysCache['list'] as $key=>$value){
+            if($value['parent_id'] != 0){
+                if($value['parent_id'] == 1){
+                    $arr['shop_info'][] = $value;
+                }else if($value['parent_id'] == 2){
+                    $arr['basic'][] = $value;
+                }else if($value['parent_id'] == 3){
+                    $arr['display'][] = $value;
+                }else if($value['parent_id'] == 4){
+                    $arr['path'][] = $value;
+                }
+            }
+         }
+         return $arr;
+    }
+
+
+
+
+}

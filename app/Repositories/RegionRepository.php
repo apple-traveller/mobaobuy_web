@@ -63,4 +63,27 @@ class RegionRepository
     }
 
 
+
+    //获取省
+    public static function getProvince($region_type){
+        $model = self::getBaseModel();
+        $info = $model::where('region_type',$region_type)->get();
+        if($info){
+            return $info->toArray();
+        }
+        return [];
+    }
+
+    //获取市，县
+    public static function getCity($regionId){
+        $model = self::getBaseModel();
+        $info = $model::where('parent_id',$regionId)->get();
+        if($info){
+            return $info->toArray();
+        }
+        return [];
+    }
+
+
+
 }

@@ -10,9 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function(){
-    return '111';
-});
+
+
 
 //后台
 Route::get('/admin/login', 'Admin\LoginController@loginForm')->name('admin_login');
@@ -57,6 +56,14 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/goodscategory/upload', 'Admin\GoodsCategoryController@upload');//上传自定义图标
 });
 
+
+
+Route::group(['middleware'=>'web.stats'],function(){
+    //系统配置信息
+    Route::get('/SysCacheSet', 'Web\SysConfigController@sysCacheSet');
+    Route::get('/SysCacheClean', 'Web\SysConfigController@sysCacheClean');
+});
+
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
 //用户
@@ -68,19 +75,27 @@ Route::post('/userRegister','Web\UserLoginController@userRegister');
 Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
 Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
-//验证码
+//手机验证码
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');
 //登陆
 Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
 Route::post('/webLogin','Web\UserLoginController@login');
 Route::get('/logout','Web\UserLoginController@logout');
 
-//产品分类
+
+
+//用户信息完善
 Route::resource('goodsCate','Web\GoodsCategoryController');
 Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
     Route::get('/updateUserInfo','UserLoginController@userUpdate');
     Route::post('/updateUserInfo','UserLoginController@userUpdate');
+    Route::get('/', function(){
+        return '主页';
+    });
 });
+
+
+
 
 
 

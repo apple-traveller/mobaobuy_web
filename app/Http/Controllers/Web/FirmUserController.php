@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Web;
 
-use App\Services\Web\FirmUserService;
+use App\Services\FirmUserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

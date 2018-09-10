@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
-use App\Services\Web\UserLoginService;
+use App\Services\UserLoginService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 

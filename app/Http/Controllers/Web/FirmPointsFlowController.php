@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Services\Web\FirmPointsFlowService;
+use App\Services\FirmPointsFlowService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;

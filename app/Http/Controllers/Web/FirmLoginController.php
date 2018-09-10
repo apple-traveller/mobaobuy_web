@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
-use App\Services\Web\FirmLoginService;
+use App\Services\FirmLoginService;
 use App\Http\Controllers\Controller;
 
 
