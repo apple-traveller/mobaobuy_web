@@ -2,9 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\FirmLogRepository;
-class FirmLogService extends BaseService
+class FirmLogService extends CommonService
 {
     //获取日志信息
     public static function getLogInfo($id,$pageSize)

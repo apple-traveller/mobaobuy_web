@@ -2,11 +2,11 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Auth\User;
 
-class UserService extends BaseService
+class UserService extends CommonService
 {
     //获取用户列表(导出excel表)
     public static function getUsers($fields)

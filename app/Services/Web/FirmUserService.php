@@ -3,12 +3,12 @@
 namespace App\Services\Web;
 use App\Repositories\FirmUserRepository;
 use App\Repositories\UserRepository;
-use App\Services\BaseService;
+use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class FirmUserService extends BaseService
+class FirmUserService extends CommonService
 {
     public static function firmUserList(){
 

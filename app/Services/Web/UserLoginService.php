@@ -7,9 +7,9 @@ use App\Repositories\FirmLogRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepository;
-use App\Services\BaseService;
+use App\Services\CommonService;
 
-class UserLoginService extends BaseService
+class UserLoginService extends CommonService
 {
     //用户注册
     public static function userRegister($data){

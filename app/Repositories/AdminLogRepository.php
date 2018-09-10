@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-class AdminLogRepository
+class AdminLogRepo
 {
     use CommonRepository;
 

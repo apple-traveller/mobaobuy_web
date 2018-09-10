@@ -2,10 +2,10 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\UserLogRepository;
 
-class UserLogService extends BaseService
+class UserLogService extends CommonService
 {
     //获取日志列表（分页）
     public static function getLogs($user_id,$pageSize)

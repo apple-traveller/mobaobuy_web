@@ -3,12 +3,12 @@
 namespace App\Services\Web;
 use App\Repositories\FirmPointsFlowRepository;
 use App\Repositories\FirmRepository;
-use App\Services\BaseService;
+use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class FirmPointsFlowService extends BaseService
+class FirmPointsFlowService extends CommonService
 {
     //增加积分流水
     public static function createPoints($data){

@@ -2,9 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\GoodsCategoryRepository;
-class GoodsCategoryService extends BaseService
+class GoodsCategoryService extends CommonService
 {
     //根据id获取一条数据
     public static function getInfo($id)

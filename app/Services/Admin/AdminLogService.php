@@ -3,9 +3,9 @@
 namespace App\Services\Admin;
 
 use Illuminate\Support\Facades\DB;
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\AdminLogRepository;
-class AdminLogService extends BaseService
+class AdminLogService extends CommonService
 {
 
     public static function create($data)

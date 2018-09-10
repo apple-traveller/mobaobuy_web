@@ -3,10 +3,10 @@
 namespace App\Services\Admin;
 
 use Illuminate\Support\Facades\DB;
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\AdminRepository;
 use Illuminate\Support\Facades\Hash;
-class AdminService extends BaseService
+class AdminService extends CommonService
 {
 
     public static function loginValidate($username, $psw)

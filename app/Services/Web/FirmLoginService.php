@@ -3,12 +3,12 @@
 namespace App\Services\Web;
 use App\Repositories\FirmBlacklistRepository;
 use App\Repositories\FirmRepository;
-use App\Services\BaseService;
+use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class FirmLoginService extends BaseService
+class FirmLoginService extends CommonService
 {
     //用户注册
     public static function firmRegister($data){

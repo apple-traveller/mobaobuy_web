@@ -2,9 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\FirmBlacklistRepository;
-class FirmBlacklistService extends BaseService
+class FirmBlacklistService extends CommonService
 {
     //获取黑名单列表(导出excel表)
     public static function getBlacklists($fields)

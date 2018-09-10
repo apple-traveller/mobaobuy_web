@@ -2,9 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\RegionRepository;
-class RegionService extends BaseService
+class RegionService extends CommonService
 {
     //获取地区列表
     public static function getRegionList($parent_id)

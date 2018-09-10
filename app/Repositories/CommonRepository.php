@@ -12,18 +12,22 @@ trait CommonRepository
 {
     private static function getBaseModel()
     {
-        $model_name = str_replace('Repository', 'Model', basename(str_replace('\\', '/', __CLASS__)));
-        return "App\\Models\\" . $model_name;
+        $x_clazz_name = 'X_'.preg_replace('/(?<=[a-z])([A-Z])/', '_$1', str_replace('Repo', '', basename(str_replace('\\', '/', __CLASS__))));
+        return "App\\Models\\" . $x_clazz_name;
     }
 
-    private static function searchQuery($pager, $query)
+    public static function getListBySearch($pager, $condition)
     {
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $query = self::setCondition($query, $condition);
+
         $page = 1;
         $page_size = -1;
 
         if (isset($pager['pageSize']) || isset($pager['page'])) {
             if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
-                $page_size = 15;
+                $page_size = 10;
             } else {
                 $page_size = intval($pager['pageSize']);
             }
@@ -53,6 +57,89 @@ trait CommonRepository
         return $rs;
     }
 
+    public static function getList($order = [], $condition=[], $columns = ['*'])
+    {
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $query = self::setCondition($query, $condition);
+
+        //处理排序
+        if (!empty($order)) {
+            foreach ($order as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+
+        return $query->get($columns)->toArray();
+    }
+
+    private static function setCondition($query, $condition){
+        $opt = 'AND';
+        if(isset($condition['opt']) && in_array($condition['opt'], array('AND','OR'))){
+            $opt = $condition['opt'];
+            unset($condition['opt']);
+        }
+
+        if(isset($condition['list'])){
+            $where = $condition['list'];
+        }else{
+            $where = $condition;
+        }
+        $query = $query->Where(function($q) use($opt, $where){
+            foreach ($where as $key => $value){
+                if(is_array($value)){
+                    if($opt == 'OR'){
+                        $q = $q->orWhere(function($s_q) use($value){
+                            $s_q = self::setCondition($s_q, $value);
+                        });
+                    }else{
+                        $q = $q->Where(function($s_q) use($value){
+                            $s_q = self::setCondition($s_q, $value);
+                        });
+                    }
+                }else{
+                    $value = trim($value);
+                    if(strpos($value, '%') === 0 || substr($value, -1) == '%'){
+                        if($opt == 'OR'){
+                            $q = $q->orWhere($key, 'like', $value);
+                        }else{
+                            $q = $q->Where($key, 'like', $value);
+                        }
+                    }elseif(strpos($value, '|') !== false){
+                        if($opt == 'OR'){
+                            $q = $q->orWhereIn($key, explode('|', $value));
+                        }else{
+                            $q = $q->WhereIn($key, explode('|', $value));
+                        }
+                    }else{
+                        if($opt == 'OR'){
+                            $q = $q->orWhere($key, $value);
+                        }else{
+                            $q = $q->Where($key, $value);
+                        }
+                    }
+                }
+            }
+        });
+        return $query;
+    }
+
+    public static function getTotalCount(){
+        return self::count();
+    }
+
+    public static function getMax($field, $where)
+    {
+        $query = self::query();
+        if(!empty($where) && is_array($where)){
+            foreach ($where as $name => $value){
+                $query = $query->where($name, $value);
+            }
+        }
+        $value = $query->max($field);
+        return $value;
+    }
+
     public static function create($data)
     {
         $clazz = self::getBaseModel();
@@ -71,7 +158,9 @@ trait CommonRepository
         $info = $model::find($id); //模型实例
         if ($info) {
             foreach ($data as $k => $v) {
-                $info->$k = $v;
+                if(!$info->getKeyName() == $k){
+                    $info->$k = $v;
+                }
             }
             $info->save();
             return $info->toArray();
@@ -115,5 +204,16 @@ trait CommonRepository
             return true;
         }
         return false;
+    }
+
+    public static function deleteByFields($where)
+    {
+        $model = self::getBaseModel();
+        $query = $model::query();
+        foreach ($where as $name => $value){
+            $query = $query->where($name, $value);
+        }
+        $deletedRows = $query->delete();
+        return $deletedRows;
     }
 }

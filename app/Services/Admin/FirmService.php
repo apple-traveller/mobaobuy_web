@@ -2,10 +2,10 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
+use App\Services\CommonService;
 use App\Repositories\FirmRepository;
 use App\Repositories\FirmPointsFlowRepository;
-class FirmService extends BaseService
+class FirmService extends CommonService
 {
     //获取企业列表（excel导出）
     public static function exportExcel($fields)
