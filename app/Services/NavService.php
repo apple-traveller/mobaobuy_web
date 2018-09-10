@@ -4,8 +4,9 @@ namespace App\Services\Admin;
 
 use App\Services\BaseService;
 use App\Repositories\NavRepo;
-class NavService extends BaseService
+class NavService
 {
+    use BaseService;
     //列表(分页)
     public static function getList($pageSize)
     {

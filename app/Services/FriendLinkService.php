@@ -4,8 +4,9 @@ namespace App\Services\Admin;
 
 use App\Services\BaseService;
 use App\Repositories\FriendLinkRepo;
-class FriendLinkService extends BaseService
+class FriendLinkService
 {
+    use BaseService;
     //分页获取链接列表
     public static function getLinks($pageSize)
     {

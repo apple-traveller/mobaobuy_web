@@ -4,8 +4,9 @@ namespace App\Services\Admin;
 
 use App\Services\BaseService;
 use App\Repositories\SeoRepo;
-class SeoService extends BaseService
+class SeoService
 {
+    use BaseService;
     //获取所有的配置信息
     public static function getList()
     {

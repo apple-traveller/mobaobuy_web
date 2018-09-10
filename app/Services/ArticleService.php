@@ -4,9 +4,9 @@ namespace App\Services\Admin;
 
 use App\Services\BaseService;
 use App\Repositories\ArticleRepo;
-class ArticleService extends BaseService
+class ArticleService
 {
-
+    use BaseService;
     //分页获取数据
     public static function getList($cat_id,$pageSize,$title)
     {
