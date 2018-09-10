@@ -10,6 +10,7 @@
 </head>
 <body>
 <h1>企业注册</h1>
+<a href="http://mbb.com">tiaozhuan</a>
 @if(count($errors)>0)
     <div class="alert alert-warning" role="alert">
         @foreach($errors->all() as $error)

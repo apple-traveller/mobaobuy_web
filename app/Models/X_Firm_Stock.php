@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class FirmStockModel extends BaseModel
+class X_Firm_Stock extends BaseModel
 {
 
      protected $table = 'firm_stock';

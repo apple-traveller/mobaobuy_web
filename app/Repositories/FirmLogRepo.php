@@ -31,4 +31,16 @@ class FirmLogRepo
         $count = $clazz::where('firm_id',$firm_id)->count();
         return $count;
     }
+
+    //获取上一次ip信息
+    public static function getLogsInfo($firm_id)
+    {
+        $clazz = self::getBaseModel();
+        $info = $clazz::where('firm_id',$firm_id)->select('ip_address')->orderBy('log_time','desc')->first()->toArray();
+        if($info)
+        {
+            return $info;
+        }
+        return [];
+    }
 }

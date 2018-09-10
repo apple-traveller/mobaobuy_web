@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class UserLogModel extends BaseModel
+class X_User_Log extends BaseModel
 {
 
      protected $table = 'user_log';

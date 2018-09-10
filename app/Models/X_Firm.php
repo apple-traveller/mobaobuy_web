@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class FirmModel extends BaseModel
+class X_Firm extends BaseModel
 {
 
      protected $table = 'firm';

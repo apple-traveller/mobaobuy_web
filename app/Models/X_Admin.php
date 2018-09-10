@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class AdminModel extends BaseModel
+class X_Admin extends BaseModel
 {
 
     protected $table = 'admin_user';

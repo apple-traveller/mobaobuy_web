@@ -31,4 +31,22 @@ class UserLogRepo
         $count = $clazz::where('user_id',$user_id)->count();
         return $count;
     }
+
+    //获取上一次ip信息,登陆时间
+    public static function getLogsInfo($user_id)
+    {
+        $clazz = self::getBaseModel();
+        $info = $clazz::where('user_id',$user_id)->select('ip_address,log_time')->orderBy('log_time','desc')->first()->toArray();
+        if($info)
+        {
+            return $info;
+        }
+        return [];
+    }
+
+
+
+
+
+
 }

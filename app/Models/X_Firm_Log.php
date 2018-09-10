@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class FirmLogModel extends BaseModel
+class X_Firm_Log extends BaseModel
 {
 
      protected $table = 'firm_log';

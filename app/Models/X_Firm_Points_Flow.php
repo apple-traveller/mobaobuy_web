@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class FirmPointsFlowModel extends BaseModel
+class X_Firm_Points_Flow extends BaseModel
 {
 
      protected $table = 'firm_points_flow';

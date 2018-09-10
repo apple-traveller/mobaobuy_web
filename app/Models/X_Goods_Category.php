@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class GoodsCategoryModel extends BaseModel
+class X_Goods_Category extends BaseModel
 {
 
      protected $table = 'goods_category';

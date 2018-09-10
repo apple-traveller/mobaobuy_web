@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class RegionModel extends BaseModel
+class X_Region extends BaseModel
 {
      protected $table = 'region';
 

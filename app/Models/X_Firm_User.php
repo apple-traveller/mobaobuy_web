@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class FirmUserModel extends BaseModel
+class X_Firm_User extends BaseModel
 {
 
      protected $table = 'firm_user';

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class FirmBlacklistModel extends BaseModel
+class X_Firm_Blacklist extends BaseModel
 {
 
      protected $table = 'firm_blacklist';
-    public $timestamps = false;
+     public $timestamps = false;
 
 }
