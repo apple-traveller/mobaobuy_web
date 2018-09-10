@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use App\Services\BaseService;
+
 use App\Repositories\SysConfigRepo;
-class SysConfigService extends BaseService
+class SysConfigService
 {
+    use CommonService;
     //根据parent_id获取配置信息
     public static function getInfo($parent_id)
     {

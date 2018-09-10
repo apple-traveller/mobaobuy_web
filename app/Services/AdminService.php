@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\DB;
 use App\Services\CommonService;
 use App\Repositories\AdminRepo;
 use Illuminate\Support\Facades\Hash;
-class AdminService extends CommonService
+class AdminService
 {
+    use CommonService;
 
     public static function loginValidate($username, $psw)
     {
