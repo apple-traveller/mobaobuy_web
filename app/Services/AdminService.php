@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use App\Services\BaseService;
-use App\Repositories\AdminRepository;
+use App\Services\CommonService;
+use App\Repositories\AdminRepo;
 use Illuminate\Support\Facades\Hash;
+<<<<<<< HEAD:app/Services/AdminService.php
 class AdminService
+=======
+class AdminService extends CommonService
+>>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/AdminService.php
 {
     use BaseService;
     public static function loginValidate($username, $psw)
     {
-        $info = AdminRepository::getInfoByLoginName($username);
+        $info = AdminRepo::getInfoByLoginName($username);
         if(empty($info)){
             self::throwError('用户名或密码不正确！');
         }

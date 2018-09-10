@@ -30,7 +30,9 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/user/export', 'Admin\UserController@export');//用户导出excel
 
     Route::any('/firm/list', 'Admin\FirmController@list');//企业列表
+    Route::get('/firm/firmuser', 'Admin\FirmController@firmuser');//企业列表
     Route::get('/firm/log', 'Admin\FirmController@log');//查看企业日志信息
+    Route::get('/firm/pointflow', 'Admin\FirmController@pointflow');//查看企业积分信息
     Route::get('/firm/detail', 'Admin\FirmController@detail');//查看企业详情信息
     Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
     Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel
@@ -54,6 +56,55 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/goodscategory/editForm', 'Admin\GoodsCategoryController@editForm');//商品分类编辑
     Route::post('/goodscategory/sort', 'Admin\GoodsCategoryController@sort');//商品分类排序
     Route::post('/goodscategory/upload', 'Admin\GoodsCategoryController@upload');//上传自定义图标
+
+
+    Route::get('/sysconfig/index', 'Admin\SysConfigController@index');//平台配置首页
+    Route::post('/sysconfig/modify', 'Admin\SysConfigController@modify');//平台配置修改
+
+    Route::get('/seo/index', 'Admin\SeoController@index');//seo配置首页
+    Route::post('/seo/modify', 'Admin\SeoController@modify');//seo配置修改
+
+    Route::get('/link/list', 'Admin\FriendLinkController@list');//友情链接列表
+    Route::get('/link/addForm', 'Admin\FriendLinkController@addForm');//友情链接添加
+    Route::get('/link/editForm', 'Admin\FriendLinkController@editForm');//友情链接编辑
+    Route::get('/link/delete', 'Admin\FriendLinkController@delete');//友情链接删除
+    Route::post('/link/add', 'Admin\FriendLinkController@add');//友情链接保存
+    Route::post('/link/sort', 'Admin\FriendLinkController@sort');//友情链接排序ajax
+
+    Route::get('/nav/list', 'Admin\NavController@list');//自定义导航栏列表
+    Route::post('/nav/status', 'Admin\NavController@status');//ajax修改状态
+    Route::get('/nav/addForm', 'Admin\NavController@addForm');//导航栏添加
+    Route::get('/nav/editForm', 'Admin\NavController@editForm');//导航栏编辑
+    Route::get('/nav/delete', 'Admin\NavController@delete');//导航栏删除
+    Route::post('/nav/add', 'Admin\NavController@add');//导航栏保存
+    Route::post('/nav/sort', 'Admin\NavController@sort');//导航栏排序
+
+
+    Route::get('/articlecat/list', 'Admin\ArticleCatController@list');//文章分类列表
+    Route::get('/articlecat/addForm', 'Admin\ArticleCatController@addForm');//文章分类添加
+    Route::get('/articlecat/editForm', 'Admin\ArticleCatController@editForm');//文章分类编辑
+    Route::post('/articlecat/save', 'Admin\ArticleCatController@save');//文章分类保存
+    Route::post('/articlecat/sort', 'Admin\ArticleCatController@sort');//文章分类排序（ajax）
+    Route::get('/articlecat/delete', 'Admin\ArticleCatController@delete');//文章分类删除
+
+    Route::get('/article/list', 'Admin\ArticleController@list');//文章列表
+    Route::get('/article/addForm', 'Admin\ArticleController@addForm');//文章添加
+    Route::get('/article/editForm', 'Admin\ArticleController@editForm');//文章编辑
+    Route::post('/article/save', 'Admin\ArticleController@save');//文章保存
+    Route::get('/article/detail', 'Admin\ArticleController@detail');//文章详情
+    Route::post('/article/sort', 'Admin\ArticleController@sort');//文章排序（ajax）
+    Route::get('/article/delete', 'Admin\ArticleController@delete');//文章删除
+    Route::post('/article/status', 'Admin\ArticleController@status');//ajax修改状态
+
+    Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
+    Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板
+    Route::post('/template/saveTemplate', 'Admin\TemplateController@saveTemplate');//模板缓存
+    Route::post('/template/publish', 'Admin\TemplateController@publish');//确认发布
+    Route::post('/template/partEdit', 'Admin\TemplateController@partEdit');//模板编辑
+    Route::get('/template/preview', 'Admin\TemplateController@preview');//模板预览
+    Route::get('/template/decoratetest', 'Admin\TemplateController@decoratetest');//装修模板(测试)
+    Route::get('/template/getPics', 'Admin\TemplateController@getPics');//测试方法
+
 });
 
 

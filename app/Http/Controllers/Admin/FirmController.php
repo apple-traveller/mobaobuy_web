@@ -46,7 +46,21 @@ class FirmController extends Controller
         return $this->display('admin.firm.detail',['info'=>$info]);
     }
 
+    //查看企业积分信息
+    public function pointflow(Request $request)
+    {
+        $firm_id = $request->input('firm_id');
+        $points = FirmService::getPointsByFirmid($firm_id);
+        //dd($points);
+        return $this->display('admin.firm.pointflow',['points'=>$points]);
+    }
 
+    public function firmuser(Request $request)
+    {
+        $firm_id = $request->input('firm_id');
+        $firmusers = FirmService::getFirmUser($firm_id);
+        return $this->display('admin.firm.firmuser',['firmusers'=>$firmusers]);
+    }
 
 
     //查询用户日志

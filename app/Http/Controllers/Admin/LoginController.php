@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Admin\AdminService;
-use App\Services\Admin\AdminLogService;
+use App\Services\AdminService;
+use App\Services\AdminLogService;
 use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
@@ -42,11 +42,9 @@ class LoginController extends Controller
         if(empty($password)){
             $errorMsg[] = '密码不能为空';
         }
-
         if(!empty($errorMsg)){
-
-        return $this->result('','0',implode('<br/>',$errorMsg));
-    }
+            return $this->result('','0',implode('<br/>',$errorMsg));
+        }
 
         try{
             $user_info = AdminService::loginValidate($username, $password);
@@ -57,7 +55,7 @@ class LoginController extends Controller
                 'log_time'=>Carbon::now(),
                 'ip_address'=>$request->getClientIp()
             ];
-            //print_r($adminLog);die;
+
             $flag = AdminLogService::create($adminLog);
 
             if(!$flag){

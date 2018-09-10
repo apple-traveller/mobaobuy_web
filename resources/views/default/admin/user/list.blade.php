@@ -9,22 +9,7 @@
                 <li class="curr">
                     <a href="/user/list">会员列表</a>
                 </li>
-                <li>
-                    <a href="user_rank.php?act=list">会员等级</a>
-                </li>
-                <li>
-                    <a href="user_real.php?act=list">实名认证</a>
-                </li>
-                <li>
-                    <a href="reg_fields.php?act=list">注册项设置</a>
-                </li>
-            </ul>
-        </div>        	<div class="explanation" id="explanation">
-            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-            <ul>
-                <li>会员列表展示商城所有的会员信息。</li>
-                <li>可通过会员名称关键字进行搜索，如需详细搜索请在侧边栏进行高级搜索。</li>
-                <li>会员等级必须在有效积分范围内，否则无法显示会员等级；<em>比如会员积分0，却没有0积分的等级就会显示无等级</em></li>
+
             </ul>
         </div>
         <div class="flexilist">

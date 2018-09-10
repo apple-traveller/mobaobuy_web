@@ -7,7 +7,15 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+<<<<<<< HEAD:app/Services/UserService.php
 class UserService
+=======
+use App\Services\CommonService;
+use App\Repositories\UserRepo;
+use Illuminate\Foundation\Auth\User;
+
+class UserService extends CommonService
+>>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Admin/UserService.php
 {
     use BaseService;
 
@@ -43,7 +51,7 @@ class UserService
     //获取用户列表(导出excel表)
     public static function getUsers($fields)
     {
-        $info = UserRepository::getUsers($fields);
+        $info = UserRepo::getUsers($fields);
         foreach($info as $key=>$item){
             if($item['sex']==1){
                 $info[$key]['sex']="女";
@@ -57,7 +65,7 @@ class UserService
     //获取用户列表（分页）
     public static function getUserList($pageSize,$user_name)
     {
-        $info = UserRepository::search($pageSize,$user_name);
+        $info = UserRepo::search($pageSize,$user_name);
         return $info;
     }
 
@@ -65,20 +73,20 @@ class UserService
     //修改
     public static function modify($id,$data)
     {
-        return UserRepository::modify($id,$data);
+        return UserRepo::modify($id,$data);
     }
 
     //查询一条数据
     public static function getInfo($id)
     {
-        return UserRepository::getInfo($id);
+        return UserRepo::getInfo($id);
     }
 
 
     //获取总条数
     public static function getCount($user_name)
     {
-        return UserRepository::getCount($user_name);
+        return UserRepo::getCount($user_name);
     }
 
 

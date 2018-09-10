@@ -1,15 +1,19 @@
 <?php
 
 namespace App\Services\Web;
-use App\Repositories\UserLogRepository;
-use App\Repositories\UserRepository;
-use App\Repositories\FirmLogRepository;
+use App\Repositories\UserLogRepo;
+use App\Repositories\UserRepo;
+use App\Repositories\FirmLogRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Repositories\FirmRepository;
-use App\Services\BaseService;
+use App\Repositories\FirmRepo;
+use App\Services\CommonService;
 
+<<<<<<< HEAD:app/Services/UserLoginService.php
 class UserLoginService
+=======
+class UserLoginService extends CommonService
+>>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Web/UserLoginService.php
 {
     use BaseService;
     //用户注册
@@ -20,7 +24,7 @@ class UserLoginService
             exit('请求超时，请刷新页面后重试');
         }
         unset($data['mobile_code']);
-        return UserRepository::create($data);
+        return UserRepo::create($data);
     }
 
     //发送验证码
@@ -53,7 +57,7 @@ class UserLoginService
 
      //
     public static function getInfo($id){
-         return UserRepository::getInfo($id);
+         return UserRepo::getInfo($id);
     }
 
     //用户登录
@@ -63,10 +67,10 @@ class UserLoginService
            self::throwError('用户名或密码不正确!');
         }
         //查用户表
-        $info = UserRepository::getInfoByUserName($username);
+        $info = UserRepo::getInfoByUserName($username);
         if(empty($info)){
             //查企业表
-            $info = FirmRepository::getInfoByUserName($username);
+            $info = FirmRepo::getInfoByUserName($username);
             if(empty($info)){
                 self::throwError('用户名或密码不正确！');
             }
@@ -99,7 +103,7 @@ class UserLoginService
                 'log_time'=>Carbon::now(),
                 'log_info'=>'个人会员登陆'
             );
-            UserLogRepository::create($userLog);
+            UserLogRepo::create($userLog);
         }else{
             //登陆访问次数
             $logCount = FirmLogRepository::getLogCount($info['id']);
@@ -115,7 +119,7 @@ class UserLoginService
                 'log_time'=>Carbon::now(),
                 'log_info'=>'企业会员登陆'
             );
-            FirmLogRepository::create($firmLog);
+            FirmLogRepo::create($firmLog);
         }
         return $info;
     }
@@ -123,7 +127,7 @@ class UserLoginService
 
     //完善信息
     public static function updateUserInfo($id,$data){
-        return UserRepository::modify($id,$data);
+        return UserRepo::modify($id,$data);
     }
 
 

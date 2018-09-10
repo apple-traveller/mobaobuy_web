@@ -1,14 +1,18 @@
 <?php
 
 namespace App\Services\Web;
-use App\Repositories\FirmUserRepository;
-use App\Repositories\UserRepository;
-use App\Services\BaseService;
+use App\Repositories\FirmUserRepo;
+use App\Repositories\UserRepo;
+use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+<<<<<<< HEAD:app/Services/FirmUserService.php
 class FirmUserService
+=======
+class FirmUserService extends CommonService
+>>>>>>> 039764dbb692d11bb288c6921e8081269efa3aaf:app/Services/Web/FirmUserService.php
 {
     use BaseService;
     public static function firmUserList(){
@@ -17,20 +21,20 @@ class FirmUserService
 
     //增加企业用户
     public static function create($data){
-        return FirmUserRepository::create($data);
+        return FirmUserRepo::create($data);
     }
 
     //
     public static function update($id,$data){
-        return FirmUserRepository::modify($id,$data);
+        return FirmUserRepo::modify($id,$data);
     }
 
     public static function delete($id){
-        return FirmUserRepository::delete($id);
+        return FirmUserRepo::delete($id);
     }
 
     public static function search($name){
-        return UserRepository::getInfoByUserName($name);
+        return UserRepo::getInfoByUserName($name);
     }
 
 }
