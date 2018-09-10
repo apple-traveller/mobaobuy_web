@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Services\Web;
-use App\Repositories\FirmBlacklistRepository;
-use App\Repositories\FirmRepository;
-use App\Services\BaseService;
+use App\Repositories\FirmBlacklistRepo;
+use App\Repositories\FirmRepo;
+use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class FirmLoginService extends BaseService
+class FirmLoginService extends CommonService
 {
     //用户注册
     public static function firmRegister($data){
         //查找黑名单表是否存在
-        $firmBlack = FirmBlacklistRepository::getInfoByFields(['firm_name'=>$data['user_name']]);
+        $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name'=>$data['user_name']]);
         if($firmBlack){
             return 'error';
         }
@@ -23,6 +23,6 @@ class FirmLoginService extends BaseService
         $filePath = explode('/',$filePath);
         $data['attorney_letter_fileImg'] = '/storage/'.$filePath[1];
         $data['reg_time'] = Carbon::now();
-        return FirmRepository::create($data);
+        return FirmRepo::create($data);
     }
 }

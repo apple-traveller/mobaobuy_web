@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class ArticleCatRepository
+class ArticleCatRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //根据parent_id获取所有的分类
     public static function getList($parent_id)

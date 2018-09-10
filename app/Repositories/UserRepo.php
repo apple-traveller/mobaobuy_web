@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class UserRepository
+class UserRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
 
 

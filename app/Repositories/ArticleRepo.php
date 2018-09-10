@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class ArticleRepository
+class ArticleRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取文章列表
     public static function getList($cat_id,$pageSize,$title)

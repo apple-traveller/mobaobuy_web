@@ -8,20 +8,24 @@
 
 namespace App\Repositories;
 
-class SeoRepository
+class AdminRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
-    public static function getList()
+    public static function getInfoByLoginName($login_name)
     {
         $model = self::getBaseModel();
-        $info = $model::get();
-        if($info){
+        $info = $model::where('user_name', $login_name)->first();
+        if ($info) {
             return $info->toArray();
         }
         return [];
-
     }
+
+
+
+
+
 
 
 }

@@ -2,20 +2,20 @@
 
 namespace App\Services\Admin;
 
-use App\Services\BaseService;
-use App\Repositories\GoodsCategoryRepository;
-class GoodsCategoryService extends BaseService
+use App\Services\CommonService;
+use App\Repositories\GoodsCategoryRepo;
+class GoodsCategoryService extends CommonService
 {
     //根据id获取一条数据
     public static function getInfo($id)
     {
-        $res = GoodsCategoryRepository::getInfo($id);
+        $res = GoodsCategoryRepo::getInfo($id);
         return $res;
     }
     //获取列表
     public static function getList($parent_id)
     {
-        $res = GoodsCategoryRepository::search([],['parent_id'=>$parent_id,'order'=>'asc']);
+        $res = GoodsCategoryRepo::search([],['parent_id'=>$parent_id,'order'=>'asc']);
         return $res['list'];
     }
 
@@ -40,7 +40,7 @@ class GoodsCategoryService extends BaseService
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = GoodsCategoryRepository::exist($cat_name);
+        $info = GoodsCategoryRepo::exist($cat_name);
         if(!empty($info)){
             self::throwError('分类名称已经存在！');
         }
@@ -50,19 +50,19 @@ class GoodsCategoryService extends BaseService
     //添加
     public static function create($data)
     {
-        return GoodsCategoryRepository::create($data);
+        return GoodsCategoryRepo::create($data);
     }
 
     //修改
     public static function modify($id,$data)
     {
-        return GoodsCategoryRepository::modify($id,$data);
+        return GoodsCategoryRepo::modify($id,$data);
     }
 
     //获取所有分类
     public static function getCates()
     {
-        $res = GoodsCategoryRepository::search([],[]);
+        $res = GoodsCategoryRepo::search([],[]);
         return $res['list'];
     }
 
@@ -111,6 +111,6 @@ class GoodsCategoryService extends BaseService
     //删除
     public static function delete($ids)
     {
-        return GoodsCategoryRepository::delete($ids);
+        return GoodsCategoryRepo::delete($ids);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-class GoodsCategoryRepository
+class GoodsCategoryRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
 //    public static function search($paper=[],$where=[])
 //    {

@@ -4,9 +4,9 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 
-class BaseService
+trait CommonService
 {
-    protected static function throwError($msg, $code = 0){
+    protected static function throwBizError($msg, $code = 0){
         throw new \Exception($msg, $code);
     }
 

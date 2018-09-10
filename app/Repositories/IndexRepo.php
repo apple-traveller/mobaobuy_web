@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-class IndexRepository
+class IndexRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 }

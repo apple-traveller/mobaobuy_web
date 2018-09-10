@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Services\BaseService;
-use App\Repositories\SysConfigRepository;
+use App\Repositories\SysConfigRepo;
 class SysConfigService extends BaseService
 {
     //根据parent_id获取配置信息
     public static function getInfo($parent_id)
     {
-        $configs = SysConfigRepository::getInfo($parent_id);
+        $configs = SysConfigRepo::getInfo($parent_id);
         return $configs;
     }
 
@@ -17,7 +17,7 @@ class SysConfigService extends BaseService
     {
         self::beginTransaction();
         foreach($data as $k=>$v){
-            $flag = SysConfigRepository::modify($k,['value'=>$v]);
+            $flag = SysConfigRepo::modify($k,['value'=>$v]);
             if(!$flag){
                 self::rollBack();
                 return false;

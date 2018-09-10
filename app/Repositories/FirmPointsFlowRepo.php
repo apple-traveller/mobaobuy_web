@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-class FirmPointsFlowRepository
+class FirmPointsFlowRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     public static function getPointsByFirmid($firm_id)
     {

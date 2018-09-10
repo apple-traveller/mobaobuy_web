@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class FriendLinkRepository
+class FriendLinkRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取列表数据(带分页)
     public static function search($pageSize)

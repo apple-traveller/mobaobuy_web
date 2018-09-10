@@ -3,7 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Services\BaseService;
-use App\Repositories\FirmPointsFlowRepository;
+use App\Repositories\FirmPointsFlowRepo;
 class FirmPointsFlowService extends BaseService
 {
 

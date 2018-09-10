@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class AdminLogRepository
+class AdminLogRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     public static function create($data)
     {

@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class SysConfigRepository
+class SysConfigRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //根据parent_id获取配置信息
     public static function getInfo($parent_id)

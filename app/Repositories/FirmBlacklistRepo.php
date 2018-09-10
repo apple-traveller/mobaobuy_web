@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-class FirmBlacklistRepository
+class FirmBlacklistRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取企业黑名单列表，查询分页
     public static function search($pageSize,$firm_name)

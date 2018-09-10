@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\GoodsCategoryRepository;
+use App\Repositories\GoodsCategoryRepo;
 use Illuminate\Http\Request;
 use App\Services\Admin\GoodsCategoryService;
 class GoodsCategoryController extends Controller

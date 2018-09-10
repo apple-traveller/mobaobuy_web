@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-class FirmUserRepository
+class FirmUserRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //根据firmid获取企业用户
     public static function getFirmUser($firm_id)

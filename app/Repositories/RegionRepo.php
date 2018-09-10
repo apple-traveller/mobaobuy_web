@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-class RegionRepository
+class RegionRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取地区列表
     public static function getRegionList($parent_id)

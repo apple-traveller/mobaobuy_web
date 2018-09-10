@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class NavRepository
+class NavRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //列表(分页)
     public static function getList($pageSize)

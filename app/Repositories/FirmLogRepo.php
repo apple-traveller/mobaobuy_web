@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class FirmLogRepository
+class FirmLogRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取日志信息
     public static function getLogInfo($firm_id,$pageSize)

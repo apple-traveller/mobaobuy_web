@@ -8,9 +8,9 @@
 
 namespace App\Repositories;
 
-class UserLogRepository
+class UserLogRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     //获取日志信息
     public static function getLogs($user_id,$pageSize)

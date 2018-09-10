@@ -12,9 +12,9 @@ use App\Models\UserModel;
 use App\Models\UserLogModel;
 use App\Models\FirmLogModel;
 
-class FirmRepository
+class FirmRepo
 {
-    use CommonRepository;
+    use CommonRepo;
 
     public static function getInfoByUserName($login_name){
         $model = self::getBaseModel();
