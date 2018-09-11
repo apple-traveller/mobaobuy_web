@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\GoodsCategoryRepo;
 use Illuminate\Http\Request;
-use App\Services\Admin\GoodsCategoryService;
+use App\Services\GoodsCategoryService;
 class GoodsCategoryController extends Controller
 {
     //列表

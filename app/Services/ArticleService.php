@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Services;
-
-
 use App\Repositories\ArticleRepo;
 class ArticleService
 {

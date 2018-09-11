@@ -1,16 +1,12 @@
 <?php
 namespace App\Services;
-
 use App\Repositories\SysConfigRepo;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
 class SysConfigService
 {
     use CommonService;
     public static function sysCacheSet($where=[]){
-
+//         $where['code'] = 'individual_reg_closed';
+//         if(empty($where)){}
          $sysCache = SysConfigRepo::search([],$where);
          $arr = [];
          foreach ($sysCache['list'] as $key=>$value){

@@ -1,9 +1,5 @@
 <?php
-
 namespace App\Services;
-
-use Illuminate\Support\Facades\DB;
-use App\Services\CommonService;
 use App\Repositories\AdminRepo;
 use Illuminate\Support\Facades\Hash;
 class AdminService

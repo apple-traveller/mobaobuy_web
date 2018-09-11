@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Services;
 use App\Repositories\FirmUserRepo;
 use App\Repositories\UserRepo;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 class FirmUserService
 {
     use CommonService;

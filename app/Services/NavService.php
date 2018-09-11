@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Services;
-
 use App\Repositories\NavRepo;
 class NavService
 {

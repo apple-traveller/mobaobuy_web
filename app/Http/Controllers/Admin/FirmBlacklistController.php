@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\Admin\FirmBlacklistService;
+use App\Services\FirmBlacklistService;
 use App\Http\Controllers\ExcelController;
 class FirmBlacklistController extends Controller
 {

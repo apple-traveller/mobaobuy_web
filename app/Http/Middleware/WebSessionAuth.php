@@ -8,22 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Web\SysConfigController;
 
 class WebSessionAuth
 {
-    public function handle($request, Closure $next, $guard = null,SysConfigController $sys)
+    public function handle($request, Closure $next, $guard = null)
     {
         //var_dump($request->getRequestUri());
-        if(empty(Cache::get('sys'))){
-            echo 'test';
-            dd(Cache::get('sys'));
-        }else{
-            $sysInfo = $sys->sysCacheSet();
-            dd($sysInfo);
-        }
         if(empty(session('_web_info'))){
-
             //web统计
             $ip = $request->getClientIp();
             $json=file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip='.'116.226.54.5');

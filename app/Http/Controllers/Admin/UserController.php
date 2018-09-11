@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\Services\UserLogService;
+use App\Services\UserLoginService;
 use App\Http\Controllers\ExcelController;
 class UserController extends Controller
 {
@@ -53,8 +53,8 @@ class UserController extends Controller
     {
         $pageSize = config('website.pageSize');
         $id = $request->input('id');
-        $logs = UserLogService::getLogs($id,$pageSize);
-        $logCount = UserLogService::getLogCount($id);
+        $logs = UserLoginService::getLogs($id,$pageSize);
+        $logCount = UserLoginService::getLogCount($id);
         //dd($logs);
         return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount]);
     }

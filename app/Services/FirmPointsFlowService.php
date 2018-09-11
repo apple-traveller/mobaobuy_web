@@ -4,8 +4,6 @@ namespace App\Services;
 use App\Repositories\FirmPointsFlowRepo;
 use App\Repositories\FirmRepo;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 class FirmPointsFlowService
 {
     use CommonService;

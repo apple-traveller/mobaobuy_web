@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Services;
-
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\FirmRepo;
 use Illuminate\Support\Facades\Storage;
-
 class FirmLoginService
 {
     use CommonService;
