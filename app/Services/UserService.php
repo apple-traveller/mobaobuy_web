@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Web;
+namespace App\Services;
 use App\Repositories\RegionRepo;
 class UserService
 {

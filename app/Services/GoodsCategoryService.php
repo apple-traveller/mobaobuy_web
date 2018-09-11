@@ -5,17 +5,17 @@ class GoodsCategoryService
 {
     use CommonService;
     public static function GoodsCategoryInfo($where=[]){
-        return GoodsCategoryRepository::search([],$where);
+        return GoodsCategoryRepo::search([],$where);
     }
 
     //分类添加
     public static function categoryCreate($data){
-        return GoodsCategoryRepository::create($data);
+        return GoodsCategoryRepo::create($data);
     }
 
     //分类编辑
     public static function categoryUpdate($id,$data){
-        return GoodsCategoryRepository::modify($id,$data);
+        return GoodsCategoryRepo::modify($id,$data);
     }
 
 
