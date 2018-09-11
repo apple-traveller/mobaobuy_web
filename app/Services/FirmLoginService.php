@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Services;
-use App\Repositories\FirmBlacklistRepository;
-use App\Repositories\FirmRepository;
+use App\Repositories\FirmBlacklistRepo;
+use App\Repositories\FirmRepo;
 class FirmLoginService
 {
     use CommonService;

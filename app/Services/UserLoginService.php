@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Services\Web;
+namespace App\Services;
 use App\Repositories\UserLogRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\FirmLogRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepo;
-use App\Services\CommonService;
-
-
 class UserLoginService
 {
     use CommonService;

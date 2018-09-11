@@ -1,10 +1,6 @@
 <?php
-
-namespace App\Services\Web;
+namespace App\Services;
 use App\Repositories\FirmStockRepo;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use App\Services\CommonService;
 class FirmStockService
 {
     use CommonService;

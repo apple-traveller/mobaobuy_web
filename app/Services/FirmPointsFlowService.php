@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services\Web;
+namespace App\Services;
 use App\Repositories\FirmPointsFlowRepo;
 use App\Repositories\FirmRepo;
-use App\Services\CommonService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;

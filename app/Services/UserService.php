@@ -1,12 +1,6 @@
 <?php
-
 namespace App\Services\Web;
-use App\Repositories\IndexRepository;
-use App\Repositories\RegionRepository;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
+use App\Repositories\RegionRepo;
 class UserService
 {
     use CommonService;
@@ -24,12 +18,12 @@ class UserService
 
     //获取省
     public static function provinceInfo($region_type){
-        return RegionRepository::getProvince($region_type);
+        return RegionRepo::getProvince($region_type);
     }
 
     //获取市
     public static function getCity($regionId){
-        return RegionRepository::getCity($regionId);
+        return RegionRepo::getCity($regionId);
     }
 
 

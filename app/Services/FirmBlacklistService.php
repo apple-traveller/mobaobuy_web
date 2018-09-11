@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Services\Admin;
-use App\Services\CommonService;
 use App\Repositories\FirmBlacklistRepo;
 class FirmBlacklistService
 {

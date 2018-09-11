@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
-
-use App\Services\BaseService;
+namespace App\Services;
 use App\Repositories\ArticleRepo;
 class ArticleService
 {

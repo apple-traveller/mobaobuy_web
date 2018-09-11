@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use App\Services\CommonService;
-use App\Repositories\AdminLogRepository;
+use App\Repositories\AdminLogRepo;
 
 class AdminLogService
 {
@@ -12,7 +11,7 @@ class AdminLogService
 
     public static function create($data)
     {
-        return AdminLogRepository::create($data);
+        return AdminLogRepo::create($data);
     }
 
 }

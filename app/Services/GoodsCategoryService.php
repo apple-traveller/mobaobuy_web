@@ -1,7 +1,5 @@
 <?php
-namespace App\Services\Admin;
-
-use App\Services\CommonService;
+namespace App\Services;
 use App\Repositories\GoodsCategoryRepo;
 class GoodsCategoryService
 {

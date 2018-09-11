@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class SeoModel extends BaseModel
+class X_Seo extends BaseModel
 {
 
     protected $table = 'seo';
