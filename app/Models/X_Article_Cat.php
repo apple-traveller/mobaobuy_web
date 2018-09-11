@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class ArticleCatModel extends BaseModel
+class X_Article_Cat extends BaseModel
 {
 
      protected $table = 'article_cat';

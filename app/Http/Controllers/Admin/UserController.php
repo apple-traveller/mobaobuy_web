@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\Admin\UserService;
-use App\Services\Admin\UserLogService;
+use App\Services\UserService;
+use App\Services\UserLogService;
 use App\Http\Controllers\ExcelController;
 class UserController extends Controller
 {

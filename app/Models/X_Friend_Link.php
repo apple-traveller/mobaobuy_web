@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-class NavModel extends BaseModel
+class X_Friend_Link extends BaseModel
 {
 
-    protected $table = 'nav';
+    protected $table = 'friend_link';
 
     public $timestamps = false;
     //protected $primaryKey = "code";

@@ -6,6 +6,7 @@ use App\Repositories\RegionRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\UserRepo;
 
 class UserService
 {
@@ -31,12 +32,6 @@ class UserService
     public static function getCity($regionId){
         return RegionRepo::getCity($regionId);
     }
-
-
-
-
-
-
 
 
     //后台

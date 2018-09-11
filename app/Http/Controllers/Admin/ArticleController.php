@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Admin\ArticleService;
-use App\Services\Admin\ArticleCatService;
+use App\Services\ArticleService;
+use App\Services\ArticleCatService;
 use Illuminate\Support\Carbon;
 
 class ArticleController extends Controller
