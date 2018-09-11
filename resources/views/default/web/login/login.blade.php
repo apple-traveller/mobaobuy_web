@@ -20,7 +20,7 @@
     {{--用户名:{{$user['name']}}<br>--}}
     {{--用户头像:{{$user['avatar']}}--}}
 
-    {{$sysCacheInfo['name']}}
+    {{--{{$sysCacheInfo['name']}}--}}
 
 </form>
 </body>

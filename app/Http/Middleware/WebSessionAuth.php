@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Controller;
 
 class WebSessionAuth
 {
@@ -38,7 +39,7 @@ class WebSessionAuth
                 (access_time,ip_address,visit_times,browser,system,area,referer_domain,referer_path,access_url) values
                 (?,?,?,?,?,?,?,?,?)',[$carbon,$ip,$visitTimes,$browser,$os,$city,$domain,$url,$uri]);
             }
-            return $this->success('页面已过期，请重新登陆！',route('login'));
+            return redirect('/webLogin');
         }
 
         if(session('_web_info')['log_info'] == '个人会员登陆'){

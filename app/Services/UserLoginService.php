@@ -85,11 +85,11 @@ class UserLoginService
         //写入日志
         if(!isset($info['flag'])){
             //登陆访问次数
-            $logCount = UserLogRepository::getLogCount($info['id']);
+            $logCount = UserLogRepo::getLogCount($info['id']);
             //上次登录ip,时间
-            $logsInfo = UserLogRepository::getLogsInfo($info['id']);
+            $logsInfo = UserLogRepo::getLogsInfo($info['id']);
             $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logCount];
-            UserRepository::modify($info['id'],$logMes);
+            UserRepo::modify($info['id'],$logMes);
             $userLog = array(
                 'user_id'=>$info['id'],
                 'user_name'=>$info['user_name'],
@@ -100,11 +100,11 @@ class UserLoginService
             UserLogRepo::create($userLog);
         }else{
             //登陆访问次数
-            $logCount = FirmLogRepository::getLogCount($info['id']);
+            $logCount = FirmLogRepo::getLogCount($info['id']);
             //上次登录ip
-            $logsInfo = FirmLogRepository::getLogsInfo($info['id']);
+            $logsInfo = FirmLogRepo::getLogsInfo($info['id']);
             $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logCount];
-            FirmRepository::modify($info['id'],$logMes);
+            FirmRepo::modify($info['id'],$logMes);
 
             $firmLog = array(
                 'firm_id'=>$info['id'],
@@ -134,13 +134,13 @@ class UserLoginService
     //获取日志列表（分页）
     public static function getLogs($user_id,$pageSize)
     {
-        return UserLogRepository::getLogs($user_id,$pageSize);
+        return UserLogRepo::getLogs($user_id,$pageSize);
     }
 
     //获取日志总条数
     public static function getLogCount($user_id)
     {
-        return UserLogRepository::getLogCount($user_id);
+        return UserLogRepo::getLogCount($user_id);
     }
 
 }
