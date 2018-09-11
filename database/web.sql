@@ -603,11 +603,15 @@ CREATE TABLE `cart` (
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `supplier_code` varchar(10) NOT NULL COMMENT '服务商编码',
   `supplier_name` varchar(50) NOT NULL COMMENT '服务商名称',
   `supplier_config` varchar(500) NOT NULL COMMENT '服务商配置',
   `is_checked` tinyint(1) NOT NULL DEFAULT '0' COMMENT '选中状态，0未选中，1选中',
   PRIMARY KEY (`id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信服务商';
+INSERT INTO sms_supplier(id, supplier_name, supplier_config,is_checked) VALUES
+(1, '阿里大于', 'ALiDaYu', '', 1),
+(2, '点集', 'DianJi', '', 0);
 
 DROP TABLE IF EXISTS `sms_send_type`;
 CREATE TABLE `sms_send_type` (
@@ -617,6 +621,13 @@ CREATE TABLE `sms_send_type` (
   PRIMARY KEY (`id`),
   KEY `type_code` (`type_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发送短信类型';
+INSERT INTO sms_send_type(type_code, type_name) VALUES
+('sms_signup', '会员注册'),
+('sms_signin', '会员登录'),
+('sms_find_signin', '找回密码'),
+('sms_seller_signup', '商家注册'),
+('sms_seller_signin', '商家登录');
+
 
 DROP TABLE IF EXISTS `sms_temp`;
 CREATE TABLE `sms_temp` (
@@ -628,6 +639,7 @@ CREATE TABLE `sms_temp` (
   `set_sign` varchar(255) NOT NULL COMMENT '签名',
   `type_code` varchar(255) NOT NULL COMMENT '短信类型'
   PRIMARY KEY (`id`),
+  KEY `supplier_id` (`supplier_id`),
   KEY `temp_id` (`temp_id`),
   KEY `type_code` (`type_code`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信模板';
