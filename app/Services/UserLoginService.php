@@ -125,11 +125,6 @@ class UserLoginService
     }
 
 
-
-
-
-
-
     //管理员后台
     //获取日志列表（分页）
     public static function getLogs($user_id,$pageSize)

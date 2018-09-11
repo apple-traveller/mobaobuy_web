@@ -6,7 +6,19 @@
             <div class="tabs_info">
                 <ul>
                     @foreach($seos as $vo)
-                    <li @if($vo['id']==$id) class="curr" @endif ><a  href="/seo/index?id={{$vo['id']}}">{{$vo['title']}}</a></li>
+                    <li @if($vo['id']==$id) class="curr" @endif >
+                        <a  href="/seo/index?id={{$vo['id']}}">
+                            @if($vo['type']=="index") 首页
+                            @elseif($vo['type']=="article") 文章分类列表
+                            @elseif($vo['type']=="article_content") 文章内容
+                            @elseif($vo['type']=="goods") 商品
+                            @elseif($vo['type']=="brand_list") 品牌商品列表
+                            @elseif($vo['type']=="brand") 品牌
+                            @elseif($vo['type']=="brand_list") 品牌商品列表
+                            @elseif($vo['type']=="category") 分类
+                            @elseif($vo['type']=="search") 搜索
+                            @endif
+                        </a></li>
                     @endforeach
                 </ul>
             </div>

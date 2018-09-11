@@ -196,7 +196,7 @@ trait CommonRepo
         $info = $model::find($id); //模型实例
         if ($info) {
             foreach ($data as $k => $v) {
-                if(!$info->getKeyName() == $k){
+                if($info->getKeyName() !== $k){
                     $info->$k = $v;
                 }
             }

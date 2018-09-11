@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\RegionRepo;
 use Illuminate\Http\Request;
-use App\Services\Admin\RegionService;
+use App\Services\RegionService;
 use App\Http\Controllers\ExcelController;
 class RegionController extends Controller
 {

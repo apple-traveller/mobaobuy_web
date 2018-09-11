@@ -49,7 +49,7 @@
                                 <th width="8%"><div class="tDiv">注册日期</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
 
-                                <th width="6%"><div class="tDiv">状态</div></th>
+                                <th width="6%"><div class="tDiv">状态(灰色为冻结)</div></th>
                                 <th width="12%" class="handle">操作</th>
                             </tr>
                             </thead>

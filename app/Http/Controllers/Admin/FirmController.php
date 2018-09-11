@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Admin\FirmService;
-use App\Services\Admin\FirmLogService;
+use App\Services\FirmService;
+use App\Services\FirmLogService;
 use App\Http\Controllers\ExcelController;
 class FirmController extends Controller
 {
