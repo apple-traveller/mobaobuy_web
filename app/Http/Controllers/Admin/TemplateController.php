@@ -29,17 +29,7 @@ class TemplateController extends Controller
         $content = $request->input('content');
        // dd($content);
         $file = "G:\phpStudy\PHPTutorial\WWW\mbb_web\public\uploads\page.html";
-        //以读写方式打写指定文件，如果文件不存则创建
-        if( ($TxtRes=fopen ($file,"w+")) === FALSE){
-            return $this->result('',400,'更新缓存失败');
-        }
-
-        if(!fwrite ($TxtRes,$content)){ //将信息写入文件
-            fclose($TxtRes);
-            return $this->result('',400,'更新缓存失败');
-        }
-
-        fclose ($TxtRes); //关闭指针
+        file_put_contents($file,$content);
         return $this->result('',200,'更新缓存成功');
 
     }

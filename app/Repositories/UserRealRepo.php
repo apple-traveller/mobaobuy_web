@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-class UserRepo
+class UserRealRepo
 {
     use CommonRepo;
 
@@ -52,14 +52,14 @@ class UserRepo
     }
 
     //获取列表数据
-    public static function search($pageSize,$user_name)
+    public static function search($pageSize,$condition)
     {
         $clazz = self::getBaseModel();
-        $info = '';
-        if($user_name){
-            $info = $clazz::where('user_name','like',"%".$user_name."%")->where('is_firm',0)->orderBy('reg_time','desc')->paginate($pageSize);
+        $info = "";
+        if(!empty($condition['real_name'])){
+            $info = $clazz::where("real_name","like","%".$condition['real_name']."%")->where("review_status",$condition['review_status'])->orderBy('add_time','desc')->paginate($pageSize);
         }else{
-            $info = $clazz::orderBy('reg_time','desc')->where('is_firm',0)->paginate($pageSize);
+            $info = $clazz::where("review_status",$condition['review_status'])->orderBy('add_time','desc')->paginate($pageSize);
         }
 
         if($info)
@@ -84,15 +84,13 @@ class UserRepo
     }
 
     //获取用户总条数
-    public static  function  getCount($user_name)
+    public static  function  getCount($condition)
     {
         $model = self::getBaseModel();
         $count = 0;
-        if($user_name){
-            $count = $model::where('user_name','like','%'.$user_name.'%')->where('is_firm',0)->count();
-        }else{
-            $count = $model::where('is_firm',0)->count();
-        }
+
+        $count = $model::where($condition)->count();
+
         return $count;
     }
 

@@ -4,14 +4,7 @@
 <div class="warpper">
     <div class="title">会员 - 会员列表</div>
     <div class="content">
-        <div class="tabs_info">
-            <ul>
-                <li class="curr">
-                    <a href="/user/list">会员列表</a>
-                </li>
 
-            </ul>
-        </div>
         <div class="flexilist">
             <div class="common-head">
                 <div class="fl">
@@ -27,7 +20,7 @@
                     <form action="/user/list" name="searchForm" >
                         <div class="input">
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                            <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus" placeholder="会员名称" autocomplete="off">
+                            <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                         </div>
                     </form>
@@ -42,11 +35,11 @@
                             <tr>
 
                                 <th width="5%"><div class="tDiv">编号</div></th>
-                                <th width="10%"><div class="tDiv">会员名称</div></th>
+                                <th width="10%"><div class="tDiv">用户名</div></th>
                                 <th width="10%"><div class="tDiv">昵称</div></th>
-                                <th width="8%"><div class="tDiv">真实姓名</div></th>
-                                <th width="8%"><div class="tDiv">手机号</div></th>
-                                <th width="8%"><div class="tDiv">注册日期</div></th>
+                                <th width="8%"><div class="tDiv">是否实名</div></th>
+                                <th width="8%"><div class="tDiv">积分</div></th>
+                                <th width="8%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
 
                                 <th width="6%"><div class="tDiv">状态(灰色为冻结)</div></th>
@@ -58,29 +51,35 @@
                             @foreach($users as $user)
                             <tr class="">
 
-                                <td><div class="tDiv">{{$user->id}}</div></td>
-                                <td><div class="tDiv">{{$user->user_name}}</div></td>
-                                <td><div class="tDiv">{{$user->nick_name}}</div></td>
-                                <td><div class="tDiv">{{$user->real_name}}</div></td>
-                                <td><div class="tDiv">{{$user->user_name}}</div></td>
-                                <td><div class="tDiv">{{$user->reg_time}}</div></td>
-                                <td><div class="tDiv">{{$user->visit_count}}</div></td>
+                                <td><div class="tDiv">{{$user['id']}}</div></td>
+                                <td><div class="tDiv">{{$user['user_name']}}</div></td>
+                                <td><div class="tDiv">{{$user['nick_name']}}</div></td>
+                                <td><div class="tDiv">
+                                        @if($user['userreal']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
+                                        @elseif($user['userreal']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td><div class="tDiv">{{$user['points']}}</div></td>
+                                <td><div class="tDiv">{{$user['reg_time']}}</div></td>
+                                <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 
                                 <td>
 
                                     <label class="el-switch el-switch-lg">
-                                        <input type="checkbox" @if($user->is_freeze==0)checked @endif  name="switch" value="{{$user->is_freeze}}"  data-id="{{$user->id}}"   hidden>
+                                        <input type="checkbox" @if($user['is_freeze']==0)checked @endif  name="switch" value="{{$user['is_freeze']}}"  data-id="{{$user['id']}}"   hidden>
                                         <span class="j_click el-switch-style"></span>
                                     </label>
-
 
                                 </td>
 
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/user/detail')}}?id={{$user->id}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                        <a href="{{url('/user/log')}}?id={{$user->id}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-
+                                        <a href="{{url('/user/detail')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a href="{{url('/user/log')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                        <a href="{{url('/user/verifyForm')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                        <a href="{{url('/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
                                     </div>
                                 </td>
                             </tr>
@@ -95,7 +94,7 @@
                                             <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
 
-                                            {{$users->links()}}
+                                            <ul id="page"></ul>
 
                                             <style>
                                                 .pagination li{
@@ -120,7 +119,24 @@
 </div>
 
     <script>
-
+        paginate(1);
+        function paginate(curr){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$userCount}}" //数据总数，从服务端得到
+                    , limit: 3    //每页显示的条数
+                    , curr: "{{$currpage}}"  //当前页
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            var user_name = $(".user_name").val();
+                            window.location.href="/user/list?curr="+obj.curr+"&user_name="+user_name;
+                        }
+                    }
+                });
+            });
+        }
 
         $('.j_click').click(function(){
                 var is_freeze ;

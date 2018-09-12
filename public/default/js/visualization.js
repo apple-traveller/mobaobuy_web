@@ -2201,7 +2201,7 @@ data-homehtml="topBanner">
     //
     // }
     function visual(temp) {
-        if (suffix) {
+
             var content = $(".pc-page").html(),
                 content_html = '',
                 preview = '',
@@ -2212,7 +2212,7 @@ data-homehtml="topBanner">
                 where = '',
                 nav_html = '';
 
-            if (section == "vis_home") {
+
                 if (temp == 1) {
                     //导航栏html
                     navlayout = $("#head-layout");
@@ -2264,108 +2264,8 @@ data-homehtml="topBanner">
                 }
 
                 Ajax.call('visualhome.php', "act=file_put_visual&content=" + encodeURIComponent(content) + "&content_html=" + encodeURIComponent(content_html) + "&suffix=" + suffix + "&temp=" + temp, file_put_visualResponse, 'POST', 'JSON');
-            } else if (section == "vis_topic") {
 
-                preview = $("#preview-layout");
 
-                preview.html("");
-
-                preview.append(content);
-
-                preview.find("*[data-html='not']").remove();
-                preview.find(".lyrow").removeClass("lyrow");
-                preview.find(".ui-draggable").removeClass("ui-draggable");
-                preview.find(".ui-box-display").removeClass("ui-box-display");
-                preview.find(".lunbotu").removeClass("lunbotu");
-                preview.find(".demo").removeClass().addClass("content");
-                preview.find(".spec").attr("data-spec", '');
-
-                /* 导航 */
-                preview.find(".categorys").remove();
-                preview.find(".setup_box").remove();
-                nav_html = preview.find('[ectype="nav"]').html();
-
-                /* 内容 */
-                preview.find(".pageHome,.nav").remove();
-                content_html = preview.html();
-
-                Ajax.call('topic.php', "act=file_put_visual&content=" + encodeURIComponent(content) + "&content_html=" + encodeURIComponent(content_html) + "&nav_html=" + encodeURIComponent(nav_html) + "&suffix=" + suffix + "&topic_type=" + topic_type, file_put_visualResponse, 'POST', 'JSON');
-
-            }
-                else {
-                preview = $("#preview-layout");
-                preview.html("");
-
-                preview.append(content);
-
-                preview.find("*[data-html='not']").remove();
-                preview.find(".lyrow").removeClass("lyrow");
-                preview.find(".ui-draggable").removeClass("ui-draggable");
-                preview.find(".ui-box-display").removeClass("ui-box-display");
-                preview.find(".lunbotu").removeClass("lunbotu");
-                preview.find(".demo").removeClass(".ui-sortable").addClass("content");
-                preview.find(".spec").attr("data-spec", '');
-
-                if (section == 'vis_seller_topic') {
-                    /* 导航 */
-                    preview.find(".categorys").remove();
-                    preview.find(".setup_box").remove();
-                    nav_html = preview.find('[ectype="nav"]').html();
-
-                    /* 内容 */
-                    preview.find(".pageHome,.nav").remove();
-                    content_html = preview.html();
-
-                    where = "&nav_html=" + encodeURIComponent(nav_html);
-                } else {
-                    content_html = preview.html();
-                }
-
-                //头部html
-                var head_content = $('.hd_main').html();
-                var headlayout = $("#head-layout");
-                var head_html = '';
-                var ajax_url = '';
-                headlayout.html("");
-
-                headlayout.append("<div class='hd_main store_hd_main'>"+head_content+"</div>");
-
-                headlayout.find("*[data-html='not']").remove();
-                headlayout.find(".lyrow").removeClass("lyrow");
-                headlayout.find(".ui-draggable").removeClass("ui-draggable");
-                headlayout.find(".ui-box-display").removeClass("ui-box-display");
-                headlayout.find(".lunbotu").removeClass("lunbotu");
-                headlayout.find(".demo").removeClass().addClass("content");
-                headlayout.find(".spec").attr("data-spec", '');
-
-                head_html = headlayout.html();
-                if (adminpath == 'admin') {
-                    ajax_url = 'topic.php';
-                } else {
-                    ajax_url = 'visual_editing.php';
-                }
-                Ajax.call(ajax_url, "act=file_put_visual&content=" + encodeURIComponent(content) + "&content_html=" + encodeURIComponent(content_html) + "&head_html=" + encodeURIComponent(head_html) + "&suffix=" + suffix + "&topic_type=" + topic_type + where, file_put_visualResponse, 'POST', 'JSON');
-            }
-        }else{
-            var content = $("[ectype=' ']").html(),
-                content_html = '',
-                preview = '',
-                where = '';
-
-            preview = $("#preview-layout");
-            preview.html("");
-
-            preview.append(content);
-
-            preview.find("*[data-html='not']").remove();
-            preview.find(".lyrow").removeClass("lyrow");
-            preview.find(".ui-draggable").removeClass("ui-draggable");
-            preview.find(".demo").removeClass(".ui-sortable").addClass("content");
-            preview.find(".spec").attr("data-spec", '');
-
-            content_html = preview.html();
-            Ajax.call('topic.php', "act=file_put_visual&content=" + encodeURIComponent(content) + "&content_html=" + encodeURIComponent(content_html) + "&new=1" , file_put_visualResponse, 'POST', 'JSON');
-        }
         //回调函数
         function file_put_visualResponse(result) {
             if (result.error == 0) {
