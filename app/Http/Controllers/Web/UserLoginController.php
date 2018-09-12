@@ -25,23 +25,48 @@ class UserLoginController extends Controller
         if($request->isMethod('get')){
             return $this->display('web.user.register');
         }else{
-            $rule = [
-                'user_name'=>'required|regex:/^1[34578]\d{9}$/|numeric|unique:user|unique:firm|min:11',
-                'nick_name'=>'required',
-                'password'=>'required|confirmed|min:6',
-                'email'=>'nullable|email|unique:user',
-                'mobile_code'=>'required|numeric'
-            ];
-            $data = $this->validate($request,$rule);
+            $is_firm = $request->input('is_firm');
+            if($is_firm){
+                //企业
+                $rule = [
+                    'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:user',
+                    'password'=>'required|confirmed|min:6',
+                    'nick_name'=>'required',
+                    'attorney_letter_fileImg'=>'file',
+                    'license_fileImg'=>'file',
+                    'business_license_id'=>'required',
+                    'taxpayer_id'=>'required',
+                    'is_firm'=>'required|numeric',
+                    'mobile_code'=>'required|numeric'
+                ];
+                $data = $this->validate($request,$rule);
+                $data['attorney_letter_fileImg'] = $request->file('attorney_letter_fileImg');
+                $data['license_fileImg'] = $request->file('license_fileImg');
+            }else{
+                //个人
+                $rule = [
+                    'user_name'=>'required|regex:/^1[34578]\d{9}$/|numeric|unique:user|min:11',
+                    'password'=>'required|confirmed|min:6',
+                    'is_firm'=>'required|numeric',
+                    'mobile_code'=>'required|numeric',
+                ];
+                $data = $this->validate($request,$rule);
+            }
+
             try{
-                UserLoginService::userRegister($data);
-                return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
+                $result = UserLoginService::userRegister($data);
+                if($result == 'error'){
+                    return $this->error('注册失败');
+                }else{
+                    return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
+                }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
         }
 
     }
+
 
     //用户登录
     public function showLoginForm($account='')
@@ -72,14 +97,11 @@ class UserLoginController extends Controller
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
-        DB::beginTransaction();
         try{
             $user_info = UserLoginService::loginValidate($username, $password, $other_params);
             session()->put('_web_info', $user_info);
-            DB::commit();
             return $this->success('登录成功，正在进入系统...',  $this->redirectTo);
         }catch (\Exception $e){
-            DB::rollBack();
             return $this->error($e->getMessage());
         }
     }
@@ -105,18 +127,16 @@ class UserLoginController extends Controller
         }else if($request->method('post')){
             $rule = [
                 'email'=>'nullable|email|unique:user',
+                'real_name'=>'nullable',
                 'sex'=>'nullable|numeric|max:1',
                 'birthday'=>'nullable|numeric',
-                'qq'=>'nullable|numeric',
                 'avatar'=>'nullable|image',
                 'id_card'=>'nullable|numeric',
                 'front_of_id_card'=>'nullable|image',
                 'reverse_of_id_card'=>'nullable|image'
             ];
             $data = $this->validate($request,$rule);
-            if(empty($data)){
-                return $this->error('');
-            }
+
             try{
                 UserLoginService::updateUserInfo(session('_web_info')['id'],$data);
             }catch (\Exception $e){
