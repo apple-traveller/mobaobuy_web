@@ -135,6 +135,7 @@ Route::post('/webLogin','Web\UserLoginController@login');
 //登出
 Route::get('/logout','Web\UserLoginController@logout');
 
+Route::get('/tt','Web\UserController@shopAddressList');
 
 
 //用户信息完善

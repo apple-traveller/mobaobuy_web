@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repositories\RegionRepo;
 
+use App\Repositories\UserAddressRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -11,16 +12,20 @@ class UserService
 {
     use CommonService;
 
-    //更新收获地
-    public static function updateShopAdderss(){
+    //
+    public static function shopAddressList($condi){
+        return UserAddressRepo::getList($order=[],$condi);
+    }
 
+    //更新收获地
+    public static function updateShopAdderss($id,$data){
+        return UserAddressRepo::modify($id,$data);
     }
 
     //新增收获地
-    public static function addShopAddress(){
-
+    public static function addShopAddress($data){
+        return UserAddressRepo::create($data);
     }
-
 
     //获取省
     public static function provinceInfo($region_type){
