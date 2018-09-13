@@ -129,20 +129,22 @@ Route::group(['middleware'=>'web.stats'],function(){
 
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
-//用户
+//注册
 Route::get('/userRegister','Web\UserLoginController@userRegister');
 Route::post('/userRegister','Web\UserLoginController@userRegister');
 
 
 //公司注册
-Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //手机验证码
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');
 //登陆
 Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
 Route::post('/webLogin','Web\UserLoginController@login');
+
+//登出
 Route::get('/logout','Web\UserLoginController@logout');
 
 

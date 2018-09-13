@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Services\UserRealService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
+use App\Services\UserInvoicesService;
+use App\Services\UserAddressService;
 use App\Http\Controllers\ExcelController;
 class UserController extends Controller
 {
@@ -50,7 +52,7 @@ class UserController extends Controller
     }
 
 
-
+    //用户审核(修改状态)
     public function verifyForm(Request $request)
     {
         $id = $request->input('id');
@@ -83,9 +85,10 @@ class UserController extends Controller
     {
         $id = $request->input('id');
         $info = UserService::getInfo($id);//基本信息
-        user_invoices =
-
-        return $this->display('admin.user.detail',['info'=>$info]);
+        $user_invoices = UserInvoicesService::getInfoByUserId($id);//会员发票信息
+        $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
+        //dd($user_invoices);
+        return $this->display('admin.user.detail',['info'=>$info,'user_invoices'=>$user_invoices]);
     }
 
     //查询用户日志

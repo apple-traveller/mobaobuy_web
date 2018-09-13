@@ -1,10 +1,6 @@
 <?php
 namespace App\Services;
-use App\Repositories\RegionRepo;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRealRepo;
 
 class UserRealService

@@ -3,22 +3,79 @@
 namespace App\Services;
 use App\Repositories\UserLogRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\UserRealRepo;
 use App\Repositories\FirmLogRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepo;
+use App\Repositories\FirmBlacklistRepo;
+use Illuminate\Support\Facades\Storage;
 class UserLoginService
 {
     use CommonService;
     //用户注册
     public static function userRegister($data){
+//        if(empty(session('send_code')) || $data['mobile_code']!=session('send_code')){
+//            exit('请求超时，请刷新页面后重试');
+//        }
+
         $data['reg_time'] = Carbon::now();
         $data['password'] = bcrypt($data['password']);
-        if(empty(session('send_code')) or $data['mobile_code']!=session('send_code')){
-            exit('请求超时，请刷新页面后重试');
+        if($data['is_firm']){
+            //企业
+            //查找黑名单表是否存在
+            $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name'=>$data['nick_name']]);
+            if($firmBlack){
+                return 'error';
+            }
+            $userReal = [];
+            $userReal['license_fileImg'] = $data['license_fileImg'];
+            $userReal['business_license_id'] = $data['business_license_id'];
+            $userReal['taxpayer_id'] = $data['taxpayer_id'];
+            $userReal['add_time'] = Carbon::now();
+
+            $attorneyImgPath = Storage::putFile('public', $data['attorney_letter_fileImg']);
+            $attorneyImgPath = explode('/',$attorneyImgPath);
+            $data['attorney_letter_fileImg'] = '/storage/'.$attorneyImgPath[1];
+
+            $licensePath = Storage::putFile('public', $data['license_fileImg']);
+            $licensePath = explode('/',$licensePath);
+            $userReal['license_fileImg'] = '/storage/'.$licensePath[1];
+
+            unset($data['business_license_id']);
+            unset($data['license_fileImg']);
+            unset($data['taxpayer_id']);
+            unset($data['mobile_code']);
+
+            self::beginTransaction();
+            $user = UserRepo::create($data);
+            $userReal['user_id'] = $user['id'];
+            $real = UserRealRepo::create($userReal);
+            if($user && $real){
+                self::commit();
+            }else{
+                self::rollBack();
+                return 'error';
+            }
+        }else{
+            //个人
+            $data['nick_name'] = rand(10000, 99999);
+            unset($data['mobile_code']);
+            self::beginTransaction();
+            $user = UserRepo::create($data);
+            $userReal['user_id'] = $user['id'];
+            $userReal['add_time'] = Carbon::now();
+            $real = UserRealRepo::create($userReal);
+            if($user && $real){
+                self::commit();
+            }else{
+                self::rollBack();
+                return 'error';
+            }
+
         }
-        unset($data['mobile_code']);
-        return UserRepo::create($data);
+
+
     }
 
     //发送验证码
@@ -63,13 +120,7 @@ class UserLoginService
         //查用户表
         $info = UserRepo::getInfoByUserName($username);
         if(empty($info)){
-            //查企业表
-            $info = FirmRepo::getInfoByUserName($username);
-            if(empty($info)){
-                self::throwError('用户名或密码不正确！');
-            }
-            $info['flag'] = 1;
-
+            self::throwError('用户名或密码不正确！');
         }
 
         if(!Hash::check($psw, $info['password'])){
@@ -81,40 +132,20 @@ class UserLoginService
         }
         unset($info['password']);
 
-
         //写入日志
-        if(!isset($info['flag'])){
-            //登陆访问次数
-            $logCount = UserLogRepo::getLogCount($info['id']);
-            //上次登录ip,时间
-            $logsInfo = UserLogRepo::getLogsInfo($info['id']);
-            $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logCount];
+        //上次登录ip,时间,登陆访问次数
+        $logsInfo = UserLogRepo::getLogsInfo($info['id']);
+        if($logsInfo != 'error'){
+            $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logsInfo['count']];
             UserRepo::modify($info['id'],$logMes);
-            $userLog = array(
-                'user_id'=>$info['id'],
-                'user_name'=>$info['user_name'],
-                'ip_address'=>$other_params['ip'],
-                'log_time'=>Carbon::now(),
-                'log_info'=>'个人会员登陆'
-            );
-            UserLogRepo::create($userLog);
-        }else{
-            //登陆访问次数
-            $logCount = FirmLogRepo::getLogCount($info['id']);
-            //上次登录ip
-            $logsInfo = FirmLogRepo::getLogsInfo($info['id']);
-            $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logCount];
-            FirmRepo::modify($info['id'],$logMes);
-
-            $firmLog = array(
-                'firm_id'=>$info['id'],
-                'firm_name'=>$info['user_name'],
-                'ip_address'=>$other_params['ip'],
-                'log_time'=>Carbon::now(),
-                'log_info'=>'企业会员登陆'
-            );
-            FirmLogRepo::create($firmLog);
         }
+        $userLog = array(
+            'user_id'=>$info['id'],
+            'ip_address'=>$other_params['ip'],
+            'log_time'=>Carbon::now(),
+            'log_info'=>'会员登陆'
+        );
+        UserLogRepo::create($userLog);
         return $info;
     }
 

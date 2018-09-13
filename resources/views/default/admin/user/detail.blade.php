@@ -9,6 +9,9 @@
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
                         <form method="post" action="users.php" name="theForm" id="user_update" novalidate="novalidate">
+<hr/>
+                            <div>基础信息</div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;会员名称：</div>
                                 <div class="label_value font14">{{$info['user_name']}}</div>
@@ -96,8 +99,89 @@
                                     @endif
                                 </div>
                             </div>
+                            <hr/>
+                            <div>发票信息</div>
+                            @if(!empty($user_invoices))
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;公司抬头：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_name']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;税号：</div>
+                                    <div class="label_value font14">{{$user_invoices['tax_id']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开户银行：</div>
+                                    <div class="label_value font14">{{$user_invoices['bank_of_deposit']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;银行账号：</div>
+                                    <div class="label_value font14">{{$user_invoices['bank_account']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开票地址：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_address']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_telephone']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票人：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_name']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票人电话：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_mobile_phone']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票地址：</div>
+                                    <div class="label_value font14">
+                                        国家：{{$user_invoices['country']}}
+                                        省：{{$user_invoices['province']}}
+                                        市：{{$user_invoices['city']}}
+                                        县：{{$user_invoices['district']}}
+                                        街道：{{$user_invoices['street']}}
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票详细地址：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_address']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;添加时间：</div>
+                                    <div class="label_value font14">{{$user_invoices['add_time']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;状态：</div>
+                                    <div class="label_value font14">
+                                        @if($user_invoices['audit_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已审核</div>
+                                        @elseif($user_invoices['audit_status']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-warm'>待审核</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @else
+                                    无发票信息
+                            @endif
+
+                            <div>收货地址信息</div>
+                            @if(!empty($user_invoices))
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;公司抬头：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_name']}}</div>
+                                </div>
 
 
+                            @else
+                                无发票信息
+                            @endif
                         </form>
                     </div>
                 </div>

@@ -8,11 +8,8 @@
 
 namespace App\Repositories;
 
-class UserRealRepo
+class UserInvoicesRepo
 {
     use CommonRepo;
-
-
-
 
 }
