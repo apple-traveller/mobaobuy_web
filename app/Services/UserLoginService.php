@@ -167,6 +167,7 @@ class UserLoginService
     public static function getLogCount($user_id)
     {
         return UserLogRepo::getLogCount($user_id);
+        //return UserLogRepo::getTotalCount();
     }
 
 }

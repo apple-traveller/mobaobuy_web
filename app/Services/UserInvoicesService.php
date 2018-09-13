@@ -14,8 +14,15 @@ class UserInvoicesService
         return UserInvoicesRepo::modify($id,$data);
     }
 
-    public static function invoicesById($condition){
-        return UserInvoicesRepo::getList($order=[],$condition);
+    public static function invoicesById($condition)
+    {
+        return UserInvoicesRepo::getList($order = [], $condition);
+    }
+
+    //根据user_id获取发票信息
+    public static function getInfoByUserId($user_id)
+    {
+        return UserInvoicesRepo::getInfoByFields(['user_id'=>$user_id]);
     }
 
 

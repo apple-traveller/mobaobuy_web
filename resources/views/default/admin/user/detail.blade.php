@@ -1,104 +1,228 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="{{url('/user/list')}}" class="s-back">返回</a>会员 - 编辑会员账号</div>
+        <div class="title"><a href="/user/list?is_firm={{$info['is_firm']}}" class="s-back">返回</a>会员 - 会员详情信息</div>
         <div class="content">
-            <div class="tabs_info">
-                <ul>
-                    <li class="curr"><a href="users.php?act=edit&amp;id=18">基本信息</a></li>
 
-                </ul>
-            </div>
 
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
                         <form method="post" action="users.php" name="theForm" id="user_update" novalidate="novalidate">
+<hr/>
+                            <div>基础信息</div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;会员名称：</div>
                                 <div class="label_value font14">{{$info['user_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label">邮件地址：</div>
-                                <div class="label_value">
-                                    <input type="text" name="email" class="text" autocomplete="off" value="{{$info['email']}}" id="email">
-                                    <div class="form_prompt"></div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;邮件地址：</div>
+                                <div class="label_value font14">{{$info['email']}}</div>
 
-                                </div>
                             </div>
 
-{{--
+
                             <div class="item">
-                                <div class="label">会员等级：</div>
-                                <div class="label_value">
-                                    <div id="user_grade" class="imitate_select select_w320">
-                                        <div class="cite">非特殊等级</div>
-                                        <ul style="display: none;">
-                                            <li><a href="javascript:;" data-value="0" class="ftx-01">非特殊等级</a></li>
-                                            <li><a href="javascript:;" data-value="3" class="ftx-01">代销用户</a></li>
-                                        </ul>
-                                        <input name="user_rank" type="hidden" value="0" id="user_grade_val">
-                                    </div>
-                                    <input type="hidden" name="old_user_rank" value="0">
-                                </div>
-                            </div>--}}
-                            <div class="item">
-                                <div class="label">性别：</div>
-                                <div class="label_value">
-                                    <div class="checkbox_items">
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==2)checked @endif class="ui-radio" name="sex" id="sex_0" value="0">
-                                            <label for="sex_0" class="ui-radio-label">保密</label>
-                                        </div>
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==1)checked @endif class="ui-radio" name="sex" id="sex_1" value="1">
-                                            <label for="sex_1" class="ui-radio-label">男</label>
-                                        </div>
-                                        <div class="checkbox_item">
-                                            <input type="radio" @if($info['sex']==0)checked @endif class="ui-radio" name="sex" id="sex_2" value="2" >
-                                            <label for="sex_2" class="ui-radio-label">女</label>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="old_sex" value="2">
-                                </div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;注册时间：</div>
+                                <div class="label_value font14">{{$info['reg_time']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;出生日期：</div>
-                                <div class="label_value font14">{{$info['birthday']}}</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;上次访问ip：</div>
+                                <div class="label_value font14">{{$info['last_ip']}}</div>
                             </div>
-                            <input type="hidden" name="old_birthday" value="0000-00-00">
-                           {{-- <div class="item">
-                                <div class="label">信用额度：</div>
-                                <div class="label_value">
-                                    <input type="text" name="credit_line" id="credit_line" value="0.00" class="text" autocomplete="off">
-                                    <input type="hidden" name="old_credit_line" value="0.00">
-                                </div>
-                            </div>--}}
+
                             <div class="item">
-                                <div class="label">身份证信息：</div>
-                                <div class="label_value">
-                                    <div class="type-file-box">
-                                            <span class="show">正面：
-                                            	<a href="" target="_blank" class="nyroModal"><i class="icon icon-picture" data-tooltipimg="{{$info['front_of_id_card']}}" ectype="tooltip" title="tooltip"></i></a>
-                                            </span>
-                                        <span class="show">反面：
-                                            	<a href="" target="_blank" class="nyroModal"><i class="icon icon-picture" data-tooltipimg="{{$info['reverse_of_id_card']}}" ectype="tooltip" title="tooltip"></i></a>
-                                            </span>
+                                <div class="label"><span class="require-field">*</span>&nbsp;上次登录时间：</div>
+                                <div class="label_value font14">{{$info['last_time']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;会员积分：</div>
+                                <div class="label_value font14">{{$info['points']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;会员可用金额：</div>
+                                <div class="label_value font14">{{$info['user_money']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;会员冻结金额：</div>
+                                <div class="label_value font14">{{$info['frozen_money']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;用户头像：</div>
+                                <div class="label_value font14"><img src="{{$info['avatar']}}" style="width:80px;height:80px;"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;默认收货地址：</div>
+                                <div class="label_value font14">{{$info['address_id']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;访问次数：</div>
+                                <div class="label_value font14">{{$info['visit_count']}}</div>
+                            </div>
+
+                            @if($info['is_firm']==1)
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;授权委托书电子版：</div>
+                                    <div class="label_value font14">
+                                        @if($info['attorney_letter_fileImg']=="") 未上传
+                                        @else
+                                            <p ><a href="{{$info['attorney_letter_fileImg']}}" style="color:red;font-size: 15px" download="attorney_letter_fileImg">点击下载原图</a></p>
+                                        @endif
+                                        {{--<img src="{{$info['attorney_letter_fileImg']}}" style="width:300px;height:300px;">--}}
                                     </div>
                                 </div>
-                            </div>
-                            <!--  -->
-                            <div class="item">
-                                <div class="label">手机：</div>
-                                <div class="label_value">
-                                    <input type="text" name="extend_field5" class="text" value="{{$info['user_name']}}" autocomplete="off">
+                            @endif
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
+                                <div class="label_value font14">
+                                    @if($info['is_validated']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已审核</div>
+                                    @elseif($info['is_validated']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-warm'>待审核</div>
+                                    @endif
                                 </div>
                             </div>
-                            <!---->
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
+                                <div class="label_value font14">
+                                    @if($info['is_freeze']==1)冻结
+                                    @elseif($info['is_freeze']==0)未冻结
+                                    @endif
+                                </div>
+                            </div>
+                            <hr/>
+                            <div>发票信息</div>
+                            @if(!empty($user_invoices))
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;公司抬头：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_name']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;税号：</div>
+                                    <div class="label_value font14">{{$user_invoices['tax_id']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开户银行：</div>
+                                    <div class="label_value font14">{{$user_invoices['bank_of_deposit']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;银行账号：</div>
+                                    <div class="label_value font14">{{$user_invoices['bank_account']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开票地址：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_address']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
+                                    <div class="label_value font14">{{$user_invoices['company_telephone']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票人：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_name']}}</div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票人电话：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_mobile_phone']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票地址：</div>
+                                    <div class="label_value font14">
+                                        国家：{{$user_invoices['country']}}
+                                        省：{{$user_invoices['province']}}
+                                        市：{{$user_invoices['city']}}
+                                        县：{{$user_invoices['district']}}
+                                        街道：{{$user_invoices['street']}}
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;收票详细地址：</div>
+                                    <div class="label_value font14">{{$user_invoices['consignee_address']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;添加时间：</div>
+                                    <div class="label_value font14">{{$user_invoices['add_time']}}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;状态：</div>
+                                    <div class="label_value font14">
+                                        @if($user_invoices['audit_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已审核</div>
+                                        @elseif($user_invoices['audit_status']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-warm'>待审核</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @else
+                                    无发票信息
+                            @endif
+                            <hr/>
+                            <div>收货地址信息</div>
+                            @if(!empty($user_address))
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>收货人</th>
+                                        <th>邮编</th>
+                                        <th>手机号</th>
+                                        <th>国家</th>
+                                        <th>省</th>
+                                        <th>市</th>
+                                        <th>县</th>
+                                        <th>街道</th>
+                                        <th>地址别名</th>
+                                        <th>收货详细地址</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($user_address as $vo)
+                                    <tr>
+                                        <td>{{$vo['consignee']}}</td>
+                                        <td>{{$vo['zipcode']}}</td>
+                                        <td>{{$vo['mobile_phone']}}</td>
+                                        <td>{{$vo['country']}}</td>
+                                        <td>{{$vo['province']}}</td>
+                                        <td>{{$vo['city']}}</td>
+                                        <td>{{$vo['district']}}</td>
+                                        <td>{{$vo['street']}}</td>
+                                        <td>{{$vo['address_name']}}</td>
+                                        <td>{{$vo['address']}}</td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+
+                            @else
+                                无地址信息
+                            @endif
+                            <hr/>
                         </form>
                     </div>
                 </div>
