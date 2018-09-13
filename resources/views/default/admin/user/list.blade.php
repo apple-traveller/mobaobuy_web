@@ -83,7 +83,7 @@
                                     <div class="tDiv a2">
                                         <a href="{{url('/user/detail')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                         <a href="{{url('/user/log')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                        <a href="{{url('/user/verifyForm')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                        <a href="{{url('/user/verifyForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
                                         <a href="{{url('/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
                                     </div>
                                 </td>

@@ -69,6 +69,7 @@ class UserController extends Controller
     public function verify(Request $request)
     {
         $id = $request->input("id");
+        $is_firm = $request->input("is_firm");
         $data = $request->all();
         $data['is_validated']=$data['is_validated']==1?0:1;
         //dd($data);
@@ -76,7 +77,7 @@ class UserController extends Controller
         try{
             $user = UserService::modify($id,$data);
             if($user){
-                return $this->success("修改成功",url('/user/list'));
+                return $this->success("修改成功",url('/user/list')."?is_firm=".$is_firm);
             }else{
                 return  $this->error("修改失败");
             }
@@ -130,15 +131,17 @@ class UserController extends Controller
     public function userReal(Request $request)
     {
         $id = $request->input("id");
+        $is_firm = $request->input("is_firm");
         $data = $request->all();
         $data['review_time'] = Carbon::now();
         $data['review_status']=$data['review_status']==2?1:2;
         //dd($data);
         unset($data['_token']);
+        unset($data['is_firm']);
         try{
             $user = UserRealService::modify($id,$data);
             if($user){
-                return $this->success("修改成功",url('/user/list'));
+                return $this->success("修改成功",url('/user/list')."?is_firm=".$is_firm);
             }else{
                 return  $this->error("修改失败");
             }
