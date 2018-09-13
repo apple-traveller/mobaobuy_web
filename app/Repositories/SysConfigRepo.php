@@ -40,13 +40,10 @@ class SysConfigRepo
     }
 
 
-    public static function search($paper=[],$where){
-    $clazz = self::getBaseModel();
-    $query = $clazz::query();
-//        if(isset($where['code'])){
-//            $query = $query->where('code',$where['code']);
-//        }
-    return self::searchQuery($paper,$query);
-}
+    public static function search($paper=[],$where)
+    {
+        $clazz = self::getBaseModel();
+        return self::getListBySearch($paper,[]);
+    }
 
 }

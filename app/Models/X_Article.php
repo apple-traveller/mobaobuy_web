@@ -14,7 +14,7 @@ class X_Article extends BaseModel
      */
     public function articleCat()
     {
-        return $this->belongsTo('App\Models\ArticleCatModel','cat_id');
+        return $this->belongsTo('App\Models\X_Article_Cat','cat_id');
     }
 
 

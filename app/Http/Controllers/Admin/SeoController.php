@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\Admin\SeoService;
+use App\Services\SeoService;
 class SeoController extends Controller
 {
     //
@@ -26,6 +26,7 @@ class SeoController extends Controller
         unset($data['_token']);
         try{
             $flag = SeoService::modify($data);
+            //dd($flag);
             if($flag){
                 return $this->success('保存成功',url('/seo/index')."?id=".$data['id']);
             }else{

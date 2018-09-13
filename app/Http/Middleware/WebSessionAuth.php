@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Controller;
 
 class WebSessionAuth
 {
@@ -29,21 +30,21 @@ class WebSessionAuth
             $url = $this->Get_Url();
             $domain = $this->Get_Domain();
 
-            $res = DB::select('select * from stats where ip_address = ? and access_time = ?',[$ip,$carbon]);
-            if($res){
-                $result = array_map('get_object_vars', $res);
-                DB::update('update stats set visit_times = ? where id = ?',[$result[0]['visit_times']+1,$result[0]['id']]);
-            }else{
-                DB::insert('insert into stats
-                (access_time,ip_address,visit_times,browser,system,area,referer_domain,referer_path,access_url) values
-                (?,?,?,?,?,?,?,?,?)',[$carbon,$ip,$visitTimes,$browser,$os,$city,$domain,$url,$uri]);
-            }
-            return $this->success('页面已过期，请重新登陆！',route('login'));
+//            $res = DB::select('select * from stats where ip_address = ? and access_time = ?',[$ip,$carbon]);
+//            if($res){
+//                $result = array_map('get_object_vars', $res);
+//                DB::update('update stats set visit_times = ? where id = ?',[$result[0]['visit_times']+1,$result[0]['id']]);
+//            }else{
+//                DB::insert('insert into stats
+//                (access_time,ip_address,visit_times,browser,system,area,referer_domain,referer_path,access_url) values
+//                (?,?,?,?,?,?,?,?,?)',[$carbon,$ip,$visitTimes,$browser,$os,$city,$domain,$url,$uri]);
+//            }
+//            return redirect('/webLogin');
         }
 
-        if(session('_web_info')['log_info'] == '个人会员登陆'){
-
-        }
+//        if(session('_web_info')['log_info'] == '个人会员登陆'){
+//
+//        }
         //判断用户初始化权限
 //        $users = DB::select('select * from firm_users where user_id = ?',session('_web_info')['id']);
 //        if($users['can_po']){

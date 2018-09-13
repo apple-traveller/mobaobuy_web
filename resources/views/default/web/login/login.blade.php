@@ -15,12 +15,12 @@
 手机号<input type="text" name="user_name" placeholder="请输入手机号"><br>
 密　码<input type="password" name="password"><br>
 <input type="submit" value="登陆">
-    {{--{{$sitename}}--}}
+   <!--  {{--{{$sitename}}--}}
     {{--<h3>用户信息</h3>--}}
     {{--用户名:{{$user['name']}}<br>--}}
     {{--用户头像:{{$user['avatar']}}--}}
 
-    {{$sysCacheInfo['name']}}
+    {{--{{$sysCacheInfo['name']}}--}} -->
 
 </form>
 </body>
