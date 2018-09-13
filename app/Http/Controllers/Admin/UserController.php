@@ -10,6 +10,8 @@ use App\Services\UserLoginService;
 use App\Services\UserService;
 use App\Services\UserInvoicesService;
 use App\Services\UserAddressService;
+use App\Services\RegionService;
+use App\Services\UserAccountLogService;
 use App\Http\Controllers\ExcelController;
 class UserController extends Controller
 {
@@ -18,18 +20,21 @@ class UserController extends Controller
     {
         $user_name = $request->input('user_name','');
         $currpage = $request->input("curr",1);
-        $is_form = $request->input('is_firm',0);
-        $condition = ['is_firm'=>$is_form];
+        $pageSize = 4;
+        $is_firm = $request->input('is_firm',0);
+        $condition = ['is_firm'=>$is_firm];
         if(!empty($user_name)){
             $condition['user_name'] = $user_name;
         }
-        $users = UserService::getUserList(['pageSize'=>3,'page'=>$currpage],$condition);
+        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
         //dd($users);
         return $this->display('admin.user.list',[
             'users'=>$users['list'],
             'user_name'=>$user_name,
             'userCount'=>$users['total'],
             'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'is_firm'=>$is_firm
         ]);
     }
 
@@ -87,8 +92,14 @@ class UserController extends Controller
         $info = UserService::getInfo($id);//基本信息
         $user_invoices = UserInvoicesService::getInfoByUserId($id);//会员发票信息
         $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
-        //dd($user_invoices);
-        return $this->display('admin.user.detail',['info'=>$info,'user_invoices'=>$user_invoices]);
+        $region = RegionService::getList($pager=[],$condition=[]);
+        //dd($region);
+        return $this->display('admin.user.detail',
+            [ 'info'=>$info,
+              'user_invoices'=>$user_invoices,
+              'user_address'=>$user_address,
+              'region'=>$region
+            ]);
     }
 
     //查询用户日志
@@ -96,10 +107,11 @@ class UserController extends Controller
     {
         $pageSize = config('website.pageSize');
         $id = $request->input('id');
+        $is_firm = $request->input("is_firm");
         $logs = UserLoginService::getLogs($id,$pageSize);
         $logCount = UserLoginService::getLogCount($id);
         //dd($logs);
-        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount]);
+        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount,'is_firm'=>$is_firm]);
     }
 
     //查看实名信息
@@ -148,6 +160,24 @@ class UserController extends Controller
             $data[]=$item;
         }
         $excel->export($data,'会员表');
+    }
+
+    //查看企业积分流水
+    public function points(Request $request)
+    {
+        $id = $request->input("id");
+        $is_firm = $request->input("is_firm");
+        $currpage = $request->input('curr',1);
+        $pageSize = 3;
+        $condition = ['user_id'=>$id];
+        $info = UserAccountLogService::getInfoByUserId(['pageSize'=>$pageSize,'page'=>$currpage],$condition);//分页
+        return $this->display('admin.user.points',[
+            'info'=>$info['list'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'totalcount'=>$info['total'],
+            'is_firm'=>$is_firm
+        ]);
     }
 
 }

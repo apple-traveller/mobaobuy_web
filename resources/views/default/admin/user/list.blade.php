@@ -20,6 +20,7 @@
                     <form action="/user/list" name="searchForm" >
                         <div class="input">
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
+                            <input id="_token" type="hidden" name="is_firm" value="{{$is_firm}}"/>
                             <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                         </div>
@@ -61,7 +62,11 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td><div class="tDiv">{{$user['points']}}</div></td>
+                                <td>
+                                    <div class="tDiv">
+                                        <a href="/user/points?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
+                                    </div>
+                                </td>
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
                                 <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 
@@ -77,7 +82,7 @@
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="{{url('/user/detail')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                        <a href="{{url('/user/log')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                        <a href="{{url('/user/log')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
                                         <a href="{{url('/user/verifyForm')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
                                         <a href="{{url('/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
                                     </div>
@@ -126,7 +131,7 @@
                 laypage.render({
                     elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
                     , count: "{{$userCount}}" //数据总数，从服务端得到
-                    , limit: 3    //每页显示的条数
+                    , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {

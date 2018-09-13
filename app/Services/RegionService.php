@@ -30,6 +30,13 @@ class RegionService
 
     }
 
+    //获取所有信息
+    public static function getList($pager=[],$condition=[])
+    {
+        $regions = RegionRepo::getListBySearch($pager,$condition);
+        return $regions['list'];
+    }
+
     //获取当前页面所属地区类型
     public static function getRegionTypeById($id)
     {

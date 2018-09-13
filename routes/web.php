@@ -32,6 +32,7 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/user/export', 'Admin\UserController@export');//用户导出excel
     Route::get('/user/userRealForm', 'Admin\UserController@userRealForm');//实名认证
     Route::post('/user/userReal', 'Admin\UserController@userReal');//实名认证审核
+    Route::get('/user/points', 'Admin\UserController@points');//查看积分
 
 
 

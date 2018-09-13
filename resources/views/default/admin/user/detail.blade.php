@@ -170,18 +170,59 @@
                             @else
                                     无发票信息
                             @endif
-
+                            <hr/>
                             <div>收货地址信息</div>
-                            @if(!empty($user_invoices))
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;公司抬头：</div>
-                                    <div class="label_value font14">{{$user_invoices['company_name']}}</div>
-                                </div>
-
+                            @if(!empty($user_address))
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col width="100">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>收货人</th>
+                                        <th>邮编</th>
+                                        <th>手机号</th>
+                                        <th>国家</th>
+                                        <th>省</th>
+                                        <th>市</th>
+                                        <th>县</th>
+                                        <th>街道</th>
+                                        <th>地址别名</th>
+                                        <th>收货详细地址</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($user_address as $vo)
+                                    <tr>
+                                        <td>{{$vo['consignee']}}</td>
+                                        <td>{{$vo['zipcode']}}</td>
+                                        <td>{{$vo['mobile_phone']}}</td>
+                                        <td>{{$vo['country']}}</td>
+                                        <td>{{$vo['province']}}</td>
+                                        <td>{{$vo['city']}}</td>
+                                        <td>{{$vo['district']}}</td>
+                                        <td>{{$vo['street']}}</td>
+                                        <td>{{$vo['address_name']}}</td>
+                                        <td>{{$vo['address']}}</td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
 
                             @else
-                                无发票信息
+                                无地址信息
                             @endif
+                            <hr/>
                         </form>
                     </div>
                 </div>
