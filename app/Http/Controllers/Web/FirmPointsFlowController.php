@@ -24,12 +24,9 @@ class FirmPointsFlowController extends Controller
         ];
         $data = $this->validate($request,$rule);
         $data['firm_id'] = session('_web_info')['id'];
-        DB::beginTransaction();
         try{
             FirmPointsFlowService::createPoints($data);
-            DB::commit();
         }catch (\Exception $e){
-            DB::rollback();
             return $this->error($e->getMessage());
         }
     }

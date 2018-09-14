@@ -121,43 +121,42 @@ Route::group(['middleware'=>'admin.auth'],function(){
 
 
 
-Route::group(['middleware'=>'web.stats'],function(){
-    //系统配置信息
-    Route::get('/SysCacheSet', 'Web\SysConfigController@sysCacheSet');
-    Route::get('/SysCacheClean', 'Web\SysConfigController@sysCacheClean');
-});
+Route::get('/SysCacheSet', 'Web\SysConfigController@sysCacheSet');//系统配置信息
+Route::get('/SysCacheClean', 'Web\SysConfigController@sysCacheClean');
 
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
-//注册
-Route::get('/userRegister','Web\UserLoginController@userRegister');
-Route::post('/userRegister','Web\UserLoginController@userRegister');
 
+Route::get('/userRegister','Web\UserLoginController@userRegister');//注册
+Route::post('/userRegister','Web\UserLoginController@userRegister');
+Route::get('/userLogin','Web\UserLoginController@showLoginForm')->name('login');//登陆
+Route::post('/userLogin','Web\UserLoginController@login');
+Route::post('/messageCode','Web\UserLoginController@getMessageCode');//注册验证码
 
 //公司注册
-//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
-
-//手机验证码
-Route::post('/messageCode','Web\UserLoginController@getMessageCode');
-//登陆
-Route::get('/webLogin','Web\UserLoginController@showLoginForm')->name('login');
-Route::post('/webLogin','Web\UserLoginController@login');
-
-//登出
-Route::get('/logout','Web\UserLoginController@logout');
-
-Route::get('/tt','Web\UserController@shopAddressList');
-
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //用户信息完善
-Route::resource('goodsCate','Web\GoodsCategoryController');
 Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
-    Route::get('/updateUserInfo','UserLoginController@userUpdate');
-    Route::post('/updateUserInfo','UserLoginController@userUpdate');
-    Route::get('/', function(){
-        return '主页';
-    });
+    Route::get('/updateUserInfo','UserController@userUpdate');//用户信息编辑
+    Route::post('/updateUserInfo','UserController@userUpdate');//用户信息保存
+
+    Route::get('/createFirmUser','FirmUserController@createFirmUser');//企业会员绑定
+    Route::post('/createFirmUser','FirmUserController@createFirmUser');//企业会员绑定
+    Route::post('/addFirmUser','FirmUserController@addFirmUser');//企业会员绑定权限
+
+    Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
+    Route::post('/updatePwd','UserController@userUpdatePwd');
+    Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
+    Route::post('/forgotPwd','UserController@userForgotPwd');
+    Route::post('/getCode','UserController@userForgotCode');//获取验证码
+
+    Route::resource('goodsCate','GoodsCategoryController');//产品信息
+
+    Route::get('/','IndexController@index');
+    Route::get('/logout','UserLoginController@logout');//登出
+
 });
 
 

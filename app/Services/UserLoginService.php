@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use App\Repositories\UserLogRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
@@ -10,23 +11,27 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepo;
 use App\Repositories\FirmBlacklistRepo;
 use Illuminate\Support\Facades\Storage;
+
 class UserLoginService
 {
     use CommonService;
+
     //用户注册
-    public static function userRegister($data){
+    public static function userRegister($data)
+    {
 //        if(empty(session('send_code')) || $data['mobile_code']!=session('send_code')){
 //            exit('请求超时，请刷新页面后重试');
 //        }
 
         $data['reg_time'] = Carbon::now();
         $data['password'] = bcrypt($data['password']);
-        if($data['is_firm']){
+        if ($data['is_firm']) {
             //企业
             //查找黑名单表是否存在
-            $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name'=>$data['nick_name']]);
-            if($firmBlack){
-                return 'error';
+            $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $data['nick_name']]);
+            if ($firmBlack) {
+                throwBizError('');
+                //return 'error';
             }
             $userReal = [];
             $userReal['license_fileImg'] = $data['license_fileImg'];
@@ -35,132 +40,151 @@ class UserLoginService
             $userReal['add_time'] = Carbon::now();
 
             $attorneyImgPath = Storage::putFile('public', $data['attorney_letter_fileImg']);
-            $attorneyImgPath = explode('/',$attorneyImgPath);
-            $data['attorney_letter_fileImg'] = '/storage/'.$attorneyImgPath[1];
+            $attorneyImgPath = explode('/', $attorneyImgPath);
+            $data['attorney_letter_fileImg'] = '/storage/' . $attorneyImgPath[1];
 
             $licensePath = Storage::putFile('public', $data['license_fileImg']);
-            $licensePath = explode('/',$licensePath);
-            $userReal['license_fileImg'] = '/storage/'.$licensePath[1];
+            $licensePath = explode('/', $licensePath);
+            $userReal['license_fileImg'] = '/storage/' . $licensePath[1];
 
             unset($data['business_license_id']);
             unset($data['license_fileImg']);
             unset($data['taxpayer_id']);
             unset($data['mobile_code']);
 
-            self::beginTransaction();
-            $user = UserRepo::create($data);
-            $userReal['user_id'] = $user['id'];
-            $real = UserRealRepo::create($userReal);
-            if($user && $real){
+            try {
+                self::beginTransaction();
+                $user = UserRepo::create($data);
+                $userReal['user_id'] = $user['id'];
+                $real = UserRealRepo::create($userReal);
                 self::commit();
-            }else{
+            }catch (\Exception $e){
                 self::rollBack();
-                return 'error';
+                throw $e;
             }
-        }else{
+
+        } else {
             //个人
             $data['nick_name'] = rand(10000, 99999);
             unset($data['mobile_code']);
-            self::beginTransaction();
-            $user = UserRepo::create($data);
-            $userReal['user_id'] = $user['id'];
-            $userReal['add_time'] = Carbon::now();
-            $real = UserRealRepo::create($userReal);
-            if($user && $real){
+            try{
+                self::beginTransaction();
+                $user = UserRepo::create($data);
+                $userReal['user_id'] = $user['id'];
+                $userReal['add_time'] = Carbon::now();
+                $real = UserRealRepo::create($userReal);
                 self::commit();
-            }else{
+            }catch(\Exception $e){
                 self::rollBack();
-                return 'error';
+                throw $e;
             }
-
         }
-
-
     }
 
     //发送验证码
-    public static function sendCode($mobile){
-        //短信接口地址
-        $target = "http://xxxx.com/xxx.php?method=Submit";
+    public static function sendCode($mobile)
+    {
+
+//        $mobile = 18217232270;
+        $type = 'sms_signup';
 
         //生成的随机数
-        $mobile_code = rand(1000,9999);
+        $mobile_code = rand(1000, 9999);
 
-        session()->put('send_code',$mobile_code);
+        session()->put('send_code', $mobile_code);
 
-        $post_data = "account=用户名&password=密码&mobile=".$mobile."&content=".rawurlencode("您的验证码是：".$mobile_code."。请不要把验证码泄露给其他人。");
-        return self::Post($post_data,$target);
+
+        return SmsService::sendSms($mobile,$type,$mobile_code);
     }
 
-    //短信
-     public static function Post($curlPost,$url){
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_HEADER, false);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_NOBODY, true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $curlPost);
-            $return_str = curl_exec($curl);
-            curl_close($curl);
-            return $return_str;
-     }
-
-     //
-    public static function getInfo($id){
-         return UserRepo::getInfo($id);
+    //
+    public static function getInfo($id)
+    {
+        return UserRepo::getInfo($id);
     }
 
     //用户登录
     public static function loginValidate($username, $psw, $other_params = [])
     {
+
         if(!preg_match("/^1[345789]{1}\\d{9}$/",$username)){
-           self::throwError('用户名或密码不正确!');
+           self::throwBizError('用户名或密码不正确!');
         }
         //查用户表
         $info = UserRepo::getInfoByUserName($username);
         if(empty($info)){
-            self::throwError('用户名或密码不正确！');
+            self::throwBizError('用户名或密码不正确！');
         }
 
         if(!Hash::check($psw, $info['password'])){
-            self::throwError('用户名或密码不正确！');
+            self::throwBizError('用户名或密码不正确！');
         }
 
-        if($info['is_freeze']){
-            self::throwError('用户名或密码不正确！');
+        //查用户表
+        $info = UserRepo::getInfoByUserName($username);
+        if (empty($info)) {
+            self::throwBizError('用户名或密码不正确！');
+        }
+
+        if (!Hash::check($psw, $info['password'])) {
+            self::throwBizError('用户名或密码不正确！');
+        }
+
+        if ($info['is_freeze']) {
+            self::throwBizError('用户名或密码不正确！');
         }
         unset($info['password']);
 
-        //写入日志
         //上次登录ip,时间,登陆访问次数
-        $logsInfo = UserLogRepo::getLogsInfo($info['id']);
-        if($logsInfo != 'error'){
-            $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logsInfo['count']];
-            UserRepo::modify($info['id'],$logMes);
-        }
+
+        $lastInfo = [
+            'last_ip' => $other_params['ip'],
+            'last_time' => Carbon::now(),
+            'visit_count' => $info['visit_count'] + 1
+        ];
+        UserRepo::modify($info['id'],$lastInfo);
+
+        //写入日志
+
         $userLog = array(
-            'user_id'=>$info['id'],
-            'ip_address'=>$other_params['ip'],
-            'log_time'=>Carbon::now(),
-            'log_info'=>'会员登陆'
+            'user_id' => $info['id'],
+            'ip_address' => $other_params['ip'],
+            'log_time' => Carbon::now(),
+            'log_info' => '会员登陆'
         );
         UserLogRepo::create($userLog);
         return $info;
     }
 
 
+
+
+
     //完善信息
-    public static function updateUserInfo($id,$data){
-        return UserRepo::modify($id,$data);
+    public static function updateUserInfo($id, $data)
+    {
+        return UserRepo::modify($id, $data);
     }
 
 
     //管理员后台
     //获取日志列表（分页）
+<<<<<<< HEAD
     public static function getUserLogs($pager,$condition)
     {
         return UserLogRepo::getListBySearch($pager,$condition);
+=======
+    public static function getLogs($user_id, $pageSize)
+    {
+        return UserLogRepo::getLogs($user_id, $pageSize);
+    }
+
+    //获取日志总条数
+    public static function getLogCount($user_id)
+    {
+        return UserLogRepo::getLogCount($user_id);
+        //return UserLogRepo::getTotalCount();
+>>>>>>> 8f6ab692574ae53ed8ecd6a8bd9148e5c37fd736
     }
 
 }

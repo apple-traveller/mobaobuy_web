@@ -55,18 +55,12 @@ class UserLoginController extends Controller
 
             try{
                 $result = UserLoginService::userRegister($data);
-                if($result == 'error'){
-                    return $this->error('注册失败');
-                }else{
-                    return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
-                }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
         }
 
     }
-
 
     //用户登录
     public function showLoginForm($account='')
@@ -108,7 +102,6 @@ class UserLoginController extends Controller
 
     //获取手机验证码
     public function getMessageCode(Request $request){
-        echo json_encode(array('code'=>1,'msg'=>'success'));exit;
         $mobile = $request->input('user_name');
         $code = UserLoginService::sendCode($mobile);
         if($code){
@@ -118,37 +111,7 @@ class UserLoginController extends Controller
     }
 
 
-
-
-    //完善用户信息
-    public function userUpdate(Request $request){
-        if(empty(session('_web_info'))){
-            $this->error('登陆失效,请重新登陆');exit;
-        }else if($request->method('post')){
-            $rule = [
-                'email'=>'nullable|email|unique:user',
-                'real_name'=>'nullable',
-                'sex'=>'nullable|numeric|max:1',
-                'birthday'=>'nullable|numeric',
-                'avatar'=>'nullable|image',
-                'id_card'=>'nullable|numeric',
-                'front_of_id_card'=>'nullable|image',
-                'reverse_of_id_card'=>'nullable|image'
-            ];
-            $data = $this->validate($request,$rule);
-
-            try{
-                UserLoginService::updateUserInfo(session('_web_info')['id'],$data);
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
-
-        }else if($request->method('get')){
-                $userInfo = UserLoginService::getInfo(session('_web_info')['id']);
-                return $this->display('web.user.info',compact('userInfo'));
-        }
-    }
-
+    //登出
     public function logout()
     {
         session()->forget('_web_info');

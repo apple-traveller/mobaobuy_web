@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 use App\Services\UserInvoicesService;
+use App\Services\UserLoginService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -137,6 +138,7 @@ class UserController extends Controller
         }
     }
 
+
     //编辑用户发票信息
     public function editInvoices(Request $request,$id){
         if($request->isMethod('get')){
@@ -178,6 +180,90 @@ class UserController extends Controller
         $condition['user_id'] = $userId;
         $invoicesInfo = UserInvoicesService::invoicesById($condition);
         return $this->display('web.xx',compact('invoicesInfo'));
+    }
+
+    //完善用户信息
+    public function userUpdate(Request $request){
+       if($request->isMethod('post')){
+            $rule = [
+                'nick_name'=>'nullable',
+                'email'=>'nullable|email|unique:user',
+                'real_name'=>'required',
+                'sex'=>'nullable|numeric|max:1',
+//                'birthday'=>'nullable|numeric',
+                'avatar'=>'required|file',
+                'front_of_id_card'=>'required|file',
+                'reverse_of_id_card'=>'required|file'
+            ];
+           $data = $this->validate($request,$rule);
+           $data['avatar'] = $request->file('avatar');
+           $data['front_of_id_card'] = $request->file('front_of_id_card');
+           $data['reverse_of_id_card'] = $request->file('reverse_of_id_card');
+            try{
+                UserService::updateUserInfo(session('_web_info')['id'],$data);
+                return $this->success('实名信息添加成功，等待审核...','/');
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+       }else{
+//            $userInfo = UserLoginService::getInfo(session('_web_info')['id']);
+            return $this->display('web.user.userUpdate');
+       }
+    }
+
+    //修改密码
+    public function userUpdatePwd(Request $request){
+        if($request->isMethod('get')){
+            return $this->display('web.user.updatePwd');
+        }else{
+            $rule = [
+                'password'=> 'required|min:6',
+                'newPassword'=> 'required|min:6|confirmed',
+                'newPassword_confirmation'=>'required|same:newPassword'
+
+            ];
+            $data = $this->validate($request,$rule);
+            $id = session('_web_info')['id'];
+            try{
+                UserService::userUpdatePwd($id,$data);
+                return $this->success('修改密码成功','/');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+    }
+
+    //忘记密码
+    public function userForgotPwd(Request $request){
+        if($request->isMethod('get')){
+            return $this->display('web.user.forgotpwd');
+        }else{
+            $rule = [
+                'newPassword'=> 'required|min:6|confirmed',
+                'newPassword_confirmation'=>'required|same:newPassword',
+//                'mobile_code'=> 'required'
+            ];
+            $data = $this->validate($request,$rule);
+            $id = session('_web_info')['id'];
+
+            try{
+                UserService::userForgotPwd($id,$data);
+                return $this->success('修改密码成功','/');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+    }
+
+    //忘记密码获取验证码
+    public function userForgotCode(){
+        try{
+            UserLoginService::sendCode(session('_web_Info')['user_name']);
+            return json_encode(array('code'=>1,'msg'=>'succ'));
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
 }

@@ -6,72 +6,75 @@
  * Time: 20:30
  */
 namespace App\Services;
-
-use App\Plugins\SMS\ALiDaYu;
-use App\Plugins\SMS\DianJi;
+use App\Repositories\SmsSendTypeRepo;
 use App\Repositories\SmsSupplierRepo;
+use App\Repositories\SmsTempRepo;
 
 
 class SmsService
 {
     use CommonService;
 
-    protected $SMS;
 
-    /**
-     * 初始化 短信接口
-     * SmsService constructor.
-     */
-    public function __construct()
+
+    public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
     {
+        // 取得配置的服务商Code
         $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
+        $Code = $smsSupplier['supplier_code'];
+        $sms_dir = dirname(__DIR__) . "/Plugins/SMS/{$Code}/SmsObj.php";
 
-        if (!empty($smsSupplier))
-        {
-            switch ($smsSupplier['supplier_code'])
-            {
-                case 'ALiDaYu':
-
-                    $this->SMS = new ALiDaYu\SmsObj();
-                    break;
-
-                case 'DianJi':
-
-                    $this->SMS = new DianJi\SmsObj();
-                    break;
-
-                default: self::throwError('不存在该短信服务');
-                    return;
-            }
+        // 判断配置是否存在
+        if (file_exists($sms_dir)){
+            require_once $sms_dir;
+            $sms = new \SmsObj();
+        } else {
+            return json_encode(['code'=>404,'msg'=>'']);
         }
 
+        $config = json_decode($smsSupplier['supplier_config'],true);
+
+        $sms->setConfig($config);
+
+        $where = [
+            'supplier_id'=>$smsSupplier['id'],
+            'type_code'=> $type
+        ];
+
+        // 取得模板内容
+        $tempInfo = SmsTempRepo::getTemp($where);
+        if (empty($tempInfo)){
+            self::throwBizError('没有模板信息');
+        }
+
+        $templateParam = [
+            'code' => $params,
+            'temp_content' => $tempInfo['temp_content']
+        ];
+        return $sms->sendSms($phoneNumbers, $tempInfo['id'], $tempInfo['set_sign'], $templateParam, $outId = 0);
     }
 
     /**
-     * @param $smsSupplier
      * @param $phoneNumbers
      * @param $temp_id
      * @param $signName
      * @param $templateParam
-     * @param int $outId
-     * @return DianJi\stdClass
+     * @return \Aliyun\Core\Http\HttpResponse|mixed|\stdClass|string
      */
-    public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
+    public static function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
     {
+        // 取得配置的服务商Code
+        $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
+        $Code = $smsSupplier['supplier_code'];
 
-        return $this->SMS->sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0);
-    }
+        // 判断配置是否存在
+        if (file_exists(dirname(__DIR__) . "/Plugins/SMS/{$Code}/SmsObj.php")){
+            require_once dirname(__DIR__) . "/Plugins/SMS/{$Code}/SmsObj.php";
+            $sms = new \SmsObj();
+        } else {
 
-
-    /**
-     * @param $phoneNumbers
-     * @param $temp_id
-     * @param $signName
-     * @param $templateParam
-     * @return DianJi\stdClass
-     */
-    public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
-    {
-        return $this->SMS->sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam);
+            return json_encode(['code'=>404,'msg'=>'不存在相关配置']);
+        }
+        return $sms->sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam);
     }
 }
