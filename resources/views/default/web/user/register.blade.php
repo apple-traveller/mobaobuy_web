@@ -8,6 +8,8 @@
 
     <title>Document</title>
 </head>
+{{--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--}}
+<script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
 <body>
 <h1>注册</h1>
 <!-- <a href="http://mbb.com">tiaozhuan</a> -->
@@ -35,7 +37,7 @@
 </form>
 </body>
 </html>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 <script>
     var flag = false;
     function messageCode(){
@@ -44,11 +46,11 @@
             $.ajax({
                 headers:{ 'X-CSRF-TOKEN': $('input[name="_token"]').val()},
                 'type':'post',
-                'data':{'user_name':user_name},
-                'url':'{{url('/messageCode')}}',
+                'data':{'user_name':user_name,'_token':'{{csrf_token()}}'},
+                'url':"{{url('/messageCode')}}",
                 success:function(res){
-                    console.log('cs');
                     var result = JSON.parse(res);
+                    console(result);
                     if(result.code){
                         alert('发送成功');
                         var time = 60;

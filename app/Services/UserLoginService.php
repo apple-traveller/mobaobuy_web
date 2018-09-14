@@ -84,16 +84,17 @@ class UserLoginService
     //发送验证码
     public static function sendCode($mobile)
     {
-        //短信接口地址
-        $target = "http://xxxx.com/xxx.php?method=Submit";
+
+//        $mobile = 18217232270;
+        $type = 'sms_signup';
 
         //生成的随机数
         $mobile_code = rand(1000, 9999);
 
         session()->put('send_code', $mobile_code);
 
-        $post_data = "account=用户名&password=密码&mobile=" . $mobile . "&content=" . rawurlencode("您的验证码是：" . $mobile_code . "。请不要把验证码泄露给其他人。");
-        return self::Post($post_data, $target);
+
+        return SmsService::sendSms($mobile,$type,$mobile_code);
     }
 
     //

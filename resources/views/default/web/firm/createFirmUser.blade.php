@@ -37,7 +37,7 @@
 		 // var can_po = $("input:checkbox[name='can_po']:checked").val();
 		 // var can_pay = $("input:checkbox[name='can_pay']:checked").val();
 		 
-		$("input:checkbox[name='can']:checked").each(function() { // 遍历name=test的多选框
+		$("input:checkbox[name='can']:checked").each(function() {
 		  	permi.push($(this).val());  // 每一个被选中项的值
 		});
 
