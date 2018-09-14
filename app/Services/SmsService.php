@@ -36,8 +36,6 @@ class SmsService
 
         $sms->setConfig($config);
 
-        $send_type = SmsSendTypeRepo::getInfoByFields(['type_code'=>'sms_signup']);
-        dd($send_type);
         $where = [
             'supplier_id'=>$smsSupplier['id'],
             'type_code'=> $type
@@ -45,26 +43,24 @@ class SmsService
 
         // 取得模板内容
         $tempInfo = SmsTempRepo::getTemp($where);
+        if (empty($tempInfo)){
+            self::throwBizError('没有模板信息');
+        }
 
         $templateParam = [
             'code' => $params,
             'temp_content' => $tempInfo['temp_content']
         ];
-
         return $sms->sendSms($phoneNumbers, $tempInfo['id'], $tempInfo['set_sign'], $templateParam, $outId = 0);
     }
-
-
-
 
     /**
      * @param $phoneNumbers
      * @param $temp_id
      * @param $signName
      * @param $templateParam
-     * @return DianJi\stdClass
+     * @return \Aliyun\Core\Http\HttpResponse|mixed|\stdClass|string
      */
-
     public static function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
     {
         // 取得配置的服务商Code
@@ -79,7 +75,6 @@ class SmsService
 
             return json_encode(['code'=>404,'msg'=>'不存在相关配置']);
         }
-
         return $sms->sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam);
     }
 }

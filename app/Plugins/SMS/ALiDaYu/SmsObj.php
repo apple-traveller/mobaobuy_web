@@ -1,10 +1,9 @@
 <?php
 
 ini_set("display_errors", "on");
+require_once dirname(__DIR__) . '/SmsInterface.php';
+//require_once dirname(__DIR__) . '/ALiDaYu/api_sdk/vendor/autoload.php';
 
-//require_once dirname(__DIR__) . '/api_sdk/vendor/autoload.php';
-
-include_once
 use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\DefaultAcsClient;
@@ -22,7 +21,7 @@ Config::load();
  * (只需要将AK替换成开通了云通信-短信服务产品功能的AK即可)
  * 备注:Demo工程编码采用UTF-8
  */
-class SmsObj implements \App\Plugins\SMS\SmsInterface
+class SmsObj implements SmsInterface
 {
 
     public $_config = null;
