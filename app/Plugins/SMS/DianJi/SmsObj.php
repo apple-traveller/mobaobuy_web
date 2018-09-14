@@ -1,5 +1,9 @@
 <?php
 
+
+ini_set("display_errors", "on");
+
+
 class SmsObj implements \App\Plugins\SMS\SmsInterface
 {
 

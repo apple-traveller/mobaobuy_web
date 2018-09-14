@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="{{url('/user/list')}}" class="s-back">返回</a>会员 - 操作记录</div>
+        <div class="title"><a href="/user/list?is_firm={{$is_firm}}" class="s-back">返回</a>会员 - 操作记录</div>
         <div class="content">
 
             <div class="flexilist">

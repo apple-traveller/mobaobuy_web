@@ -1,5 +1,5 @@
 <?php
-namespace App\Plugins\SMS;
+
 /**
  * Created by PhpStorm.
  * User: kery
@@ -7,8 +7,12 @@ namespace App\Plugins\SMS;
  * Time: 9:31
  */
 interface SmsInterface{
+
     public static function getConfigParams();
+
     public function setConfig($config);
+
     public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0);
+
     public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam);
 }

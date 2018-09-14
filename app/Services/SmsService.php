@@ -16,6 +16,7 @@ class SmsService
     use CommonService;
 
 
+
     public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
     {
         // 取得配置的服务商Code
@@ -55,6 +56,8 @@ class SmsService
     }
 
 
+
+
     /**
      * @param $phoneNumbers
      * @param $temp_id
@@ -62,6 +65,7 @@ class SmsService
      * @param $templateParam
      * @return DianJi\stdClass
      */
+
     public static function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
     {
         // 取得配置的服务商Code

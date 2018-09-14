@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-class UserRepo
+class UserAccountLogRepo
 {
     use CommonRepo;
 

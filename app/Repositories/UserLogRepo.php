@@ -42,6 +42,13 @@ class UserLogRepo
         return 'error';
     }
 
+    //获取日志总条数
+    public static function getLogCount($user_id)
+    {
+        $model = self::getBaseModel();
+        $count = $model::where('user_id',$user_id)->count();
+        return $count;
+    }
 
 
 

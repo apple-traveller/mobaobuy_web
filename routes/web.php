@@ -27,15 +27,28 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/user/detail', 'Admin\UserController@detail');//查看用户详情信息
     Route::get('/user/addForm', 'Admin\UserController@addForm');//用户添加（表单）
     Route::post('/user/add', 'Admin\UserController@add');//用户添加
+    Route::get('/user/verifyForm', 'Admin\UserController@verifyForm');//用户审核
+    Route::post('/user/verify', 'Admin\UserController@verify');//用户审核
     Route::get('/user/export', 'Admin\UserController@export');//用户导出excel
+    Route::get('/user/userRealForm', 'Admin\UserController@userRealForm');//实名认证
+    Route::post('/user/userReal', 'Admin\UserController@userReal');//实名认证审核
+    Route::get('/user/points', 'Admin\UserController@points');//查看积分
 
-    Route::any('/firm/list', 'Admin\FirmController@list');//企业列表
-    Route::get('/firm/firmuser', 'Admin\FirmController@firmuser');//企业列表
+
+
+/*    Route::any('/firm/list', 'Admin\FirmController@list');//企业列表
     Route::get('/firm/log', 'Admin\FirmController@log');//查看企业日志信息
-    Route::get('/firm/pointflow', 'Admin\FirmController@pointflow');//查看企业积分信息
     Route::get('/firm/detail', 'Admin\FirmController@detail');//查看企业详情信息
-    Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
+    Route::get('/firm/verifyForm', 'Admin\FirmController@verifyForm');//企业审核
+    Route::post('/firm/verify', 'Admin\FirmController@verify');//企业审核
     Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel
+    Route::get('/firm/userRealForm', 'Admin\FirmController@userRealForm');//实名认证
+    Route::post('/firm/userReal', 'Admin\FirmController@userReal');//实名认证审核
+
+    Route::get('/firm/firmuser', 'Admin\FirmController@firmuser');//企业列表
+    Route::get('/firm/pointflow', 'Admin\FirmController@pointflow');//查看企业积分信息
+    Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
+    Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel*/
 
     Route::any('/blacklist/list', 'Admin\FirmBlacklistController@list');//黑名单企业
     Route::get('/blacklist/addForm', 'Admin\FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -123,8 +136,8 @@ Route::post('/userRegister','Web\UserLoginController@userRegister');
 
 
 //公司注册
-//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //手机验证码
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');
@@ -135,6 +148,7 @@ Route::post('/webLogin','Web\UserLoginController@login');
 //登出
 Route::get('/logout','Web\UserLoginController@logout');
 
+Route::get('/tt','Web\UserController@shopAddressList');
 
 
 //用户信息完善

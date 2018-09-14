@@ -8,8 +8,9 @@
 
 namespace App\Repositories;
 
-class UserRealRepo
+class BrandRepo
 {
     use CommonRepo;
+
 
 }

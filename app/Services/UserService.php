@@ -1,26 +1,30 @@
 <?php
 namespace App\Services;
 use App\Repositories\RegionRepo;
-
+use App\Repositories\UserAddressRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
-
+use App\Repositories\UserRealRepo;
 class UserService
 {
     use CommonService;
 
-    //更新收获地
-    public static function updateShopAdderss(){
+    //
+    public static function shopAddressList($condi){
+        return UserAddressRepo::getList($order=[],$condi);
+    }
 
+    //更新收获地
+    public static function updateShopAdderss($id,$data){
+        return UserAddressRepo::modify($id,$data);
     }
 
     //新增收获地
-    public static function addShopAddress(){
-
+    public static function addShopAddress($data){
+        return UserAddressRepo::create($data);
     }
-
 
     //获取省
     public static function provinceInfo($region_type){
@@ -38,20 +42,22 @@ class UserService
     public static function getUsers($fields)
     {
         $info = UserRepo::getUsers($fields);
-        foreach($info as $key=>$item){
-            if($item['sex']==1){
-                $info[$key]['sex']="女";
-            }else{
-                $info[$key]['sex']="男";
-            }
-        }
         return $info;
     }
 
     //获取用户列表（分页）
-    public static function getUserList($pageSize,$user_name)
+    public static function getUserList($pager,$condition)
     {
-        $info = UserRepo::search($pageSize,$user_name);
+        //$info = UserRepo::search($pageSize,$user_name);
+        $info = UserRepo::getListBySearch($pager,$condition);
+        foreach($info['list'] as $k=>$v) {
+            $userreal = UserRealRepo::getInfoByFields(['user_id'=>$v['id']]);
+            if(!empty($userreal)){
+                $info['list'][$k]['userreal']=$userreal['review_status'];
+            }else{
+                $info['list'][$k]['userreal']=0;
+            }
+        }
         return $info;
     }
 
