@@ -12,10 +12,6 @@ class UserRepo
 {
     use CommonRepo;
 
-
-
-
-
     public static function getInfoByUserName($user_name){
         $model = self::getBaseModel();
         $info = $model::where('user_name', $user_name)->first();
@@ -24,9 +20,6 @@ class UserRepo
         }
         return [];
     }
-
-
-
 
     public static function create($data)
     {
@@ -39,7 +32,4 @@ class UserRepo
 
         return $info->toArray();
     }
-
-
-
 }

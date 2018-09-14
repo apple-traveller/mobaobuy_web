@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Repositories\RegionRepository;
+use App\Repositories\RegionRepo;
 use Illuminate\Http\Request;
 use App\Services\IndexService;
 use App\Http\Controllers\Controller;
+
 
 
 class IndexController extends Controller
@@ -17,7 +18,7 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(){
-
+        return $this->display('web.index');
     }
 
     //首页定位城市
