@@ -1,10 +1,10 @@
 <?php
-namespace App\Plugins\SMS\ALiDaYu;
 
 ini_set("display_errors", "on");
 
 //require_once dirname(__DIR__) . '/api_sdk/vendor/autoload.php';
 
+include_once
 use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\DefaultAcsClient;

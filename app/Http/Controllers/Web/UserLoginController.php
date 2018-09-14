@@ -55,11 +55,6 @@ class UserLoginController extends Controller
 
             try{
                 $result = UserLoginService::userRegister($data);
-                if($result == 'error'){
-                    return $this->error('注册失败');
-                }else{
-                    return $this->success('注册成功，正在进入系统...',  $this->redirectTo);
-                }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }

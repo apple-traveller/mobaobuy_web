@@ -136,8 +136,8 @@ Route::post('/userRegister','Web\UserLoginController@userRegister');
 
 
 //公司注册
-//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //手机验证码
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');

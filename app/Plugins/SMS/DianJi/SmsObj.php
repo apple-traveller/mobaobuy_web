@@ -1,5 +1,4 @@
 <?php
-namespace App\Plugins\SMS\DianJi;
 ini_set("display_errors", "on");
 
 

@@ -16,36 +16,7 @@ class SmsService
 {
     use CommonService;
 
-    protected $SMS;
 
-    /**
-     * 初始化 短信接口
-     * SmsService constructor.
-     */
-    public function __construct()
-    {
-        $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
-
-        if (!empty($smsSupplier))
-        {
-            switch ($smsSupplier['supplier_code'])
-            {
-                case 'ALiDaYu':
-
-                    $this->SMS = new ALiDaYu\SmsObj();
-                    break;
-
-                case 'DianJi':
-
-                    $this->SMS = new DianJi\SmsObj();
-                    break;
-
-                default: self::throwError('不存在该短信服务');
-                    return;
-            }
-        }
-
-    }
 
     /**
      * @param $smsSupplier
@@ -56,8 +27,16 @@ class SmsService
      * @param int $outId
      * @return DianJi\stdClass
      */
-    public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
+    public static function sendSms($phoneNumbers, $sms_type, $templateParam, $outId = 0)
     {
+        $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
+
+        if (!empty($smsSupplier))
+        {
+            $clazz = path();
+            new $clazz
+
+        }
 
         return $this->SMS->sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0);
     }

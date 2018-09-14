@@ -682,11 +682,12 @@ CREATE TABLE `sms_send_type` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type_code` varchar(20) NOT NULL COMMENT '类型编码',
   `type_name` varchar(50) NOT NULL COMMENT '类型名称',
+  ''
   PRIMARY KEY (`id`),
   KEY `type_code` (`type_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发送短信类型';
 INSERT INTO sms_send_type(type_code, type_name) VALUES
-('sms_signup', '会员注册'),
+('sms_signup', '会员注册', 'code, '),
 ('sms_signin', '会员登录'),
 ('sms_find_signin', '找回密码'),
 ('sms_seller_signup', '商家注册'),
