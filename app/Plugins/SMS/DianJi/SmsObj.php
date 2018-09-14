@@ -34,7 +34,7 @@ class SmsObj implements SmsInterface
     public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
     {
         if (!empty($templateParam['code'])){
-            $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content']);
+            $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$signName}】";
         } else {
             $content = $templateParam['temp_content'];
         }
