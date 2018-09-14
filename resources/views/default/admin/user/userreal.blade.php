@@ -97,9 +97,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
                                 <div class="label_value font14">
-                                    @if($info['review_status']==0)<div class='layui-btn layui-btn-sm layui-btn-radius'>待审核</div>
-                                    @elseif($info['review_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>已审核</div>
-                                    @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>审核不通过</div>
+                                    @if($info['review_status']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                    @elseif($info['review_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
+                                    @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
                                     @endif
                                 </div>
                             </div>
@@ -109,6 +109,7 @@
 
                             <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="id" value="{{$info['id']}}">
+                            <input type="hidden" name="is_firm" value="{{$is_firm}}">
                             <input type="hidden" name="review_status" value="{{$info['review_status']}}">
                             <div class="item">
                                 <div class="label">&nbsp;</div>

@@ -14,23 +14,22 @@ class FirmUserService
         $userPermi = [];
         $userPermi['firm_id'] = $firmId;
         $userPermi['user_id'] = $userId;
-        foreach($permi as $v){
-            if($v == 1){
+            if(in_array(1,$permi)){
                 $userPermi['can_po'] = 1;
             }
-            if($v == 2){
+            if(in_array(2,$permi)){
                 $userPermi['can_pay'] = 1;
             }
-            if($v == 3){
+            if(in_array(3,$permi)){
                 $userPermi['can_confirm'] = 1;
             }
-            if($v){
+            if(in_array(4,$permi)){
                 $userPermi['can_stock_in'] = 1;
             }
-            if($v){
+            if(in_array(5,$permi)){
                 $userPermi['can_stock_out'] = 1;
             }
-        }
+
         return FirmUserRepo::create($userPermi);
     }
 

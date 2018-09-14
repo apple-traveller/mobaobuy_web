@@ -1,15 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: USER
- * Date: 2017/4/18
- * Time: 14:56
+ * User: Administrator
+ * Date: 2018-09-14
+ * Time: 15:02
  */
-
 namespace App\Repositories;
 
-class UserRealRepo
+class SmsSendTypeRepo
 {
     use CommonRepo;
-
 }

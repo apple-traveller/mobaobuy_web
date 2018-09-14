@@ -96,6 +96,7 @@
 
                             <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="id" value="{{$info['id']}}">
+                            <input type="hidden" name="is_firm" value="{{$info['is_firm']}}">
                             <input type="hidden" name="is_validated" value="{{$info['is_validated']}}">
                             <div class="item">
                                 <div class="label">&nbsp;</div>

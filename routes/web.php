@@ -135,8 +135,8 @@ Route::post('/userLogin','Web\UserLoginController@login');
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');//注册验证码
 
 //公司注册
-//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
+Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //用户信息完善
 Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
