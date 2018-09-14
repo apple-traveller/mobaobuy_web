@@ -48,7 +48,6 @@ class SmsService
 
         $templateParam = [
             'code' => $params,
-//            're_code' =>
             'temp_content' => $tempInfo['temp_content']
         ];
 
