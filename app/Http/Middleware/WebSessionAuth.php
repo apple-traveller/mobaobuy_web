@@ -15,6 +15,7 @@ class WebSessionAuth
     public function handle($request, Closure $next, $guard = null)
     {
         //var_dump($request->getRequestUri());
+        session()->put('theme','default');
         if(empty(session('_web_info'))){
             //web统计
             $ip = $request->getClientIp();
@@ -39,7 +40,7 @@ class WebSessionAuth
 //                (access_time,ip_address,visit_times,browser,system,area,referer_domain,referer_path,access_url) values
 //                (?,?,?,?,?,?,?,?,?)',[$carbon,$ip,$visitTimes,$browser,$os,$city,$domain,$url,$uri]);
 //            }
-//            return redirect('/webLogin');
+            return redirect('/userLogin');
         }
 
 //        if(session('_web_info')['log_info'] == '个人会员登陆'){

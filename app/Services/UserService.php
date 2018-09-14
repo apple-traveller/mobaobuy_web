@@ -11,6 +11,59 @@ class UserService
 {
     use CommonService;
 
+    //修改密码
+    public static function userUpdatePwd($id,$data){
+       $userInfo = UserRepo::getInfo($id);
+       if(!Hash::check($data['password'],$userInfo['password'])){
+           self::throwBizError('用户密码不正确！');
+       }
+       $newData = [];
+       $newData['password'] = bcrypt($data['newPassword']);
+       return UserRepo::modify($id,$newData);
+    }
+
+    //忘记密码
+    public static function userForgotPwd($id,$data){
+        $newData = [];
+        $newData['password'] = bcrypt($data['newPassword']);
+        return UserRepo::modify($id,$newData);
+    }
+
+    //完善信息
+    public static function updateUserInfo($id,$data){
+        //real表 真实名字  性别  省份证正  反面
+        //user表  昵称 邮箱 用户头像
+        $real = [];
+        $real['real_name'] = $data['real_name'];
+        $real['sex'] = $data['sex'];
+
+
+        $frontCardImgPath = Storage::putFile('public', $data['front_of_id_card']);
+        $frontCardImgPath = explode('/',$frontCardImgPath);
+        $real['front_of_id_card'] = '/storage/'.$frontCardImgPath[1];
+
+        $reverseCardImgPath = Storage::putFile('public', $data['reverse_of_id_card']);
+        $reverseCardImgPath = explode('/',$reverseCardImgPath);
+        $real['reverse_of_id_card'] = '/storage/'.$reverseCardImgPath[1];
+
+        unset($data['real_name']);
+        unset($data['sex']);
+        unset($data['front_of_id_card']);
+        unset($data['reverse_of_id_card']);
+        try{
+            self::beginTransaction();
+            UserRealRepo::modify($id,$real);
+            UserRepo::modify($id,$data);
+            self::commit();
+        }catch (\Exception $e){
+            self::rollBack();
+            throw $e;
+        }
+    }
+
+
+
+
     //
     public static function shopAddressList($condi){
         return UserAddressRepo::getList($order=[],$condi);

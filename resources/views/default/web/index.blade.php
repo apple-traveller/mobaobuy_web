@@ -8,6 +8,14 @@
     <title>Document</title>
 </head>
 <body>
-6666666666666666666
+首页
+<ul>
+    <li><a href="/createFirmUser">会员绑定</a></li>
+    <li><a href="/updateUserInfo">实名认证</a></li>
+    <li><a href="/updatePwd">修改密码</a></li>
+    <li><a href="/forgotPwd">找回密码</a></li>
+    <li></li>
+    <li><a href="/logout">退出</a></li>
+</ul>
 </body>
 </html>

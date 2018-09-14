@@ -47,35 +47,33 @@ class UserLoginService
             unset($data['taxpayer_id']);
             unset($data['mobile_code']);
 
-            self::beginTransaction();
-            $user = UserRepo::create($data);
-            $userReal['user_id'] = $user['id'];
-            $real = UserRealRepo::create($userReal);
-            if($user && $real){
+            try{
+                self::beginTransaction();
+                $user = UserRepo::create($data);
+                $userReal['user_id'] = $user['id'];
+                $real = UserRealRepo::create($userReal);
                 self::commit();
-            }else{
+            }catch (\Exception $e){
                 self::rollBack();
-                return 'error';
+                throw $e;
             }
         }else{
             //个人
             $data['nick_name'] = rand(10000, 99999);
             unset($data['mobile_code']);
-            self::beginTransaction();
-            $user = UserRepo::create($data);
-            $userReal['user_id'] = $user['id'];
-            $userReal['add_time'] = Carbon::now();
-            $real = UserRealRepo::create($userReal);
-            if($user && $real){
+
+            try{
+                self::beginTransaction();
+                $user = UserRepo::create($data);
+                $userReal['user_id'] = $user['id'];
+                $userReal['add_time'] = Carbon::now();
+                $real = UserRealRepo::create($userReal);
                 self::commit();
-            }else{
+            }catch(\Exception $e){
                 self::rollBack();
-                return 'error';
+                throw $e;
             }
-
         }
-
-
     }
 
     //发送验证码
@@ -115,30 +113,32 @@ class UserLoginService
     public static function loginValidate($username, $psw, $other_params = [])
     {
         if(!preg_match("/^1[345789]{1}\\d{9}$/",$username)){
-           self::throwError('用户名或密码不正确!');
+           self::throwBizError('用户名或密码不正确!');
         }
         //查用户表
         $info = UserRepo::getInfoByUserName($username);
         if(empty($info)){
-            self::throwError('用户名或密码不正确！');
+            self::throwBizError('用户名或密码不正确！');
         }
 
         if(!Hash::check($psw, $info['password'])){
-            self::throwError('用户名或密码不正确！');
+            self::throwBizError('用户名或密码不正确！');
         }
 
         if($info['is_freeze']){
-            self::throwError('用户名或密码不正确！');
+            self::throwBizError('用户名或密码不正确！');
         }
         unset($info['password']);
 
-        //写入日志
         //上次登录ip,时间,登陆访问次数
-        $logsInfo = UserLogRepo::getLogsInfo($info['id']);
-        if($logsInfo != 'error'){
-            $logMes = ['last_ip'=>$logsInfo['ip_address'],'last_time'=>$logsInfo['log_time'],'visit_count'=>$logsInfo['count']];
-            UserRepo::modify($info['id'],$logMes);
-        }
+        $lastInfo = [
+            'last_ip' => $other_params['ip'],
+            'last_time' => Carbon::now(),
+            'visit_count' => $info['visit_count'] + 1
+        ];
+        UserRepo::modify($info['id'],$lastInfo);
+
+        //写入日志
         $userLog = array(
             'user_id'=>$info['id'],
             'ip_address'=>$other_params['ip'],
@@ -150,10 +150,7 @@ class UserLoginService
     }
 
 
-    //完善信息
-    public static function updateUserInfo($id,$data){
-        return UserRepo::modify($id,$data);
-    }
+
 
 
     //管理员后台

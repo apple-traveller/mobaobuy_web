@@ -20,24 +20,51 @@ class FirmUserController extends Controller
         return $this->display('web',compact('userInfo'));
     }
     public function createFirmUser(Request $request){
-        $rule = [
-            'firm_id'=>'required|numeric',
-            'user_id'=>'required|numeric',
-            'real_name'=>'required|max:30',
-            'can_po'=>'required|numeric',
-            'can_pay'=>'required|numeric ',
-            'can_confirm'=>'required|numeric',
-            'can_stock_in'=>'required|numeric',
-            'can_stock_out'=>'required|numeric'
-        ];
-        $data = $this->validate($request,$rule);
+        if($request->isMethod('get')){
+            return $this->display('web.firm.createFirmUser');
+        }else{
+//            $rule = [
+//                'firm_id'=>'required|numeric',
+//                'user_id'=>'required|numeric',
+//                'real_name'=>'required|max:30',
+//                'can_po'=>'required|numeric',
+//                'can_pay'=>'required|numeric ',
+//                'can_confirm'=>'required|numeric',
+//                'can_stock_in'=>'required|numeric',
+//                'can_stock_out'=>'required|numeric'
+//            ];
+
+         $userName = $request->input('user_name');
+            try{
+                $userInfo = FirmUserService::search($userName);
+                return json_encode(array('code'=>1,'info'=>$userInfo));
+//                response()->json(['code' => 1, 'info' => $userInfo]);
+            }catch (\Exception $e){
+                return json_encode(array('code'=>0,'msg'=>'error'));
+            }
+
+        }
+    }
+
+    //绑定企业会员和权限
+    public function addFirmUser(Request $request){
+        $firmId = session('_web_info')['id'];
+        $userId = $request->input('user_id');
+        if(!$firmId || !$userId){
+            return json_encode(array('code'=>0,'msg'=>'企业和用户id为空'));
+        }
+        $permi = $request->input('permi');
+        //$permi数组1能采购 2能付款 3能收货 4能其它入库 5能库存出库
+
         try{
-            FirmUserService::create($data);
+            $firmInfo = FirmUserService::create($firmId,$userId,$permi);
+            return json_encode(array('code'=>1,'msg'=>$firmInfo));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
+    //更新权限信息
     public function updateFirmUser(Request $request){
         $rule = [
             'firm_id'=>'required|numeric',
