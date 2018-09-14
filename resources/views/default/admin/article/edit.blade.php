@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/article/list" class="s-back">返回</a>文章 - 编辑文章</div>
+        <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 编辑文章</div>
         <div class="content">
             <div class="tabs_info">
                 <ul>
@@ -13,7 +13,7 @@
 
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/article/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+                    <form action="/admin/article/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;文章标题：</div>
@@ -96,7 +96,7 @@
                                 <div class="form_prompt"></div>
                             </div>
                         </div>
-
+                        <input type="hidden" name="currpage" value="{{$currpage}}">
                         <div class="info_btn info_btn_bf100 button-info-item0" id="info_btn_bf100">
                             <div class="label">&nbsp;</div>
                             <div class="value">

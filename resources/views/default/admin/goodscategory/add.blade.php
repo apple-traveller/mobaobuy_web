@@ -2,13 +2,13 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/goodscategory/list" class="s-back">返回</a>商品 - 添加分类</div>
+        <div class="title"><a href="/admin/goodscategory/list" class="s-back">返回</a>商品 - 添加分类</div>
         <div class="content">
 
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form action="/goodscategory/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
+                        <form action="/admin/goodscategory/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
                             <div class="switch_info">
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;分类名称：</div>
@@ -185,7 +185,7 @@
             //文件上传
             var uploadInst = upload.render({
                 elem: '#avatar' //绑定元素
-                ,url: "{{url('/goodscategory/upload')}}" //上传接口
+                ,url: "{{url('/admin/goodscategory/upload')}}" //上传接口
                 ,accept:'file'
                 ,data:{'_token':tag_token}
                 ,done: function(res){

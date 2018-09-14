@@ -7,15 +7,15 @@ class ArticleCatService
     //获取列表数据
     public static function getList($parent_id)
     {
-        return ArticleCatRepo::getList($parent_id);
+        return ArticleCatRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
     }
 
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = ArticleCatRepo::exist($cat_name);
+        $info = ArticleCatRepo::getInfoByFields(['cat_name'=>$cat_name]);
         if(!empty($info)){
-            self::throwError('分类名称已经存在！');
+            self::throwBizError('分类名称已经存在！');
         }
         return $info;
     }
@@ -42,13 +42,24 @@ class ArticleCatService
     //删除
     public static function delete($ids)
     {
-        return ArticleCatRepo::delete($ids);
+        try{
+            foreach($ids as $k=>$v){
+                $info = ArticleCatRepo::delete($v);
+                if(!$info){
+                    return false;
+                }
+            }
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
+        return true;
     }
 
     //获取所有的分类
     public static function getCates()
     {
-        return ArticleCatRepo::getCates();
+        return ArticleCatRepo::getList();
     }
 
     //分类树,获取所有分类
@@ -75,7 +86,6 @@ class ArticleCatService
                 self::getChilds($cates,$v['id']);
             }
         }
-
         return $ids;
     }
 

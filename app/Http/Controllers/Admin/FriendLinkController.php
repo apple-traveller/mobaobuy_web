@@ -9,13 +9,20 @@ use App\Services\FriendLinkService;
 class FriendLinkController extends Controller
 {
     //列表页
-    public  function list()
+    public  function list(Request $request)
     {
         //查询所有的数据(分页)
         $pageSize =config('website.pageSize');
-        $links = FriendLinkService::getLinks($pageSize);
+        $currpage = $request->input('currpage',1);
+        $pageSize = 3;
+        $links = FriendLinkService::getLinks(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
         //dd($links);
-        return $this->display('admin.friendlink.list',['links'=>$links]);
+        return $this->display('admin.friendlink.list',[
+            'links'=>$links['list'],
+            'pageSize'=>$pageSize,
+            'count'=>$links['total'],
+            'currpage'=>$currpage
+        ]);
     }
 
     //添加页
@@ -45,6 +52,10 @@ class FriendLinkController extends Controller
         if(empty($data['link_url'])){
             $errorMsg[] = "链接地址不能为空";
         }
+        $regex = '/\b(([\w-]+:\/\/?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/)))/';
+        if(!preg_match($regex,$data['link_url'])){
+            $errorMsg[] = "请输入正确的url";
+        }
         if(empty($data['link_logo'])){
             $errorMsg[] = "链接logo不能为空";
         }
@@ -65,7 +76,7 @@ class FriendLinkController extends Controller
                     return $this->error('保存失败');
                 }
             }
-            return $this->success('保存成功！',url("/link/list"));
+            return $this->success('保存成功！',url("/admin/link/list"));
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -78,7 +89,7 @@ class FriendLinkController extends Controller
         try{
             $flag = FriendLinkService::delete($id);
             if($flag){
-                return $this->success('删除成功',url('/link/list'));
+                return $this->success('删除成功',url('/admin/link/list'));
             }else{
                 return $this->error('删除失败');
             }
@@ -97,7 +108,7 @@ class FriendLinkController extends Controller
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
-            return $this->result("/link/list",200,'更新成功');
+            return $this->result("/admin/link/list",200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }

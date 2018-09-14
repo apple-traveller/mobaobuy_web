@@ -8,11 +8,11 @@ class RegionService
     //获取地区列表
     public static function getRegionList($parent_id)
     {
-        $info = RegionRepo::getRegionList($parent_id);
+        $info = RegionRepo::getList([],['parent_id'=>$parent_id]);
         return $info;
     }
 
-    public static function getInfo($id)
+    public static function getInfoByParentId($id)
     {
         $info = RegionRepo::getInfo($id);
         return $info;
@@ -46,8 +46,6 @@ class RegionService
         }else{
             return $info['region_type'];
         }
-
-
     }
 
     //添加

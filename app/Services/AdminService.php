@@ -7,7 +7,7 @@ class AdminService
     use CommonService;
     public static function loginValidate($username, $psw)
     {
-        $info = AdminRepo::getInfoByLoginName($username);
+        $info = AdminRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
             self::throwError('用户名或密码不正确！');
         }

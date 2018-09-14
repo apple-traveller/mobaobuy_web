@@ -15,22 +15,30 @@ class ArticleController extends Controller
     {
         $cat_id = $request->input('cat_id',0);
         $title = $request->input('title',"");
-        $pageSize =config('website.pageSize');//分页
+        $currpage = $request->input('currpage',1);
+        $condition = [];
+        if(!empty($cat_id)){
+            $condition['cat_id']=$cat_id;
+        }
+        if(!empty($title)){
+            $condition['title']="%".$title."%";
+        }
+        $pageSize =5;//分页
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);
         //查询所有文章
-        $articles = ArticleService::getList($cat_id,$pageSize,$title);
-        //查询文章总条数
-        $count = ArticleService::getCount($cat_id,$title);
+        $articles = ArticleService::getArticleLists(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],$condition);
         //dd($articles);
         return $this->display('admin.article.list',
             [
                 'cateTrees'=>$cateTrees,
-                'articles'=>$articles,
-                'count'=>$count,
+                'articles'=>$articles['list'],
+                'count'=>$articles['total'],
                 'title'=>$title,
-                'cat_id'=>$cat_id
+                'cat_id'=>$cat_id,
+                'pageSize'=>$pageSize,
+                'currpage'=>$currpage
             ]);
     }
 
@@ -50,6 +58,7 @@ class ArticleController extends Controller
     public function editForm(Request $request)
     {
         $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);
@@ -58,7 +67,8 @@ class ArticleController extends Controller
         return $this->display('admin.article.edit',
             [
                 'cateTrees'=>$cateTrees,
-                'article'=>$article
+                'article'=>$article,
+                'currpage'=>$currpage
             ]);
     }
 
@@ -67,7 +77,9 @@ class ArticleController extends Controller
     {
         $data = $request->all();
         $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
         unset($data['_token']);
+        unset($data['currpage']);
         $errorMsg = [];
         //dd($data);
         if(empty($data['title'])){
@@ -96,8 +108,6 @@ class ArticleController extends Controller
             if(empty($id)){
                 ArticleService::uniqueValidate($data['title']);//唯一性验证
                 $data['add_time']=Carbon::now();
-                //$data['content']=htmlspecialchars($data['content']);
-                //dd($data);
                 $info = ArticleService::create($data);
             }else{
                 $info = ArticleService::modify($id,$data);
@@ -105,15 +115,17 @@ class ArticleController extends Controller
             if(!$info){
                 return $this->error('保存失败');
             }
-            return $this->success('保存成功！',url("/article/list"));
+            return $this->success('保存成功！',url("/admin/article/list")."?currpage=".$currpage);
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
+    //查看
     public function detail(Request $request)
     {
         $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);
@@ -122,7 +134,8 @@ class ArticleController extends Controller
         return $this->display('admin.article.detail',
             [
                 'cateTrees'=>$cateTrees,
-                'article'=>$article
+                'article'=>$article,
+                'currpage'=>$currpage
             ]);
     }
 
@@ -136,7 +149,7 @@ class ArticleController extends Controller
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
-            return $this->result("/article/list",200,'更新成功');
+            return $this->result("/admin/article/list",200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
@@ -150,7 +163,7 @@ class ArticleController extends Controller
         try{
             $flag = ArticleService::delete($id);
             if($flag){
-                return $this->success('删除成功',url('/article/list'));
+                return $this->success('删除成功',url('/admin/article/list'));
             }else{
                 return $this->error('删除失败');
             }

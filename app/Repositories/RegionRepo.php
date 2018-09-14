@@ -6,17 +6,6 @@ class RegionRepo
 {
     use CommonRepo;
 
-    //获取地区列表
-    public static function getRegionList($parent_id)
-    {
-        $model = self::getBaseModel();
-        $info = $model::where('parent_id',$parent_id)->get();
-        if($info){
-            return $info->toArray();
-        }
-        return [];
-    }
-
     //获取当前页面所属地区名字
     public static function getInfo($id)
     {
@@ -39,7 +28,7 @@ class RegionRepo
         return [];
     }
 
-    //删除
+    //批量删除
     public static function delete($data)
     {
         $model = self::getBaseModel();
@@ -61,8 +50,6 @@ class RegionRepo
         }
         return false;
     }
-
-
 
     //获取省
     public static function getProvince($region_type){

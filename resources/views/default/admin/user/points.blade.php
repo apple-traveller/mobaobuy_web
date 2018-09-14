@@ -2,7 +2,7 @@
 @section('iframe')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
-    <div class="title"><a href="/user/list?is_firm={{$is_firm}}" class="s-back">返回</a>会员 - 积分日志列表</div>
+    <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回</a>会员 - 积分日志列表</div>
     <div class="content">
 
         <div class="flexilist">

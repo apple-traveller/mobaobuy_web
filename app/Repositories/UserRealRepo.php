@@ -12,7 +12,4 @@ class UserRealRepo
 {
     use CommonRepo;
 
-
-
-
 }

@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/blacklist/list" class="s-back">返回</a>企业黑名单- 添加黑名单</div>
+        <div class="title"><a href="/admin/blacklist/list" class="s-back">返回</a>企业黑名单- 添加黑名单</div>
         <div class="content">
             <div class="tabs_info">
                 <ul>
@@ -13,7 +13,7 @@
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form method="post" action="/blacklist/add" name="theForm" id="user_form" novalidate="novalidate">
+                        <form method="post" action="/admin/blacklist/add" name="theForm" id="user_form" novalidate="novalidate">
                             <div class="switch_info">
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;企业名称：</div>

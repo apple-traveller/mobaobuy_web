@@ -5,9 +5,9 @@ class NavService
 {
     use CommonService;
     //列表(分页)
-    public static function getList($pageSize)
+    public static function getNavs($pager,$condition)
     {
-        return NavRepo::getList($pageSize);
+        return NavRepo::getListBySearch($pager,$condition);
     }
 
     public static function getInfo($id)
@@ -15,18 +15,12 @@ class NavService
         return NavRepo::getInfo($id);
     }
 
-    //获取总条数
-    public static function getCount()
-    {
-        return NavRepo::getCount();
-    }
-
     //唯一性验证
     public static function uniqueValidate($name)
     {
-        $flag = NavRepo::exist($name);
+        $flag = NavRepo::getInfoByFields(['name'=>$name]);
         if($flag){
-            self::throwError('该导航名称已经存在');
+            self::throwBizError('该导航名称已经存在');
         }
         return $flag;
     }

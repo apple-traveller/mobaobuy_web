@@ -12,22 +12,4 @@ class AdminLogRepo
 {
     use CommonRepo;
 
-    public static function create($data)
-    {
-        $clazz = self::getBaseModel();
-        $info = new $clazz();
-        foreach ($data as $k => $v) {
-            $info->$k =$v;
-        }
-        $info->save();
-
-        return $info->toArray();
-    }
-
-
-
-
-
-
-
 }

@@ -34,7 +34,7 @@ class SysConfigController extends Controller
         try{
             $flag = SysConfigService::modify($data);
             if($flag){
-                return $this->success('保存成功',url('/sysconfig/index')."?parent_id=".$parent_id);
+                return $this->success('保存成功',url('/admin/sysconfig/index')."?parent_id=".$parent_id);
             }else{
                 return $this->success('保存失败');
             }

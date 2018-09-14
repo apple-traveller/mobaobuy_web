@@ -13,11 +13,20 @@ class FirmBlacklistController extends Controller
     public function list(Request $request)
     {
         $firm_name = $request->input('firm_name','');
-        $pageSize =config('website.pageSize');
-        $blacklist = FirmBlacklistService::getList($pageSize,$firm_name);
-        $count = FirmBlacklistService::getCount($firm_name);
-        //dd($blacklist);
-        return $this->display('admin.blacklist.list',['blacklist'=>$blacklist,'firm_name'=>$firm_name,'count'=>$count]);
+        $currpage = $request->input("currpage",1);
+        $pageSize = 4;
+        $condition = [];
+        if(!empty($firm_name)){
+            $condition['firm_name'] = "%".$firm_name."%";
+        }
+        $blacklist = FirmBlacklistService::getBlackList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        return $this->display('admin.blacklist.list',[
+            'blacklist'=>$blacklist['list'],
+            'firm_name'=>$firm_name,
+            'count'=>$blacklist['total'],
+            'pageSize'=>$pageSize,
+            'currpage'=>$currpage,
+        ]);
     }
 
     //添加黑名单
@@ -58,7 +67,7 @@ class FirmBlacklistController extends Controller
             if(!$flag){
                 return $this->error('添加失败');
             }else{
-                return $this->success('添加成功',url('/blacklist/list'));
+                return $this->success('添加成功',url('/admin/blacklist/list'));
             }
         }catch(\Exception $e){
             return $this->error($e->getMessage());
@@ -70,27 +79,36 @@ class FirmBlacklistController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input("id");
-        $flag = FirmBlacklistService::delete($id);
+        try{
+            $flag = FirmBlacklistService::delete($id);
 
-        //dd($flag);
-        if($flag){
-            return $this->success("删除成功",url('/blacklist/list'));
-        }else{
-           return  $this->error("删除失败");
+            //dd($flag);
+            if($flag){
+                return $this->success("删除成功",url('/admin/blacklist/list'));
+            }else{
+                return  $this->error("删除失败");
+            }
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
         }
+
     }
 
     //批量删除
     public function deleteAll(Request $request)
     {
         $ids = $request->input('checkboxes');
-        $flag = FirmBlacklistService::delete($ids);
-        //dd($flag);
-        if($flag){
-            return $this->success("批量删除成功",url('/blacklist/list'));
-        }else{
-            return  $this->error("批量删除失败");
+        try{
+            $flag = FirmBlacklistService::delete($ids);
+            if($flag){
+                return $this->success("批量删除成功",url('/admin/blacklist/list'));
+            }else{
+                return  $this->error("批量删除失败");
+            }
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
         }
+
     }
 
     //导出黑名单

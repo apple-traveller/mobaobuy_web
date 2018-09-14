@@ -3,6 +3,20 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
     <div class="title">会员 - 会员列表</div>
+    <div class="content visible">
+
+        <div class="explanation" id="explanation">
+            <div class="ex_tit">
+                <i class="sc_icon"></i>
+                <h4>操作提示</h4>
+                <span id="explanationZoom" title="收起提示"></span>
+            </div>
+            <ul>
+                <li>已经审核通过的会员，审核按钮不再显示。</li>
+            </ul>
+        </div>
+
+    </div>
     <div class="content">
 
         <div class="flexilist">
@@ -17,10 +31,10 @@
                 </div>
 
                 <div class="search">
-                    <form action="/user/list" name="searchForm" >
+                    <form action="/admin/user/list" name="searchForm" >
                         <div class="input">
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                            <input id="_token" type="hidden" name="is_firm" value="{{$is_firm}}"/>
+                            <input  type="hidden" name="is_firm" value="{{$is_firm}}"/>
                             <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                         </div>
@@ -30,7 +44,7 @@
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
-                    <div class="list-div" id="listDiv">
+                    <div class="list-div" id="listDiv" data-id="{{$is_firm}}">
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
@@ -64,7 +78,7 @@
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        <a href="/user/points?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
+                                        <a href="/admin/user/points?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
@@ -81,10 +95,10 @@
 
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/user/detail')}}?id={{$user['id']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                        <a href="{{url('/user/log')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                        <a href="{{url('/user/verifyForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
-                                        <a href="{{url('/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a  href="{{url('/admin/user/log')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                        <a @if($user['is_validated']==1) style="display:none;" @endif href="{{url('/admin/user/verifyForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
                                     </div>
                                 </td>
                             </tr>
@@ -124,8 +138,9 @@
 </div>
 
     <script>
-        paginate(1);
-        function paginate(curr){
+
+        paginate();
+        function paginate(){
             layui.use(['laypage'], function() {
                 var laypage = layui.laypage;
                 laypage.render({
@@ -136,7 +151,8 @@
                     , jump: function (obj, first) {
                         if (!first) {
                             var user_name = $(".user_name").val();
-                            window.location.href="/user/list?curr="+obj.curr+"&user_name="+user_name;
+
+                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name="+user_name+"&is_firm="+"{{$is_firm}}";
                         }
                     }
                 });
@@ -155,7 +171,7 @@
 
                 layui.use(['layer'], function() {
                     layer = layui.layer;
-                    $.post("{{url('/user/modify')}}",{"id":user_id,"is_freeze":is_freeze,"_token":$("#_token").val()},function(res){
+                    $.post("{{url('/admin/user/modify')}}",{"id":user_id,"is_freeze":is_freeze,"_token":$("#_token").val()},function(res){
                         if(res.code==1){
                             layer.msg(res.msg, {icon: 1});
                             input.val(res.data);

@@ -1,31 +1,30 @@
 <?php
 namespace App\Services;
 use App\Repositories\ArticleRepo;
+use App\Repositories\ArticleCatRepo;
 class ArticleService
 {
     use CommonService;
     //分页获取数据
-    public static function getList($cat_id,$pageSize,$title)
+    public static function getArticleLists($pager,$condition)
     {
-        return ArticleRepo::getList($cat_id,$pageSize,$title);
-    }
-
-    //验证唯一性
-    public static function uniqueValidate($cat_name)
-    {
-        $info = ArticleRepo::exist($cat_name);
-        if(!empty($info)){
-            self::throwError('文章标题已经存在！');
+        $info = ArticleRepo::getListBySearch($pager,$condition);
+        foreach($info['list'] as $k=>$v){
+            $cate = ArticleCatRepo::getInfoByFields(['id'=>$v['cat_id']]);
+            $info['list'][$k]['cat_name']=$cate['cat_name'];
         }
         return $info;
     }
 
-    //获取总条数
-    public static function getCount($cat_id,$title)
+    //验证唯一性
+    public static function uniqueValidate($title)
     {
-        return ArticleRepo::getCount($cat_id,$title);
+        $info = ArticleRepo::getInfoByFields(['title'=>$title]);
+        if(!empty($info)){
+            self::throwBizError('文章标题已经存在！');
+        }
+        return $info;
     }
-
 
     //获取一条数据
     public static function getInfo($id)

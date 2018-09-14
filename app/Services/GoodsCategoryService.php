@@ -18,19 +18,25 @@ class GoodsCategoryService
         return GoodsCategoryRepo::modify($id,$data);
     }
 
-
-
     //根据id获取一条数据
     public static function getInfo($id)
     {
         $res = GoodsCategoryRepo::getInfo($id);
         return $res;
     }
+
+    //根据parent_id获取数据
+    public static function getInfoByParentId($parent_id)
+    {
+        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
+        return $res;
+    }
+
     //获取列表
     public static function getList($parent_id)
     {
-        $res = GoodsCategoryRepo::search([],['parent_id'=>$parent_id,'order'=>'asc']);
-        return $res['list'];
+        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
+        return $res;
     }
 
     //获取图标库文件所有文件
@@ -54,9 +60,9 @@ class GoodsCategoryService
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = GoodsCategoryRepo::exist($cat_name);
+        $info = GoodsCategoryRepo::getInfoByFields(['cat_name'=>$cat_name]);
         if(!empty($info)){
-            self::throwError('分类名称已经存在！');
+            self::throwBizError('分类名称已经存在！');
         }
         return $info;
     }
@@ -76,7 +82,7 @@ class GoodsCategoryService
     //获取所有分类
     public static function getCates()
     {
-        $res = GoodsCategoryRepo::search([],[]);
+        $res = GoodsCategoryRepo::getListBySearch([],[]);
         return $res['list'];
     }
 
