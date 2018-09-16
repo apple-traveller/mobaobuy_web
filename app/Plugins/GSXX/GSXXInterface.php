@@ -1,5 +1,4 @@
 <?php
-namespace App\Plugins\SMS;
 /**
  * Created by PhpStorm.
  * User: kery
