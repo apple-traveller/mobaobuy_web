@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/user/list?is_firm={{$is_firm}}" class="s-back">返回</a>会员 - 操作记录</div>
+        <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回</a>会员 - 操作记录</div>
         <div class="content">
 
             <div class="flexilist">
@@ -34,10 +34,10 @@
                                     @foreach($logs as $log)
                                     <tr class="">
 
-                                        <td><div class="tDiv">{{$log->id}}</div></td>
-                                        <td><div class="tDiv">{{$log->log_time}}</div></td>
-                                        <td><div class="tDiv">{{$log->log_info}}</div></td>
-                                        <td><div class="tDiv">{{$log->ip_address}}</div></td>
+                                        <td><div class="tDiv">{{$log['id']}}</div></td>
+                                        <td><div class="tDiv">{{$log['log_time']}}</div></td>
+                                        <td><div class="tDiv">{{$log['log_info']}}</div></td>
+                                        <td><div class="tDiv">{{$log['ip_address']}}</div></td>
 
                                     </tr>
                                     @endforeach
@@ -52,7 +52,7 @@
                                                 <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
 
-                                                    {{$logs->appends(['id' => $id])->links()}}
+                                                <ul id="page"></ul>
 
                                                 <style>
                                                     .pagination li{
@@ -74,4 +74,23 @@
             </div>
         </div>
     </div>
+    <script>
+        paginate();
+        function paginate(){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$logCount}}" //数据总数，从服务端得到
+                    , limit: "{{$pageSize}}"   //每页显示的条数
+                    , curr: "{{$currpage}}"  //当前页
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            window.location.href="/admin/user/log?currpage="+obj.curr;
+                        }
+                    }
+                });
+            });
+        }
+    </script>
 @stop

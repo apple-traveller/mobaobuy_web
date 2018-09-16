@@ -82,7 +82,7 @@ class ArticleCatController extends Controller
             if(!$info){
                 return $this->error('保存失败');
             }
-            return $this->success('保存成功！',url("/articlecat/list")."?parent_id=".$data['parent_id']);
+            return $this->success('保存成功！',url("/admin/articlecat/list")."?parent_id=".$data['parent_id']);
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -98,7 +98,7 @@ class ArticleCatController extends Controller
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
-            return $this->result("/articlecat/list?parent_id=".$info['parent_id'],200,'更新成功');
+            return $this->result("/admin/articlecat/list?parent_id=".$info['parent_id'],200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
@@ -118,7 +118,7 @@ class ArticleCatController extends Controller
         try{
             $flag = ArticleCatService::delete($ids);
             if($flag){
-                return $this->success('删除成功',url('/articlecat/list'));
+                return $this->success('删除成功',url('/admin/articlecat/list'));
             }else{
                 return $this->error('删除失败');
             }

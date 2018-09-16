@@ -53,7 +53,8 @@ class LoginController extends Controller
                 'admin_id'=>1,
                 'real_name'=>$user_info['real_name'],
                 'log_time'=>Carbon::now(),
-                'ip_address'=>$request->getClientIp()
+                'ip_address'=>$request->getClientIp(),
+                'log_info'=>"登录"
             ];
 
             $flag = AdminLogService::create($adminLog);
@@ -61,10 +62,9 @@ class LoginController extends Controller
             if(!$flag){
                 return $this->result('','0',"登录失败");
             }
-            session()->put('_admin_info', $user_info);
+            session()->put('_admin_info', $user_info['id']);
             session()->put('theme', 'default');
             return $this->result('',1,'登录成功');
-
         }catch(\Exception $e){
             return $this->result('','0',$e->getMessage());
         }

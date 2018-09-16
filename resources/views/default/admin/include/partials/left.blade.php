@@ -17,16 +17,16 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_01_system"></i><h4>设置</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/sysconfig/index" data-param="" target="workspace">商店设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/link/list" data-param="" target="workspace">友情链接</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/seo/index" data-param="" target="workspace">SEO设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/nav/list" data-param="" target="workspace">自定义导航栏</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/sysconfig/index" data-param="" target="workspace">商店设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/link/list" data-param="" target="workspace">友情链接</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/seo/index" data-param="" target="workspace">SEO设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/nav/list" data-param="" target="workspace">自定义导航栏</a></li>
                     </ul>
                 </div>
             </div>
             <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_05_banner"></i><h4>广告管理</h4></a></div>
-                <div class="sub-menu" style="top: 0px; display: none;">
+                <div class="sub-menu" style="top:0px; display:none;">
                     <ul>
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="ads.php?act=list" data-param="menuplatform|ad_list" target="workspace">广告列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="ad_position.php?act=list" data-param="menuplatform|ad_position" target="workspace">广告位置</a></li>
@@ -37,10 +37,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_07_content"></i><h4>文章管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/articlecat/list" data-param="menuplatform|02_articlecat_list" target="workspace">文章分类</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/article/list" data-param="menuplatform|03_article_list" target="workspace">文章列表</a></li>
-                        <li><s></s><a href="visualnews.php?act=visual" target="_blank">CMS可视化</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="article_auto.php?act=list" data-param="menuplatform|article_auto" target="workspace">文章自动发布</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/articlecat/list" data-param="menuplatform|02_articlecat_list" target="workspace">文章分类</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/article/list" data-param="menuplatform|03_article_list" target="workspace">文章列表</a></li>
                     </ul>
                 </div>
             </div>
@@ -48,11 +46,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_08_members"></i><h4>会员</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="{{url('/user/list')}}" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/user/list?is_firm=1" data-param="menuplatform|06_list_integrate" target="workspace">企业列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/blacklist/list" data-param="menuplatform|08_unreply_msg" target="workspace">企业黑名单</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
-
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/user/list" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/user/list?is_firm=1" data-param="menuplatform|06_list_integrate" target="workspace">企业列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/blacklist/list" data-param="menuplatform|08_unreply_msg" target="workspace">企业黑名单</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
                     </ul>
                 </div>
             </div>
@@ -126,7 +123,7 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/home" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/brand/list" data-param="menushopping|05_comment_manage" target="workspace">品牌列表</a></li>
                     </ul>
                 </div>

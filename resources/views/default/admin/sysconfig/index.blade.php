@@ -6,7 +6,7 @@
             <div class="tabs_info">
                 <ul>
                     @foreach($topConfigs as $vo)
-                    <li @if($parent_id==$vo['id'])class="curr" @endif><a  href="/sysconfig/index?parent_id={{$vo['id']}}">{{$vo['name']}}</a></li>
+                    <li @if($parent_id==$vo['id'])class="curr" @endif><a  href="/admin/sysconfig/index?parent_id={{$vo['id']}}">{{$vo['name']}}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -23,7 +23,7 @@
             </div>
             <div class="flexilist visible">
                 <div class="mian-info visible">
-                    <form enctype="multipart/form-data" name="theForm" action="/sysconfig/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">
+                    <form enctype="multipart/form-data" name="theForm" action="/admin/sysconfig/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">
                         <div class="switch_info shopConfig_switch visible">
 
                             @foreach($childConfids as $vo)
@@ -32,33 +32,39 @@
                             <div class="item shop_name" data-val="101">
                                 <div class="label"><span class="require-field">*</span>{{$vo['name']}}：</div>
                                 <div class="label_value">
-
                                     @if($vo['type']=='text')
                                         <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text shop_name" value="{{$vo['value']}}" autocomplete="off" type="text">
                                         <div class="form_prompt"></div>
                                         <div class="notic">{{$vo['config_desc']}}</div>
                                     @elseif($vo['type']=='select')
-                                        @if($vo['code']=='template')
+                                        @if($vo['code']=='template'||$vo['code']=='admin_template'||$vo['code']=='shop_template')
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option value="default">default</option>
-                                                <option value="默认">默认</option>
+                                                <option @if($vo['value']=='default') selected @endif value="default">默认</option>
+
                                             </select>
                                         @elseif($vo['code']=='upload_size_limit')
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option value="512k">512k</option>
-                                                <option value="1024">1M</option>
-                                                <option value="2048">2M</option>
-                                                <option value="4096">4M</option>
+                                                <option @if($vo['value']==512) selected @endif value="512k">512k</option>
+                                                <option @if($vo['value']==1024) selected @endif value="1024">1M</option>
+                                                <option @if($vo['value']==2048) selected @endif value="2048">2M</option>
+                                                <option @if($vo['value']==4096) selected @endif value="4096">4M</option>
                                             </select>
                                         @elseif($vo['code']=='visit_stats')
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option value="0">关闭</option>
-                                                <option value="1">开启</option>
+                                                <option @if($vo['value']==0) selected @endif value="0">关闭</option>
+                                                <option @if($vo['value']==1) selected @endif value="1">开启</option>
+                                            </select>
+                                        @elseif($vo['code']=='stock_dec_time')
+                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
+                                                <option @if($vo['value']==1) selected @endif value="1">加入购物车</option>
+                                                <option @if($vo['value']==2) selected @endif value="2">下单时</option>
+                                                <option @if($vo['value']==3) selected @endif value="3">付款时</option>
+                                                <option @if($vo['value']==4) selected @endif value="4">发货时</option>
                                             </select>
                                         @else
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option value="0">否</option>
-                                                <option value="1">是</option>
+                                                <option @if($vo['value']==0) selected @endif value="0">否</option>
+                                                <option @if($vo['value']==1) selected @endif value="1">是</option>
                                             </select>
                                         @endif
                                     @elseif($vo['type']=='textarea')

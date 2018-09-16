@@ -8,15 +8,12 @@
         <div class="flexilist">
             <div class="common-head">
                 <div class="fl">
-                    <a href="/nav/addForm"><div class="fbutton"><div class="add" title="添加新链接"><span><i class="icon icon-plus"></i>添加新链接</span></div></div></a>
+                    <a href="/admin/nav/addForm"><div class="fbutton"><div class="add" title="添加新链接"><span><i class="icon icon-plus"></i>添加新链接</span></div></div></a>
                 </div>
                 <div class="refresh">
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                     <div class="refresh_span">刷新 - 共{{$count}}条记录</div>
                 </div>
-
-
-
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
@@ -64,7 +61,7 @@
 
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/nav/editForm?id={{$nav['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                        <a href="/admin/nav/editForm?id={{$nav['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         <a href="javascript:void(0);" onclick="remove({{$nav['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -80,7 +77,7 @@
                                             <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
 
-                                            {{$navs->links()}}
+                                            <ul id="page"></ul>
 
                                             <style>
                                                 .pagination li{
@@ -105,7 +102,23 @@
 </div>
 
     <script>
-
+        paginate();
+        function paginate(){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$count}}" //数据总数，从服务端得到
+                    , limit: "{{$pageSize}}"   //每页显示的条数
+                    , curr: "{{$currpage}}"  //当前页
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            window.location.href="/admin/nav/list?currpage="+obj.curr;
+                        }
+                    }
+                });
+            });
+        }
 
         $('.j_click1').click(function(){
                 var is_show ;
@@ -119,7 +132,7 @@
 
                 layui.use(['layer'], function() {
                     layer = layui.layer;
-                    $.post("{{url('/nav/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
+                    $.post("{{url('/admin/nav/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
                         if(res.code==200){
                             layer.msg(res.msg, {icon: 1});
                             input.val(res.data);
@@ -144,7 +157,7 @@
 
             layui.use(['layer'], function() {
                 layer = layui.layer;
-                $.post("{{url('/nav/status')}}",{"id":id,"opennew":opennew,"_token":$("#_token").val()},function(res){
+                $.post("{{url('/admin/nav/status')}}",{"id":id,"opennew":opennew,"_token":$("#_token").val()},function(res){
                     if(res.code==200){
                         layer.msg(res.msg, {icon: 1});
                         input.val(res.data);
@@ -161,7 +174,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/nav/delete?id="+id;
+                    window.location.href="/admin/nav/delete?id="+id;
                     layer.close(index);
                 });
             });
@@ -178,7 +191,7 @@
                 '_token':$("#_token").val(),
             }
             //console.log(postData);
-            var url = "/nav/sort";
+            var url = "/admin/nav/sort";
             $.post(url,postData,function(res){
                 if(res.code==200){
                     window.location.href=res.data;

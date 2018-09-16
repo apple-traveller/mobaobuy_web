@@ -28,7 +28,7 @@ class SeoController extends Controller
             $flag = SeoService::modify($data);
             //dd($flag);
             if($flag){
-                return $this->success('保存成功',url('/seo/index')."?id=".$data['id']);
+                return $this->success('保存成功',url('/admin/seo/index')."?id=".$data['id']);
             }else{
                 return $this->success('保存失败');
             }

@@ -10,11 +10,18 @@ class NavController extends Controller
     //
     public function list(Request $request)
     {
-        $pageSize =config('website.pageSize');
-        $navs = NavService::getList($pageSize);
-        $count = NavService::getCount();
+
+        $currpage = $request->input('currpage',1);
+        $pageSize = 3;
+        $navs = NavService::getNavs(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
+
         //dd($count);
-        return $this->display('admin.nav.list',['navs'=>$navs,'count'=>$count]);
+        return $this->display('admin.nav.list',[
+            'navs'=>$navs['list'],
+            'count'=>$navs['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize
+        ]);
     }
 
     //添加
@@ -27,8 +34,9 @@ class NavController extends Controller
     public function editForm(Request $request)
     {
         $id = $request->input('id');
+        $currpage = $request->input('currpage');
         $nav = NavService::getInfo($id);
-        return $this->display('admin.nav.edit',['nav'=>$nav]);
+        return $this->display('admin.nav.edit',['nav'=>$nav,'currpage'=>$currpage]);
     }
 
     //保存
@@ -36,6 +44,8 @@ class NavController extends Controller
     {
         $data = $request->all();
         $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
+        unset($data['currpage']);
         //dd($id);
         unset($data['_token']);
         $errorMsg = [];
@@ -62,7 +72,7 @@ class NavController extends Controller
                     return $this->error('保存失败');
                 }
             }
-            return $this->success('保存成功！',url("/nav/list"));
+            return $this->success('保存成功！',url("/admin/nav/list")."?currpage=".$currpage);
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -74,8 +84,7 @@ class NavController extends Controller
         $data = $request->all();
         unset($data['_token']);
         $id = $request->input('id');
-        //dd($data);
-        //dd(array_key_exists('opennew',$data));
+
         try{
             $info = NavService::modify($id,$data);
 
@@ -103,7 +112,7 @@ class NavController extends Controller
         try{
             $flag = NavService::delete($id);
             if($flag){
-                return $this->success('删除成功',url('/nav/list'));
+                return $this->success('删除成功',url('/admin/nav/list'));
             }else{
                 return $this->error('删除失败');
             }
@@ -124,7 +133,7 @@ class NavController extends Controller
             if(empty($info)){
                 return $this->result('',400,'更新失败');
             }
-            return $this->result("/nav/list",200,'更新成功');
+            return $this->result("/admin/nav/list",200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }

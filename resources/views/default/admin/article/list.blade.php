@@ -8,14 +8,14 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/article/addForm"><div class="fbutton"><div class="add" title="添加新文章"><span><i class="icon icon-plus"></i>添加新文章</span></div></div></a>
+                        <a href="/admin/article/addForm"><div class="fbutton"><div class="add" title="添加新文章"><span><i class="icon icon-plus"></i>添加新文章</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                         <div class="refresh_span">刷新 - 共{{$count}}条记录</div>
                     </div>
                     <div class="search">
-                        <form action="/article/list" name="searchForm" >
+                        <form action="/admin/article/list" name="searchForm" >
                             <div style="width: 179px;float: left;">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
                                         <option value="0">顶级分类</option>
@@ -33,11 +33,11 @@
                     </div>
                 </div>
                 <div class="common-content">
-                    <form method="POST" action="article.php?act=batch_remove" name="listForm">
-                        <div class="list-div" id="listDiv">                    	<table cellpadding="0" cellspacing="0" border="0">
+                    <form method="POST" action="" name="listForm">
+                        <div class="list-div" id="listDiv">
+                            <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-
                                     <th width="5%"><div class="tDiv">编号</div></th>
                                     <th width="21%"><div class="tDiv"><a href="#">文章标题</a></div></th>
                                     <th width="20%"><div class="tDiv"><a href="#">文章分类</a></div></th>
@@ -51,10 +51,9 @@
                                 <tbody>
                                 @foreach($articles as $vo)
                                 <tr class="">
-
                                     <td><div class="tDiv">{{$vo['id']}}</div></td>
                                     <td><div class="tDiv">{{$vo['title']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['articleCat']['cat_name']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['cat_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['click']}}</div></td>
                                     <td><div class="tDiv changeInput"><input type="text" name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" ></div></td>
                                     <td>
@@ -70,8 +69,8 @@
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/article/detail?id={{$vo['id']}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                            <a href="/article/editForm?id={{$vo['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="/admin/article/detail?id={{$vo['id']}}&currpage={{$currpage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                            <a href="/admin/article/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->
                                         </div>
                                     </td>
@@ -87,7 +86,7 @@
                                             <div class="list-page">
                                                 <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
-                                                {{$articles->links()}}
+                                                <ul id="page"></ul>
 
                                                 <style>
                                                     .pagination li{
@@ -111,13 +110,30 @@
     </div>
 
     <script>
+        paginate();
+        function paginate(){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$count}}" //数据总数，从服务端得到
+                    , limit: "{{$pageSize}}"   //每页显示的条数
+                    , curr: "{{$currpage}}"  //当前页
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            window.location.href="/admin/article/list?currpage="+obj.curr;
+                        }
+                    }
+                });
+            });
+        }
         var tag_token = $("#_token").val();
         function remove(id)
         {
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/article/delete?id="+id;
+                    window.location.href="/admin/article/delete?id="+id;
                     layer.close(index);
                 });
             });
@@ -136,7 +152,7 @@
 
             layui.use(['layer'], function() {
                 layer = layui.layer;
-                $.post("{{url('/article/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
+                $.post("{{url('/admin/article/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
                     if(res.code==200){
                         layer.msg(res.msg, {icon: 1});
                         input.val(res.data);
@@ -149,7 +165,6 @@
 
 
         $(".changeInput input").blur(function(){
-
                 var sort_order = $(this).val();
                 var id = $(this).attr('data-id');
                 var postData = {
@@ -158,7 +173,7 @@
                     '_token':tag_token,
                 }
                 console.log(postData);
-                var url = "/article/sort";
+                var url = "/admin/article/sort";
                 $.post(url,postData,function(res){
                     if(res.code==200){
                         window.location.href=res.data;

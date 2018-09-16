@@ -59,10 +59,8 @@ trait CommonRepo
 
     private static function searchQuery($pager, $query)
     {
-
         $page = 1;
         $page_size = -1;
-
         if (isset($pager['pageSize']) || isset($pager['page'])) {
             if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
                 $page_size = 15;

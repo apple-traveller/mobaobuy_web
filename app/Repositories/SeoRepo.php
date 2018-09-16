@@ -12,16 +12,4 @@ class SeoRepo
 {
     use CommonRepo;
 
-    public static function getList()
-    {
-        $model = self::getBaseModel();
-        $info = $model::get();
-        if($info){
-            return $info->toArray();
-        }
-        return [];
-
-    }
-
-
 }

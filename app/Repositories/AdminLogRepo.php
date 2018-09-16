@@ -11,4 +11,5 @@ namespace App\Repositories;
 class AdminLogRepo
 {
     use CommonRepo;
+
 }

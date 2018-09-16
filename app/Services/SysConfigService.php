@@ -31,22 +31,24 @@ class SysConfigService
     //根据parent_id获取配置信息
     public static function getInfo($parent_id)
     {
-        $configs = SysConfigRepo::getInfo($parent_id);
+        $configs = SysConfigRepo::getList([],['parent_id'=>$parent_id]);
         return $configs;
     }
 
     public static function modify($data)
     {
-        self::beginTransaction();
-        foreach($data as $k=>$v){
-            $flag = SysConfigRepo::modify($k,['value'=>$v]);
-            if(!$flag){
-                self::rollBack();
-                return false;
+        try{
+            self::beginTransaction();
+            foreach($data as $k=>$v){
+                $flag = SysConfigRepo::modify($k,['value'=>$v]);
             }
+            self::commit();
+            return true;
+        }catch(\Exception $e){
+            self::rollBack();
+            Self::throwBizError('修改失败');
         }
-        self::commit();
-        return true;
+
     }
 
 

@@ -21,13 +21,13 @@
                         @if($parent_id==0)
 
                         @else
-                        <a href="/region/list?parent_id={{$last_parent_id}}" ><div class="fbutton"><div class="add_region" title="返回上一级"><span><span><i class="icon icon-reply"></i>返回上一级</span></div></div></a>
+                        <a href="/admin/region/list?parent_id={{$last_parent_id}}" ><div class="fbutton"><div class="add_region" title="返回上一级"><span><span><i class="icon icon-reply"></i>返回上一级</span></div></div></a>
                         @endif
 
 
                     </div>
                     <div class="add_area fr">
-                        <form method="post" action="/region/add" name="theForm">
+                        <form method="post" action="/admin/region/add" name="theForm">
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <input type="hidden" name="region_type" value="{{$region_type}}">
                             <input type="hidden" name="parent_id" value="{{$parent_id}}">
@@ -72,7 +72,7 @@
                                 <td><div class="tDiv">{{$parentRegion}}</div></td>
                                 <td class="handle">
                                     <div class="tDiv a1">
-                                        <a href="/region/list?parent_id={{$region['region_id']}}" title="管理" class="btn_see"><i class="sc_icon sc_icon_see"></i>管理</a>
+                                        <a href="/admin/region/list?parent_id={{$region['region_id']}}" title="管理" class="btn_see"><i class="sc_icon sc_icon_see"></i>管理</a>
                                         <a href="javascript:void(0)" title="删除" onclick="remove({{$region['region_id']}},{{$parent_id}})" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -95,7 +95,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/region/delete?region_id="+id+"&parent_id="+parent_id;
+                    window.location.href="/admin/region/delete?region_id="+id+"&parent_id="+parent_id;
                     layer.close(index);
                 });
             });
@@ -114,7 +114,7 @@
                 'parent_id':"{{$parent_id}}"
             };
             console.log(postData);
-            var url = "{{url('/region/modify')}}";
+            var url = "{{url('/admin/region/modify')}}";
             // 抛送http
             $.post(url, postData, function(result){
                 // 逻辑
