@@ -6,7 +6,6 @@
  * Time: 20:30
  */
 namespace App\Services;
-use App\Repositories\SmsSendTypeRepo;
 use App\Repositories\SmsSupplierRepo;
 use App\Repositories\SmsTempRepo;
 
@@ -14,7 +13,6 @@ use App\Repositories\SmsTempRepo;
 class SmsService
 {
     use CommonService;
-
 
 
     public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
@@ -29,7 +27,7 @@ class SmsService
             require_once $sms_dir;
             $sms = new \SmsObj();
         } else {
-            return json_encode(['code'=>404,'msg'=>'']);
+          self::throwBizError('配置文件不存在');
         }
 
         $config = json_decode($smsSupplier['supplier_config'],true);
