@@ -33,6 +33,7 @@ class SmsObj implements SmsInterface
      */
     public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
     {
+
         if (!empty($templateParam['code'])){
             $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$signName}】";
         } else {
@@ -69,8 +70,8 @@ class SmsObj implements SmsInterface
     public function sendContentSms($phoneNumbers, $content)
     {
         $params = [
-            'destmobile'        => $phoneNumbers,
-            'msgText'       => $content,
+            'destmobile' => $phoneNumbers,
+            'msgText'    => $content,
         ];
         return $this->request($params);
     }
@@ -89,7 +90,6 @@ class SmsObj implements SmsInterface
             'password' =>$this->_config['password'],
             'sendDateTime'  => '',
         ], $params);
-        dd($params);
         return $params;
 
     }
@@ -114,12 +114,14 @@ class SmsObj implements SmsInterface
      */
     public function Post($url,$params){
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_NOBODY, true);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($curl,CURLOPT_BINARYTRANSFER,true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 0);
+        $post_data = http_build_query($params);
+//echo $post_data;
+        curl_setopt($curl, CURLOPT_POSTFIELDS,$post_data);
+        curl_setopt($curl, CURLOPT_URL, $url);
         $return_str = curl_exec($curl);
         curl_close($curl);
         return $return_str;
