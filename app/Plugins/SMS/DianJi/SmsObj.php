@@ -39,7 +39,7 @@ class SmsObj implements SmsInterface
             $content = $templateParam['temp_content'];
         }
 
-        $this->sendContentSms($phoneNumbers,$content);
+        return $this->sendContentSms($phoneNumbers,$content);
     }
 
     /**
@@ -53,28 +53,32 @@ class SmsObj implements SmsInterface
      */
     public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
     {
-        return 'sdfs';
-        //短信接口地址
-        $target = "http://ip:port/msgHttp/json/mt";
-
-        //生成的随机数
-        $timestamps = rand(1000,9999);
-        if (is_array($phoneNumbers)){
-            foreach ($phoneNumbers as $k=>$v){
-                $post_data = "account={$this->_config['AccessKeyID']}&password={$this->_config['AccessKeySecret']}&mobile=$v&content=$templateParam&tamps=$timestamps";
-                return  self::Post($post_data,$target);
-                return \Aliyun\Core\Http\HttpHelper::curl($target,'POST',$post_data);
-            }
+        if (!empty($templateParam['code'])){
+            $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$signName}】";
+        } else {
+            $content = $templateParam['temp_content'];
         }
+
+        if (is_array($phoneNumbers)){
+            $phoneNumbers = implode(',',$phoneNumbers);
+        }
+
+        return $this->sendContentSms($phoneNumbers,$content);
+
     }
 
+    /**
+     * 组合参数
+     * @param $phoneNumbers
+     * @param $content
+     */
     public function sendContentSms($phoneNumbers, $content)
     {
         $params = [
             'mobile'        => $phoneNumbers,
             'content'       => $content,
         ];
-        $this->request($params);
+       return $this->request($params);
     }
 
 
