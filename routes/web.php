@@ -34,21 +34,6 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/user/points', 'Admin\UserController@points');//查看积分
 
 
-
-/*    Route::any('/firm/list', 'Admin\FirmController@list');//企业列表
-    Route::get('/firm/log', 'Admin\FirmController@log');//查看企业日志信息
-    Route::get('/firm/detail', 'Admin\FirmController@detail');//查看企业详情信息
-    Route::get('/firm/verifyForm', 'Admin\FirmController@verifyForm');//企业审核
-    Route::post('/firm/verify', 'Admin\FirmController@verify');//企业审核
-    Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel
-    Route::get('/firm/userRealForm', 'Admin\FirmController@userRealForm');//实名认证
-    Route::post('/firm/userReal', 'Admin\FirmController@userReal');//实名认证审核
-
-    Route::get('/firm/firmuser', 'Admin\FirmController@firmuser');//企业列表
-    Route::get('/firm/pointflow', 'Admin\FirmController@pointflow');//查看企业积分信息
-    Route::post('/firm/modify', 'Admin\FirmController@modify');//修改企业状态
-    Route::get('/firm/export', 'Admin\FirmController@export');//企业导出excel*/
-
     Route::any('/admin/blacklist/list', 'Admin\FirmBlacklistController@list');//黑名单企业
     Route::get('/admin/blacklist/addForm', 'Admin\FirmBlacklistController@addForm');//黑名单添加（表单）
     Route::post('/admin/blacklist/add', 'Admin\FirmBlacklistController@add');//黑名单添加
@@ -107,6 +92,10 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/admin/article/sort', 'Admin\ArticleController@sort');//文章排序（ajax）
     Route::get('/admin/article/delete', 'Admin\ArticleController@delete');//文章删除
     Route::post('/admin/article/status', 'Admin\ArticleController@status');//ajax修改状态
+
+    Route::get('/admin/brand/list', 'Admin\BrandController@list');//品牌列表
+    Route::post('/admin/brand/status', 'Admin\BrandController@status');//ajax修改状态
+    Route::post('/admin/brand/sort', 'Admin\BrandController@sort');//ajax排序
 
     Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
     Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板

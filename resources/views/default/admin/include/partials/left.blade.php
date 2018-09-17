@@ -124,7 +124,7 @@
                     <ul>
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/home" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/brand/list" data-param="menushopping|05_comment_manage" target="workspace">品牌列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/brand/list" data-param="menushopping|05_comment_manage" target="workspace">品牌列表</a></li>
                     </ul>
                 </div>
             </div>
