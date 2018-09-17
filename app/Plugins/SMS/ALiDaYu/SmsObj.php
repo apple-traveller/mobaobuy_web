@@ -111,6 +111,9 @@ class SmsObj implements SmsInterface
      */
     public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
     {
+
+        $phoneNumbers = implode(',',$phoneNumbers);
+
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendBatchSmsRequest();
 
