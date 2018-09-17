@@ -169,22 +169,11 @@ class UserLoginService
 
     //管理员后台
     //获取日志列表（分页）
-<<<<<<< HEAD
     public static function getUserLogs($pager,$condition)
     {
-        return UserLogRepo::getListBySearch($pager,$condition);
-=======
-    public static function getLogs($user_id, $pageSize)
-    {
-        return UserLogRepo::getLogs($user_id, $pageSize);
+        return UserLogRepo::getListBySearch($pager, $condition);
     }
 
-    //获取日志总条数
-    public static function getLogCount($user_id)
-    {
-        return UserLogRepo::getLogCount($user_id);
-        //return UserLogRepo::getTotalCount();
->>>>>>> 8f6ab692574ae53ed8ecd6a8bd9148e5c37fd736
-    }
+
 
 }

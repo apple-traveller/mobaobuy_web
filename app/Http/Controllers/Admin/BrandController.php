@@ -10,52 +10,76 @@ class BrandController extends Controller
     //用户列表
     public function list(Request $request)
     {
-        $user_name = $request->input('user_name','');
-        $currpage = $request->input("curr",1);
-        $pageSize = 4;
-        $is_firm = $request->input('is_firm',0);
-        $condition = ['is_firm'=>$is_firm];
-        if(!empty($user_name)){
-            $condition['user_name'] = $user_name;
+        $brand_name = $request->input('brand_name','');
+        $condition = [];
+        if(!empty($brand_name)){
+            $condition['brand_name']=$brand_name;
         }
-        $users = BrandService::getBrandList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
-        //dd($users);
-        return $this->display();
+        $currpage = $request->input('currpage',1);
+        $pageSize = 3;
+        $links = BrandService::getBrandList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],$condition);
+        return $this->display('admin.brand.list',[
+            'links'=>$links['list'],
+            'total'=>$links['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'brand_name'=>$brand_name
+        ]);
+
     }
 
     //编辑(修改状态)
     public function modify(Request $request)
     {
-        $id = $request->input("id");
-        $data = $request->all();
-        unset($data['_token']);
-        try{
-            $user = UserService::modify($id,$data);
-            if($user){
-                return $this->result($user['is_freeze'],'1',"修改成功");
-            }else{
-                return  $this->result('','0',"修改失败");
-            }
-        }catch(\Exception $e){
-            return  $this->result('','0',$e->getMessage());
-        }
+
     }
 
     //查看详情信息
     public function detail(Request $request)
     {
         $id = $request->input('id');
-        $info = UserService::getInfo($id);//基本信息
-        $user_invoices = UserInvoicesService::getInfoByUserId($id);//会员发票信息
-        $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
-        $region = RegionService::getList($pager=[],$condition=[]);
-        //dd($region);
-        return $this->display('admin.user.detail',
-            [ 'info'=>$info,
-              'user_invoices'=>$user_invoices,
-              'user_address'=>$user_address,
-              'region'=>$region
-            ]);
+        $currpage = $request->input('currpage');
+        $brands = BrandService::getBrandInfo($id);
+        return $this->display('admin.brand.detail');
+    }
+
+    //修改状态（ajax）
+    public function status(Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+        try{
+            $info = BrandService::modify($data['id'],$data);
+            $flag = 1;
+            if(key_exists('is_delete',$data)){
+                $flag = $info['is_delete'];
+            }else{
+                $flag = $info['is_recommend'];
+            }
+            if($info){
+                return $this->result($flag,200,'修改成功');
+            }else{
+                return $this->result('',400,'修改失败');
+            }
+        }catch (\Exception $e){
+            return $this->result('',400,'修改失败');
+        }
+    }
+
+    //排序（ajax）
+    public function sort(Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+        try{
+            $info = BrandService::modify($data['id'],$data);
+            if(!$info){
+                return $this->result('',400,'更新失败');
+            }
+            return $this->result("/admin/brand/list",200,'更新成功');
+        }catch (\Exception $e){
+            return $this->result('',400,'修改失败');
+        }
     }
 
 

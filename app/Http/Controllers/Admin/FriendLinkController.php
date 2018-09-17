@@ -12,7 +12,6 @@ class FriendLinkController extends Controller
     public  function list(Request $request)
     {
         //查询所有的数据(分页)
-        $pageSize =config('website.pageSize');
         $currpage = $request->input('currpage',1);
         $pageSize = 3;
         $links = FriendLinkService::getLinks(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
