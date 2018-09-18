@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/nav/list" class="s-back">返回</a>系统设置 - 自定义导航栏</div>
+        <div class="title"><a href="/admin/nav/list" class="s-back">返回</a>系统设置 - 自定义导航栏</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -15,11 +15,10 @@
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form action="/nav/add" method="post" name="form" id="navigator_form" novalidate="novalidate">
+                        <form action="/admin/nav/add" method="post" name="form" id="navigator_form" novalidate="novalidate">
                             <div class="switch_info">
 
                                 <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
-
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>名称：</div>
                                     <div class="label_value">
@@ -110,7 +109,6 @@
                     url :{
                         required : true
                     },
-
                 },
                 messages:{
                     name:{

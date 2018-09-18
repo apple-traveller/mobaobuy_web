@@ -19,12 +19,13 @@ class UserController extends Controller
     public function list(Request $request)
     {
         $user_name = $request->input('user_name','');
-        $currpage = $request->input("curr",1);
+        $currpage = $request->input("currpage",1);
         $pageSize = 4;
         $is_firm = $request->input('is_firm',0);
+
         $condition = ['is_firm'=>$is_firm];
         if(!empty($user_name)){
-            $condition['user_name'] = $user_name;
+            $condition['user_name'] = "%".$user_name."%";
         }
         $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
         //dd($users);
@@ -61,8 +62,9 @@ class UserController extends Controller
     public function verifyForm(Request $request)
     {
         $id = $request->input('id');
+        $currpage = $request->input('currpage');
         $info = UserService::getInfo($id);
-        return $this->display('admin.user.verify',['info'=>$info]);
+        return $this->display('admin.user.verify',['info'=>$info,'currpage'=>$currpage]);
     }
 
     //用户审核(修改状态)
@@ -70,14 +72,16 @@ class UserController extends Controller
     {
         $id = $request->input("id");
         $is_firm = $request->input("is_firm");
+        $currpage = $request->input('currpage');
         $data = $request->all();
         $data['is_validated']=$data['is_validated']==1?0:1;
         //dd($data);
         unset($data['_token']);
+        unset($data['currpage']);
         try{
             $user = UserService::modify($id,$data);
             if($user){
-                return $this->success("修改成功",url('/user/list')."?is_firm=".$is_firm);
+                return $this->success("修改成功",url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage);
             }else{
                 return  $this->error("修改失败");
             }
@@ -90,6 +94,7 @@ class UserController extends Controller
     public function detail(Request $request)
     {
         $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
         $info = UserService::getInfo($id);//基本信息
         $user_invoices = UserInvoicesService::getInfoByUserId($id);//会员发票信息
         $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
@@ -99,20 +104,29 @@ class UserController extends Controller
             [ 'info'=>$info,
               'user_invoices'=>$user_invoices,
               'user_address'=>$user_address,
-              'region'=>$region
+              'region'=>$region,
+                'currpage'=>$currpage
             ]);
     }
 
     //查询用户日志
     public function log(Request $request)
     {
-        $pageSize = config('website.pageSize');
+        $pageSize = 3;
+        $currpage = $request->input("currpage");
         $id = $request->input('id');
         $is_firm = $request->input("is_firm");
-        $logs = UserLoginService::getLogs($id,$pageSize);
-        $logCount = UserLoginService::getLogCount($id);
+        $condition=['user_id'=>$id];
+        $logs = UserLoginService::getUserLogs(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['log_time'=>'desc']],$condition);
         //dd($logs);
-        return $this->display('admin.user.logdetail',['logs'=>$logs,'id'=>$id,'logCount'=>$logCount,'is_firm'=>$is_firm]);
+        return $this->display('admin.user.logdetail',[
+            'logs'=>$logs['list'],
+            'id'=>$id,
+            'logCount'=>$logs['total'],
+            'is_firm'=>$is_firm,
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize
+        ]);
     }
 
     //查看实名信息
@@ -120,11 +134,13 @@ class UserController extends Controller
     {
         $userid = $request->input('id');
         $is_firm = $request->input('is_firm');
+        $currpage = $request->input("currpage");
+
         $info = UserRealService::getInfoByUserId($userid);
         if(empty($info)){
             return $this->error("该用户未提交实名信息");
         }
-        return $this->display("admin.user.userreal",['info'=>$info,'is_firm'=>$is_firm]);
+        return $this->display("admin.user.userreal",['info'=>$info,'is_firm'=>$is_firm,'currpage'=>$currpage]);
     }
 
     //实名审核
@@ -132,21 +148,23 @@ class UserController extends Controller
     {
         $id = $request->input("id");
         $is_firm = $request->input("is_firm");
+        $currpage = $request->input('currpage');
         $data = $request->all();
         $data['review_time'] = Carbon::now();
         $data['review_status']=$data['review_status']==2?1:2;
         //dd($data);
         unset($data['_token']);
         unset($data['is_firm']);
+        unset($data['currpage']);
         try{
             $user = UserRealService::modify($id,$data);
             if($user){
-                return $this->success("修改成功",url('/user/list')."?is_firm=".$is_firm);
+                return $this->success("修改成功",url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage);
             }else{
                 return  $this->error("修改失败");
             }
         }catch(\Exception $e){
-            return  $this->error('','0',$e->getMessage());
+            return  $this->error('',$e->getMessage());
         }
     }
 
@@ -170,7 +188,7 @@ class UserController extends Controller
     {
         $id = $request->input("id");
         $is_firm = $request->input("is_firm");
-        $currpage = $request->input('curr',1);
+        $currpage = $request->input('currpage',1);
         $pageSize = 3;
         $condition = ['user_id'=>$id];
         $info = UserAccountLogService::getInfoByUserId(['pageSize'=>$pageSize,'page'=>$currpage],$condition);//分页

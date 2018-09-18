@@ -13,10 +13,9 @@ class GoodsCategoryController extends Controller
     {
         $parent_id = $request->input('parent_id',0);
         $goodsCategory = GoodsCategoryService::getInfo($parent_id);//根据id获取信息
+       // dd($goodsCategory);
         //判断当前分类是几级
         $level = GoodsCategoryService::getLevel($parent_id);
-            //dd($level);
-        //dd($goodsCategory);
         $last_parent_id=0;
         if(!empty($goodsCategory)){
             $last_parent_id = $goodsCategory['parent_id'];
@@ -39,7 +38,7 @@ class GoodsCategoryController extends Controller
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
-            return $this->result("/goodscategory/list?parent_id=".$info['parent_id'],200,'更新成功');
+            return $this->result("/admin/goodscategory/list?parent_id=".$info['parent_id'],200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
@@ -132,7 +131,7 @@ class GoodsCategoryController extends Controller
             if(!$info){
                 return $this->error('保存失败');
             }
-            return $this->success('保存成功！',url("/goodscategory/list")."?parent_id=".$data['parent_id']);
+            return $this->success('保存成功！',url("/admin/goodscategory/list")."?parent_id=".$data['parent_id']);
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -191,7 +190,7 @@ class GoodsCategoryController extends Controller
         try{
             $flag = GoodsCategoryService::delete($ids);
             if($flag){
-                return $this->success('删除成功',url('/goodscategory/list'));
+                return $this->success('删除成功',url('/admin/goodscategory/list'));
             }else{
                 return $this->error('删除失败');
             }

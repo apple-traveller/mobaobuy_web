@@ -8,14 +8,14 @@ class FirmBlacklistService
     //获取黑名单列表(导出excel表)
     public static function getBlacklists($fields)
     {
-        $info = FirmBlacklistRepo::getBlacklists($fields);
+        $info = FirmBlacklistRepo::getList(['id'=>'asc'],[],$fields);
         return $info;
     }
 
     //获取黑名单列表（分页）
-    public static function getList($pageSize,$firm_name)
+    public static function getBlackList($pager,$condition)
     {
-        $info = FirmBlacklistRepo::search($pageSize,$firm_name);
+        $info = FirmBlacklistRepo::getListBySearch($pager,$condition);
         return $info;
     }
 
@@ -28,12 +28,6 @@ class FirmBlacklistService
 
 
 
-    //获取黑名单总条数
-    public static function getCount($firm_name)
-    {
-        return FirmBlacklistRepo::getCount($firm_name);
-    }
-
     //检测企业名称是否已经存在
     public static function validateUnique($firm_name)
     {
@@ -43,7 +37,23 @@ class FirmBlacklistService
     //删除
     public static function delete($id)
     {
-        return FirmBlacklistRepo::delete($id);
+        try{
+            if(is_array($id)){
+                foreach($id as $k=>$v){
+                    $info = FirmBlacklistRepo::delete($v);
+                    if(!$info){
+                        return false;
+                    }
+                }
+            }else{
+                $info = FirmBlacklistRepo::delete($id);
+            }
+
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
+        return true;
     }
 
 

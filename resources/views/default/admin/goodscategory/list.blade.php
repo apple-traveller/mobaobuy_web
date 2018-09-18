@@ -9,8 +9,8 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/goodscategory/list?parent_id={{$last_parent_id}}"><div class="fbutton"><div class="add" title="返回上一级"><span><i class="icon icon-reply"></i>返回上一级</span></div></div></a>
-                        <a href="/goodscategory/addForm"><div class="fbutton"><div class="add" title="添加分类"><span><i class="icon icon-plus"></i>添加分类</span></div></div></a>
+                        <a href="/admin/goodscategory/list?parent_id={{$last_parent_id}}"><div class="fbutton"><div class="add" title="返回上一级"><span><i class="icon icon-reply"></i>返回上一级</span></div></div></a>
+                        <a href="/admin/goodscategory/addForm"><div class="fbutton"><div class="add" title="添加分类"><span><i class="icon icon-plus"></i>添加分类</span></div></div></a>
                     </div>
                 </div>
                 <div class="common-content">
@@ -36,8 +36,8 @@
                                         <div class="setup_span">
                                             <em><i class="icon icon-cog"></i>设置<i class="arrow"></i></em>
                                             <ul>
-                                                <li><a href="/goodscategory/addForm?parent_id={{$vo['id']}}">新增下一级</a></li>
-                                                <li><a href="/goodscategory/list?parent_id={{$vo['id']}}">查看下一级</a></li>
+                                                <li><a href="/admin/goodscategory/addForm?parent_id={{$vo['id']}}">新增下一级</a></li>
+                                                <li><a href="/admin/goodscategory/list?parent_id={{$vo['id']}}">查看下一级</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -47,8 +47,6 @@
                                 <td>
                                     <div class="tDiv">
                                         {{status($vo['is_nav_show'])}}
-
-
                                     </div>
                                 </td>
                                 <td>
@@ -69,7 +67,7 @@
                                 <td><div class="tDiv changeInput"><input type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/goodscategory/editForm?id={{$vo['id']}}" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                        <a href="/admin/goodscategory/editForm?id={{$vo['id']}}" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -90,11 +88,10 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/goodscategory/delete?id="+id;
+                    window.location.href="/admin/goodscategory/delete?id="+id;
                     layer.close(index);
                 });
             });
-
         }
 
 
@@ -108,7 +105,7 @@
                     '_token':tag_token,
                 }
                 console.log(postData);
-                var url = "/goodscategory/sort";
+                var url = "/admin/goodscategory/sort";
                 $.post(url,postData,function(res){
                     if(res.code==200){
                         window.location.href=res.data;
@@ -116,8 +113,6 @@
                         alert('更新失败');
                     }
                 },"json");
-
         });
-
     </script>
 @stop

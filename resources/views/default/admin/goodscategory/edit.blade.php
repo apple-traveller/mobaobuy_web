@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/goodscategory/list?parent_id={{$cate['parent_id']}}" class="s-back">返回</a>商品 - 编辑分类</div>
+        <div class="title"><a href="/admin/goodscategory/list?parent_id={{$cate['parent_id']}}" class="s-back">返回</a>商品 - 编辑分类</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -14,7 +14,7 @@
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form action="/goodscategory/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
+                        <form action="/admin/goodscategory/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
                             <div class="switch_info">
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;分类名称：</div>
@@ -191,7 +191,7 @@
             //文件上传
             var uploadInst = upload.render({
                 elem: '#avatar' //绑定元素
-                ,url: "{{url('/goodscategory/upload')}}" //上传接口
+                ,url: "{{url('/admin/goodscategory/upload')}}" //上传接口
                 ,accept:'file'
                 ,data:{'_token':tag_token}
                 ,done: function(res){

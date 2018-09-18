@@ -16,7 +16,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/link/addForm"><div class="fbutton"><div class="add" title="添加新链接"><span><i class="icon icon-plus"></i>添加新链接</span></div></div></a>
+                        <a href="/admin/link/addForm"><div class="fbutton"><div class="add" title="添加新链接"><span><i class="icon icon-plus"></i>添加新链接</span></div></div></a>
                     </div>
                 </div>
                 <div class="common-content">
@@ -24,10 +24,10 @@
                         <table cellspacing="0" cellpadding="0" border="0">
                             <thead>
                             <tr>
-                                <th width="20%"><div class="tDiv"><a href="javascript:listTable.sort('link_name');">链接名称</a></div></th>
-                                <th width="35%"><div class="tDiv"><a href="javascript:listTable.sort('link_url');">链接地址</a></div></th>
-                                <th width="20%"><div class="tDiv"><a href="javascript:listTable.sort('link_logo');">链接LOGO</a></div></th>
-                                <th width="10%"><div class="tDiv"><a href="javascript:listTable.sort('show_order');">显示顺序</a></div></th>
+                                <th width="20%"><div class="tDiv">链接名称</div></th>
+                                <th width="35%"><div class="tDiv">链接地址</div></th>
+                                <th width="20%"><div class="tDiv">链接LOGO</div></th>
+                                <th width="10%"><div class="tDiv">显示顺序</div></th>
                                 <th class="handle" width="10%">操作</th>
                             </tr>
                             </thead>
@@ -48,7 +48,7 @@
                                 <td><div class="tDiv changeInput"><input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text"></div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/link/editForm?id={{$vo['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                        <a href="/admin/link/editForm?id={{$vo['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -61,7 +61,7 @@
                                     <div class="list-page">
                                         <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
-                                        {{$links->links()}}
+                                        <ul id="page"></ul>
 
                                         <style>
                                             .pagination li{
@@ -82,12 +82,29 @@
         </div>
     </div>
     <script>
+        paginate();
+        function paginate(){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$count}}" //数据总数，从服务端得到
+                    , limit: "{{$pageSize}}"   //每页显示的条数
+                    , curr: "{{$currpage}}"  //当前页
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            window.location.href="/admin/link/list?currpage="+obj.curr;
+                        }
+                    }
+                });
+            });
+        }
         function remove(id)
         {
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/link/delete?id="+id;
+                    window.location.href="/admin/link/delete?id="+id;
                     layer.close(index);
                 });
             });
@@ -104,7 +121,7 @@
                 '_token':'{{csrf_token()}}',
             }
             //console.log(postData);
-            var url = "/link/sort";
+            var url = "/admin/link/sort";
             $.post(url,postData,function(res){
                 if(res.code==200){
                     window.location.href=res.data;

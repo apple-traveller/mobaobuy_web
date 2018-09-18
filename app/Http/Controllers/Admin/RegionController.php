@@ -14,7 +14,7 @@ class RegionController extends Controller
     {
         $parent_id = $request->input('parent_id',0);//作为parent_id查询当前页面的数据
         $last_parent_id = 0;
-        $region_info = RegionService::getInfo($parent_id);
+        $region_info = RegionService::getInfoByParentId($parent_id);
         if(!empty($region_info)){
             $last_parent_id = $region_info['parent_id'];
         }
@@ -45,7 +45,7 @@ class RegionController extends Controller
         try{
             $flag = RegionService::create($data);
             if($flag){
-                return $this->success("添加成功",url('/region/list')."?parent_id=".$data['parent_id']);
+                return $this->success("添加成功",url('/admin/region/list')."?parent_id=".$data['parent_id']);
             }else{
                 return $this->error('添加失败');
             }
@@ -63,7 +63,7 @@ class RegionController extends Controller
             $flag = RegionService::delete($region_id);
             //dd($flag);
             if($flag){
-                return $this->success("删除成功",url('/region/list')."?parent_id=".$parent_id);
+                return $this->success("删除成功",url('/admin/region/list')."?parent_id=".$parent_id);
             }else{
                 return $this->error('删除失败');
             }
@@ -81,7 +81,7 @@ class RegionController extends Controller
         try{
             $flag = RegionService::modify($region_id,$region_name);
             if($flag){
-                return $this->result("/region/list?parent_id=".$parent_id,1,"修改成功");
+                return $this->result("/admin/region/list?parent_id=".$parent_id,1,"修改成功");
             }else {
                 return $this->result("", 0, "修改失败");
             }

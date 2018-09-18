@@ -2,13 +2,13 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/articlecat/list" class="s-back">返回</a>文章 - 编辑分类</div>
+        <div class="title"><a href="/admin/articlecat/list" class="s-back">返回</a>文章 - 编辑分类</div>
         <div class="content">
 
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form action="/articlecat/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
+                        <form action="/admin/articlecat/save" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form" novalidate="novalidate">
                             <div class="switch_info">
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;分类名称：</div>

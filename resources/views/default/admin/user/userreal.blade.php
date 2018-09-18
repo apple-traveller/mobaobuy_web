@@ -1,14 +1,13 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/user/list?is_firm={{$is_firm}}" class="s-back">返回</a>会员 - 审核实名认证信息</div>
+        <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回{{$currpage}}</a>会员 - 审核实名认证信息</div>
         <div class="content">
-
 
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
-                        <form method="post" action="/user/userReal" name="theForm" id="user_update" novalidate="novalidate">
+                        <form method="post" action="/admin/user/userReal" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;真实姓名：</div>
@@ -110,6 +109,7 @@
                             <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="id" value="{{$info['id']}}">
                             <input type="hidden" name="is_firm" value="{{$is_firm}}">
+                            <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="review_status" value="{{$info['review_status']}}">
                             <div class="item">
                                 <div class="label">&nbsp;</div>

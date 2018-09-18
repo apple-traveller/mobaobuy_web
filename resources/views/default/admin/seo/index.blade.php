@@ -7,7 +7,7 @@
                 <ul>
                     @foreach($seos as $vo)
                     <li @if($vo['id']==$id) class="curr" @endif >
-                        <a  href="/seo/index?id={{$vo['id']}}">
+                        <a  href="/admin/seo/index?id={{$vo['id']}}">
                             @if($vo['type']=="index") 首页
                             @elseif($vo['type']=="article") 文章分类列表
                             @elseif($vo['type']=="article_content") 文章内容
@@ -25,7 +25,7 @@
 
             <div class="flexilist visible">
                 <div class="mian-info visible">
-                    <form enctype="multipart/form-data" name="theForm" action="/seo/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">
+                    <form enctype="multipart/form-data" name="theForm" action="/admin/seo/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">
                         <div class="switch_info shopConfig_switch visible">
 
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
