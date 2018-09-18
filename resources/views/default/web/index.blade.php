@@ -14,7 +14,9 @@
     <li><a href="/updateUserInfo">实名认证</a></li>
     <li><a href="/updatePwd">修改密码</a></li>
     <li><a href="/forgotPwd">找回密码</a></li>
-    <li></li>
+    <li><a href="/stockIn">入库记录</a></li>
+    <li><a href="/stockOut">出库管理</a></li>
+    <li><a href="/stockNum">实时库存</a></li>
     <li><a href="/logout">退出</a></li>
 </ul>
 </body>

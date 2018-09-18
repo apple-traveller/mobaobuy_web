@@ -29,6 +29,18 @@ class UserService
         return UserRepo::modify($id,$newData);
     }
 
+    //设置支付密码
+    public static function setPayPwd($data){
+        if($data['password'] != $data['passwords']){
+            self::throwBizError('两次密码不一致！');
+        }
+
+        unset($data['passwords']);
+
+
+        UserPaypwdRepo::create();
+    }
+
     //完善信息
     public static function updateUserInfo($id,$data){
         //real表 真实名字  性别  省份证正  反面

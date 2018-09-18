@@ -25,6 +25,9 @@ class UserLoginController extends Controller
         if($request->isMethod('get')){
             return $this->display('web.user.register');
         }else{
+            if(session('send_code') != $request->input('mobile_code')){
+                return $this->error('验证码有误');exit;
+            }
             $is_firm = $request->input('is_firm');
             if($is_firm){
                 //企业
@@ -54,7 +57,9 @@ class UserLoginController extends Controller
             }
 
             try{
-                $result = UserLoginService::userRegister($data);
+                UserLoginService::userRegister($data);
+                $request->session()->forget('send_code');
+                return $this->success('注册成功','/');
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -100,13 +105,19 @@ class UserLoginController extends Controller
         }
     }
 
-    //获取手机验证码
+    //注册获取手机验证码
     public function getMessageCode(Request $request){
+        $type = $request->input('is_type');
+//        $type = 'sms_signup';
+        //生成的随机数
+        $mobile_code = rand(1000, 9999);
+        session()->put('send_code', $mobile_code);
         $mobile = $request->input('user_name');
-        $code = UserLoginService::sendCode($mobile);
+        $code = UserLoginService::sendCode($mobile,$type,$mobile_code);
         if($code){
             echo json_encode(array('code'=>1,'msg'=>'success'));exit;
         }
+
         echo json_encode(array('code'=>0,'msg'=>'error'));exit;
     }
 
