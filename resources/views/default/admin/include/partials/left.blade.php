@@ -122,7 +122,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_cat_and_goods"></i><h4>商品管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/home" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/goods/list" data-param="menushopping|01_goods_list" target="workspace">商品列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">商品分类</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/brand/list" data-param="menushopping|05_comment_manage" target="workspace">品牌列表</a></li>
                     </ul>

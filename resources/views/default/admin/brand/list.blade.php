@@ -4,11 +4,17 @@
     <div class="warpper">
         <div class="title">品牌 - 品牌列表</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>展示了商城自营品牌的相关信息。</li>
+                    <li>可以通过品牌关键字搜索相关品牌信息。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/brand/addForm"><div class="fbutton"><div class="add" title="添加新品牌"><span><i class="icon icon-plus"></i>添加新文章</span></div></div></a>
+                        <a href="/admin/brand/addForm"><div class="fbutton"><div class="add" title="添加新品牌"><span><i class="icon icon-plus"></i>添加新品牌</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -31,7 +37,8 @@
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
                                     <th width="21%"><div class="tDiv"><a href="#">品牌名称</a></div></th>
-                                    <th width="20%"><div class="tDiv"><a href="#">品牌首字母</a></div></th>
+                                    <th width="8%"><div class="tDiv"><a href="#">品牌首字母</a></div></th>
+                                    <th width="10%"><div class="tDiv"><a href="#">品牌logo</a></div></th>
                                     <th width="8%"><div class="tDiv"><a href="#">品牌描述</a></div></th>
                                     <th width="8%"><div class="tDiv"><a href="#">排序</a></div></th>
                                     <th width="8%"><div class="tDiv"><a href="#">是否删除</a></div></th>
@@ -45,6 +52,13 @@
                                     <td><div class="tDiv">{{$vo['id']}}</div></td>
                                     <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['brand_first_char']}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <span class="show">
+                                            <i class="icon icon-picture" data-tooltipimg="{{$vo['brand_logo']}}" ectype="tooltip" title="tooltip"></i>
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td><div class="tDiv">{{$vo['brand_desc']}}</div></td>
                                     <td>
                                         <div class="tDiv changeInput">
@@ -70,7 +84,6 @@
                                     </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/brand/detail?id={{$vo['id']}}&currpage={{$currpage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                             <a href="/admin/brand/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->
                                         </div>

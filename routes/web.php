@@ -33,7 +33,6 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/admin/user/userReal', 'Admin\UserController@userReal');//实名认证审核
     Route::get('/admin/user/points', 'Admin\UserController@points');//查看积分
 
-
     Route::any('/admin/blacklist/list', 'Admin\FirmBlacklistController@list');//黑名单企业
     Route::get('/admin/blacklist/addForm', 'Admin\FirmBlacklistController@addForm');//黑名单添加（表单）
     Route::post('/admin/blacklist/add', 'Admin\FirmBlacklistController@add');//黑名单添加
@@ -53,7 +52,6 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/goodscategory/editForm', 'Admin\GoodsCategoryController@editForm');//商品分类编辑
     Route::post('/admin/goodscategory/sort', 'Admin\GoodsCategoryController@sort');//商品分类排序
     Route::post('/admin/goodscategory/upload', 'Admin\GoodsCategoryController@upload');//上传自定义图标
-
 
     Route::get('/admin/sysconfig/index', 'Admin\SysConfigController@index');//平台配置首页
     Route::post('/admin/sysconfig/modify', 'Admin\SysConfigController@modify');//平台配置修改
@@ -76,7 +74,6 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/admin/nav/add', 'Admin\NavController@add');//导航栏保存
     Route::post('/admin/nav/sort', 'Admin\NavController@sort');//导航栏排序
 
-
     Route::get('/admin/articlecat/list', 'Admin\ArticleCatController@list');//文章分类列表
     Route::get('/admin/articlecat/addForm', 'Admin\ArticleCatController@addForm');//文章分类添加
     Route::get('/admin/articlecat/editForm', 'Admin\ArticleCatController@editForm');//文章分类编辑
@@ -96,6 +93,22 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/brand/list', 'Admin\BrandController@list');//品牌列表
     Route::post('/admin/brand/status', 'Admin\BrandController@status');//ajax修改状态
     Route::post('/admin/brand/sort', 'Admin\BrandController@sort');//ajax排序
+    Route::get('/admin/brand/addForm', 'Admin\BrandController@addForm');//添加
+    Route::get('/admin/brand/editForm', 'Admin\BrandController@editForm');//编辑
+    Route::post('/admin/brand/save', 'Admin\BrandController@save');//保存
+
+    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//产品列表
+    Route::get('/admin/goods/addForm', 'Admin\GoodsController@addForm');//产品列表
+    Route::get('/admin/goods/editForm', 'Admin\GoodsController@editForm');//产品列表
+    Route::get('/admin/goods/detail', 'Admin\GoodsController@detail');//产品详情
+    Route::post('/admin/goods/save', 'Admin\GoodsController@save');//产品列表
+    Route::get('/admin/goods/delete', 'Admin\GoodsController@delete');//产品列表
+    Route::post('/admin/goods/getAttrs', 'Admin\GoodsController@getAttrs');//获取属性名
+    Route::post('/admin/goods/getAttrValues', 'Admin\GoodsController@getAttrValues');//获取属性值
+
+    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//单位列表
+    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//添加单位
+    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//修改单位
 
     Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
     Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板
