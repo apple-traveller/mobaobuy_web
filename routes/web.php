@@ -106,9 +106,9 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::post('/admin/goods/getAttrs', 'Admin\GoodsController@getAttrs');//获取属性名
     Route::post('/admin/goods/getAttrValues', 'Admin\GoodsController@getAttrValues');//获取属性值
 
-    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//单位列表
-    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//添加单位
-    Route::get('/admin/goods/list', 'Admin\GoodsController@list');//修改单位
+    Route::get('/admin/unit/list', 'Admin\UnitController@list');//单位列表
+    Route::get('/admin/unit/addForm', 'Admin\UnitController@addForm');//添加单位
+    Route::get('/admin/unit/editForm', 'Admin\UnitController@editForm');//修改单位
 
     Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
     Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板

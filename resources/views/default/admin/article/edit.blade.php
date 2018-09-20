@@ -91,8 +91,7 @@
                         <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                         <div class="switch_info" style="display: none;">
                             <div class="item">
-                                <script id="container" name="content" type="text/plain">{{$article['content']}}</script>
-
+                                <script id="container" name="content" type="text/plain"><?php echo stripslashes($article['content']);?></script>
                                 <div class="form_prompt"></div>
                             </div>
                         </div>

@@ -89,8 +89,7 @@
                             <div class="item">
                                 <div class="label">内容：</div>
                                 <div class="label_value">
-                                    <script id="container" name="content" type="text/plain">{{html_entity_decode($article['content'])}}</script>
-
+                                    <div  content="{{$article['content']}}" class="layui-btn viewContent">点击查看</div>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +111,22 @@
             initialFrameWidth : '100%',//宽度
             initialFrameHeight: 500//高度
         });
-    </script>
 
+        layui.use(['upload','layer'], function() {
+            var layer = layui.layer;
+
+
+            $(".viewContent").click(function(){
+                var content = $(this).attr('content');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['700px', '500px'],
+                    content: content
+                });
+            });
+
+        });
+    </script>
 
 @stop
