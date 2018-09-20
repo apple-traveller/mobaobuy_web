@@ -145,6 +145,17 @@ Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
 
     Route::get('/','IndexController@index');
     Route::get('/logout','UserLoginController@logout');//登出
+});
+
+//商户
+Route::group(['domain'=>''], function (){
+    Route::group(['namespace'=>'Web','prefix'=>'shop'],function (){
+        Route::get('/login.html','ShopLoginController@login');
+        Route::post('/login','ShopLoginController@login');
+        Route::get('/register.html','ShopLoginController@register');
+        Route::post('/register','ShopLoginController@register');
+        Route::post('/getSmsCode','ShopLoginController@getSmsCode');
+    });
 
 });
 

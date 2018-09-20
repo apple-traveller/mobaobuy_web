@@ -25,8 +25,8 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 手机号码<input type="text" name="user_name" placeholder=""><br>
 昵　称<input type="text" name="nick_name" placeholder="" id="nick_name"><br>
-授权委托书<input type="file" name="attorney_letter_fileImg"><br> 
-营业执照<input type="file" name="license_fileImg"><br> 
+授权委托书<input type="file" name="attorney_letter_fileImg"><br>
+营业执照<input type="file" name="license_fileImg"><br>
 营业执照注册号<input type="text" name="business_license_id"><br>
 纳税人识别号<input type="text" name="taxpayer_id"><br>
 手机验证码<input type="text" name="mobile_code"><input type="button" onclick="messageCode();" value="获取验证码" id="code" /><br>
@@ -42,6 +42,7 @@
     var flag = false;
     function messageCode(){
         var user_name = $('#user_name').val();
+        console.log(user_name);
         if(!flag){
             $.ajax({
                 headers:{ 'X-CSRF-TOKEN': $('input[name="_token"]').val()},
