@@ -257,13 +257,54 @@ class UserController extends Controller
     }
 
     //忘记密码获取验证码
-    public function userForgotCode(){
+    public function userForgotCode(Request $request){
+        $mobile = session('_web_info')['user_name'];
+        $type = $request->input('is_type');
         try{
-            UserLoginService::sendCode(session('_web_Info')['user_name']);
+            UserLoginService::sendCode($mobile,$type);
             return json_encode(array('code'=>1,'msg'=>'succ'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    //发送支付密码验证码
+    public function sendCodeByPay(Request $request){
+        $mobile = session('_web_info')['user_name'];
+        $type = $request->input('type');
+        $mobile_code = rand(1000, 9999);
+        session()->put('pay_send_code', $mobile_code);
+        try{
+            UserLoginService::sendCode($mobile,$type,$mobile_code);
+            return json_encode(array('code'=>1,'msg'=>'succ'));
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //设置支付密码
+    public function setPayPwd(Request $request){
+        if($request->isMethod('get')){
+            return $this->display('web');
+        }else{
+
+            $payInfo = [];
+            $payInfo['password'] = $request->input('password');
+            $payInfo['passwords'] = $request->input('passwords');
+            $payInfo['code'] = $request->input('code');
+            $payInfo['user_id'] = session('_web_info')['id'];
+            if($payInfo['code'] != session('pay_send_code')){
+                return $this->error('验证码错误');exit;
+            }
+            try{
+                UserService::setPayPwd($payInfo);
+                return $this->success('支付密码设置成功','/');
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+
+
     }
 
 }

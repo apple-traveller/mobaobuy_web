@@ -135,9 +135,9 @@ Route::get('/userLogin','Web\UserLoginController@showLoginForm')->name('login');
 Route::post('/userLogin','Web\UserLoginController@login');
 Route::post('/messageCode','Web\UserLoginController@getMessageCode');//注册验证码
 
-//公司注册
-Route::get('/firmRegister','Web\FirmLoginController@firmRegister');
-Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
+
+//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');公司注册
+//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
 
 //用户信息完善
 Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
@@ -152,12 +152,27 @@ Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
     Route::post('/updatePwd','UserController@userUpdatePwd');
     Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
     Route::post('/forgotPwd','UserController@userForgotPwd');
-    Route::post('/getCode','UserController@userForgotCode');//获取验证码
+    Route::post('/getCode','UserController@userForgotCode');//重置密码获取验证码
+
+    Route::get('/paypwd','UserController@setPayPwd');//设置支付密码
+    Route::post('/paypwd','UserController@setPayPwd');
+    Route::post('/paypwdByCode','UserController@sendCodeByPay');//支付密码获取验证码
 
     Route::resource('goodsCate','GoodsCategoryController');//产品信息
 
     Route::get('/','IndexController@index');
     Route::get('/logout','UserLoginController@logout');//登出
+});
+
+//商户
+Route::group(['domain'=>''], function (){
+    Route::group(['namespace'=>'Web','prefix'=>'shop'],function (){
+        Route::get('/login.html','ShopLoginController@login');
+        Route::post('/login','ShopLoginController@login');
+        Route::get('/register.html','ShopLoginController@register');
+        Route::post('/register','ShopLoginController@register');
+        Route::post('/getSmsCode','ShopLoginController@getSmsCode');
+    });
 
 });
 
