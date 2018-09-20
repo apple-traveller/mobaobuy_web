@@ -82,18 +82,8 @@ class UserLoginService
     }
 
     //发送验证码
-    public static function sendCode($mobile)
+    public static function sendCode($mobile,$type,$mobile_code)
     {
-
-//        $mobile = 18217232270;
-        $type = 'sms_signup';
-
-        //生成的随机数
-        $mobile_code = rand(1000, 9999);
-
-        session()->put('send_code', $mobile_code);
-
-
         return SmsService::sendSms($mobile,$type,$mobile_code);
     }
 

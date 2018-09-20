@@ -19,6 +19,8 @@ class FirmUserController extends Controller
         $userInfo = FirmUserService::search($username);
         return $this->display('web',compact('userInfo'));
     }
+
+    //新增企业会员
     public function createFirmUser(Request $request){
         if($request->isMethod('get')){
             return $this->display('web.firm.createFirmUser');
@@ -38,7 +40,6 @@ class FirmUserController extends Controller
             try{
                 $userInfo = FirmUserService::search($userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
-//                response()->json(['code' => 1, 'info' => $userInfo]);
             }catch (\Exception $e){
                 return json_encode(array('code'=>0,'msg'=>'error'));
             }
