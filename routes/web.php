@@ -135,6 +135,19 @@ Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
     Route::post('/createFirmUser','FirmUserController@createFirmUser');//企业会员绑定
     Route::post('/addFirmUser','FirmUserController@addFirmUser');//企业会员绑定权限
 
+    Route::get('/invoices','UserController@invoicesList');//会员发票
+    Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
+    Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
+    Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
+    Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+
+    Route::get('/addressList','UserController@shopAddressList');//收货地址列表
+    Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
+    Route::post('/createAddressList','UserController@addShopAddress');
+    Route::post('/getCity','UserController@getCity');//通过省获取市
+    Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
+    Route::post('/editAddressList','UserController@updateShopAddress');
+
     Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
     Route::post('/updatePwd','UserController@userUpdatePwd');
     Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
@@ -145,9 +158,18 @@ Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
     Route::post('/paypwd','UserController@setPayPwd');
     Route::post('/paypwdByCode','UserController@sendCodeByPay');//支付密码获取验证码
 
+
+    Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
+    Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
+    Route::post('/addStockIn','FirmStockController@addFirmStock');
+
+    Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
+    Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
+    Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+
     Route::resource('goodsCate','GoodsCategoryController');//产品信息
 
-    Route::get('/','IndexController@index');
+    Route::get('/','IndexController@index');//主页
     Route::get('/logout','UserLoginController@logout');//登出
 
 });

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\FirmRepo;
 use App\Repositories\FirmBlacklistRepo;
 use Illuminate\Support\Facades\Storage;
+use App\Services\GsxxService;
 
 class UserLoginService
 {
@@ -22,6 +23,14 @@ class UserLoginService
 //        if(empty(session('send_code')) || $data['mobile_code']!=session('send_code')){
 //            exit('请求超时，请刷新页面后重试');
 //        }
+
+        //企查查验证
+//        dump($data['nick_name']);
+//        exit;
+        $result = GsxxService::GsSearch($data['nick_name']);
+        if(!$result){
+            self::throwBizError('公司信息不存在！');
+        }
 
         $data['reg_time'] = Carbon::now();
         $data['password'] = bcrypt($data['password']);
@@ -96,27 +105,16 @@ class UserLoginService
     //用户登录
     public static function loginValidate($username, $psw, $other_params = [])
     {
-
         if(!preg_match("/^1[345789]{1}\\d{9}$/",$username)){
            self::throwBizError('用户名或密码不正确!');
         }
         //查用户表
-        $info = UserRepo::getInfoByUserName($username);
+        $info = UserRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
             self::throwBizError('用户名或密码不正确！');
         }
 
         if(!Hash::check($psw, $info['password'])){
-            self::throwBizError('用户名或密码不正确！');
-        }
-
-        //查用户表
-        $info = UserRepo::getInfoByUserName($username);
-        if (empty($info)) {
-            self::throwBizError('用户名或密码不正确！');
-        }
-
-        if (!Hash::check($psw, $info['password'])) {
             self::throwBizError('用户名或密码不正确！');
         }
 
@@ -145,10 +143,6 @@ class UserLoginService
         UserLogRepo::create($userLog);
         return $info;
     }
-
-
-
-
 
     //完善信息
     public static function updateUserInfo($id, $data)

@@ -23,16 +23,31 @@ class UserController extends Controller
 
     //显示用户收获地
     public function shopAddressList(){
-        $userId = session('_web_info');
+        $userId = session('_web_info')['id'];
         $condition = [];
         $condition['user_id'] = $userId;
         $addressInfo = UserService::shopAddressList($condition);
-        return $this->display('web',compact('addressInfo'));
+        return $this->display('web.user.userAddress',compact('addressInfo'));
     }
 
     //新增收获地址
     public function addShopAddress(Request $request){
         if($request->isMethod('post')){
+            $message = [
+                'required' => ':attribute 不能为空'
+            ];
+            $attributes = [
+                'address_name'=>'地址别名',
+                'consignee'=>'收货人',
+                'country'=>'国家',
+                'province'=>'省',
+                'city'=>'市',
+                'district'=>'县',
+                'street'=>'街道',
+                'address'=>'详细地址',
+                'zipcode'=>'邮编',
+                'mobile_phone'=>'手机'
+            ];
             $rule = [
                 'address_name'=>'required',
                 'user_id'=>'required',
@@ -46,7 +61,7 @@ class UserController extends Controller
                 'zipcode'=>'required',
                 'mobile_phone'=>'required',
             ];
-            $data = $this->validate($request,$rule);
+            $data = $this->validate($request,$rule,$message,$attributes);
             try{
                 UserService::addShopAddress($data);
             }catch (\Exception $e){
@@ -54,8 +69,8 @@ class UserController extends Controller
             }
         }else{
             $region_type = 1;
-            UserService::provinceInfo($region_type);
-            return $this->display();
+            $addressInfo = UserService::provinceInfo($region_type);
+            return $this->display('web.user.createAddress',compact('addressInfo'));
         }
     }
 
@@ -63,7 +78,8 @@ class UserController extends Controller
     public function getCity(Request $request){
         $regionId = $request->input('region_id');
         try{
-            UserService::getCity($regionId);
+            $cityInfo = UserService::getCity($regionId);
+            return json_encode(array('status'=>1,'info'=>$cityInfo));
         }
         catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -112,30 +128,36 @@ class UserController extends Controller
 
     //会员发票信息新增
     public function createInvoices(Request $request){
-        $rule = [
-            'company_name' => 'required',
-            'tax_id' => 'required',
-            'bank_of_deposit' =>'required',
-            'bank_account' => 'required',
-            'company_address' => 'required',
-            'company_telephone' => 'required',
-            'consignee_name' => 'required',
-            'consignee_mobile_phone' =>'required',
-            'country' => 'required',
-            'province' => 'required',
-            'city' => 'required',
-            'district' => 'required',
-            'street' => 'required',
-            'consignee_address' => 'required',
-        ];
-        $data = $this->validate($request,$rule);
-        $data['user_id'] = session('_web_info')['id'];
-        try{
-            UserInvoicesService::create($data);
-            return $this->success('保存成功',$this->redirectTo);
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
+        if($request->isMethod('get')){
+            return $this->display('web.user.createInvoices');
+        }else{
+            $rule = [
+                'company_name' => 'required',
+                'tax_id' => 'required',
+                'bank_of_deposit' =>'required',
+                'bank_account' => 'required',
+                'company_address' => 'required',
+                'company_telephone' => 'required',
+                'consignee_name' => 'required',
+                'consignee_mobile_phone' =>'required',
+                'country' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'district' => 'required',
+                'street' => 'required',
+                'consignee_address' => 'required',
+            ];
+            $data = $this->validate($request,$rule);
+            $data['user_id'] = session('_web_info')['id'];
+            try{
+                UserInvoicesService::create($data);
+                return json_encode(array('status'=>1));
+                return $this->success('保存成功',$this->redirectTo);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
         }
+
     }
 
 
@@ -168,9 +190,7 @@ class UserController extends Controller
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
-
         }
-
     }
 
     //用户发票信息
@@ -179,7 +199,7 @@ class UserController extends Controller
         $condition = [];
         $condition['user_id'] = $userId;
         $invoicesInfo = UserInvoicesService::invoicesById($condition);
-        return $this->display('web.xx',compact('invoicesInfo'));
+        return $this->display('web.user.userInvoices',compact('invoicesInfo'));
     }
 
     //完善用户信息
@@ -285,7 +305,7 @@ class UserController extends Controller
     //设置支付密码
     public function setPayPwd(Request $request){
         if($request->isMethod('get')){
-            return $this->display('web');
+            return $this->display('web.user.forgotPwd');
         }else{
 
             $payInfo = [];
@@ -303,8 +323,6 @@ class UserController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-
-
     }
 
 }

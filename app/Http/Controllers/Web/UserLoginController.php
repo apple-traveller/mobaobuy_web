@@ -7,7 +7,6 @@ use App\Services\UserLoginService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-
 class UserLoginController extends Controller
 {
     /**
@@ -29,20 +28,34 @@ class UserLoginController extends Controller
                 return $this->error('验证码有误');exit;
             }
             $is_firm = $request->input('is_firm');
+            $message = [
+                'required' => ':attribute 不能为空'
+            ];
+            $attributes = [
+                'user_name'=>'手机号码',
+                'nick_name'=>'公司名称',
+                'attorney_letter_fileImg'=>'授权委托书',
+                'license_fileImg'=>'营业执照',
+                'business_license_id'=>'营业执照注册号',
+                'taxpayer_id'=>'纳税人识别号',
+                'mobile_code'=>'手机验证码',
+                'password'=>'密码'
+            ];
             if($is_firm){
                 //企业
                 $rule = [
                     'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:user',
-                    'password'=>'required|confirmed|min:6',
                     'nick_name'=>'required',
-                    'attorney_letter_fileImg'=>'file',
-                    'license_fileImg'=>'file',
+                    'attorney_letter_fileImg'=>'required|file',
+                    'license_fileImg'=>'required|file',
                     'business_license_id'=>'required',
                     'taxpayer_id'=>'required',
                     'is_firm'=>'required|numeric',
-                    'mobile_code'=>'required|numeric'
+                    'mobile_code'=>'required|numeric',
+                    'password'=>'required|confirmed|min:6',
+                    'password_confirmation'=>'required|confirmed|min:6'
                 ];
-                $data = $this->validate($request,$rule);
+                $data = $this->validate($request,$rule,$message,$attributes);
                 $data['attorney_letter_fileImg'] = $request->file('attorney_letter_fileImg');
                 $data['license_fileImg'] = $request->file('license_fileImg');
             }else{
@@ -52,6 +65,7 @@ class UserLoginController extends Controller
                     'password'=>'required|confirmed|min:6',
                     'is_firm'=>'required|numeric',
                     'mobile_code'=>'required|numeric',
+                    'password_confirmation'=>'required|confirmed|min:6'
                 ];
                 $data = $this->validate($request,$rule);
             }
@@ -112,6 +126,7 @@ class UserLoginController extends Controller
         //生成的随机数
         $mobile_code = rand(1000, 9999);
         session()->put('send_code', $mobile_code);
+        session()->save();
         $mobile = $request->input('user_name');
         $code = UserLoginService::sendCode($mobile,$type,$mobile_code);
         if($code){

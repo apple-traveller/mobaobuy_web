@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use App\Repositories\FirmStockFlowRepo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\FirmStockService;
-
-
-
-
 class FirmStockController extends Controller
 {
     /**
@@ -17,19 +14,24 @@ class FirmStockController extends Controller
      */
     protected $redirectTo = '/';
 
+
     //入库记录列表
     public function createFirmStock(Request $request){
-        if($request->isMethod('get')){
+        $goods_name = $request->input('goods_name');
+        $start_time = $request->input('start_time');
+        $end_time = $request->input('end_time');
+        if($goods_name && $start_time &&$end_time){
+            $firmstock = FirmStockService::search($goods_name,$start_time,$end_time);
+        }else{
             $firmstock = FirmStockService::firmStockIn(session('_web_info')['id']);
-            return $this->display('web.xx',compact('firmstock'));
         }
-
+        return view('default.web.firm.stockIn',['firmstock'=>$firmstock]);
     }
 
     //出库记录列表
     public function firmStockOut(Request $request){
         $firmstock = FirmStockService::firmStockOut(session('_web_info')['id']);
-        return $this->display('web.xx',compact('firmstock'));
+        return $this->display('web.firm.stockOut',compact('firmstock'));
     }
 
     //新增出库记录
@@ -43,6 +45,16 @@ class FirmStockController extends Controller
                 'order_sn'=>'nullable',
                 'number'=>'required|numeric',
                 'flow_desc'=>'nullable'
+            ];
+            $message = [
+                'required' => ':attribute 不能为空'
+            ];
+            $attributes = [
+                'partner_name'=>'业务伙伴名称',
+                'goods_name'=>'商品名称',
+                'order_sn'=>'订单号',
+                'number'=>'数量',
+                'flow_desc'=>'描述'
             ];
             $data = $this->validate($request,$rule);
             $data['firm_id'] = session('_web_info')['id'];
@@ -74,7 +86,6 @@ class FirmStockController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-
     }
 
     //企业库存商品流水

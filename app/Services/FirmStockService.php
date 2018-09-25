@@ -41,9 +41,22 @@ class FirmStockService
         }
     }
 
+    //出入库查询
+    public static function search($goods_name,$start_time,$end_time){
+//        if(empty($goods_name) && !empty($start_time) && !empty($end_time)){
+//            return FirmStockFlowRepo::search($start_time,$end_time);
+//        }
+        return  FirmStockFlowRepo::search($goods_name,$start_time,$end_time);
+    }
+
     //入库记录列表
     public static function firmStockIn($id){
-       return FirmStockFlowRepo::getList([],['firm_id'=>$id,'flow_type'=>2]);
+       return FirmStockFlowRepo::getListByStockIn($id);
+    }
+
+    //出库记录列表
+    public static function firmStockOut($id){
+        return FirmStockFlowRepo::getListByStockOut($id);
     }
 
     //出库记录列表
