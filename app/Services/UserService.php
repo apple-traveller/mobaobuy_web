@@ -96,10 +96,8 @@ class UserService
             self::throwBizError('用户名或密码不正确！');
         }
         unset($info['password']);
-
         //登录成功后事件
         createEvent('webUserLogin', ['user_id'=>$info['id'], 'client_ip'=>$other_params['ip']]);
-
         return $info['id'];
     }
 
