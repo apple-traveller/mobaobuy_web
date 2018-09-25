@@ -6,8 +6,13 @@
  * Time: 10:40
  */
 if(!function_exists('themePath')){
-    function themePath($joint = ''){
-        $theme = session('theme');
+    function themePath($joint = '', $prefix=''){
+        if(empty($prefix)){
+            $theme = session('theme', 'default');
+        }else{
+            $theme = session($prefix.'_theme', 'default');
+        }
+
         if(empty($theme)){
             return '';
         }
@@ -35,6 +40,21 @@ if(!function_exists('status')){
             $str = "<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>禁用</div>";
         }
         echo  $str;
+    }
+}
+
+if(!function_exists('createEvent')){
+    function createEvent($name, $params=''){
+        $clazz = "App\Events\\".ucwords($name);
+        if(class_exists($clazz)){
+            event(new $clazz($params));
+        }
+    }
+}
+
+if(!function_exists('getConfig')){
+    function getConfig($code = ''){
+        return \App\Services\SysConfigService::getConfig($code);
     }
 }
 

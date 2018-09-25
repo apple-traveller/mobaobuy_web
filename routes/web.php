@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/verifyCode', 'VerifyCodeController@create');
+Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 
 
 //后台
@@ -133,62 +135,84 @@ Route::group(['middleware'=>'admin.auth'],function(){
 });
 
 
-
-Route::get('/SysCacheSet', 'Web\SysConfigController@sysCacheSet');//系统配置信息
-Route::get('/SysCacheClean', 'Web\SysConfigController@sysCacheClean');
-
 Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
 
+Route::group(['namespace'=>'Web'],function() {
+    Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
+    Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
 
-Route::get('/userRegister','Web\UserLoginController@userRegister');//注册
-Route::post('/userRegister','Web\UserLoginController@userRegister');
-Route::get('/userLogin','Web\UserLoginController@showLoginForm')->name('login');//登陆
-Route::post('/userLogin','Web\UserLoginController@login');
-Route::post('/messageCode','Web\UserLoginController@getMessageCode');//注册验证码
+    Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
+    Route::post('/userRegister', 'UserController@userRegister');
+    Route::get('/firmRegister', 'UserController@firmRegister')->name('firmRegister');//企业注册
+    Route::post('/firmRegister', 'UserController@firmRegister');
+
+    Route::get('/login', 'UserController@showLoginForm')->name('login');//登陆
+    Route::post('/login', 'UserController@login');
+
+    Route::group(['middleware' => 'web.auth'], function () {
+        Route::get('/logout', 'UserController@logout');//登出
+        Route::get('/', 'IndexController@index'); //首页
+
+        Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
+        Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
+
+        Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
+        Route::post('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
+        Route::post('/addFirmUser', 'FirmUserController@addFirmUser');//企业会员绑定权限
+
+        Route::get('/invoices','UserController@invoicesList');//会员发票
+        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
+        Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
+        Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
+        Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+
+        Route::get('/addressList','UserController@shopAddressList');//收货地址列表
+        Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
+        Route::post('/createAddressList','UserController@addShopAddress');
+        Route::post('/getCity','UserController@getCity');//通过省获取市
+        Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
+        Route::post('/editAddressList','UserController@updateShopAddress');
+
+        Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
+        Route::post('/updatePwd','UserController@userUpdatePwd');
+        Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
+        Route::post('/forgotPwd','UserController@userForgotPwd');
+        Route::post('/getCode','UserController@userForgotCode');//重置密码获取验证码
+
+        Route::get('/paypwd', 'UserController@setPayPwd');//设置支付密码
+        Route::post('/paypwd', 'UserController@setPayPwd');
+        Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
+
+        Route::resource('goodsCate', 'GoodsCategoryController');//产品信息
+
+        Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
+        Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
+        Route::post('/addStockIn','FirmStockController@addFirmStock');
+
+        Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
+        Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
+        Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
 
 
-//Route::get('/firmRegister','Web\FirmLoginController@firmRegister');公司注册
-//Route::post('/firmRegister','Web\FirmLoginController@firmRegister');
-
-//用户信息完善
-Route::group(['middleware'=>'web.auth','namespace'=>'Web'],function(){
-    Route::get('/updateUserInfo','UserController@userUpdate');//用户信息编辑
-    Route::post('/updateUserInfo','UserController@userUpdate');//用户信息保存
-
-    Route::get('/createFirmUser','FirmUserController@createFirmUser');//企业会员绑定
-    Route::post('/createFirmUser','FirmUserController@createFirmUser');//企业会员绑定
-    Route::post('/addFirmUser','FirmUserController@addFirmUser');//企业会员绑定权限
-
-    Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
-    Route::post('/updatePwd','UserController@userUpdatePwd');
-    Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
-    Route::post('/forgotPwd','UserController@userForgotPwd');
-    Route::post('/getCode','UserController@userForgotCode');//重置密码获取验证码
-
-    Route::get('/paypwd','UserController@setPayPwd');//设置支付密码
-    Route::post('/paypwd','UserController@setPayPwd');
-    Route::post('/paypwdByCode','UserController@sendCodeByPay');//支付密码获取验证码
-
-    Route::resource('goodsCate','GoodsCategoryController');//产品信息
-
-    Route::get('/','IndexController@index');
-    Route::get('/logout','UserLoginController@logout');//登出
+        Route::get('/','IndexController@index');//主页
+        Route::get('/logout','UserLoginController@logout');//登出
+    });
 });
+
 
 //商户
-Route::group(['domain'=>''], function (){
-    Route::group(['namespace'=>'Web','prefix'=>'shop'],function (){
-        Route::get('/login.html','ShopLoginController@login');
-        Route::post('/login','ShopLoginController@login');
-        Route::get('/register.html','ShopLoginController@register');
-        Route::post('/register','ShopLoginController@register');
-        Route::post('/getSmsCode','ShopLoginController@getSmsCode');
+Route::group(['namespace' => 'seller'], function () {
+    Route::group(['middleware' => 'seller.auth'], function () {
+        Route::get('/login.html', 'ShopLoginController@login');
+        Route::post('/login', 'ShopLoginController@login');
+        Route::get('/register.html', 'ShopLoginController@register');
+        Route::post('/register', 'ShopLoginController@register');
+        Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');
     });
-
 });
 
-
-
+Route::pattern('path','.+');
+Route::any('{path}', 'CommonController@route');
 
 
 

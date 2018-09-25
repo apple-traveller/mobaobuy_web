@@ -73,7 +73,7 @@ class SmsObj implements SmsInterface
      * 发送短信
      * @return stdClass
      */
-    public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
+    public function sendSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName, $outId = 0)
     {
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();
@@ -91,7 +91,7 @@ class SmsObj implements SmsInterface
         $request->setTemplateCode($temp_id);
 
         // 可选，设置模板参数, 假如模板中存在变量需要替换则为必填项
-        $request->setTemplateParam(json_encode($templateParam['code'], JSON_UNESCAPED_UNICODE));
+        $request->setTemplateParam(json_encode($templateParam, JSON_UNESCAPED_UNICODE));
 
         // 可选，设置流水号
         $request->setOutId($outId);
@@ -109,7 +109,7 @@ class SmsObj implements SmsInterface
      * 批量发送短信
      * @return stdClass
      */
-    public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
+    public function sendBatchSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName)
     {
 
         $phoneNumbers = implode(',',$phoneNumbers);
@@ -131,7 +131,7 @@ class SmsObj implements SmsInterface
 
         // 必填:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         // 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
-        $request->setTemplateParamJson(json_encode($templateParam['code'], JSON_UNESCAPED_UNICODE));
+        $request->setTemplateParamJson(json_encode($templateParam, JSON_UNESCAPED_UNICODE));
 
         // 可选-上行短信扩展码(扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段)
         // $request->setSmsUpExtendCodeJson("[\"90997\",\"90998\"]");

@@ -11,5 +11,4 @@ namespace App\Repositories;
 class UserRepo
 {
     use CommonRepo;
-
 }

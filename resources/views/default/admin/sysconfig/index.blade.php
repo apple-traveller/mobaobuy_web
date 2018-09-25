@@ -26,7 +26,7 @@
                     <form enctype="multipart/form-data" name="theForm" action="/admin/sysconfig/modify" method="post" id="shopConfigForm" novalidate="novalidate" class="visible">
                         <div class="switch_info shopConfig_switch visible">
 
-                            @foreach($childConfids as $vo)
+                            @foreach($childConfigs as $vo)
                                 <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                                 <input type="hidden" name="parent_id" value="{{$parent_id}}"/>
                             <div class="item shop_name" data-val="101">
@@ -37,36 +37,18 @@
                                         <div class="form_prompt"></div>
                                         <div class="notic">{{$vo['config_desc']}}</div>
                                     @elseif($vo['type']=='select')
-                                        @if($vo['code']=='template'||$vo['code']=='admin_template'||$vo['code']=='shop_template')
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option @if($vo['value']=='default') selected @endif value="default">默认</option>
+                                        @php
+                                        $items = explode(',', $vo['store_range']);
+                                        @endphp
 
-                                            </select>
-                                        @elseif($vo['code']=='upload_size_limit')
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option @if($vo['value']==512) selected @endif value="512k">512k</option>
-                                                <option @if($vo['value']==1024) selected @endif value="1024">1M</option>
-                                                <option @if($vo['value']==2048) selected @endif value="2048">2M</option>
-                                                <option @if($vo['value']==4096) selected @endif value="4096">4M</option>
-                                            </select>
-                                        @elseif($vo['code']=='visit_stats')
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option @if($vo['value']==0) selected @endif value="0">关闭</option>
-                                                <option @if($vo['value']==1) selected @endif value="1">开启</option>
-                                            </select>
-                                        @elseif($vo['code']=='stock_dec_time')
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option @if($vo['value']==1) selected @endif value="1">加入购物车</option>
-                                                <option @if($vo['value']==2) selected @endif value="2">下单时</option>
-                                                <option @if($vo['value']==3) selected @endif value="3">付款时</option>
-                                                <option @if($vo['value']==4) selected @endif value="4">发货时</option>
-                                            </select>
-                                        @else
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
-                                                <option @if($vo['value']==0) selected @endif value="0">否</option>
-                                                <option @if($vo['value']==1) selected @endif value="1">是</option>
-                                            </select>
-                                        @endif
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
+                                        @foreach($items as $item)
+                                            @php
+                                                $arr = explode('|', $item);
+                                            @endphp
+                                            <option @if($vo['value'] == $arr[0]) selected @endif value="{{$arr[0]}}">{{$arr[1]}}</option>
+                                        @endforeach
+                                        </select>
                                     @elseif($vo['type']=='textarea')
                                         <textarea class="textarea"  name="{{$vo['code']}}" id="{{$vo['code']}}">{{$vo['value']}}</textarea>
                                         <div class="form_prompt"></div>
@@ -94,9 +76,6 @@
         </div>
     </div>
     <script type="text/javascript">
-        // $(".changColr").click(function(){
-        //     $(this).addClass('curr');
-        // });
         var tag_token = $("#_token").val();
         layui.use(['upload','layer'], function(){
             var upload = layui.upload;

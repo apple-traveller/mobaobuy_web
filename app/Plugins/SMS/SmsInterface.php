@@ -12,7 +12,7 @@ interface SmsInterface{
 
     public function setConfig($config);
 
-    public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0);
+    public function sendSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName, $outId = 0);
 
-    public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam);
+    public function sendBatchSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName);
 }

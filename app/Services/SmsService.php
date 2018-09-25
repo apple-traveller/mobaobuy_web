@@ -30,57 +30,36 @@ class SmsService
         // 判断配置是否存在
         if (file_exists($sms_dir)){
             require_once $sms_dir;
-            $sms = new \SmsObj();
         } else {
-          self::throwBizError('配置文件不存在');
+            self::throwBizError('配置文件不存在');
         }
 
         $config = json_decode($smsSupplier['supplier_config'],true);
 
+        $sms = new \SmsObj();
         $sms->setConfig($config);
 
+        // 取得模板内容
         $where = [
             'supplier_id'=>$smsSupplier['id'],
             'type_code'=> $type
         ];
-
-        // 取得模板内容
-        $tempInfo = SmsTempRepo::getTemp($where);
+        $tempInfo = SmsTempRepo::getInfoByFields($where);
         if (empty($tempInfo)){
             self::throwBizError('没有模板信息');
         }
 
-        $templateParam = [
-            'code' => $params,
-            'temp_content' => $tempInfo['temp_content']
+        $rs = $sms->sendSms($phoneNumbers, $tempInfo['temp_id'], $tempInfo['temp_content'], $params, $tempInfo['set_sign'], $outId = 0);
+
+        $log_info = [
+            'template_id' => $tempInfo['id'],
+            'phone_numbers' => $phoneNumbers,
+            'params' => json_encode($params, JSON_UNESCAPED_UNICODE),
+            'sms_rs' => $rs,
+            'sent_time' => Carbon::now()
         ];
 
-         try{
-             $re =  $sms->sendSms($phoneNumbers, $tempInfo['id'], $tempInfo['set_sign'], $templateParam, $outId = 0);
-             if ($re){
-                 if (is_array($phoneNumbers)){
-                     $phone_numbers = implode(',',$phoneNumbers);
-                 } else {
-                     $phone_numbers = $phoneNumbers;
-                 }
-                 $_params = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$tempInfo['set_sign']}】";
-                 $log_data = [
-                     'template_id'=>$tempInfo['id'],
-                     'phone_numbers'=>$phone_numbers,
-                     'params'=>$_params,
-                     'sms_rs'=>$re,
-                     'sent_time'=>Carbon::now()
-                 ];
-                 SmsSendLogRepo::create($log_data);
-                 return $re;
-             } else {
-                 throwException('发送失败');
-             }
-
-         }catch (\Exception $e){
-             throw $e;
-         }
-
+        SmsSendLogRepo::create($log_info);
     }
 
     /**

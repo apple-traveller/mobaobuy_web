@@ -12,14 +12,15 @@ class SysConfigController extends Controller
     public function index(Request $request)
     {
         //查询所有配置信息
-        $topConfigs = SysConfigService::getInfo($parent_id=0);
+        $topConfigs = SysConfigService::getTopList();
         //获取父类配置的子类配置
-        $parent_id = $request->input('parent_id',1);
-        $childConfids = SysConfigService::getInfo($parent_id);
-        //dd($configs);
+        $parent_id = $request->input('parent_id', $topConfigs[0]['id']);
+
+        $childConfigs = SysConfigService::getListByParentID($parent_id);
+
         return $this->display('admin.sysconfig.index',
             ['topConfigs'=>$topConfigs,
-                'childConfids'=>$childConfids,
+                'childConfigs' => $childConfigs,
                  'parent_id'=>$parent_id
             ]);
     }

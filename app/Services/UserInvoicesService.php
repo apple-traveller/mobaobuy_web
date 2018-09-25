@@ -2,11 +2,13 @@
 namespace App\Services;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserInvoicesRepo;
+use Carbon\Carbon;
 
 class UserInvoicesService
 {
     use CommonService;
     public static function create($data){
+        $data['add_time'] = Carbon::now();
         return UserInvoicesRepo::create($data);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\UserService;
 use Closure;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
@@ -10,40 +11,22 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 
-class WebSessionAuth
+class WebAuthenticate
 {
     public function handle($request, Closure $next, $guard = null)
     {
-        //var_dump($request->getRequestUri());
-        session()->put('theme','default');
-        if(empty(session('_web_info'))){
-            //web统计
-            $ip = $request->getClientIp();
-            $json=file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip='.'116.226.54.5');
-            $arr=json_decode($json);
-            $province =  $arr->data->region;    //省份
-            $city = $arr->data->city;    //城市
-            $visitTimes = 1;
-            $uri = $this->Get_Uri();
-            $carbon = substr(Carbon::now(),0,10);
-            $browser = $this->Get_Browser();
-            $os = $this->Get_Os();
-            $url = $this->Get_Url();
-            $domain = $this->Get_Domain();
 
-//            $res = DB::select('select * from stats where ip_address = ? and access_time = ?',[$ip,$carbon]);
-//            if($res){
-//                $result = array_map('get_object_vars', $res);
-//                DB::update('update stats set visit_times = ? where id = ?',[$result[0]['visit_times']+1,$result[0]['id']]);
-//            }else{
-//                DB::insert('insert into stats
-//                (access_time,ip_address,visit_times,browser,system,area,referer_domain,referer_path,access_url) values
-//                (?,?,?,?,?,?,?,?,?)',[$carbon,$ip,$visitTimes,$browser,$os,$city,$domain,$url,$uri]);
-//            }
-            return redirect('/userLogin');
+        if(empty(session('_web_user_id'))){
+            return redirect(route('login'));
         }
 
-//        if(session('_web_info')['log_info'] == '个人会员登陆'){
+        //缓存用户的基本信息
+        if(!session()->has('_web_user')){
+            $user_info = UserService::getInfo(session('_web_user_id'));
+            session()->put('_web_user', $user_info);
+        }
+
+//        if(session('_web_info')['is_firm']){
 //
 //        }
         //判断用户初始化权限
