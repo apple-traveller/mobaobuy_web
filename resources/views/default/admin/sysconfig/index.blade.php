@@ -56,7 +56,7 @@
                                     @elseif($vo['type']=='file')
                                         <button type="button" class="layui-btn" id="avatar_{{$vo['code']}}">上传图片</button>
                                         <input type="text" value="{{$vo['value']}}" class="text" id="{{$vo['code']}}" name="{{$vo['code']}}"  style="display:none;">
-                                        <img @if(empty($vo['value'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;"   @endif src="{{$vo['value']}}"  class="layui-upload-img" id="demo1" ><br/>
+                                        <img @if(empty($vo['value'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{$vo['value']}}"  @endif   class="layui-upload-img" id="demo1" ><br/>
                                     @endif
                                 </div>
                             </div>

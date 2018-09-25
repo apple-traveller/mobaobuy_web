@@ -12,24 +12,11 @@ use App\Repositories\FirmRepo;
 use App\Repositories\FirmBlacklistRepo;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use App\Services\GsxxService;
 
 class UserLoginService
 {
     use CommonService;
-
-
-
-    //
-    public static function getInfo($id)
-    {
-        return UserRepo::getInfo($id);
-    }
-
-
-
-
-
-
 
     //完善信息
     public static function updateUserInfo($id, $data)

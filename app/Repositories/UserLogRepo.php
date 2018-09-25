@@ -12,27 +12,4 @@ class UserLogRepo
 {
     use CommonRepo;
 
-
-    //获取上一次ip信息,登陆时间,日志条数
-    public static function getLogsInfo($user_id)
-    {
-        $clazz = self::getBaseModel();
-        $count = $clazz::where('user_id',$user_id)->count();
-        if($count>0){
-            $info = $clazz::where('user_id',$user_id)->select('ip_address','log_time')->orderBy('id','desc')->first()->toArray();
-            if($info)
-            {
-                $info['count'] = $count;
-                return $info;
-            }
-            return 'error';
-        }
-        return 'error';
-    }
-
-
-
-
-
-
 }

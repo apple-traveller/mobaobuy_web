@@ -23,4 +23,18 @@ class BrandService
         return BrandRepo::getInfo($id);
     }
 
+    //唯一性验证
+    public static function uniqueValidate($brand_name)
+    {
+        $flag = BrandRepo::getInfoByFields(['brand_name'=>$brand_name]);
+        if($flag){
+            self::throwBizError('该品牌名称已经存在');
+        }
+    }
+
+    //保存
+    public static function create($data)
+    {
+        return BrandRepo::create($data);
+    }
 }

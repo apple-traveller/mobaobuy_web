@@ -26,7 +26,7 @@ class WebAuthenticate
             session()->put('_web_user', $user_info);
         }
 
-//        if(session('_web_info')['log_info'] == '个人会员登陆'){
+//        if(session('_web_info')['is_firm']){
 //
 //        }
         //判断用户初始化权限

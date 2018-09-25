@@ -19,6 +19,9 @@ class SmsService
 
     public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
     {
+        if (empty($phoneNumbers)){
+            self::throwBizError('手机号不能为空');
+        }
         // 取得配置的服务商Code
         $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
         $Code = $smsSupplier['supplier_code'];
@@ -55,6 +58,7 @@ class SmsService
             'sms_rs' => $rs,
             'sent_time' => Carbon::now()
         ];
+
         SmsSendLogRepo::create($log_info);
     }
 
@@ -67,6 +71,9 @@ class SmsService
      */
     public static function sendBatchSms($phoneNumbers, $type, $params)
     {
+        if (empty($phoneNumbers)){
+            self::throwBizError('手机号不能为空');
+        }
         // 取得配置的服务商Code
         $smsSupplier = SmsSupplierRepo::getInfoByFields(['is_checked'=>1]);
         $Code = $smsSupplier['supplier_code'];
@@ -100,7 +107,45 @@ class SmsService
             'code' => $params,
             'temp_content' => $tempInfo['temp_content']
         ];
+        try{
+        $re =  $sms->sendBatchSms($phoneNumbers, $tempInfo['id'], $tempInfo['set_sign'], $templateParam);
+            if ($re){
+                if (is_array($phoneNumbers)){
+                    $phone_numbers = implode(',',$phoneNumbers);
+                } else {
+                    $phone_numbers = $phoneNumbers;
+                }
+                $_params = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$tempInfo['set_sign']}】";
+                $log_data = [
+                    'template_id'=>$tempInfo['id'],
+                    'phone_numbers'=>$phone_numbers,
+                    'params'=>$_params,
+                    'sms_rs'=>$re,
+                    'sent_time'=>Carbon::now()
+                ];
+                SmsSendLogRepo::create($log_data);
+                return $re;
+            } else {
+                throwException('发送失败');
+            }
 
-        return $sms->sendBatchSms($phoneNumbers, $tempInfo['id'], $tempInfo['set_sign'], $templateParam);
+        }catch (\Exception $e){
+            throw $e;
+        }
+    }
+
+    /**
+     * 获取一个自定义长度的随机数
+     * @param int $length
+     * @param string $content
+     * @return string
+     */
+    public static function getRandom($length=6,$content='123456789'){
+        $string = '';
+        for ( $i = 0; $i < $length; $i++ )
+        {
+            $string .= $content[mt_rand(0, strlen($content) - 1)];
+        }
+        return $string;
     }
 }

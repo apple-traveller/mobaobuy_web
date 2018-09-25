@@ -37,11 +37,12 @@ class FirmUserController extends Controller
 //            ];
 
          $userName = $request->input('user_name');
+         $firmId = session('_web_info')['id'];
             try{
-                $userInfo = FirmUserService::search($userName);
+                $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
             }catch (\Exception $e){
-                return json_encode(array('code'=>0,'msg'=>'error'));
+                return json_encode(array('code'=>0,'info'=>$e->getMessage()));
             }
 
         }
@@ -51,6 +52,7 @@ class FirmUserController extends Controller
     public function addFirmUser(Request $request){
         $firmId = session('_web_info')['id'];
         $userId = $request->input('user_id');
+        $userName = $request->input('user_name');
         if(!$firmId || !$userId){
             return json_encode(array('code'=>0,'msg'=>'企业和用户id为空'));
         }
@@ -58,10 +60,10 @@ class FirmUserController extends Controller
         //$permi数组1能采购 2能付款 3能收货 4能其它入库 5能库存出库
 
         try{
-            $firmInfo = FirmUserService::create($firmId,$userId,$permi);
+            $firmInfo = FirmUserService::create($firmId,$userId,$permi,$userName);
             return json_encode(array('code'=>1,'msg'=>$firmInfo));
         }catch (\Exception $e){
-            return $this->error($e->getMessage());
+            return json_encode(array('code'=>0,'msg'=>$e->getMessage()));
         }
     }
 
