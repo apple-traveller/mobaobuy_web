@@ -29,6 +29,7 @@ class LoginController extends Controller
     }
     /*
      * 登录逻辑
+     *
      */
     public function login(Request $request)
     {
@@ -48,7 +49,6 @@ class LoginController extends Controller
 
         try{
             $user_info = AdminService::loginValidate($username, $password);
-
             $adminLog=[
                 'admin_id'=>1,
                 'real_name'=>$user_info['real_name'],
@@ -56,9 +56,7 @@ class LoginController extends Controller
                 'ip_address'=>$request->getClientIp(),
                 'log_info'=>"登录"
             ];
-
             $flag = AdminLogService::create($adminLog);
-
             if(!$flag){
                 return $this->result('','0',"登录失败");
             }
@@ -68,10 +66,6 @@ class LoginController extends Controller
         }catch(\Exception $e){
             return $this->result('','0',$e->getMessage());
         }
-
-
-
-
     }
 
     /**

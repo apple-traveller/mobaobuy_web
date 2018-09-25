@@ -118,6 +118,7 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/shop/editForm', 'Admin\ShopController@editForm');//修改店铺
     Route::post('/admin/shop/save', 'Admin\ShopController@save');//保存
     Route::post('/admin/shop/sort', 'Admin\ShopController@sort');//排序
+    Route::post('/admin/shop/getUsers', 'Admin\ShopController@getUsers');//查询用户
     Route::get('/admin/shop/delete', 'Admin\ShopController@delete');//删除
 
     Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化

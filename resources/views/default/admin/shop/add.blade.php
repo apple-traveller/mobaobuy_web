@@ -11,6 +11,18 @@
                         <div class="switch_info" style="display: block;">
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;会员：</div>
+                                <div class="label_value">
+                                    <input type="text" name="nick_name" class="text" value="" maxlength="40" autocomplete="off" id="nick_name">
+                                    <input type="hidden" name="user_id" class="text" value="" maxlength="40" autocomplete="off" id="user_id">
+                                    <ul class="query" style="position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
+
+                                    </ul>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_name" class="text" value="" maxlength="40" autocomplete="off" id="shop_name">
@@ -49,7 +61,7 @@
                                 <div class="label_value">
                                     <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar_attorney_letter_fileImg">上传图片</button>
                                     <input type="hidden"  value="" class="text" id="attorney_letter_fileImg" name="attorney_letter_fileImg" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo_attorney_letter_fileImg " >
+                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo_attorney_letter_fileImg" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -65,50 +77,43 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品属性：</div>
+                                <div class="label"><span class="require-field">*</span>营业执照注册号：</div>
                                 <div class="label_value">
-                                    <div class="attribute"></div>
-                                    <input type="hidden" id="goods_attr" name="goods_attr">
+                                    <input type="text" name="business_license_id" class="text" value="" maxlength="40" autocomplete="off" id="business_license_id">
                                     <div class="form_prompt"></div>
-                                    <div class="layui-btn attr-btn"  style="margin-top:5px;">
-                                        <i class="layui-icon">&#xe608;</i> 添加属性
-                                    </div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>纳税人识别号：</div>
+                                <div class="label_value">
+                                    <input type="text" name="taxpayer_id" class="text" value="" maxlength="40" autocomplete="off" id="taxpayer_id">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_self_run" id="is_self_run">
+                                        <option value="0">否</option>
+                                        <option selected  value="1">是</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;市场价：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
-                                    <input type="text" name="market_price" class="text" value="" maxlength="40" autocomplete="off" id="market_price">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_validated" id="is_validated">
+                                        <option value="0">否</option>
+                                        <option selected value="1">是</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品重量：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_weight" class="text" value="" maxlength="40" autocomplete="off" id="goods_weight">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;pc商品详情：</div>
-                                <div class="label_value">
-                                    <script id="goods_desc" name="goods_desc" type="text/plain"></script>
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;移动端商品详情：</div>
-                                <div class="label_value">
-                                    <script id="desc_mobile" name="desc_mobile" type="text/plain"></script>
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
 
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
                             <div class="item">
@@ -124,57 +129,26 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.config.js')}}"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.all.js')}}"></script>
-    <!-- 实例化编辑器 -->
-    <script type="text/javascript">
-        var ue = UE.getEditor('goods_desc',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
-        });
-        var ue2 = UE.getEditor('desc_mobile',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
-        });
-    </script>
+
     <script type="text/javascript">
         var tag_token = $("#_token").val();
 
         layui.use(['upload','layer'], function() {
             var upload = layui.upload;
             var layer = layui.layer;
-            var index = 0;
-
-            //添加属性
-            $(".attr-btn").click(function () {
-                index = layer.open({
-                    type: 1,
-                    title: '添加属性',
-                    area: ['500px', '300px'],
-                    content: '<div style="position: relative;"> <input  type="text"  attr-id="" style="margin-left:20px;width:130px;" placeholder="属性名" class="text attr_name" />' +
-                    '<ul class="query" style="position: absolute;top: 30px;left:20px;background: #fff;width: 152px; box-shadow: 1px 1px 1px 1px #dedede;">' +
-                    '</ul>' +
-                    '<input type="text" attr-value-id=""  style="width:130px;" placeholder="属性值" class="text attr_value" >' +
-                    '<ul class="query1" style="position: absolute;top: 30px;left: 188px;background: #fff;width: 144px; box-shadow: 1px 1px 1px 1px #dedede;">' +
-                    '</ul></div>' +
-                    '<div><button  class="layui-btn layui-btn-sm layui-btn-danger">确定</button></div>'
-                });
-
-            });
-
             //文件上传
             var uploadInst = upload.render({
-                elem: '#avatar1' //绑定元素
+                elem: '#avatar_attorney_letter_fileImg' //绑定元素
                 , url: "/uploadImg" //上传接口
                 , accept: 'file'
                 , data: {'_token': tag_token}
                 , done: function (res) {
                     //上传完毕回调
                     if (200 == res.code) {
-                        $("#demo1").show();
-                        $('#goods_thumb').val(res.data);
-                        $("#demo1").attr('src', res.data);
+                        $("#demo_attorney_letter_fileImg").show();
+                        $('#attorney_letter_fileImg').val(res.data);
+                        $("#demo_attorney_letter_fileImg").parent('div').children(".form_prompt").remove();
+                        $("#demo_attorney_letter_fileImg").attr('src', res.data);
                         layer.msg(res.msg, {time: 2000});
                     } else {
                         layer.msg(res.msg, {time: 2000});
@@ -184,16 +158,17 @@
 
             //文件上传
             var uploadInst = upload.render({
-                elem: '#avatar2' //绑定元素
+                elem: '#avatar_license_fileImg' //绑定元素
                 , url: "/uploadImg" //上传接口
                 , accept: 'file'
                 , data: {'_token': tag_token}
                 , done: function (res) {
                     //上传完毕回调
                     if (200 == res.code) {
-                        $("#demo2").show();
-                        $('#goods_img').val(res.data);
-                        $("#demo2").attr('src', res.data);
+                        $("#demo_license_fileImg").show();
+                        $('#license_fileImg').val(res.data);
+                        $("#license_fileImg").parent('div').children(".form_prompt").remove();
+                        $("#demo_license_fileImg").attr('src', res.data);
                         layer.msg(res.msg, {time: 2000});
                     } else {
                         layer.msg(res.msg, {time: 2000});
@@ -201,24 +176,40 @@
                 }
             });
 
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar3' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo3").show();
-                        $('#original_img').val(res.data);
-                        $("#demo3").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
+
+        });
+
+        $("#nick_name").focus(function(){
+            $.post('/admin/shop/getUsers',{'_token':tag_token},function(res){
+                if(res.code==200){
+                    var data = res.data;
+                    for(var i=0;i<data.length;i++){
+                        $(".query").append('<li class="searchAttr" data-id="'+data[i].id+'" style="cursor: pointer;padding-left: 10px;box-sizing: border-box;">'+data[i].nick_name+'</li>');
                     }
                 }
-            });
+            },"json");
+        });
+
+        //user_id输入框模糊查询
+        $("#nick_name").bind("input propertychange",function(res){
+            var nick_name = $(this).val();
+            $(".query").children().filter("li").remove();
+            $.post('/admin/shop/getUsers',{'nick_name':nick_name,'_token':tag_token},function(res){
+                if(res.code==200){
+                    var data = res.data;
+                    for(var i=0;i<data.length;i++){
+                        $(".query").append('<li class="searchAttr" data-id="'+data[i].id+'" style="cursor: pointer;padding-left: 10px;box-sizing: border-box;">'+data[i].nick_name+'</li>');
+                    }
+                }
+            },"json");
+        });
+
+        $(document).delegate(".searchAttr","click",function(){
+            var nick_name = $(this).text();
+            var user_id = $(this).attr('data-id');
+            $("#user_id").val(user_id);
+            $("#nick_name").val(nick_name);
+            $(".query").children().filter("li").remove();
         });
 
         $(function(){
@@ -237,96 +228,62 @@
                 },
                 ignore : [],
                 rules:{
-                    goods_name :{
+                    shop_name :{
                         required : true,
                     },
-                    goods_sn :{
+                    company_name :{
                         required : true,
                     },
-                    keywords:{
-                        required : true
+                    contactName:{
+                        required : true,
                     },
-                    brand_id:{
-                        required : true
-                    },
-                    unit_id:{
-                        required : true
-                    },
-                    goods_model:{
-                        required : true
-                    },
-                    packing_spec:{
+                    contactPhone:{
                         required : true,
                         number:true,
                     },
-                    packing_unit:{
-                        required : true
-                    },
-                    goods_thumb:{
-                        required : true
-                    },
-                    goods_img:{
-                        required : true
-                    },
-                    original_img:{
-                        required : true
-                    },
-                    market_price:{
+                    attorney_letter_fileImg:{
                         required : true,
-                        number:true
                     },
-                    goods_weight:{
+                    license_fileImg:{
                         required : true,
-                        number:true
                     },
-                    goods_attr:{
-                        required:true
+                    business_license_id:{
+                        required : true,
+                        number:true,
+                    },
+                    taxpayer_id:{
+                        required : true,
+                        number:true,
                     }
                 },
                 messages:{
-                    goods_name:{
+                    shop_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_sn :{
+                    company_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    brand_id :{
+                    contactName :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    unit_id :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    goods_model :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    packing_spec :{
+                    contactPhone :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
-                    packing_unit :{
+                    attorney_letter_fileImg :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_thumb :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    goods_img :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    original_img :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    market_price :{
+                    license_fileImg :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
-                    goods_weight :{
+                    business_license_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
-                    goods_attr :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
-                    },
-
+                    taxpayer_id :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    }
                 }
             });
         });

@@ -68,4 +68,19 @@ class ShopController extends Controller
     {
 
     }
+
+    public function getUsers(Request $request)
+    {
+        $nick_name = $request->input('nick_name');
+        $condition = [];
+        if(!empty($nick_name)){
+            $condition['nick_name']="%".$nick_name."%";
+        }
+        $users = ShopService::getUserList($condition);
+        if(!empty($users['list'])){
+            return $this->result($users['list'],200,'获取用户成功');
+        }else{
+            return $this->result('',400,'没有用户可以选择');
+        }
+    }
 }
