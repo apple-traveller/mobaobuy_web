@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\BrandService;
 class BrandController extends Controller
@@ -28,19 +29,58 @@ class BrandController extends Controller
 
     }
 
-    //编辑(修改状态)
-    public function modify(Request $request)
+    //添加
+    public function addForm(Request $request)
     {
-
+        return $this->display('admin.brand.add');
     }
 
-    //查看详情信息
-    public function detail(Request $request)
+    //编辑
+    public function editForm(Request $request)
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage');
-        $brands = BrandService::getBrandInfo($id);
-        return $this->display('admin.brand.detail');
+        $brand = BrandService::getBrandInfo($id);
+        return $this->display('admin.brand.edit',['currpage'=>$currpage,'brand'=>$brand]);
+    }
+
+    //保存
+    public function save(Request $request)
+    {
+        $data = $request->all();
+        $currpage = $data['currpage'];
+        unset($data['currpage']);
+        unset($data['_token']);
+        $errorMsg=[];
+        if(empty($data['brand_name'])){
+            $errorMsg[] = "品牌名称不能为空";
+        }
+        if(empty($data['brand_first_char'])){
+            $errorMsg[] = "品牌首字母不能为空";
+        }
+        if(empty($data['brand_logo'])){
+            $errorMsg[] = "品牌Logo不能为空";
+        }
+        if(!empty($errorMsg)){
+            return $this->error(implode("<br/>",$errorMsg));
+        }
+
+        try{
+            if(!key_exists('id',$data)){
+                BrandService::uniqueValidate($data['brand_name']);//唯一性验证
+                $data['add_time']=Carbon::now();
+                $info = BrandService::create($data);
+            }else{
+                $info = BrandService::modify($data['id'],$data);
+            }
+            if(!$info){
+                return $this->error('保存失败');
+            }
+            return $this->success('保存成功！',url("/admin/brand/list")."?currpage=".$currpage);
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
     }
 
     //修改状态（ajax）

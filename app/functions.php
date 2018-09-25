@@ -28,11 +28,11 @@ if(!function_exists('getValue')){
 if(!function_exists('status')){
     function status($status) {
         if($status == 1) {
-            $str = "<button class='layui-btn layui-btn-sm layui-btn-radius'>正常</button>";
+            $str = "<div class='layui-btn layui-btn-sm layui-btn-radius'>是</div>";
         }elseif($status ==0) {
-            $str = "<button class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>关闭</button>";
+            $str = "<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>否</div>";
         }else {
-            $str = "<button class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-disabled'>警用</button>";
+            $str = "<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>禁用</div>";
         }
         echo  $str;
     }
