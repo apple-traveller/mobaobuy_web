@@ -206,13 +206,18 @@ Route::group(['namespace'=>'Web'],function() {
 
 
 //商户
-Route::group(['namespace' => 'seller'], function () {
+Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
+    Route::get('/login.html', 'LoginController@login')->name('seller_login');
+    Route::post('/login', 'LoginController@login');
+    Route::get('/register.html', 'LoginController@register');
+    Route::post('/register', 'LoginController@register');
+    Route::post('/getSmsCode', 'LoginController@getSmsCode');
+    Route::get('/checkShopName', 'LoginController@checkShopName');
+    Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
-        Route::get('/login.html', 'ShopLoginController@login');
-        Route::post('/login', 'ShopLoginController@login');
-        Route::get('/register.html', 'ShopLoginController@register');
-        Route::post('/register', 'ShopLoginController@register');
-        Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');
+        Route::get('/test', function (){
+            return 'M test';
+        });
     });
 });
 
