@@ -9,12 +9,12 @@
 </head>
 <body>
 <h1>商户登陆</h1>
-<form action="/shop/login" method="post">
+<form action="/seller/login" method="post">
     @csrf
     用户名<input type="text" name="user_name" placeholder="请输入用户名"><br>
     密　码<input type="password" name="password"><br>
     <input type="submit" value="登陆">
-    <a href="/shop/register.html">注册</a>
+    <a href="/seller/register.html">注册</a>
 </form>
 </body>
 </html>

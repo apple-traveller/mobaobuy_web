@@ -5,29 +5,63 @@
  * Date: 2018-09-18
  * Time: 16:32
  */
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\GsxxService;
 use App\Services\ShopLoginService;
 use Illuminate\Http\Request;
 
-class ShopLoginController extends Controller
+class LoginController extends Controller
 {
     public function login(Request $request)
     {
         if ($request->isMethod('get')){
-            return view('default.web.shop.login');
+            return $this->display('seller.login');
         } else {
 
         }
         dd($request->all());
     }
 
+    /**
+     * 验证是否存在店铺名
+     * @param Request $request
+     * @return LoginController
+     */
+    public function checkShopName(Request $request)
+    {
+        $checkShopName = $request->input('shop_name','');
+        if (!$checkShopName){
+            return $this->error('参数为空');
+        }
+        $re = ShopLoginService::checkShopNameExists($checkShopName);
+        if ($re){
+            return $this->result([],200,'店铺已存在');
+        }
+        return $this->success('');
+    }
+
+    /**
+     * 验证企业(企查查等)
+     * @param Request $request
+     * @return LoginController
+     */
+    public function checkCompany(Request $request)
+    {
+        $CompanyName = $request->input('company_name','');
+        $re = GsxxService::GsSearch($CompanyName);
+        if ($re){
+            return $this->result([],'200','验证通过');
+        } else {
+            return $this->error('验证失败');
+        }
+    }
 
     public function register(Request $request)
     {
         if ($request->isMethod('get')){
-            return view('default.web.shop.register');
+            return $this->display('seller.register');
         } else {
             $shop = $request->input('shop_name','');
             $company_name = $request->input('company_name','');
