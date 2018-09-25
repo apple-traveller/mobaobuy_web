@@ -45,12 +45,12 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/region/delete', 'Admin\RegionController@delete');//地区删除
     Route::post('/admin/region/modify', 'Admin\RegionController@modify');//地区修改
 
-    Route::get('/admin/goodscategory/list', 'Admin\GoodsCategoryController@list');//商品分类列表
-    Route::get('/admin/goodscategory/addForm', 'Admin\GoodsCategoryController@addForm');//商品分类添加
-    Route::post('/admin/goodscategory/save', 'Admin\GoodsCategoryController@save');//商品分类保存
-    Route::get('/admin/goodscategory/delete', 'Admin\GoodsCategoryController@delete');//商品分类删除
-    Route::get('/admin/goodscategory/editForm', 'Admin\GoodsCategoryController@editForm');//商品分类编辑
-    Route::post('/admin/goodscategory/sort', 'Admin\GoodsCategoryController@sort');//商品分类排序
+    Route::get('/admin/goodscategory/list', 'Admin\GoodsCategoryController@list');//产品分类列表
+    Route::get('/admin/goodscategory/addForm', 'Admin\GoodsCategoryController@addForm');//产品分类添加
+    Route::post('/admin/goodscategory/save', 'Admin\GoodsCategoryController@save');//产品分类保存
+    Route::get('/admin/goodscategory/delete', 'Admin\GoodsCategoryController@delete');//产品分类删除
+    Route::get('/admin/goodscategory/editForm', 'Admin\GoodsCategoryController@editForm');//产品分类编辑
+    Route::post('/admin/goodscategory/sort', 'Admin\GoodsCategoryController@sort');//产品分类排序
     Route::post('/admin/goodscategory/upload', 'Admin\GoodsCategoryController@upload');//上传自定义图标
 
     Route::get('/admin/sysconfig/index', 'Admin\SysConfigController@index');//平台配置首页
@@ -109,6 +109,16 @@ Route::group(['middleware'=>'admin.auth'],function(){
     Route::get('/admin/unit/list', 'Admin\UnitController@list');//单位列表
     Route::get('/admin/unit/addForm', 'Admin\UnitController@addForm');//添加单位
     Route::get('/admin/unit/editForm', 'Admin\UnitController@editForm');//修改单位
+    Route::post('/admin/unit/save', 'Admin\UnitController@save');//保存
+    Route::post('/admin/unit/sort', 'Admin\UnitController@sort');//排序
+    Route::get('/admin/unit/delete', 'Admin\UnitController@delete');//删除
+
+    Route::get('/admin/shop/list', 'Admin\ShopController@list');//入驻店铺列表
+    Route::get('/admin/shop/addForm', 'Admin\ShopController@addForm');//添加店铺
+    Route::get('/admin/shop/editForm', 'Admin\ShopController@editForm');//修改店铺
+    Route::post('/admin/shop/save', 'Admin\ShopController@save');//保存
+    Route::post('/admin/shop/sort', 'Admin\ShopController@sort');//排序
+    Route::get('/admin/shop/delete', 'Admin\ShopController@delete');//删除
 
     Route::get('/template/index', 'Admin\TemplateController@index');//首页可视化
     Route::get('/template/decorate', 'Admin\TemplateController@decorate');//装修模板

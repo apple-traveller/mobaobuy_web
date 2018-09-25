@@ -17,10 +17,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_01_system"></i><h4>设置</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/sysconfig/index" data-param="" target="workspace">商店设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/link/list" data-param="" target="workspace">友情链接</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/seo/index" data-param="" target="workspace">SEO设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/nav/list" data-param="" target="workspace">自定义导航栏</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/sysconfig/index" data-param="menuplatform|ad_list1" target="workspace">商店设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/link/list" data-param="menuplatform|ad_list2" target="workspace">友情链接</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/seo/index" data-param="menuplatform|ad_list3" target="workspace">SEO设置</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/nav/list" data-param="menuplatform|ad_list4" target="workspace">自定义导航栏</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,10 +122,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_cat_and_goods"></i><h4>商品管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/goods/list" data-param="menushopping|01_goods_list" target="workspace">产品列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/goods/list" data-param="menushopping|01_goods_list" target="workspace">产品列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/goodscategory/list" data-param="menushopping|03_category_manage" target="workspace">产品分类</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/brand/list" data-param="menushopping|05_comment_manage" target="workspace">品牌管理</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/unit/list" data-param="menushopping|05_comment_manage" target="workspace">产品单位管理</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/unit/list" data-param="menushopping|06_comment_manage" target="workspace">产品单位管理</a></li>
                     </ul>
                 </div>
             </div>
@@ -203,14 +203,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_17_merchants"></i><h4>店铺管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="merchants_steps.php?act=step_up" data-param="menushopping|01_seller_stepup" target="workspace">店铺设置</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="merchants_users_list.php?act=list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="merchants_commission.php?act=list" data-param="menushopping|03_merchants_commission" target="workspace">店铺结算</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="seller_domain.php?act=list" data-param="menushopping|09_seller_domain" target="workspace">店铺域名</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="merchants_account.php?act=list&amp;act_type=merchants_seller_account" data-param="menushopping|12_seller_account" target="workspace">店铺账户</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="offline_store.php?act=list&amp;type=1" data-param="menushopping|12_seller_store" target="workspace">店铺门店</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="comment_seller.php?act=list" data-param="menushopping|13_comment_seller_rank" target="workspace">店铺满意度</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="user_real.php?act=list&amp;user_type=1" data-param="menushopping|16_users_real" target="workspace">实名认证</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺列表</a></li>
+
                     </ul>
                 </div>
             </div>

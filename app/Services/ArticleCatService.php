@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\ArticleCatRepo;
+use App\Repositories\ArticleRepo;
 class ArticleCatService
 {
     use CommonService;
@@ -44,6 +45,10 @@ class ArticleCatService
     {
         try{
             foreach($ids as $k=>$v){
+                $article = ArticleRepo::getInfo($v);
+                if(!empty($article)){
+                    self::throwBizError('该分类下有文章，不能删除');
+                }
                 $info = ArticleCatRepo::delete($v);
                 if(!$info){
                     return false;
