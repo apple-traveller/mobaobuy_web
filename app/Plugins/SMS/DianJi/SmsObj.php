@@ -31,15 +31,15 @@ class SmsObj implements SmsInterface
      * @param $templateParam
      * @param int $outId
      */
-    public function sendSms($phoneNumbers, $temp_id, $signName, $templateParam, $outId = 0)
+    public function sendSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName, $outId = 0)
     {
-        if (!empty($templateParam['code'])){
-            $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$signName}】";
-        } else {
-            $content = $templateParam['temp_content'];
+        foreach ($templateParam as $k => $v){
+            $temp_content = str_replace('${'.$k.'}', $v ,$temp_content);
         }
 
-        return $this->sendContentSms($phoneNumbers,$content);
+        $temp_content .= "【".$signName."】";
+
+        return $this->sendContentSms($phoneNumbers,$temp_content);
     }
 
     /**
@@ -51,19 +51,19 @@ class SmsObj implements SmsInterface
      * @return \Aliyun\Core\Http\HttpResponse|mixed|string
      * @throws \Aliyun\Core\Exception\ClientException
      */
-    public function sendBatchSms($phoneNumbers, $temp_id, $signName, $templateParam)
+    public function sendBatchSms($phoneNumbers, $temp_id, $temp_content, $templateParam, $signName)
     {
-        if (!empty($templateParam['code'])){
-            $content = str_replace('${code}',$templateParam['code'],$templateParam['temp_content'])."【{$signName}】";
-        } else {
-            $content = $templateParam['temp_content'];
+        foreach ($templateParam as $k => $v){
+            $temp_content = str_replace('${'.$k.'}', $v ,$temp_content);
         }
+
+        $temp_content .= "【".$signName."】";
 
         if (is_array($phoneNumbers)){
             $phoneNumbers = implode(',',$phoneNumbers);
         }
 
-        return $this->sendContentSms($phoneNumbers,$content);
+        return $this->sendContentSms($phoneNumbers, $temp_content);
 
     }
 

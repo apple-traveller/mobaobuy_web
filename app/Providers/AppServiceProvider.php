@@ -21,9 +21,6 @@ class AppServiceProvider extends ServiceProvider
 //            $view->with('user',array('name'=>'text','avatar'=>'/pah/to/test.jpg'));
 //        });
 
-        view()->composer(
-            '*', 'App\Http\ViewComposers\commonComposer'
-        );
     }
 
     /**

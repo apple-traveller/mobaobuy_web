@@ -20,9 +20,9 @@
         @endforeach
     </div>
 @endif
-<form action="/userRegister" method="post" enctype="multipart/form-data">
-    {{--{{ csrf_field() }}--}}
-    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+<h4>企业注册</h4><a href="{{route('register')}}">个人注册</a>
+<form action="/firmRegister" method="post" enctype="multipart/form-data">
+    {{ csrf_field() }}
 手机号码<input type="text" id="user_name" name="user_name" placeholder=""><br>
 昵　称<input type="text" name="nick_name" placeholder="" id="nick_name"><br>
 授权委托书<input type="file" name="attorney_letter_fileImg"><br> 
@@ -32,9 +32,7 @@
 手机验证码<input type="text" name="mobile_code"><input type="button" onclick="messageCode();" value="获取验证码" id="code" /><br>
 密　码<input type="password" name="password"><br>
 确认密码<input type="password" name="password_confirmation">
-<input type="hidden" name="is_firm" value="0">
-<input type="hidden" name="type" value="sms_signup">
-<input type="submit" value="注册">
+<input type="submit" value="注册"><a href="{{route('login')}}">去登录</a>
 </form>
 </body>
 </html>

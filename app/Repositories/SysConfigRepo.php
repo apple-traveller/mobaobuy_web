@@ -12,9 +12,7 @@ class SysConfigRepo
 {
     use CommonRepo;
 
-
-    //修改 （我的）
-    public static function modify($code,$data)
+    public static function modifyByCode($code, $data)
     {
         $model = self::getBaseModel();
         $info = $model::where('code',$code)->first(); //模型实例
@@ -27,12 +25,4 @@ class SysConfigRepo
         }
         return false;
     }
-
-    //叶鹏的
-    public static function search($paper=[],$where)
-    {
-        $clazz = self::getBaseModel();
-        return self::getListBySearch($paper,[]);
-    }
-
 }
