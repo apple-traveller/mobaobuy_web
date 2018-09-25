@@ -57,7 +57,10 @@
     <div style="height: 20px;">
         <div class="reg_error" id="name_error"></div>
     </div>
-    手机号    <input type="text" name="mobile" id="mobile"><br>
+    手机号    <input type="text" name="mobile" id="mobile" onblur="check_mobile()"><br>
+    <div style="height: 20px;">
+        <div class="reg_error" id="mobile_error"></div>
+    </div>
     <input style="width: 98px;" type="text" maxlength="4" placeholder="图形验证码"
            id="verify" onblur="verifyValidate();"><img src="" title="点击换一个校验码"
                                                        alt="点击换一个校验码" id="imVcode">
@@ -142,19 +145,20 @@
     // 检查执照注册号
     function check_license_id() {
         let license_id = $('#business_license_id');
-        if (license_id){
-            checkAccount = true;
-        } else {
+        if (isNull.test(license_id)){
             $('#business_license_id_error').html('请填写注册号');
             checkAccount = false;
             return false;
+        } else {
+            $('#business_license_id_error').html('');
+            checkAccount = true;
         }
     }
-
     // 检查纳税人识别号
     function check_taxpayer() {
         let taxpayer_id = $('#taxpayer_id').val();
         if (taxpayer_id){
+            $('#taxpayer_id_error').html('');
             checkAccount = true;
         } else {
             checkAccount = false;
@@ -162,8 +166,79 @@
             return false;
         }
     }
+    // 检查手机号
+    function check_mobile() {
+        let mobile = $('#mobile').val();
+        if (isNull.test(mobile)){
+            checkAccount = false;
+            $('#mobile_error').html('手机号不能为空');
+            checkAccount = false;
+        } else {
+           if (phoneReg.test(mobile)){
+               checkAccount = true;
+               $('#mobile_error').html('');
+           }else{
+               checkAccount = false;
+               $('#mobile_error').html('手机号格式不正确，请重新填写');
+               return false;
+           }
+        }
+    }
+    // 图形验证码格式检查
+    function verifyValidate() {
+        $("#verify_error").html("&nbsp;");
+        if (isNull.test($("#verify").val())) {
+            $("#verify_error").html("验证码不能为空");
+            registerCode = false;
+            return false;
+        } else if (!veriCodeExep.test($("#verify").val())) {
+            $("#verify_error").html("您输入的验证码有误");
+            registerCode = false;
+            return false;
+        }
+        $.ajax({
+            url: "{{url('checkVerifyCode')}}",
+            type: 'post',
+            cache: false,
+            async: false,
+            data: {
+                t: t,
+                verifyCode: $('#verify').val(),
+                _token: "{{csrf_token()}}"
+            },
+            success:function (data) {
+                if(data.msg) {
+                    registerCode = true;
+                    $("#verify_error").text('');
+                    return true;
+                } else {
+                    registerCode = false;
+                    gv();
+                    $("#verify_error").text("验证码不正确");
+                }
+            }
+        })
+    }
+    // 密码格式检查
+    function pwdValidate() {
+        $("#pwd_error").html('');
+        if (isNull.test($("#password").val())) {
+            $("#pwd_error").html("请输入密码");
+            return false;
+        } else if (!pwdReg.test($("#password").val())) {
+            $("#pwd_error").html("密码必须包含字母和数字长度8-16位字符");
+            return false;
+        }
+        return true;
+    }
     // 发送短信
     function messageCode(){
+        phoneValidate();
+        verifyValidate ();
+
+        if (!checkAccount || !pwdValidate() || !registerCode) {
+            return false;
+        }
         var mobile = $('#mobile').val();
         console.log(mobile);
         if(!flag){
@@ -228,7 +303,6 @@
     }
     // 图形验证码
     $('#imVcode').click(function(){
-        console.log(44);
         gv();
     });
 
