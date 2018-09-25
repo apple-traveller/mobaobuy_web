@@ -57,7 +57,7 @@
                                 <th width="8%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
 
-                                <th width="6%"><div class="tDiv">状态(灰色为冻结)</div></th>
+                                <th width="6%"><div class="tDiv">是否冻结</div></th>
                                 <th width="12%" class="handle">操作</th>
                             </tr>
                             </thead>
@@ -87,7 +87,7 @@
                                 <td>
 
                                     <label class="el-switch el-switch-lg">
-                                        <input type="checkbox" @if($user['is_freeze']==0)checked @endif  name="switch" value="{{$user['is_freeze']}}"  data-id="{{$user['id']}}"   hidden>
+                                        <input type="checkbox" @if($user['is_freeze']==1)checked @endif  name="switch" value="{{$user['is_freeze']}}"  data-id="{{$user['id']}}"   hidden>
                                         <span class="j_click el-switch-style"></span>
                                     </label>
 

@@ -33,7 +33,7 @@
                                 <div class="label"><span class="require-field">*</span>{{$vo['name']}}：</div>
                                 <div class="label_value">
                                     @if($vo['type']=='text')
-                                        <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text shop_name" value="{{$vo['value']}}" autocomplete="off" type="text">
+                                        <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
                                         <div class="form_prompt"></div>
                                         <div class="notic">{{$vo['config_desc']}}</div>
                                     @elseif($vo['type']=='select')
@@ -41,7 +41,7 @@
                                         $items = explode(',', $vo['store_range']);
                                         @endphp
 
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:38.5%;" name="{{$vo['code']}}" id="{{$vo['code']}}">
                                         @foreach($items as $item)
                                             @php
                                                 $arr = explode('|', $item);

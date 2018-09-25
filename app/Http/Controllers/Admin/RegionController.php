@@ -33,7 +33,7 @@ class RegionController extends Controller
     }
 
     //添加
-    public function add(Request $request)
+    public function save(Request $request)
     {
         $data = array();
         $data['region_type'] = $request->input('region_type');

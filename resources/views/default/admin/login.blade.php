@@ -5,7 +5,7 @@
     <title>登录页</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="icon" href="{{asset(themePath('/').'images/animated_favicon.gif')}}" type="image/gif" />
+    <link rel="icon" href="{{asset(themePath('/','admin').'images/animated_favicon.gif')}}" type="image/gif" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/purebox.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/login.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
@@ -89,15 +89,13 @@
 
             $.post('{{url('/admin/login')}}', $("#form1").serialize(), function (res) {
                 if (res.code == 1) {
-                   // layer.msg(res.msg, {icon: 1});
+                    layer.msg(res.msg, {icon: 1});
                     setTimeout(function(){
                         window.location.href = "{{url('/admin/index')}}"
                     }, 1000);
 
                 } else {
                     layer.msg(res.msg, {icon: 5});
-
-
                 }
             }, "json");
 

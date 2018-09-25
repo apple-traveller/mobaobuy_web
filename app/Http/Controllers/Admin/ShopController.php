@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopService;
+use App\Services\UserService;
 class ShopController extends Controller
 {
     //列表
@@ -13,7 +15,7 @@ class ShopController extends Controller
         $currpage = $request->input('currpage',1);
         $shop_name = $request->input('shop_name',"");
         $condition = [];
-        if(!empty($title)){
+        if(!empty($shop_name)){
             $condition['shop_name']="%".$shop_name."%";
         }
         $pageSize =5;
@@ -36,19 +38,96 @@ class ShopController extends Controller
     //编辑
     public function editForm(Request $request)
     {
+        $currpage = $request->input('currpage',1);
+        $id = $request->input('id');
+        $shop = ShopService::getShopById($id);
+        $user = UserService::getInfo($shop['user_id']);
+        $nick_name = '';
+        if(!empty($user)){
+            $nick_name = $user['nick_name'];
+        }
 
+        return $this->display('admin.shop.edit',[
+            'currpage'=>$currpage,
+            'shop'=>$shop,
+            'nick_name'=>$nick_name
+        ]);
     }
 
     //保存
     public function save(Request $request)
     {
+        $data = $request->all();
+        $currpage = $request->input('currpage',1);
+        unset($data['nick_name']);
+        unset($data['_token']);
+        unset($data['currpage']);
+        $errorMsg = [];
+        if(empty($data['shop_name'])){
+            $errorMsg[] = '店铺名称不能为空';
+        }
+        if(empty($data['company_name'])){
+            $errorMsg[] = '企业全称不能为空';
+        }
+        if(empty($data['contactName'])){
+            $errorMsg[] = '负责人姓名不能为空';
+        }
+        if(empty($data['contactPhone'])){
+            $errorMsg[] = '负责人手机不能为空';
+        }
+        if(empty($data['attorney_letter_fileImg'])){
+            $errorMsg[] = '授权委托书电子版不能为空';
+        }
+        if(empty($data['license_fileImg'])){
+            $errorMsg[] = '营业执照副本电子版不能为空';
+        }
+        if(empty($data['business_license_id'])){
+            $errorMsg[] = '营业执照注册号不能为空';
+        }
+        if(empty($data['taxpayer_id'])){
+            $errorMsg[] = '纳税人识别号不能为空';
+        }
 
+        if(!empty($errorMsg)){
+            return $this->error(implode('<br/>',$errorMsg));
+        }
+        try{
+            if(!key_exists('id',$data)){
+                ShopService::uniqueValidate($data['shop_name']);//唯一性验证
+                $data['reg_time']=Carbon::now();
+                $flag = ShopService::create($data);
+                if(!empty($flag)){
+                    return $this->success('添加成功',url('/admin/shop/list'));
+                }
+            }else{
+                $flag = ShopService::modify($data);
+                if(!empty($flag)){
+                    return $this->success('修改成功',url('/admin/shop/list')."?currpage=".$currpage);
+                }
+            }
+            return $this->error('添加失败');
+        }catch(\Exception $e){
+
+        }
     }
 
     //查看
     public function detail(Request $request)
     {
+        $currpage = $request->input('currpage',1);
+        $id = $request->input('id');
+        $shop = ShopService::getShopById($id);
+        $user = UserService::getInfo($shop['user_id']);
+        $nick_name = '';
+        if(!empty($user)){
+            $nick_name = $user['nick_name'];
+        }
 
+        return $this->display('admin.shop.detail',[
+            'currpage'=>$currpage,
+            'shop'=>$shop,
+            'nick_name'=>$nick_name
+        ]);
     }
 
     //排序
@@ -66,6 +145,31 @@ class ShopController extends Controller
     //ajax修改状态
     public function status(Request $request)
     {
+        $data = $request->all();
+        try{
+            $shop= ShopService::modify($data);
+            if($shop){
+                return $this->result($shop['is_freeze'],'200',"修改成功");
+            }else{
+                return  $this->result('','400',"修改失败");
+            }
+        }catch(\Exception $e){
+            return  $this->result('','400',$e->getMessage());
+        }
+    }
 
+    public function getUsers(Request $request)
+    {
+        $nick_name = $request->input('nick_name');
+        $condition = [];
+        if(!empty($nick_name)){
+            $condition['nick_name']="%".$nick_name."%";
+        }
+        $users = ShopService::getUserList($condition);
+        if(!empty($users['list'])){
+            return $this->result($users['list'],200,'获取用户成功');
+        }else{
+            return $this->result('',400,'没有用户可以选择');
+        }
     }
 }
