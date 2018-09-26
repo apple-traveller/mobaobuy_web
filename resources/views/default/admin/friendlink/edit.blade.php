@@ -12,7 +12,7 @@
         </div>
         <div class="flexilist">
             <div class="mian-info">
-                <form action="/admin/link/add" method="post" name="theForm" enctype="multipart/form-data" id="link_form" novalidate="novalidate">
+                <form action="/admin/link/save" method="post" name="theForm" enctype="multipart/form-data" id="link_form" novalidate="novalidate">
                     <div class="switch_info user_basic">
                         <div class="item">
                             <div class="label"><span class="require-field">*</span>链接名称：</div>

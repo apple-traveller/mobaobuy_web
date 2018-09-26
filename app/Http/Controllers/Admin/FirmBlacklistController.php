@@ -36,7 +36,7 @@ class FirmBlacklistController extends Controller
     }
 
     //添加黑名单
-    public function add(Request $request)
+    public function save(Request $request)
     {
         $data = array();
         $errorMsg = array();

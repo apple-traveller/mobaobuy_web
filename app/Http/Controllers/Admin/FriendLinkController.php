@@ -39,7 +39,7 @@ class FriendLinkController extends Controller
     }
 
     //保存
-    public function add(Request $request)
+    public function save(Request $request)
     {
         $data = $request->all();
         $id = $request->input('id');

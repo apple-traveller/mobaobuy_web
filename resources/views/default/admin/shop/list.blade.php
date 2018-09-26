@@ -55,13 +55,21 @@
                                     <td><div class="tDiv">{{$vo['contactPhone']}}</div></td>
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
                                     <td><div class="tDiv">{{status($vo['is_validated'])}}</div></td>
-                                    <td><div class="tDiv">{{status($vo['is_freeze'])}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <label class="el-switch el-switch-lg">
+                                                <input type="checkbox" @if($vo['is_freeze']==1)checked @endif  name="switch" value="{{$vo['is_freeze']}}"  data-id="{{$vo['id']}}"   hidden>
+                                                <span class="j_click el-switch-style"></span>
+                                            </label>
+                                        </div>
+                                    </td>
                                     <td><div class="tDiv">{{status($vo['is_self_run'])}}</div></td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_edit"><i class="icon icon-edit"></i>查看</a>
-                                            <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="入驻信息" class="btn_edit"><i class="icon icon-edit"></i>入驻信息</a>
-                                            <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->
+                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>
+                                            <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                           {{-- <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="审核" class="btn_edit"><i class="sc_icon sc_icon_see"></i>审核</a>--}}
+                                            {{--<a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->--}}
                                         </div>
                                     </td>
                                 </tr>
@@ -118,6 +126,30 @@
                 });
             });
         }
+
+        $('.j_click').click(function(){
+            var is_freeze ;
+            var id = $(this).siblings('input').attr('data-id');
+            var input = $(this).siblings('input');
+            if (input.val() === '1') {
+                is_freeze = 0;
+            } else {
+                is_freeze = 1;
+            }
+
+            layui.use(['layer'], function() {
+                layer = layui.layer;
+                $.post("{{url('/admin/shop/status')}}",{"id":id,"is_freeze":is_freeze},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {icon: 1});
+                        input.val(res.data);
+                    }else{
+                        layer.msg(res.msg, {icon: 5});
+                    }
+                },"json");
+
+            });
+        });
 
         function remove(id)
         {

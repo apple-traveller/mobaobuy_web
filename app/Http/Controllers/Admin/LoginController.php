@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\AdminService;
 use App\Services\AdminLogService;
-use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -28,6 +27,7 @@ class LoginController extends Controller
     }
     /*
      * 登录逻辑
+     *
      */
     public function login(Request $request)
     {
@@ -47,7 +47,6 @@ class LoginController extends Controller
 
         try{
             $user_info = AdminService::loginValidate($username, $password);
-
             $adminLog=[
                 'admin_id'=>1,
                 'real_name'=>$user_info['real_name'],
@@ -55,9 +54,7 @@ class LoginController extends Controller
                 'ip_address'=>$request->getClientIp(),
                 'log_info'=>"登录"
             ];
-
             $flag = AdminLogService::create($adminLog);
-
             if(!$flag){
                 return $this->result('','0',"登录失败");
             }
@@ -67,10 +64,6 @@ class LoginController extends Controller
         }catch(\Exception $e){
             return $this->result('','0',$e->getMessage());
         }
-
-
-
-
     }
 
     /**
@@ -79,7 +72,6 @@ class LoginController extends Controller
     public function logout()
     {
         session()->forget('_admin_info');
-        //Cookie::forget('dscUrl');
         return $this->success('退出登录成功！', route('admin_login'));
 
 

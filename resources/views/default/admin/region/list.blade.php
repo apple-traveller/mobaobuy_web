@@ -27,7 +27,7 @@
 
                     </div>
                     <div class="add_area fr">
-                        <form method="post" action="/admin/region/add" name="theForm">
+                        <form method="post" action="/admin/region/save" name="theForm">
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <input type="hidden" name="region_type" value="{{$region_type}}">
                             <input type="hidden" name="parent_id" value="{{$parent_id}}">

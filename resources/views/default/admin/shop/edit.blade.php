@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/shop/list" class="s-back">返回</a>产品 - 添加入驻店铺</div>
+        <div class="title"><a href="/admin/shop/list?currpage={{$currpage}}" class="s-back">返回</a>产品 - 编辑入驻店铺</div>
         <div class="content">
 
             <div class="flexilist">
@@ -13,8 +13,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;会员：</div>
                                 <div class="label_value">
-                                    <input type="text" name="nick_name" class="text" value="" maxlength="40" autocomplete="off" id="nick_name">
-                                    <input type="hidden" name="user_id" class="text" value="" maxlength="40" autocomplete="off" id="user_id">
+                                    <input type="text" name="nick_name" class="text" value="{{$nick_name}}" maxlength="40" autocomplete="off" id="nick_name">
+                                    <input type="hidden" name="user_id" class="text" value="{{$shop['user_id']}}" maxlength="40" autocomplete="off" id="user_id">
                                     <ul class="query" style="position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                     </ul>
@@ -25,7 +25,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺名称：</div>
                                 <div class="label_value">
-                                    <input type="text" name="shop_name" class="text" value="" maxlength="40" autocomplete="off" id="shop_name">
+                                    <input type="text" name="shop_name" class="text" value="{{$shop['shop_name']}}" maxlength="40" autocomplete="off" id="shop_name">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;企业全称：</div>
                                 <div class="label_value">
-                                    <input type="text" name="company_name" class="text" value="" maxlength="40" autocomplete="off" id="company_name">
+                                    <input type="text" name="company_name" class="text" value="{{$shop['company_name']}}" maxlength="40" autocomplete="off" id="company_name">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -42,7 +42,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;负责人姓名：</div>
                                 <div class="label_value">
-                                    <input type="text" name="contactName" class="text" value="" maxlength="40" autocomplete="off" id="contactName">
+                                    <input type="text" name="contactName" class="text" value="{{$shop['contactName']}}" maxlength="40" autocomplete="off" id="contactName">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>负责人手机：</div>
                                 <div class="label_value">
-                                    <input type="text" name="contactPhone" class="text" value="" maxlength="40" autocomplete="off" id="contactPhone">
+                                    <input type="text" name="contactPhone" class="text" value="{{$shop['contactPhone']}}" maxlength="40" autocomplete="off" id="contactPhone">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -60,8 +60,8 @@
                                 <div class="label"><span class="require-field">*</span>授权委托书电子版：</div>
                                 <div class="label_value">
                                     <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar_attorney_letter_fileImg">上传图片</button>
-                                    <input type="hidden"  value="" class="text" id="attorney_letter_fileImg" name="attorney_letter_fileImg" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo_attorney_letter_fileImg" >
+                                    <input type="hidden"  value="{{$shop['attorney_letter_fileImg']}}" class="text" id="attorney_letter_fileImg" name="attorney_letter_fileImg" >
+                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{$shop['attorney_letter_fileImg']}}" @else style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @endif class="layui-upload-img" id="demo_attorney_letter_fileImg" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -70,8 +70,9 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value">
                                     <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar_license_fileImg">上传图片</button>
-                                    <input type="hidden"  value="" class="text" id="license_fileImg" name="license_fileImg" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo_license_fileImg" >
+                                    <input type="hidden"  value="{{$shop['license_fileImg']}}" class="text" id="license_fileImg" name="license_fileImg" >
+                                    <img @if(!empty($shop['license_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{$shop['license_fileImg']}}" @else style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @endif class="layui-upload-img" id="demo_license_fileImg" >
+
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -79,7 +80,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>营业执照注册号：</div>
                                 <div class="label_value">
-                                    <input type="text" name="business_license_id" class="text" value="" maxlength="40" autocomplete="off" id="business_license_id">
+                                    <input type="text" name="business_license_id" class="text" value="{{$shop['business_license_id']}}" maxlength="40" autocomplete="off" id="business_license_id">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -88,7 +89,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>纳税人识别号：</div>
                                 <div class="label_value">
-                                    <input type="text" name="taxpayer_id" class="text" value="" maxlength="40" autocomplete="off" id="taxpayer_id">
+                                    <input type="text" name="taxpayer_id" class="text" value="{{$shop['taxpayer_id']}}" maxlength="40" autocomplete="off" id="taxpayer_id">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -98,8 +99,8 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
-                                        <option value="0">否</option>
-                                        <option selected  value="1">是</option>
+                                        <option @if($shop['is_self_run']==0) selected @endif value="0">否</option>
+                                        <option @if($shop['is_self_run']==1) selected @endif value="1">是</option>
                                     </select>
                                 </div>
                             </div>
@@ -108,12 +109,24 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_validated" id="is_validated">
-                                        <option value="0">否</option>
-                                        <option selected value="1">是</option>
+                                        <option @if($shop['is_validated']==0) selected @endif value="0">否</option>
+                                        <option @if($shop['is_validated']==1) selected @endif value="1">是</option>
                                     </select>
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_freeze" id="is_validated">
+                                        <option @if($shop['is_freeze']==0) selected @endif value="0">否</option>
+                                        <option @if($shop['is_freeze']==1) selected @endif value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="id"  value="{{$shop['id']}}"/>
+                            <input type="hidden" name="currpage"  value="{{$currpage}}"/>
 
                             <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
                             <div class="item">

@@ -13,7 +13,7 @@
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
-                        <form method="post" action="/admin/blacklist/add" name="theForm" id="user_form" novalidate="novalidate">
+                        <form method="post" action="/admin/blacklist/save" name="theForm" id="user_form" novalidate="novalidate">
                             <div class="switch_info">
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;企业名称：</div>
