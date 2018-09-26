@@ -96,6 +96,7 @@ class ShopController extends Controller
                 ShopService::uniqueValidate($data['shop_name']);//唯一性验证
                 $data['reg_time']=Carbon::now();
                 $flag = ShopService::create($data);
+                //dd($flag);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shop/list'));
                 }
@@ -130,11 +131,6 @@ class ShopController extends Controller
         ]);
     }
 
-    //排序
-    public function sort(Request $request)
-    {
-
-    }
 
     //ajax修改状态
     public function status(Request $request)

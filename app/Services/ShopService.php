@@ -2,6 +2,9 @@
 namespace App\Services;
 use App\Repositories\ShopRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\ShopUserRepo;
+use Illuminate\Support\Facades\Hash;
+
 class ShopService
 {
     use CommonService;
@@ -12,10 +15,27 @@ class ShopService
         return ShopRepo::getListBySearch($pager,$condition);
     }
 
+
     //新增
     public static function create($data)
     {
-        return ShopRepo::create($data);
+        $udata['user_name']=$data['user_name'];
+        $udata['password']=Hash::make($data['password']);
+        $udata['add_time']=$data['reg_time'];
+        unset($data['user_name']);
+        unset($data['password']);
+        try{
+            self::beginTransaction();
+            $shop = ShopRepo::create($data);
+            $udata['shop_id'] = $shop['id'];
+            $shopuser = ShopUserService::create($udata);
+            self::commit();
+            return $shopuser;
+        }catch(\Exception $e){
+            self::rollBack();
+            Self::throwBizError($e->getMessage());
+        }
+
     }
 
     //获取一条数据

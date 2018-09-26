@@ -203,8 +203,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_17_merchants"></i><h4>店铺管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺列表</a></li>
-
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/list" data-param="menushopping|01_merchants_users_list" target="workspace">店铺列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shopuser/list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺职员列表</a></li>
                     </ul>
                 </div>
             </div>

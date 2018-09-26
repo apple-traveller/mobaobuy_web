@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/shop/list" class="s-back">返回</a>产品 - 添加入驻店铺</div>
+        <div class="title"><a href="/admin/shop/list" class="s-back">返回</a>店铺 - 添加入驻店铺</div>
         <div class="content">
 
             <div class="flexilist">
@@ -105,6 +105,16 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
+                                        <option value="0">否</option>
+                                        <option selected  value="1">是</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_validated" id="is_validated">
@@ -112,6 +122,26 @@
                                         <option selected value="1">是</option>
                                     </select>
                                 </div>
+                            </div>
+
+
+<hr>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>默认店铺管理员：</div>
+                                <div class="label_value">
+                                    <input type="text" name="user_name" class="text" value="" maxlength="40" autocomplete="off" id="user_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>店铺管理员密码：</div>
+                                <div class="label_value">
+                                    <input type="text" name="password" class="text" value="" maxlength="40" autocomplete="off" id="password">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
                             </div>
 
 

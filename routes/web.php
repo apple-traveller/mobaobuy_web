@@ -125,6 +125,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/detail', 'ShopController@detail');//排序
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
 
+        Route::get('/shopuser/list', 'ShopUserController@list');//店铺职员列表
+        Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员
+        Route::get('/shopuser/editForm', 'ShopUserController@editForm');//修改职员
+        Route::post('/shopuser/save', 'ShopUserController@save');//保存
+        Route::get('/shopuser/delete', 'ShopUserController@delete');//删除
+
+
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
         Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存

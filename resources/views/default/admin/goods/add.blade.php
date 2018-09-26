@@ -18,14 +18,6 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品编码：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_sn" class="text" value="" maxlength="40" autocomplete="off" id="goods_sn">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
@@ -353,6 +345,7 @@
                     if (200 == res.code) {
                         $("#demo1").show();
                         $('#goods_thumb').val(res.data);
+                        $("#goods_thumb").parent('div').children(".form_prompt").remove();
                         $("#demo1").attr('src', res.data);
                         layer.msg(res.msg, {time: 2000});
                     } else {
@@ -372,6 +365,7 @@
                     if (200 == res.code) {
                         $("#demo2").show();
                         $('#goods_img').val(res.data);
+                        $("#goods_img").parent('div').children(".form_prompt").remove();
                         $("#demo2").attr('src', res.data);
                         layer.msg(res.msg, {time: 2000});
                     } else {
@@ -391,6 +385,7 @@
                     if (200 == res.code) {
                         $("#demo3").show();
                         $('#original_img').val(res.data);
+                        $("#original_img").parent('div').children(".form_prompt").remove();
                         $("#demo3").attr('src', res.data);
                         layer.msg(res.msg, {time: 2000});
                     } else {
@@ -417,9 +412,6 @@
                 ignore : [],
                 rules:{
                     goods_name :{
-                        required : true,
-                    },
-                    goods_sn :{
                         required : true,
                     },
                     keywords:{
@@ -466,9 +458,7 @@
                     goods_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_sn :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+
                     brand_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
