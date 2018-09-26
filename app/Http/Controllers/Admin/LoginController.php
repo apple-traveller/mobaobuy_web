@@ -21,10 +21,9 @@ class LoginController extends Controller
     //登录
     public function loginForm()
     {
-        if (!empty(session('_admin_info'))) {
+        if (!empty(session('_admin_user_id'))) {
             return redirect($this->redirectTo);
         }
-        session()->put('theme', 'default');
         return $this->display('admin.login');
     }
     /*
