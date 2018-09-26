@@ -19,9 +19,17 @@ class LoginController extends Controller
         if ($request->isMethod('get')){
             return $this->display('seller.login');
         } else {
+            $user_name = $request->input('user_name','');
+            $password = base64_decode($request->input('password',''));
 
+            if (empty($user_name)){
+                return $this->error('用户名不能为空');
+            }
+            if (empty($password)){
+                return $this->error('密码不能为空');
+            }
+            dd($password);
         }
-        dd($request->all());
     }
 
     /**
@@ -37,7 +45,7 @@ class LoginController extends Controller
         }
         $re = ShopLoginService::checkShopNameExists($checkShopName);
         if ($re){
-            return $this->result([],200,'店铺已存在');
+            return $this->error('店铺已存在');
         }
         return $this->success('');
     }
@@ -58,93 +66,82 @@ class LoginController extends Controller
         }
     }
 
+    /**
+     * 注册商户
+     * @param Request $request
+     * @return LoginController|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function register(Request $request)
     {
         if ($request->isMethod('get')){
             return $this->display('seller.register');
         } else {
-            $shop = $request->input('shop_name','');
+            $user_id = $request->input('user_id','0');
+            $shop_name = $request->input('shop_name','');
             $company_name = $request->input('company_name','');
-            $attorney_letter_fileImg = $request->input('attorney_letter_fileImg','');
+            $attorney_letter_fileImg = $request->file('attorney_letter_fileImg','');
             $business_license_id = $request->input('business_license_id','');
-            $license_fileImg = $request->input('license_fileImg','');
+            $license_fileImg = $request->file('license_fileImg','');
             $taxpayer_id = $request->input('taxpayer_id','');
             $is_self_run = $request->input('is_self_run','0');
-            $user_name = $request->input('user_name','');
-            $password = $request->input('password','');
-            $password_confirmation = $request->input('password_confirmation','');
+            $user_name = $request->input('name','');
+//            $password = base64_decode($request->input('password', ''));
+            $password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
-            $protocol = $request->input('protocol','');
 
-            if (empty($protocol)){
-                $errorMsg[] = '未同意协议';
-            }
-
-            if (empty($shop)){
-                $errorMsg[] ='店铺名称不能为空';
+            if (empty($shop_name)){
+                return $this->error('店铺名称不能为空');
             }
 
             if (empty($company_name)){
-                $errorMsg[] ='企业名称不能为空';
+                return $this->error('企业名称不能为空');
             }
 
             if (empty($attorney_letter_fileImg)){
-                $errorMsg[] ='授权委托书电子版不能为空';
+                return $this->error('授权委托书电子版不能为空');
             }
 
             if (empty($business_license_id)){
-                $errorMsg[] ='营业执照注册号不能为空';
+                return $this->error('营业执照注册号不能为空');
             }
             if (empty($license_fileImg)){
-                $errorMsg[] ='营业执照副本电子版不能为空';
+                return $this->error('营业执照副本电子版不能为空');
             }
             if (empty($taxpayer_id)){
-                $errorMsg[] ='纳税人识别号';
+                return $this->error('纳税人识别号');
             }
             if (empty($user_name)){
-                $errorMsg[] ='用户名称不能为空';
+                return $this->error('用户名称不能为空');
             }
             if (empty($password)){
-                $errorMsg[] ='密码不能为空';
-            }
-            if ($password!=$password_confirmation){
-                $errorMsg[] = "两次密码不能一样";
+                return $this->error('密码不能为空');
             }
             if (empty($mobile)){
-                $errorMsg[] ='手机号不能为空';
-            }
-            if (empty($mobile_code)){
-                $errorMsg[] ='店铺名称不能为空';
-            }
-
-            if (!empty($errorMsg))
-            {
-                return $this->error(implode('<br/>,',$errorMsg));
+                return $this->error('手机号不能为空');
             }
             $data = [
-                'shop_name',
-                'company_name',
-                'attorney_letter_fileImg',
-                'business_license_id',
-                'license_fileImg',
-                'taxpayer_id',
-                'is_self_run',
-                'password',
-                'mobile',
-                'mobile_code',
-                'protocol'
+                'user_id' =>$user_id,
+                'shop_name' =>$shop_name,
+                'company_name' => $company_name,
+                'attorney_letter_fileImg' => $attorney_letter_fileImg,
+                'business_license_id' => $business_license_id,
+                'license_fileImg' => $license_fileImg,
+                'taxpayer_id' => $taxpayer_id,
+                'is_self_run' => $is_self_run,
+                'user_name' => $user_name,
+                'password' => $password,
+                'mobile' => $mobile
             ];
             try{
                $re = ShopLoginService::Register($data);
-
-               dd($re);
+               if ($re){
+                   return $this->success('注册申请提交成功','login.html');
+               }
+                return $this->success($re);
             }catch (\Exception $e){
-                dd($e->getMessage());
+                return $this->error($e->getMessage());
             }
-
-
-
         }
     }
 
