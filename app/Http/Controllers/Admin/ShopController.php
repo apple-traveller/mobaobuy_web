@@ -136,12 +136,6 @@ class ShopController extends Controller
 
     }
 
-    //删除
-    public function delete(Request $request)
-    {
-
-    }
-
     //ajax修改状态
     public function status(Request $request)
     {
@@ -149,7 +143,12 @@ class ShopController extends Controller
         try{
             $shop= ShopService::modify($data);
             if($shop){
-                return $this->result($shop['is_freeze'],'200',"修改成功");
+                if(key_exists('is_validated',$data)){
+                    return $this->result($shop['is_validated'],'200',"审核成功");
+                }else{
+                    return $this->result($shop['is_freeze'],'200',"修改成功");
+                }
+
             }else{
                 return  $this->result('','400',"修改失败");
             }

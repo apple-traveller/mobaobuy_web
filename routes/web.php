@@ -18,9 +18,9 @@ Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 //后台
 
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
-    Route::get('/admin', 'LoginController@loginForm');
-    Route::get('/admin/login', 'LoginController@loginForm')->name('admin_login');
-    Route::post('/admin/login', 'LoginController@login');
+    Route::get('/', 'LoginController@loginForm');
+    Route::get('/login', 'LoginController@loginForm')->name('admin_login');
+    Route::post('/login', 'LoginController@login');
 
     Route::group(['middleware' => 'admin.auth'], function () {
         Route::get('/logout', 'LoginController@logout');
@@ -122,9 +122,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/editForm', 'ShopController@editForm');//修改店铺
         Route::post('/shop/save', 'ShopController@save');//保存
         Route::post('/shop/status', 'ShopController@status');//修改状态
-        Route::post('/shop/sort', 'ShopController@sort');//排序
+        Route::get('/shop/detail', 'ShopController@detail');//排序
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
-        Route::get('/shop/delete', 'ShopController@delete');//删除
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板

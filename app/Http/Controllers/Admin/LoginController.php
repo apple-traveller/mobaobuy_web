@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\AdminService;
 use App\Services\AdminLogService;
-use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -74,7 +73,6 @@ class LoginController extends Controller
     public function logout()
     {
         session()->forget('_admin_info');
-        //Cookie::forget('dscUrl');
         return $this->success('退出登录成功！', route('admin_login'));
 
 
