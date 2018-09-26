@@ -17,14 +17,14 @@
 
 <body>
 <div class="login-layout">
-    <div class="logo">
-        <img src="{{asset(themePath('/').'images/admin_login_logo.png')}}">
-    </div>
+
     <form id="form1" name='theForm' id="theForm" method="post">
-        <input type="hidden" name="_token" value="{{ csrf_token()}}" />
         <div class="login-form layui-form" style="position: relative">
             <div class="formContent">
-                <div class="title">管理中心</div>
+                <div class="title"><div class="logo">
+                        <img style="max-height:60px;" src="{{asset('/images/logo.png')}}">
+                    </div>
+                    平台管理中心</div>
                 <div class="formInfo">
                     <div class="formText">
                         <i class="icon icon-user"></i>
@@ -35,22 +35,10 @@
                         <input type="password" style="display:none"/>
                         <input type="password"  id="password" name="password" autocomplete="off" class="input-text" value="" placeholder="密码" />
                     </div>
-                    <div class="formText">
-                        <div class="checkbox">
-                            <div class="cur">
-                                <input type="hidden" value="0" name="remember"/>
-                            </div>
-                        </div>
-                        <span class="span">保存信息</span>
-                        <a href="get_password.php?act=forget_pwd" class="forget_pwd">忘记密码？</a>
-                    </div>
                     <div class="formText submitDiv">
-
                         <span class="submit_span">
-                            	<input style="border-radius: 50px;margin:0 auto;display: block;" lay-filter="login" id="sunBtn" type="button" name="submit" class="sub" value="登录" />
+                            <input style="border-radius: 50px;margin:0 auto;display: block;" lay-filter="login" id="sunBtn" type="button" name="submit" class="sub" value="登录" />
                         </span>
-
-
                     </div>
                 </div>
             </div>

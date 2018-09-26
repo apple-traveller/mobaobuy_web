@@ -9,10 +9,9 @@ class AdminAuthenticate
 {
     public function handle($request, Closure $next, $guard = null)
     {
-        //var_dump($request->getRequestUri());
-        $admininfo = $request->session()->get('_admin_info');
+        $user_id = session('_admin_user_id');
 
-        if (empty($admininfo)) {
+        if (empty($user_id)) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'code' => '400',

@@ -674,12 +674,13 @@ CREATE TABLE `cart` (
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `order_sn` varchar(100) NOT NULL DEFAULT '' COMMENT '订单编码',
+  `order_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '订单编码',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '个人会员ID',
   `firm_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '企业会员ID',
-  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态 0-已作废 1-待企业审核 2-待商家确认',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态 0-已作废 1-待企业审核 2-待商家确认 3-已确认',
   `shipping_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '发货状态 0-待发货 1-已发货 2-部分发货',
-  `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态 0-待付款 1-已付款 2-部分付款',
   `consignee` varchar(60) NOT NULL DEFAULT '' COMMENT '收货人',
   `country` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '国家',
   `province` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '省份',
@@ -687,100 +688,233 @@ CREATE TABLE `order_info` (
   `district` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '县',
   `street` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '街道',
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
-  `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮编',
+  `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮政编码',
   `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
   `postscript` varchar(255) NOT NULL DEFAULT '' COMMENT '买家留言',
-  `shipping_id` text NOT NULL,
-  `shipping_name` text NOT NULL,
-  `shipping_code` text NOT NULL,
-  `shipping_type` text NOT NULL,
-  `pay_id` tinyint(3) NOT NULL DEFAULT '0',
-  `pay_name` varchar(120) NOT NULL DEFAULT '',
-  `how_oos` varchar(120) NOT NULL DEFAULT '',
-  `how_surplus` varchar(120) NOT NULL DEFAULT '',
-  `pack_name` varchar(120) NOT NULL DEFAULT '',
-  `card_name` varchar(120) NOT NULL DEFAULT '',
-  `card_message` varchar(255) NOT NULL DEFAULT '',
-  `inv_payee` varchar(120) NOT NULL DEFAULT '',
-  `inv_content` varchar(120) NOT NULL DEFAULT '',
-  `goods_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `cost_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单成本',
-  `shipping_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `insure_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `pay_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `pack_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `card_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `money_paid` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `surplus` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `integral` int(10) unsigned NOT NULL DEFAULT '0',
-  `integral_money` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `bonus` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `order_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `return_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单整站退款金额',
-  `from_ad` smallint(5) NOT NULL DEFAULT '0',
-  `referer` varchar(255) NOT NULL DEFAULT '',
-  `add_time` int(10) unsigned NOT NULL DEFAULT '0',
-  `confirm_time` int(10) unsigned NOT NULL DEFAULT '0',
-  `pay_time` int(10) unsigned NOT NULL DEFAULT '0',
-  `shipping_time` int(10) unsigned NOT NULL DEFAULT '0',
-  `confirm_take_time` int(10) unsigned NOT NULL DEFAULT '0',
-  `auto_delivery_time` int(11) unsigned NOT NULL DEFAULT '15',
-  `pack_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `card_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `bonus_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `invoice_no` varchar(255) NOT NULL DEFAULT '',
-  `extension_code` varchar(30) NOT NULL DEFAULT '',
-  `extension_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `to_buyer` varchar(255) NOT NULL DEFAULT '',
-  `pay_note` varchar(255) NOT NULL DEFAULT '',
-  `agency_id` int(10) unsigned NOT NULL,
-  `inv_type` varchar(60) NOT NULL,
-  `tax` decimal(10,2) unsigned NOT NULL,
-  `is_separate` tinyint(1) NOT NULL DEFAULT '0',
-  `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `discount` decimal(10,2) unsigned NOT NULL,
-  `discount_all` decimal(10,2) unsigned NOT NULL,
-  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `is_settlement` tinyint(1) NOT NULL DEFAULT '0',
-  `sign_time` int(30) DEFAULT NULL,
-  `is_single` tinyint(1) DEFAULT '0',
-  `point_id` varchar(255) NOT NULL DEFAULT '',
-  `shipping_dateStr` varchar(255) NOT NULL,
-  `supplier_id` int(10) NOT NULL DEFAULT '0',
-  `froms` char(10) NOT NULL DEFAULT 'pc',
-  `coupons` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
-  `uc_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `is_zc_order` int(10) DEFAULT '0',
-  `zc_goods_id` int(10) NOT NULL,
-  `is_frozen` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `chargeoff_status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `invoice_type` tinyint(1) NOT NULL DEFAULT '0',
-  `vat_id` int(10) NOT NULL DEFAULT '0' COMMENT '增值税发票信息ID 关联 users_vat_invoices_info表自增ID',
-  `tax_id` varchar(255) NOT NULL DEFAULT '',
-  `is_update_sale` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`order_id`),
+  `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态 0-待付款 1-已付款 2-部分付款',
+  `invoice_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员发票信息ID',
+  `goods_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品总金额',
+  `tax` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '发票税额',
+  `shipping_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `insure_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '保费金额',
+  `pay_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '支付费用',
+  `pack_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '包装费金额',
+  `money_paid` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '已付金额',
+  `surplus` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '余额支付金额',
+  `integral` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用积分数',
+  `integral_money` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '积分抵扣金额',
+  `bonus` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '红包抵扣金额',
+  `bonus_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '红包ID',
+  `coupons` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '优惠券抵扣金额',
+  `discount` decimal(10,2) unsigned NOT NULL COMMENT '折扣金额',
+  `order_amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '订单总金额',
+  `return_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单退款金额',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `confirm_time` datetime DEFAULT NULL COMMENT '卖家确认时间',
+  `pay_time` datetime DEFAULT NULL COMMENT '付款时间',
+  `shipping_time` datetime DEFAULT NULL COMMENT '发货时间',
+  `confirm_take_time` datetime DEFAULT NULL COMMENT '确认收货时间',
+  `auto_delivery_time` int(11) unsigned NOT NULL DEFAULT '15' COMMENT '自动确认收货天数',
+  `extension_code` varchar(20) NOT NULL DEFAULT '' COMMENT '活动编码',
+  `extension_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '活动ID',
+  `to_buyer` varchar(255) NOT NULL DEFAULT '' COMMENT '卖家留言',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已删除 0-否 1-是',
+  `is_settlement` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已结算 0-否 1-是',
+  `froms` char(10) NOT NULL DEFAULT 'pc' COMMENT '订单来源',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `order_sn` (`order_sn`),
   KEY `user_id` (`user_id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `firm_id` (`firm_id`),
   KEY `order_status` (`order_status`),
   KEY `shipping_status` (`shipping_status`),
-  KEY `pay_status` (`pay_status`),
-  KEY `shipping_id` (`shipping_id`(333)),
-  KEY `pay_id` (`pay_id`),
-  KEY `extension_code` (`extension_code`,`extension_id`),
-  KEY `agency_id` (`agency_id`),
-  KEY `main_order_id` (`main_order_id`),
-  KEY `uc_id` (`uc_id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `supplier_id` (`supplier_id`),
-  KEY `is_zc_order` (`is_zc_order`),
-  KEY `zc_goods_id` (`zc_goods_id`),
-  KEY `chargeoff_status` (`chargeoff_status`),
-  KEY `country` (`country`),
-  KEY `province` (`province`),
-  KEY `city` (`city`),
-  KEY `district` (`district`),
-  KEY `street` (`street`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `pay_status` (`pay_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
+
+DROP TABLE IF EXISTS `order_goods`;
+CREATE TABLE `order_goods` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
+  `goods_number` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '产品数量',
+  `goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
+  `send_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '已发货数量',
+  PRIMARY KEY (`id`),
+  KEY `goods_id` (`goods_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单明细表';
+
+DROP TABLE IF EXISTS `shipping`;
+CREATE TABLE `shipping` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shipping_code` varchar(20) NOT NULL DEFAULT '' COMMENT '编码',
+  `shipping_name` varchar(120) NOT NULL DEFAULT '' COMMENT '名称',
+  `shipping_desc` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否启用 0-否 1-是',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `shipping_code` (`shipping_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='快递公司表';
+INSERT INTO shipping(id, shipping_code, shipping_name, shipping_desc, enabled) VALUES
+(1, 'yto', '圆通速递', '上海圆通物流（速递）有限公司经过多年的网络快速发展，在中国速递行业中一直处于领先地位。为了能更好的发展国际快件市场，加快与国际市场的接轨，强化圆通的整体实力，圆通已在东南亚、欧美、中东、北美洲、非洲等许多城市运作国际快件业务', 1),
+(2, 'sto_express', '申通快递', '江、浙、沪地区首重为15元/KG，其他地区18元/KG， 续重均为5-6元/KG， 云南地区为8元', 1),
+(3, 'zto', '中通速递', '中通快递的相关说明。保价费按照申报价值的2％交纳，但是，保价费不低于100元，保价金额不得高于10000元，保价金额超过10000元的，超过的部分无效', 1),
+(4, 'sf_express', '顺丰速运', '江、浙、沪地区首重15元/KG，续重2元/KG，其余城市首重20元/KG', 1);
+
+DROP TABLE IF EXISTS `order_delivery`;
+CREATE TABLE `order_delivery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `delivery_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '发货单编码',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `order_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '订单编码',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `shipping_id` int(10) unsigned DEFAULT '0' COMMENT '快递公司ID',
+  `shipping_name` varchar(120) DEFAULT NULL COMMENT '快递名称',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '个人会员ID',
+  `firm_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '企业会员ID',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `action_user` varchar(30) DEFAULT NULL COMMENT '操作用户',
+  `consignee` varchar(60) DEFAULT NULL COMMENT '收货人',
+  `address` varchar(250) DEFAULT NULL COMMENT '收货地址',
+  `country` int(10) unsigned DEFAULT '0' COMMENT '国家',
+  `province` int(10) unsigned DEFAULT '0' COMMENT '省份',
+  `city` int(10) unsigned DEFAULT '0' COMMENT '城市',
+  `district` int(10) unsigned DEFAULT '0' COMMENT '县',
+  `street` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '街道',
+  `zipcode` varchar(60) DEFAULT NULL COMMENT '邮政编码',
+  `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `postscript` varchar(255) DEFAULT NULL COMMENT '买家留言',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态 0-待发货 1-已发货',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `firm_id` (`firm_id`),
+  KEY `order_id` (`order_id`),
+  KEY `delivery_sn` (`delivery_sn`),
+  KEY `order_sn` (`order_sn`),
+  KEY `shipping_id` (`shipping_id`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发货单表';
+
+DROP TABLE IF EXISTS `order_delivery_goods`;
+CREATE TABLE `order_delivery_goods` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `delivery_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发货单ID',
+  `order_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单明细ID',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
+  `send_number` smallint(5) unsigned DEFAULT '0' COMMENT '发货数量',
+  PRIMARY KEY (`id`),
+  KEY `delivery_id` (`delivery_id`,`goods_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发货单明细表';
+
+DROP TABLE IF EXISTS `order_back`;
+CREATE TABLE `order_back` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `delivery_sn` varchar(30) NOT NULL COMMENT '发货单编码',
+  `order_sn` varchar(30) NOT NULL COMMENT '订单编码',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `shipping_id` int(10) unsigned DEFAULT '0' COMMENT '快递公司ID',
+  `shipping_name` varchar(120) DEFAULT NULL COMMENT '快递名称',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '个人会员ID',
+  `firm_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '企业会员ID',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `action_user` varchar(30) DEFAULT NULL COMMENT '操作用户',
+  `consignee` varchar(60) DEFAULT NULL COMMENT '收货人',
+  `address` varchar(250) DEFAULT NULL COMMENT '收货地址',
+  `country` int(10) unsigned DEFAULT '0' COMMENT '国家',
+  `province` int(10) unsigned DEFAULT '0' COMMENT '省份',
+  `city` int(10) unsigned DEFAULT '0' COMMENT '城市',
+  `district` int(10) unsigned DEFAULT '0' COMMENT '县',
+  `street` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '街道',
+  `zipcode` varchar(60) DEFAULT NULL COMMENT '邮政编码',
+  `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `postscript` varchar(255) DEFAULT NULL COMMENT '买家留言',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态 0-待发货 1-已发货',
+  `return_time` datetime NOT NULL COMMENT '退货时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `firm_id` (`firm_id`),
+  KEY `order_id` (`order_id`),
+  KEY `delivery_sn` (`delivery_sn`),
+  KEY `order_sn` (`order_sn`),
+  KEY `shipping_id` (`shipping_id`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='退货单';
+
+DROP TABLE IF EXISTS `order_back_goods`;
+CREATE TABLE `order_back_goods` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `back_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退货单ID',
+  `order_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单明细ID',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
+  `back_number` smallint(5) unsigned DEFAULT '0' COMMENT '退货数量',
+  PRIMARY KEY (`id`),
+  KEY `back_id` (`back_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='退货明细';
+
+DROP TABLE IF EXISTS `seckill_time_bucket`;
+CREATE TABLE `seckill_time_bucket` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `begin_time` time NOT NULL COMMENT '开始时间段',
+  `end_time` time NOT NULL COMMENT '结束时间段',
+  `title` varchar(50) NOT NULL COMMENT '秒杀时段标题',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `begin_time` (`begin_time`,`end_time`),
+  UNIQUE KEY `title` (`title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀时间段表';
+INSERT INTO seckill_time_bucket(id, begin_time, end_time, title) VALUES
+(1, '08:00:00', '10:00:00', '8:00'),
+(2, '10:00:00', '12:00:00', '10:00');
+
+DROP TABLE IF EXISTS `seckill`;
+CREATE TABLE `seckill` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '秒杀活动自增ID',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `title` varchar(50) NOT NULL COMMENT '秒杀活动标题',
+  `begin_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-禁用',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  PRIMARY KEY (`id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `review_status` (`review_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动';
+
+DROP TABLE IF EXISTS `seckill_goods`;
+CREATE TABLE `seckill_goods` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `seckill_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀活动ID',
+  `tb_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀时段ID',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀商品ID',
+  `sec_price` decimal(10,2) NOT NULL COMMENT '秒杀价格',
+  `sec_num` smallint(5) NOT NULL COMMENT '秒杀总数量',
+  `sec_limit` tinyint(3) NOT NULL COMMENT '限制数量',
+  PRIMARY KEY (`id`),
+  KEY `seckill_id` (`seckill_id`),
+  KEY `tb_id` (`tb_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动产品';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
@@ -866,8 +1000,9 @@ CREATE TABLE `gsxx_send_log` (
   KEY `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发送企业查询日志';
 
+DROP TABLE IF EXISTS `gsxx_company`;
 CREATE TABLE `gsxx_company` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `KeyNo` varchar(255) DEFAULT '' COMMENT '关联主键',
   `Name` varchar(255) DEFAULT '' COMMENT '公司名称',
   `No` varchar(255) DEFAULT '' COMMENT '注册号',
@@ -891,3 +1026,27 @@ CREATE TABLE `gsxx_company` (
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工商信息企业表';
+
+CREATE TABLE `payment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `pay_code` varchar(20) NOT NULL DEFAULT '' COMMENT '编码',
+  `pay_name` varchar(120) NOT NULL DEFAULT '' COMMENT '名称',
+  `pay_fee` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '费用',
+  `pay_desc` varchar(2000) NOT NULL DEFAULT '' COMMENT '描述',
+  `pay_config` varchar(2000) NOT NULL COMMENT '支付配置',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否启用 1-启用 0-禁用'
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pay_code` (`pay_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付方式表';
+
+CREATE TABLE `order_pay_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `order_amount` decimal(10,2) unsigned NOT NULL COMMENT '支付金额',
+  `pay_name` varchar(120) NOT NULL DEFAULT '' COMMENT '名称',
+  `is_paid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已支付 1-是 0-否',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `is_paid` (`is_paid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单付款日志表';
+
