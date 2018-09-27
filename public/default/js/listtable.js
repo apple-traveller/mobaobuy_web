@@ -163,33 +163,26 @@ listTable.toggle = function(obj, act, id)
 }
 
 /* 按钮切换 by wu */
-listTable.switchBt = function(obj, act, id)
+listTable.switchBt = function(obj, url, id)
 {
     var obj = $(obj);
     var val = (obj.attr('class').match(/active/i)) ? 0 : 1;
-    var res = Ajax.call(this.url, "act="+act+"&val=" + val + "&id=" +id, null, "POST", "JSON", false);
+    var res = Ajax.call(url, "val=" + val + "&id=" +id, null, "POST", "JSON", false);
 
     /* 判断是否唯一 */
     var type = obj.data("type");
 
-    if (res.message)
+    if (res.code == 1)
     {
-        pbDialog(res.message,"",0);
-    }
-
-    if (res.error == 0)
-    {
-        obj.src = (res.content > 0) ? 'images/yes.gif' : 'images/no.gif';
-        if (!res.message) {
-            if (obj.hasClass("active")) {
-                obj.removeClass("active");
-                obj.next("input[type='hidden']").val(0);
-                obj.attr("title", "否");
-            } else {
-                obj.addClass("active");
-                obj.next("input[type='hidden']").val(1);
-                obj.attr("title", "是");
-            }
+        obj.src = (res.data > 0) ? 'images/yes.gif' : 'images/no.gif';
+        if (obj.hasClass("active")) {
+            obj.removeClass("active");
+            obj.next("input[type='hidden']").val(0);
+            obj.attr("title", "否");
+        } else {
+            obj.addClass("active");
+            obj.next("input[type='hidden']").val(1);
+            obj.attr("title", "是");
         }
     }
     if(type == "only"){

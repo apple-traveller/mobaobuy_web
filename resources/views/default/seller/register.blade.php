@@ -24,7 +24,7 @@
 <body>
 <div class="main" >
 <h1>商户注册</h1>
-<form>
+<form action="/seller/register" method="post" enctype="multipart/form-data" onsubmit ="return onSubmit()">
     店铺名称  <input type="text" name="shop_name" id="shop_name" onblur="checkShopName()"><br>
     <div style="height: 20px;">
         <div class="reg_error" id="shop_name_error"></div>
@@ -33,7 +33,7 @@
     <div style="height: 20px;">
         <div class="reg_error" id="company_name_error"></div>
     </div>
-    授权委托书电子版  <input type="file" name="attorney_letter_fileImg" id="attorney_letter_fileImg" onblur="checkAttorney_letter_fileImg()"><br>
+    授权委托书电子版  <input type="file" name="attorney_letter_fileImg" id="attorney_letter_fileImg"><br>
     <div style="height: 20px;">
         <div class="reg_error" id="attorney_letter_fileImg_error"></div>
     </div>
@@ -49,7 +49,12 @@
     <div style="height: 20px;">
         <div class="reg_error" id="taxpayer_id_error"></div>
     </div>
-    是否自营  <input type="text" name="is_self_run" id="is_self_run"><br>
+    是否自营
+    <div class="g-fl">
+        <input type="checkbox" id="is_self_run" value="1" name="is_self_run" onchange="" >
+        <label for="is_self_run" class="checked">是</label>
+    </div>
+
     <div style="height: 20px;">
         <div class="reg_error" id="is_self_run_error"></div>
     </div>
@@ -70,15 +75,19 @@
     手机验证码  <input type="text" name="mobile_code" id="mobile_code"><input type="button" onclick="messageCode();" value="获取验证码" id="code" /><br>
     密　码   <input type="password" name="password" id="password"><br>
     确认密码  <input type="password" name="password_confirmation" id="password_confirmation"><br>
-            <input name="protocol" type="checkbox" value="1" id="protocol" > <a href="javascript:void(0)">《协议》</a>
-    {{--<input type="button" value="注册" onclick="submit()">--}}
-    <a href="javascript:void(0)" onclick="submit()">注册</a>
+    <div class="g-fl">
+        <input type="checkbox" id="action" value="1" onchange="" checked="checked">
+        <label for="action" class="checked">我已阅读并同意</label>
+    </div>
+    <div class="g-fl">
+        <a target="_blank" href="javascript:void(0)" class="black">《注册服务协议》</a>
+    </div>
+    <input type="submit" value="注册">
     <a href="/seller/login.html">登录</a>
 </form>
 </div>
 </body>
 <script>
-    var InterValObj; //timer变量，控制时间
     var countdown = 60; //间隔函数，1秒执行
     //        var curCount; //当前剩余秒数
     var phoneReg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})||(19[0-9]{1}))+\d{8})$/; // 正则手机号
@@ -87,8 +96,6 @@
     var verify = /^\d{6}$/; // 正则短信验证码
     var veriCodeExep = /^\w{4}$/; // 正则图形验证
     var checkAccount = false;
-    var msType = false;
-    var msType02 = true;
     var registerCode = false;
     var t = 0;
     var flag = false;
@@ -106,7 +113,7 @@
             'data':{'shop_name':ShopName,'_token':'{{csrf_token()}}'},
             'url':"{{url('/seller/checkShopName')}}",
             success(res){
-                if (res.msg){
+                if (res.msg.length>0){
                     $('#shop_name_error').html(res.msg);
                     checkAccount = false;
                     return false;
@@ -271,35 +278,15 @@
     }
 
     // 提交
-    function submit() {
-            var _shop_name = $('#shop_name').val();
-            var _company_name = $('#company_name').val();
-            var _attorney_letter_fileImg = $('#attorney_letter_fileImg').val();
-            var _business_license_id = $('#business_license_id').val();
-            var _license_fileImg = $('#license_fileImg').val();
-            var _taxpayer_id = $('#taxpayer_id').val();
-            var _is_self_run = $('#is_self_run').val();
-            var _password = $('#password').val();
-            var _mobile = $('#mobile').val();
-            var _mobile_code = $('#mobile_code').val();
-            // if ($('#protocol').checked())
-
-            var _protocol = $('#protocol').checked ? $('#protocol').val():'';
-
-            let _data = {
-                'shop_name':_shop_name,
-                'company_name':_company_name,
-                'attorney_letter_fileImg':_attorney_letter_fileImg,
-                'business_license_id':_business_license_id,
-                'license_fileImg':_license_fileImg,
-                'taxpayer_id':_taxpayer_id,
-                'is_self_run':_is_self_run,
-                'password':_password,
-                'mobile':_mobile,
-                'mobile_code':_mobile_code,
-                'protocol':_protocol
-            };
-            console.log(_data);
+    function onSubmit() {
+          // if (!checkShopName() || !checkCompany() || !check_license_id() || !check_taxpayer() || !check_mobile()) {
+          //     return false;
+          // }
+            $('#password').val(window.btoa($('#password').val()));
+            if (!checkAccount ){
+               return false;
+            }
+            return true;
     }
     // 图形验证码
     $('#imVcode').click(function(){

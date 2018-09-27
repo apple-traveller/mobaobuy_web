@@ -1,6 +1,8 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    <style>
+        .mian-info .item .label {width: 15%;}
+    </style>
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>产品 - 编辑产品</div>
         <div class="content">
@@ -40,7 +42,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>所属品牌：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="brand_id" id="brand_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="brand_id" id="brand_id">
                                         <option value="0">请选择品牌</option>
                                         @foreach($brands as $v)
                                             <option @if($v['id']==$good['brand_id']) selected @endif  value="{{$v['id']}}">{{$v['brand_name']}}</option>
@@ -54,7 +56,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>所属分类：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
                                         <option value="0">请选择分类</option>
                                         @foreach($cateTrees as $v)
                                             <option @if($v['id']==$good['cat_id']) selected @endif  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
@@ -67,7 +69,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>单位名称：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="unit_id" id="unit_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="unit_id" id="unit_id">
                                         @foreach($units as $v)
                                             <option @if($v['id']==$good['unit_id']) selected @endif value="{{$v['id']}}">{{$v['unit_name']}}</option>
                                         @endforeach
@@ -101,36 +103,6 @@
                                     <input type="text" name="packing_unit" class="text" value="{{$good['packing_unit']}}" maxlength="40" autocomplete="off" id="packing_unit">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品小图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar1">上传图片</button>
-                                    <input type="hidden"  value="{{$good['goods_thumb']}}" class="text" id="goods_thumb" name="goods_thumb" >
-                                    <img @if(empty($good['goods_thumb'])) style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @else style="width:30px;height:30px;float:left;margin-right:10px;"  src="{{$good['goods_thumb']}}" @endif  class="layui-upload-img" id="demo1" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品大图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar2">上传图片</button>
-                                    <input type="hidden"  value="{{$good['goods_img']}}" class="text" id="goods_img" name="goods_img" >
-                                    <img  @if(empty($good['goods_img'])) style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @else style="width:30px;height:30px;float:left;margin-right:10px;"  src="{{$good['goods_img']}}" @endif class="layui-upload-img" id="demo2" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品原图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar3">上传图片</button>
-                                    <input type="hidden"  value="{{$good['original_img']}}" class="text" id="original_img" name="original_img" >
-                                    <img  @if(empty($good['original_img'])) style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @else style="width:30px;height:30px;float:left;margin-right:10px;"  src="{{$good['original_img']}}" @endif   class="layui-upload-img" id="demo3" >
-                                    <div class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -349,63 +321,6 @@
                 console.log($("#goods_attr").val());
                 $(this).parent('div').remove();
             });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar1' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo1").show();
-                        $('#goods_thumb').val(res.data);
-                        $("#demo1").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar2' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo2").show();
-                        $('#goods_img').val(res.data);
-                        $("#demo2").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar3' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo3").show();
-                        $('#original_img').val(res.data);
-                        $("#demo3").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
         });
 
         $(function(){
@@ -449,15 +364,6 @@
                     packing_unit:{
                         required : true
                     },
-                    goods_thumb:{
-                        required : true
-                    },
-                    goods_img:{
-                        required : true
-                    },
-                    original_img:{
-                        required : true
-                    },
                     market_price:{
                         required : true,
                         number:true
@@ -491,15 +397,6 @@
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
                     packing_unit :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    goods_thumb :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    goods_img :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    original_img :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     market_price :{

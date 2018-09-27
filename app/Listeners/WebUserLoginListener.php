@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\WebUserLogin;
 use App\Repositories\UserRepo;
 use App\Services\UserLogService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,12 +42,12 @@ class WebUserLoginListener
         UserLogService::create($userLog);
 
         //修改用户登录次数
-        $user_info = UserRepo::getInfo($data['user_id']);
+        $user_info = UserService::getInfo($data['user_id']);
         $lastInfo = [
             'last_ip' => $data['client_ip'],
             'last_time' => Carbon::now(),
             'visit_count' => $user_info['visit_count'] + 1
         ];
-        UserRepo::modify($data['user_id'], $lastInfo);
+        UserService::modify($data['user_id'], $lastInfo);
     }
 }

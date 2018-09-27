@@ -111,8 +111,9 @@ var Transport =
         self.onRunning();
       }
 
-      xhr.open(transferMode, url, asyn);
+      xhr.open(transferMode, url, false);
 
+      xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
       if (transferMode === "POST")
       {
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

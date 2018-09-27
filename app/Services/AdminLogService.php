@@ -9,5 +9,4 @@ class AdminLogService
     {
         return AdminLogRepo::create($data);
     }
-
 }

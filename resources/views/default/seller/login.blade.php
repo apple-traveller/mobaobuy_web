@@ -7,14 +7,37 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <body>
 <h1>商户登陆</h1>
-<form action="/seller/login" method="post">
+<form action="/seller/login" method="post" id="user_login">
     @csrf
-    用户名<input type="text" name="user_name" placeholder="请输入用户名"><br>
-    密　码<input type="password" name="password"><br>
-    <input type="submit" value="登陆">
+    用户名<input type="text" name="user_name" id="user_name" placeholder="请输入用户名" value=""><br>
+    密　码<input type="password" name="password" id="password" value=""><br>
+    <input type="button" value="登陆" onclick="submitForm()">
     <a href="/seller/register.html">注册</a>
 </form>
 </body>
+<script>
+    function submitForm() {
+        let user_name = $('#user_name').val();
+        let password = window.btoa($('#password').val());
+        // $('#password').val(password);
+        $.ajax({
+            url: '/seller/login',
+            data: {
+                user_name: user_name,
+                password: password
+            },
+            type: 'POST',
+            success: function (res) {
+                if (res.code == 1){
+                    window.location.href="{{url('/seller/index')}}";
+                } else {
+                    $('#password').val('');
+                }
+            }
+        });
+    }
+</script>
 </html>

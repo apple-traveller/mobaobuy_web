@@ -19,6 +19,7 @@ i.fa { font-size: 14px; vertical-align: middle; margin-right: 4px; }
 input[type='text']:focus{ border:1px solid #62b3ff;}
 input[type='text'].error:focus{ border:1px dashed #E84C3D;}
 input[type='submit']{ outline:0 none;}
+select {width: 320px;}
 .fontweight{ font-weight:bold;}
 .overflow_view{ overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .fl_label{ display:inline-block; width:100px; text-align:right; float:left;}
@@ -402,7 +403,7 @@ input.error,textarea.error{ background-color: #FFF0F0;background-repeat: repeat;
 .admin-header .module-menu li a:hover{ filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#26FFFFFF', endColorstr='#26FFFFFF');background: rgba(255,255,255,0.15);opacity: 1;}
 .admin-header .module-menu li.active a:hover{filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#26000000', endColorstr='#26000000');background: rgba(0,0,0,0.15);opacity: 1;}
 
-.admin-logo a{ float:left;}
+.admin-logo a{ float:left;padding-top: 4px;padding-left: 20px;}
 .admin-logo .foldsider{ position:absolute; bottom:5px; right:5px; cursor:pointer;}
 .admin-logo .foldsider i{ font-size:16px; color:#fff;}
 
@@ -431,7 +432,7 @@ input.error,textarea.error{ background-color: #FFF0F0;background-repeat: repeat;
 .admin-header-right .operate i{ width:1px; height:20px; display:block; float:left; background-position:-19px -62px; margin:15px 5px 0;}
 .admin-header-right .operate s{text-decoration: inherit; width:18px; height:18px; border-radius:50%; background-color:#ec5051; color:#fff; position:absolute; top:4px; right:6px; text-align:center; z-index:999;}
 
-.manager-menu{ display:none; position:absolute; width:204px; padding:10px 20px; top:50px; left:-118px; background:#fff; border-radius:0px 0px 5px 5px; box-shadow:0 0 4px rgba(0,0,0, 0.25);}
+.manager-menu{ display:none; position:absolute; width:204px; padding:10px 20px; top:50px; left:-85px; background:#fff; border-radius:0px 0px 5px 5px; box-shadow:0 0 4px rgba(0,0,0, 0.25);}
 .manager-menu .title{ width:100%; height:25px; line-height:25px; overflow:hidden; border-bottom:1px solid #e4eaec;}
 .manager-menu .title h4{ float:left;}
 .manager-menu .title a{ float:right;}

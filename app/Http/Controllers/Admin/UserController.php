@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $user_name = $request->input('user_name','');
         $currpage = $request->input("currpage",1);
-        $pageSize = 4;
+        $pageSize = 10;
         $is_firm = $request->input('is_firm',0);
 
         $condition = ['is_firm'=>$is_firm];
@@ -28,7 +28,6 @@ class UserController extends Controller
             $condition['user_name'] = "%".$user_name."%";
         }
         $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
-        //dd($users);
         return $this->display('admin.user.list',[
             'users'=>$users['list'],
             'user_name'=>$user_name,
@@ -37,6 +36,17 @@ class UserController extends Controller
             'pageSize'=>$pageSize,
             'is_firm'=>$is_firm
         ]);
+    }
+
+    public function modifyFreeze(Request $request){
+        $id = $request->input("id");
+        $is_freeze = $request->input("val", 0);
+        try{
+            UserService::modify($id, ['is_freeze' => $is_freeze]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
     }
 
     //编辑(修改状态)
@@ -48,12 +58,12 @@ class UserController extends Controller
         try{
             $user = UserService::modify($id,$data);
             if($user){
-                return $this->result($user['is_freeze'],'1',"修改成功");
+                return $this->success("修改成功");
             }else{
-                return  $this->result('','0',"修改失败");
+                return  $this->error("修改失败");
             }
         }catch(\Exception $e){
-            return  $this->result('','0',$e->getMessage());
+            return  $this->error($e->getMessage());
         }
     }
 

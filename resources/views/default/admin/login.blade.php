@@ -12,7 +12,11 @@
 
     <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/jquery.SuperSlide.2.1.1.js')}}" ></script>
-
+    <script>
+        if(top.location != this.location){
+            top.location.href = location.href;
+        }
+    </script>
 </head>
 
 <body>
@@ -22,7 +26,7 @@
         <div class="login-form layui-form" style="position: relative">
             <div class="formContent">
                 <div class="title"><div class="logo">
-                        <img style="max-height:60px;" src="{{asset('/images/logo.png')}}">
+                        <img style="max-height:50px;" src="{{asset('/images/logo.png')}}">
                     </div>
                     平台管理中心</div>
                 <div class="formInfo">
@@ -42,31 +46,41 @@
                     </div>
                 </div>
             </div>
-            <div id="error" style="position: absolute;left:0px;bottom: 30px;text-align: center;width:395px;">
-
-            </div>
         </div>
     </form>
 </div>
 <div id="bannerBox">
     <ul id="slideBanner" class="slideBanner">
-        <li><img src="{{asset(themePath('/').'images/banner_1.jpg')}}"></li>
         <li><img src="{{asset(themePath('/').'images/banner_2.jpg')}}"></li>
-        <li><img src="{{asset(themePath('/').'images/banner_3.jpg')}}"></li>
-        <li><img src="{{asset(themePath('/').'images/banner_4.jpg')}}"></li>
-        <li><img src="{{asset(themePath('/').'images/banner_5.jpg')}}"></li>
+
+        {{--<li><img src="{{asset(themePath('/').'images/banner_1.png')}}"></li>
+        <li><img src="{{asset(themePath('/').'images/banner_2.jpg')}}"></li>
+        <li><img src="{{asset(themePath('/').'images/banner_3.jpg')}}"></li>--}}
     </ul>
 </div>
 <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.purebox.js')}}" ></script>
 <script type="text/javascript">
+    document.onkeydown = keyDownSearch;
+
+    function keyDownSearch(e) {
+        // 兼容FF和IE和Opera
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            $("#sunBtn").click();
+            return false;
+        }
+        return true;
+    }
+
     $("#sunBtn").click(function(){
         layui.use(['layer','form'], function(){
             var form = layui.form,
                 layer = layui.layer;
             var username = $("#username").val();
             var password = $("#password").val();
-            if(username.length<2){
+            if(username.length < 2){
                 layer.msg("管理员长度不能小于两个字符", {icon: 5});
                 return false;
             }
@@ -77,20 +91,14 @@
 
             $.post('{{url('/admin/login')}}', $("#form1").serialize(), function (res) {
                 if (res.code == 1) {
-                    layer.msg(res.msg, {icon: 1});
-                    setTimeout(function(){
-                        window.location.href = "{{url('/admin/index')}}"
-                    }, 1000);
-
+                    window.location.href = "{{url('/admin/index')}}"
                 } else {
                     layer.msg(res.msg, {icon: 5});
                 }
             }, "json");
 
         });
-
-
-    })
+    });
 
     $("#bannerBox").slide({mainCell:".slideBanner",effect:"fold",interTime:3500,delayTime:500,autoPlay:true,autoPage:true,endFun:function(i,c,s){
             $(window).resize(function(){
@@ -108,23 +116,6 @@
         $(".formText .input-text").blur(function(){
             $(this).parent().removeClass("focus");
         });
-
-        $(".checkbox").click(function(){
-            if($(this).hasClass("checked")){
-                $(this).removeClass("checked");
-                $('input[name=remember]').val(0);
-            }else{
-                $(this).addClass("checked");
-                $('input[name=remember]').val(1);
-            }
-        });
-
-
-
-
-
-
-
     });
 </script>
 </body>
