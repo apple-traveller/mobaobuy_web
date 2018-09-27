@@ -24,4 +24,9 @@ class AdminService
         return $info;
     }
 
+    //获取所有数据
+    public static function getAdminList($pager,$condition)
+    {
+        return AdminRepo::getListBySearch($pager,$condition);
+    }
 }

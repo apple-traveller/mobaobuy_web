@@ -68,7 +68,7 @@
                                         <div class="tDiv a3">
                                             <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>
                                             <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                            <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="审核" class="btn_edit"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                            <a href="/admin/shop/logList?shop_id={{$vo['id']}}&currpage={{$currpage}}" title="日志" class="btn_edit"><i class="sc_icon sc_icon_see"></i>日志</a>
                                             {{--<a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->--}}
                                         </div>
                                     </td>

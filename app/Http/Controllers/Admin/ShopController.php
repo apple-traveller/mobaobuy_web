@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopService;
 use App\Services\UserService;
+use App\Services\ShopUserService;
+use App\Services\AdminService;
 class ShopController extends Controller
 {
     //列表
@@ -27,6 +29,27 @@ class ShopController extends Controller
             'shop_name'=>$shop_name,
             'pageSize'=>$pageSize
         ]);
+    }
+
+
+    //日志
+    public function logList(Request $request)
+    {
+        $shop_id = $request->input('shop_id');
+        $pageSize = 10;
+        $currpage = $request->input('currpage',1);
+        $shopUsers = ShopUserService::getShopUserList([],[]);//所有的店铺用户
+        $admins = AdminService::getAdminList([],[]);//所有的店铺用户
+        $shop_logs = ShopService::getShopLogList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['log_time'=>'asc']],[]);
+        return $this->display('admin.shop.loglist',[
+            'shop_logs'=>$shop_logs['list'],
+            'total'=>$shop_logs['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'shopUsers'=>$shopUsers,
+            'admins'=>$admins
+        ]);
+
     }
 
     //添加
@@ -108,7 +131,7 @@ class ShopController extends Controller
             }
             return $this->error('添加失败');
         }catch(\Exception $e){
-
+            return $this->error($e->getMessage());
         }
     }
 
@@ -130,6 +153,7 @@ class ShopController extends Controller
             'nick_name'=>$nick_name
         ]);
     }
+
 
 
     //ajax修改状态

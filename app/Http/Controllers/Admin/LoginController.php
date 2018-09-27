@@ -58,7 +58,7 @@ class LoginController extends Controller
             if(!$flag){
                 return $this->result('','0',"登录失败");
             }
-            session()->put('_admin_info', $user_info['id']);
+            session()->put('_admin_user_id', $user_info['id']);
             session()->put('theme', 'default');
             return $this->result('',1,'登录成功');
         }catch(\Exception $e){

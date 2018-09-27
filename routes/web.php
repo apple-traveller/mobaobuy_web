@@ -122,7 +122,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/editForm', 'ShopController@editForm');//修改店铺
         Route::post('/shop/save', 'ShopController@save');//保存
         Route::post('/shop/status', 'ShopController@status');//修改状态
-        Route::get('/shop/detail', 'ShopController@detail');//排序
+        Route::get('/shop/detail', 'ShopController@detail');//详情
+        Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
 
         Route::get('/shopuser/list', 'ShopUserController@list');//店铺职员列表
@@ -131,6 +132,18 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopuser/save', 'ShopUserController@save');//保存
         Route::get('/shopuser/delete', 'ShopUserController@delete');//删除
 
+        Route::get('/shopgoods/list', 'ShopGoodsController@list');//店铺产品列表
+        Route::get('/shopgoods/addForm', 'ShopGoodsController@addForm');//店铺产品添加
+        Route::get('/shopgoods/editForm', 'ShopGoodsController@editForm');//店铺产品编辑
+        Route::post('/shopgoods/save', 'ShopGoodsController@save');//保存
+        Route::post('/shopgoods/getGoods', 'ShopGoodsController@getGoods');//ajax获取产品
+        Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除
+
+        Route::get('/shopgoodsquote/list', 'ShopGoodsQuoteController@list');//店铺产品报价列表
+        Route::get('/shopgoodsquote/addForm', 'ShopGoodsQuoteController@addForm');//添加
+        Route::get('/shopgoodsquote/editForm', 'ShopGoodsQuoteController@editForm');//编辑
+        Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
+        Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板

@@ -3,6 +3,7 @@ namespace App\Services;
 use App\Repositories\ShopRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\ShopUserRepo;
+use App\Repositories\ShopLogRepo;
 use Illuminate\Support\Facades\Hash;
 
 class ShopService
@@ -13,6 +14,12 @@ class ShopService
     public static function getShopList($pager,$condition)
     {
         return ShopRepo::getListBySearch($pager,$condition);
+    }
+
+    //查询日志
+    public static function getShopLogList($pager,$condition)
+    {
+        return ShopLogRepo::getListBySearch($pager,$condition);
     }
 
 
@@ -28,7 +35,7 @@ class ShopService
             self::beginTransaction();
             $shop = ShopRepo::create($data);
             $udata['shop_id'] = $shop['id'];
-            $shopuser = ShopUserService::create($udata);
+            $shopuser = ShopUserRepo::create($udata);
             self::commit();
             return $shopuser;
         }catch(\Exception $e){

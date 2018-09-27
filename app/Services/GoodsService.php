@@ -13,6 +13,12 @@ class GoodsService
         return GoodsRepo::getListBySearch($pager,$condition);
     }
 
+    //无分页
+    public static function getGoods($condition,$columns)
+    {
+        return GoodsRepo::getList([],$condition,$columns);
+    }
+
     //验证唯一性
     public static function uniqueValidate($goods_name)
     {
