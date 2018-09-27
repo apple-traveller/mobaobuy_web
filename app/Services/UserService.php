@@ -63,6 +63,12 @@ class UserService
             unset($data['taxpayer_id']);
             unset($data['mobile_code']);
 
+            if(getConfig('firm_reg_check')){
+                $data['is_validated'] = 0;
+            }else{
+                $data['is_validated'] = 1;
+            }
+
             try {
                 self::beginTransaction();
                 $user = UserRepo::create($data);
@@ -74,6 +80,11 @@ class UserService
                 throw $e;
             }
         } else {
+            if(getConfig('individual_reg_check')){
+                $data['is_validated'] = 0;
+            }else{
+                $data['is_validated'] = 1;
+            }
             $user_info = UserRepo::create($data);
             return $user_info['id'];
         }
@@ -94,6 +105,9 @@ class UserService
 
         if ($info['is_freeze']) {
             self::throwBizError('用户名或密码不正确！');
+        }
+        if (!$info['is_validated']) {
+            self::throwBizError('待管理员审核通过后才可登录！');
         }
         unset($info['password']);
         //登录成功后事件

@@ -11,9 +11,11 @@
 |
 */
 
+//图形验证码
 Route::get('/verifyCode', 'VerifyCodeController@create');
 Route::post('/checkVerifyCode', 'VerifyCodeController@check');
-
+//图片上传
+Route::post('/uploadImg', 'UploadController@uploadImg');
 
 //后台
 
@@ -26,8 +28,11 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logout', 'LoginController@logout');
         Route::get('/index', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
+        Route::get('/clear', 'IndexController@clear');
+
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/modify', 'UserController@modify');//修改用户状态
+        Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
         Route::get('/user/verifyForm', 'UserController@verifyForm');//用户审核
@@ -138,10 +143,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 });
 
-
-Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
-
-Route::group(['namespace'=>'Web'],function() {
+Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
     Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
 

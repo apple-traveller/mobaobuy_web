@@ -9,7 +9,7 @@
 @include(themePath('.').'admin.include.partials.pageheader')
 <div class="admin-main">
     <div class="top-border"></div>
-    @include(themePath('.').'admin.include.partials.left')
+    @include(themePath('.','admin').'admin.include.partials.left')
     <div class="admin-main-right">
         <iframe src="/admin/home" id="workspace" name="workspace" frameborder="0" width="100%" height="95%" scrolling="yes"></iframe>
     </div>

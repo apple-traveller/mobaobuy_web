@@ -204,11 +204,11 @@ $(function(){
     });
 
     //没有cookie默认选择起始页
-   /* if ($.cookie('dscActionParam') == null) {
+    if ($.cookie('dscActionParam') == null) {
         $('.admin-logo').find('a').click();
     } else {
         openItem($.cookie('dscActionParam'));
-    }*/
+    }
 
     //顶部布局换色设置
     var bgColorSelectorColors = [{ c: '#981767', cName: '' }, { c: '#AD116B', cName: '' }, { c: '#B61944', cName: '' }, { c: '#AA1815', cName: '' }, { c: '#C4182D', cName: '' }, { c: '#D74641', cName: '' }, { c: '#ED6E4D', cName: '' }, { c: '#D78A67', cName: '' }, { c: '#F5A675', cName: '' }, { c: '#F8C888', cName: '' }, { c: '#F9D39B', cName: '' }, { c: '#F8DB87', cName: '' }, { c: '#FFD839', cName: '' }, { c: '#F9D12C', cName: '' }, { c: '#FABB3D', cName: '' }, { c: '#F8CB3C', cName: '' }, { c: '#F4E47E', cName: '' }, { c: '#F4ED87', cName: '' }, { c: '#DFE05E', cName: '' }, { c: '#CDCA5B', cName: '' }, { c: '#A8C03D', cName: '' }, { c: '#73A833', cName: '' }, { c: '#468E33', cName: '' }, { c: '#5CB147', cName: '' }, { c: '#6BB979', cName: '' }, { c: '#8EC89C', cName: '' }, { c: '#9AD0B9', cName: '' }, { c: '#97D3E3', cName: '' }, { c: '#7CCCEE', cName: '' }, { c: '#5AC3EC', cName: '' }, { c: '#16B8D8', cName: '' }, { c: '#49B4D6', cName: '' }, { c: '#6DB4E4', cName: '' }, { c: '#8DC2EA', cName: '' }, { c: '#BDB8DC', cName: '' }, { c: '#8381BD', cName: '' }, { c: '#7B6FB0', cName: '' }, { c: '#AA86BC', cName: '' }, { c: '#AA7AB3', cName: '' }, { c: '#935EA2', cName: '' }, { c: '#9D559C', cName: '' }, { c: '#C95C9D', cName: '' }, { c: '#DC75AB', cName: '' }, { c: '#EE7DAE', cName: '' }, { c: '#E6A5CA', cName: '' }, { c: '#EA94BE', cName: '' }, { c: '#D63F7D', cName: '' }, { c: '#C1374A', cName: '' }, { c: '#AB3255', cName: '' }, { c: '#A51263', cName: '' }, { c: '#7F285D', cName: ''}];
@@ -781,14 +781,12 @@ function openItem(param,home){
 
     $.cookie('dscActionParam', data_str[0] + '|' + data_str[1] , { expires: 1 ,path:'/'});
 
-/*    if(param == 'home')
+    if(param == 'home')
     {
         $('#adminNavTabs_home').show().siblings().hide();
         $('#adminNavTabs_home').find(".sub-menu").show();
         $('#adminNavTabs_home .sub-menu').find("li a:first").click();
-        url = 'index.php?act=main';
-        loadUrl(url);
-    }*/
+    }
 
     /*if(param == "index|main"){
         $(".admin-main").addClass("start_home");

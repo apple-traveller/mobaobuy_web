@@ -71,7 +71,7 @@
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
                                 <td><div class="tDiv">
                                         @if($user['userreal']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
-                                        @elseif($user['userreal']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                        @elseif($user['userreal']==0 && $user['is_validated'] == 0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                         @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
                                         @endif
                                     </div>
@@ -85,11 +85,13 @@
                                 <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 
                                 <td>
+                                    <div class="tDiv">
+                                        <div class="switch @if($user['is_freeze']) active @endif" title="@if($user['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('admin/user/change/active')}}', '{{$user['id']}}')">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
 
-                                    <label class="el-switch el-switch-lg">
-                                        <input type="checkbox" @if($user['is_freeze']==1)checked @endif  name="switch" value="{{$user['is_freeze']}}"  data-id="{{$user['id']}}"   hidden>
-                                        <span class="j_click el-switch-style"></span>
-                                    </label>
 
                                 </td>
 
@@ -108,21 +110,15 @@
                             <tr>
                                 <td colspan="12">
                                     <div class="tDiv">
-
                                         <div class="list-page">
                                             <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
-
-
                                             <ul id="page"></ul>
-
                                             <style>
                                                 .pagination li{
                                                     float: left;
                                                     width: 30px;
                                                     line-height: 30px;}
                                             </style>
-
-
                                         </div>
                                     </div>
                                 </td>
@@ -138,7 +134,6 @@
 </div>
 
     <script>
-
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
@@ -151,7 +146,6 @@
                     , jump: function (obj, first) {
                         if (!first) {
                             var user_name = $(".user_name").val();
-
                             window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name="+user_name+"&is_firm="+"{{$is_firm}}";
                         }
                     }
@@ -168,10 +162,12 @@
                 } else {
                     is_freeze = 1;
                 }
+                console.log(is_freeze);
+                return false;
 
                 layui.use(['layer'], function() {
                     layer = layui.layer;
-                    $.post("{{url('/admin/user/modify')}}",{"id":user_id,"is_freeze":is_freeze,"_token":$("#_token").val()},function(res){
+                    $.post("{{url('/admin/user/modify')}}",{"id":user_id,"is_freeze":is_freeze},function(res){
                         if(res.code==1){
                             layer.msg(res.msg, {icon: 1});
                             input.val(res.data);

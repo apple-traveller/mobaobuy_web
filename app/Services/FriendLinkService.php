@@ -5,19 +5,9 @@ class FriendLinkService
 {
      use CommonService;
     //分页获取链接列表
-    public static function getLinks($pager,$condition)
+    public static function getPageList($pager,$condition)
     {
         return FriendLinkRepo::getListBySearch($pager,$condition);
-    }
-
-    //验证唯一性
-    public static function uniqueValidate($link_name)
-    {
-        $info = FriendLinkRepo::getInfoByFields(['link_name'=>$link_name]);
-        if(!empty($info)){
-            self::throwBizError('分类名称已经存在！');
-        }
-        return $info;
     }
 
     //添加

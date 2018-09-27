@@ -12,10 +12,9 @@ class NavController extends Controller
     {
 
         $currpage = $request->input('currpage',1);
-        $pageSize = 3;
+        $pageSize = 10;
         $navs = NavService::getNavs(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
 
-        //dd($count);
         return $this->display('admin.nav.list',[
             'navs'=>$navs['list'],
             'count'=>$navs['total'],
