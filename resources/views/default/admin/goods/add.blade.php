@@ -20,14 +20,6 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品编码：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_sn" class="text" value="" maxlength="40" autocomplete="off" id="goods_sn">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
@@ -333,9 +325,6 @@
                     goods_name :{
                         required : true,
                     },
-                    goods_sn :{
-                        required : true,
-                    },
                     keywords:{
                         required : true
                     },
@@ -371,9 +360,7 @@
                     goods_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_sn :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+
                     brand_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },

@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/shop/list?currpage={{$currpage}}" class="s-back">返回</a>产品 - 编辑入驻店铺</div>
+        <div class="title"><a href="/admin/shop/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 编辑入驻店铺</div>
         <div class="content">
 
             <div class="flexilist">

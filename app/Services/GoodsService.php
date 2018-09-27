@@ -14,9 +14,9 @@ class GoodsService
     }
 
     //验证唯一性
-    public static function uniqueValidate($goods_sn)
+    public static function uniqueValidate($goods_name)
     {
-        $info = GoodsRepo::getInfoByFields(['goods_sn'=>$goods_sn]);
+        $info = GoodsRepo::getInfoByFields(['goods_name'=>$goods_name]);
         //dd($info);
         if(!empty($info)){
             self::throwBizError('该产品已经存在！');
