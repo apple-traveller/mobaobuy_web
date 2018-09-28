@@ -10,11 +10,12 @@ class SellerAuthenticate
 {
     public function handle($request, Closure $next, $guard = null)
     {
+        if(empty(session('_seller_id'))){
+            return redirect(route('seller_login'));
+        }
 
-
-        //缓存商户用户的基本信息
-        if(!session()->has('_seller_user')){
-
+        //缓存用户的基本信息
+        if(!session()->has('_seller')){
             $user_info = ShopLoginService::getInfo(session('_seller_id')['user_id']);
             $shop_info = ShopService::getShopById($user_info['shop_id']);
             $data = [
@@ -25,11 +26,13 @@ class SellerAuthenticate
             ];
             session()->put('_seller', $data);
             //缓存模板信息
+        }
 
+        //缓存模板信息
+        if(!session()->has('web_theme')){
+            session()->put('web_theme', getConfig('template','default'));
         }
-        if(!session()->has('seller_theme')){
-            session()->put('seller_theme', getConfig('seller_template','default'));
-        }
+
         return $next($request);
     }
 
@@ -55,6 +58,7 @@ class SellerAuthenticate
             return '';
         }
         return $domain;
+
     }
     ////获得访客浏览器类型
     function Get_Browser(){

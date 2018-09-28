@@ -8,7 +8,6 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Services\ShopService;
 
 class IndexController extends Controller
 {
@@ -23,6 +22,4 @@ class IndexController extends Controller
         ];
         return $this->display('seller.index',compact('data'));
     }
-
-
 }

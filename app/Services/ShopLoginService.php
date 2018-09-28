@@ -110,7 +110,7 @@ class ShopLoginService
         if ($shop_info['is_freeze'] == 1){
             self::throwBizError('该店铺已经冻结，暂不能登录');
         }
-        // 验证成功后，创建时间
+        // 验证成功后，创建事件
         createEvent('sellerUserLogin',['shop_id'=>$shop_info['id'],'user_id'=>$user_info['id'],'ip'=>$data['ip']]);
         return ['shop_id'=>$user_info['shop_id'],'user_id'=>$user_info['id']];
     }
