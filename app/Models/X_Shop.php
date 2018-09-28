@@ -7,7 +7,7 @@
  */
 namespace App\Models;
 
-class X_shop extends BaseModel
+class X_Shop extends BaseModel
 {
     protected $table = 'shop';
 }

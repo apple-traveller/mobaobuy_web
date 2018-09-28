@@ -119,22 +119,19 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var shop_name = $(".shop_name").val();
-                            window.location.href="/admin/shopuser/list?currpage="+"{{$pageSize}}"+"&shop_id="+"{{$shop_id}}";
+                            window.location.href="/admin/shopgoods/list?currpage="+obj.curr+"&shop_id="+"{{$shop_id}}";
                         }
                     }
                 });
             });
         }
 
-
-
         function remove(id)
         {
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/shopuser/delete?id="+id;
+                    window.location.href="/admin/shopgoods/delete?id="+id;
                     layer.close(index);
                 });
             });

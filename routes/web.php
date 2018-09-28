@@ -11,9 +11,11 @@
 |
 */
 
+//图形验证码
 Route::get('/verifyCode', 'VerifyCodeController@create');
 Route::post('/checkVerifyCode', 'VerifyCodeController@check');
-
+//图片上传
+Route::post('/uploadImg', 'UploadController@uploadImg');
 
 //后台
 
@@ -26,8 +28,11 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logout', 'LoginController@logout');
         Route::get('/index', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
+        Route::get('/clear', 'IndexController@clear');
+
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/modify', 'UserController@modify');//修改用户状态
+        Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
         Route::get('/user/verifyForm', 'UserController@verifyForm');//用户审核
@@ -122,7 +127,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/editForm', 'ShopController@editForm');//修改店铺
         Route::post('/shop/save', 'ShopController@save');//保存
         Route::post('/shop/status', 'ShopController@status');//修改状态
-        Route::get('/shop/detail', 'ShopController@detail');//排序
+        Route::get('/shop/detail', 'ShopController@detail');//详情
+        Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
 
         Route::get('/shopuser/list', 'ShopUserController@list');//店铺职员列表
@@ -131,6 +137,18 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopuser/save', 'ShopUserController@save');//保存
         Route::get('/shopuser/delete', 'ShopUserController@delete');//删除
 
+        Route::get('/shopgoods/list', 'ShopGoodsController@list');//店铺产品列表
+        Route::get('/shopgoods/addForm', 'ShopGoodsController@addForm');//店铺产品添加
+        Route::get('/shopgoods/editForm', 'ShopGoodsController@editForm');//店铺产品编辑
+        Route::post('/shopgoods/save', 'ShopGoodsController@save');//保存
+        Route::post('/shopgoods/getGoods', 'ShopGoodsController@getGoods');//ajax获取产品
+        Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除
+
+        Route::get('/shopgoodsquote/list', 'ShopGoodsQuoteController@list');//店铺产品报价列表
+        Route::get('/shopgoodsquote/addForm', 'ShopGoodsQuoteController@addForm');//添加
+        Route::get('/shopgoodsquote/editForm', 'ShopGoodsQuoteController@editForm');//编辑
+        Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
+        Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -145,10 +163,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 });
 
-
-Route::post('/uploadImg', 'UploadController@uploadImg');//图片上传
-
-Route::group(['namespace'=>'Web'],function() {
+Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
     Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
 

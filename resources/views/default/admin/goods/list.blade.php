@@ -36,14 +36,12 @@
                                 <thead>
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
-                                    <th width="10%"><div class="tDiv">产品名称</div></th>
-                                    <th width="10%"><div class="tDiv">产品编码</div></th>
-                                    <th width="8%"><div class="tDiv">所属品牌</div></th>
-                                    <th width="10%"><div class="tDiv">单位</div></th>
+                                    <th width="5%"><div class="tDiv">产品编码</div></th>
+                                    <th><div class="tDiv">产品名称</div></th>
+                                    <th width="10%"><div class="tDiv">所属品牌</div></th>
+                                    <th width="1%"><div class="tDiv">单位</div></th>
                                     <th width="8%"><div class="tDiv">产品型号</div></th>
                                     <th width="8%"><div class="tDiv">包装规格</div></th>
-                                    <th width="8%"><div class="tDiv">产品属性</div></th>
-                                    <th width="15%"><div class="tDiv">产品重量</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
@@ -51,21 +49,12 @@
                                 @foreach($goods as $vo)
                                 <tr class="">
                                     <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
-                                    <td><div class="tDiv">
-                                            @foreach($cates as $cate)
-                                                @if($cate['id']==$vo['cat_id'])
-                                                    {{$cate['cat_name']}}
-                                                @endif
-                                            @endforeach
-                                        </div>
-                                    </td>
+                                    <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_model']}}</div></td>
                                     <td><div class="tDiv">{{$vo['packing_spec']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_attr']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_weight']}}</div></td>
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/admin/goods/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_edit"><i class="icon icon-edit"></i>查看</a>

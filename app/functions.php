@@ -22,11 +22,20 @@ if(!function_exists('themePath')){
 
 if(!function_exists('getValue')){
     function getValue($obj, $key, $default=''){
-        //echo 123;die;
         if(empty($obj)){
             return $default;
         }
         return $obj[$key] ?? $default;
+    }
+}
+
+if(!function_exists('getNotEmptyValue')){
+    function getNotEmptyValue($obj, $key, $default=''){
+        $value = getValue($obj, $key, $default);
+        if(empty($value)){
+            return $default;
+        }
+        return $value;
     }
 }
 
@@ -53,8 +62,22 @@ if(!function_exists('createEvent')){
 }
 
 if(!function_exists('getConfig')){
-    function getConfig($code = ''){
-        return \App\Services\SysConfigService::getConfig($code);
+    function getConfig($code = '', $default = ''){
+        $value = \App\Services\SysConfigService::getConfig($code);
+        if(empty($value)){
+            return $default;
+        }
+        return $value;
     }
 }
+
+if(!function_exists('getFileUrl')){
+    function getFileUrl($file_path){
+        if(preg_match('/^(http|https):\/\/(.*)/', $file_path)){
+            return $file_path;
+        }
+        return \Illuminate\Support\Facades\Storage::url($file_path);
+    }
+}
+
 

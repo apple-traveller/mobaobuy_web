@@ -13,9 +13,8 @@ class FriendLinkController extends Controller
     {
         //查询所有的数据(分页)
         $currpage = $request->input('currpage',1);
-        $pageSize = 3;
-        $links = FriendLinkService::getLinks(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
-        //dd($links);
+        $pageSize = 10;
+        $links = FriendLinkService::getPageList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],[]);
         return $this->display('admin.friendlink.list',[
             'links'=>$links['list'],
             'pageSize'=>$pageSize,
@@ -44,7 +43,7 @@ class FriendLinkController extends Controller
         $data = $request->all();
         $id = $request->input('id');
         $errorMsg = array();
-        unset($data['_token']);
+
         if(empty($data['link_name'])){
             $errorMsg[] = "链接名称不能为空";
         }
@@ -55,6 +54,8 @@ class FriendLinkController extends Controller
         if(!preg_match($regex,$data['link_url'])){
             $errorMsg[] = "请输入正确的url";
         }
+        $data['link_logo'] = $data['link_logo'] ?? $data['url_logo'];
+        unset($data['url_logo']);
         if(empty($data['link_logo'])){
             $errorMsg[] = "链接logo不能为空";
         }
@@ -64,18 +65,11 @@ class FriendLinkController extends Controller
 
         try{
             if(empty($id)){
-                FriendLinkService::uniqueValidate($data['link_name']);//唯一性验证
-                $info = FriendLinkService::create($data);
-                if(empty($info)){
-                    return $this->error('保存失败');
-                }
+                FriendLinkService::create($data);
             }else{
-                $info = FriendLinkService::modify($id,$data);
-                if(!$info){
-                    return $this->error('保存失败');
-                }
+                FriendLinkService::modify($id,$data);
             }
-            return $this->success('保存成功！',url("/admin/link/list"));
+            return $this->success('保存成功！', url("/admin/link/list"));
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -105,9 +99,9 @@ class FriendLinkController extends Controller
         try{
             $info = FriendLinkService::modify($id,['sort_order'=>$sort_order]);
             if(!$info){
-                return $this->result('',400,'更新失败');
+                return $this->error('更新失败');
             }
-            return $this->result("/admin/link/list",200,'更新成功');
+            return $this->success("/admin/link/list",200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }

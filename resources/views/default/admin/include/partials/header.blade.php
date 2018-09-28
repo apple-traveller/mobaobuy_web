@@ -1,9 +1,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>大商创</title>
+<title>{{getConfig('shop_name')}}</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="shortcut icon" href="{{asset(themePath('/').'favicon.ico')}}" />
-<link rel="icon" href="{{asset(themePath('/').'animated_favicon.gif')}}" type="image/gif" />
+<link rel="shortcut icon" href="{{getFileUrl(getConfig('shop_ico', asset('images/favicon.ico')))}}" />
 
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/main.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/iconfont.css')}}" />

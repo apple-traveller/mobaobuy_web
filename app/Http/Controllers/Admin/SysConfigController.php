@@ -29,13 +29,12 @@ class SysConfigController extends Controller
     public function modify(Request $request)
     {
         $data = $request->all();
-        $parent_id = $request->input('parent_id');
         unset($data['parent_id']);
         unset($data['_token']);
         try{
             $flag = SysConfigService::modify($data);
             if($flag){
-                return $this->success('保存成功',url('/admin/sysconfig/index')."?parent_id=".$parent_id);
+                return $this->success('保存成功','javascript:history.back(-1);');
             }else{
                 return $this->success('保存失败');
             }

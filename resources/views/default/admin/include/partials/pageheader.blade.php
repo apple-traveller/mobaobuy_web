@@ -2,7 +2,7 @@
     <div class="bgSelector"></div>
     <div class="admin-logo">
         <a href="/admin/home"  data-param="home" target="workspace">
-            <img src="{{asset(themePath('/').'images/admin_logo.png')}}">
+            <img style="max-height: 40px" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
         </a>
         <div class="foldsider"><i class="icon icon-indent-right"></i></div>
     </div>
@@ -19,14 +19,14 @@
     <div class="admin-header-right">
         <div class="manager">
             <dl>
-                <dt class="name">admin</dt>
-                <dd class="group">超级管理员</dd>
+                <dt class="name">{{session('_admin_user_info')['user_name']}}</dt>
+                <dd class="group">{{session('_admin_user_info')['real_name']}}</dd>
             </dl>
             <span class="avatar">
-				<form action="index.php" id="fileForm" method="post" enctype="multipart/form-data" runat="server">
+				<form action="index.php" id="fileForm" method="post" enctype="multipart/form-data">
 					<input name="img" type="file" class="admin-avatar-file" id="_pic" title="设置管理员头像">
 				</form>
-				<img nctype="admin_avatar" src="{{asset(themePath('/').'images/admin.png')}}">
+				<img nctype="admin_avatar" src="{{getFileUrl(getNotEmptyValue(session('_admin_user_info'),'avatar',asset('images/admin.png')))}}">
 			</span>
             <div id="admin-manager-btn" class="admin-manager-btn"><i class="arrow"></i></div>
             <div class="manager-menu">
@@ -35,8 +35,8 @@
                     <a href="privilege.php?act=edit&amp;id=60" target="workspace" class="edit_pwd">修改密码</a>
                 </div>
                 <div class="login-date">
-                    <strong>2018-08-09 18:47:25</strong>
-                    <span>(IP:0.0.0.0)</span>
+                    <strong>{{session('_admin_user_info')['last_time']}}</strong>
+                    <span>(IP:{{getNotEmptyValue(session('_admin_user_info'),'last_ip','0.0.0.0')}})</span>
                 </div>
                 <div class="title mt10">
                     <h4>常用操作</h4>
@@ -84,15 +84,11 @@
                 </div>
             </li>
             <i></i>
-            <li><a href="../" target="_blank" class="home" title="新窗口打开商城首页">&nbsp;</a></li>
+            <li><a href="{{asset('')}}" target="_blank" class="home" title="新窗口打开商城首页">&nbsp;</a></li>
             <i></i>
-            <li><a href="javascript:void(0);" class="sitemap" title="查看全部管理菜单">&nbsp;</a></li>
+            <li><a href="{{asset('admin/clear')}}" class="clear" target="workspace" title="清除缓存">&nbsp;</a></li>
             <i></i>
-            <li><a href="javascript:void(0);" id="trace_show" class="style-color" title="给管理中心换个颜色">&nbsp;</a></li>
-            <i></i>
-            <li><a href="index.php?act=clear_cache" class="clear" target="workspace" title="清除缓存">&nbsp;</a></li>
-            <i></i>
-            <li><a href="javascript:void(0);" id="out"  title="安全退出管理中心">&nbsp;</a></li>
+            <li><a href="javascript:void(0);" class="prompt" id="out"  title="安全退出管理中心">&nbsp;</a></li>
         </div>
     </div>
 </div>

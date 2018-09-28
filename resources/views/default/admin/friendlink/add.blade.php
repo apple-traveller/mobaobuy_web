@@ -35,13 +35,12 @@
                                 <input name="sort_order" value="50" class="text" autocomplete="off" type="text">
                             </div>
                         </div>
-                        <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                         <div class="item shop_logo">
                             <div class="label"><span class="require-field">*</span>链接LOGO：</div>
                             <div class="label_value">
                                 <div class="type-file-box" style="width:600px;">
-                                    <button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                    <input type="text"  class="text" id="link_logo" name="link_logo"  style="display:none;">
+                                    <button type="button" class="layui-btn upload-file" data-type="friend_link" data-path="friend_link">上传图片</button>
+                                    <input type="text"  class="text" name="link_logo"  style="display:none;">
                                     <img  style="width:60px;height:60px;display:none;"   class="layui-upload-img" id="demo1" ><br/>
                                 </div>
                             </div>
@@ -50,7 +49,7 @@
                         <div class="item">
                             <div class="label">或LOGO地址：</div>
                             <div class="label_value">
-                                <input name="link_logo" id="remote_link_logo" class="text" autocomplete="off" value="" type="text">
+                                <input name="url_logo" id="remote_link_logo" class="text" autocomplete="off" value="" type="text">
                                 <div class="notic m20">在指定远程LOGO图片时, LOGO图片的URL网址必须为http:// 或 https://开头的正确URL格式!</div>
                             </div>
                         </div>
@@ -75,23 +74,22 @@
 
             //文件上传
             var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
-                , url: "{{url('/uploadImg')}}" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
+                elem: '.upload-file' //绑定元素
+                ,url: "{{url('/uploadImg')}}" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
                     //上传完毕回调
-                    if (200 == res.code) {
-                        $('#demo1').show();
-                        $('#link_logo').val(res.data);
-                        $('#demo1').attr('src', res.data);
-                        $('#remote_link_logo').attr('name',"");
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                    }else{
+                        layer.msg(res.msg, {time:2000});
                     }
                 }
-
             });
         });
 
@@ -102,15 +100,6 @@
                     $("#link_form").submit();
                 }
             });
-
-            jQuery.validator.addMethod("isMobile", function(value, element) {
-                var length = value.length;
-                var mobile = /^1[34578]\d{9}$/;/*/^1(3|4|5|7|8)\d{9}$/*/
-                return this.optional(element) || (length == 11 && mobile.test(value));
-            }, "请正确填写您的手机号码");
-
-
-
 
             $('#link_form').validate({
                 errorPlacement:function(error, element){

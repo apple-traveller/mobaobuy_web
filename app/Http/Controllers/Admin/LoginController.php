@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
+use App\Services\AdminService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\AdminService;
-use App\Services\AdminLogService;
 
 class LoginController extends Controller
 {
@@ -34,7 +33,6 @@ class LoginController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
         $errorMsg = array();
-        $adminLog = array();
         if(empty($username)){
             $errorMsg[] = '管理员不能为空';
         }
@@ -42,27 +40,15 @@ class LoginController extends Controller
             $errorMsg[] = '密码不能为空';
         }
         if(!empty($errorMsg)){
-            return $this->result('','0',implode('<br/>',$errorMsg));
+            return $this->error(implode('<br/>',$errorMsg));
         }
 
         try{
-            $user_info = AdminService::loginValidate($username, $password);
-            $adminLog=[
-                'admin_id'=>1,
-                'real_name'=>$user_info['real_name'],
-                'log_time'=>Carbon::now(),
-                'ip_address'=>$request->getClientIp(),
-                'log_info'=>"登录"
-            ];
-            $flag = AdminLogService::create($adminLog);
-            if(!$flag){
-                return $this->result('','0',"登录失败");
-            }
-            session()->put('_admin_info', $user_info['id']);
-            session()->put('theme', 'default');
-            return $this->result('',1,'登录成功');
+            $user_id = AdminService::loginValidate($username, $password, [ 'ip'  => $request->getClientIp()]);
+            session()->put('_admin_user_id', $user_id);
+            return $this->success('登录成功，正在进入系统...');
         }catch(\Exception $e){
-            return $this->result('','0',$e->getMessage());
+            return $this->error($e->getMessage());
         }
     }
 
@@ -71,9 +57,8 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        session()->forget('_admin_info');
+        session()->forget('_admin_user_id');
+        session()->forget('_admin_user_info');
         return $this->success('退出登录成功！', route('admin_login'));
-
-
     }
 }

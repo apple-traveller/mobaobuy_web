@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\WebUserLogin' => [
             'App\Listeners\WebUserLoginListener',
         ],
+        'App\Events\AdminUserLogin' => [
+            'App\Listeners\AdminUserLoginListener',
+        ],
         'App\Events\SendSms' => [
             'App\Listeners\SendSmsListener',
         ],
