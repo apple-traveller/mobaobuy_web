@@ -13,26 +13,33 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="shop_id" id="shop_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;" name="shop_id" id="shop_id">
+                                        <option value="">请选择店铺</option>
                                         @foreach($shops as $vo)
                                         <option  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
                                         @endforeach
                                     </select>
+                                    <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择产品：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;float:left;" class="cat_id" >
-                                        <option value="0">请选择分类</option>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
+                                        <option value="">请选择分类</option>
                                         @foreach($goodsCatTree as $vo)
                                             <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
                                         @endforeach
                                     </select>
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
+                                        <option value="">请选择产品</option>
+                                        @foreach($goods as $vo)
+                                            <option  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
+                                        @endforeach
                                     </select>
                                     <div class="form_prompt"></div>
+                                    <div class="notic">分类用于辅助选择产品</div>
                                 </div>
                             </div>
 
@@ -113,8 +120,12 @@
                     },
                     goods_number :{
                         required : true,
+                        number:true
                     },
                     goods_id:{
+                        required : true,
+                    },
+                    shop_id:{
                         required : true,
                     }
                 },
@@ -123,9 +134,13 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
                     goods_id :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    shop_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     }
                 }

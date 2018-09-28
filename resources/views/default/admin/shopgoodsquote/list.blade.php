@@ -14,7 +14,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/shopgoods/addForm"><div class="fbutton"><div class="add" title="添加产品报价"><span><i class="icon icon-plus"></i>添加产品报价</span></div></div></a>
+                        <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加产品报价"><span><i class="icon icon-plus"></i>添加产品报价</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -48,7 +48,7 @@
                                     <th width="10%"><div class="tDiv">交货地</div></th>
                                     <th width="15%"><div class="tDiv">添加时间</div></th>
                                     <th width="15%"><div class="tDiv">截止时间</div></th>
-                                    <th width="20%" class="handle">操作</th>
+                                    <th width="15%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,8 +62,8 @@
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['expiry_time']}}</div></td>
-                                    <td class="handle">
-                                        <div class="tDiv a3">
+                                    <td>
+                                        <div class="tDiv">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                             <a href="/admin/shopgoodsquote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
@@ -77,7 +77,7 @@
                                         <div class="tDiv">
 
                                             <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
+
 
                                                 <ul id="page"></ul>
 
@@ -122,7 +122,6 @@
         }
 
 
-
         function remove(id)
         {
             layui.use('layer', function(){
@@ -133,7 +132,5 @@
                 });
             });
         }
-
-
     </script>
 @stop

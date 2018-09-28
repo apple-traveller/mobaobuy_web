@@ -24,7 +24,8 @@
                         <form action="/admin/shopuser/list" name="searchForm" >
                             <div class="input">
                                 <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_id" id="cat_id">
-                                    <option value="0">请选择店铺</option>
+
+                                    <option value="0">全部店铺</option>
                                     @foreach($shops as $vo)
                                         <option @if($vo['id']==$shop_id) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
                                     @endforeach

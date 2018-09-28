@@ -14,7 +14,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/shopgoods/addForm"><div class="fbutton"><div class="add" title="添加店铺职员"><span><i class="icon icon-plus"></i>添加店铺职员</span></div></div></a>
+                        <a href="/admin/shopgoods/addForm"><div class="fbutton"><div class="add" title="添加店铺产品"><span><i class="icon icon-plus"></i>添加店铺产品</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>

@@ -2,67 +2,81 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/shopgoods/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 编辑店铺产品</div>
+        <div class="title"><a href="/admin/shopgoodsquote/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 修改产品报价</div>
         <div class="content">
 
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/admin/shopgoods/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+                    <form action="/admin/shopgoodsquote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="shop_id" id="shop_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id">
+                                        <option value="">请选择店铺</option>
                                         @foreach($shops as $vo)
-                                            <option @if($shopGood['shop_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
+                                        <option @if($goodsQuote['shop_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
                                         @endforeach
                                     </select>
+                                    <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择产品：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;float:left;" class="cat_id" >
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
                                         <option value="0">请选择分类</option>
                                         @foreach($goodsCatTree as $vo)
-                                            <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
+                                            <option @if($good['cat_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
                                         @endforeach
                                     </select>
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;float:left;margin-left:20px;" class="goods_id" name="goods_id" id="goods_id">
-                                        <option value="{{$shopGood['goods_name']}}">{{$shopGood['goods_name']}}</option>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
+                                        <option value="">请选择产品</option>
+                                        @foreach($goods as $vo)
+                                            <option @if($goodsQuote['goods_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
+                                        @endforeach
                                     </select>
                                     <div class="form_prompt"></div>
+                                    <div class="notic">分类用于辅助选择产品</div>
                                 </div>
+
                             </div>
-                                <input type="hidden" name="id" value="{{$shopGood['id']}}">
-                                <input type="hidden" name="currpage" value="{{$currpage}}">
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;产品库存数量：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{$shopGood['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_place" class="text" value="{{$goodsQuote['delivery_place']}}" maxlength="40" autocomplete="off" id="delivery_place">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="expiry_time" value="{{$goodsQuote['expiry_time']}}" id="expiry_time" class="layui-input text" maxlength="40" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                                <input type="hidden" name="currpage" value="{{$currpage}}">
+                            <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
-                                    <input type="text" name="shop_price" class="text" value="{{$shopGood['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
+                                    <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否在售：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_on_sale" id="is_super">
-                                        <option @if($shopGood['is_on_sale']==0) selected @endif  value="0">否</option>
-                                        <option @if($shopGood['is_on_sale']==1) selected @endif value="1">是</option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -80,6 +94,19 @@
     </div>
 
     <script type="text/javascript">
+
+        //时间选择器
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#expiry_time' //指定元素
+                ,type: 'datetime'
+            });
+        });
+
+
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
@@ -90,7 +117,7 @@
                         $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
-                    $(".goods_id").append('<option value="0">该分类下没有产品</option>');
+                    $(".goods_id").append('<option value="">该分类下没有产品</option>');
                 }
             },"json");
         });
@@ -102,6 +129,7 @@
                 }
             });
 
+
             $('#article_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
@@ -110,26 +138,47 @@
                 },
                 ignore : [],
                 rules:{
+                    shop_id:{
+                        required : true,
+                    },
                     shop_price :{
                         required : true,
                     },
                     goods_number :{
                         required : true,
+                        number:true
                     },
                     goods_id:{
                         required : true,
+                    },
+                    delivery_place:{
+                        required:true,
+                    },
+                    expiry_time:{
+                        required:true,
                     }
                 },
                 messages:{
+                    shop_id :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    }
+                    },
+                    delivery_place :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    expiry_time :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+
                 }
             });
         });

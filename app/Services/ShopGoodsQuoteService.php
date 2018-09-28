@@ -8,7 +8,11 @@ class ShopGoodsQuoteService
     //分页
     public static function getShopGoodsQuoteList($pager,$condition)
     {
-        return ShopGoodsQuoteRepo::getListBySearch($pager,$condition);
+        $result = ShopGoodsQuoteRepo::getListBySearch($pager,$condition);
+       /* foreach($result['list'] as $vo){
+
+        }*/
+       return $result;
     }
 
     //保存
