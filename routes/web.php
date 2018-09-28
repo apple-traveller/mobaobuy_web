@@ -238,6 +238,15 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
         Route::get('/', 'IndexController@index');
         Route::get('/logout', 'LoginController@logout');
+
+        Route::get('/goods/list', 'ShopGoodsController@list');//商户商品操作
+        Route::get('/goods/add', 'ShopGoodsController@add');
+        Route::get('/goods/edit', 'ShopGoodsController@edit');
+        Route::post('/goods/save', 'ShopGoodsController@save');
+        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
+        Route::post('/goods/delete', 'ShopGoodsController@delete');
+
+
     });
 });
 
