@@ -65,7 +65,7 @@
                                     <input value=" 确 定 " ectype="btnSubmit" class="button" type="submit">
                                 </div>
                             </div>
-
+                        </div>
                     </form>
                 </div>
             </div>
@@ -97,11 +97,6 @@
             });
         });
 
-        $(function(){
-            //表单验证
-            $("#submitBtn").click(function(){
-                $("#shopConfigForm").submit();
-            });
-        });
+
     </script>
 @stop

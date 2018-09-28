@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><div class="tDiv"><a href="#" class="ftx-01">{{$vo['cat_name']}}</a></div></td>
+                                <td><div class="tDiv">{{$vo['cat_name']}}</div></td>
 
                                 <td>
                                     <div class="tDiv">

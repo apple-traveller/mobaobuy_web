@@ -8,6 +8,7 @@ use App\Services\ShopGoodsService;
 use App\Services\ShopService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
+use App\Services\ShopGoodsQuoteService;
 class ShopGoodsController extends Controller
 {
     //列表
@@ -38,10 +39,12 @@ class ShopGoodsController extends Controller
         $shops = ShopService::getShopList([],[]);
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
+        $goods = GoodsService::getGoodsList([],[]);
         //dd($goods);
         return $this->display('admin.shopgoods.add',[
             'goodsCatTree'=>$goodsCatTree,
             'shops'=>$shops['list'],
+            'goods'=>$goods['list']
         ]);
     }
 
@@ -54,11 +57,15 @@ class ShopGoodsController extends Controller
         $shops = ShopService::getShopList([],[]);
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
+        $goods = GoodsService::getGoodsList([],[]);
+        $good = GoodsService::getGoodInfo($shopGood['goods_id']);
         return $this->display('admin.shopgoods.edit',[
             'shopGood'=>$shopGood,
             'currpage'=>$currpage,
             'shops'=>$shops['list'],
             'goodsCatTree'=>$goodsCatTree,
+            'goods'=>$goods['list'],
+            'good'=>$good
         ]);
     }
 
@@ -139,4 +146,8 @@ class ShopGoodsController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+
+
+
 }

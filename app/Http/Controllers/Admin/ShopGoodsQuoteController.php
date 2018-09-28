@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopGoodsService;
 use App\Services\ShopService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\GoodsCategoryService;
+use App\Services\GoodsService;
 class ShopGoodsQuoteController extends Controller
 {
     //列表
@@ -37,10 +40,12 @@ class ShopGoodsQuoteController extends Controller
         $shops = ShopService::getShopList([],[]);
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
+        $goods = GoodsService::getGoodsList([],[]);
         //dd($goods);
-        return $this->display('admin.shopgoods.add',[
+        return $this->display('admin.shopgoodsquote.add',[
             'goodsCatTree'=>$goodsCatTree,
             'shops'=>$shops['list'],
+            'goods'=>$goods['list']
         ]);
     }
 
@@ -49,15 +54,19 @@ class ShopGoodsQuoteController extends Controller
     {
         $currpage = $request->input('currpage',1);
         $id = $request->input('id');
-        $shopGood = ShopGoodsService::getShopGoodsById($id);
+        $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $shops = ShopService::getShopList([],[]);
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        return $this->display('admin.shopgoods.edit',[
-            'shopGood'=>$shopGood,
+        $goods = GoodsService::getGoodsList([],[]);
+        $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
+        return $this->display('admin.shopgoodsquote.edit',[
+            'goodsQuote'=>$goodsQuote,
             'currpage'=>$currpage,
             'shops'=>$shops['list'],
             'goodsCatTree'=>$goodsCatTree,
+            'goods'=>$goods['list'],
+            'good'=>$good
         ]);
     }
 
@@ -69,8 +78,14 @@ class ShopGoodsQuoteController extends Controller
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '产品不能为空';
         }
-        if(empty($data['shop_id'])){
+        if($data['shop_id']==0||empty($data['shop_id'])){
             $errorMsg[] = '店铺不能为空';
+        }
+        if(empty($data['delivery_place'])){
+            $errorMsg[] = '交货地不能为空';
+        }
+        if(empty($data['expiry_time'])){
+            $errorMsg[] = '截止时间不能为空';
         }
         if(empty($data['goods_number'])){
             $errorMsg[] = '库存不能为空';
@@ -89,14 +104,24 @@ class ShopGoodsQuoteController extends Controller
         unset($data['currpage']);
         try{
             if(key_exists('id',$data)){
-                $flag = ShopGoodsService::modify($data);
+                $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
+                if(strtotime($data['expiry_time'])<strtotime($goodsQuote['add_time'])){
+                    return $this->error('截止时间不能在添加时间之前');
+                }
+                $flag = ShopGoodsQuoteService::modify($data);
                 if(!empty($flag)){
-                    return $this->success('修改成功',url('/admin/shopgoods/list')."?currpage=".$currpage);
+                    return $this->success('修改成功',url('/admin/shopgoodsquote/list')."?currpage=".$currpage);
                 }
             }else{
-                $flag = ShopGoodsService::create($data);
+                $data['add_time'] = Carbon::now();
+                $data['outer_user_id'] = session('_admin_user_id');
+                $data['outer_id'] = 0;
+                if(strtotime($data['expiry_time'])<strtotime($data['add_time'])){
+                    return $this->error('截止时间不能在添加时间之前');
+                }
+                $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
-                    return $this->success('添加成功',url('/admin/shopgoods/list'));
+                    return $this->success('添加成功',url('/admin/shopgoodsquote/list'));
                 }
             }
             return $this->error('添加失败');
@@ -107,29 +132,14 @@ class ShopGoodsQuoteController extends Controller
     }
 
 
-    //ajax获取产品
-    public function getGoods(Request $request)
-    {
-        $cat_id = $request->input('cat_id');
-        $goods = GoodsService::getGoods(['cat_id'=>$cat_id],['id','goods_name']);
-        if($cat_id==0){
-            $goods = GoodsService::getGoods([],['id','goods_name']);
-        }
-        if(!empty($goods)){
-            return $this->result($goods,200,'获取产品成功');
-        }else{
-            return $this->result('',400,'获取产品失败');
-        }
-    }
-
     //删除
     public function delete(Request $request)
     {
         $id = $request->input('id');
         try{
-            $flag = ShopGoodsService::delete($id);
+            $flag = ShopGoodsQuoteService::delete($id);
             if($flag){
-                return $this->success('删除成功',url('/admin/shopgoods/list'));
+                return $this->success('删除成功',url('/admin/shopgoodsquote/list'));
             }
             return  $this->error('删除失败');
         }catch(\Exception $e){
