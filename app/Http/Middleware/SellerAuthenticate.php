@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\ShopLoginService;
+use App\Services\ShopService;
 use Closure;
 
 class SellerAuthenticate
@@ -10,13 +11,20 @@ class SellerAuthenticate
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if(empty(session('_seller_user'))){
+        if(empty(session('_seller_id'))){
             return redirect(route('seller_login'));
         }
         //缓存商户用户的基本信息
         if(!session()->has('_seller_user')){
-            $user_info = ShopLoginService::getInfo(session('_seller_user_id'));
-            session()->put('_seller_user_id', $user_info[]);
+            $user_info = ShopLoginService::getInfo(session('_seller_id')['user_id']);
+            $shop_info = ShopService::getShopById($user_info['shop_id']);
+            $data = [
+                'user_id' => $user_info['id'],
+                'user_name' => $user_info['user_name'],
+                'is_super' => $user_info['is_super'],
+                'shop_info' => $shop_info
+            ];
+            session()->put('_seller', $data);
         }
         return $next($request);
     }

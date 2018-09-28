@@ -221,9 +221,8 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
-        Route::get('/test', function (){
-            return 'M test';
-        });
+        Route::get('/', 'IndexController@index');
+        Route::get('/logout', 'LoginController@logout');
     });
 });
 

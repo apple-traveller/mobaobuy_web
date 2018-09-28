@@ -32,9 +32,10 @@
             type: 'POST',
             success: function (res) {
                 if (res.code == 1){
-                    window.location.href="{{url('/seller/index')}}";
+                    window.location.href="{{url('/seller')}}";
                 } else {
                     $('#password').val('');
+                    alert(res.msg);
                 }
             }
         });

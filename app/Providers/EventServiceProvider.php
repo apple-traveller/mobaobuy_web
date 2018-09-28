@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SendSms' => [
             'App\Listeners\SendSmsListener',
         ],
+        'App\Events\SellerUserLogin' => [
+            'App\Listeners\SellerUserLoginListener'
+        ]
     ];
 
     /**

@@ -25,6 +25,8 @@
 <div class="main" >
 <h1>商户注册</h1>
 <form action="/seller/register" method="post" enctype="multipart/form-data" onsubmit ="return onSubmit()">
+
+    <input type="hidden" name="_token" value="{{csrf_token()}}"/>
     店铺名称  <input type="text" name="shop_name" id="shop_name" onblur="checkShopName()"><br>
     <div style="height: 20px;">
         <div class="reg_error" id="shop_name_error"></div>
@@ -240,19 +242,19 @@
     }
     // 发送短信
     function messageCode(){
-        phoneValidate();
+        check_mobile();
         verifyValidate ();
-
-        if (!checkAccount || !pwdValidate() || !registerCode) {
+        console.log(pwdValidate);
+        if (!checkAccount) {
             return false;
         }
         var mobile = $('#mobile').val();
-        console.log(mobile);
+
         if(!flag){
             $.ajax({
                 'type':'post',
                 'data':{'mobile':mobile,'_token':'{{csrf_token()}}'},
-                'url':"{{url('/shop/getSmsCode')}}",
+                'url': "/seller/getSmsCode",
                 success:function(res){
                     var result = JSON.parse(res);
                     if(result.code){

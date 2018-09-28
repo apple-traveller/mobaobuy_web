@@ -28,7 +28,23 @@ class LoginController extends Controller
             if (empty($password)){
                 return $this->error('密码不能为空');
             }
-            dd($password);
+            $request->setTrustedProxies(['116.226.54.5'],0);
+            $params = [
+                'user_name'=>$user_name,
+                'password'=>$password,
+                'ip'=>$request->getClientIp()
+            ];
+            try{
+                $seller_id = ShopLoginService::CheckLogin($params);
+                if ($seller_id){
+                    session()->put('_seller_id',$seller_id);
+                    return $this->success('登录成功,正在进入系统');
+                } else {
+                    return $this->error('登录失败');
+                }
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
         }
     }
 
@@ -153,5 +169,17 @@ class LoginController extends Controller
             echo json_encode(array('code'=>1,'msg'=>'success'));exit;
         }
         echo json_encode(array('code'=>0,'msg'=>'error'));exit;
+    }
+
+    /**
+     * 登出
+     * @return LoginController|\Illuminate\Http\RedirectResponse
+     */
+    public function logout()
+    {
+        session()->forget('_seller_id');
+        session()->forget('_seller');
+
+        return $this->success('退出成功','seller/login.html','',0);
     }
 }

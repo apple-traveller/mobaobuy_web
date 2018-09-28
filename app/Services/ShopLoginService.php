@@ -11,12 +11,19 @@ use App\Helpers\BaseUpload;
 use App\Repositories\ShopRepo;
 use App\Repositories\ShopUserRepo;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ShopLoginService
 {
     use CommonService;
 
+    /**
+     * 商户入驻
+     * @param $data
+     * @return bool
+     * @throws \Exception
+     */
     public static function Register($data)
     {
         try {
@@ -84,6 +91,29 @@ class ShopLoginService
         }
     }
 
+    public static function CheckLogin($data)
+    {
+        if (empty($data)){
+            return ;
+        }
+        $user_info = ShopUserRepo::getInfoByFields(['user_name'=>$data['user_name']]);
+        if (empty($user_info)){
+            self::throwBizError('用户不存在');
+        }
+        if (!Hash::check($data['password'],$user_info['password'])){
+            self::throwBizError('密码不正确');
+        }
+        $shop_info = ShopRepo::getInfoByFields(['id'=>$user_info['shop_id']]);
+        if ($shop_info['is_validated'] == 0){
+            self::throwBizError('该店铺未通过审核，暂不能登录，请耐心等待');
+        }
+        if ($shop_info['is_freeze'] == 1){
+            self::throwBizError('该店铺已经冻结，暂不能登录');
+        }
+        // 验证成功后，创建时间
+        createEvent('sellerUserLogin',['shop_id'=>$shop_info['id'],'user_id'=>$user_info['id'],'ip'=>$data['ip']]);
+        return ['shop_id'=>$user_info['shop_id'],'user_id'=>$user_info['id']];
+    }
     /**
      * 发送注册短信
      * @param $mobile
@@ -96,9 +126,12 @@ class ShopLoginService
 
         $code = SmsService::getRandom(6);
 
+        $params = [
+            'code'=>$code
+        ];
         session()->put('register_code', $code);
 
-        return SmsService::sendSms($mobile, $type, $code);
+        return SmsService::sendSms($mobile, $type, $params);
     }
 
     /**
@@ -110,7 +143,7 @@ class ShopLoginService
     {
         $user_info = ShopUserRepo::getInfo($id);
         unset($user_info['password']);
-       return $user_info;
+        return $user_info;
     }
 
     /**
@@ -151,4 +184,5 @@ class ShopLoginService
         }
         return false;
     }
+
 }
