@@ -11,6 +11,12 @@ class ShopGoodsService
         return ShopGoodsRepo::getListBySearch($pager,$condition);
     }
 
+    // 下拉列表
+    public static function getGoodsList($condition)
+    {
+        return ShopGoodsRepo::getList([],$condition);
+    }
+
     //保存
     public static function create($data)
     {
