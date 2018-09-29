@@ -310,7 +310,7 @@
                     layer.close(index);//关闭弹窗
                     return ;
                 }
-                $(".attribute").append('<div style="width:299px;margin-top:10px;height:28px;" ><span style="font-size:16px;color:skyblue;" >'+attr_name+'":"'+attr_value+'</span>&nbsp;&nbsp;<button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button></div>');
+                $(".attribute").append('<div style="width:299px;margin-top:10px;height:28px;" ><span style="font-size:16px;color:skyblue;" >'+attr_name+':'+attr_value+'</span>&nbsp;&nbsp;<button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button></div>');
                 if(goods_attr==""){
                     $("#goods_attr").val(attr_name+":"+attr_value);
                 }else{
