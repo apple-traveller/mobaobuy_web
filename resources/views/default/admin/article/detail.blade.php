@@ -2,7 +2,7 @@
 @section('iframe')
     @include('vendor.ueditor.assets')
     <div class="warpper">
-        <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 编辑文章</div>
+        <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 查看文章</div>
         <div class="content">
             <div class="tabs_info">
                 <ul>
