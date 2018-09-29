@@ -57,7 +57,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_10_priv_admin"></i><h4>权限管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="privilege.php?act=list" data-param="menuplatform|01_admin_list" target="workspace">管理员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/adminuser/list" data-param="menuplatform|01_admin_list" target="workspace">管理员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="privilege_seller.php?act=list" data-param="menuplatform|02_admin_seller" target="workspace">下级管理员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="admin_logs.php?act=list" data-param="menuplatform|admin_logs" target="workspace">管理员日志</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="message.php?act=list" data-param="menuplatform|admin_message" target="workspace">管理员留言</a></li>

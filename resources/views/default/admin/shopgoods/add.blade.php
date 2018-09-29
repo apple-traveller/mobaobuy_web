@@ -62,7 +62,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否在售：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_on_sale" id="is_super">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_on_sale" id="is_super">
                                         <option  value="0">否</option>
                                         <option selected value="1">是</option>
                                     </select>

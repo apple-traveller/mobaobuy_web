@@ -98,7 +98,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_self_run" id="is_self_run">
                                         <option @if($shop['is_self_run']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_self_run']==1) selected @endif value="1">是</option>
                                     </select>
@@ -108,7 +108,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_validated" id="is_validated">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_validated" id="is_validated">
                                         <option @if($shop['is_validated']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_validated']==1) selected @endif value="1">是</option>
                                     </select>
@@ -118,7 +118,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_freeze" id="is_validated">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_freeze" id="is_validated">
                                         <option @if($shop['is_freeze']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_freeze']==1) selected @endif value="1">是</option>
                                     </select>

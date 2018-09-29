@@ -44,7 +44,7 @@
                                 <div class="item">
                                     <div class="label">是否显示：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_show" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_show" >
                                             <option @if($nav['is_show']==1) selected @endif value="1">是</option>
                                             <option @if($nav['is_show']==0) selected @endif value="0">否</option>
                                         </select>
@@ -53,7 +53,7 @@
                                 <div class="item">
                                     <div class="label">是否新窗口：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="opennew" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="opennew" >
                                             <option @if($nav['opennew']==1) selected @endif value="1">是</option>
                                             <option @if($nav['opennew']==0) selected @endif value="0">否</option>
                                         </select>
@@ -62,7 +62,7 @@
                                 <div class="item">
                                     <div class="label">位置：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="type" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="type" >
                                             <option @if($nav['type']=='top') selected @endif value="top">顶部</option>
                                             <option @if($nav['type']=='middle') selected @endif value="middle">中间</option>
                                             <option @if($nav['type']=='bottom') selected @endif value="bottom">底部</option>

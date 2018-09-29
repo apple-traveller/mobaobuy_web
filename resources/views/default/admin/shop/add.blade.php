@@ -97,7 +97,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_self_run" id="is_self_run">
                                         <option value="0">否</option>
                                         <option selected  value="1">是</option>
                                     </select>
@@ -107,7 +107,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_self_run" id="is_self_run">
                                         <option value="0">否</option>
                                         <option selected  value="1">是</option>
                                     </select>
@@ -117,7 +117,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_validated" id="is_validated">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_validated" id="is_validated">
                                         <option value="0">否</option>
                                         <option selected value="1">是</option>
                                     </select>
