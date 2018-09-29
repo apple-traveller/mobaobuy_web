@@ -99,15 +99,6 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '产品名称不能为空';
         }
-        if(empty($data['goods_thumb'])){
-            $errorMsg[] = '产品小图不能为空';
-        }
-        if(empty($data['goods_img'])){
-            $errorMsg[] = '产品大图不能为空';
-        }
-        if(empty($data['original_img'])){
-            $errorMsg[] = '产品原图不能为空';
-        }
         if(empty($data['keywords'])){
             $errorMsg[] = '产品关键字不能为空';
         }
@@ -152,6 +143,8 @@ class GoodsController extends Controller
                 return $this->success('添加成功',url('/admin/goods/list'));
             }else{
                 $data['last_update']=Carbon::now();
+                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                $data['goods_attr_ids']=$goods_attr_ids;
                 $info = GoodsService::modify($data);
                 if(empty($info)){
                     return $this->error('修改失败');

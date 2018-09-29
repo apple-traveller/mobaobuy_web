@@ -10,7 +10,10 @@ class AdminUserController extends Controller
     //列表
     public function list(Request $request)
     {
-
+        $currpage = $request->input("currpage",1);
+        $pageSize = 10;
+        $condition = [];
+        $admins = AdminService::getAdminList();
     }
 
     //添加

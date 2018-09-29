@@ -88,25 +88,17 @@
                             <div class="item">
                                 <div class="label">内容：</div>
                                 <div class="label_value">
-                                    <div content="<?php echo html_entity_decode($article['content']);?>" class="layui-btn viewContent"  >点击查看</div>
+                                    <div content="{{$article['content']}}" class="layui-btn viewContent">点击查看</div>
                                 </div>
                             </div>
                         </div>
-
-
-
 
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        var ue = UE.getEditor('container');
-        ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
-        });
-    </script>
+
     <script type="text/javascript">
 
         layui.use(['upload','layer'], function() {

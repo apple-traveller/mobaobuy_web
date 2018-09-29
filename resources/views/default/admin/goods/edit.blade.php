@@ -1,5 +1,6 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
+    @include('vendor.ueditor.assets')
     <style>
         .mian-info .item .label {width: 15%;}
     </style>
@@ -111,10 +112,10 @@
                                 <div class="label_value">
                                     <div class="attribute">
                                         @foreach($attrArr as $arr)
-                                        <div>
-                                            <input type="text" value="{{$arr}}">&nbsp;&nbsp;
-                                            <span class="deleteAttr" attr-data="{{$arr}}"  style="color:red;cursor:pointer;">删除</span>
-                                        </div>
+                                            <div style="width:299px;margin-top:10px;height:28px;" >
+                                                <span style="font-size:16px;color:skyblue;" >{{$arr}}</span>&nbsp;&nbsp;
+                                                <button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button>
+                                            </div>
                                         @endforeach
                                     </div>
                                     <input type="hidden" id="goods_attr" value="{{$good['goods_attr']}}" name="goods_attr">
@@ -147,6 +148,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;pc商品详情：</div>
                                 <div class="label_value">
                                     <script id="goods_desc" name="goods_desc" type="text/plain"><?php echo stripslashes($good['goods_desc']);?></script>
+
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -173,18 +175,15 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.config.js')}}"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.all.js')}}"></script>
-    <!-- 实例化编辑器 -->
     <script type="text/javascript">
-        var ue = UE.getEditor('goods_desc',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
+        var ue = UE.getEditor('goods_desc',{initialFrameHeight:400});
+        ue.ready(function() {
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
-        var ue2 = UE.getEditor('desc_mobile',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
+
+        var ue = UE.getEditor('desc_mobile',{initialFrameHeight:400});
+        ue.ready(function() {
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
     <script type="text/javascript">
@@ -303,7 +302,15 @@
                 var attr_name=$(".attr_name").val();
                 var attr_value=$(".attr_value").val();
                 var goods_attr=$("#goods_attr").val();
-                $(".attribute").append('<div  ><input type="text" value="'+attr_name+':'+attr_value+'">&nbsp;&nbsp;<span class="deleteAttr" attr-data="'+attr_name+':'+attr_value+'"  style="color:red;cursor:pointer;">删除</span></div>');
+                if(attr_name==""){
+                    layer.close(index);//关闭弹窗
+                    return ;
+                }
+                if(attr_value==""){
+                    layer.close(index);//关闭弹窗
+                    return ;
+                }
+                $(".attribute").append('<div style="width:299px;margin-top:10px;height:28px;" ><span style="font-size:16px;color:skyblue;" >'+attr_name+'":"'+attr_value+'</span>&nbsp;&nbsp;<button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button></div>');
                 if(goods_attr==""){
                     $("#goods_attr").val(attr_name+":"+attr_value);
                 }else{
