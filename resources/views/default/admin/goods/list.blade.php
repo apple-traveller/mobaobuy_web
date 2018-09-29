@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">产品 - 产品列表</div>
         <div class="content">
@@ -109,8 +108,8 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var goods_name = $(".goods_name").val();
-                            window.location.href="/admin/goods/list?currpage="+obj.curr+"&goods_name="+goods_name;
+
+                            window.location.href="/admin/goods/list?currpage="+obj.curr+"&goods_name={{$goods_name}}";
                         }
                     }
                 });

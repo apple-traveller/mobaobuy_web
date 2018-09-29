@@ -135,8 +135,7 @@ class GoodsController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
-//        $data['goods_desc'] = htmlspecialchars_decode($data['goods_desc']);
-//        $data['desc_mobile'] = htmlspecialchars_decode($data['desc_mobile']);
+
         try{
             if(!key_exists('id',$data)){
                 GoodsService::uniqueValidate($data['goods_name']);

@@ -172,22 +172,17 @@ class ArticleController extends Controller
         }
     }
 
-    //ajax修改状态
-    public function status(Request $request)
-    {
-        $data = $request->all();
-        unset($data['_token']);
-        $id = $request->input('id');
-        try{
-            $info = ArticleService::modify($id,$data);
-            if($info){
-                return $this->result($info['is_show'],200,"修改成功");
-            }else{
-                return  $this->result('',400,"修改失败");
-            }
-        }catch(\Exception $e){
-            return $this->result('',400,$e->getMessage());
-        }
 
+    //ajax修改状态
+    public function isShow(Request $request)
+    {
+        $id = $request->input("id");
+        $is_show = $request->input("val", 0);
+        try{
+            ArticleService::modify($id, ['is_show' => $is_show]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
     }
 }

@@ -57,27 +57,6 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品小图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['goods_thumb']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品大图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['goods_img']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品原图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['original_img']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
-                            </div>
-
-                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;产品属性：</div>
                                 <div class="label_value font14">{{$good['goods_attr']}}</div>
                             </div>

@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
     <div class="title">系统设置 - 自定义导航栏</div>
     <div class="content">
@@ -38,19 +37,18 @@
                                 <td><div class="tDiv">{{$nav['name']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        <label class="el-switch el-switch-lg">
-                                            <input type="checkbox" @if($nav['is_show']==1)checked @endif  name="switch" value="{{$nav['is_show']}}"  data-id="{{$nav['id']}}"   hidden>
-                                            <span class="j_click1 el-switch-style"></span>
-                                        </label>
+                                        <div class="switch @if($nav['is_show']) active @endif" title="@if($nav['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/isShow')}}', '{{$nav['id']}}')">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        <label class="el-switch el-switch-lg">
-                                            <input type="checkbox" @if($nav['opennew']==1)checked @endif  name="switch" value="{{$nav['opennew']}}"  data-id="{{$nav['id']}}"   hidden>
-                                            <span class="j_click2 el-switch-style"></span>
-                                        </label>
-
+                                        <div class="switch @if($nav['opennew']) active @endif" title="@if($nav['opennew']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/openNew')}}', '{{$nav['id']}}')">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$nav['url']}}</div></td>
@@ -74,8 +72,6 @@
                                     <div class="tDiv">
 
                                         <div class="list-page">
-                                            <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
-
 
                                             <ul id="page"></ul>
 
@@ -120,54 +116,8 @@
             });
         }
 
-        $('.j_click1').click(function(){
-                var is_show ;
-                var id = $(this).siblings('input').attr('data-id');
-                var input = $(this).siblings('input');
-                if (input.val() === '1') {
-                    is_show = 0;
-                } else {
-                    is_show = 1;
-                }
-
-                layui.use(['layer'], function() {
-                    layer = layui.layer;
-                    $.post("{{url('/admin/nav/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
-                        if(res.code==200){
-                            layer.msg(res.msg, {icon: 1});
-                            input.val(res.data);
-                        }else{
-                            layer.msg(res.msg, {icon: 5});
-                        }
-                    },"json");
-
-                });
-        });
 
 
-        $('.j_click2').click(function(){
-            var opennew ;
-            var id = $(this).siblings('input').attr('data-id');
-            var input = $(this).siblings('input');
-            if (input.val() === '1') {
-                opennew = 0;
-            } else {
-                opennew = 1;
-            }
-
-            layui.use(['layer'], function() {
-                layer = layui.layer;
-                $.post("{{url('/admin/nav/status')}}",{"id":id,"opennew":opennew,"_token":$("#_token").val()},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {icon: 1});
-                        input.val(res.data);
-                    }else{
-                        layer.msg(res.msg, {icon: 5});
-                    }
-                },"json");
-
-            });
-        });
 
         function remove(id)
         {
@@ -188,7 +138,6 @@
             var postData = {
                 'id':id,
                 'sort_order':sort_order,
-                '_token':$("#_token").val(),
             }
             //console.log(postData);
             var url = "/admin/nav/sort";

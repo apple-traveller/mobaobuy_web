@@ -12,9 +12,9 @@ class BrandService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return BrandRepo::modify($id,$data);
+        return BrandRepo::modify($data['id'],$data);
     }
 
     //获取一条数据
@@ -36,5 +36,11 @@ class BrandService
     public static function create($data)
     {
         return BrandRepo::create($data);
+    }
+
+    //删除
+    public static function delete($id)
+    {
+        return BrandRepo::delete($id);
     }
 }

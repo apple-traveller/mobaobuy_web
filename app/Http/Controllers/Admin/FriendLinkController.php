@@ -67,7 +67,7 @@ class FriendLinkController extends Controller
             if(empty($id)){
                 FriendLinkService::create($data);
             }else{
-                FriendLinkService::modify($id,$data);
+                FriendLinkService::modify($data);
             }
             return $this->success('保存成功！', url("/admin/link/list"));
         }catch(\Exception $e){
@@ -94,10 +94,9 @@ class FriendLinkController extends Controller
     //ajax排序
     public function sort(Request $request)
     {
-        $id = $request->input('id');
-        $sort_order = $request->input('sort_order');
+        $data = $request->all();
         try{
-            $info = FriendLinkService::modify($id,['sort_order'=>$sort_order]);
+            $info = FriendLinkService::modify($data);
             if(!$info){
                 return $this->error('更新失败');
             }

@@ -64,7 +64,6 @@ class ArticleCatController extends Controller
     {
         $data = $request->all();
         $id = $request->input('id');
-        unset($data['_token']);
         $errorMsg = [];
         if(empty($data['cat_name'])){
             $errorMsg[] = '分类名称不能为空';
@@ -77,7 +76,7 @@ class ArticleCatController extends Controller
                 ArticleCatService::uniqueValidate($data['cat_name']);//唯一性验证
                 $info = ArticleCatService::create($data);
             }else{
-                $info = ArticleCatService::modify($id,$data);
+                $info = ArticleCatService::modify($data);
             }
             if(!$info){
                 return $this->error('保存失败');
@@ -91,10 +90,9 @@ class ArticleCatController extends Controller
     //排序
     public function sort(Request $request)
     {
-        $id = $request->input('id');
-        $sort_order = $request->input('sort_order');
+        $data = $request->all();
         try{
-            $info = ArticleCatService::modify($id,['sort_order'=>$sort_order]);
+            $info = ArticleCatService::modify($data);
             if(!$info){
                 return $this->result('',400,'更新失败');
             }

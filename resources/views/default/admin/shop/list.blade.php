@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">店铺 - 入驻店铺列表</div>
         <div class="content">
@@ -57,10 +56,10 @@
                                     <td><div class="tDiv">{{status($vo['is_validated'])}}</div></td>
                                     <td>
                                         <div class="tDiv">
-                                            <label class="el-switch el-switch-lg">
-                                                <input type="checkbox" @if($vo['is_freeze']==1)checked @endif  name="switch" value="{{$vo['is_freeze']}}"  data-id="{{$vo['id']}}"   hidden>
-                                                <span class="j_click el-switch-style"></span>
-                                            </label>
+                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isFreeze')}}','{{$vo['id']}}')">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <input type="hidden" value="0" name="">
                                         </div>
                                     </td>
                                     <td><div class="tDiv">{{status($vo['is_self_run'])}}</div></td>
@@ -75,14 +74,12 @@
                                 </tr>
                                 @endforeach
                                 </tbody>
-                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <tfoot>
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
 
                                             <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
                                                 <ul id="page"></ul>
 
@@ -113,43 +110,19 @@
             layui.use(['laypage'], function() {
                 var laypage = layui.laypage;
                 laypage.render({
-                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    elem: 'page' //注意，这里 是 ID，不用加 # 号
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var shop_name = $(".shop_name").val();
-                            window.location.href="/admin/shop/list?currpage="+obj.curr+"&shop_name="+shop_name;
+                            window.location.href="/admin/shop/list?currpage="+obj.curr+"&shop_name={{$shop_name}}";
                         }
                     }
                 });
             });
         }
 
-        $('.j_click').click(function(){
-            var is_freeze ;
-            var id = $(this).siblings('input').attr('data-id');
-            var input = $(this).siblings('input');
-            if (input.val() === '1') {
-                is_freeze = 0;
-            } else {
-                is_freeze = 1;
-            }
-
-            layui.use(['layer'], function() {
-                layer = layui.layer;
-                $.post("{{url('/admin/shop/status')}}",{"id":id,"is_freeze":is_freeze},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {icon: 1});
-                        input.val(res.data);
-                    }else{
-                        layer.msg(res.msg, {icon: 5});
-                    }
-                },"json");
-
-            });
-        });
 
         function remove(id)
         {

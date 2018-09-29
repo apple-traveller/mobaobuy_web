@@ -18,7 +18,6 @@ Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 Route::post('/uploadImg', 'UploadController@uploadImg');
 
 //后台
-
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
     Route::get('/login', 'LoginController@loginForm')->name('admin_login');
@@ -31,7 +30,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/clear', 'IndexController@clear');
 
         Route::any('/user/list', 'UserController@list');//用户列表
-        Route::post('/user/modify', 'UserController@modify');//修改用户状态
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
@@ -76,7 +74,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/link/sort', 'FriendLinkController@sort');//友情链接排序ajax
 
         Route::get('/nav/list', 'NavController@list');//自定义导航栏列表
-        Route::post('/nav/status', 'NavController@status');//ajax修改状态
+        Route::post('/nav/change/isShow', 'NavController@isShow');//修改是否显示的状态
+        Route::post('/nav/change/openNew', 'NavController@openNew');//修改是否在新窗口显示
         Route::get('/nav/addForm', 'NavController@addForm');//导航栏添加
         Route::get('/nav/editForm', 'NavController@editForm');//导航栏编辑
         Route::get('/nav/delete', 'NavController@delete');//导航栏删除
@@ -97,13 +96,14 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/article/detail', 'ArticleController@detail');//文章详情
         Route::post('/article/sort', 'ArticleController@sort');//文章排序（ajax）
         Route::get('/article/delete', 'ArticleController@delete');//文章删除
-        Route::post('/article/status', 'ArticleController@status');//ajax修改状态
+        Route::post('/article/change/isShow', 'ArticleController@isShow');//ajax修改状态
 
         Route::get('/brand/list', 'BrandController@list');//品牌列表
-        Route::post('/brand/status', 'BrandController@status');//ajax修改状态
+        Route::post('/brand/change/isRemmond', 'BrandController@isRemmond');//ajax修改状态
         Route::post('/brand/sort', 'BrandController@sort');//ajax排序
         Route::get('/brand/addForm', 'BrandController@addForm');//添加
         Route::get('/brand/editForm', 'BrandController@editForm');//编辑
+        Route::get('/brand/delete', 'BrandController@delete');//删除
         Route::post('/brand/save', 'BrandController@save');//保存
 
         Route::get('/goods/list', 'GoodsController@list');//产品列表
@@ -126,7 +126,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/addForm', 'ShopController@addForm');//添加店铺
         Route::get('/shop/editForm', 'ShopController@editForm');//修改店铺
         Route::post('/shop/save', 'ShopController@save');//保存
-        Route::post('/shop/status', 'ShopController@status');//修改状态
+        Route::post('/brand/change/isFreeze', 'ShopController@isFreeze');//修改状态
+        Route::post('/brand/change/isValidated', 'ShopController@isValidated');//修改状态
         Route::get('/shop/detail', 'ShopController@detail');//详情
         Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户

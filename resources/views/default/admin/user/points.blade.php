@@ -32,7 +32,7 @@
                                 <th width="12%" class="handle">操作</th>
                             </tr>
                             </thead>
-                            <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
+
                             <tbody>
                             @foreach($info as $vo)
                             <tr class="">

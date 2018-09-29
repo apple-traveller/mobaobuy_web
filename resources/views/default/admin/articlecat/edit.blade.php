@@ -41,7 +41,6 @@
 
 
                                 <input  type="hidden" name="id" value="{{$cate['id']}}"/>
-                                <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
 
 
 
@@ -61,7 +60,6 @@
         </div>
     </div>
     <script type="text/javascript">
-        var tag_token = $("#_token").val();
 
 
         $(function(){

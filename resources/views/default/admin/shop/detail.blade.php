@@ -132,7 +132,7 @@
                 }
                 layui.use(['layer'], function() {
                     layer = layui.layer;
-                    $.post("{{url('/admin/shop/status')}}",{"id":id,"is_validated":is_validated},function(res){
+                    $.post("{{url('/admin/brand/change/isValidated')}}",{"id":id,"is_validated":is_validated},function(res){
                         if(res.code==200){
                             layer.msg(res.msg, {icon: 1});
                             if(res.data==1){

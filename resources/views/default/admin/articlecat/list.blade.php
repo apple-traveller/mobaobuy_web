@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">
             文章 - 文章分类        </div>
@@ -88,7 +87,6 @@
                 var postData = {
                     'id':id,
                     'sort_order':sort_order,
-                    '_token':tag_token,
                 }
                 console.log(postData);
                 var url = "/admin/articlecat/sort";

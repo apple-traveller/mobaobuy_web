@@ -75,7 +75,7 @@
             //文件上传
             var uploadInst = upload.render({
                 elem: '.upload-file' //绑定元素
-                ,url: "{{url('/uploadImg')}}" //上传接口
+                ,url: "/uploadImg" //上传接口
                 ,accept:'file'
                 ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
                     this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};

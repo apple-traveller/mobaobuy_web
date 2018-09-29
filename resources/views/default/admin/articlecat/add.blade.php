@@ -37,7 +37,6 @@
                                         <input type="text" class="text text_4 valid" name="sort_order" id="sort_order" value="50" size="15" autocomplete="off" aria-invalid="false">
                                     </div>
                                 </div>
-                                <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
 
                                 <div class="item">
                                     <div class="label">&nbsp;</div>

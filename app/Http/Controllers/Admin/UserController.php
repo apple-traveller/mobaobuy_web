@@ -22,7 +22,6 @@ class UserController extends Controller
         $currpage = $request->input("currpage",1);
         $pageSize = 10;
         $is_firm = $request->input('is_firm',0);
-
         $condition = ['is_firm'=>$is_firm];
         if(!empty($user_name)){
             $condition['user_name'] = "%".$user_name."%";
@@ -42,30 +41,14 @@ class UserController extends Controller
         $id = $request->input("id");
         $is_freeze = $request->input("val", 0);
         try{
-            UserService::modify($id, ['is_freeze' => $is_freeze]);
+            UserService::modify(['id'=>$id,'is_freeze' => $is_freeze]);
             return $this->success("修改成功");
         }catch(\Exception $e){
             return  $this->error($e->getMessage());
         }
     }
 
-    //编辑(修改状态)
-    public function modify(Request $request)
-    {
-        $id = $request->input("id");
-        $data = $request->all();
-        unset($data['_token']);
-        try{
-            $user = UserService::modify($id,$data);
-            if($user){
-                return $this->success("修改成功");
-            }else{
-                return  $this->error("修改失败");
-            }
-        }catch(\Exception $e){
-            return  $this->error($e->getMessage());
-        }
-    }
+
 
 
     //用户审核(修改状态)
@@ -85,11 +68,9 @@ class UserController extends Controller
         $currpage = $request->input('currpage');
         $data = $request->all();
         $data['is_validated']=$data['is_validated']==1?0:1;
-        //dd($data);
-        unset($data['_token']);
         unset($data['currpage']);
         try{
-            $user = UserService::modify($id,$data);
+            $user = UserService::modify($data);
             if($user){
                 return $this->success("修改成功",url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage);
             }else{
@@ -162,12 +143,10 @@ class UserController extends Controller
         $data = $request->all();
         $data['review_time'] = Carbon::now();
         $data['review_status']=$data['review_status']==2?1:2;
-        //dd($data);
-        unset($data['_token']);
         unset($data['is_firm']);
         unset($data['currpage']);
         try{
-            $user = UserRealService::modify($id,$data);
+            $user = UserRealService::modify($data);
             if($user){
                 return $this->success("修改成功",url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage);
             }else{

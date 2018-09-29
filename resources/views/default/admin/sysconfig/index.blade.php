@@ -6,7 +6,7 @@
             <div class="tabs_info">
                 <ul>
                     @foreach($topConfigs as $vo)
-                    <li @if($parent_id==$vo['id'])class="curr" @endif><a  href="/admin/sysconfig/index?parent_id={{$vo['id']}}">{{$vo['name']}}</a></li>
+                    <li @if($parent_id==$vo['id']) class="curr" @endif><a  href="/admin/sysconfig/index?parent_id={{$vo['id']}}">{{$vo['name']}}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -49,9 +49,9 @@
                                         <textarea class="textarea"  name="{{$vo['code']}}" id="{{$vo['code']}}">{{$vo['value']}}</textarea>
                                         <div class="form_prompt"></div>
                                     @elseif($vo['type']=='file')
-                                        <button type="button" class="layui-btn upload-file" data-type="{{$vo['code']}}" data-path="{{$vo['store_dir']}}" id="avatar_{{$vo['code']}}">上传图片</button>
-                                        <input type="text" value="{{$vo['value']}}" class="text" id="{{$vo['code']}}" name="{{$vo['code']}}" style="display:none;">
-                                        <img @if(empty($vo['value'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($vo['value'])}}"  @endif   class="layui-upload-img" id="demo1" ><br/>
+                                        <button type="button" class="layui-btn upload-file" data-type="{{$vo['code']}}" data-path="{{$vo['store_dir']}}" >上传图片</button>
+                                        <input type="text" value="{{$vo['value']}}" class="text"  name="{{$vo['code']}}" style="display:none;">
+                                        <img @if(empty($vo['value'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($vo['value'])}}"  @endif   class="layui-upload-img"><br/>
                                     @endif
                                     <div class="notic">{{$vo['config_desc']}}</div>
                                 </div>
@@ -79,7 +79,7 @@
             //文件上传
             upload.render({
                 elem: '.upload-file' //绑定元素
-                ,url: "{{url('/uploadImg')}}" //上传接口
+                ,url: "/uploadImg" //上传接口
                 ,accept:'file'
                 ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
                     this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};

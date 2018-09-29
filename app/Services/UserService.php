@@ -211,7 +211,7 @@ class UserService
     //获取用户列表(导出excel表)
     public static function getUsers($fields)
     {
-        $info = UserRepo::getUsers($fields);
+        $info = UserRepo::getList([],[],$fields);
         return $info;
     }
 
@@ -230,14 +230,10 @@ class UserService
         }
         return $info;
     }
-
-
-
-
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return UserRepo::modify($id,$data);
+        return UserRepo::modify($data['id'],$data);
     }
 
     public static function getInfo($id)
@@ -247,10 +243,4 @@ class UserService
         return $info;
     }
 
-
-    //获取总条数
-    public static function getCount($user_name)
-    {
-        return UserRepo::getCount($user_name);
-    }
 }

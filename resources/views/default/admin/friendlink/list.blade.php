@@ -45,7 +45,11 @@
                                         <img src="{{getFileUrl($vo['link_logo'])}}" style="width:50px;height:50px;">
                                     </div>
                                 </td>
-                                <td><div class="tDiv changeInput"><input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text"></div></td>
+                                <td>
+                                    <div class="tDiv changeInput">
+                                        <input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text">
+                                    </div>
+                                </td>
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="/admin/link/editForm?id={{$vo['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
@@ -116,7 +120,10 @@
             }
             var url = "/admin/link/sort";
             $.post(url, postData, function(res){
-                if(res.code == 0){
+                console.log(res);
+                if(res.code==1){
+                    window.location.href=res.msg;
+                }else{
                     alert('更新失败');
                 }
             },"json");

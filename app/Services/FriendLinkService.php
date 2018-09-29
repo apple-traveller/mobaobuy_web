@@ -17,9 +17,9 @@ class FriendLinkService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return FriendLinkRepo::modify($id,$data);
+        return FriendLinkRepo::modify($data['id'],$data);
     }
 
     //获取一条数据

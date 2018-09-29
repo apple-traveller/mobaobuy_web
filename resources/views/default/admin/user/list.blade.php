@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
     <div class="title">会员 - 会员列表</div>
     <div class="content visible">
@@ -91,8 +90,6 @@
                                         </div>
                                         <input type="hidden" value="0" name="">
                                     </div>
-
-
                                 </td>
 
                                 <td class="handle">
@@ -111,7 +108,6 @@
                                 <td colspan="12">
                                     <div class="tDiv">
                                         <div class="list-page">
-                                            <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
                                             <ul id="page"></ul>
                                             <style>
                                                 .pagination li{
@@ -139,53 +135,23 @@
             layui.use(['laypage'], function() {
                 var laypage = layui.laypage;
                 laypage.render({
-                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    elem: 'page' //注意，这里是 ID，不用加 # 号
                     , count: "{{$userCount}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var user_name = $(".user_name").val();
-                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name="+user_name+"&is_firm="+"{{$is_firm}}";
+                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}&is_firm="+"{{$is_firm}}";
                         }
                     }
                 });
             });
         }
 
-        $('.j_click').click(function(){
-                var is_freeze ;
-                var user_id = $(this).siblings('input').attr('data-id');
-                var input = $(this).siblings('input');
-                if (input.val() === '1') {
-                    is_freeze = 0;
-                } else {
-                    is_freeze = 1;
-                }
-                console.log(is_freeze);
-                return false;
-
-                layui.use(['layer'], function() {
-                    layer = layui.layer;
-                    $.post("{{url('/admin/user/modify')}}",{"id":user_id,"is_freeze":is_freeze},function(res){
-                        if(res.code==1){
-                            layer.msg(res.msg, {icon: 1});
-                            input.val(res.data);
-                        }else{
-                            layer.msg(res.msg, {icon: 5});
-                        }
-                    },"json");
-
-                });
-        });
-
-
-
-
         //导出会员
         function download_userlist()
         {
-            location.href = "/user/export";
+            location.href = "/admin/user/export";
         }
 
     </script>

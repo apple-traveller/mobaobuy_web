@@ -154,23 +154,29 @@ class ShopController extends Controller
         ]);
     }
 
-
+    //修改状态（ajax）
+    public function isFreeze(Request $request)
+    {
+        $id = $request->input("id");
+        $is_freeze = $request->input("val", 0);
+        try{
+            ShopService::modify( ['id'=>$id,'is_freeze' => $is_freeze]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
+    }
 
     //ajax修改状态
-    public function status(Request $request)
+    public function isValidated(Request $request)
     {
         $data = $request->all();
         try{
             $shop= ShopService::modify($data);
             if($shop){
-                if(key_exists('is_validated',$data)){
-                    return $this->result($shop['is_validated'],'200',"审核成功");
-                }else{
-                    return $this->result($shop['is_freeze'],'200',"修改成功");
-                }
-
+                 return $this->result($shop['is_validated'],'200',"审核成功");
             }else{
-                return  $this->result('','400',"修改失败");
+                return  $this->result('','400',"审核失败");
             }
         }catch(\Exception $e){
             return  $this->result('','400',$e->getMessage());

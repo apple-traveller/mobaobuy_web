@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">
             商品 - 平台商品分类        </div>
@@ -96,13 +95,11 @@
 
 
         $(".changeInput input").blur(function(){
-
                 var sort_order = $(this).val();
                 var id = $(this).attr('data-id');
                 var postData = {
                     'id':id,
                     'sort_order':sort_order,
-                    '_token':tag_token,
                 }
                 console.log(postData);
                 var url = "/admin/goodscategory/sort";

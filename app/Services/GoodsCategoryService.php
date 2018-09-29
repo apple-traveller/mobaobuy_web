@@ -74,9 +74,9 @@ class GoodsCategoryService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return GoodsCategoryRepo::modify($id,$data);
+        return GoodsCategoryRepo::modify($data['id'],$data);
     }
 
     //获取所有分类

@@ -78,30 +78,29 @@ class NavController extends Controller
     }
 
     //ajax修改状态
-    public function status(Request $request)
+    public function isShow(Request $request)
     {
-        $data = $request->all();
-        unset($data['_token']);
-        $id = $request->input('id');
-
+        $id = $request->input("id");
+        $is_show = $request->input("val", 0);
         try{
-            $info = NavService::modify($id,$data);
-
-            if($info){
-                if(!array_key_exists('opennew',$data)){
-                    return $this->result($info['is_show'],200,"修改成功");
-                }else{
-                    //return "123";
-                    return $this->result($info['opennew'],200,"修改成功");
-                }
-
-            }else{
-                return  $this->result('',400,"修改失败");
-            }
+            NavService::modify(['id'=>$id, 'is_show' => $is_show]);
+            return $this->success("修改成功");
         }catch(\Exception $e){
-            return $this->result('',400,$e->getMessage());
+            return  $this->error($e->getMessage());
         }
+    }
 
+    //ajax修改状态
+    public function openNew(Request $request)
+    {
+        $id = $request->input("id");
+        $opennew = $request->input("val", 0);
+        try{
+            NavService::modify(['id'=>$id, 'opennew' => $opennew]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
     }
 
     //删除
@@ -125,10 +124,9 @@ class NavController extends Controller
     public function sort(Request $request)
     {
         $data = $request->all();
-        unset($data['_token']);
         $id = $request->input('id');
         try{
-            $info = NavService::modify($id,$data);
+            $info = NavService::modify($data);
             if(empty($info)){
                 return $this->result('',400,'更新失败');
             }

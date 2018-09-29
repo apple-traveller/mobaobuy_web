@@ -32,9 +32,9 @@ class NavService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return NavRepo::modify($id,$data);
+        return NavRepo::modify($data['id'],$data);
     }
 
     //删除

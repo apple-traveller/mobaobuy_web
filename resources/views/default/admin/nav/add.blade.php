@@ -38,6 +38,7 @@
                                     <div class="label">排序：</div>
                                     <div class="label_value">
                                         <input type="text" name="sort_order" value="" size="40" class="text text_3">
+                                        <div class="form_prompt"></div>
                                     </div>
                                 </div>
                                 <div class="item">
@@ -93,8 +94,6 @@
                 }
             });
 
-
-
             $('#navigator_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
@@ -109,6 +108,10 @@
                     url :{
                         required : true
                     },
+                    sort_order:{
+                        required : true,
+                        number : true,
+                    }
                 },
                 messages:{
                     name:{
@@ -116,6 +119,10 @@
                     },
                     url :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空'
+                    },
+                    sort_order :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     }
                 }
             });
