@@ -13,7 +13,8 @@ class AdminUserController extends Controller
         $currpage = $request->input("currpage",1);
         $pageSize = 10;
         $condition = [];
-        $admins = AdminService::getAdminList();
+        $admins = AdminService::getAdminList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['sort_order'=>'asc']],$condition);
+        return $this->display('admin.');
     }
 
     //添加

@@ -49,6 +49,5 @@ class AdminService
             'visit_count' => $info['visit_count'] + 1
         ];
         AdminRepo::modify($id, $lastInfo);
-
     }
 }
