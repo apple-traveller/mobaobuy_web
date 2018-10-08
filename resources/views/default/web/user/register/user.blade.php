@@ -6,20 +6,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Document</title>
+    <title>个人注册</title>
 </head>
-{{--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--}}
-<script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+
+@include('partials.base_header')
 <body>
+<i class="iconfont icon_image"></i>
 <h1>注册</h1>
-<!-- <a href="http://mbb.com">tiaozhuan</a> -->
-@if(count($errors)>0)
-    <div class="alert alert-warning" role="alert">
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </div>
-@endif
 <h4>个人注册</h4><a href="{{route('firmRegister')}}">企业注册</a>
 <form action="/userRegister" method="post">
 <input type="text" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"><br>
@@ -61,7 +54,6 @@
     var InterValObj; //timer变量，控制时间
     var countdown = 60; //间隔函数，1秒执行
     //        var curCount; //当前剩余秒数
-    var phoneReg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(16[0-9]{1})|(17[0-9]{1})|(18[0-9]{1})||(19[0-9]{1}))+\d{8})$/; // 正则手机号
     var isNull = /^[\s]{0,}$/;
     var pwdReg = /^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9@#\$%\^&\*\/\.]{8,16})$/;  // 正则密码
     var verify = /^\d{6}$/; // 正则短信验证码
@@ -81,7 +73,7 @@
             checkAccount = false;
 
             return false;
-        } else if (!phoneReg.test($("#phone").val())) {
+        } else if (!Utils.isPhone($("#phone").val())) {
             $("#phone_error").html("手机号码格式不正确！");
             checkAccount = false;
 
@@ -92,23 +84,14 @@
 
     // 验证手机是否注册
     function checkNameExists() {
-        $.ajax({
-            url: "{{url('user/checkNameExists')}}",
-            dataType: "json",
-            data: {
-                accountName: $("#phone").val(),
-                _token: "{{csrf_token()}}"
-            },
-            type: "POST",
-            success: function (data) {
-                if (data.msg) {
-                    $("#phone_error").html("手机号已经注册！");
-                    checkAccount = false;
-                } else {
-                    checkAccount = true;
-                }
+        Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
+            if (result.msg) {
+                $("#phone_error").html("手机号已经注册！");
+                checkAccount = false;
+            } else {
+                checkAccount = true;
             }
-        });
+        }, "POST", "JSON");
     }
 
     // 密码格式检查
@@ -143,28 +126,21 @@
             registerCode = false;
             return false;
         }
-        $.ajax({
-            url: "{{url('checkVerifyCode')}}",
-            type: 'post',
-            cache: false,
-            async: false,
-            data: {
-                t: t,
-                verifyCode: $('#verify').val(),
-                _token: "{{csrf_token()}}"
-            },
-            success:function (data) {
-                if(data.msg) {
-                    registerCode = true;
-                    $("#verify_error").text('');
-                    return true;
-                } else {
-                    registerCode = false;
-                    gv();
-                    $("#verify_error").text("验证码不正确");
-                }
+        params = {
+            t: t,
+            verifyCode: $('#verify').val()
+        };
+        Ajax.call("{{url('checkVerifyCode')}}", params, function (result){
+            if(result.msg) {
+                registerCode = true;
+                $("#verify_error").text('');
+                return true;
+            } else {
+                registerCode = false;
+                gv();
+                $("#verify_error").text("验证码不正确");
             }
-        })
+        }, "POST", "JSON");
     }
     //  手机验证码格式检查
     function msgCodeValidate() {
@@ -191,28 +167,23 @@
         if (!checkAccount || !pwdValidate() || !registerCode) {
             return false;
         }
-        $.ajax({
-            url: "{{url('/register/sendSms')}}",
-            data: {
-                accountName: $("#phone").val(),
-                verifyCode: $("#verify").val(),
-                t: t,
-            },
-            type: "GET",
-            success: function (data) {
-//                    console.log(data);
-                if (data.code == 1) {
-                        $('#numnerTip .tipName').text('短信验证码已发送到');
-                        $('#numnerTip .numer').text($('#phone').val());
-                        $('#numnerTip .tip_las').text('，请注意查收');
-                        $('#numnerTip').show();
+        params = {
+            accountName: $("#phone").val(),
+            verifyCode: $("#verify").val(),
+            t: t,
+        };
+        Ajax.call("{{url('/register/sendSms')}}", params, function (result){
+            if (result.code == 1) {
+                $('#numnerTip .tipName').text('短信验证码已发送到');
+                $('#numnerTip .numer').text($('#phone').val());
+                $('#numnerTip .tip_las').text('，请注意查收');
+                $('#numnerTip').show();
 
-                    Settime (type);
-                }else{
-                    $("#verify_error").html(data.desc);
-                }
+                Settime (type);
+            }else{
+                $("#verify_error").html(result.msg);
             }
-        });
+        }, "GET", "JSON");
     }
     function Settime(type) {
         if (countdown == 0) {
@@ -241,24 +212,18 @@
         if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
             return false;
         }
-
-        $.ajax({
-            url: "{{route('register')}}",
-            data: {
-                accountName: $("#phone").val(),
-                password: window.btoa($("#password").val()),
-                messCode: $("#messCode").val()
-            },
-            type: "POST",
-            success: function (data) {
-                console.log(data);
-                if (data.code == 1) {
-                    window.location.href="{{route('login')}}";
-                }else{
-                    alert(data.msg)
-                }
+        params = {
+            accountName: $("#phone").val(),
+            password: window.btoa($("#password").val()),
+            messCode: $("#messCode").val()
+        };
+        Ajax.call("{{url('/userRegister')}}", params, function (result){
+            if (result.code == 1) {
+                window.location.href="{{route('login')}}";
+            }else{
+                $.msg.error(result.msg);
             }
-        });
+        }, "POST", "JSON");
         gv()
     });
 </script>
