@@ -285,6 +285,7 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (1, 'individual_reg_closed', 'select','0|否,1|是','','是否关闭个人注册','0','',''),
 (1, 'individual_reg_check', 'select','0|否,1|是','','个人注册是否需要审核','0','',''),
 (1, 'individual_trade_closed', 'select','0|否,1|是','','是否关闭个人交易','1','',''),
+(1, 'firm_exist_check', 'select','0|否,1|是','','是否企业工商验证','0','',''),
 (1, 'firm_reg_closed', 'select','0|否,1|是','','是否关闭企业注册','0','',''),
 (1, 'firm_reg_check', 'select','0|否,1|是','','企业注册是否需要审核','1','',''),
 (1, 'firm_trade_closed', 'select','0|否,1|是','','是否关闭企业交易','0','关闭企业交易，则企业用户只能查看产品',''),
@@ -643,7 +644,7 @@ CREATE TABLE `shop_goods_quote` (
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部职员ID',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `expiry_time` datetime NOT NULL COMMENT '截止时间',
-  `outer_id` int(10) NOT NULL COMMENT '外部ID',
+  `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)

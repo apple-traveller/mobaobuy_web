@@ -175,6 +175,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
+    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证用户名是否存在
     Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
 
     Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
