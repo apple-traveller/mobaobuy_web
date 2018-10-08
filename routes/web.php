@@ -29,6 +29,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/home', 'IndexController@home');
         Route::get('/clear', 'IndexController@clear');
 
+        Route::get('/adminuser/list','AdminUserController@list');//管理员列表
+        Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
+        Route::get('/adminuser/editForm','AdminUserController@addForm');//编辑
+        Route::post('/adminuser/save','AdminUserController@save');//保存
+        Route::get('/adminuser/log','AdminUserController@log');//日志
+
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息

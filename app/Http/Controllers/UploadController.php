@@ -34,7 +34,6 @@ class UploadController extends Controller
 
 
         /*$file = $_FILES['file'];
-        print_r($fileCharater);die();
         //检测文件大小
         if(!empty($file)){
             if(getConfig('upload_size_limit') != 0 && $file['size'] > (getConfig('upload_size_limit')*1024))

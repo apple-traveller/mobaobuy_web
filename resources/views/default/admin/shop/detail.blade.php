@@ -48,14 +48,14 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;授权委托书电子版：</div>
                                 <div class="label_value font14">
-                                    <div  path="{{$shop['attorney_letter_fileImg']}}" class="layui-btn viewPic">点击查看</div>
+                                    <div  path="{{getFileUrl($shop['attorney_letter_fileImg'])}}" class="layui-btn viewPic">点击查看</div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value font14">
-                                    <div  path="{{$shop['license_fileImg']}}" class="layui-btn viewPic">点击查看</div>
+                                    <div  path="{{getFileUrl($shop['license_fileImg'])}}" class="layui-btn viewPic">点击查看</div>
                                 </div>
                             </div>
 

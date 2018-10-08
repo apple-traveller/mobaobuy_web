@@ -1,5 +1,6 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
+
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>会员 - 产品列表</div>
         <div class="content">

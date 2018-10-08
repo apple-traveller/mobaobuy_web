@@ -59,9 +59,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>授权委托书电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar_attorney_letter_fileImg">上传图片</button>
-                                    <input type="hidden"  value="{{$shop['attorney_letter_fileImg']}}" class="text" id="attorney_letter_fileImg" name="attorney_letter_fileImg" >
-                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{$shop['attorney_letter_fileImg']}}" @else style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @endif class="layui-upload-img" id="demo_attorney_letter_fileImg" >
+                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <input type="text" value="{{$shop['attorney_letter_fileImg']}}" class="text"  name="attorney_letter_fileImg" style="display:none;">
+                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -69,9 +69,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar_license_fileImg">上传图片</button>
-                                    <input type="hidden"  value="{{$shop['license_fileImg']}}" class="text" id="license_fileImg" name="license_fileImg" >
-                                    <img @if(!empty($shop['license_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{$shop['license_fileImg']}}" @else style="width:30px;height:30px;display:none;float:left;margin-right:10px;" @endif class="layui-upload-img" id="demo_license_fileImg" >
+                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <input type="text" value="{{$shop['license_fileImg']}}" class="text"  name="license_fileImg" style="display:none;">
+                                    <img @if(!empty($shop['license_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
 
                                     <div class="form_prompt"></div>
                                 </div>
@@ -98,7 +98,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_self_run" id="is_self_run">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_self_run" id="is_self_run">
                                         <option @if($shop['is_self_run']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_self_run']==1) selected @endif value="1">是</option>
                                     </select>
@@ -108,7 +108,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_validated" id="is_validated">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_validated" id="is_validated">
                                         <option @if($shop['is_validated']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_validated']==1) selected @endif value="1">是</option>
                                     </select>
@@ -118,7 +118,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_freeze" id="is_validated">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_freeze" id="is_validated">
                                         <option @if($shop['is_freeze']==0) selected @endif value="0">否</option>
                                         <option @if($shop['is_freeze']==1) selected @endif value="1">是</option>
                                     </select>
@@ -146,50 +146,29 @@
     <script type="text/javascript">
         var tag_token = $("#_token").val();
 
-        layui.use(['upload','layer'], function() {
+        layui.use(['upload','layer'], function(){
             var upload = layui.upload;
             var layer = layui.layer;
             //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar_attorney_letter_fileImg' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
                     //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo_attorney_letter_fileImg").show();
-                        $('#attorney_letter_fileImg').val(res.data);
-                        $("#demo_attorney_letter_fileImg").parent('div').children(".form_prompt").remove();
-                        $("#demo_attorney_letter_fileImg").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('img').parent('div').children(".form_prompt").remove();
+                    }else{
+                        layer.msg(res.msg, {time:2000});
                     }
                 }
             });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar_license_fileImg' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo_license_fileImg").show();
-                        $('#license_fileImg').val(res.data);
-                        $("#license_fileImg").parent('div').children(".form_prompt").remove();
-                        $("#demo_license_fileImg").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
-
-
         });
 
         $("#nick_name").focus(function(){
