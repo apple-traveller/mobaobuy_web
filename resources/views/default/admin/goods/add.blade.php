@@ -300,7 +300,6 @@
                 }else{
                     $("#goods_attr").val(attr_name+":"+attr_value+";"+goods_attr);
                 }
-                //console.log($("#goods_attr").val());
                 layer.close(index);//关闭弹窗
             });
 
