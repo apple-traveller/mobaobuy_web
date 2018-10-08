@@ -16,7 +16,6 @@
                                     <input type="text" name="nick_name" class="text" value="" maxlength="40" autocomplete="off" id="nick_name">
                                     <input type="hidden" name="user_id" class="text" value="" maxlength="40" autocomplete="off" id="user_id">
                                     <ul class="query" style="position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
-
                                     </ul>
                                     <div class="form_prompt"></div>
                                 </div>

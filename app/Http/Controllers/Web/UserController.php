@@ -32,6 +32,14 @@ class UserController extends Controller
         return $this->success($rs);
     }
 
+    //检查公司是否允许注册
+    public function checkCompanyNameCanAdd(Request $request){
+        $companyName = $request->input('companyName');
+        $rs = UserService::checkCompanyNameCanAdd($companyName);
+
+        return $this->success($rs);
+    }
+
     //注册获取手机验证码
     public function sendSms(Request $request){
         $accountName = $request->input('accountName');
@@ -59,7 +67,6 @@ class UserController extends Controller
     //个人用户注册
     public function userRegister(Request $request){
         if($request->isMethod('get')){
-
             return $this->display('web.user.register.user');
         }else{
             $accountName = $request->input('accountName', '');
@@ -80,6 +87,11 @@ class UserController extends Controller
 
             try{
                 UserService::userRegister($data);
+                if(getConfig('individual_reg_check')) {
+                    return $this->success('提交成功，请等待审核！', '/');
+                }else{
+                    return $this->success('注册成功！', '/');
+                }
                 return $this->success('注册成功','/');
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -92,41 +104,35 @@ class UserController extends Controller
         if($request->isMethod('get')){
             return $this->display('web.user.register.firm');
         }else{
-            if(session('send_code') != $request->input('mobile_code')){
-                return $this->error('验证码有误');exit;
-            }
-            $is_firm = $request->input('is_firm');
-            if($is_firm){
-                //企业
-                $rule = [
-                    'user_name'=>'required|regex:/^1[34578][0-9]{9}$/|unique:user',
-                    'password'=>'required|confirmed|min:6',
-                    'nick_name'=>'required',
-                    'attorney_letter_fileImg'=>'file',
-                    'license_fileImg'=>'file',
-                    'business_license_id'=>'required',
-                    'taxpayer_id'=>'required',
-                    'is_firm'=>'required|numeric',
-                    'mobile_code'=>'required|numeric'
-                ];
-                $data = $this->validate($request,$rule);
-                $data['attorney_letter_fileImg'] = $request->file('attorney_letter_fileImg');
-                $data['license_fileImg'] = $request->file('license_fileImg');
-            }else{
-                //个人
-                $rule = [
-                    'user_name'=>'required|regex:/^1[34578]\d{9}$/|numeric|unique:user|min:11',
-                    'password'=>'required|confirmed|min:6',
-                    'is_firm'=>'required|numeric',
-                    'mobile_code'=>'required|numeric',
-                ];
-                $data = $this->validate($request,$rule);
+            $companyName = $request->input('companyName', '');
+            $accountName = $request->input('accountName', '');
+            $password = base64_decode($request->input('password', ''));
+            $messCode = $request->input('messCode', '');
+            $attorneyLetterFileImg = $request->input('attorneyLetterFileImg', '');
+            $licenseFileImg = $request->input('licenseFileImg', '');
+            $type = 'sms_signup';
+
+            //手机验证码是否正确
+            if(Cache::get(session()->getId().$type.$accountName) != $messCode){
+                return $this->error('手机验证码不正确');
             }
 
+            $data=[
+                'company_name' => $companyName,
+                'user_name' => $accountName,
+                'password' => $password,
+                'attorney_letter_fileImg' => $attorneyLetterFileImg,
+                'license_fileImg' => $licenseFileImg,
+                'is_firm' => 1
+            ];
+
             try{
-                UserLoginService::userRegister($data);
-                $request->session()->forget('send_code');
-                return $this->success('注册成功','/');
+                UserService::userRegister($data);
+                if(getConfig('firm_reg_check')) {
+                    return $this->success('提交成功，请等待审核！', '/');
+                }else{
+                    return $this->success('注册成功！', '/');
+                }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }

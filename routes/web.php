@@ -31,9 +31,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::get('/adminuser/list','AdminUserController@list');//管理员列表
         Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
-        Route::get('/adminuser/editForm','AdminUserController@addForm');//编辑
+        Route::get('/adminuser/editForm','AdminUserController@editForm');//编辑
         Route::post('/adminuser/save','AdminUserController@save');//保存
         Route::get('/adminuser/log','AdminUserController@log');//日志
+        Route::get('/adminuser/detail','AdminUserController@detail');//详情
+        Route::get('/adminuser/delete','AdminUserController@delete');//删除
+        Route::post('/adminuser/change/isFreeze','AdminUserController@isFreeze');//修改状态
 
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
@@ -172,6 +175,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
+    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证用户名是否存在
     Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
 
     Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
