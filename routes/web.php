@@ -245,15 +245,27 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
         Route::get('/', 'IndexController@index');
         Route::get('/logout', 'LoginController@logout');
+        Route::get('/detail', 'indexController@detail');
+
+        Route::get('/shopUser', 'ShopUserController@list');
+        Route::get('/shopUser/add', 'ShopUserController@add');
+        Route::get('/shopUser/edit', 'ShopUserController@edit');
+        Route::post('/shopUser/save', 'ShopUserController@save');
+        Route::post('/shopUser/delete', 'ShopUserController@delete');
 
         Route::get('/goods/list', 'ShopGoodsController@list');//商户商品操作
         Route::get('/goods/add', 'ShopGoodsController@add');
         Route::get('/goods/edit', 'ShopGoodsController@edit');
         Route::post('/goods/save', 'ShopGoodsController@save');
-        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
         Route::post('/goods/delete', 'ShopGoodsController@delete');
 
+        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
+        Route::get('/quote/list', 'ShopGoodsQuoteController@list');//商户商品报价
+        Route::get('/quote/add', 'ShopGoodsQuoteController@add');
+        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');
+        Route::post('/quote/save', 'ShopGoodsQuoteController@save');
+        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');
     });
 });
 

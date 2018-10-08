@@ -3,15 +3,9 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <p class="title"><a href="/seller">【主页】</a></p>
+        <p class="title"><a href="/seller/quote/list">【商品报价】</a></p>
         <div class="title">店铺 - 店铺产品列表 </div>
         <div class="content">
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                </ul>
-            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">

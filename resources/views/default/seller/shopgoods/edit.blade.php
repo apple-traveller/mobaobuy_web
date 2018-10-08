@@ -1,4 +1,4 @@
-@extends(themePath('.')."admin.include.layouts.master")
+@extends(themePath('.')."seller.include.layouts.master")
 @section('iframe')
 
     <div class="warpper">

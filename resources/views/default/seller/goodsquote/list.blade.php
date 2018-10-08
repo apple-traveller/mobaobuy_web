@@ -1,31 +1,26 @@
-@extends(themePath('.')."admin.include.layouts.master")
+@extends(themePath('.')."seller.include.layouts.master")
 @section('iframe')
     <div class="warpper">
+        <p class="title"><a href="/seller">【主页】</a></p>
+        <p class="title"><a href="/seller/goods/list">【商品】</a></p>
         <div class="title">店铺 - 店铺产品报价列表</div>
         <div class="content">
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                </ul>
-            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加产品报价"><span><i class="icon icon-plus"></i>添加产品报价</span></div></div></a>
+                        <a href="/seller/quote/add"><div class="fbutton"><div class="add" title="添加产品报价"><span><i class="icon icon-plus"></i>添加产品报价</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                         <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                     </div>
                     <div class="search">
-                        <form action="/admin/shopgoodsquote/list" name="searchForm" >
+                        <form action="/seller/quote/list" name="searchForm" >
                             <div class="input">
-                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_name" id="cat_id">
-                                    <option value="0">全部店铺</option>
-                                    @foreach($shops as $vo)
-                                        <option @if($vo['shop_name']==$shop_name) selected @endif  value="{{$vo['shop_name']}}">{{$vo['shop_name']}}</option>
+                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="goods_name" id="cat_id">
+                                    <option value="0">全部商品</option>
+                                    @foreach($goods as $vo)
+                                        <option @if($vo['goods_name']==$goods_name) selected @endif  value="{{$vo['goods_name']}}">{{$vo['goods_name']}}</option>
                                     @endforeach
                                 </select>
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
@@ -64,7 +59,7 @@
                                     <td>
                                         <div class="tDiv">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                            <a href="/admin/shopgoodsquote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="/seller/quote/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -110,10 +105,10 @@
                     elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}" //每页显示的条数
-                    , curr: "{{$currpage}}" //当前页
+                    , curr: "{{$currentPage}}" //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/shopgoodsquote/list?currpage="+obj.curr+"&shop_name="+"{{$shop_name}}";
+                            window.location.href="/seller/quote/list?currentPage="+obj.curr+"&goods_name="+"{{$goods_name}}";
                         }
                     }
                 });
@@ -126,8 +121,25 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/shopgoodsquote/delete?id="+id;
-                    layer.close(index);
+                    $.ajax({
+                        'url':'/seller/quote/delete',
+                        'data':{
+                            'id':id
+                        },
+                        'type':'post',
+                        success: function (res) {
+                            console.log(res.code);
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:1000});
+                                layer.close(index);
+                                window.location.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
+                    // window.location.href="/seller/quote/delete?id="+id;
+
                 });
             });
         }

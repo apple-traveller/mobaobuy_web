@@ -1,6 +1,7 @@
-@extends(themePath('.')."admin.include.layouts.master")
+@extends(themePath('.')."seller.include.layouts.master")
 @section('iframe')
     <div class="warpper">
+        <p class="title"><a href="/seller">【主页】</a></p>
         <div class="title">店铺 - 店铺职员列表</div>
         <div class="content">
             <div class="explanation" id="explanation">
@@ -13,25 +14,11 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/shopuser/addForm"><div class="fbutton"><div class="add" title="添加店铺职员"><span><i class="icon icon-plus"></i>添加店铺职员</span></div></div></a>
+                        <a href="/seller/shopUser/add"><div class="fbutton"><div class="add" title="添加店铺职员"><span><i class="icon icon-plus"></i>添加店铺职员</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                         <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
-                    </div>
-                    <div class="search">
-                        <form action="/admin/shopuser/list" name="searchForm" >
-                            <div class="input">
-                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_id" id="cat_id">
-
-                                    <option value="0">全部店铺</option>
-                                    @foreach($shops as $vo)
-                                        <option @if($vo['id']==$shop_id) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
-                                    @endforeach
-                                </select>
-                                <input type="submit" class="btn"  ectype="secrch_btn" value="">
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <div class="common-content">
@@ -69,7 +56,7 @@
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                            <a href="/admin/shopuser/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="/seller/shopuser/editForm?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -116,10 +103,10 @@
                     elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
-                    , curr: "{{$currpage}}"  //当前页
+                    , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/shopgoods/list?currpage="+obj.curr+"&shop_id="+"{{$shop_id}}";
+                            window.location.href="/seller/shopgoods/list?currentPage="+obj.curr+"&shop_id="+"{{$shop_id}}";
                         }
                     }
                 });
@@ -131,8 +118,22 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/shopgoods/delete?id="+id;
-                    layer.close(index);
+                    $.ajax({
+                        'url':'/seller/shopUser/delete',
+                        'data':{
+                            'id':id
+                        },
+                        'type':'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:1000});
+                                layer.close(index);
+                                window.location.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
                 });
             });
         }

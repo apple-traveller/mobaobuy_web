@@ -1,28 +1,14 @@
-@extends(themePath('.')."admin.include.layouts.master")
+@extends(themePath('.')."seller.include.layouts.master")
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/shopgoodsquote/list" class="s-back">返回</a>店铺 - 添加产品报价</div>
+        <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加产品报价</div>
         <div class="content">
 
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/admin/shopgoodsquote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+                    <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id">
-                                        <option value="">请选择店铺</option>
-                                        @foreach($shops as $vo)
-                                        <option  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择产品：</div>
                                 <div class="label_value">
@@ -109,7 +95,7 @@
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
-            $.post('/admin/shopgoods/getGoods',{'cat_id':cat_id},function(res){
+            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
@@ -137,9 +123,6 @@
                 },
                 ignore : [],
                 rules:{
-                    shop_id:{
-                        required : true,
-                    },
                     shop_price :{
                         required : true,
                     },
@@ -158,9 +141,6 @@
                     }
                 },
                 messages:{
-                    shop_id :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
