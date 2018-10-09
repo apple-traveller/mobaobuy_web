@@ -38,7 +38,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($shopusers as $vo)
+                                @foreach($shopUsers as $vo)
                                 <tr class="">
                                     <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['user_name']}}</div></td>
@@ -50,7 +50,7 @@
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                            <a href="/seller/shopuser/editForm?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="/seller/shopUser/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,7 +100,7 @@
                     , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/seller/shopgoods/list?currentPage="+obj.curr+"&shop_id="+"{{$shop_id}}";
+                            window.location.href="/seller/shopUser?currentPage="+obj.curr+"&shop_id="+"{{$shop_id}}";
                         }
                     }
                 });

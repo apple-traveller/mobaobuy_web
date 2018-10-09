@@ -62,7 +62,7 @@ class ShopUserService
         if (!empty($shopInfo)){
             $condition['user_name'] = "!".$shopInfo['contactName'];
         }
-        if (!empty($user_info) || $user_info['user_name'] != $shopInfo['contactName']){
+        if (!empty($user_info) && $user_info['user_name'] != $shopInfo['contactName']){
             $condition['is_super'] = 0;
         }
         $list = ShopUserRepo::getListBySearch($pager,$condition);
@@ -73,6 +73,26 @@ class ShopUserService
             }
         }
         return $list;
+    }
+
+    /**
+     * 获取等级
+     * @param $user_id
+     * @param $shop_id
+     * @return int
+     */
+    public static function getLv($user_id,$shop_id)
+    {
+        $shopInfo = ShopService::getShopById($shop_id);
+        $user_info = ShopUserRepo::getInfo($user_id);
+
+        if ($user_info['user_name'] == $shopInfo['contactName']){
+            return 1;
+        }
+        if ($user_info['user_name'] == $shopInfo['contactName'] && $user_info['is_super']== 1){
+            return 2;
+        }
+        return 3;
     }
 
 }
