@@ -29,7 +29,7 @@
     <li><a href="javascript:void(0);">订单</a></li>
     <li><a href="javascript:void(0);">报表</a></li>
     <li><a href="javascript:void(0);">系统</a></li>
-    <li><a href="javascript:void(0);">店铺信息</a></li>
+    <li><a href="/seller/detail">店铺信息</a></li>
     <li><a href="seller/logout">退出</a></li>
     <h1>商户主页</h1>
     <table>
