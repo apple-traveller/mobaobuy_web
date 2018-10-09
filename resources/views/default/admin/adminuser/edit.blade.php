@@ -78,15 +78,6 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否为超级管理员：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_super" id="is_super">
-                                        <option @if($adminUser['is_super']==0) selected @endif value="0">否</option>
-                                        <option @if($adminUser['is_super']==1) selected @endif value="1">是</option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>

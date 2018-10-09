@@ -154,11 +154,18 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopgoods/getGoods', 'ShopGoodsController@getGoods');//ajax获取产品
         Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除
 
+
         Route::get('/shopgoodsquote/list', 'ShopGoodsQuoteController@list');//店铺产品报价列表
         Route::get('/shopgoodsquote/addForm', 'ShopGoodsQuoteController@addForm');//添加
         Route::get('/shopgoodsquote/editForm', 'ShopGoodsQuoteController@editForm');//编辑
         Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
+
+        Route::any('/orderinfo/list', 'OrderInfoController@list');//订单列表
+        Route::get('/orderinfo/addForm', 'OrderInfoController@addForm');//添加订单
+        Route::get('/orderinfo/editForm', 'OrderInfoController@editForm');//编辑订单
+        Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
+        Route::get('/orderinfo/detail', 'OrderInfoController@detail');//删除
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板

@@ -74,25 +74,7 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否为超级管理员：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_super" id="is_super">
-                                        <option value="0">否</option>
-                                        <option value="1">是</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_freeze" id="is_freeze">
-                                        <option value="0">否</option>
-                                        <option value="1">是</option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>

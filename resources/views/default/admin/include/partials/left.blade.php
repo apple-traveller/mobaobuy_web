@@ -165,7 +165,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_04_order"></i><h4>订单管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="order.php?act=list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="goods_booking.php?act=list_all" data-param="menushopping|06_undispose_booking" target="workspace">缺货登记</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=add" data-param="menushopping|08_add_order" target="workspace">添加订单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=delivery_list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>

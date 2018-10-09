@@ -271,4 +271,10 @@ class UserService
         return $info;
     }
 
+    //获取指定字段的所有数据
+    public static function getUsersByColumn($column)
+    {
+        return UserRepo::getList([],[],$column);
+    }
+
 }
