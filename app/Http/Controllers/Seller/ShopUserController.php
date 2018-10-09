@@ -18,21 +18,18 @@ class ShopUserController extends Controller
     public function list(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
+        $user_id = session()->get('_seller_id')['user_id'];
         $shop_id = session('_seller_id')['shop_id'];
-        $shops = ShopService::getShopList([],[]);
-        $condition = [];
-        if($shop_id!=0){
-            $condition['shop_id']=$shop_id;
-        }
+
+        $condition['is_super']= 0;
         $pageSize =5;
-        $shopUsers = ShopUserService::getShopUserList(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
+        $shopUsers = ShopUserService::getNotSuper(['pageSize'=>$pageSize,'page'=>$currentPage],$shop_id,$user_id);
         return $this->display('seller.shopuser.list',[
             'total'=>$shopUsers['total'],
             'shopusers'=>$shopUsers['list'],
             'currentPage'=>$currentPage,
             'shop_id'=>$shop_id,
-            'pageSize'=>$pageSize,
-            'shops'=>$shops['list']
+            'pageSize'=>$pageSize
         ]);
     }
 

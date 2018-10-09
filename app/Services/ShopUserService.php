@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Repositories\ShopUserRepo;
+use function Psy\sh;
+
 class ShopUserService
 {
     use CommonService;
@@ -45,5 +47,32 @@ class ShopUserService
         return ShopUserRepo::modify($data['id'],$data);
     }
 
+    /**
+     * 获取非店铺负责人的职员
+     * @param $shop_id
+     * @param $user_id
+     * @return array
+     */
+    public static function getNotSuper($pager,$shop_id,$user_id)
+    {
+        $condition = [];
+        $condition['shop_id'] = $shop_id;
+        $shopInfo = ShopService::getShopById($shop_id);
+        $user_info = ShopUserRepo::getInfo($user_id);
+        if (!empty($shopInfo)){
+            $condition['user_name'] = "!".$shopInfo['contactName'];
+        }
+        if (!empty($user_info) || $user_info['user_name'] != $shopInfo['contactName']){
+            $condition['is_super'] = 0;
+        }
+        $list = ShopUserRepo::getListBySearch($pager,$condition);
+        if (!empty($list['list'])){
+            foreach ($list['list'] as $k=>$v){
+                $list['list'][$k]['shop_name'] = $shopInfo['shop_name'];
+                unset($list['list'][$k]['password']);
+            }
+        }
+        return $list;
+    }
 
 }

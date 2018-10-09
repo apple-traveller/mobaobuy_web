@@ -40,13 +40,7 @@
                                 <tbody>
                                 @foreach($shopusers as $vo)
                                 <tr class="">
-                                    <td>
-                                        <div class="tDiv">
-                                            @foreach($shops as $v)
-                                            @if($v['id']==$vo['shop_id']) {{$v['shop_name']}} @endif
-                                            @endforeach
-                                        </div>
-                                    </td>
+                                    <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['user_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['last_time']}}</div></td>
