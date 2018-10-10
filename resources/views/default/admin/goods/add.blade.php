@@ -371,6 +371,9 @@
                     goods_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+                    keywords:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                     brand_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },

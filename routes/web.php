@@ -59,6 +59,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/region/list', 'RegionController@list');//地区列表
         Route::post('/region/save', 'RegionController@save');//地区添加
         Route::get('/region/delete', 'RegionController@delete');//地区删除
+        Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@list');//产品分类列表
@@ -162,10 +163,15 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
 
         Route::any('/orderinfo/list', 'OrderInfoController@list');//订单列表
-        Route::get('/orderinfo/addForm', 'OrderInfoController@addForm');//添加订单
-        Route::get('/orderinfo/editForm', 'OrderInfoController@editForm');//编辑订单
+        Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
         Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
-        Route::get('/orderinfo/detail', 'OrderInfoController@detail');//删除
+        Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
+        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改
+        Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
+        Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
+        Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
+        Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
+        Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
