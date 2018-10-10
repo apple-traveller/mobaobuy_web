@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
 </head>
-<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
+{{--<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>--}}
 <body>
 <h1>商户登陆</h1>
 <form action="/seller/login" method="post" id="user_login">

@@ -10,9 +10,9 @@ class OrderInfoService
     use CommonService;
 
     //列表（分页）
-    public static function getOrderInfoList($pager,$condition)
+    public static function getOrderInfoList($pager, $condition)
     {
-        return OrderInfoRepo::getListBySearch($pager,$condition);
+        return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
     //查询一条数据
@@ -21,21 +21,21 @@ class OrderInfoService
         return OrderInfoRepo::getInfo($id);
     }
 
-    //修改
+
     public static function modify($data)
     {
-        return OrderInfoRepo::modify($data['id'],$data);
+        return OrderInfoRepo::modify($data['id'], $data);
     }
 
     //获取订单商品信息
     public static function getOrderGoodsByOrderid($order_id)
     {
-        $order_goods = OrderGoodsRepo::getList([],['order_id'=>$order_id]);
-        foreach($order_goods as $k=>$vo){
+        $order_goods = OrderGoodsRepo::getList([], ['order_id' => $order_id]);
+        foreach ($order_goods as $k => $vo) {
             $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($vo['shop_goods_quote_id']);
             $good = GoodsRepo::getInfo($vo['goods_id']);
-            $order_goods[$k]['shop_name']=$shop_goods_quote['shop_name'];
-            $order_goods[$k]['brand_name']=$good['brand_name'];
+            $order_goods[$k]['shop_name'] = $shop_goods_quote['shop_name'];
+            $order_goods[$k]['brand_name'] = $good['brand_name'];
         }
         return $order_goods;
     }
@@ -43,7 +43,7 @@ class OrderInfoService
     //获取收货地址信息
     public static function getConsigneeInfo($id)
     {
-        return OrderInfoRepo::getList([],['id'=>$id],['consignee','country','province','city','district','street','address','zipcode','mobile_phone'])[0];
+        return OrderInfoRepo::getList([], ['id' => $id], ['consignee', 'country', 'province', 'city', 'district', 'street', 'address', 'zipcode', 'mobile_phone'])[0];
     }
 
     //获取发票信息
@@ -55,7 +55,7 @@ class OrderInfoService
     //修改商品信息
     public static function modifyOrderGoods($data)
     {
-        return OrderGoodsRepo::modify($data['id'],$data);
+        return OrderGoodsRepo::modify($data['id'], $data);
     }
 
     //更新订单的商品总金额
@@ -63,12 +63,27 @@ class OrderInfoService
     {
         $orderInfo = OrderInfoRepo::getInfo($id);
         //查询该所有的商品
-        $orderGoods = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+        $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);
         $sum = 0;
-        foreach($orderGoods as $k=>$v){
-            $sum+=$v['goods_price']*$v['goods_number'];
+        foreach ($orderGoods as $k => $v) {
+            $sum += $v['goods_price'] * $v['goods_number'];
         }
-        return OrderInfoRepo::modify($id,['goods_amount'=>$sum]);
+        return OrderInfoRepo::modify($id, ['goods_amount' => $sum]);
     }
 
+
+    /**
+     * 根据条件查询
+     * @param $where
+     * @return array
+     */
+    public static function getOrderInfoByWhere($where)
+    {
+        return OrderInfoRepo::getInfoByFields($where);
+    }
+
+/*    public static function modify($id, $data)
+    {
+        return OrderInfoRepo::modify($id, $data);
+    }*/
 }
