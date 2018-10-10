@@ -131,6 +131,9 @@ function loadIframe(tabTitle,url,tabId) {
 
 window.onload=function() {
     var hash = location.hash;
+    if (!hash){
+        return ;
+    }
     let tL = hash.indexOf('&');
     let IL = hash.lastIndexOf('#');
 
