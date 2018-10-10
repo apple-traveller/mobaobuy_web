@@ -20,7 +20,6 @@ class ShopUserController extends Controller
         $currentPage = $request->input('currentPage',1);
         $user_id = session()->get('_seller_id')['user_id'];
         $shop_id = session('_seller_id')['shop_id'];
-
         $condition['is_super']= 0;
         $pageSize =5;
         $shopUsers = ShopUserService::getNotSuper(['pageSize'=>$pageSize,'page'=>$currentPage],$shop_id,$user_id);
@@ -85,7 +84,7 @@ class ShopUserController extends Controller
         try{
             if($id){
                 $u_lv = ShopUserService::getLv($id,$shop_id);
-                if ($lv<=$u_lv){
+                if ($lv>=$u_lv){
                     return $this->error('您不具备执行此操作的权限',url('/seller/shopUser')."?currentPage=".$currentPage);
                 }
                $data['id'] = $id;
@@ -111,6 +110,13 @@ class ShopUserController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        $shop_id = session('_seller_id')['shop_id'];
+        $action_id = session('_seller_id')['user_id'];
+        $lv = ShopUserService::getLv($action_id,$shop_id);
+        $u_lv = ShopUserService::getLv($id,$shop_id);
+        if ($lv>=$u_lv){
+            return $this->error('您不具备执行此操作的权限',url('/seller/shopUser'));
+        }
         try{
             $flag = ShopUserService::delete($id);
             if($flag){

@@ -2,8 +2,6 @@
 @section('iframe')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
-        <p class="title"><a href="/seller">【主页】</a></p>
-        <p class="title"><a href="/seller/quote/list">【商品报价】</a></p>
         <div class="title">店铺 - 店铺产品列表 </div>
         <div class="content">
             <div class="flexilist">
@@ -104,9 +102,6 @@
                 });
             });
         }
-
-
-
         function remove(id)
         {
             layui.use('layer', function(){
