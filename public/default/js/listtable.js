@@ -73,11 +73,13 @@ listTable.edit = function(obj, act, id)
     {
         if (Utils.trim(txt.value).length > 0)
         {
-            res = Ajax.call(listTable.url, "act="+act+"&val=" + encodeURIComponent(Utils.trim(txt.value)) + "&id=" +id, null, "POST", "JSON", false);
-
-            if (res.message)
+            res = Ajax.call(act, "val=" + encodeURIComponent(Utils.trim(txt.value)) + "&id=" +id, null, "POST", "JSON", false);
+            //var res = Ajax.call(url, "val=" + val + "&id=" +id, null, "POST", "JSON", false);
+            console.log(res);
+            obj.innerHTML = res.data;
+            /*if (res.msg)
             {
-                pbDialog(res.message,'',0);
+                pbDialog(res.msg,'',0);
             }
 
             if(res.id && (res.act == 'goods_auto' || res.act == 'article_auto'))
@@ -89,7 +91,7 @@ listTable.edit = function(obj, act, id)
 
             if($(obj).siblings(".edit_icon")){
                 $(obj).siblings(".edit_icon").css({"display":""});
-            }
+            }*/
         }
         else
         {

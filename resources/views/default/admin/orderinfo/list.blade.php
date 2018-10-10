@@ -47,11 +47,11 @@
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="10%"><div class="tDiv">收货人</div></th>
-                                    <th width="5%"><div class="tDiv">订单状态</div></th>
+                                    <th width="5%"><div class="tDiv">审核状态</div></th>
                                     <th width="5%"><div class="tDiv">付款状态</div></th>
                                     <th width="5%"><div class="tDiv">发货状态</div></th>
-                                    <th width="5%"><div class="tDiv">商品总金额</div></th>
                                     <th width="5%"><div class="tDiv">运费</div></th>
+                                    <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
@@ -69,7 +69,7 @@
                                             </div>
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['consignee']}}<br>{{$vo['mobile_phone']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['consignee']}}<br>{{$vo['mobile_phone']}}<br>{{$vo['address']}}</div></td>
                                         <td>
                                             <div class="tDiv">
                                                 @if($vo['order_status']==0)已作废
@@ -96,8 +96,8 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
                                         <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['goods_amount']+$vo['shipping_fee']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
@@ -149,7 +149,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/orderinfo/list?currpage="+obj.curr+"&order_status={{$order_status}}";
+                            window.location.href="/admin/orderinfo/list?currpage="+obj.curr+"&order_status={{$order_status}}"+"&order_sn={{$order_sn}}";
                         }
                     }
                 });
