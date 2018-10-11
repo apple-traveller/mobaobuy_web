@@ -288,6 +288,10 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
+        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
+        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
+        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
+        Route::get('/order/modifyAddress', 'ShopOrderController@modifyAddress');
     });
 });
 

@@ -1,4 +1,4 @@
-@include(themePath('.')."seller.include.layouts.master")
+@extends(themePath('.')."seller.include.layouts.master")
 @section('title','en-this')
 @section('styles')
     <style>
@@ -34,8 +34,8 @@
         </div>
     </div>
     <!-- 内容主体区域 -->
-    <div class="layui-body">
-        <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch">
+    <div class="layui-body" style="height: auto">
+        <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch" >
             <ul class="layui-tab-title">
                 <li class="layui-this" >后台首页</li>
             </ul>

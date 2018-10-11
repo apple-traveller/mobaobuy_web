@@ -1,5 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('iframe')
+@section('body')
     <div class="warpper">
         <div class="title">订单 - 订单列表</div>
         <div class="content">
@@ -48,8 +48,8 @@
                                     <th width="5%"><div class="tDiv">订单状态</div></th>
                                     <th width="5%"><div class="tDiv">付款状态</div></th>
                                     <th width="5%"><div class="tDiv">发货状态</div></th>
-                                    <th width="5%"><div class="tDiv">商品总金额</div></th>
                                     <th width="5%"><div class="tDiv">运费</div></th>
+                                    <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
@@ -94,8 +94,8 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
                                         <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/seller/order/detail?id={{$vo['id']}}&currentPage={{$currentPage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>

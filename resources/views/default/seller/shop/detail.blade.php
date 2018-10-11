@@ -1,5 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('iframe')
+@section('body')
     <div class="warpper">
         <div class="title">店铺 详情</div>
         <div class="title"><a href="/seller/shopUser">【店铺职员】</a></div>

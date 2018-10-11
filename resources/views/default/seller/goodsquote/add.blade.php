@@ -1,6 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('iframe')
-
+@section('body')
     <div class="warpper">
         <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加产品报价</div>
         <div class="content">

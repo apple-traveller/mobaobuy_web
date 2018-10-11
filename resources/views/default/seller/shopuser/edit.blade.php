@@ -1,5 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('iframe')
+@section('body')
 
     <div class="warpper">
         <div class="title"><a href="/seller/shopUser?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 编辑职员</div>
