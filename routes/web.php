@@ -283,7 +283,7 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/login.html', 'ShopLoginController@login');
-//        Route::post('/login', 'ShopLoginController@login');
+        Route::post('/login', 'ShopLoginController@login');
         Route::get('/register.html', 'ShopLoginController@register');
         Route::post('/register', 'ShopLoginController@register');
         Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');
