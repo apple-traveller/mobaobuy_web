@@ -101,8 +101,14 @@
                                 <dl>
                                     <dt>发货时间：</dt>
                                     <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
-                                    <dt>发货单号：<a href="order.php?act=edit&amp;order_id=4&amp;step=shipping"><i class="icon icon-edit"></i></a></dt>
-                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
+                                    <dt>发货单号：</dt>
+                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else
+                                            <div class="editSpanInput" ectype="editSpanInput">
+                                                <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/modify3')}}','{{$orderInfo['id']}}')">{{$orderInfo['shipping_time']}}</span>
+                                                <span>天</span>
+                                                <i class="icon icon-edit"></i>
+                                            </div>
+                                        @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
@@ -144,9 +150,9 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>{{$user_invoices['company_name']}}</dd>
+                                    <dd>@if(!empty($user_invoices['company_name'])) {{$user_invoices['company_name']}} @else 无 @endif</dd>
                                     <dt>税号:：</dt>
-                                    <dd>{{$user_invoices['tax_id']}}</dd>
+                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
@@ -193,7 +199,6 @@
                                             <th width="10%">价格</th>
                                             <th width="10%">购买数量</th>
                                             <th width="10%">已发货数量</th>
-                                            <th width="10%">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -205,11 +210,6 @@
                                             <td>{{$vo['goods_price']}}</td>
                                             <td>{{$vo['goods_number']}}</td>
                                             <td>{{$vo['send_number']}}</td>
-                                            <td>
-                                                <!--生成发货单-->
-                                                <input name="part_ship" type="button" value="生成发货单" class="btn btn25 blue_btn" data-rec_id="4">
-
-                                            </td>
                                         </tr>
                                         @endforeach
                                         <tr>
@@ -228,40 +228,35 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="order.php?act=edit&amp;order_id=4&amp;step=money"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>商品总金额：</dt>
                                     <dd><em>¥</em>{{$orderInfo['goods_amount']}}</dd>
-                                    <dt>使用余额：</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>配送费用：</dt>
                                     <dd>+ <em>¥</em>{{$orderInfo['shipping_fee']}}</dd>
-                                    <dt>使用红包：</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>折扣：</dt>
                                     <dd>- <em>¥</em>{{$orderInfo['discount']}}</dd>
-                                    <dt>使用储值卡：</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
-                                </dl>
-                                <dl>
                                     <dt></dt>
                                     <dd></dd>
-
+                                </dl>
+                                <dl>
                                     <dt>已付款金额：</dt>
                                     <dd>- <em>¥</em>{{$orderInfo['money_paid']}}</dd>
+                                    <dt></dt>
+                                    <dd></dd>
                                 </dl>
                                 <dl>
                                     <dt>订单总金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']}}</dd>
+                                    <dd class="red"><em>¥</em>{{$orderInfo['order_amount']}}</dd>
                                     <dt>应付款金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid']}}</dd>
+                                    <dd class="red"><em>¥</em>{{$orderInfo['order_amount']-$orderInfo['money_paid']}}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -274,22 +269,28 @@
                                     <div class="item">
                                         <div class="label">操作备注：</div>
                                         <div class="value">
-                                            <div class="bf100 fl"><textarea name="action_note" class="textarea"></textarea></div>
-                                            <div class="order_operation_btn">
+                                            <div class="bf100 fl"><textarea placeholder="请详细填写操作日志" name="action_note" class="textarea action_note"></textarea></div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">订单状态：</div>
+                                        <div class="value">
+                                            <input @if($orderInfo['order_status']==0) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif  type="button" data-id="0" value="已作废" >
+                                            <input @if($orderInfo['order_status']==1) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="1" value="待企业审核" >
+                                            <input @if($orderInfo['order_status']==2) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="2" value="待商家确认" >
+                                            <input @if($orderInfo['order_status']==3) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="3" value="已确认" >
+                                            <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                        </div>
 
-                                                <input name="pay" type="submit" value="付款" class="btn btn25 red_btn">
+                                    </div>
 
-
-                                                <input name="cancel" type="submit" value="取消" class="btn btn25 red_btn">
-
-
-                                                <input name="invalid" type="submit" value="无效" class="btn btn25 red_btn">
-
-                                                <input name="after_service" type="submit" value="售后" class="btn btn25 red_btn">                                                                                                                                                <input name="order_id" type="hidden" value="4">
-                                                <!--门店列表 start-->
-                                                <!--门店列表 end-->
-                                                <input type="button" value="打印订单" class="btn btn25 blue_btn" onclick="javascript:window.open('tp_api.php?act=order_print&amp;order_id=4')">
-                                            </div>
+                                    <div class="item">
+                                        <div class="label">支付状态：</div>
+                                        <div class="value">
+                                              <input @if($orderInfo['pay_status']==0) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="0" value="待付款" >
+                                              <input @if($orderInfo['pay_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="1" value="已付款" >
+                                              <input @if($orderInfo['pay_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="2" value="部分付款" >
+                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                         </div>
                                     </div>
                                 </div>
@@ -305,15 +306,33 @@
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
+                                        @foreach($orderLogs as $vo)
                                         <tr>
                                             <td>&nbsp;</td>
-                                            <td>admin</td>
-                                            <td>2018-10-09 08:46:28</td>
-                                            <td>已确认</td>
-                                            <td>未付款</td>
-                                            <td>未发货</td>
-                                            <td>23</td>
+                                            <td>{{$vo['action_user']}}</td>
+                                            <td>{{$vo['log_time']}}</td>
+                                            <td>
+                                                @if($vo['order_status']==0)已作废
+                                                @elseif($vo['order_status']==1)待企业审核
+                                                @elseif($vo['order_status']==2)待商家确认
+                                                @else已确认
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($vo['pay_status']==0)待付款
+                                                @elseif($vo['pay_status']==1)已付款
+                                                @else部分付款
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($orderInfo['shipping_status']==0)待发货
+                                                @elseif($orderInfo['shipping_status']==1)已发货
+                                                @elseif($orderInfo['shipping_status']==2)部分发货
+                                                @endif
+                                            </td>
+                                            <td>{{$vo['action_note']}}</td>
                                         </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
 
@@ -326,6 +345,7 @@
         </div>
     </div>
     <script>
+
         layui.use(['layer'], function() {
             var layer = layui.layer;
             var index = 0;
@@ -353,6 +373,44 @@
                     }
                 },"json");
                 layer.close(index);
+            });
+            //修改订单状态
+            $(".order_status").click(function(){
+                var order_status = $(this).attr("data-id");
+                var action_note = $(".action_note").val();
+                $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            window.location.reload();
+                        });
+
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
+            });
+
+
+            //修改支付状态
+            $(".pay_status").click(function(){
+                var pay_status = $(this).attr("data-id");
+                var action_note = $(".action_note").val();
+                $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'pay_status':pay_status},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            window.location.reload();
+                        });
+
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
             });
         });
     </script>

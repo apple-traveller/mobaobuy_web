@@ -49,17 +49,14 @@
                             </div>
 
 
-
-
                             <input type="hidden" name="id" value="{{$id}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
-
 
                         </div>
 
                         <div style="margin-top:-42px;margin-right:166px;" class="goods_btn">
+                            <input type="button" value="确定" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}'">
                             <input type="button" value="返回" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}'">
-
                         </div>
                     </form>
 

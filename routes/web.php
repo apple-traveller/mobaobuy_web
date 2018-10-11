@@ -166,12 +166,16 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
         Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
         Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
-        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改
+        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
+        Route::post('/orderinfo/modify3', 'OrderInfoController@modify3');//修改发货单号
+        Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
         Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
         Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
+        Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
+        Route::post('/orderinfo/saveFee', 'OrderInfoController@saveFee');//保存费用修改信息
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -293,6 +297,8 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
 
 Route::pattern('path','.+');
 Route::any('{path}', 'CommonController@route');
+
+
 
 
 

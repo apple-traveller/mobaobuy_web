@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\OrderInfoService;
 use App\Services\UserService;
@@ -71,14 +72,15 @@ class OrderInfoController extends Controller
         $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
         $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderid($orderInfo['id']);//订单商品
-        // $operator
+        $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
         return $this->display('admin.orderinfo.detail',[
             'currpage'=>$currpage,
             'orderInfo'=>$orderInfo,
             'user'=>$user,
             'region'=>$region,
             'order_goods'=>$order_goods,
-            'user_invoices'=>$user_invoices
+            'user_invoices'=>$user_invoices,
+            'orderLogs'=>$orderLogs
         ]);
     }
 
@@ -109,7 +111,55 @@ class OrderInfoController extends Controller
         }
     }
 
-    //修改收货人信息
+    //修改发货单号
+    public function modify3(Request $request)
+    {
+        $data = [
+            'id'=>$request->input('id'),
+            'shipping_time'=>$request->input('val'),
+        ];
+        //已经发货不能修改发货单号
+        try{
+            $flag = OrderInfoService::modify($data);
+            return $this->result($flag['auto_delivery_time'],200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //修改订单状态
+    public function modifyStatus(Request $request)
+    {
+        $data = $request->all();
+        $action_note = $data['action_note'];
+        if(empty($action_note)){
+            if(key_exists('order_status',$data)){
+                $action_note = "修改订单状态";
+            }else{
+                $action_note = "修改支付状态";
+            }
+        }
+        unset($data['action_note']);
+        try{
+            $flag = OrderInfoService::modify($data);
+            //存储日志信息
+            $logData = [
+                'action_note'=>$action_note,
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$data['id'],
+                'order_status'=>$flag['order_status'],
+                'shipping_status'=>$flag['shipping_status'],
+                'pay_status'=>$flag['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            OrderInfoService::createLog($logData);
+            return $this->result('',200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //编辑收货人信息
     public function modifyConsignee(Request $request)
     {
         $id = $request->input('id');
@@ -130,7 +180,7 @@ class OrderInfoController extends Controller
         ]);
     }
 
-    //修改发票信息
+    //编辑开票信息
     public function modifyInvoice(Request $request)
     {
         $id = $request->input('id');
@@ -194,6 +244,39 @@ class OrderInfoController extends Controller
                 return $this->error('更新失败');
             }
             return $this->success("/admin/orderinfo/modifyOrderGoods?id=".$order_id."&currpage=".$currpage,200,'更新成功');
+        }catch(\Exception $e){
+            return $this->result('',400,$e->getMessage());
+        }
+    }
+
+    //编辑费用信息
+    public function modifyFee(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage');
+        $feeInfo = OrderInfoService::getFeeInfo($id);
+        //dd($feeInfo);
+        return $this->display('admin.orderinfo.fee',[
+            'feeInfo'=>$feeInfo,
+            'currpage'=>$currpage,
+            'id'=>$id
+        ]);
+    }
+
+    //保存费用信息
+    public function saveFee(Request $request)
+    {
+        $data = $request->all();
+        $id = $data['id'];
+        $currpage = $data['currpage'];
+        unset($data['currpage']);
+        try{
+            $info = OrderInfoService::modify($data);
+            OrderInfoService::modifyGoodsAmount($id);
+            if(!$info){
+                return $this->error('更新失败');
+            }
+            return $this->success('更新成功',"/admin/orderinfo/detail?id=".$id."&currpage=".$currpage);
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
