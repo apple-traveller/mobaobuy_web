@@ -1,5 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('iframe')
+@section('body')
 
     <div class="warpper">
         <div class="title"><a href="/seller/quote/list?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 修改产品报价</div>

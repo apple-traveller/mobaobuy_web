@@ -65,11 +65,26 @@ class RegionRepo
     public static function getCity($regionId){
         $model = self::getBaseModel();
         $info = $model::where('parent_id',$regionId)->get();
+        $cityInfo = $info->toArray();
+//        $cityInfo[0]['region_id']
+        $countyClass = $model::where('parent_id',$cityInfo[0]['region_id'])->get();
+        $countyInfo = $countyClass->toArray();
+
+        if($info && $countyClass){
+            return ['city'=>$cityInfo,'county'=>$countyInfo];
+        }
+        return [];
+    }
+    //获取县
+    public static function getCounty($cityId){
+        $model = self::getBaseModel();
+        $info = $model::where('parent_id',$cityId)->get();
         if($info){
             return $info->toArray();
         }
         return [];
     }
+
 
 
 

@@ -8,12 +8,14 @@
 
 namespace App\Repositories;
 
-class OrderInfoRepo
+class UserCollectGoodsRepo
 {
     use CommonRepo;
-    public static function orderList($userId){
+    //获取收藏列表
+    public static function userCollectGoodsList($id){
         $clazz = self::getBaseModel();
         $query = $clazz::query();
-        return $query->where('user_id',$userId)->paginate(10);
+        return $query->where('user_id',$id)->paginate(1);
     }
+
 }

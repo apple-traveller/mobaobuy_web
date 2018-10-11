@@ -102,9 +102,6 @@ layui.use(['element','jquery','form', 'layedit'],function(){
  * @param tabId 选项卡id
  */
 function addTab(tabTitle,tabUrl,tabId){
-    console.log(tabTitle);
-    console.log(tabUrl);
-    console.log(tabId);
     if ($(".layui-tab-title li[lay-id=" + tabId + "]").length > 0) {
         element.tabChange('tab-switch', tabId);
     }else{
@@ -114,7 +111,43 @@ function addTab(tabTitle,tabUrl,tabId){
             ,id: tabId //选项卡标题的lay-id属性值
         });
         element.tabChange('tab-switch', tabId); //切换到新增的tab上
+        loadIframe(tabTitle,tabUrl,tabId);
     }
+}
+
+
+function loadIframe(tabTitle,url,tabId) {
+    //获取url链接
+    var u = window.location.href;
+    //因为每次获取的链接中都有之前的旧锚点，
+    //所以需要把#之后的旧锚点去掉再来加新的锚点（即传入的url参数）
+    var end = u.indexOf("#");
+    var rurl = u.substring(0,end);
+    //设置新的锚点
+    // let anchor = {'tabTitle':tabTitle,'url':window.btoa(url),'tabId':tabId}; anchor = JSON.stringify(anchor);
+    let anchor =  window.btoa(encodeURIComponent(tabTitle))+ "&" + window.btoa(url) + "#" + window.btoa(tabId);
+    window.location.href = "#" + anchor;
+}
+
+
+window.onload=function() {
+    var hash = location.hash;
+    if (!hash){
+        return ;
+    }
+    let tL = hash.indexOf('&');
+    let IL = hash.lastIndexOf('#');
+
+    let tabTitle = decodeURIComponent(window.atob(hash.substring(1,tL)));
+    let url = window.atob(hash.substring(tL+1,IL));
+    let tabId = window.atob(hash.substring(IL+1,hash.length));
+    element.tabAdd('tab-switch', {
+        title: tabTitle
+        ,content: '<iframe src='+url+' width="100%" style="min-height: 500px;" frameborder="0" scrolling="auto" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
+        ,id: tabId //选项卡标题的lay-id属性值
+    });
+    element.tabChange('tab-switch', tabId);
+
 }
 
 

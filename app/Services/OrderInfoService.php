@@ -102,8 +102,4 @@ class OrderInfoService
         return OrderInfoRepo::getInfoByFields($where);
     }
 
-/*    public static function modify($id, $data)
-    {
-        return OrderInfoRepo::modify($id, $data);
-    }*/
 }

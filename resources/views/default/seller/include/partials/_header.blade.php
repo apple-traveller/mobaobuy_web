@@ -20,9 +20,8 @@
         </dl>
     </li>
     <li class="layui-nav-item">
-        <a href=""
-           onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
+        <a href="/seller/logout"
+           >
             退了
         </a>
 
