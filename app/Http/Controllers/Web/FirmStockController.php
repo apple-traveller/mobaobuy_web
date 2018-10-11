@@ -23,7 +23,7 @@ class FirmStockController extends Controller
         if($goods_name && $start_time &&$end_time){
             $firmstock = FirmStockService::search($goods_name,$start_time,$end_time);
         }else{
-            $firmstock = FirmStockService::firmStockIn(session('_web_info')['id']);
+            $firmstock = FirmStockService::firmStockIn(session('_web_user_id'));
         }
         return view('default.web.firm.stockIn',['firmstock'=>$firmstock]);
     }

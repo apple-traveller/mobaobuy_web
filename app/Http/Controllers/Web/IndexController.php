@@ -18,7 +18,8 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(){
-        return $this->display('web.index');
+        $articleCat = IndexService::information();
+        return $this->display('web.index',compact('articleCat'));
     }
 
     //首页定位城市
@@ -37,12 +38,18 @@ class IndexController extends Controller
         $cityInfo = IndexService::getProvince($city,$region_type);
         session()->put('selCity',$city);
         session()->put('cityInfo',$cityInfo);
-        $this->display('web',compact(['city','cityInfo']));
+        return $this->display('web',compact(['city','cityInfo']));
     }
 
     //修改定位城市
     public function updateCity(Request $request){
         $city = $request->input('city');
         session()->put('selCity',$city);
+    }
+
+    //咨询分类
+    public function article($id){
+        $articleInfo = IndexService::article($id);
+        return $this->display('web.user.articleDetails',compact('articleInfo'));
     }
 }

@@ -15,7 +15,7 @@ class FirmStockFlowRepo
     }
 
     //入库列表
-    public static function getLists($id){
+    public static function getListByStockIn($id){
         $clazz = self::getBaseModel();
         $query = $clazz::query();
         return $query->where('firm_id',$id)

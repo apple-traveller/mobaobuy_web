@@ -8,10 +8,11 @@
 
 namespace App\Repositories;
 
-class OrderInfoRepo
+class CartRepo
 {
     use CommonRepo;
-    public static function orderList($userId){
+     //购物车列表
+    public static function cartList($userId){
         $clazz = self::getBaseModel();
         $query = $clazz::query();
         return $query->where('user_id',$userId)->paginate(10);

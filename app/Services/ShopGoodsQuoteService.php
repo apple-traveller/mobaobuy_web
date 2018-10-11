@@ -6,6 +6,10 @@ use App\Repositories\ShopGoodsRepo;
 class ShopGoodsQuoteService
 {
     use CommonService;
+    //获取报价列表
+    public static function goodsQuoteList(){
+        return ShopGoodsQuoteRepo::goodsQuoteList();
+    }
 
     //分页
     public static function getShopGoodsQuoteList($pager,$condition)
@@ -50,5 +54,5 @@ class ShopGoodsQuoteService
     {
         return ShopGoodsQuoteRepo::getQuoteGoods($shop_id);
     }
-
 }
+

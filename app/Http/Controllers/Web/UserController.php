@@ -128,6 +128,10 @@ class UserController extends Controller
 
             try{
                 UserService::userRegister($data);
+
+                $request->session()->forget('send_code');
+//                return $this->success('注册成功','/');
+
                 if(getConfig('firm_reg_check')) {
                     return $this->success('提交成功，请等待审核！', '/');
                 }else{
@@ -179,14 +183,13 @@ class UserController extends Controller
     {
         session()->forget('_web_user_id');
         session()->forget('_web_user');
-
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
 
     //显示用户收获地
     public function shopAddressList(){
-        $userId = session('_web_info')['id'];
+        $userId = session('_web_user_id');
         $condition = [];
         $condition['user_id'] = $userId;
         $addressInfo = UserService::shopAddressList($condition);
@@ -196,6 +199,7 @@ class UserController extends Controller
     //新增收获地址
     public function addShopAddress(Request $request){
         if($request->isMethod('post')){
+            $user_id = session('_web_user_id');
             $message = [
                 'required' => ':attribute 不能为空'
             ];
@@ -212,21 +216,23 @@ class UserController extends Controller
                 'mobile_phone'=>'手机'
             ];
             $rule = [
-                'address_name'=>'required',
-                'user_id'=>'required',
+//                'address_name'=>'required',
                 'consignee'=>'required',
-                'country'=>'required',
+//                'country'=>'required',
                 'province'=>'required',
                 'city'=>'required',
                 'district'=>'required',
-                'street'=>'required',
+//                'street'=>'required',
                 'address'=>'required',
                 'zipcode'=>'required',
                 'mobile_phone'=>'required',
             ];
             $data = $this->validate($request,$rule,$message,$attributes);
+            $data['user_id'] = $user_id;
+            $data['country'] = 1;
             try{
                 UserService::addShopAddress($data);
+                return $this->success('添加收获地址成功');
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -252,8 +258,10 @@ class UserController extends Controller
     //通过市区获取县级
     public function getCounty(Request $request){
         $cityId = $request->input('cityId');
+//        dd($cityId);
         try{
-            UserService::getCounty($cityId);
+            $countyInfo = UserService::getCounty($cityId);
+            return json_encode(array('status'=>1,'info'=>$countyInfo));
         }
         catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -311,7 +319,7 @@ class UserController extends Controller
                 'consignee_address' => 'required',
             ];
             $data = $this->validate($request,$rule);
-            $data['user_id'] = session('_web_info')['id'];
+            $data['user_id'] = session('_web_user_id');
             try{
                 UserInvoicesService::create($data);
                 return json_encode(array('status'=>1));
@@ -346,7 +354,7 @@ class UserController extends Controller
                 'consignee_address' => 'required',
             ];
             $data = $this->validate($request,$rule);
-            $data['user_id'] = session('_web_info');
+            $data['user_id'] = session('_web_user_id');
             try{
                 UserInvoicesService::editInvoices($id,$data);
                 return $this->success('保存成功');
@@ -358,7 +366,7 @@ class UserController extends Controller
 
     //用户发票信息
     public function invoicesList(){
-        $userId = session('_web_info')['id'];
+        $userId = session('_web_user_id');
         $condition = [];
         $condition['user_id'] = $userId;
         $invoicesInfo = UserInvoicesService::invoicesById($condition);
@@ -383,7 +391,7 @@ class UserController extends Controller
            $data['front_of_id_card'] = $request->file('front_of_id_card');
            $data['reverse_of_id_card'] = $request->file('reverse_of_id_card');
             try{
-                UserService::updateUserInfo(session('_web_info')['id'],$data);
+                UserService::updateUserInfo(session('_web_user_id'),$data);
                 return $this->success('实名信息添加成功，等待审核...','/');
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -407,7 +415,7 @@ class UserController extends Controller
 
             ];
             $data = $this->validate($request,$rule);
-            $id = session('_web_info')['id'];
+            $id = session('_web_user_id');
             try{
                 UserService::userUpdatePwd($id,$data);
                 return $this->success('修改密码成功','/');
@@ -428,7 +436,7 @@ class UserController extends Controller
 //                'mobile_code'=> 'required'
             ];
             $data = $this->validate($request,$rule);
-            $id = session('_web_info')['id'];
+            $id = session('_web_user_id');
 
             try{
                 UserService::userForgotPwd($id,$data);
@@ -441,7 +449,7 @@ class UserController extends Controller
 
     //忘记密码获取验证码
     public function userForgotCode(Request $request){
-        $mobile = session('_web_info')['user_name'];
+        $mobile = session('_web_user')['user_name'];
         $type = $request->input('is_type');
         try{
             UserLoginService::sendCode($mobile,$type);
@@ -453,7 +461,7 @@ class UserController extends Controller
 
     //发送支付密码验证码
     public function sendCodeByPay(Request $request){
-        $mobile = session('_web_info')['user_name'];
+        $mobile = session('_web_user')['user_name'];
         $type = $request->input('type');
         $mobile_code = rand(1000, 9999);
         session()->put('pay_send_code', $mobile_code);
@@ -475,7 +483,7 @@ class UserController extends Controller
             $payInfo['password'] = $request->input('password');
             $payInfo['passwords'] = $request->input('passwords');
             $payInfo['code'] = $request->input('code');
-            $payInfo['user_id'] = session('_web_info')['id'];
+            $payInfo['user_id'] = session('_web_user_id');
             if($payInfo['code'] != session('pay_send_code')){
                 return $this->error('验证码错误');exit;
             }
@@ -488,4 +496,22 @@ class UserController extends Controller
         }
     }
 
+    //用户收藏产品列表
+    public function userCollectGoodsList(){
+        $id = session('_web_user_id');
+        $collectGoods = UserService::userCollectGoodsList($id);
+        return $this->display('web.user.userCellectGoodsList',compact('collectGoods'));
+    }
+
+    //收藏商品
+    public function addCollectGoods(Request $request){
+        $id = $request->input('id');
+        $userId = session('_web_user_id');
+        try{
+            UserService::addCollectGoods($id,$userId);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error();
+        }
+    }
 }

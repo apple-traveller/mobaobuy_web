@@ -22,7 +22,7 @@
 <script>
     $('#sub-btn').click(function ()  {
         $.ajax({
-            url: "{{url('login')}}",
+            url: "/login",
             data: {
                 user_name: $("#user_name").val(),
                 password: window.btoa($("#password").val()),

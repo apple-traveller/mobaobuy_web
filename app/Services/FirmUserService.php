@@ -5,8 +5,9 @@ use App\Repositories\UserRepo;
 class FirmUserService
 {
     use CommonService;
-    public static function firmUserList(){
-
+    //企业用户列表
+    public static function firmUserList($firmId){
+        return FirmUserRepo::firmUserList($firmId);
     }
 
     //增加企业用户
