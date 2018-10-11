@@ -221,11 +221,12 @@ class OrderInfoController extends Controller
         $id = $request->input('id');
         $currpage = $request->input('currpage');
         $orderGoods = OrderInfoService::getOrderGoodsByOrderid($id);
-        //dd($orderGoods);
+        $goods_amount = OrderInfoService::getOrderInfoById($id)['goods_amount'];
         return $this->display('admin.orderinfo.good',[
             'orderGoods'=>$orderGoods,
             'currpage'=>$currpage,
-            'id'=>$id
+            'id'=>$id,
+            'goods_amount'=>$goods_amount
         ]);
     }
 
@@ -234,16 +235,15 @@ class OrderInfoController extends Controller
     {
         $data = $request->all();
         $order_id = $data['order_id'];
-        $currpage = $data['currpage'];
         unset($data['order_id']);
-        unset($data['currpage']);
         try{
             $info = OrderInfoService::modifyOrderGoods($data);
             OrderInfoService::modifyGoodsAmount($order_id);
+            $goods_amount = OrderInfoService::getOrderInfoById($order_id)['goods_amount'];
             if(!$info){
                 return $this->error('更新失败');
             }
-            return $this->success("/admin/orderinfo/modifyOrderGoods?id=".$order_id."&currpage=".$currpage,200,'更新成功');
+            return $this->result($goods_amount,200,'更新成功');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
