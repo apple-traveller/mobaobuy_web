@@ -199,4 +199,45 @@ class ShopOrderController extends Controller
             return $this->result('',400,$e->getMessage());
         }
     }
+
+
+    /**
+     * 维护运费 & 折扣
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function modifyFree(Request $request)
+    {
+        $id = $request->input('id');
+        $currentPage = $request->input('currentPage','1');
+        $feeInfo = OrderInfoService::getFeeInfo($id);
+        return $this->display('seller.order.free',[
+            'feeInfo'=>$feeInfo,
+            'currentPage'=>$currentPage,
+            'id'=>$id
+        ]);
+    }
+
+    /**
+     * 保存运费 & 折扣
+     * @param Request $request
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
+    public function saveFree(Request $request)
+    {
+        $data = $request->all();
+        $id = $data['id'];
+        $currentPage = $data['currentPage'];
+        unset($data['currentPage']);
+        try{
+            $info = OrderInfoService::modify($data);
+            OrderInfoService::modifyGoodsAmount($id);
+            if(!$info){
+                return $this->error('更新失败');
+            }
+            return $this->success('更新成功',"/seller/order/detail?id=".$id."&currentPage=".$currentPage);
+        }catch(\Exception $e){
+            return $this->result('',400,$e->getMessage());
+        }
+    }
 }

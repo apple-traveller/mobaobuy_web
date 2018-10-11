@@ -323,6 +323,8 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
+        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
+        Route::post('/order/saveFree', 'ShopOrderController@saveFree');
     });
 });
 

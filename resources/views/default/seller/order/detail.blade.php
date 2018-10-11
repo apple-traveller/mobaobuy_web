@@ -228,7 +228,7 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="order.php?act=edit&amp;order_id=4&amp;step=money"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>商品总金额：</dt>
