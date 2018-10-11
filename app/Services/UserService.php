@@ -1,7 +1,9 @@
 <?php
 namespace App\Services;
+use App\Repositories\GoodsRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserAddressRepo;
+use App\Repositories\UserCollectGoodsRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -41,8 +43,8 @@ class UserService
             //查找黑名单表是否存在
             $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $data['nick_name']]);
             if ($firmBlack) {
-                throwBizError('');
-                //return 'error';
+                throwBizError('此用户已被冻结，请联系管理员');
+
             }
             $userReal = [];
             $userReal['license_fileImg'] = $data['license_fileImg'];
@@ -169,9 +171,16 @@ class UserService
 
 
 
-    //
+    //显示用户收获地
     public static function shopAddressList($condi){
-        return UserAddressRepo::getList($order=[],$condi);
+        $userAddressInfo = UserAddressRepo::getList($order=[],$condi);
+        foreach($userAddressInfo as $k=>$v){
+            $userAddressInfo[$k]['country'] = RegionRepo::getInfo($v['country'])['region_name'];
+            $userAddressInfo[$k]['province'] = RegionRepo::getInfo($v['province'])['region_name'];
+            $userAddressInfo[$k]['city'] = RegionRepo::getInfo($v['city'])['region_name'];
+            $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])['region_name'];
+        }
+        return $userAddressInfo;
     }
 
     //更新收获地
@@ -192,6 +201,31 @@ class UserService
     //获取市
     public static function getCity($regionId){
         return RegionRepo::getCity($regionId);
+    }
+
+    //获取县
+    public static function getCounty($cityId){
+        return RegionRepo::getCounty($cityId);
+    }
+
+    //收藏商品列表
+    public static function userCollectGoodsList($id){
+        //查找收藏商品表
+        $collectGoods = UserCollectGoodsRepo::getList([],['user_id'=>$id]);
+        //通过商品id查找对应的产品
+        if($collectGoods){
+            $goodsId = [];
+            foreach($collectGoods as $v){
+                $goodsId[] = $v['goods_id'];
+            }
+            return GoodsRepo::userCollectGoodsList($goodsId);
+        }
+        return [];
+    }
+
+    //收藏商品
+    public static function addCollectGoods($goodsId,$userId){
+        return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
     }
 
 

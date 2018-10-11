@@ -149,7 +149,6 @@ Route::group(['namespace'=>'Web'],function() {
     Route::post('/login', 'UserController@login');
 
     Route::group(['middleware' => 'web.auth'], function () {
-        Route::get('/logout', 'UserController@logout');//登出
         Route::get('/', 'IndexController@index'); //首页
 
         Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
@@ -158,6 +157,7 @@ Route::group(['namespace'=>'Web'],function() {
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/addFirmUser', 'FirmUserController@addFirmUser');//企业会员绑定权限
+        Route::get('/firmUserAuthList', 'FirmUserController@firmUserAuthList');//企业会员权限列表
 
         Route::get('/invoices','UserController@invoicesList');//会员发票
         Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
@@ -169,6 +169,7 @@ Route::group(['namespace'=>'Web'],function() {
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
         Route::post('/createAddressList','UserController@addShopAddress');
         Route::post('/getCity','UserController@getCity');//通过省获取市
+        Route::post('/getCounty','UserController@getCounty');//通过省获取市
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
 
@@ -183,6 +184,7 @@ Route::group(['namespace'=>'Web'],function() {
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
         Route::resource('goodsCate', 'GoodsCategoryController');//产品信息
+        Route::get('goodsList', 'GoodsController@goodsList');//产品列表
 
         Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
@@ -192,9 +194,28 @@ Route::group(['namespace'=>'Web'],function() {
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
 
+        Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
+        Route::get('/cart','GoodsController@cart');//购物车列表
+        Route::post('/cart','GoodsController@cart');//加入购物车
+        Route::post('/checkListen','GoodsController@checkListen');//购物车多选框
+        Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
+        Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
+        Route::post('/createOrder','GoodsController@createOrder');//提交订单
+        Route::get('/clearCart','GoodsController@clearCart');//清空购物车
 
-        Route::get('/','IndexController@index');//主页
-        Route::get('/logout','UserLoginController@logout');//登出
+        Route::get('/order','GoodsController@orderList');//我的订单
+        Route::post('/egis','GoodsController@egis');//订单审核通过
+        Route::post('/cancel','GoodsController@cancel');//订单审核通过
+        Route::get('/orderDetails/{id}','GoodsController@orderDetails');//订单详情
+        Route::get('/pay','GoodsController@pay');//支付界面
+        Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
+
+        Route::get('/collectGoodsList','UserController@userCollectGoodsList');//产品收藏列表
+        Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
+
+        Route::get('/article/{id}','IndexController@article');//资讯
+
+        Route::get('/logout', 'UserController@logout');//登出
     });
 });
 
@@ -203,7 +224,7 @@ Route::group(['namespace'=>'Web'],function() {
 Route::group(['namespace' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
         Route::get('/login.html', 'ShopLoginController@login');
-        Route::post('/login', 'ShopLoginController@login');
+//        Route::post('/login', 'ShopLoginController@login');
         Route::get('/register.html', 'ShopLoginController@register');
         Route::post('/register', 'ShopLoginController@register');
         Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');

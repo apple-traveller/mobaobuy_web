@@ -50,7 +50,7 @@ class FirmUserController extends Controller
 
     //绑定企业会员和权限
     public function addFirmUser(Request $request){
-        $firmId = session('_web_info')['id'];
+        $firmId = session('_web_user_id');
         $userId = $request->input('user_id');
         $userName = $request->input('user_name');
         if(!$firmId || !$userId){
@@ -89,5 +89,12 @@ class FirmUserController extends Controller
 
     public function destroy($id){
 
+    }
+
+    public function firmUserAuthList(){
+        $userInfo = session('_web_user');
+        $firmId = session('_web_user_id');
+        $firmUser = FirmUserService::firmUserList($firmId);
+        return $this->display('web.firm.firmUserAuth',compact('userInfo','firmUser'));
     }
 }
