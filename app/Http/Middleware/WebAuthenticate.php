@@ -26,6 +26,11 @@ class WebAuthenticate
             session()->put('_web_user', $user_info);
         }
 
+        //缓存模板信息
+        if(!session()->has('web_theme')){
+            session()->put('web_theme', getConfig('template','default'));
+        }
+
 //        if(session('_web_info')['is_firm']){
 //
 //        }

@@ -1,6 +1,9 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    @include('vendor.ueditor.assets')
+    <style>
+        .mian-info .item .label {width: 15%;}
+    </style>
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list" class="s-back">返回</a>产品 - 添加产品</div>
         <div class="content">
@@ -18,14 +21,6 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品编码：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_sn" class="text" value="" maxlength="40" autocomplete="off" id="goods_sn">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
@@ -39,8 +34,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>所属品牌：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="brand_id" id="brand_id">
-                                        <option value="0">请选择品牌</option>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="brand_id" id="brand_id">
+                                        <option value="">请选择品牌</option>
                                         @foreach($brands as $v)
                                             <option  value="{{$v['id']}}">{{$v['brand_name']}}</option>
                                         @endforeach
@@ -53,8 +48,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>所属分类：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
-                                        <option value="0">请选择分类</option>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="cat_id" id="cat_id">
+                                        <option value="">请选择分类</option>
                                         @foreach($cateTrees as $v)
                                             <option  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
                                         @endforeach
@@ -66,7 +61,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>单位名称：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="unit_id" id="unit_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="unit_id" id="unit_id">
+                                        <option value="">请选择单位</option>
                                         @foreach($units as $v)
                                             <option  value="{{$v['id']}}">{{$v['unit_name']}}</option>
                                         @endforeach
@@ -100,36 +96,6 @@
                                     <input type="text" name="packing_unit" class="text" value="" maxlength="40" autocomplete="off" id="packing_unit">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品小图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar1">上传图片</button>
-                                    <input type="hidden"  value="" class="text" id="goods_thumb" name="goods_thumb" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo1" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品大图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar2">上传图片</button>
-                                    <input type="hidden"  value="" class="text" id="goods_img" name="goods_img" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;" class="layui-upload-img" id="demo2" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品原图：</div>
-                                <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar3">上传图片</button>
-                                    <input type="hidden"  value="" class="text" id="original_img" name="original_img" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;"  class="layui-upload-img" id="demo3" >
-                                    <div class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -179,7 +145,6 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -193,18 +158,15 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.config.js')}}"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.all.js')}}"></script>
-    <!-- 实例化编辑器 -->
     <script type="text/javascript">
-        var ue = UE.getEditor('goods_desc',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
+        var ue = UE.getEditor('goods_desc',{initialFrameHeight:400});
+        ue.ready(function() {
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
-        var ue2 = UE.getEditor('desc_mobile',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
+
+        var ue = UE.getEditor('desc_mobile',{initialFrameHeight:400});
+        ue.ready(function() {
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
     <script type="text/javascript">
@@ -323,13 +285,21 @@
                 var attr_name=$(".attr_name").val();
                 var attr_value=$(".attr_value").val();
                 var goods_attr=$("#goods_attr").val();
-                $(".attribute").append('<div  ><input type="text" value="'+attr_name+':'+attr_value+'">&nbsp;&nbsp;<span class="deleteAttr" attr-data="'+attr_name+':'+attr_value+'"  style="color:red;cursor:pointer;">删除</span></div>');
+                if(attr_name==""){
+                    layer.close(index);//关闭弹窗
+                    return ;
+                }
+                if(attr_value==""){
+                    layer.close(index);//关闭弹窗
+                    return ;
+                }
+                $(".attribute").append('<div style="width:299px;margin-top:10px;height:28px;" ><span style="font-size:16px;color:skyblue;" >'+attr_name+':'+attr_value+'</span>&nbsp;&nbsp;<button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button></div>');
+
                 if(goods_attr==""){
                     $("#goods_attr").val(attr_name+":"+attr_value);
                 }else{
                     $("#goods_attr").val(attr_name+":"+attr_value+";"+goods_attr);
                 }
-                //console.log($("#goods_attr").val());
                 layer.close(index);//关闭弹窗
             });
 
@@ -340,63 +310,6 @@
                 $("#goods_attr").val(attrCollection.join(';'));
                 console.log($("#goods_attr").val());
                 $(this).parent('div').remove();
-            });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar1' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo1").show();
-                        $('#goods_thumb').val(res.data);
-                        $("#demo1").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar2' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo2").show();
-                        $('#goods_img').val(res.data);
-                        $("#demo2").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
-            });
-
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar3' //绑定元素
-                , url: "/uploadImg" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
-                    //上传完毕回调
-                    if (200 == res.code) {
-                        $("#demo3").show();
-                        $('#original_img').val(res.data);
-                        $("#demo3").attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
-                    }
-                }
             });
         });
 
@@ -419,9 +332,6 @@
                     goods_name :{
                         required : true,
                     },
-                    goods_sn :{
-                        required : true,
-                    },
                     keywords:{
                         required : true
                     },
@@ -441,15 +351,6 @@
                     packing_unit:{
                         required : true
                     },
-                    goods_thumb:{
-                        required : true
-                    },
-                    goods_img:{
-                        required : true
-                    },
-                    original_img:{
-                        required : true
-                    },
                     market_price:{
                         required : true,
                         number:true
@@ -460,13 +361,17 @@
                     },
                     goods_attr:{
                         required:true
-                    }
+                    },
+                    cat_id:{
+                        required:true
+                    },
+
                 },
                 messages:{
                     goods_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_sn :{
+                    keywords:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     brand_id :{
@@ -485,15 +390,6 @@
                     packing_unit :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_thumb :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    goods_img :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    original_img :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     market_price :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
@@ -505,7 +401,9 @@
                     goods_attr :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },
-
+                    cat_id:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                 }
             });
         });

@@ -106,7 +106,6 @@
 
 
 
-                            <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                             <input type="hidden" name="id" value="{{$info['id']}}">
                             <input type="hidden" name="is_firm" value="{{$is_firm}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">

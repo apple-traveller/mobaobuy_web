@@ -1,5 +1,6 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
+
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>会员 - 产品列表</div>
         <div class="content">
@@ -54,27 +55,6 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装规格：</div>
                                 <div class="label_value font14">{{$good['packing_spec']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品小图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['goods_thumb']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品大图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['goods_img']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品原图：</div>
-                                <div class="label_value font14">
-                                    <div  path="{{$good['original_img']}}" class="layui-btn viewPic">点击查看</div>
-                                </div>
                             </div>
 
                             <div class="item">

@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">单位 - 单位列表</div>
         <div class="content">

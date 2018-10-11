@@ -22,9 +22,9 @@ class UserRealService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return UserRealRepo::modify($id,$data);
+        return UserRealRepo::modify($data['id'],$data);
     }
 
 

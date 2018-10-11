@@ -27,5 +27,11 @@ class UserInvoicesService
         return UserInvoicesRepo::getInfoByFields(['user_id'=>$user_id]);
     }
 
+    //根据id获取信息
+    public static function getInvoice($id)
+    {
+        return UserInvoicesRepo::getInfo($id);
+    }
+
 
 }

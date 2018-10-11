@@ -14,22 +14,24 @@ class GoodsController extends Controller
     public function list(Request $request)
     {
         $goods_name = $request->input('goods_name','');
-        $cates = GoodsCategoryService::getCates();
-        //echo $goods_name;
         $currpage = $request->input('currpage',1);
-        $pageSize = 3;
+        $pageSize = 10;
         $condition = ['is_delete'=>0];
         if(!empty($goods_name)){
-            $condition['goods_name'] = "%".$goods_name."%";
+            $c['opt'] = "OR";
+            $c['goods_name'] = "%".$goods_name."%";
+            $c['goods_sn'] = $goods_name;
+            $c['brand_name'] = $goods_name;
+            $c['goods_model'] = $goods_name;
+            $condition[] = $c;
         }
-        $goods = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        $goods = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['id'=>'desc']],$condition);
         return $this->display('admin.goods.list',[
             'currpage'=>$currpage,
             'goods_name'=>$goods_name,
             'pageSize'=>$pageSize,
             'total'=>$goods['total'],
             'goods'=>$goods['list'],
-            'cates'=>$cates
         ]);
     }
 
@@ -97,18 +99,6 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '产品名称不能为空';
         }
-        if(empty($data['goods_thumb'])){
-            $errorMsg[] = '产品小图不能为空';
-        }
-        if(empty($data['goods_img'])){
-            $errorMsg[] = '产品大图不能为空';
-        }
-        if(empty($data['original_img'])){
-            $errorMsg[] = '产品原图不能为空';
-        }
-        if(empty($data['goods_sn'])){
-            $errorMsg[] = '产品编码不能为空';
-        }
         if(empty($data['keywords'])){
             $errorMsg[] = '产品关键字不能为空';
         }
@@ -136,11 +126,10 @@ class GoodsController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
-//        $data['goods_desc'] = htmlspecialchars_decode($data['goods_desc']);
-//        $data['desc_mobile'] = htmlspecialchars_decode($data['desc_mobile']);
+
         try{
             if(!key_exists('id',$data)){
-                GoodsService::uniqueValidate($data['goods_sn']);
+                GoodsService::uniqueValidate($data['goods_name']);
                 $data['add_time']=Carbon::now();
                 $data['last_update']=Carbon::now();
                 $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
@@ -149,9 +138,13 @@ class GoodsController extends Controller
                 if(empty($info)){
                     return $this->error('添加失败');
                 }
+                $mdata = ['id'=>$info['id'],'goods_sn'=>"P".str_pad($info['id'],6,'0',STR_PAD_LEFT )];
+                GoodsService::modify($mdata);
                 return $this->success('添加成功',url('/admin/goods/list'));
             }else{
                 $data['last_update']=Carbon::now();
+                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                $data['goods_attr_ids']=$goods_attr_ids;
                 $info = GoodsService::modify($data);
                 if(empty($info)){
                     return $this->error('修改失败');

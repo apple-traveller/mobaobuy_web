@@ -38,12 +38,13 @@
                                     <div class="label">排序：</div>
                                     <div class="label_value">
                                         <input type="text" name="sort_order" value="" size="40" class="text text_3">
+                                        <div class="form_prompt"></div>
                                     </div>
                                 </div>
                                 <div class="item">
                                     <div class="label">是否显示：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_show" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_show" >
                                             <option value="1">是</option>
                                             <option value="0">否</option>
                                         </select>
@@ -52,7 +53,7 @@
                                 <div class="item">
                                     <div class="label">是否新窗口：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="opennew" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="opennew" >
                                             <option value="1">是</option>
                                             <option value="0">否</option>
                                         </select>
@@ -61,7 +62,7 @@
                                 <div class="item">
                                     <div class="label">位置：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="type" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="type" >
                                             <option value="top">顶部</option>
                                             <option value="middle">中间</option>
                                             <option value="bottom">底部</option>
@@ -93,8 +94,6 @@
                 }
             });
 
-
-
             $('#navigator_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
@@ -109,6 +108,10 @@
                     url :{
                         required : true
                     },
+                    sort_order:{
+                        required : true,
+                        number : true,
+                    }
                 },
                 messages:{
                     name:{
@@ -116,6 +119,10 @@
                     },
                     url :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空'
+                    },
+                    sort_order :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     }
                 }
             });

@@ -32,14 +32,18 @@ class SysConfigService
         try{
             self::beginTransaction();
             foreach($data as $k=>$v){
-                SysConfigRepo::modifyByCode($k, ['value'=>$v]);
+                if(is_null($v)){
+                    SysConfigRepo::modifyByCode($k, ['value'=>'']);
+                }else{
+                    SysConfigRepo::modifyByCode($k, ['value'=>$v]);
+                }
             }
             Cache::forget('_sys_config');
             self::commit();
             return true;
         }catch(\Exception $e){
             self::rollBack();
-            Self::throwBizError('修改失败');
+            Self::throwBizError($e->getMessage());
         }
 
     }

@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
     <div class="title">会员 - 会员列表</div>
     <div class="content visible">
@@ -57,7 +56,7 @@
                                 <th width="8%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
 
-                                <th width="6%"><div class="tDiv">状态(灰色为冻结)</div></th>
+                                <th width="6%"><div class="tDiv">是否冻结</div></th>
                                 <th width="12%" class="handle">操作</th>
                             </tr>
                             </thead>
@@ -71,7 +70,7 @@
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
                                 <td><div class="tDiv">
                                         @if($user['userreal']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
-                                        @elseif($user['userreal']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                        @elseif($user['userreal']==0 && $user['is_validated'] == 0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                         @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
                                         @endif
                                     </div>
@@ -85,12 +84,12 @@
                                 <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 
                                 <td>
-
-                                    <label class="el-switch el-switch-lg">
-                                        <input type="checkbox" @if($user['is_freeze']==0)checked @endif  name="switch" value="{{$user['is_freeze']}}"  data-id="{{$user['id']}}"   hidden>
-                                        <span class="j_click el-switch-style"></span>
-                                    </label>
-
+                                    <div class="tDiv">
+                                        <div class="switch @if($user['is_freeze']) active @endif" title="@if($user['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('admin/user/change/active')}}', '{{$user['id']}}')">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
                                 </td>
 
                                 <td class="handle">
@@ -108,21 +107,14 @@
                             <tr>
                                 <td colspan="12">
                                     <div class="tDiv">
-
                                         <div class="list-page">
-                                            <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
-
-
                                             <ul id="page"></ul>
-
                                             <style>
                                                 .pagination li{
                                                     float: left;
                                                     width: 30px;
                                                     line-height: 30px;}
                                             </style>
-
-
                                         </div>
                                     </div>
                                 </td>
@@ -138,58 +130,28 @@
 </div>
 
     <script>
-
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
                 var laypage = layui.laypage;
                 laypage.render({
-                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    elem: 'page' //注意，这里是 ID，不用加 # 号
                     , count: "{{$userCount}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var user_name = $(".user_name").val();
-
-                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name="+user_name+"&is_firm="+"{{$is_firm}}";
+                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}&is_firm="+"{{$is_firm}}";
                         }
                     }
                 });
             });
         }
 
-        $('.j_click').click(function(){
-                var is_freeze ;
-                var user_id = $(this).siblings('input').attr('data-id');
-                var input = $(this).siblings('input');
-                if (input.val() === '1') {
-                    is_freeze = 0;
-                } else {
-                    is_freeze = 1;
-                }
-
-                layui.use(['layer'], function() {
-                    layer = layui.layer;
-                    $.post("{{url('/admin/user/modify')}}",{"id":user_id,"is_freeze":is_freeze,"_token":$("#_token").val()},function(res){
-                        if(res.code==1){
-                            layer.msg(res.msg, {icon: 1});
-                            input.val(res.data);
-                        }else{
-                            layer.msg(res.msg, {icon: 5});
-                        }
-                    },"json");
-
-                });
-        });
-
-
-
-
         //导出会员
         function download_userlist()
         {
-            location.href = "/user/export";
+            location.href = "/admin/user/export";
         }
 
     </script>

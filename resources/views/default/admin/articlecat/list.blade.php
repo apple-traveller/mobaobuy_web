@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">
             文章 - 文章分类        </div>
@@ -51,8 +50,10 @@
                                 <td><div class="tDiv changeInput"><input type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/admin/articlecat/editForm?id={{$vo['id']}}" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                        <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                        @if(!in_array($vo['id'], [ 1 , 2]) )
+                                            <a href="/admin/articlecat/editForm?id={{$vo['id']}}" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -86,7 +87,6 @@
                 var postData = {
                     'id':id,
                     'sort_order':sort_order,
-                    '_token':tag_token,
                 }
                 console.log(postData);
                 var url = "/admin/articlecat/sort";

@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">文章 - 文章列表</div>
         <div class="content">
@@ -59,10 +58,10 @@
                                     <td>
                                         <div class="tDiv">
                                             <div class="tDiv">
-                                                <label class="el-switch el-switch-lg">
-                                                    <input type="checkbox" @if($vo['is_show']==1)checked @endif  name="switch" value="{{$vo['is_show']}}"  data-id="{{$vo['id']}}"   hidden>
-                                                    <span class="j_click1 el-switch-style"></span>
-                                                </label>
+                                                <div class="switch @if($vo['is_show']) active @endif" title="@if($vo['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/article/change/isShow')}}','{{$vo['id']}}')">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <input type="hidden" value="0" name="">
                                             </div>
                                         </div>
                                     </td>
@@ -140,28 +139,7 @@
 
         }
 
-        $('.j_click1').click(function(){
-            var is_show ;
-            var id = $(this).siblings('input').attr('data-id');
-            var input = $(this).siblings('input');
-            if (input.val() === '1') {
-                is_show = 0;
-            } else {
-                is_show = 1;
-            }
 
-            layui.use(['layer'], function() {
-                layer = layui.layer;
-                $.post("{{url('/admin/article/status')}}",{"id":id,"is_show":is_show,"_token":$("#_token").val()},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {icon: 1});
-                        input.val(res.data);
-                    }else{
-                        layer.msg(res.msg, {icon: 5});
-                    }
-                },"json");
-            });
-        });
 
 
         $(".changeInput input").blur(function(){

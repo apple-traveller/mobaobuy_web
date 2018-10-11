@@ -29,10 +29,10 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;品牌Logo：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn layui-btn-sm" style="float:left;margin-right:10px;" id="avatar">上传图片</button>
-                                    <input type="hidden" size="0" value="" class="text" id="brand_logo" name="brand_logo" >
-                                    <img  style="width:30px;height:30px;display:none;float:left;margin-right:10px;"    class="layui-upload-img" id="demo1" >
-                                    <div class="form_prompt"></div>
+                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="brand" >上传图片</button>
+                                    <input type="text" value="" class="text"  name="brand_logo" style="display:none;">
+                                    <img  style="width:60px;height:60px;display:none;"   class="layui-upload-img"><br/>
+                                    <div class="form_prompt brand_logo"></div>
                                 </div>
                             </div>
 
@@ -47,17 +47,17 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>排序：</div>
                                 <div class="label_value">
-                                    <input type="text" name="sort_order" class="text text_2 valid" autocomplete="off" id="sort_order" value="50"/>
+                                    <input type="text" name="sort_order" class="text" autocomplete="off" id="sort_order" value="50"/>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
 
-                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>是否删除：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_delete" id="is_delete">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_delete" id="is_delete">
                                         <option  value="0">否</option>
                                         <option  value="1">是</option>
                                     </select>
@@ -68,7 +68,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>是否推荐：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_recommend" id="is_recommend">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_recommend" id="is_recommend">
                                         <option  value="0">否</option>
                                         <option  value="1">是</option>
                                     </select>
@@ -80,7 +80,6 @@
                                 <div class="label_value info_btn">
                                     <input type="submit" value=" 确定 " class="button" id="submitBtn">
                                     <input type="reset" value=" 重置 " class="button button_reset">
-                                    <input type="hidden" name="id" value="">
                                 </div>
                             </div>
 
@@ -103,23 +102,24 @@
             var layer = layui.layer;
 
             //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
+            upload.render({
+                elem: '.upload-file' //绑定元素
                 ,url: "/uploadImg" //上传接口
                 ,accept:'file'
-                ,data:{'_token':tag_token}
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
                 ,done: function(res){
                     //上传完毕回调
-                    if(200 == res.code){
-                        $('#demo1').show();
-                        $('#brand_logo').val(res.data);
-                        $('#demo1').attr('src', res.data);
-                        layer.msg(res.msg, {time:2000});
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        $(".brand_logo").remove();
                     }else{
                         layer.msg(res.msg, {time:2000});
                     }
                 }
-
             });
 
         });

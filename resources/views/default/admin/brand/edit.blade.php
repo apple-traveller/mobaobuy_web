@@ -34,10 +34,10 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;品牌Logo：</div>
                                     <div class="label_value">
-                                        <button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                        <input type="hidden" size="0" value="{{$brand['brand_logo']}}" class="text" id="brand_logo" name="brand_logo" >
-                                        <img @if($brand['brand_logo']!='') style="width:60px;height:60px;" src="{{$brand['brand_logo']}}" @else style="width:60px;height:60px;display:none;"  @endif style="width:60px;height:60px;display:none;"    class="layui-upload-img" id="demo1" >
-                                        <div class="form_prompt"></div>
+                                        <button type="button" class="layui-btn upload-file" data-type="" data-path="brand" >上传图片</button>
+                                        <input type="text" value="{{$brand['brand_logo']}}" class="text"  name="brand_logo" style="display:none;">
+                                        <img  @if(empty($brand['brand_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($brand['brand_logo'])}}"  @endif    class="layui-upload-img"><br/>
+                                        <div class="form_prompt brand_logo"></div>
                                     </div>
                                 </div>
 
@@ -57,7 +57,7 @@
                                     <div class="form_prompt"></div>
                                 </div>
 
-                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+                                <input type="hidden" name="id"  value="{{$brand['id']}}"/>
                                 <input type="hidden" name="currpage"  value="{{$currpage}}"/>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>是否删除：</div>
@@ -104,23 +104,30 @@
             var layer = layui.layer;
 
             //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
-                ,url: "/uploadImg" //上传接口
-                ,accept:'file'
-                ,data:{'_token':tag_token}
-                ,done: function(res){
-                    //上传完毕回调
-                    if(200 == res.code){
-                        $('#demo1').show();
-                        $('#brand_logo').val(res.data);
-                        $('#demo1').attr('src', res.data);
-                        layer.msg(res.msg, {time:2000});
-                    }else{
-                        layer.msg(res.msg, {time:2000});
-                    }
-                }
+            layui.use(['upload','layer'], function(){
+                var upload = layui.upload;
+                var layer = layui.layer;
 
+                //文件上传
+                upload.render({
+                    elem: '.upload-file' //绑定元素
+                    ,url: "/uploadImg" //上传接口
+                    ,accept:'file'
+                    ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                        this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                    }
+                    ,done: function(res){
+                        //上传完毕回调
+                        if(1 == res.code){
+                            var item = this.item;
+                            item.siblings('input').attr('value', res.data.path);
+                            item.siblings('img').show().attr('src', res.data.url);
+                            $(".brand_logo").remove();
+                        }else{
+                            layer.msg(res.msg, {time:2000});
+                        }
+                    }
+                });
             });
 
         });

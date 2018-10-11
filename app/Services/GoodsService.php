@@ -22,10 +22,16 @@ class GoodsService
         return GoodsRepo::getListBySearch($pager,$condition);
     }
 
-    //验证唯一性
-    public static function uniqueValidate($goods_sn)
+    //无分页
+    public static function getGoods($condition,$columns)
     {
-        $info = GoodsRepo::getInfoByFields(['goods_sn'=>$goods_sn]);
+        return GoodsRepo::getList([],$condition,$columns);
+    }
+
+    //验证唯一性
+    public static function uniqueValidate($goods_name)
+    {
+        $info = GoodsRepo::getInfoByFields(['goods_name'=>$goods_name]);
         //dd($info);
         if(!empty($info)){
             self::throwBizError('该产品已经存在！');

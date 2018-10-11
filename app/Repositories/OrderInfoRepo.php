@@ -11,7 +11,6 @@ namespace App\Repositories;
 class OrderInfoRepo
 {
     use CommonRepo;
-
     public static function orderList($userId){
         $clazz = self::getBaseModel();
         $query = $clazz::query();

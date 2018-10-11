@@ -29,7 +29,7 @@
                                     <div class="label">上级分类：</div>
                                     <div class="label_value">
 
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="parent_id" id="parent_id">
+                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="parent_id" id="parent_id">
                                                 <option value="0">顶级分类</option>
                                                 @foreach($catesTree as $cates)
                                                 <option @if($cates['id']==$parent_id) selected @endif value="{{$cates['id']}}">|<?php echo str_repeat('-->',$cates['level']).$cates['cat_name'];?></option>
@@ -132,9 +132,11 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
-                                                自定义：<button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                                <input type="radio" class="text" id="cat_icon" name="cat_icon"  style="display:none;" >
-                                                <img style="width:50px;height:50px;display:none;"  class="layui-upload-img" id="demo1" ><br/>
+                                                自定义：
+
+                                                <button type="button" class="layui-btn upload-file" data-type="" data-path="goodscategory" >上传图片</button>
+                                                <input type="text" value="" class="text"  name="cat_icon" style="display:none;">
+                                                <img  style="width:60px;height:60px;display:none;"    class="layui-upload-img"><br/>
                                                 <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
                                     </div>
@@ -180,28 +182,27 @@
                 $('#iconImg').attr('src',$(this).val());
                 $('#iconImg').css('display',"inline");
                 $('.img_item').slideToggle();
-            })
+            });
 
-            //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
-                ,url: "{{url('/admin/goodscategory/upload')}}" //上传接口
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
                 ,accept:'file'
-                ,data:{'_token':tag_token}
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
                 ,done: function(res){
                     //上传完毕回调
-                    if(200 == res.code){
-                        $('#demo1').show();
-                        $('#cat_icon').val(res.data);
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
                         $('#cat_icon').attr('checked','true');
                         $('#iconImg').css('display',"none");
-                        $('#demo1').attr('src', res.data);
-                        layer.msg(res.msg, {time:2000});
                     }else{
                         layer.msg(res.msg, {time:2000});
                     }
                 }
-
             });
 
         });

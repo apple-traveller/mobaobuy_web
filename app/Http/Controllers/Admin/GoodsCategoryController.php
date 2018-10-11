@@ -13,7 +13,6 @@ class GoodsCategoryController extends Controller
     {
         $parent_id = $request->input('parent_id',0);
         $goodsCategory = GoodsCategoryService::getInfo($parent_id);//根据id获取信息
-       // dd($goodsCategory);
         //判断当前分类是几级
         $level = GoodsCategoryService::getLevel($parent_id);
         $last_parent_id=0;
@@ -31,10 +30,9 @@ class GoodsCategoryController extends Controller
     //排序
     public function sort(Request $request)
     {
-        $id = $request->input('id');
-        $sort_order = $request->input('sort_order');
+        $data = $request->all();
         try{
-            $info = GoodsCategoryService::modify($id,['sort_order'=>$sort_order]);
+            $info = GoodsCategoryService::modify($data);
             if(!$info){
                 return $this->result('',400,'更新失败');
             }
@@ -69,7 +67,6 @@ class GoodsCategoryController extends Controller
     {
         $id = $request->input('id');
         $cate= GoodsCategoryService::getInfo($id);//根据id获取信息
-        //dd(substr($cate['cat_icon'],0,7));
         //获取图标库文件
         $icons = GoodsCategoryService::getIcons();
         //获取所有的栏目
@@ -81,7 +78,6 @@ class GoodsCategoryController extends Controller
                 unset($catesTree[$k]);//选着parent_id的时候不能存在自己的数据
             }
         }
-        //dd($catesTree);
         return $this->display('admin.goodscategory.edit',['icons'=>$icons,'catesTree'=>$catesTree,'cate'=>$cate]);
     }
 
@@ -126,7 +122,7 @@ class GoodsCategoryController extends Controller
                 GoodsCategoryService::uniqueValidate($data['cat_name']);//唯一性验证
                 $info = GoodsCategoryService::create($data);
             }else{
-                $info = GoodsCategoryService::modify($id,$data);
+                $info = GoodsCategoryService::modify($data);
             }
             if(!$info){
                 return $this->error('保存失败');

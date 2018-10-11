@@ -1,8 +1,8 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    @include('vendor.ueditor.assets')
     <div class="warpper">
-        <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 编辑文章</div>
+        <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 查看文章</div>
         <div class="content">
             <div class="tabs_info">
                 <ul>
@@ -82,35 +82,24 @@
                             <div class="item">
                                 <div class="label">上传图片：</div>
                                 <div class="label_value">
-
-                                    <img  style="width:60px;height:60px;"    class="layui-upload-img" src="{{$article['image']}}" id="demo1" ><br/>
+                                    <div  content="{{getFileUrl($article['image'])}}" class="layui-btn viewImg">点击查看</div>
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="label">内容：</div>
                                 <div class="label_value">
-                                    <div  content="{{$article['content']}}" class="layui-btn viewContent">点击查看</div>
+                                    <div content="{{$article['content']}}" class="layui-btn viewContent">点击查看</div>
                                 </div>
                             </div>
                         </div>
-
-
-
 
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.config.js')}}"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.all.js')}}"></script>
-    <!-- 实例化编辑器 -->
+
     <script type="text/javascript">
-        var ue = UE.getEditor('container',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
-        });
 
         layui.use(['upload','layer'], function() {
             var layer = layui.layer;
@@ -123,6 +112,16 @@
                     title: '详情',
                     area: ['700px', '500px'],
                     content: content
+                });
+            });
+
+            $(".viewImg").click(function(){
+                var content = $(this).attr('content');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['700px', '500px'],
+                    content: '<img src="'+content+'">'
                 });
             });
 

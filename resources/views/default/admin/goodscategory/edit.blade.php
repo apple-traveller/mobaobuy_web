@@ -106,7 +106,7 @@
                                             <div class="img_label_value" >
                                                 <div style="cursor: pointer;" id="iconBtn">
                                                     <i class="layui-icon layui-icon-picture" style="font-size: 30px; "></i>点击查看图标库&nbsp;&nbsp;
-                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{$cate['cat_icon']}}"></span>
+                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{getFileUrl($cate['cat_icon'])}}"></span>
                                                 </div>
                                                 <style>
                                                     .img_item{width: 100%;
@@ -138,9 +138,10 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
-                                                自定义：<button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                                <input type="radio" class="text" <?php if(substr($cate['cat_icon'],0,7)=="/upload") echo "checked";?> value="{{$cate['cat_icon']}}"  id="cat_icon" name="cat_icon"  style="display:none;" >
-                                                <img style="width:50px;height:50px;display:none;"  class="layui-upload-img" id="demo1" ><br/>
+                                                自定义：
+                                                <button type="button" class="layui-btn upload-file" data-type="" data-path="goodscategory" >上传图片</button>
+                                                <input type="text" value="{{$cate['cat_icon']}}" class="text"  name="cat_icon" style="display:none;">
+                                                <img  style="width:60px;height:60px;display:none;"    class="layui-upload-img"><br/>
                                                 <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
                                     </div>
@@ -153,8 +154,6 @@
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
-
-
 
                                 <div class="item">
                                     <div class="label">&nbsp;</div>
@@ -173,43 +172,45 @@
     </div>
     <script type="text/javascript">
         var tag_token = $("#_token").val();
-        layui.use(['upload','layer'], function(){
+        layui.use(['upload','layer'], function() {
             var upload = layui.upload;
             var layer = layui.layer;
 
-            $("#iconBtn").click(function(){
+            $("#iconBtn").click(function () {
                 $('.img_item').slideToggle();
             });
 
-            $(".iconButton").click(function(){
+            $(".iconButton").click(function () {
                 //console.log($(this).val());
-                $('#iconImg').attr('src',$(this).val());
-                $('#iconImg').css('display',"inline");
+                $('#iconImg').attr('src', $(this).val());
+                $('#iconImg').css('display', "inline");
                 $('.img_item').slideToggle();
-            })
+            });
 
             //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
-                ,url: "{{url('/admin/goodscategory/upload')}}" //上传接口
-                ,accept:'file'
-                ,data:{'_token':tag_token}
-                ,done: function(res){
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                , url: "/uploadImg" //上传接口
+                , accept: 'file'
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data = {
+                        'upload_type': this.item.attr('data-type'),
+                        'upload_path': this.item.attr('data-path')
+                    };
+                }
+                , done: function (res) {
                     //上传完毕回调
-                    if(200 == res.code){
-                        $('#demo1').show();
-                        $('#cat_icon').val(res.data);
-                        $('#cat_icon').attr('checked','true');
-                        $('#iconImg').css('display',"none");
-                        $('#demo1').attr('src', res.data);
-                        layer.msg(res.msg, {time:2000});
-                    }else{
-                        layer.msg(res.msg, {time:2000});
+                    if (1 == res.code) {
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        $('#cat_icon').attr('checked', 'true');
+                        $('#iconImg').css('display', "none");
+                    } else {
+                        layer.msg(res.msg, {time: 2000});
                     }
                 }
-
             });
-
         });
 
         $(function(){

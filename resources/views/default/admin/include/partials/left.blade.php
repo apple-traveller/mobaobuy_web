@@ -57,7 +57,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_10_priv_admin"></i><h4>权限管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="privilege.php?act=list" data-param="menuplatform|01_admin_list" target="workspace">管理员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/adminuser/list" data-param="menuplatform|01_admin_list" target="workspace">管理员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="privilege_seller.php?act=list" data-param="menuplatform|02_admin_seller" target="workspace">下级管理员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="admin_logs.php?act=list" data-param="menuplatform|admin_logs" target="workspace">管理员日志</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="message.php?act=list" data-param="menuplatform|admin_message" target="workspace">管理员留言</a></li>
@@ -165,7 +165,7 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_04_order"></i><h4>订单管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="order.php?act=list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="goods_booking.php?act=list_all" data-param="menushopping|06_undispose_booking" target="workspace">缺货登记</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=add" data-param="menushopping|08_add_order" target="workspace">添加订单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=delivery_list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
@@ -203,8 +203,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_17_merchants"></i><h4>店铺管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺列表</a></li>
-
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/list" data-param="menushopping|01_merchants_users_list" target="workspace">店铺列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shopuser/list" data-param="menushopping|02_merchants_users_list" target="workspace">店铺职员列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shopgoods/list" data-param="menushopping|03_merchants_users_list" target="workspace">店铺产品列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shopgoodsquote/list" data-param="menushopping|04_merchants_users_list" target="workspace">产品报价列表</a></li>
                     </ul>
                 </div>
             </div>

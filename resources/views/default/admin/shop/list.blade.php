@@ -1,6 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">店铺 - 入驻店铺列表</div>
         <div class="content">
@@ -55,26 +54,32 @@
                                     <td><div class="tDiv">{{$vo['contactPhone']}}</div></td>
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
                                     <td><div class="tDiv">{{status($vo['is_validated'])}}</div></td>
-                                    <td><div class="tDiv">{{status($vo['is_freeze'])}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isFreeze')}}','{{$vo['id']}}')">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <input type="hidden" value="0" name="">
+                                        </div>
+                                    </td>
                                     <td><div class="tDiv">{{status($vo['is_self_run'])}}</div></td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_edit"><i class="icon icon-edit"></i>查看</a>
-                                            <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="入驻信息" class="btn_edit"><i class="icon icon-edit"></i>入驻信息</a>
-                                            <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->
+                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>
+                                            <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                            <a href="/admin/shop/logList?shop_id={{$vo['id']}}&currpage={{$currpage}}" title="日志" class="btn_edit"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                            {{--<a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->--}}
                                         </div>
                                     </td>
                                 </tr>
                                 @endforeach
                                 </tbody>
-                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <tfoot>
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
 
                                             <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
                                                 <ul id="page"></ul>
 
@@ -105,19 +110,19 @@
             layui.use(['laypage'], function() {
                 var laypage = layui.laypage;
                 laypage.render({
-                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    elem: 'page' //注意，这里 是 ID，不用加 # 号
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            var shop_name = $(".shop_name").val();
-                            window.location.href="/admin/shop/list?currpage="+obj.curr+"&shop_name="+shop_name;
+                            window.location.href="/admin/shop/list?currpage="+obj.curr+"&shop_name={{$shop_name}}";
                         }
                     }
                 });
             });
         }
+
 
         function remove(id)
         {

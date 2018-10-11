@@ -1,6 +1,6 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    @include('vendor.ueditor.assets')
     <div class="warpper">
         <div class="title"><a href="/admin/article/list?currpage={{$currpage}}" class="s-back">返回</a>文章 - 编辑文章</div>
         <div class="content">
@@ -82,16 +82,17 @@
                             <div class="item">
                                 <div class="label">上传图片：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn" id="avatar">上传图片</button>
-                                    <input type="text"  class="text" id="image" value="{{$article['image']}}" name="image"  style="display:none;">
-                                    <img @if(empty($article['image']))  style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;"   @endif class="layui-upload-img" src="{{$article['image']}}" id="demo1" ><br/>
+                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="article" >上传图片</button>
+                                    <input type="text" value="{{$article['image']}}" class="text"  name="image" style="display:none;">
+                                    <img @if(empty($article['image'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($article['image'])}}"  @endif   class="layui-upload-img"><br/>
                                 </div>
                             </div>
                         </div>
                         <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                         <div class="switch_info" style="display: none;">
                             <div class="item">
-                                <script id="container" name="content" type="text/plain"><?php echo stripslashes($article['content']);?></script>
+                                <script id="container" name="content" type="text/plain"><?php echo html_entity_decode($article['content']);?></script>
+
                                 <div class="form_prompt"></div>
                             </div>
                         </div>
@@ -107,10 +108,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.config.js')}}"></script>
-    <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="{{asset(themePath('/').'ueditor/ueditor.all.js')}}"></script>
-    <!-- 实例化编辑器 -->
+
     <script type="text/javascript">
         var ue = UE.getEditor('container',{
             initialFrameWidth : '100%',//宽度
@@ -119,28 +117,28 @@
     </script>
     <script type="text/javascript">
         var tag_token = $("#_token").val();
-        layui.use(['upload','layer'], function() {
+        layui.use(['upload','layer'], function(){
             var upload = layui.upload;
             var layer = layui.layer;
 
             //文件上传
-            var uploadInst = upload.render({
-                elem: '#avatar' //绑定元素
-                , url: "{{url('/uploadImg')}}" //上传接口
-                , accept: 'file'
-                , data: {'_token': tag_token}
-                , done: function (res) {
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
                     //上传完毕回调
-                    if (200 == res.code) {
-                        $('#demo1').show();
-                        $('#image').val(res.data);
-                        $('#demo1').attr('src', res.data);
-                        layer.msg(res.msg, {time: 2000});
-                    } else {
-                        layer.msg(res.msg, {time: 2000});
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                    }else{
+                        layer.msg(res.msg, {time:2000});
                     }
                 }
-
             });
         });
 

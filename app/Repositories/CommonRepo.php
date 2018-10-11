@@ -44,7 +44,6 @@ trait CommonRepo
                 $query = $query->orderBy($c, $d);
             }
         }
-
         if ($page_size > 0) {
             $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
         } else {
@@ -110,6 +109,12 @@ trait CommonRepo
                             $q = $q->orWhereIn($key, explode('|', $value));
                         }else{
                             $q = $q->WhereIn($key, explode('|', $value));
+                        }
+                    }elseif(strpos($value, '!') === 0 ){
+                        if($opt == 'OR'){
+                            $q = $q->orWhere($key, '<>', substr($value, 1));
+                        }else{
+                            $q = $q->Where($key, '<>', substr($value, 1));
                         }
                     }else{
                         if($opt == 'OR'){

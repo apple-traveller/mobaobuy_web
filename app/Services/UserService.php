@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Repositories\GoodsRepo;
+use App\Repositories\FirmBlacklistRepo;
+use App\Repositories\GsxxCompanyRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
@@ -25,6 +27,28 @@ class UserService
         return false;
     }
 
+    public static function checkCompanyNameCanAdd($name){
+        if(UserRepo::getTotalCount(['is_firm'=>1, 'nick_name'=> $name])){
+            return false;
+        }
+
+        $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $name]);
+        if ($firmBlack) {
+            return false;
+        }
+
+        if(getConfig('firm_exist_check')){
+            $info = GsxxService::GsSearch($name);
+            if($info){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     //用户注册
     public static function userRegister($data)
     {
@@ -44,38 +68,59 @@ class UserService
             $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $data['nick_name']]);
             if ($firmBlack) {
                 throwBizError('此用户已被冻结，请联系管理员');
-
             }
-            $userReal = [];
-            $userReal['license_fileImg'] = $data['license_fileImg'];
-            $userReal['business_license_id'] = $data['business_license_id'];
-            $userReal['taxpayer_id'] = $data['taxpayer_id'];
-            $userReal['add_time'] = Carbon::now();
+            $data['nick_name'] = $data['company_name'];
+            if(!self::checkCompanyNameCanAdd($data['company_name'])){
+                self::throwBizError('企业名称不对或已被注册!');
+            }
+            if(getConfig('firm_reg_check')){
+                $data['is_validated'] = 0;
+            }else{
+                $data['is_validated'] = 1;
+            }
 
-            $attorneyImgPath = Storage::putFile('public', $data['attorney_letter_fileImg']);
-            $attorneyImgPath = explode('/', $attorneyImgPath);
-            $data['attorney_letter_fileImg'] = '/storage/' . $attorneyImgPath[1];
+            $user_data = [
+                'user_name' => $data['user_name'],
+                'nick_name' => $data['nick_name'],
+                'password' => $data['password'],
+                'contactName' => '',
+                'contactPhone' => '',
+                'attorney_letter_fileImg' => $data['attorney_letter_fileImg'],
+                'reg_time' => Carbon::now(),
+                'is_firm' => $data['is_firm'],
+                'is_validated' => $data['is_validated']
+            ];
 
-            $licensePath = Storage::putFile('public', $data['license_fileImg']);
-            $licensePath = explode('/', $licensePath);
-            $userReal['license_fileImg'] = '/storage/' . $licensePath[1];
-
-            unset($data['business_license_id']);
-            unset($data['license_fileImg']);
-            unset($data['taxpayer_id']);
-            unset($data['mobile_code']);
+            $userReal = [
+                'real_name' => $data['nick_name'],
+                'business_license_id' => '',
+                'license_fileImg' => $data['license_fileImg'],
+                'taxpayer_id' => '',
+                'add_time' => Carbon::now(),
+            ];
+            $supplierInfo = GsxxSupplierRepo::getInfoByFields(['is_checked'=>1]);
+            if($supplierInfo){
+                $userReal['taxpayer_id'] = $supplierInfo['CreditCode'];
+                $userReal['business_license_id'] = $supplierInfo['No'];
+            }
 
             try {
                 self::beginTransaction();
-                $user = UserRepo::create($data);
+                $user = UserRepo::create($user_data);
                 $userReal['user_id'] = $user['id'];
                 $real = UserRealRepo::create($userReal);
                 self::commit();
+                return $user['id'];
             }catch (\Exception $e){
                 self::rollBack();
                 throw $e;
             }
         } else {
+            if(getConfig('individual_reg_check')){
+                $data['is_validated'] = 0;
+            }else{
+                $data['is_validated'] = 1;
+            }
             $user_info = UserRepo::create($data);
             return $user_info['id'];
         }
@@ -97,11 +142,12 @@ class UserService
         if ($info['is_freeze']) {
             self::throwBizError('用户名或密码不正确！');
         }
+        if (!$info['is_validated']) {
+            self::throwBizError('账号需待审核通过后才可登录！');
+        }
         unset($info['password']);
-
         //登录成功后事件
         createEvent('webUserLogin', ['user_id'=>$info['id'], 'client_ip'=>$other_params['ip']]);
-
         return $info['id'];
     }
 
@@ -129,10 +175,7 @@ class UserService
         if($data['password'] != $data['passwords']){
             self::throwBizError('两次密码不一致！');
         }
-
         unset($data['passwords']);
-
-
         UserPaypwdRepo::create();
     }
 
@@ -233,7 +276,7 @@ class UserService
     //获取用户列表(导出excel表)
     public static function getUsers($fields)
     {
-        $info = UserRepo::getUsers($fields);
+        $info = UserRepo::getList([],[],$fields);
         return $info;
     }
 
@@ -252,12 +295,10 @@ class UserService
         }
         return $info;
     }
-
-
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return UserRepo::modify($id,$data);
+        return UserRepo::modify($data['id'],$data);
     }
 
     public static function getInfo($id)
@@ -267,10 +308,10 @@ class UserService
         return $info;
     }
 
-
-    //获取总条数
-    public static function getCount($user_name)
+    //获取指定字段的所有数据
+    public static function getUsersByColumn($column)
     {
-        return UserRepo::getCount($user_name);
+        return UserRepo::getList([],[],$column);
     }
+
 }

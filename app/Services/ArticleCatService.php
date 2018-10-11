@@ -29,9 +29,9 @@ class ArticleCatService
     }
 
     //修改
-    public static function modify($id,$data)
+    public static function modify($data)
     {
-        return ArticleCatRepo::modify($id,$data);
+        return ArticleCatRepo::modify($data['id'],$data);
     }
 
     //保存

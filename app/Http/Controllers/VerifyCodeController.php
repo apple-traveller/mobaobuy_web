@@ -37,7 +37,8 @@ class VerifyCodeController extends Controller
         $t = $request->input('t');
         $code = $request->input('verifyCode');
         $s_code = Cache::get(session()->getId().'captcha'.$t, '');
-        if($s_code == $code){
+        //print_r($s_code);die();
+        if(!empty($s_code) && $s_code == $code){
             return $this->success(true);
         }
         return $this->success(false);

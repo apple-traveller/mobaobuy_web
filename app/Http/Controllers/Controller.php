@@ -19,7 +19,7 @@ class Controller extends BaseController
         return view(themePath('.').$view, $data, $mergeData);
     }
 
-    protected function success($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
+    protected function success($msg = '', $url = '', $data = '', $wait = 3, array $header = [])
     {
         $result = [
             'code' => 1,
@@ -41,10 +41,10 @@ class Controller extends BaseController
         }
     }
 
-    protected function error($msg = '', $url = null, $data = '', $wait = 3, array $header = [])
+    protected function error($msg = '', $url = '', $data = '', $wait = 3, array $header = [])
     {
         $type = $this->getResponseType();
-        if(is_null($url) && 'html' == strtolower($type)){
+        if(empty($url) && 'html' == strtolower($type)){
             $url = 'javascript:history.back(-1);';
         }
         $result = [
