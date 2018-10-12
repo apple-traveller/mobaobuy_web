@@ -286,12 +286,6 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
 
-        Route::get('/login.html', 'ShopLoginController@login');
-        Route::post('/login', 'ShopLoginController@login');
-        Route::get('/register.html', 'ShopLoginController@register');
-        Route::post('/register', 'ShopLoginController@register');
-        Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');
-
         Route::get('/', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
@@ -308,6 +302,7 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/goods/edit', 'ShopGoodsController@edit');
         Route::post('/goods/save', 'ShopGoodsController@save');
         Route::post('/goods/delete', 'ShopGoodsController@delete');
+        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
@@ -325,6 +320,11 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
         Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
         Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
+        Route::get('/seckill/add', 'SeckillController@addForm');
+        Route::post('/seckill/save', 'SeckillController@save');
+        Route::post('/seckill/delete', 'SeckillController@delete');
     });
 });
 

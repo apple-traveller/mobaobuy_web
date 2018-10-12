@@ -159,11 +159,12 @@ class ShopOrderController extends Controller
         $id = $request->input('id');
         $currentPage = $request->input('currentPage');
         $orderGoods = OrderInfoService::getOrderGoodsByOrderid($id);
-
+        $goods_amount = OrderInfoService::getOrderInfoById($id)['goods_amount'];
         return $this->display('seller.order.goods',[
             'orderGoods'=>$orderGoods,
             'currentPage'=>$currentPage,
-            'id'=>$id
+            'id'=>$id,
+            'goods_amount' => $goods_amount
         ]);
     }
 
