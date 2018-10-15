@@ -13,24 +13,14 @@
 <body>
 首页
 <ul>
+    @if(session('_web_user_id'))
     <li><a href="/member">会员中心</a></li>
     <li><a href="/logout">退出</a></li>
+    @else
+    <li><a href="{{route('login')}}">登录</a></li>
+    <li><a href="{{route('register')}}">注册</a></li>
+    @endif
 </ul>
-<div style="width:1620px;margin:0 auto;height:200px;text-align:center;">
-    <ul style="display: inline-block;overflow: auto;">
-        @foreach($articleCat as $k=>$v)
-        <li style="float: left;list-style: none;display: inline;width:100px;height:200px;">{{$v['cat_name']}}
-            @if(isset($v['child']))
-            <ul style="text-align:center;display: inline;">
-                @foreach($v['child'] as $vv)
-                <li style="list-style: none;width:120px;text-align:center;"><a href="/article/{{$vv['id']}}">{{ $vv['title'] }}</a></li>
-                @endforeach
-            </ul>
-            @else
-            @endif
-        </li>
-        @endforeach
-    </ul>
-</div>
+
 </body>
 </html>

@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="clearfix" style="height:465px;background: url({{themePath('/','web').'img/login_bg.png'}})no-repeat;background-size: 100% 100%;">
+    <div class="clearfix" style="height:600px;background: url({{themePath('/','web').'img/login_bg.jpg'}})no-repeat;background-size: 100% 100%;">
         <div class="w1200">
             <div class="login-box">
                 <div style="padding: 30px;">

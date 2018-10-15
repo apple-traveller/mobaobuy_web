@@ -193,6 +193,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 });
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
+    Route::get('/', 'IndexController@index'); //首页
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
     Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
     Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信
@@ -210,8 +211,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
 
     Route::group(['middleware' => 'web.auth'], function () {
-        Route::get('/', 'IndexController@index'); //首页
-
         Route::get('/member', 'UserController@index'); //会员中心
         Route::get('/member/emp', 'UserController@empList'); //会员中心
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定

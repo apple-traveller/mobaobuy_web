@@ -3,7 +3,7 @@
         <ul class="new-list">
             @foreach(getFooterArticle() as $cat)
                 <li>
-                    <h4>{{$cat['cat_name']}}</h4>@php print_r($cat); @endphp
+                    <h4>{{$cat['cat_name']}}</h4>
                     @foreach($cat['articles'] as $item)
                         <a href="#.html" rel="nofollow">{{$item['title']}}</a>
                     @endforeach
