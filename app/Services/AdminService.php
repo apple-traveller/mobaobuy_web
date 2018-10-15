@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\AdminRepo;
+use App\Repositories\AdminLogRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 class AdminService
@@ -34,12 +35,6 @@ class AdminService
     }
 
 
-    //获取所有数据
-    public static function getAdminList($pager,$condition)
-    {
-        return AdminRepo::getListBySearch($pager, $condition);
-    }
-
     public static function updateLoginField($id, $data){
         $info = AdminRepo::getInfo($id);
         //修改用户登录次数
@@ -49,5 +44,41 @@ class AdminService
             'visit_count' => $info['visit_count'] + 1
         ];
         AdminRepo::modify($id, $lastInfo);
+    }
+
+    //获取所有数据
+    public static function getAdminList($pager,$condition)
+    {
+        return AdminRepo::getListBySearch($pager, $condition);
+    }
+
+    //修改
+    public static function modify($data)
+    {
+        return AdminRepo::modify($data['id'],$data);
+    }
+
+    //添加
+    public static function create($data)
+    {
+        return AdminRepo::create($data);
+    }
+
+    //删除
+    public static function delete($id)
+    {
+        return AdminRepo::delete($id);
+    }
+
+    //查询一条数据
+    public static function getAdminById($id)
+    {
+        return AdminRepo::getInfo($id);
+    }
+
+    //查询日志信息
+    public static function getLogList($pager,$condition)
+    {
+        return AdminLogRepo::getListBySearch($pager,$condition);
     }
 }

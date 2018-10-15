@@ -33,9 +33,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::get('/adminuser/list','AdminUserController@list');//管理员列表
         Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
-        Route::get('/adminuser/editForm','AdminUserController@addForm');//编辑
+        Route::get('/adminuser/editForm','AdminUserController@editForm');//编辑
         Route::post('/adminuser/save','AdminUserController@save');//保存
         Route::get('/adminuser/log','AdminUserController@log');//日志
+        Route::get('/adminuser/detail','AdminUserController@detail');//详情
+        Route::get('/adminuser/delete','AdminUserController@delete');//删除
+        Route::post('/adminuser/change/isFreeze','AdminUserController@isFreeze');//修改状态
 
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
@@ -58,6 +61,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/region/list', 'RegionController@list');//地区列表
         Route::post('/region/save', 'RegionController@save');//地区添加
         Route::get('/region/delete', 'RegionController@delete');//地区删除
+        Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@list');//产品分类列表
@@ -153,11 +157,27 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopgoods/getGoods', 'ShopGoodsController@getGoods');//ajax获取产品
         Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除
 
+
         Route::get('/shopgoodsquote/list', 'ShopGoodsQuoteController@list');//店铺产品报价列表
         Route::get('/shopgoodsquote/addForm', 'ShopGoodsQuoteController@addForm');//添加
         Route::get('/shopgoodsquote/editForm', 'ShopGoodsQuoteController@editForm');//编辑
         Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
+
+        Route::any('/orderinfo/list', 'OrderInfoController@list');//订单列表
+        Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
+        Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
+        Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
+        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
+        Route::post('/orderinfo/modify3', 'OrderInfoController@modify3');//修改发货单号
+        Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
+        Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
+        Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
+        Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
+        Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
+        Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
+        Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
+        Route::post('/orderinfo/saveFee', 'OrderInfoController@saveFee');//保存费用修改信息
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -190,7 +210,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
 
     Route::group(['middleware' => 'web.auth'], function () {
-        Route::get('/logout', 'UserController@logout');//登出
         Route::get('/', 'IndexController@index'); //首页
 
         Route::get('/member', 'UserController@index'); //会员中心
@@ -198,6 +217,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/addFirmUser', 'FirmUserController@addFirmUser');//企业会员绑定权限
+        Route::get('/firmUserAuthList', 'FirmUserController@firmUserAuthList');//企业会员权限列表
 
         Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
         Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
@@ -214,6 +234,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
         Route::post('/createAddressList','UserController@addShopAddress');
         Route::post('/getCity','UserController@getCity');//通过省获取市
+        Route::post('/getCounty','UserController@getCounty');//通过省获取市
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
 
@@ -227,6 +248,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
         Route::resource('goodsCate', 'GoodsCategoryController');//产品信息
+        Route::get('goodsList', 'GoodsController@goodsList');//产品列表
 
         Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
@@ -235,6 +257,29 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+
+        Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
+        Route::get('/cart','GoodsController@cart');//购物车列表
+        Route::post('/cart','GoodsController@cart');//加入购物车
+        Route::post('/checkListen','GoodsController@checkListen');//购物车多选框
+        Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
+        Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
+        Route::post('/createOrder','GoodsController@createOrder');//提交订单
+        Route::get('/clearCart','GoodsController@clearCart');//清空购物车
+
+        Route::get('/order','GoodsController@orderList');//我的订单
+        Route::post('/egis','GoodsController@egis');//订单审核通过
+        Route::post('/cancel','GoodsController@cancel');//订单审核通过
+        Route::get('/orderDetails/{id}','GoodsController@orderDetails');//订单详情
+        Route::get('/pay','GoodsController@pay');//支付界面
+        Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
+
+        Route::get('/collectGoodsList','UserController@userCollectGoodsList');//产品收藏列表
+        Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
+
+        Route::get('/article/{id}','IndexController@article');//资讯
+
+        Route::get('/logout', 'UserController@logout');//登出
     });
 });
 
@@ -249,22 +294,53 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
-        Route::get('/', 'IndexController@index');
-        Route::get('/logout', 'LoginController@logout');
 
-        Route::get('/goods/list', 'ShopGoodsController@list');//商户商品操作
+        Route::get('/', 'IndexController@index');
+        Route::get('/home', 'IndexController@home');
+        Route::get('/logout', 'LoginController@logout');
+        Route::get('/detail', 'indexController@detail');
+
+        Route::get('/shopUser', 'ShopUserController@list');// 商户职员管理
+        Route::get('/shopUser/add', 'ShopUserController@add');
+        Route::get('/shopUser/edit', 'ShopUserController@edit');
+        Route::post('/shopUser/save', 'ShopUserController@save');
+        Route::post('/shopUser/delete', 'ShopUserController@delete');
+
+        Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
         Route::get('/goods/add', 'ShopGoodsController@add');
         Route::get('/goods/edit', 'ShopGoodsController@edit');
         Route::post('/goods/save', 'ShopGoodsController@save');
-        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
         Route::post('/goods/delete', 'ShopGoodsController@delete');
+        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
+        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
+        Route::get('/quote/list', 'ShopGoodsQuoteController@list');// 商户商品报价
+        Route::get('/quote/add', 'ShopGoodsQuoteController@add');
+        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');
+        Route::post('/quote/save', 'ShopGoodsQuoteController@save');
+        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');
+
+        Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
+        Route::get('/order/detail', 'ShopOrderController@detail');
+        Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
+        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
+        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
+        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
+        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
+        Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
+        Route::get('/seckill/add', 'SeckillController@addForm');
+        Route::post('/seckill/save', 'SeckillController@save');
+        Route::post('/seckill/delete', 'SeckillController@delete');
     });
 });
 
 Route::pattern('path','.+');
 Route::any('{path}', 'CommonController@route');
+
+
 
 
 

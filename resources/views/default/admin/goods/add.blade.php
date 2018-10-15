@@ -300,7 +300,6 @@
                 }else{
                     $("#goods_attr").val(attr_name+":"+attr_value+";"+goods_attr);
                 }
-                //console.log($("#goods_attr").val());
                 layer.close(index);//关闭弹窗
             });
 
@@ -370,6 +369,9 @@
                 },
                 messages:{
                     goods_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    keywords:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     brand_id :{

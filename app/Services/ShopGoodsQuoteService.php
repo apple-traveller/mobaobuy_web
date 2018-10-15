@@ -1,9 +1,15 @@
 <?php
 namespace App\Services;
 use App\Repositories\ShopGoodsQuoteRepo;
+use App\Repositories\ShopGoodsRepo;
+
 class ShopGoodsQuoteService
 {
     use CommonService;
+    //获取报价列表
+    public static function goodsQuoteList(){
+        return ShopGoodsQuoteRepo::goodsQuoteList();
+    }
 
     //分页
     public static function getShopGoodsQuoteList($pager,$condition)
@@ -39,4 +45,14 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::delete($id);
     }
 
+    /**
+     * 商户报价的商品
+     * @param $shop_id
+     * @return mixed
+     */
+    public static function getQuoteGoods($shop_id)
+    {
+        return ShopGoodsQuoteRepo::getQuoteGoods($shop_id);
+    }
 }
+

@@ -72,7 +72,6 @@
                                         <div class="tDiv">
 
                                             <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
 
                                                 <ul id="page"></ul>
 

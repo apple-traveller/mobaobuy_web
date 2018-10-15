@@ -91,6 +91,20 @@ class RegionController extends Controller
     }
 
 
+    //联动
+    public function linkage(Request $request)
+    {
+        $id = $request->input('id');
+        $data = RegionService::getRegionList($id);
+        if($id==0){
+            return $this->result("",400,'获取失败');
+        }
+        if(!empty($data)){
+            return $this->result($data,200,'获取成功');
+        }else{
+            return $this->result('',400,'获取失败');
+        }
+    }
 
 
 

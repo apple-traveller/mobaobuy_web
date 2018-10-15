@@ -101,8 +101,9 @@ class LoginController extends Controller
             $taxpayer_id = $request->input('taxpayer_id','');
             $is_self_run = $request->input('is_self_run','0');
             $user_name = $request->input('name','');
-//            $password = base64_decode($request->input('password', ''));
-            $password = $request->input('password', '');
+            $password = base64_decode($request->input('password', ''));
+
+//            $password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
 
