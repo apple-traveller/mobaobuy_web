@@ -200,6 +200,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/login', 'UserController@login');
 
     Route::group(['middleware' => 'web.auth'], function () {
+
+        Route::get('/middle','UserController@middlePage');//中间页
+        Route::post('/selectCompany','IndexController@selectCompany');//选择公司
         Route::get('/', 'IndexController@index'); //首页
 
         Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
@@ -252,7 +255,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
         Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
-        Route::get('/clearCart','GoodsController@clearCart');//清空购物车
+        Route::post('/clearCart','GoodsController@clearCart');//清空购物车
+        Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
 
         Route::get('/order','GoodsController@orderList');//我的订单
         Route::post('/egis','GoodsController@egis');//订单审核通过

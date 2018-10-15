@@ -15,6 +15,8 @@ class CartRepo
     public static function cartList($userId){
         $clazz = self::getBaseModel();
         $query = $clazz::query();
-        return $query->where('user_id',$userId)->paginate(10);
+        return $query->where('user_id',$userId)
+//            ->where('is_invalid',0)
+            ->paginate(10);
     }
 }

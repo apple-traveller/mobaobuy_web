@@ -56,7 +56,7 @@ class GoodsController extends Controller
         $userId = session('_web_user_id');
         try{
             GoodsService::clearCart($userId);
-            return $this->success('清空购物车成功');
+            return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -77,11 +77,24 @@ class GoodsController extends Controller
 
     //确认订单页面
     public function confirmOrder(Request $request){
-        $goodsInfo = session('cartSession');
+        //公司id
+        $firmId = session('_web_firm_id');
+        //个人id
         $userId = session('_web_user_id');
-        //获取收货地
-        $addressInfo = GoodsService::showAddress($userId);
-        return $this->display('web.goods.confirmOrder',compact('addressInfo'));
+        //获取发票信息
+        try{
+            if($firmId){
+                $invoicesInfo = GoodsService::getInvoices($firmId);
+            }else{
+                $invoicesInfo = GoodsService::getInvoices($userId);
+            }
+            $goodsInfo = session('cartSession');
+            //获取收货地
+            $addressInfo = GoodsService::showAddress($userId);
+            return $this->display('web.goods.confirmOrder',compact('addressInfo','invoicesInfo'));
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
 
@@ -90,11 +103,13 @@ class GoodsController extends Controller
         $userId = session('_web_user_id');
         $cartInfo = session('cartSession');
         $userAddress = $request->input('address');
+        $invoices = $request->input('invoices');
+
         if(empty($cartInfo)){
             return $this->error('产品信息不存在');
         }
         try{
-            GoodsService::createOrder($cartInfo,$userId,$userAddress);
+            GoodsService::createOrder($cartInfo,$userId,$userAddress,$invoices);
 //            Session::forget('cartSession');
             return $this->success('订单提交成功');
         }catch (\Exception $e){
@@ -110,6 +125,21 @@ class GoodsController extends Controller
         $cartIds = $request->input('cartId');
         try{
             GoodsService::checkListen($cartIds);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //修改购物车数量
+    public function editCartNum(Request $request){
+        $cartNum = $request->input('cartNum');
+        $id = $request->input('id');
+        if(!is_numeric($cartNum)){
+            return $this->error();
+        }
+        try{
+            GoodsService::editCartNum($id,$cartNum);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());
