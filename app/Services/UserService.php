@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\FirmUserRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\GsxxCompanyRepo;
@@ -277,6 +278,7 @@ class UserService
     public static function addCollectGoods($goodsId,$userId){
         return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
     }
+
 
 
     //后台

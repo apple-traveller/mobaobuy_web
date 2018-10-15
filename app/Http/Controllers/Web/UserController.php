@@ -180,6 +180,7 @@ class UserController extends Controller
     {
         session()->forget('_web_user_id');
         session()->forget('_web_user');
+        session()->forget('_web_firm_id');
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
@@ -297,7 +298,14 @@ class UserController extends Controller
     //会员发票信息新增
     public function createInvoices(Request $request){
         if($request->isMethod('get')){
-            return $this->display('web.user.createInvoices');
+            try{
+                $region_type = 1;
+                $addressInfo = UserService::provinceInfo($region_type);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+            return $this->display('web.user.createInvoices',compact('addressInfo'));
         }else{
             $rule = [
                 'company_name' => 'required',
@@ -308,24 +316,23 @@ class UserController extends Controller
                 'company_telephone' => 'required',
                 'consignee_name' => 'required',
                 'consignee_mobile_phone' =>'required',
-                'country' => 'required',
+//                'country' => 'required',
                 'province' => 'required',
                 'city' => 'required',
                 'district' => 'required',
-                'street' => 'required',
+//                'street' => 'required',
                 'consignee_address' => 'required',
             ];
             $data = $this->validate($request,$rule);
             $data['user_id'] = session('_web_user_id');
+            $data['country'] = 1;
             try{
                 UserInvoicesService::create($data);
-                return json_encode(array('status'=>1));
-                return $this->success('保存成功',$this->redirectTo);
+                return $this->success();
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
         }
-
     }
 
 
@@ -553,4 +560,6 @@ class UserController extends Controller
             return $this->error();
         }
     }
+
+
 }

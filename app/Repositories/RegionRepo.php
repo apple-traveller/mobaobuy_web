@@ -54,7 +54,7 @@ class RegionRepo
     //获取省
     public static function getProvince($region_type){
         $model = self::getBaseModel();
-        $info = $model::where('region_type',$region_type)->get();
+        $info = $model::where('parent_id',$region_type)->get();
         if($info){
             return $info->toArray();
         }

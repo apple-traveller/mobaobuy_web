@@ -211,6 +211,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
 
     Route::group(['middleware' => 'web.auth'], function () {
+        Route::get('/middle','UserController@middlePage');//中间页
+        Route::post('/selectCompany','IndexController@selectCompany');//选择公司
+        Route::get('/', 'IndexController@index'); //首页
+
         Route::get('/member', 'UserController@index'); //会员中心
         Route::get('/member/emp', 'UserController@empList'); //会员中心
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
@@ -264,7 +268,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
         Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
-        Route::get('/clearCart','GoodsController@clearCart');//清空购物车
+        Route::post('/clearCart','GoodsController@clearCart');//清空购物车
+        Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
 
         Route::get('/order','GoodsController@orderList');//我的订单
         Route::post('/egis','GoodsController@egis');//订单审核通过
