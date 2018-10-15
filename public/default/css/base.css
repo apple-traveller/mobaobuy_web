@@ -1,6 +1,0 @@
-.type-file-box{ position:relative; float:left; width:322px; margin-right:10px;}
-.type-file-box .type-file-button{ width:104px; height:30px; background:url(../images/type-file.png) 0 0 no-repeat; border:0; cursor:pointer; padding:0; float:left;}
-.type-file-box.hover .type-file-button{ background-position:-111px 0;}
-.type-file-box input[type="file"]{ position:absolute; left:0; opacity:0;filter: alpha(opacity=0); width:104px; height:30px; cursor:pointer;}
-.type-file-box .type-file-text{ float:left; height:20px; padding:4px 0; border:1px solid #fff; width:144px; overflow: hidden;white-space: nowrap;text-overflow: ellipsis; margin-left:10px; background:#fff;}
-.type-file-box .show{ float:left; margin-left:10px; height:30px; line-height:30px;}

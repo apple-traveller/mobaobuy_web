@@ -16,6 +16,8 @@ Route::get('/verifyCode', 'VerifyCodeController@create');
 Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 //图片上传
 Route::post('/uploadImg', 'UploadController@uploadImg');
+//省市县
+Route::post('/region/level', 'RegionController@regionLevelList');
 
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
@@ -172,8 +174,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
-    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证用户名是否存在
-    Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
+    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
+    Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信
 
     Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
     Route::post('/userRegister', 'UserController@userRegister');
@@ -183,16 +185,24 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/login', 'UserController@showLoginForm')->name('login');//登陆
     Route::post('/login', 'UserController@login');
 
+    Route::get('/findPwd','UserController@userFindPwd');//忘记密码
+    Route::post('/findPwd','UserController@userFindPwd');
+    Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
+
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
         Route::get('/', 'IndexController@index'); //首页
 
-        Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
-        Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
-
+        Route::get('/member', 'UserController@index'); //会员中心
+        Route::get('/member/emp', 'UserController@empList'); //会员中心
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/addFirmUser', 'FirmUserController@addFirmUser');//企业会员绑定权限
+
+        Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
+        Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
+
+
 
         Route::get('/invoices','UserController@invoicesList');//会员发票
         Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
@@ -207,11 +217,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
 
+        Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
         Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
         Route::post('/updatePwd','UserController@userUpdatePwd');
-        Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
-        Route::post('/forgotPwd','UserController@userForgotPwd');
-        Route::post('/getCode','UserController@userForgotCode');//重置密码获取验证码
+
 
         Route::get('/paypwd', 'UserController@setPayPwd');//设置支付密码
         Route::post('/paypwd', 'UserController@setPayPwd');
@@ -226,10 +235,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
-
-
-        Route::get('/','IndexController@index');//主页
-        Route::get('/logout','UserLoginController@logout');//登出
     });
 });
 

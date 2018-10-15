@@ -1,42 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <title>{{getConfig('shop_name')}}_登录</title>
+    @include(themePath('.','web').'web.include.partials.base')
 </head>
 <body>
-<h1>用户登陆</h1>
-<form action="/login" method="post">
-手机号<input type="text" id="user_name" name="user_name" placeholder="请输入手机号"><br>
-密　码<input type="password" id="password" name="password"><br>
-<input type="button" id="sub-btn" value="登陆">
-<a href="{{route('register')}}" >注册</a>
-</form>
-</body>
-</html>
+    <div class="clearfix">
+        <div class="logo-box">
+            <div class="logo">
+                <a href="/">
+                    <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+                </a>
+            </div>
 
-<script>
-    $('#sub-btn').click(function ()  {
-        $.ajax({
-            url: "{{url('login')}}",
-            data: {
+            <div class="service-tel">全国免费服务热线 : {{getConfig('service_phone')}}</div>
+        </div>
+    </div>
+
+    <div class="clearfix" style="height:465px;background: url({{themePath('/','web').'img/login_bg.png'}})no-repeat;background-size: 100% 100%;">
+        <div class="w1200">
+            <div class="login-box">
+                <div style="padding: 30px;">
+                    <div class="login-title">会员登录</div>
+                    <div class="login-item"><input type="text" id="user_name" name="user_name" class="login_input" placeholder="输入您的账户名"/></div>
+                    <div class="login-item"><input type="password" id="password" name="password" class="login_input" placeholder="输入您的密码"/></div>
+                    <div class="login-item"><button class="login_btn fs16">登录</button></div>
+                    <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
+                    <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @include(themePath('.','web').'web.include.partials.footer_service')
+    @include(themePath('.','web').'web.include.partials.copyright')
+
+    <script>
+        $('.login_btn').click(function (){
+            data = {
                 user_name: $("#user_name").val(),
                 password: window.btoa($("#password").val()),
-            },
-            type: "POST",
-            success: function (data) {
-                console.log(data);
-                if (data.code == 1) {
-                    window.location.href="{{url('/')}}";
-                }else{
+            };
+            Ajax.call("{{url('login')}}", data , function(result) {
+                if (result.code == 1) {
+                    window.location.href = "{{url('/')}}";
+                } else {
                     $("#password").val('');
-                    alert(data.msg);
+                    $('.error-content').text(result.msg);
+                    $('.login-error').addClass('show');
+
                 }
-            }
+            }, "POST", "JSON");
         });
-    });
-</script>
+    </script>
+</body>
+</html>

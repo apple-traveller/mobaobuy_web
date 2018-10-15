@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 @include('partials.base_header')
-<link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/base.css')}}">
+
 <body>
 <h1>注册</h1>
 <h4>企业注册</h4><a href="{{route('register')}}">个人注册</a>

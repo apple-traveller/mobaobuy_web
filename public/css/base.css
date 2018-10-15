@@ -1,0 +1,129 @@
+/*base.css Date:2017-01-20 09:51:00 sunle*/
+@charset "UTF-8";
+
+/* common */
+*{ padding: 0;margin: 0;}
+fieldset,iframe,img{ border:0;}
+body,button,input,select,textarea{-webkit-font-smoothing: antialiased; font:14px/1.5 Microsoft YaHei,tahoma,arial,Hiragino Sans GB,\\5b8b\4f53,sans-serif; color: #555;}
+input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
+h2,h3,h4,h5,h6{ font-size:100%;font-family: "microsoft yahei";font-weight: normal;}
+address,cite,dfn,em,var{ font-style:normal;}
+ul,ol{ list-style:none;}
+em, i, u { font-style: normal;}
+input, select, textarea {font-family: inherit;font-size: inherit;font-weight: inherit;}
+
+button,input,select,textarea{ font-size:100%;}
+table{ border-collapse:collapse;border-spacing:0;}
+img{ vertical-align:middle; display:inline-block;}
+a{ text-decoration:none; color: inherit; cursor:pointer;}
+a:hover{ color: #f42424;}
+a:focus{ outline:none;}
+.black,a.black,a.black:hover{color:#000;}
+.green,a.green,a.green:hover{color:#009900;}
+.red,a.red,a.red:hover{color:#f70503;}
+.orange,a.orange,a.orange:hover{color:#ff6600;}
+.gray,a.gray,a.gray:hover{color:#aaa;}
+.white,a.white,a.white:hover{color:#fff; text-decoration:none;}
+.yellow,a.yellow,a.yellow:hover{color:#ff8d04;}
+.blue,a.blue,a.blue:hover{color:#00a1e9;}
+.cb{vertical-align:middle;margin-top:-1px;margin-bottom:1px;margin-right:5px;}
+.colorblue{color: #36a3ef;}
+
+.yellowbg{background: #efbf00;}
+.aredbg{background: #f54450;}
+.whitebg{background: #FFFFFF;}
+.graybg {background: #f7f7f7;}
+.redbg{background: #ed1e2d;}
+.bluebg{background: #36a3ef;}
+.f4bg{background-color: #f4f4f4;}
+.blackgraybg{background-color: #a0a0a0;}
+
+input[disabled],input[disabled="disabled"],input[readonly],input[readonly="readonly"]{ background-color:#ebebe4;}
+
+.w{ margin:0 auto;}
+.w:after,.w:before{ content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+
+/*浮动*/
+.fl{ float:left !important;}
+.fr{ float:right !important;}
+.fn{ float:none !important;}
+
+/*字体*/
+.fs0{font-size: 0;}
+.fs10{font-size:10px;}
+.fs12{font-size:12px;}
+.fs13{font-size:13px;}
+.fs14{font-size:14px;}
+.fs16{font-size:16px;}
+.fs17{font-size:17px;}
+.fs18{font-size:18px;}
+.fs20{font-size:20px;}
+.fs21{font-size:21px;}
+.fs22{font-size:22px;}
+.fs24{font-size:24px;}
+.fs25{font-size:25px;}
+.fs26{font-size:26px;}
+.fs28{font-size:28px;}
+.fs30{font-size:30px;}
+.fs35{font-size:35px;}
+
+.txt-lh{ line-height:40px; font-size:16px;}
+.txt-lh2{ line-height:40px; font-size:14px;}
+
+.w1200{width: 1200px;margin: 0 auto;}
+.w100{width: 100%;}
+.w180{width: 180px;}
+.w185{width: 185px;}
+.w230{width:230px;}
+.w300{width:300px;}
+.w500{width:500px;}
+
+.mt1{margin-top:1px;}
+.mt3{margin-top:3px;}
+.mt5{margin-top:5px;}
+.mt15{margin-top:15px;}
+.mt10{margin-top:10px;}
+.mt20{margin-top:20px;}
+.mt25{margin-top:25px;}
+.mt30{margin-top:30px;}
+.mt35{margin-top:35px;}
+.mt40{margin-top:40px;}
+
+.ml5{margin-left:5px;}
+.ml10{margin-left:10px;}
+.ml15{margin-left:15px;}
+.ml20{margin-left:20px;}
+.ml25{margin-left:25px;}
+.ml30{margin-left:30px;}
+.ml35{margin-left:35px;}
+.ml50{margin-left:50px;}
+.ml90{margin-left:90px;}
+
+/*隐藏显示*/
+.hide{ display:none !important;}
+.show{ display:block !important;}
+
+.clear,.clearfix{ clear:both;}
+.relative{ position:relative;}
+.clearfix:after,.clearfix:before{ content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+
+.icon{ display:inline-block; background:url(../images/dsc-icon.png) no-repeat;}
+.text {height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;width: 300px;}
+
+.ud-right{ float:left; margin-left:20px; width:calc(100% - 70px);}
+
+/*对齐方式*/
+.tal{ text-align:left !important;}
+.tac{ text-align:center !important;}
+.tar{ text-align:right !important;}
+
+.lh20{ line-height:20px !important;}
+.lh25{ line-height:25px !important;}
+.lh30{ line-height:30px !important;}
+
+.type-file-box{ position:relative; float:left; width:322px; margin-right:10px;}
+.type-file-box .type-file-button{ width:104px; height:30px; background:url(../images/type-file.png) 0 0 no-repeat; border:0; cursor:pointer; padding:0; float:left;}
+.type-file-box.hover .type-file-button{ background-position:-111px 0;}
+.type-file-box input[type="file"]{ position:absolute; left:0; opacity:0;filter: alpha(opacity=0); width:104px; height:30px; cursor:pointer;}
+.type-file-box .type-file-text{ float:left; height:20px; padding:4px 0; border:1px solid #fff; width:144px; overflow: hidden;white-space: nowrap;text-overflow: ellipsis; margin-left:10px; background:#fff;}
+.type-file-box .show{ float:left; margin-left:10px; height:30px; line-height:30px;}

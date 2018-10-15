@@ -10,6 +10,10 @@ class NavService
         return NavRepo::getListBySearch($pager,$condition);
     }
 
+    public static function getPositionList($type){
+        return NavRepo::getList(['sort_order'=>'asc'],['type'=>$type, 'is_show'=>1]);
+    }
+
     public static function getInfo($id)
     {
         return NavRepo::getInfo($id);

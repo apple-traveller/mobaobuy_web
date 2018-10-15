@@ -80,4 +80,11 @@ if(!function_exists('getFileUrl')){
     }
 }
 
+if(!function_exists('getPositionNav')){
+    function getPositionNav($position){
+        $value = \App\Services\NavService::getPositionList($position);
+        return $value;
+    }
+}
+
 
