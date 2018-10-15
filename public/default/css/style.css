@@ -6,6 +6,8 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 
+.blackgraybg input{}
+
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account a{padding: 0 5px;}
 .top-box .account a.link-login{color:red;}
@@ -23,7 +25,7 @@
 .footer-service-box .icons li .icon03{background: url(/images/service_03.png)no-repeat;background-size: 100% 100%;}
 .footer-service-box .icons li .icon04{background: url(/images/service_04.png)no-repeat;background-size: 100% 100%;}
 
-.copyright-box{text-align: center;padding: 45px 0;color: #ccc;background-color: #F7F7F7;}
+.copyright-box{text-align: center;padding: 25px 0;color: #ccc;background-color: #F7F7F7;clear: both;}
 .copyright-box .links a{color: #999;padding: 0 10px;}
 .copyright-box .copyright{padding-top: 10px;color: #999;}
 
@@ -52,8 +54,8 @@
 
 .register-type {display: block;background-color: #f4f4f4;border-bottom: 1px solid #ddd;}
 .register-type ul {width: 376px;margin: 0 auto;}
-.register-type li {width: 188px;height: 45px;line-height: 45px;font-size: 16px;float: left;text-align: center;margin: 0;cursor: default;}
-.register-type li.curr {border-bottom: 1px solid #75b335;color: #75b335;}
+.register-type li {width: 188px;height: 45px;line-height: 45px;font-size: 16px;float: left;text-align: center;margin: 0;cursor: pointer;}
+.register-type li.curr {border-bottom: 1px solid #75b335;color: #75b335;cursor: default;}
 
 .register-box {width: 1200px;margin: 0 auto;overflow: hidden;background: #FFFFFF;}
 .register-form {width: 500px;margin: 0 auto;overflow: hidden;padding-top: 20px;}

@@ -129,9 +129,6 @@ class UserController extends Controller
             try{
                 UserService::userRegister($data);
 
-                $request->session()->forget('send_code');
-//                return $this->success('注册成功','/');
-
                 if(getConfig('firm_reg_check')) {
                     return $this->success('提交成功，请等待审核！', '/');
                 }else{

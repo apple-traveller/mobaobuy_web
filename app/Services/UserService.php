@@ -3,6 +3,7 @@ namespace App\Services;
 use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\GsxxCompanyRepo;
+use App\Repositories\GsxxSupplierRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
@@ -98,17 +99,17 @@ class UserService
                 'taxpayer_id' => '',
                 'add_time' => Carbon::now(),
             ];
-            $supplierInfo = GsxxSupplierRepo::getInfoByFields(['is_checked'=>1]);
-            if($supplierInfo){
-                $userReal['taxpayer_id'] = $supplierInfo['CreditCode'];
-                $userReal['business_license_id'] = $supplierInfo['No'];
+            $company_info = GsxxCompanyRepo::getInfoByFields(['Name'=>$data['nick_name']]);
+            if($company_info){
+                $userReal['taxpayer_id'] = $company_info['CreditCode'];
+                $userReal['business_license_id'] = $company_info['No'];
             }
 
             try {
                 self::beginTransaction();
                 $user = UserRepo::create($user_data);
                 $userReal['user_id'] = $user['id'];
-                $real = UserRealRepo::create($userReal);
+                UserRealRepo::create($userReal);
                 self::commit();
                 return $user['id'];
             }catch (\Exception $e){

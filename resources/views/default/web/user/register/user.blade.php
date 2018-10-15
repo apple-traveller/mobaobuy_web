@@ -18,7 +18,7 @@
     </div>
 
     <div class="register-type">
-        <div class="w1200"><ul><li class="curr">个人注册</li><li>企业注册</li></ul></div>
+        <div class="w1200"><ul><li class="curr">个人注册</li><li onclick="javascript:window.location.href='{{route('firmRegister')}}'">企业注册</li></ul></div>
     </div>
 
     <div class="clearfix">
@@ -45,8 +45,8 @@
                     </div>
                     <div class="item">
                         <div class="item-libel">手机验证码</div>
-                        <div class="item-info" style="width: 178px;">
-                            <input style="width: 158px;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" placeholder="手机验证码" onblur="msgCodeValidate();">
+                        <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
+                            <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly onblur="msgCodeValidate();">
                         </div>
                         <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
                         <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
@@ -62,6 +62,7 @@
     <div class="clearfix" style="height: 35px;"></div>
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
+    @include(themePath('.','web').'web.include.partials.copyright')
 </body>
 </html>
 
@@ -148,12 +149,12 @@
         Ajax.call("{{url('checkVerifyCode')}}", params, function (result){
             if(result.msg) {
                 registerCode = true;
-                $("#verify_error").text('');
+                $("#verify_error").html('');
                 return true;
             } else {
                 registerCode = false;
                 gv();
-                $("#verify_error").text("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
+                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
             }
         }, "POST", "JSON");
     }
@@ -190,8 +191,10 @@
         Ajax.call("{{url('/register/sendSms')}}", params, function (result){
             if (result.code == 1) {
                 Settime (type);
+                $('.msgCode-swap').removeClass('blackgraybg');
+                $('.msgCode-swap input').removeAttr('readonly');
             }else{
-                $("#msgCode_error").html(result.msg);
+                $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>"+result.msg);
             }
         }, "GET", "JSON");
     }

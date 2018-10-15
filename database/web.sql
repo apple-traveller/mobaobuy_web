@@ -389,11 +389,11 @@ insert into article(cat_id,title,content,author,keywords,add_time,file_url) VALU
 (6,'联系方式','','','', now(), 'http://'),
 (6,'网站故障报告','','','', now(), 'http://'),
 (6,'投诉与建议','','','', now(), 'http://'),
-(6,'我的订单','','','', now(), 'http://'),
-(6,'我的收藏','','','', now(), 'http://'),
-(7,'产品质量保障','','','', now(), 'http://'),
-(7,'售后服务保障','','','', now(), 'http://'),
-(7,'退换货原则','','','', now(), 'http://');
+(7,'我的订单','','','', now(), 'http://'),
+(7,'我的收藏','','','', now(), 'http://'),
+(8,'产品质量保障','','','', now(), 'http://'),
+(8,'售后服务保障','','','', now(), 'http://'),
+(8,'退换货原则','','','', now(), 'http://');
 
 CREATE TABLE `article_cat` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '主键',
