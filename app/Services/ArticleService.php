@@ -50,7 +50,13 @@ class ArticleService
         return ArticleRepo::delete($id);
     }
 
-
+    public static function getFooterArticle(){
+        $cat_list = ArticleCatService::getList(3);
+        foreach ($cat_list as &$cat){
+            $cat['articles'] = ArticleRepo::getList(['sort_order'=>'asc'],['is_show'=>1,'cat_id'=>$cat['id']]);
+        }
+        return $cat_list;
+    }
 
 
 

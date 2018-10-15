@@ -178,4 +178,21 @@ class ShopGoodsController extends Controller
             return $this->result('',400,'获取产品失败');
         }
     }
+
+    /**
+     * 为layui提供api
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function GoodsForm()
+    {
+        $shop_id = session('_seller_id')['shop_id'];
+        $list = ShopGoodsService::getShopGoodsList([],['shop_id'=>$shop_id]);
+        $result = [
+            'code'=>0,
+            'msg'=>'',
+            'count'=>$list['total'],
+            'data'=>$list['list']
+        ];
+        return response()->json($result);
+    }
 }

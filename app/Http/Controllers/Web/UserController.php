@@ -21,7 +21,7 @@ class UserController extends Controller
     protected $redirectTo = '/';
 
     public function  index(){
-
+        return $this->display('web.user.index');
     }
 
     //检查账号用户是否存在
@@ -41,7 +41,7 @@ class UserController extends Controller
     }
 
     //注册获取手机验证码
-    public function sendSms(Request $request){
+    public function sendRegisterSms(Request $request){
         $accountName = $request->input('accountName');
 
         $t = $request->input('t');
@@ -128,9 +128,6 @@ class UserController extends Controller
 
             try{
                 UserService::userRegister($data);
-
-                $request->session()->forget('send_code');
-//                return $this->success('注册成功','/');
 
                 if(getConfig('firm_reg_check')) {
                     return $this->success('提交成功，请等待审核！', '/');
@@ -410,43 +407,46 @@ class UserController extends Controller
        }
     }
 
+    //修改密码获取手机验证码
+    public function sendUpdatePwdSms(Request $request){
+        $t = $request->input('t');
+        $code = $request->input('verifyCode');
+        $s_code = Cache::get(session()->getId().'captcha'.$t, '');
+        if($s_code != $code){
+            return $this->error('图形验证有误');
+        }
+        if(!UserService::checkNameExists(session('_web_user.user_name'))){
+            return $this->error('手机号未注册');
+        }
+
+        $type = 'sms_update_pwd';
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.session('_web_user.user_name'), $mobile_code, 5);
+        createEvent('sendSms', ['phoneNumbers'=>session('_web_user.user_name'), 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
     //修改密码
     public function userUpdatePwd(Request $request){
         if($request->isMethod('get')){
             return $this->display('web.user.updatePwd');
         }else{
-            $rule = [
-                'password'=> 'required|min:6',
-                'newPassword'=> 'required|min:6|confirmed',
-                'newPassword_confirmation'=>'required|same:newPassword'
+            $password = base64_decode($request->input('password', ''));
+            $messCode = $request->input('messCode', '');
+            $type = 'sms_update_pwd';
 
-            ];
-            $data = $this->validate($request,$rule);
-            $id = session('_web_user_id');
-            try{
-                UserService::userUpdatePwd($id,$data);
-                return $this->success('修改密码成功','/');
-            }catch(\Exception $e){
-                return $this->error($e->getMessage());
+            //手机验证码是否正确
+            if(Cache::get(session()->getId().$type.session('_web_user.user_name')) != $messCode){
+                return $this->error('手机验证码不正确');
             }
-        }
-    }
 
-    //忘记密码
-    public function userForgotPwd(Request $request){
-        if($request->isMethod('get')){
-            return $this->display('web.user.forgotpwd');
-        }else{
-            $rule = [
-                'newPassword'=> 'required|min:6|confirmed',
-                'newPassword_confirmation'=>'required|same:newPassword',
-//                'mobile_code'=> 'required'
-            ];
-            $data = $this->validate($request,$rule);
-            $id = session('_web_user_id');
+            $id = session('_web_user.id');
 
             try{
-                UserService::userForgotPwd($id,$data);
+                UserService::userUpdatePwd($id, ['newPassword' => $password]);
                 return $this->success('修改密码成功','/');
             }catch(\Exception $e){
                 return $this->error($e->getMessage());
@@ -455,14 +455,49 @@ class UserController extends Controller
     }
 
     //忘记密码获取验证码
-    public function userForgotCode(Request $request){
-        $mobile = session('_web_user')['user_name'];
-        $type = $request->input('is_type');
-        try{
-            UserLoginService::sendCode($mobile,$type);
-            return json_encode(array('code'=>1,'msg'=>'succ'));
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
+    public function sendFindPwdSms(Request $request){
+        $accountName = $request->input('accountName');
+        $t = $request->input('t');
+        $code = $request->input('verifyCode');
+        $s_code = Cache::get(session()->getId().'captcha'.$t, '');
+        if($s_code != $code){
+            return $this->error('图形验证有误');
+        }
+        if(!UserService::checkNameExists($accountName)){
+            return $this->error('手机号未注册');
+        }
+
+        $type = 'sms_find_signin';
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+        createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
+    //忘记密码
+    public function userFindPwd(Request $request){
+        if($request->isMethod('get')){
+            return $this->display('web.user.findPwd');
+        }else{
+            $accountName = $request->input('accountName', '');
+            $password = base64_decode($request->input('password', ''));
+            $messCode = $request->input('messCode', '');
+            $type = 'sms_find_signin';
+
+            //手机验证码是否正确
+            if(Cache::get(session()->getId().$type.$accountName) != $messCode){
+                return $this->error('手机验证码不正确');
+            }
+
+            try{
+                UserService::userFindPwd($accountName, $password);
+                return $this->success('修改密码成功','/');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage());
+            }
         }
     }
 
@@ -501,6 +536,10 @@ class UserController extends Controller
                 return $this->error($e->getMessage());
             }
         }
+    }
+
+    public function empList(Request $request){
+        return $this->display('web.user.emp.list');
     }
 
     //用户收藏产品列表

@@ -1,52 +1,68 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>个人注册</title>
+    <title>{{getConfig('shop_name')}}_个人注册</title>
+    @include(themePath('.','web').'web.include.partials.base')
 </head>
+<body style="background-color: #f4f4f4;">
+    <div class="clearfix whitebg">
+        <div class="register-title">
+            <div class="logo">
+                <a href="/">
+                    <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+                </a>
+            </div>
 
-@include('partials.base_header')
-<body>
-<i class="iconfont icon_image"></i>
-<h1>注册</h1>
-<h4>个人注册</h4><a href="{{route('firmRegister')}}">企业注册</a>
-<form action="/userRegister" method="post">
-<input type="text" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"><br>
-<div style="height: 20px;">
-    <div class="reg_error" id="phone_error"></div>
-</div>
-<input type="password" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"><br>
-    <div style="height: 20px;">
-        <div class="reg_error" id="pwd_error"></div>
-    </div>
-<input style="width: 98px;" type="text" maxlength="4" placeholder="图形验证码"
-           id="verify" onblur="verifyValidate();"><img src="" title="点击换一个校验码"
-                                                       alt="点击换一个校验码" id="imVcode">
-    <div style="height: 20px;">
-        <div class="reg_error" id="verify_error"></div>
+            <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+        </div>
     </div>
 
-    <div class="reg_user"><input name="msgCode" id="messCode" type="text" maxlength="6" placeholder="手机验证码" onblur="msgCodeValidate();">
-        <input type="button" class="messCode_but" id="messCode_but" value="获取手机验证码">
-    </div>
-    <div style="height: 20px;">
-        <div class="reg_error" id="msgCode_error"></div>
-    </div>
-    <div class="g-fl">
-        <input type="checkbox" id="action" value="" onchange="genreCheck();" checked="checked">
-        <label for="action" class="checked">我已阅读并同意</label>
-    </div>
-    <div class="g-fl">
-        <a target="_blank" href="sites/term/ZCXY.html" class="black">《注册服务协议》</a>
+    <div class="register-type">
+        <div class="w1200"><ul><li class="curr">个人注册</li><li onclick="javascript:window.location.href='{{route('firmRegister')}}'">企业注册</li></ul></div>
     </div>
 
-    <input type="button" id="sub-btn" value="注册">
-<a href="{{route('login')}}">去登录</a>
-</form>
+    <div class="clearfix">
+        <div class="register-box">
+            <div class="register-form">
+                <div class="form">
+                    <div class="item">
+                        <div class="item-libel">用户名</div>
+                        <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"></div>
+                        <div class="input-tip"><label id="phone_error" class="error" for="phone"></label></div>
+                    </div>
+                    <div class="item">
+                        <div class="item-libel">设置密码</div>
+                        <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
+                        <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
+                    </div>
+                    <div class="item">
+                        <div class="item-libel">图形验证码</div>
+                        <div class="item-info" style="width: 178px;">
+                            <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                        </div>
+                        <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                        <div class="input-tip"><label id="verify_error" class="error" for="phone"></div>
+                    </div>
+                    <div class="item">
+                        <div class="item-libel">手机验证码</div>
+                        <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
+                            <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly onblur="msgCodeValidate();">
+                        </div>
+                        <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                        <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="register-checkbox">
+                <label class="check_box"><input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />我已阅读并同意<a class="orange">《秣宝平台用户注册协议》</a></label>
+            </div>
+            <button class="register-button" id="sub-btn">同意并注册</button>
+        </div>
+    </div>
+    <div class="clearfix" style="height: 35px;"></div>
+    @include(themePath('.','web').'web.include.partials.footer_service')
+    @include(themePath('.','web').'web.include.partials.footer_new')
+    @include(themePath('.','web').'web.include.partials.copyright')
 </body>
 </html>
 
@@ -69,12 +85,12 @@
     function phoneValidate() {
         $("#phone_error").html('');
         if (isNull.test($("#phone").val())) {
-            $("#phone_error").html("请输入手机号");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入手机号");
             checkAccount = false;
 
             return false;
         } else if (!Utils.isPhone($("#phone").val())) {
-            $("#phone_error").html("手机号码格式不正确！");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确");
             checkAccount = false;
 
             return false;
@@ -86,7 +102,7 @@
     function checkNameExists() {
         Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
             if (result.msg) {
-                $("#phone_error").html("手机号已经注册！");
+                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
                 checkAccount = false;
             } else {
                 checkAccount = true;
@@ -98,10 +114,10 @@
     function pwdValidate() {
         $("#pwd_error").html('');
         if (isNull.test($("#password").val())) {
-            $("#pwd_error").html("请输入密码");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入密码");
             return false;
         } else if (!pwdReg.test($("#password").val())) {
-            $("#pwd_error").html("密码必须包含字母和数字长度8-16位字符");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>密码必须包含字母和数字长度8-16位字符");
             return false;
         }
         return true;
@@ -118,11 +134,11 @@
     function verifyValidate() {
         $("#verify_error").html("&nbsp;");
         if (isNull.test($("#verify").val())) {
-            $("#verify_error").html("验证码不能为空");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不能为空");
             registerCode = false;
             return false;
         } else if (!veriCodeExep.test($("#verify").val())) {
-            $("#verify_error").html("您输入的验证码有误");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的验证码有误");
             registerCode = false;
             return false;
         }
@@ -133,12 +149,12 @@
         Ajax.call("{{url('checkVerifyCode')}}", params, function (result){
             if(result.msg) {
                 registerCode = true;
-                $("#verify_error").text('');
+                $("#verify_error").html('');
                 return true;
             } else {
                 registerCode = false;
                 gv();
-                $("#verify_error").text("验证码不正确");
+                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
             }
         }, "POST", "JSON");
     }
@@ -146,10 +162,10 @@
     function msgCodeValidate() {
         $("#msgCode_error").html("");
         if (isNull.test($("#messCode").val())) {
-            $("#msgCode_error").html("手机验证码不能为空");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机验证码不能为空");
             return false;
         } else if (!verify.test($("#messCode").val())) {
-            $("#msgCode_error").html("您输入的手机验证码有误");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的手机验证码有误");
             return false;
         }
         return true;
@@ -174,14 +190,11 @@
         };
         Ajax.call("{{url('/register/sendSms')}}", params, function (result){
             if (result.code == 1) {
-                $('#numnerTip .tipName').text('短信验证码已发送到');
-                $('#numnerTip .numer').text($('#phone').val());
-                $('#numnerTip .tip_las').text('，请注意查收');
-                $('#numnerTip').show();
-
                 Settime (type);
+                $('.msgCode-swap').removeClass('blackgraybg');
+                $('.msgCode-swap input').removeAttr('readonly');
             }else{
-                $("#verify_error").html(result.msg);
+                $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>"+result.msg);
             }
         }, "GET", "JSON");
     }
@@ -191,9 +204,6 @@
             $("#messCode_but").attr("class", "messCode_but");
             countdown = 60;
             msType = true;
-            if(type) {
-                $('#numnerTip').hide();
-            }
             msType02 = true;
         } else {
             msType = false;
@@ -206,7 +216,17 @@
             }, 1000);
         }
     }
+    function genreCheck() {
+        if ($("#action").is(':checked')) {
+            $("#sub-btn").attr("class", "register-button");
+        } else {
+            $("#sub-btn").attr("class", "register-button-gray");
+        }
+    }
     $('#sub-btn').click(function ()  {
+        if (!$("#action").is(':checked')) {
+            return false;
+        }
         phoneValidate();
         verifyValidate ();
         if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {

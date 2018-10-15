@@ -16,6 +16,8 @@ Route::get('/verifyCode', 'VerifyCodeController@create');
 Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 //图片上传
 Route::post('/uploadImg', 'UploadController@uploadImg');
+//省市县
+Route::post('/region/level', 'RegionController@regionLevelList');
 
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
@@ -166,12 +168,16 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
         Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
         Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
-        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改
+        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
+        Route::post('/orderinfo/modify3', 'OrderInfoController@modify3');//修改发货单号
+        Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
         Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
         Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
+        Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
+        Route::post('/orderinfo/saveFee', 'OrderInfoController@saveFee');//保存费用修改信息
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -188,8 +194,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
-    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证用户名是否存在
-    Route::get('/register/sendSms', 'UserController@sendSms');//发送注册短信
+    Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
+    Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信
 
     Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
     Route::post('/userRegister', 'UserController@userRegister');
@@ -199,19 +205,27 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/login', 'UserController@showLoginForm')->name('login');//登陆
     Route::post('/login', 'UserController@login');
 
+    Route::get('/findPwd','UserController@userFindPwd');//忘记密码
+    Route::post('/findPwd','UserController@userFindPwd');
+    Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
+
     Route::group(['middleware' => 'web.auth'], function () {
 
         Route::get('/middle','UserController@middlePage');//中间页
         Route::post('/selectCompany','IndexController@selectCompany');//选择公司
         Route::get('/', 'IndexController@index'); //首页
 
-        Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
-        Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
-
+        Route::get('/member', 'UserController@index'); //会员中心
+        Route::get('/member/emp', 'UserController@empList'); //会员中心
         Route::get('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/createFirmUser', 'FirmUserController@createFirmUser');//企业会员绑定
         Route::post('/addFirmUser', 'FirmUserController@addFirmUser');//企业会员绑定权限
         Route::get('/firmUserAuthList', 'FirmUserController@firmUserAuthList');//企业会员权限列表
+
+        Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
+        Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
+
+
 
         Route::get('/invoices','UserController@invoicesList');//会员发票
         Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
@@ -227,11 +241,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
 
+        Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
         Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
         Route::post('/updatePwd','UserController@userUpdatePwd');
-        Route::get('/forgotPwd','UserController@userForgotPwd');//忘记密码
-        Route::post('/forgotPwd','UserController@userForgotPwd');
-        Route::post('/getCode','UserController@userForgotCode');//重置密码获取验证码
+
 
         Route::get('/paypwd', 'UserController@setPayPwd');//设置支付密码
         Route::post('/paypwd', 'UserController@setPayPwd');
@@ -286,12 +299,6 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
 
-        Route::get('/login.html', 'ShopLoginController@login');
-//        Route::post('/login', 'ShopLoginController@login');
-        Route::get('/register.html', 'ShopLoginController@register');
-        Route::post('/register', 'ShopLoginController@register');
-        Route::post('/getSmsCode', 'ShopLoginController@getSmsCode');
-
         Route::get('/', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
@@ -308,6 +315,7 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/goods/edit', 'ShopGoodsController@edit');
         Route::post('/goods/save', 'ShopGoodsController@save');
         Route::post('/goods/delete', 'ShopGoodsController@delete');
+        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
@@ -320,12 +328,23 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
+        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
+        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
+        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
+        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
+        Route::post('/order/saveFree', 'ShopOrderController@saveFree');
 
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
+        Route::get('/seckill/add', 'SeckillController@addForm');
+        Route::post('/seckill/save', 'SeckillController@save');
+        Route::post('/seckill/delete', 'SeckillController@delete');
     });
 });
 
 Route::pattern('path','.+');
 Route::any('{path}', 'CommonController@route');
+
+
 
 
 

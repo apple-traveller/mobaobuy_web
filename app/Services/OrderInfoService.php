@@ -5,6 +5,7 @@ use App\Repositories\OrderGoodsRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\UserInvoicesRepo;
+use App\Repositories\OrderActionLogRepo;
 class OrderInfoService
 {
     use CommonService;
@@ -62,13 +63,32 @@ class OrderInfoService
     public static function modifyGoodsAmount($id)
     {
         $orderInfo = OrderInfoRepo::getInfo($id);
-        //查询该所有的商品
+        //查询该订单的所有的商品
         $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);
         $sum = 0;
         foreach ($orderGoods as $k => $v) {
             $sum += $v['goods_price'] * $v['goods_number'];
         }
-        return OrderInfoRepo::modify($id, ['goods_amount' => $sum]);
+        $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
+        return OrderInfoRepo::modify($id, ['goods_amount' => $sum,'order_amount'=>$order_amount]);
+    }
+
+    //获取费用信息
+    public static function getFeeInfo($id)
+    {
+        return OrderInfoRepo::getList([], ['id' => $id], ['goods_amount', 'shipping_fee', 'discount', 'money_paid','order_amount'])[0];
+    }
+
+    //保存管理员操作日志信息
+    public static function createLog($data)
+    {
+        return OrderActionLogRepo::create($data);
+    }
+
+    //查询操作日志信息
+    public static function getOrderLogsByOrderid($id)
+    {
+        return OrderActionLogRepo::getList(['log_time'=>'desc'],['order_id'=>$id]);
     }
 
 
@@ -82,8 +102,4 @@ class OrderInfoService
         return OrderInfoRepo::getInfoByFields($where);
     }
 
-/*    public static function modify($id, $data)
-    {
-        return OrderInfoRepo::modify($id, $data);
-    }*/
 }

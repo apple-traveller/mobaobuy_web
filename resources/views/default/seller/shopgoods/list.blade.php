@@ -1,5 +1,5 @@
-@extends(themePath('.')."admin.include.layouts.master")
-@section('iframe')
+@extends(themePath('.')."seller.include.layouts.master")
+@section('body')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
         <div class="title">店铺 - 店铺产品列表 </div>

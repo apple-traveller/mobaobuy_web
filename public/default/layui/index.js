@@ -115,6 +115,7 @@ function addTab(tabTitle,tabUrl,tabId){
     }
 }
 
+
 function loadIframe(tabTitle,url,tabId) {
     //获取url链接
     var u = window.location.href;
