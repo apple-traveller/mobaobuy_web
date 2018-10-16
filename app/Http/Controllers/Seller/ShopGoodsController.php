@@ -183,15 +183,25 @@ class ShopGoodsController extends Controller
      * 为layui提供api
      * @return \Illuminate\Http\JsonResponse
      */
-    public function GoodsForm()
+    public function GoodsForm(Request $request)
     {
-        $shop_id = session('_seller_id')['shop_id'];
-        $list = ShopGoodsService::getShopGoodsList([],['shop_id'=>$shop_id]);
+        $goods_name = $request->input('goods_name','');
+        if(!empty($goods_name)){
+            $c['opt'] = "OR";
+            $c['goods_name'] = "%".$goods_name."%";
+            $c['goods_sn'] = $goods_name;
+            $c['brand_name'] = $goods_name;
+            $c['goods_model'] = $goods_name;
+            $condition[] = $c;
+        }else{
+            $condition = [];
+        }
+        $goods = GoodsService::getGoodsList([],$condition);
         $result = [
             'code'=>0,
             'msg'=>'',
-            'count'=>$list['total'],
-            'data'=>$list['list']
+            'count'=>$goods['total'],
+            'data'=>$goods['list']
         ];
         return response()->json($result);
     }

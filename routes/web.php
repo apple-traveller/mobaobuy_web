@@ -169,7 +169,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
         Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
         Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
-        Route::post('/orderinfo/modify3', 'OrderInfoController@modify3');//修改发货单号
         Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
         Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
@@ -178,6 +177,16 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
         Route::post('/orderinfo/saveFee', 'OrderInfoController@saveFee');//保存费用修改信息
+        Route::get('/orderinfo/delivery', 'OrderInfoController@delivery');//发货单
+        Route::post('/orderinfo/saveDelivery', 'OrderInfoController@saveDelivery');//保存发货单
+        Route::post('/orderinfo/GoodsForm', 'OrderInfoController@GoodsForm');//发货单商品table(渲染表格数据)
+        Route::get('/orderinfo/delivery/list', 'OrderInfoController@deliveryList');//发货单列表
+        Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
+        Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
+        Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
+
+        Route::any('/seckill/list', 'SeckillController@list');//秒杀活动列表
+        Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -339,6 +348,8 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/seckill/add', 'SeckillController@addForm');
         Route::post('/seckill/save', 'SeckillController@save');
         Route::post('/seckill/delete', 'SeckillController@delete');
+        Route::get('/seckill/goods_list', 'SeckillController@goods_list');
+        Route::get('/seckill/list_detail', 'SeckillController@list_detail');
     });
 });
 

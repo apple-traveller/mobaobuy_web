@@ -8,7 +8,9 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\GoodsService;
 use App\Services\SeckillService;
+use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 
 class SeckillController extends Controller
@@ -32,6 +34,21 @@ class SeckillController extends Controller
             'pageSize' => $pageSize,
             'currentPage' => $currentPage
         ]);
+    }
+
+    /**
+     * 列表详情
+     * @param Request $request
+     * @return array
+     */
+    public function list_detail(Request $request)
+    {
+        $seckill_id = $request->input('seckill_id','');
+        $list = [];
+        if (!empty($seckill_id)){
+            $list = SeckillService::listInfo($seckill_id);
+            return $this->display('seller.seckill.list_detail',['list'=>$list]);
+        }
     }
 
     /**
@@ -75,5 +92,28 @@ class SeckillController extends Controller
         } else {
             return $this->error('删除失败，请联系客服');
         }
+    }
+
+    public function goods_list(Request $request)
+    {
+        $goods_name = $request->input('goods_name','');
+        if(!empty($goods_name)){
+            $c['opt'] = "OR";
+            $c['goods_name'] = "%".$goods_name."%";
+            $c['goods_sn'] = $goods_name;
+            $c['brand_name'] = $goods_name;
+            $c['goods_model'] = $goods_name;
+            $condition[] = $c;
+        }else{
+            $condition = [];
+    }
+        $goods = GoodsService::getGoodsList([],$condition);
+        return $this->display('seller.seckill.goods_list',[
+            'code'=>0,
+            'msg'=>'',
+            'count'=>$goods['total'],
+            'data'=>$goods['list']
+        ]);
+
     }
 }
