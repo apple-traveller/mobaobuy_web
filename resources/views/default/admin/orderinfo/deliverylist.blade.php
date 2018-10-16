@@ -79,7 +79,6 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/orderinfo/delivery/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                                <a title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
 
