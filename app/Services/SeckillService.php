@@ -98,4 +98,14 @@ class SeckillService
             self::throwBizError($e->getMessage());
         }
     }
+
+
+    /**
+     * 以下，后台代码
+     */
+    //获取秒杀列表
+    public static function getAdminSeckillList($pager,$condition)
+    {
+        return SeckillRepo::getListBySearch($pager,$condition);
+    }
 }

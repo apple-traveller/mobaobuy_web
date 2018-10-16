@@ -309,8 +309,8 @@ class OrderInfoController extends Controller
             $order_delivery_goods_data[$k]['goods_id'] = $v['goods_id'];
             $order_delivery_goods_data[$k]['goods_name'] = $v['goods_name'];
             $order_delivery_goods_data[$k]['goods_sn'] = $v['goods_sn'];
-            if(!empty($v['send_number_delivery']) && $v['send_number_delivery']>$v['goods_number']){
-                return $this->error('发货数量不能大于下单数量');
+            if(!empty($v['send_number_delivery']) && $v['send_number_delivery']>$v['goods_number']-$v['send_number']){
+                return $this->error('发货数量不能大于剩余产品数量');
             }
             $order_delivery_goods_data[$k]['send_number'] = empty($v['send_number_delivery'])?0:$v['send_number_delivery'];
         }

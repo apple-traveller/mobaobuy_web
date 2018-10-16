@@ -185,6 +185,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
 
+        Route::any('/seckill/list', 'SeckillController@list');//秒杀活动列表
+        Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
+
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
         Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存
