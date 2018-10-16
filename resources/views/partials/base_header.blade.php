@@ -1,4 +1,4 @@
-<link href="http://at.alicdn.com/t/font_859393_aosu4lbumpf.css" rel="stylesheet">
+<link href="http://at.alicdn.com/t/font_859393_k63z0kfqy8.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{asset('plugs/jquery-ui/jquery-ui.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('css/base.css')}}">
 
