@@ -187,7 +187,7 @@ class UserController extends Controller
     {
         session()->forget('_web_user_id');
         session()->forget('_web_user');
-        session()->forget('_web_firm_id');
+        session()->forget('_curr_deputy_user');
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
