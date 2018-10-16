@@ -125,4 +125,33 @@ class SeckillService
     {
         return SeckillRepo::getListBySearch($pager,$condition);
     }
+
+    //修改
+    public static function modify($data)
+    {
+        return SeckillRepo::modify($data['id'],$data);
+    }
+
+    //获取商品信息
+    public static function getSeckillGoods($pager,$condition)
+    {
+        $seckill_goods = SeckillGoodsRepo::getListBySearch($pager,$condition);
+        foreach($seckill_goods['list'] as $k=>$v){
+            $good = GoodsRepo::getList([],['id'=>$v['goods_id']],['goods_name'])[0];
+            $seckill_goods['list'][$k]['goods_name']=$good['goods_name'];
+        }
+        return $seckill_goods;
+    }
+
+    //获取一条商品的数据
+    public static function getSeckillInfo($id)
+    {
+        return SeckillRepo::getInfo($id);
+    }
+
+    //获取时间段列表
+    public static function getSeckillTimeList($pager,$condition)
+    {
+        return SeckillTimeBucketRepo::getListBySearch($pager,$condition);
+    }
 }

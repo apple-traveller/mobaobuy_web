@@ -124,7 +124,8 @@ class OrderInfoService
                 $order_delivery_goods_data[$k]['delivery_id']=$orderDelivery['id'];
                 $orderDeliveryGoods = OrderDeliveryGoodsRepo::create($order_delivery_goods_data[$k]);
                 //修改order_goods表的已发货数量
-                OrderGoodsRepo::modify($orderDeliveryGoods['order_goods_id'],['send_number'=>$orderDeliveryGoods['send_number']]);
+                $order_goods = OrderGoodsRepo::getInfo($orderDeliveryGoods['order_goods_id']);
+                OrderGoodsRepo::modify($orderDeliveryGoods['order_goods_id'],['send_number'=>$order_goods['send_number']+$orderDeliveryGoods['send_number']]);
             }
             self::commit();
             return $orderDelivery;
