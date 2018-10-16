@@ -61,6 +61,7 @@ var Transport =
           url:url,
           type: transferMode,
           dataType: responseType,
+          context: document.body,
           data: params,
           success:callback
       });

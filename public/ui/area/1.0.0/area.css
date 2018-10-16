@@ -1,0 +1,91 @@
+.ui-area { position: relative;}
+
+.ui-area .tit {
+    padding: 0 10px;
+    border: 1px solid #d2d2d2;
+    height: 23px;
+    line-height: 23px;
+    cursor: pointer;
+}
+
+.ui-area.hover .tit {
+    border-bottom-color: #fff;
+    position: relative;
+    z-index: 11;
+}
+
+.ui-area .tit i{
+    float: right;
+}
+
+.ui-area .area-warp {
+    position: absolute;
+    border: 1px solid #d2d2d2;
+    width: 290px;
+    padding: 10px 23px 15px 18px;
+    top: 24px;
+    left: 0;
+    z-index: 10;
+    display: none;
+    background: #fff;
+}
+
+.ui-area.hover .area-warp {
+    display: block;
+}
+
+.ui-area .tab {
+    border-bottom: 1px solid #d2d2d2;
+    float: left;
+    width: 100%;
+    padding-left: 1px;
+    height: 24px;
+}
+
+.ui-area .tab li {
+    min-width: 36px;
+    float: left;
+    padding: 0 10px;
+    height: 23px;
+    line-height: 23px;
+    border: 1px solid #d2d2d2;
+    border-bottom: 0;
+    margin-left: -1px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.ui-area .tab li.curr {
+    border-bottom: 1px solid #fff;
+    border-top: 2px solid #f42424;
+    height: 22px;
+    color: #f42424;
+}
+
+.ui-area .tab-content {
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.ui-area .tab-content ul {
+    width: 300px;
+}
+
+.ui-area .tab-content li {
+    float: left;
+    width: 70px;
+    line-height: 18px;
+    margin: 0 5px 5px 0;
+}
+
+.ui-area .tab-content li a {
+    display: inline-block;
+    padding: 0 4px;
+    color: #333;
+}
+
+.ui-area .tab-content li a:hover {
+    background-color: #f42424;
+    color: #fff;
+}

@@ -294,7 +294,7 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (1, 'shop_reg_closed', 'select','0|否,1|是','','是否关闭店铺入驻','0','',''),
 (1, 'shop_reg_check', 'select','0|否,1|是','','店铺入驻是否需要审核','1','',''),
 (1, 'copyright', 'text','','','版权','© 2018-2019 塑创电商 版权所有','',''),
-(1, 'powered_by ', 'text','','','技术支持','塑创电商','',''),
+(1, 'powered_by', 'text','','','技术支持','塑创电商','',''),
 (1, 'admin_template', 'select','default|默认','','管理后台模板','default','',''),
 (1, 'template', 'select','default|默认','','会员模板','default','',''),
 (1, 'seller_template', 'select','default|默认','','商户后台模板','default','',''),
@@ -389,11 +389,11 @@ insert into article(cat_id,title,content,author,keywords,add_time,file_url) VALU
 (6,'联系方式','','','', now(), 'http://'),
 (6,'网站故障报告','','','', now(), 'http://'),
 (6,'投诉与建议','','','', now(), 'http://'),
-(6,'我的订单','','','', now(), 'http://'),
-(6,'我的收藏','','','', now(), 'http://'),
-(7,'产品质量保障','','','', now(), 'http://'),
-(7,'售后服务保障','','','', now(), 'http://'),
-(7,'退换货原则','','','', now(), 'http://');
+(7,'我的订单','','','', now(), 'http://'),
+(7,'我的收藏','','','', now(), 'http://'),
+(8,'产品质量保障','','','', now(), 'http://'),
+(8,'售后服务保障','','','', now(), 'http://'),
+(8,'退换货原则','','','', now(), 'http://');
 
 CREATE TABLE `article_cat` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -750,6 +750,21 @@ CREATE TABLE `order_goods` (
   KEY `order_id` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单明细表';
 
+DROP TABLE IF EXISTS `order_action_log`;
+CREATE TABLE `order_action_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `action_user` varchar(30) NOT NULL DEFAULT '' COMMENT '操作管理员',
+  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '操作后订单状态',
+  `shipping_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '操作后发货状态',
+  `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '操作后付款状态',
+  `action_place` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '操作前状态',
+  `action_note` varchar(255) NOT NULL DEFAULT '' COMMENT '操作描述',
+  `log_time` datetime NOT NULL COMMENT '日志时间',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单状态日志表';
+
 DROP TABLE IF EXISTS `shipping`;
 CREATE TABLE `shipping` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -775,6 +790,7 @@ CREATE TABLE `order_delivery` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `shipping_id` int(10) unsigned DEFAULT '0' COMMENT '快递公司ID',
   `shipping_name` varchar(120) DEFAULT NULL COMMENT '快递名称',
+  `shipping_billno` varchar(120) DEFAULT NULL COMMENT '运单号',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '个人会员ID',
   `firm_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '企业会员ID',
   `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
@@ -892,14 +908,15 @@ CREATE TABLE `seckill` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '秒杀活动自增ID',
   `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
   `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-  `title` varchar(50) NOT NULL COMMENT '秒杀活动标题',
   `begin_time` datetime NOT NULL COMMENT '开始时间',
   `end_time` datetime NOT NULL COMMENT '结束时间',
+  `tb_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀时段ID',
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用 1-启用 0-禁用',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
+  KEY `tb_id` (`tb_id`),
   KEY `review_status` (`review_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动';
 
@@ -907,14 +924,12 @@ DROP TABLE IF EXISTS `seckill_goods`;
 CREATE TABLE `seckill_goods` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `seckill_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀活动ID',
-  `tb_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀时段ID',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀商品ID',
   `sec_price` decimal(10,2) NOT NULL COMMENT '秒杀价格',
   `sec_num` smallint(5) NOT NULL COMMENT '秒杀总数量',
   `sec_limit` tinyint(3) NOT NULL COMMENT '限制数量',
   PRIMARY KEY (`id`),
   KEY `seckill_id` (`seckill_id`),
-  KEY `tb_id` (`tb_id`),
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动产品';
 

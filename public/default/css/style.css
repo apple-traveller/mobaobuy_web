@@ -1,0 +1,72 @@
+.form .item {line-height: 46px;display: inline-block;position: relative;}
+.form .item .item-libel {float:left; width: 150px;font-size: 14px;line-height: 45px;padding-right: 20px;text-align: right;}
+.form .item .item-info {float:left; width: 328px;line-height: 43px;height: 43px;border: 1px solid #DEDEDE;}
+.form .text {border: 0;padding: 0 10px; width:308px;}
+.input-tip {width: 330px;height: 26px;line-height: 26px;font-size: 12px;float: left;padding-left: 170px;position: relative;}
+.input-tip .error{color: #f42424;}
+.input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
+
+.blackgraybg input{}
+
+.top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
+.top-box .account a{padding: 0 5px;}
+.top-box .account a.link-login{color:red;}
+.top-box .quick-menu a {padding: 0 12px;border-right: 1px solid #DEDEDE;}
+.top-box .quick-menu span{padding: 0 12px;}
+
+.footer-service-box {clear: both;background-color: #FFFFFF;}
+.footer-service-box .icons {overflow: hidden;}
+.footer-service-box .icons li{float: left;height: 50px;line-height: 50px;margin: 25px auto; margin-left: 132px;}
+.footer-service-box .icons li:first-child{margin-left: 0;}
+.footer-service-box .icons li div{width: 50px;height: 50px;float:left !important;}
+.footer-service-box .icons li h1{height: 50px;line-height: 50px;font-size: 16px;margin-left: 10px;float: left;}
+.footer-service-box .icons li .icon01{background: url('/images/service_01.png')no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon02{background: url('/images/service_02.png')no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon03{background: url('/images/service_03.png')no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon04{background: url('(/images/service_04.png')no-repeat;background-size: 100% 100%;}
+
+.footer-new-box{background-color: #FFFFFF;border-top: 1px solid #DEDEDE;font-size: 0;padding: 20px; 0px;overflow: hidden;}
+.footer-new-box .new-list{}
+.footer-new-box .new-list li {float: left;width: 190px;}
+.footer-new-box .new-list li h4 {font-size: 16px;padding-bottom: 5px;}
+.footer-new-box .new-list li a {display: block;line-height: 30px;color: #666;font-size: 14px;}
+.footer-new-box .new-list .tel {font-size: 14px;width: 280px;text-align: center;padding-top: 0px;border-left: 1px solid #DEDEDE;}
+
+.copyright-box{text-align: center;padding: 25px 0;color: #ccc;background-color: #F7F7F7;clear: both;}
+.copyright-box .links a{color: #999;padding: 0 10px;}
+.copyright-box .copyright{padding-top: 10px;color: #999;}
+
+.logo-box{width: 1200px;height: 95px;margin: 0 auto;}
+.logo-box .logo{height: 100%;float: left; width: 200px;position: relative;}
+.logo-box .logo img{max-height: 70%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
+
+.login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
+.login-box .login-title {font-size: 16px;}
+.login-box .login-item {margin-top: 20px;}
+.login-box .login_input{width: 100%; height:42px;padding: 15px;box-sizing: border-box;color: #666;}
+.login-box .login_input::-webkit-input-placeholder{color: #ccc;}
+.login-box .login_input::-moz-placeholder{color: #ccc;}
+.login-box .login_input:-ms-input-placeholder{color: #ccc;}
+
+.login-box .login_btn{width: 100%;background-color: #75b335;height: 42px;line-height: 42px;border: none;color: #fff;cursor: pointer;font-size: 16px;}
+.login-box .login-error {height:42px;line-height: 42px;margin:0 auto 15px;border: 1px solid #f40000;background-color:#fef2f2;padding-left: 20px;display: none;}
+.login-box .login-error i{color: red;}
+.login-box .login-error .error-content{font-size: 14px;margin-left: 15px;}
+
+.register-title{width: 1200px;height: 95px;margin: 0 auto;}
+.register-title .logo{height: 100%;float: left; width: 200px;position: relative;}
+.register-title .logo img{max-height: 70%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.register-title .go-login{height: 100%;line-height: 95px;color: #666;font-size: 14px;float: right;}
+
+.register-type {display: block;background-color: #f4f4f4;border-bottom: 1px solid #ddd;}
+.register-type ul {width: 376px;margin: 0 auto;}
+.register-type li {width: 188px;height: 45px;line-height: 45px;font-size: 16px;float: left;text-align: center;margin: 0;cursor: pointer;}
+.register-type li.curr {border-bottom: 1px solid #75b335;color: #75b335;cursor: default;}
+
+.register-box {width: 1200px;margin: 0 auto;overflow: hidden;background: #FFFFFF;}
+.register-form {width: 500px;margin: 0 auto;overflow: hidden;padding-top: 20px;}
+.register-checkbox {text-align: center !important;margin-top: 10px;font-size: 14px;}
+.register-button{display: block;width: 330px;height: 46px;line-height: 46px;background-color: #75b335;border: 0;margin: 20px auto 40px;color: #fff;font-size: 16px;cursor:pointer;}
+.register-button-gray{display: block;width: 330px;height: 46px;line-height: 46px;background-color: #aaa;border: 0;margin: 20px auto 40px;color: #fff;font-size: 16px;}
+

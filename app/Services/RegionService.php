@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Repositories\RegionRepo;
+use Illuminate\Support\Facades\Cache;
+
 class RegionService
 {
     use CommonService;
@@ -10,6 +12,15 @@ class RegionService
     {
         $info = RegionRepo::getList([],['parent_id'=>$parent_id]);
         return $info;
+    }
+
+    public static function getLevelRegion($level, $parent_id)
+    {
+        $value = Cache::rememberForever('_region_' . $level . '_' . $parent_id, function () use ($level, $parent_id) {
+            return RegionRepo::getList([], ['parent_id' => $parent_id, 'region_type' => $level]);
+        });
+        return $value;
+
     }
 
     //根据region_type获取地区
