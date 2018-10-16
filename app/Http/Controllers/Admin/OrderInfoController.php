@@ -26,7 +26,7 @@ class OrderInfoController extends Controller
             $condition['order_sn'] = "%".$order_sn."%";
         }
         $orders = OrderInfoService::getOrderInfoList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        $users = UserService::getUsersByColumn(['id','user_name']);
+        $users = UserService::getUsersByColumn([],['id','user_name']);
         return $this->display('admin.orderinfo.list',[
             'orders'=>$orders['list'],
             'total'=>$orders['total'],
@@ -111,21 +111,6 @@ class OrderInfoController extends Controller
         }
     }
 
-    //修改发货单号
-    public function modify3(Request $request)
-    {
-        $data = [
-            'id'=>$request->input('id'),
-            'shipping_time'=>$request->input('val'),
-        ];
-        //已经发货不能修改发货单号
-        try{
-            $flag = OrderInfoService::modify($data);
-            return $this->result($flag['auto_delivery_time'],200,'修改成功');
-        }catch(\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
 
     //修改订单状态
     public function modifyStatus(Request $request)
@@ -281,6 +266,166 @@ class OrderInfoController extends Controller
             return $this->result('',400,$e->getMessage());
         }
     }
+
+    //生成发货单
+    public function delivery(Request $request)
+    {
+        $currpage = $request->input('currpage');
+        $order_id = $request->input('order_id');
+        //查询所有的快递信息
+        $shippings = OrderInfoService::getShippingList();
+        //查询该订单的所有商品信息
+        $orderGoods = OrderInfoService::getOrderGoodsByOrderid($order_id);
+
+        return $this->display('admin.orderinfo.delivery',[
+
+            'shippings'=>$shippings,
+            'currpage'=>$currpage,
+            'orderGoods'=>$orderGoods,
+            'id'=>$order_id
+        ]);
+    }
+
+    //发货单商品（渲染表单）
+    public function GoodsForm(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        $orderGoods = OrderInfoService::getOrderGoodsList($order_id);
+        return json_encode(['count'=>$orderGoods['total'],'data'=>$orderGoods['list'],'code'=>0,'msg'=>'']);
+    }
+
+    //保存发货单
+    public function saveDelivery(Request $request)
+    {
+        $data = $request->all();
+        $order_id = $request->input('order_id');
+        unset($data['layTableCheckbox']);
+        $orderDeliveryGoodsData = json_decode($data['send_number_delivery'],true);
+        $order_delivery_goods_data = []; //发货单商品信息
+        foreach($orderDeliveryGoodsData as $k=>$v){
+            $order_delivery_goods_data[$k]['order_goods_id'] = $v['id'];
+            $order_delivery_goods_data[$k]['shop_goods_id'] = $v['shop_goods_id'];
+            $order_delivery_goods_data[$k]['shop_goods_quote_id'] = $v['shop_goods_quote_id'];
+            $order_delivery_goods_data[$k]['goods_id'] = $v['goods_id'];
+            $order_delivery_goods_data[$k]['goods_name'] = $v['goods_name'];
+            $order_delivery_goods_data[$k]['goods_sn'] = $v['goods_sn'];
+            if(!empty($v['send_number_delivery']) && $v['send_number_delivery']>$v['goods_number']){
+                return $this->error('发货数量不能大于下单数量');
+            }
+            $order_delivery_goods_data[$k]['send_number'] = empty($v['send_number_delivery'])?0:$v['send_number_delivery'];
+        }
+        $order_delivery = [];//发货单信息
+        $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+        $order_delivery_data['delivery_sn'] = $this->microtime_float()['mi'];
+        $order_delivery_data['order_id'] = $order_id;
+        $order_delivery_data['order_sn'] = $orderInfo['order_sn'];
+        $order_delivery_data['add_time'] = Carbon::now();
+        $order_delivery_data['shipping_id'] = $data['shipping_id'];
+        $order_delivery_data['shipping_name'] = $data['shipping_name'];
+        $order_delivery_data['shipping_billno'] = $data['shipping_billno'];
+        $order_delivery_data['user_id'] = $orderInfo['user_id'];
+        $order_delivery_data['firm_id'] = $orderInfo['firm_id'];
+        $order_delivery_data['shop_id'] = $orderInfo['shop_id'];
+        $order_delivery_data['shop_name'] = $orderInfo['shop_name'];
+        $order_delivery_data['action_user'] = session()->get('_admin_user_info')['real_name'];
+        $order_delivery_data['consignee'] = $orderInfo['consignee'];
+        $order_delivery_data['address'] = $orderInfo['address'];
+        $order_delivery_data['country'] = $orderInfo['country'];
+        $order_delivery_data['province'] = $orderInfo['province'];
+        $order_delivery_data['city'] = $orderInfo['city'];
+        $order_delivery_data['district'] = $orderInfo['district'];
+        $order_delivery_data['street'] = $orderInfo['street'];
+        $order_delivery_data['zipcode'] = $orderInfo['zipcode'];
+        $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];
+        $order_delivery_data['postscript'] = $orderInfo['postscript'];
+        $order_delivery_data['update_time'] = Carbon::now();
+        $order_delivery_data['status'] = 0;
+        //dd($order_delivery_data);
+        try{
+            $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
+            if(!empty($orderDelivery)){
+                return $this->success('生成发货单成功',url('/admin/orderinfo/delivery/list')."?order_sn=".$orderDelivery['order_sn']);
+            }
+            return $this->error('生成发货单失败');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //发货单列表
+    public function deliveryList(Request $request)
+    {
+        $order_sn = $request->input('order_sn');
+        $currpage = $request->input('currpage',1);
+        $pageSize = 10;
+        $condition = [];
+        if($order_sn!=""){
+            $condition['order_sn'] = "%".$order_sn."%";
+        }
+        $deliverys = OrderInfoService::getDeliveryList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->display('admin.orderinfo.deliverylist',[
+            'deliverys'=>$deliverys['list'],
+            'total'=>$deliverys['total'],
+            'pageSize'=>$pageSize,
+            'currpage'=>$currpage,
+            'order_sn'=>$order_sn,
+        ]);
+    }
+
+    //发货单详情
+    public function deliveryDetail(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage');
+        $delivery = OrderInfoService::getDeliveryInfo($id);
+        //地区信息
+        $region = RegionService::getRegion($delivery['country'],$delivery['province'],$delivery['city'],$delivery['district']);
+        //商品信息
+        $delivery_goods = OrderInfoService::getDeliveryGoods($id);
+        //dd($delivery_goods);
+        return $this->display('admin.orderinfo.deliverydetail',[
+            'currpage'=>$currpage,
+            'delivery'=>$delivery,
+            'region'=>$region,
+            'delivery_goods'=>$delivery_goods,
+        ]);
+    }
+
+    //修改快递号
+    public function modifyShippingBillno(Request $request)
+    {
+        $data = [
+            'id'=>$request->input('id'),
+            'shipping_billno'=>$request->input('val'),
+        ];
+        try{
+            $flag = OrderInfoService::modifyDelivery($data);
+            return $this->result($flag['shipping_billno'],200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //修改发货状态
+    public function modifyDeliveryStatus(Request $request)
+    {
+        $data = $request->all();
+        try{
+            $flag = OrderInfoService::modifyDeliveryStatus($data);
+            //修改订单表的发货状态
+            return $this->result('',200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    public function microtime_float()
+    { /* 微秒 */
+        list($usec, $sec) = explode(' ', microtime()); /* 非科学计数法 */
+        return array('ms' => microtime(true) * 10000, 'mi' => sprintf("%.0f", ((float)$usec + (float)$sec) * 100000000),);
+    }
+
+
 
 
 

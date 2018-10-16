@@ -58,15 +58,16 @@ class NavController extends Controller
             return $this->error(implode('<br/>',$errorMsg));
         }
         try{
-            if(empty($id)){
+            if(!key_exists('id',$data)){
                 NavService::uniqueValidate($data['name']);//唯一性验证
                 $info = NavService::create($data);
+
                 if(empty($info)){
                     return $this->error('保存失败');
                 }
             }else{
                 //NavService::uniqueValidate($data['name']);//唯一性验证
-                $info = NavService::modify($id,$data);
+                $info = NavService::modify($data);
                 if(empty($info)){
                     return $this->error('保存失败');
                 }

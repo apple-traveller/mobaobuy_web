@@ -309,9 +309,9 @@ class UserService
     }
 
     //获取指定字段的所有数据
-    public static function getUsersByColumn($column)
+    public static function getUsersByColumn($condition,$column)
     {
-        return UserRepo::getList([],[],$column);
+        return UserRepo::getList([],$condition,$column);
     }
 
 }

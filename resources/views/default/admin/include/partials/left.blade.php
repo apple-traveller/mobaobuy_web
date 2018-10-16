@@ -166,9 +166,9 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="goods_booking.php?act=list_all" data-param="menushopping|06_undispose_booking" target="workspace">缺货登记</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=add" data-param="menushopping|08_add_order" target="workspace">添加订单</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="order.php?act=delivery_list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=back_list" data-param="menushopping|10_back_order" target="workspace">退货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="mc_order.php" data-param="menushopping|11_add_order" target="workspace">批量添加订单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="order.php?act=back_cause_list" data-param="menushopping|11_back_cause" target="workspace">退货原因列表</a></li>
