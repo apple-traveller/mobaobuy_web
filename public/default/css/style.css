@@ -7,8 +7,14 @@
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
+.top-box .account li.site-nav-menu{float: left}
+.top-box .account li.site-nav-menu .site-nav-menu-list{z-index: 10001;position: relative;display: none;margin-top: -1px;}
+.site-nav-menu-list .menu-bd-panel{position: absolute;left: 0;top: 0;padding: 8px;line-height: normal;border: 1px solid #EEE;background: #FFF;}
+.site-nav-menu-list li{height: 29px;line-height: 29px;padding-left: 8px;cursor: pointer;}
+.site-nav-menu-list li:hover{background-color: #f4f4f4;}
 .top-box .account a{padding: 0 5px;}
 .top-box .account a.link-login{color:red;}
+.top-box .account .company-select{color:#999;cursor:pointer;position: absolute;top:35px;left:-1px;z-index:5;width: 98px;text-align: center;border-left: 1px solid #DEDEDE;border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
 .top-box .quick-menu a {padding: 0 12px;border-right: 1px solid #DEDEDE;}
 .top-box .quick-menu span{padding: 0 12px;}
 
@@ -75,10 +81,12 @@
 
 .member_left {width: 216px;border-top: 4px solid #75b335;border-left: 1px solid #DEDEDE;border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;background-color: #fff;box-sizing: border-box;float: left;}
 .member_left .member_list_mode {margin-top: 30px;overflow: hidden;}
-.member_list_mode h1 {font-size: 16px;padding-left: 24px;margin-left: 30px;}
+.member_list_mode h1 {font-size: 16px;margin-left: 30px;}
+.member_list_mode .iconfont{font-size: 22px;float:left;line-height: 22px;color:#cfcfcf;margin-right: 4px;}
 .member_left_list {margin-top: 20px;color: #666;}
 .member_left_list li {display: block;margin-top: 10px;padding-left: 52px;cursor: pointer;}
 .member_left_list li:last-child {position: relative;margin-top: 40px;}
 .member_left_list li.curr {border-left: 4px solid #75b335;color: #75b335;box-sizing: border-box;padding-left: 48px;}
 .member_list_mode .bottom {position: absolute;top: -7px;z-index: 1;width: 66px;height: 3px;background-color: #75b335;}
 .member_list_mode .line {width: 100%;position: absolute;top: -6px;height: 1px;background-color: #DEDEDE;}
+

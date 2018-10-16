@@ -1,5 +1,5 @@
-@extends(themePath('.')."admin.include.layouts.master")
-@section('iframe')
+@extends(themePath('.')."seller.include.layouts.master")
+@section('body')
     <div class="warpper">
         <div class="title">发货单 - 发货单列表</div>
         <div class="content">
@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="search">
-                        <form action="/admin/orderinfo/delivery/list" name="searchForm" >
+                        <form action="/seller/delivery/list" name="searchForm" >
                             <div class="input">
                                 <input type="text" name="order_sn" value="{{$order_sn}}" class="text nofocus w180" placeholder="订单编号" autocomplete="off">
                                 <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
@@ -78,7 +78,8 @@
 
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/orderinfo/delivery/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                <a href="/seller/delivery/detail?id={{$vo['id']}}&currentPage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                {{--<a title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>--}}
                                             </div>
                                         </td>
 
@@ -125,10 +126,10 @@
                     elem: 'page' //注意，这里 是 ID，不用加 # 号
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
-                    , curr: "{{$currpage}}"  //当前页
+                    , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/orderinfo/delivery/list?currpage="+obj.curr+"&order_sn={{$order_sn}}";
+                            window.location.href="/seller/delivery/list?currentPage="+obj.curr+"&order_sn={{$order_sn}}";
                         }
                     }
                 });

@@ -37,7 +37,7 @@
 @endsection
 @section('body')
     <div class="warpper">
-        <div class="title"><a href="/seller/seckill/list" class="s-back">返回</a>订单 - 编辑商品</div>
+        <div class="title"><a href="/seller/seckill/list" class="s-back">返回</a>秒杀申请列表</div>
         <div class="title">商品</div>
         <div class="search_div">
             <table class="layui-hide" id="test_goods"></table>

@@ -67,7 +67,7 @@
                                             </div>
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['consignee']}}<br>{{$vo['mobile_phone']}}</div></td>
+                                        <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
                                         <td>
                                             <div class="tDiv">
                                                 @if($vo['order_status']==0)已作废
