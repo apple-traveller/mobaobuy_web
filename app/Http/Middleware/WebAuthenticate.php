@@ -35,6 +35,7 @@ class WebAuthenticate
             $info = [
                 'is_self' => 1,
                 'is_firm' => session('_web_user')['is_firm'],
+                'firm_id'=>0,
                 'name' => session('_web_user')['nick_name']
             ];
             session()->put('_curr_deputy_user', $info);
