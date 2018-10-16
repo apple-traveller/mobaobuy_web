@@ -11,7 +11,7 @@
             </div>
             <div class="flexilist">
                 <div class="mian-info">
-                    <form name="theForm" action="/admin/orderinfo/saveOrderGoods" method="post" id="consignee" novalidate="novalidate">
+                    <form name="theForm" action="" method="post" id="consignee" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="step_title pb5">
                                 <i class="ui-step"></i>

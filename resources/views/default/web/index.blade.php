@@ -21,63 +21,42 @@
 </head>
 <body>
 首页
+@if(session('_web_user_id'))
 <div>
-   <!--  <ul>
-        @foreach($firmInfo as $v)
-            <li id="{{$v['id']}}">{{$v['nick_name']}}</li>
-        @endforeach
-    </ul> -->
-     
     <select id="selectCompany" onchange="selectCompany();">
-            <option value="0">个人</option>
-         @foreach($firmInfo as $v)
-             <option value="{{$v['id']}}">{{$v['nick_name']}}</option>
-        @endforeach
-        <input type="hidden" name="hiddenSelect" value="{{$userId}}">
+        @if(!session('_web_user')['is_firm'])
+            <option @if(session('_curr_deputy_user')['is_self']) selected @endif value="0">个人</option>
+            @foreach(session('_web_user')['firms'] as $v)
+            <option @if(session('_curr_deputy_user')['firm_id'] == $v['firm_id']) selected @endif value="{{$v['firm_id']}}">{{$v['firm_name']}}</option>
+            @endforeach
+        @else
+            <option value="0">{{session('_web_user')['nick_name']}}</option>
+        @endif
     </select>
   </div>
+@endif
 <ul>
+    @if(session('_web_user_id'))
     <li><a href="/member">会员中心</a></li>
     <li><a href="/logout">退出</a></li>
+    @else
+    <li><a href="{{route('login')}}">登录</a></li>
+    <li><a href="{{route('register')}}">注册</a></li>
+    @endif
+
+        <li><a href="/goodsQuote">报价列表</a></li>
+        <li><a href="/goodsList">商品列表</a></li>
 </ul>
-<div style="width:1620px;margin:0 auto;height:200px;text-align:center;">
-    <ul style="display: inline-block;overflow: auto;">
-        @foreach($articleCat as $k=>$v)
-        <li style="float: left;list-style: none;display: inline;width:100px;height:200px;">{{$v['cat_name']}}
-            @if(isset($v['child']))
-            <ul style="text-align:center;display: inline;">
-                @foreach($v['child'] as $vv)
-                <li style="list-style: none;width:120px;text-align:center;"><a href="/article/{{$vv['id']}}">{{ $vv['title'] }}</a></li>
-                @endforeach
-            </ul>
-            @else
-            @endif
-        </li>
-        @endforeach
-    </ul>
-</div>
+
 </body>
 </html>
 <script type="text/javascript">
-    $(function(){
-         hiddenVal = $('input[name=hiddenSelect]').val();
-        $('#selectCompany').val(hiddenVal);
-    })
 
     //选择公司
     function selectCompany(){
         var selectCompanyId = $('#selectCompany').val();
-        var selectCompanyName = $('#selectCompany').find('option:selected').text();
-        $.ajax({
-            url:"{{url('selectCompany')}}",
-            dataType:'json',
-            data:{'user_id':selectCompanyId},
-            type:'POST',
-            success:function(res){
-                if(res.code){
-                     alert('切换成功');
-                }
-            }
-        })
+        Ajax.call("{{url('changeDeputy')}}", {user_id:selectCompanyId},function(result){
+            window.location.reload();
+        },"POST", "JSON");
     }
 </script>

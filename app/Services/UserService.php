@@ -64,12 +64,13 @@ class UserService
             $data['nick_name'] = 'a'.str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT);
         }
 
+        $user_id = 0;
         if ($data['is_firm']) {
             //企业
             //查找黑名单表是否存在
             $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $data['nick_name']]);
             if ($firmBlack) {
-                throwBizError('此用户已被冻结，请联系管理员');
+                self::throwBizError('企业已被冻结');
             }
             $data['nick_name'] = $data['company_name'];
             if(!self::checkCompanyNameCanAdd($data['company_name'])){
@@ -112,7 +113,7 @@ class UserService
                 $userReal['user_id'] = $user['id'];
                 UserRealRepo::create($userReal);
                 self::commit();
-                return $user['id'];
+                $user_id = $user['id'];
             }catch (\Exception $e){
                 self::rollBack();
                 throw $e;
@@ -124,8 +125,11 @@ class UserService
                 $data['is_validated'] = 1;
             }
             $user_info = UserRepo::create($data);
-            return $user_info['id'];
+            $user_id = $user_info['id'];
         }
+        //登录成功后事件
+        createEvent('webUserRegister', ['user_id'=>$user_id]);
+        return $user_id;
     }
 
     //用户登录
@@ -172,10 +176,22 @@ class UserService
             self::throwBizError('用户名已被冻结！');
         }
         if (!$info['is_validated']) {
-            self::throwBizError('账号需待审核通过后才可操作！');
+            self::throwBizError('账号审核通过后才可操作！');
         }
         $newData['password'] = bcrypt($new_pwd);
         return UserRepo::modify($info['id'], $newData);
+    }
+
+    public static function getUserFirms($user_id){
+        $firm_list = FirmUserRepo::getList([],['user_id'=>$user_id]);
+        if($firm_list){
+            foreach($firm_list as &$item){
+                $firm_info = UserRepo::getInfo($item['firm_id']);
+                $item['firm_name'] = $firm_info['nick_name'];
+            }
+            return $firm_list;
+        }
+        return [];
     }
 
     //设置支付密码
@@ -318,9 +334,9 @@ class UserService
     }
 
     //获取指定字段的所有数据
-    public static function getUsersByColumn($column)
+    public static function getUsersByColumn($condition,$column)
     {
-        return UserRepo::getList([],[],$column);
+        return UserRepo::getList([],$condition,$column);
     }
 
 }

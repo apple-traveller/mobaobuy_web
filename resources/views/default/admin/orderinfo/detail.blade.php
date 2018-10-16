@@ -101,14 +101,7 @@
                                 <dl>
                                     <dt>发货时间：</dt>
                                     <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
-                                    <dt>发货单号：</dt>
-                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else
-                                            <div class="editSpanInput" ectype="editSpanInput">
-                                                <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/modify3')}}','{{$orderInfo['id']}}')">{{$orderInfo['shipping_time']}}</span>
-                                                <span>天</span>
-                                                <i class="icon icon-edit"></i>
-                                            </div>
-                                        @endif</dd>
+
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
@@ -157,21 +150,21 @@
 
                                 <dl>
                                     <dt>开票地址:</dt>
-                                    <dd>{{$user_invoices['company_address']}}</dd>
+                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else 无 @endif</dd>
                                     <dt>开票电话：</dt>
-                                    <dd>{{$user_invoices['company_telephone']}}</dd>
+                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票地址:</dt>
-                                    <dd>{{$user_invoices['consignee_address']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
                                     <dt>收票电话：</dt>
-                                    <dd>{{$user_invoices['consignee_mobile_phone']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])) {{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票人:</dt>
-                                    <dd>{{$user_invoices['consignee_name']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -213,10 +206,17 @@
                                         </tr>
                                         @endforeach
                                         <tr>
-                                            <td colspan="12">
+                                            <td colspan="6">
                                                 <div class="order_total_fr">
                                                     <strong>合计：</strong>
                                                     <span class="red"><em>¥</em>{{$orderInfo['goods_amount']}}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="order_total_fr">
+                                                    <div class="layui-btn layui-btn-sm order_delivery" data-status="{{$orderInfo['shipping_status']}}" style="margin-right: 30px;"><a href="/admin/orderinfo/delivery?order_id={{$orderInfo['id']}}&currpage={{$currpage}}">生成发货单</a></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -412,6 +412,18 @@
                     }
                 },"json");
             });
+
+            $(".order_delivery").click(function(){
+                var shipping_status = $(this).attr('data-status');
+                if(shipping_status==1){
+                    layer.msg("已发货", {
+                        icon: 6,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+
+                   $(this).children("a").attr('href',"#");
+                }
+            })
         });
     </script>
 @stop

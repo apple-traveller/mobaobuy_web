@@ -144,28 +144,28 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>{{$user_invoices['company_name']}}</dd>
+                                    <dd>@if(!empty($user_invoices['shop_name'])) {{ $user_invoices['shop_name'] }}@else  @endif </dd>
                                     <dt>税号:：</dt>
-                                    <dd>{{$user_invoices['tax_id']}}</dd>
+                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else  @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>开票地址:</dt>
-                                    <dd>{{$user_invoices['company_address']}}</dd>
+                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else  @endif</dd>
                                     <dt>开票电话：</dt>
-                                    <dd>{{$user_invoices['company_telephone']}}</dd>
+                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else  @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票地址:</dt>
-                                    <dd>{{$user_invoices['consignee_address']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else  @endif</dd>
                                     <dt>收票电话：</dt>
-                                    <dd>{{$user_invoices['consignee_mobile_phone']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])){{$user_invoices['consignee_mobile_phone']}} @else  @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票人:</dt>
-                                    <dd>{{$user_invoices['consignee_name']}}</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else  @endif</dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>

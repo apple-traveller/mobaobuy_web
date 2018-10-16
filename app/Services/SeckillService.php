@@ -7,6 +7,7 @@
  */
 namespace App\Services;
 
+use App\Repositories\GoodsRepo;
 use App\Repositories\SeckillGoodsRepo;
 use App\Repositories\SeckillRepo;
 use App\Repositories\SeckillTimeBucketRepo;
@@ -20,26 +21,34 @@ class SeckillService
     public static function getSellerSeckillList($pager,$where)
     {
         $list = SeckillRepo::getListBySearch($pager,$where);
-
-        foreach ($list['list'] as $k=>$v){
-
-            // 将商品信息塞入list
-            $goods = SeckillGoodsRepo::getList([],['seckill_id'=>$v['id']]);
-           foreach ($goods as $k1=>$v1){
-               $goods[$k1]['goods_name'] = ShopGoodsRepo::getInfo($v1['goods_id']);
-               $list['list'][$k1]['goods'] = $goods;
-           }
-            // 将秒杀时间段塞入list
-            $SeckillTime = SeckillTimeBucketRepo::getInfo($goods[0]['tb_id']);
-            $list['list'][$k]['seckill_time'] = $SeckillTime['title'];
-        }
-
         return $list;
     }
 
+    public static function listInfo($seckill_id)
+    {
+        $goods = SeckillGoodsRepo::getList([],['seckill_id'=>$seckill_id]);
+        foreach ($goods as $k1=>$v1) {
+            $goods[$k1]['goods_name'] = GoodsRepo::getInfo($v1['goods_id'])['goods_name'];
+        }
+        return $goods;
+    }
+    /**
+     * 时间段列表
+     * @return mixed
+     */
     public static function getSeckillTime()
     {
         return SeckillTimeBucketRepo::getList([],[]);
+    }
+
+    /**
+     * 时间段详情
+     * @param $tb_id
+     * @return array
+     */
+    public static function timeInfo($tb_id)
+    {
+        return SeckillTimeBucketRepo::getInfo($tb_id);
     }
 
     /**
@@ -51,9 +60,13 @@ class SeckillService
      */
     public static function sellerSeckillSave($shop_info,$data)
     {
+        $time_bucket = SeckillService::timeInfo($data[0]['tb_id']);
         $secKill_data = [
             'shop_id' =>$shop_info['id'],
             'shop_name' =>$shop_info['shop_name'],
+            'tb_id' => $data[0]['tb_id'],
+            'begin_time' => date('Y-m-d H:i:s',strtotime($data[0]['date_time'].$time_bucket['begin_time'])),
+            'end_time' => date('Y-m-d H:i:s',strtotime($data[0]['date_time'].$time_bucket['end_time'])),
             'add_time' => Carbon::now(),
             'review_status' => 1
         ];
@@ -64,7 +77,6 @@ class SeckillService
         foreach ($data as $k=>$v){
             $seckill_goods_data = [
                 'seckill_id' => $re_secKill['id'],
-                'tb_id' => $v['tb_id'],
                 'goods_id' => $v['goods_id'],
                 'sec_price' => $v['sec_price'],
                 'sec_num' => $v['sec_num'],
@@ -80,6 +92,11 @@ class SeckillService
         }
     }
 
+    /**
+     * @param $seckill_id
+     * @return bool
+     * @throws \Exception
+     */
     public static function deleteSellerSeckll($seckill_id)
     {
         try{
@@ -97,5 +114,15 @@ class SeckillService
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
+    }
+
+
+    /**
+     * 以下，后台代码
+     */
+    //获取秒杀列表
+    public static function getAdminSeckillList($pager,$condition)
+    {
+        return SeckillRepo::getListBySearch($pager,$condition);
     }
 }
