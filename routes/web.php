@@ -325,6 +325,8 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/seckill/add', 'SeckillController@addForm');
         Route::post('/seckill/save', 'SeckillController@save');
         Route::post('/seckill/delete', 'SeckillController@delete');
+        Route::get('/seckill/goods_list', 'SeckillController@goods_list');
+        Route::get('/seckill/list_detail', 'SeckillController@list_detail');
     });
 });
 
