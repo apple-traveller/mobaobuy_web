@@ -130,7 +130,8 @@ class UserController extends Controller
                 UserService::userRegister($data);
 
                 if(getConfig('firm_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', '/');
+                      return redirect('/verifyReg');
+//                    return $this->success('提交成功，请等待审核！', '/');
                 }else{
                     return $this->success('注册成功！', '/');
                 }
@@ -174,6 +175,12 @@ class UserController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //注册审核页面
+    public function verifyReg(){
+        return $this->display('web.user.register.verifyReg');
+    }
+
 
     //登出
     public function logout()

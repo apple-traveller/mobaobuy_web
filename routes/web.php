@@ -208,10 +208,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd','UserController@userFindPwd');//忘记密码
     Route::post('/findPwd','UserController@userFindPwd');
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
+    Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
     Route::group(['middleware' => 'web.auth'], function () {
 
-        Route::get('/middle','UserController@middlePage');//中间页
         Route::post('/selectCompany','IndexController@selectCompany');//选择公司
         Route::get('/', 'IndexController@index'); //首页
 

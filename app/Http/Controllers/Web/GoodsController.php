@@ -139,6 +139,7 @@ class GoodsController extends Controller
             return $this->error();
         }
         try{
+
             GoodsService::editCartNum($id,$cartNum);
             return $this->success();
         }catch (\Exception $e){
