@@ -27,18 +27,4 @@ class IndexService
     public static function article($id){
         return ArticleRepo::getInfo($id);
     }
-
-    //个人选择哪家公司操作
-    public static function getUserInfoByFirmId($userId){
-        $firmUserInfo =  FirmUserRepo::getList([],['user_id'=>$userId]);
-        $userInfo = [];
-        if($firmUserInfo){
-            foreach($firmUserInfo as $k=>$v){
-        //                $firmUserInfo[$k]['firm_id'] = UserRepo::getInfo($v['firm_id'])['nick_name'];
-                $userInfo[] = UserRepo::getInfo($v['firm_id']);
-            }
-            return $userInfo;
-        }
-        return [];
-    }
 }
