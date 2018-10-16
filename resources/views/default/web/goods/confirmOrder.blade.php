@@ -28,6 +28,23 @@
 	</div>
 	<!-- encrypt( -->
 	<br>
+	<div style="margin-top:50px;height:80px;">
+	选择开票地址
+		<div>
+			@if($invoicesInfo)
+			@foreach($invoicesInfo as $v)
+				<div class="selectInvoicesInfo" style="float:left;width:160px;border:solid 1px;" onclick="selectInvoicesInfo(this)">
+					<input type="hidden" name="hiddenId" value="{{encrypt($v['id'])}}">
+					<div>{{$v['company_name']}}</div>
+					<div>{{$v['bank_of_deposit']}}</div>
+					<div>{{$v['bank_account']}}</div>
+				</div>
+			@endforeach
+			@else
+			为空
+			@endif
+		</div>
+	</div>
 	<table border="1" style="width:1100px;clear:both;">
 		<tr>
 			<th>商品名称</th>
@@ -52,22 +69,19 @@
 </html>
 <script type="text/javascript">
 	var selectedAdd = '';
+	var selectInvoices = '';
 	//提交订单
 	function createOrder(){
-		// var addressInfo = $('.selectAddress input').attr('style').indexOf('color');
-		// var addressInfo = $('.selectAddress').css('color');
-		// .children('input').val();
-		// $('.selectAddress').each(function(){
-		// 	var a = $(this).css('color');
-		// 	console.log(a);
-		// 	return;
-		// })
-		
+		if(selectedAdd == '' || selectInvoices == ''){
+			alert('收货地址或发票信息不能为空');
+			return;
+		}
 		$.ajax({
 			url: "/createOrder",
 			dataType: "json",
 			data: {
-				'address':selectedAdd
+				'address':selectedAdd,
+				'invoices':selectInvoices
 			},
 			type: "POST",
 			success: function (data) {
@@ -86,5 +100,12 @@
 		selectedAdd =  $(obj).children('input[type=hidden]').val();
 		$(obj).css('color','red');
 		$(obj).siblings('.selectAddress').css('color','');
+	}
+
+	//选中发票
+	function selectInvoicesInfo(obj){
+		selectInvoices = $(obj).children('input[type=hidden]').val();
+		$(obj).css('color','red');
+		$(obj).siblings('.selectInvoicesInfo').css('color','');
 	}
 </script>

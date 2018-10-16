@@ -1,8 +1,10 @@
 <?php
 namespace App\Services;
+use App\Repositories\FirmUserRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\GsxxCompanyRepo;
+use App\Repositories\GsxxSupplierRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
@@ -98,17 +100,17 @@ class UserService
                 'taxpayer_id' => '',
                 'add_time' => Carbon::now(),
             ];
-            $supplierInfo = GsxxSupplierRepo::getInfoByFields(['is_checked'=>1]);
-            if($supplierInfo){
-                $userReal['taxpayer_id'] = $supplierInfo['CreditCode'];
-                $userReal['business_license_id'] = $supplierInfo['No'];
+            $company_info = GsxxCompanyRepo::getInfoByFields(['Name'=>$data['nick_name']]);
+            if($company_info){
+                $userReal['taxpayer_id'] = $company_info['CreditCode'];
+                $userReal['business_license_id'] = $company_info['No'];
             }
 
             try {
                 self::beginTransaction();
                 $user = UserRepo::create($user_data);
                 $userReal['user_id'] = $user['id'];
-                $real = UserRealRepo::create($userReal);
+                UserRealRepo::create($userReal);
                 self::commit();
                 return $user['id'];
             }catch (\Exception $e){
@@ -153,21 +155,27 @@ class UserService
 
 
     //修改密码
-    public static function userUpdatePwd($id,$data){
-       $userInfo = UserRepo::getInfo($id);
-       if(!Hash::check($data['password'],$userInfo['password'])){
-           self::throwBizError('用户密码不正确！');
-       }
-       $newData = [];
+    public static function userUpdatePwd($id, $data){
        $newData['password'] = bcrypt($data['newPassword']);
        return UserRepo::modify($id,$newData);
     }
 
     //忘记密码
-    public static function userForgotPwd($id,$data){
+    public static function userFindPwd($username, $new_pwd){
         $newData = [];
-        $newData['password'] = bcrypt($data['newPassword']);
-        return UserRepo::modify($id,$newData);
+        $info = UserRepo::getInfoByFields(['user_name'=>$username]);
+        if(empty($info)){
+            self::throwBizError('用户名不正确！');
+        }
+
+        if ($info['is_freeze']) {
+            self::throwBizError('用户名已被冻结！');
+        }
+        if (!$info['is_validated']) {
+            self::throwBizError('账号需待审核通过后才可操作！');
+        }
+        $newData['password'] = bcrypt($new_pwd);
+        return UserRepo::modify($info['id'], $newData);
     }
 
     //设置支付密码
@@ -270,6 +278,7 @@ class UserService
     public static function addCollectGoods($goodsId,$userId){
         return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
     }
+
 
 
     //后台

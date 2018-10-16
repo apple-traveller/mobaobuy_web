@@ -56,6 +56,7 @@ if(!function_exists('createEvent')){
     function createEvent($name, $params=''){
         $clazz = "App\Events\\".ucwords($name);
         if(class_exists($clazz)){
+            $params['_event_data'] = Carbon\Carbon::now();
             event(new $clazz($params));
         }
     }
@@ -77,6 +78,20 @@ if(!function_exists('getFileUrl')){
             return $file_path;
         }
         return \Illuminate\Support\Facades\Storage::url($file_path);
+    }
+}
+
+if(!function_exists('getPositionNav')){
+    function getPositionNav($position){
+        $value = \App\Services\NavService::getPositionList($position);
+        return $value;
+    }
+}
+
+if(!function_exists('getFooterArticle')){
+    function getFooterArticle(){
+        $value = \App\Services\ArticleService::getFooterArticle();
+        return $value;
     }
 }
 

@@ -10,6 +10,7 @@ use App\Repositories\AttributeRepo;
 use App\Repositories\AttributeValueRepo;
 use App\Repositories\CartRepo;
 use App\Repositories\UserAddressRepo;
+use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 
@@ -124,7 +125,18 @@ class GoodsService
 
     //清空购物车
     public static function clearCart($userId){
-        return CartRepo::getList([],['user_id'=>$userId]);
+        $cartInfo = CartRepo::getList([],['user_id'=>$userId]);
+        try{
+            self::beginTransaction();
+            foreach($cartInfo as $v){
+                CartRepo::modify($v['id'],['is_invalid'=>1]);
+            }
+            self::commit();
+        }catch (\Exception $e){
+            self::rollBack();
+            throw $e;
+        }
+
     }
 
     //去结算操作
@@ -147,11 +159,12 @@ class GoodsService
     }
 
     //提交订单
-    public static function createOrder($cartInfo_session,$userId,$userAddressId){
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$invoicesId){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         $userAddressId = decrypt($userAddressId);
+        $invoicesId = decrypt($invoicesId);
         $userAddressMes = UserAddressRepo::getInfo($userAddressId);
 //        $province = RegionRepo::getInfoByFields(['region_id'=>$userAddressMes['province']]);
 //        $city = RegionRepo::getInfo($userAddressMes['city']);
@@ -160,7 +173,7 @@ class GoodsService
         try{
             self::beginTransaction();
             //订单表
-            $orderInfo = ['order_sn'=>$order_no,'user_id'=>$userId,'order_status'=>1,'add_time'=>$addTime,'address'=>$userAddressMes['address'],'shop_id'=>$cartInfo_session[0]['shop_id'],'zipcode'=>$userAddressMes['zipcode'],'mobile_phone'=>$userAddressMes['mobile_phone'],'province'=>$userAddressMes['province'],'city'=>$userAddressMes['city'],'district'=>$userAddressMes['district'],'consignee'=>$userAddressMes['consignee']];
+            $orderInfo = ['order_sn'=>$order_no,'user_id'=>$userId,'order_status'=>1,'add_time'=>$addTime,'address'=>$userAddressMes['address'],'shop_id'=>$cartInfo_session[0]['shop_id'],'zipcode'=>$userAddressMes['zipcode'],'mobile_phone'=>$userAddressMes['mobile_phone'],'province'=>$userAddressMes['province'],'city'=>$userAddressMes['city'],'district'=>$userAddressMes['district'],'consignee'=>$userAddressMes['consignee'],'invoice_id'=>$invoicesId];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 //            'shop_name'=>$cartInfo['shop_name'],
 
@@ -181,6 +194,7 @@ class GoodsService
                 //删除购物车的此纪录
                 CartRepo::modify($id,['is_invalid'=>1]);
             }
+            //更新订单总金额
             OrderInfoRepo::modify($orderInfoResult['id'],['goods_amount'=>$goods_amount,'order_amount'=>$goods_amount,'shop_name'=>$cartInfo['shop_name']]);
 
             self::commit();
@@ -217,6 +231,17 @@ class GoodsService
     public static function orderDetails($id){
         $id = decrypt($id);
         return OrderGoodsRepo::getList([],['order_id'=>$id]);
+    }
+
+    //获取发票信息
+    public static function getInvoices($id){
+        return UserInvoicesRepo::getList([],['user_id'=>$id]);
+    }
+
+    //修改购物车数量
+    public static function editCartNum($id,$cartNum){
+        $id = decrypt($id);
+        return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
 }
 

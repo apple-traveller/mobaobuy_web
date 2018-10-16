@@ -11,7 +11,7 @@
 		float:left;
 	}
 </style>
-<script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
 <body>
 	
 	
@@ -34,7 +34,7 @@
 		<td>{{$v->shop_name}}</td>
 		<td>{{$v->goods_name}}</td>
 		<td>{{$v->goods_price}}</td>
-		<td>{{$v->goods_number}}</td>
+		<td class="cartGoodsNum" ondblclick="dbl_c(this)">{{$v->goods_number}}</td>
 		</tr>
 		@endforeach
 
@@ -46,6 +46,36 @@
 </body>
 </html>
 <script type="text/javascript">
+	//购物车数量修改
+	function dbl_c(obj){
+		var text = $(obj).text();
+		var id = $(obj).siblings().children('input').val();
+		var txt ='<input type="text" value="'+text+'">';
+		$(obj).html(txt);
+		var tdDom = $(obj).find('input');
+		var oldTdDomData = $(obj).find('input').val();
+		tdDom.blur(function(){
+			var newTdDomData = $(obj).find('input').val();
+			$.ajax({
+				url: "/editCartNum",
+            	dataType: "json",
+            	data: {
+               		 'cartNum':newTdDomData,
+               		 'id':id
+            	},
+	            type: "POST",
+	            success: function (data) {
+	               if(data.code){
+	               	window.location.reload();
+	               		// alert('清空购物车成功');
+	               }else{
+	               		alert('修改失败，请重试');
+	               }
+	            }
+			})
+		})
+	}
+
 	//清空购物车
 	function clearCart(){
 		$.ajax({
