@@ -2,25 +2,33 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>注册_提交成功</title>
-		<link rel="stylesheet" href="default/css/global.css" />
-		<link rel="stylesheet" href="default/css/index.css" />
-		
+		<title>注册_提交成功 @yield('title')</title>
+		@include(themePath('.','web').'web.include.partials.base')
+		<style>
+			.clearfix {display: inline-block;}
+			* html .clearfix {height: 1%;}
+			.clearfix {display: block;}
+			.clearfix:after {clear: both;content: ".";display: block;height: 0;visibility: hidden;}
+			.mt30{margin-top:30px;}
+			.succes_main{width: 1200px;margin: 0 auto;border-top: 2px solid #50b200;background-color: #f6fcf0;}
+			.ovh{overflow: hidden;}
+			.succes_main_til{width:280px;margin:0 auto; margin-top:60px;padding-left:25px;height: 31px;line-height: 31px; color: #50b200;background: url(default/img/succes_til.png)no-repeat 0px 5px;}
+			.succes_main_til .succes_til_img{margin-top: 5px;}
+			.fs18{font-size:18px;}
+			.tac{text-align:center !important;}
+			.mt35{margin-top:35px;}
+			.orange,a.orange,a.orange:hover{color:#ff6600;}
+			.enter_index{width:175px;height:40px;line-height: 40px;margin:0 auto;margin-top:35px;background-color: #50b200;border: none;}
+			.db{display:block;}
+			.white,a.white,a.white:hover{color:#fff; text-decoration:none;}
+			.tac{text-align:center !important;}
+			.mt5{margin-top:5px;}
+			.gray,a.gray,a.gray:hover{color:#aaa;}
+			.mb50{margin-bottom:50px;}
+		</style>
 	</head>
 	<body>
-	<!-- <div class="clearfix height35 lh35 graybg">
-		<div class="w1200">
-			<div class="top_til">
-				<a>首页</a>
-				<a style="border: none;">会员中心</a>
-			</div>
-		</div>
-	</div> -->
-	<div class="clearfix">
-		<div class="w1200">
-			<div class="logo fl"></div><div class="w_name fs24 gray fl mt20 ml20">账户注册</div>
-		</div>
-	</div>
+	@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '账户注册'])@endcomponent
 	<div class="clearfix mt30">
 		<div class="succes_main ovh">
 			<div class="succes_main_til fs18">恭喜您，注册申请提交成功！</div>
@@ -29,66 +37,9 @@
 			<p class="tac mt5 gray mb50"><span class="orange">10s</span> 后返回官网首页</p>
 		</div>
 	</div>
-	
-	<!--底部-->
-	<!--底部-->
-	<div class="footer">
-		<div class="clearfix whitebg mt35">
-		<div class="w1200">
-			<ul class="footer_icon ovh">
-			<li><div class="login_icon login_icon01 fl"></div><h1>品类齐全 轻松购物</h1></li>
-			<li><div class="login_icon login_icon02 fl"></div><h1>便捷交易 订货零风险</h1></li>
-			<li><div class="login_icon login_icon03 fl"></div><h1>多仓直发 极速配送</h1></li>
-			<li><div class="login_icon login_icon04 fl"></div><h1>阳光采购 一站式服务</h1></li>
-		</ul>
-		</div>
-	</div>
-	
-	<div class="clearfix whitebg " style="border-top: 1px solid #DEDEDE;font-size: 0;">
-		
-       <div class="footer_content">
-            <ul class="footer_list mt30 mb30 ovh">
-                <li>
-                	<h4>关于秣宝</h4>
-                	<a href="#.html" rel="nofollow">企业文化</a>
-	                <a href="#.html" rel="nofollow">企业证照</a>
-	                <a href="#.html" rel="nofollow">联系我们</a>
-                </li>
-                <li>
-                	<h4>友情连接</h4>
-                	<a href="#.html" rel="nofollow">秣宝官网</a>
-	                <a href="#.html" rel="nofollow">秣宝官网</a>
-                </li>
-                <li>
-                	<h4>新手指南</h4>
-                	<a href="#.html" rel="nofollow">购物指南</a>
-	                <a href="#.html" rel="nofollow">找回密码</a>
-	                <a href="#.html" rel="nofollow">用户服务协议</a>
-                </li>
-                <li>
-                	<h4>支付与买货</h4>
-                	<a href="#.html" rel="nofollow">购物指南</a>
-	                <a href="#.html" rel="nofollow">公司转账</a>
-	                <a href="#.html" rel="nofollow">在线支付</a>
-                </li>
-                <li>
-                	<h4>售后服务</h4>
-                	<a href="#.html" rel="nofollow">发票说明</a>
-	                <a href="#.html" rel="nofollow">物流配送</a>
-                </li>
-                
-                <li>
-                	<div class="tel" >
-                    <p class="fs24 tac" style="color: #75b335;">{{getConfig('service_phone')}}</p>
-                    <p class="tac" style="width: 190px; margin: 5px auto; color: #666;">周一至周日8:00-18:00（仅收市话费）</p>
-                    <p class="tac"><a rel="nofollow"  href="#"><img border="0" class="mr5p" style="margin-top:3px;" src="/default/img/custom.png"/></a></p>
-                    </div>
-                </li>
-                
-            </ul>
-        </div>
-        </div>
-	</div>
+	@include(themePath('.','web').'web.include.partials.footer_service')
+	@include(themePath('.','web').'web.include.partials.footer_new')
+	@include(themePath('.','web').'web.include.partials.copyright')
 
 	</body>
 </html>
