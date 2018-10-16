@@ -6,13 +6,16 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 
-.blackgraybg input{}
-
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account a{padding: 0 5px;}
 .top-box .account a.link-login{color:red;}
 .top-box .quick-menu a {padding: 0 12px;border-right: 1px solid #DEDEDE;}
 .top-box .quick-menu span{padding: 0 12px;}
+
+.top-title{width: 1200px;height: 115px;margin: 0 auto;}
+.top-title .logo{height: 100%;float: left; width: 200px;position: relative;}
+.top-title .logo img{max-height: 50%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.top-title .title-name{float: left; font-size: 24px;margin: 33px; 20px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
 .footer-service-box .icons {overflow: hidden;}
@@ -23,7 +26,7 @@
 .footer-service-box .icons li .icon01{background: url('/images/service_01.png')no-repeat;background-size: 100% 100%;}
 .footer-service-box .icons li .icon02{background: url('/images/service_02.png')no-repeat;background-size: 100% 100%;}
 .footer-service-box .icons li .icon03{background: url('/images/service_03.png')no-repeat;background-size: 100% 100%;}
-.footer-service-box .icons li .icon04{background: url('(/images/service_04.png')no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon04{background: url('/images/service_04.png')no-repeat;background-size: 100% 100%;}
 
 .footer-new-box{background-color: #FFFFFF;border-top: 1px solid #DEDEDE;font-size: 0;padding: 20px; 0px;overflow: hidden;}
 .footer-new-box .new-list{}
@@ -70,3 +73,12 @@
 .register-button{display: block;width: 330px;height: 46px;line-height: 46px;background-color: #75b335;border: 0;margin: 20px auto 40px;color: #fff;font-size: 16px;cursor:pointer;}
 .register-button-gray{display: block;width: 330px;height: 46px;line-height: 46px;background-color: #aaa;border: 0;margin: 20px auto 40px;color: #fff;font-size: 16px;}
 
+.member_left {width: 216px;border-top: 4px solid #75b335;border-left: 1px solid #DEDEDE;border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;background-color: #fff;box-sizing: border-box;float: left;}
+.member_left .member_list_mode {margin-top: 30px;overflow: hidden;}
+.member_list_mode h1 {font-size: 16px;padding-left: 24px;margin-left: 30px;}
+.member_left_list {margin-top: 20px;color: #666;}
+.member_left_list li {display: block;margin-top: 10px;padding-left: 52px;cursor: pointer;}
+.member_left_list li:last-child {position: relative;margin-top: 40px;}
+.member_left_list li.curr {border-left: 4px solid #75b335;color: #75b335;box-sizing: border-box;padding-left: 48px;}
+.member_list_mode .bottom {position: absolute;top: -7px;z-index: 1;width: 66px;height: 3px;background-color: #75b335;}
+.member_list_mode .line {width: 100%;position: absolute;top: -6px;height: 1px;background-color: #DEDEDE;}

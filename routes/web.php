@@ -212,8 +212,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/middle','UserController@middlePage');//中间页
-        Route::post('/selectCompany','IndexController@selectCompany');//选择公司
         Route::get('/', 'IndexController@index'); //首页
+
+        Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
 
         Route::get('/member', 'UserController@index'); //会员中心
         Route::get('/member/emp', 'UserController@empList'); //会员中心

@@ -23,7 +23,21 @@ class WebAuthenticate
         //缓存用户的基本信息
         if(!session()->has('_web_user')){
             $user_info = UserService::getInfo(session('_web_user_id'));
+            if(!$user_info['is_firm']){
+                $user_info['firms'] = UserService::getUserFirms(session('_web_user_id'));
+            }
+
             session()->put('_web_user', $user_info);
+
+        }
+
+        if(!session()->has('_curr_deputy_user')){
+            $info = [
+                'is_self' => 1,
+                'is_firm' => session('_web_user')['is_firm'],
+                'name' => session('_web_user')['nick_name']
+            ];
+            session()->put('_curr_deputy_user', $info);
         }
 
         //缓存模板信息
@@ -31,26 +45,6 @@ class WebAuthenticate
             session()->put('web_theme', getConfig('template','default'));
         }
 
-//        if(session('_web_info')['is_firm']){
-//
-//        }
-        //判断用户初始化权限
-//        $users = DB::select('select * from firm_users where user_id = ?',session('_web_info')['id']);
-//        if($users['can_po']){
-//            session()->put('can_po',$users['can_po']);
-//        }
-//        if($users['can_pay']){
-//            session()->put('can_pay',$users['can_pay']);
-//        }
-//        if($users['can_confirm']){
-//            session()->put('can_confirm',$users['can_confirm']);
-//        }
-//        if($users['can_stock_in']){
-//            session()->put('can_stock_in',$users['can_stock_in']);
-//        }
-//        if($users['can_stock_out']){
-//            session()->put('can_stock_out',$users['can_stock_out']);
-//        }
         return $next($request);
     }
 
