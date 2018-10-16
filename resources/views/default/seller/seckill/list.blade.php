@@ -40,23 +40,24 @@
                                     <th width="10%"><div class="tDiv">编号</div></th>
                                     <th width="10%"><div class="tDiv">店铺</div></th>
                                     <th width="10%"><div class="tDiv">申请时间</div></th>
-                                    <th width="10%"><div class="tDiv">活动时间段</div></th>
+                                    <th width="10%"><div class="tDiv">活动开始时间</div></th>
+                                    <th width="10%"><div class="tDiv">活动结束时间</div></th>
                                     <th width="15%"><div class="tDiv">审核状态</div></th>
                                     <th width="25%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                @foreach($list as $v)
+                                @foreach($list as $k=>$v)
                                     <tr class="">
-                                        <td><div class="tDiv">{{$v['id']}}</div></td>
+                                        <td><div class="tDiv">{{$v["id"]}}</div></td>
                                         <td><div class="tDiv">{{$v['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
-                                        <td><div class="tDiv">{{$v['seckill_time']}}</div></td>
+                                        <td><div class="tDiv">{{$v['begin_time']}}</div></td>
+                                        <td><div class="tDiv">{{$v['end_time']}}</div></td>
                                         <td><div class="tDiv">@if($v['review_status']==1)待审核 @elseif($v['review_status']==2)审核不通过@elseif($v['review_status']==3)审核通过@endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="javascript:void(0)"  title="查看" class="btn_see" id="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                <a href="/seller/seckill/list_detail?seckill_id={{$v['id']}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                                 <a href="javascript:void(0)"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash" id="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
@@ -93,9 +94,9 @@
 
         </div>
     </div>
-
     <script>
         // window.location.reload();
+
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
@@ -132,11 +133,34 @@
                 }
             })
         });
+        layui.use(['table','layer'],function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            let seckill_id = $('#btn_see').attr('data_id');
+            $("#btn_see").click(function () {
+                // 定义弹窗数组
+                layer.open({
+                    type: 1,
+                    area: '500px',
+                    maxmin: true,
+                    content: '<table class="layui-hide" id="test_goods">'+'</table>',
+                    zIndex: layer.zIndex
+                });
+            });
+            var table = layui.table;
+            table.render({
+                elem: '#test_goods',
+                ur:'/seller/seckill/list_detail',
+                where:{
+                    'seckill_id':seckill_id
+                }
+                ,cols: [[
+                    {field:'id',  title: 'ID', sort: true}
+                    ,{field:'goods_sn',  title: '商品编号'}
+                    ,{field:'goods_name',  title: '商品名称'}
+                ]]
+            });
 
-        $("#btn_see").click(function () {
-            layui.setTop(
-                'title'
-            );
-        });
+        })
     </script>
 @stop
