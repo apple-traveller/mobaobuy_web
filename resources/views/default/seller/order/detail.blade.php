@@ -101,14 +101,14 @@
                                 <dl>
                                     <dt>发货时间：</dt>
                                     <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
-                                    <dt>发货单号：<a href="order.php?act=edit&amp;order_id=4&amp;step=shipping"><i class="icon icon-edit"></i></a></dt>
-                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
+                                    <dt></dt>
+                                    <dd></dd>
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
                                     <dd>
                                         <div class="editSpanInput" ectype="editSpanInput">
-                                            <span onclick="listTable.edit(this,'{{url('/seller/order/modify2')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
+                                            <span onclick="listTable.edit(this,'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
                                             <i class="icon icon-edit"></i>
                                         </div>
@@ -144,28 +144,28 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>@if(!empty($user_invoices['shop_name'])) {{ $user_invoices['shop_name'] }}@else  @endif </dd>
+                                    <dd>@if(!empty($user_invoices['shop_name'])) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>
                                     <dt>税号:：</dt>
-                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>开票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else 无 @endif</dd>
                                     <dt>开票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
                                     <dt>收票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])){{$user_invoices['consignee_mobile_phone']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票人:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else  @endif</dd>
+                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -193,7 +193,6 @@
                                             <th width="10%">价格</th>
                                             <th width="10%">购买数量</th>
                                             <th width="10%">已发货数量</th>
-                                            <th width="10%">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -205,11 +204,6 @@
                                                 <td>{{$vo['goods_price']}}</td>
                                                 <td>{{$vo['goods_number']}}</td>
                                                 <td>{{$vo['send_number']}}</td>
-                                                <td>
-                                                    <!--生成发货单-->
-                                                    <input name="part_ship" type="button" value="生成发货单" class="btn btn25 blue_btn" data-rec_id="4">
-
-                                                </td>
                                             </tr>
                                         @endforeach
                                         <tr>
@@ -217,6 +211,13 @@
                                                 <div class="order_total_fr">
                                                     <strong>合计：</strong>
                                                     <span class="red"><em>¥</em>{{$orderInfo['goods_amount']}}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="order_total_fr">
+                                                    <div class="layui-btn layui-btn-sm order_delivery" data-status="{{$orderInfo['shipping_status']}}" style="margin-right: 30px;"><a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}">生成发货单</a></div>
                                                 </div>
                                             </td>
                                         </tr>

@@ -297,7 +297,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 });
 
 
-//商户
+// 商户
 Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/login.html', 'LoginController@login')->name('seller_login');
     Route::post('/login', 'LoginController@login');
@@ -339,9 +339,18 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
+        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate');
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
         Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
         Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+        Route::get('/order/delivery', 'ShopOrderController@delivery'); // 发货订单
+        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');
+        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery');
+
+        Route::get('/delivery/list', 'ShopDeliveryController@list');// 发货订单
+        Route::get('/delivery/detail', 'ShopDeliveryController@detail');// 发货订单详情
+        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');
+        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno');
 
         Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
         Route::get('/seckill/add', 'SeckillController@addForm');
