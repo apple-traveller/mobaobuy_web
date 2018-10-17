@@ -280,6 +280,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
 
+        Route::get('/stock/list','FirmStockController@stockList');
+        Route::post('/stock/list','FirmStockController@stockList');
+
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
         Route::post('/cart','GoodsController@cart');//加入购物车
@@ -330,10 +333,10 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/shopUser/delete', 'ShopUserController@delete');
 
         Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
-        Route::get('/goods/add', 'ShopGoodsController@add');
-        Route::get('/goods/edit', 'ShopGoodsController@edit');
-        Route::post('/goods/save', 'ShopGoodsController@save');
-        Route::post('/goods/delete', 'ShopGoodsController@delete');
+//        Route::get('/goods/add', 'ShopGoodsController@add');
+//        Route::get('/goods/edit', 'ShopGoodsController@edit');
+//        Route::post('/goods/save', 'ShopGoodsController@save');
+//        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');

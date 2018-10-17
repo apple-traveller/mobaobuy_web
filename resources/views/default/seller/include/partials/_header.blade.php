@@ -12,17 +12,19 @@
 <ul class="layui-nav layui-layout-right">
     <li class="layui-nav-item">
         <a href="javascript:;">
-            <img src="javascript:;" class="layui-nav-img">
+            <img src="{{asset(themePath('/').'layui/images/login/avtar.png')}}" class="layui-nav-img">
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="">基本资料</a></dd>
-            <dd><a href="">安全设置</a></dd>
+            <dd><a href="javascript:void(0);">seller</a></dd>
+            <dd><a href="javascript:void(0);">shop_name</a></dd>
+            {{--{{ session('_seller')['real_name'] }}--}}
+            {{--{{ session('_seller')['shop_info'] }}--}}
         </dl>
     </li>
     <li class="layui-nav-item">
         <a href="/seller/logout"
            >
-            退了
+            login out
         </a>
 
         <form id="logout-form" action="" method="POST" style="display: none;">

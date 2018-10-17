@@ -193,7 +193,7 @@ class OrderInfoService
                 }
             }
             if($flag==true){
-                OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>2]);//部分发货
+               return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>2]);//部分发货
             }
 
             $flag1 = true;
@@ -203,7 +203,7 @@ class OrderInfoService
                 }
             }
             if($flag1==true){
-                OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>1]);//已全部发货
+                return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>1]);//已全部发货
             }
             self::commit();
         }catch(\Exception $e){
