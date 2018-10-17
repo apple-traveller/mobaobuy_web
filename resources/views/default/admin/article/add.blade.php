@@ -26,7 +26,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;文章分类：</div>
                                 <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
                                             @foreach($cateTrees as $vo)
                                                 <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
                                             @endforeach

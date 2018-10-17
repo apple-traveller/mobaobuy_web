@@ -97,7 +97,7 @@ class SeckillService
      * @return bool
      * @throws \Exception
      */
-    public static function deleteSellerSeckll($seckill_id)
+    public static function deleteSellerSeckill($seckill_id)
     {
         try{
             self::beginTransaction();
@@ -132,6 +132,32 @@ class SeckillService
         return SeckillRepo::modify($data['id'],$data);
     }
 
+    //保存
+    public static function create($data,$gdata)
+    {
+        try{
+            self::beginTransaction();
+            $seckill = SeckillRepo::create($data);
+            if(empty($seckill)){
+                return false;
+            }
+            $flag = "";
+            foreach($gdata as $vo){
+                $vo['seckill_id'] = $seckill['id'];
+                $flag = SeckillGoodsRepo::create($vo);
+                if(empty($flag)){
+                    return false;
+                }
+            }
+            self::commit();
+            return true;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
+    }
+
     //获取商品信息
     public static function getSeckillGoods($pager,$condition)
     {
@@ -154,4 +180,38 @@ class SeckillService
     {
         return SeckillTimeBucketRepo::getListBySearch($pager,$condition);
     }
+
+    //保存时间
+    public static function createSeckillTime($data)
+    {
+        return SeckillTimeBucketRepo::create($data);
+    }
+
+    //编辑时间
+    public static function modifySeckillTime($data)
+    {
+        return SeckillTimeBucketRepo::modify($data['id'],$data);
+    }
+
+    //删除秒杀时间段
+    public static function deleteTime($id)
+    {
+        return SeckillTimeBucketRepo::delete($id);
+    }
+
+    //获取数据库中最大的id值
+    public static function getMaxSeckillTimeId()
+    {
+        return SeckillTimeBucketRepo::getMax('id',[]);
+    }
+
+    //获取一个秒杀时间信息
+    public static function getSeckillTimeInfo($id)
+    {
+        return SeckillTimeBucketRepo::getInfo($id);
+    }
+
+
+
+
 }
