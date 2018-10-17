@@ -17,7 +17,7 @@ $(function(){
     );
 });
 
-changeDeputy(obj){
+function changeDeputy(obj){
     var selectCompanyId = $(obj).data('value');
     Ajax.call("/changeDeputy", {user_id:selectCompanyId},function(result){
         window.location.reload();

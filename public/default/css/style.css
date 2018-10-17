@@ -5,6 +5,25 @@
 .input-tip {width: 330px;height: 26px;line-height: 26px;font-size: 12px;float: left;padding-left: 170px;position: relative;}
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
+h1{font-size: 16px;}
+
+.data-table-box{margin-top: 20px;overflow: hidden;}
+.data-table-box .table-condition{overflow: hidden;}
+.data-table-box .table-condition{overflow: hidden;}
+.data-table-box .table-condition .item{float: left;}
+.data-table-box .table-condition .item .text{width: 184px;height: 34px;padding: 6px;box-sizing: border-box;border: 1px solid #DEDEDE;}
+.data-table-box .table-condition .search-btn{width: 90px;height: 34px;line-height: 34px;background-color: #75b335;border-radius: 2px;cursor: pointer;margin-left: 15px;border: 0px;color: #fff;}
+.data-table-box .table-body{margin-top: 20px;width: 100%}
+.data-table-box .table-body table{width: 100%}
+.data-table-box .table-body table thead{background-color: #f4f4f4;font-size: 14px;height: 40px;line-height: 40px;}
+.data-table-box .table-body table tbody tr:nth-child(even) {background-color: #f4f4f4;}
+.data-table-box .table-body table tbody tr {height: 45px;line-height: 45px;text-align: center;}
+.data-table-box .table-body .opt-btn{width: 60px;height: 24px;line-height: 24px;background-color: #75b335;border-radius: 3px;cursor: pointer;border: 0px;color: #fff;}
+.data-table-box .table-pager {margin-top:20px;text-align: right;}
+.data-table-box .table-pager ul.pagination {display: inline-block;padding: 0;margin: 0;}
+.data-table-box .table-pager ul.pagination li {height: 20px;line-height: 20px;display: inline;}
+.data-table-box .table-pager ul.pagination li a {color: #ccc;float: left;padding: 4px 16px;text-decoration: none;transition: background-color .3s;border: 1px solid #ddd;margin: 0 4px;}
+.data-table-box .table-pager ul.pagination li a.active {color: #75b335;border: 1px solid #75b335;}
 
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account li.site-nav-menu{float: left}
@@ -89,4 +108,6 @@
 .member_left_list li.curr {border-left: 4px solid #75b335;color: #75b335;box-sizing: border-box;padding-left: 48px;}
 .member_list_mode .bottom {position: absolute;top: -7px;z-index: 1;width: 66px;height: 3px;background-color: #75b335;}
 .member_list_mode .line {width: 100%;position: absolute;top: -6px;height: 1px;background-color: #DEDEDE;}
+
+.member_right{width: 968px;box-sizing: border-box;min-height: 842px;height: auto;position: relative;border: 1px solid #DEDEDE;background: #FFFFFF;margin-left: 15px;float: left;padding: 25px 30px;}
 

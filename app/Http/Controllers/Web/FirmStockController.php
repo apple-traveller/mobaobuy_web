@@ -95,8 +95,20 @@ class FirmStockController extends Controller
     }
 
     //企业实时库存列表
-    public function stockList(){
-        $firmStock = FirmStockService::stockList(session('_web_info')['id']);
-        return $this->display('web',compact('firmStock'));
+    public function stockList(Request $request){
+        if(session('_curr_deputy_user')['is_firm']){
+            if($request->isMethod('get')){
+                return $this->display('web.user.stock.list');
+            }else{
+                $page = $request->input('page', 1);
+                $page_size = $request->input('page_size', 10);
+                $firm_id = session('_curr_deputy_user')['firm_id'];
+                $goods_name = $request->input('goods_name');
+                $rs_list = FirmStockService::stockList($firm_id, $goods_name, $page, $page_size);
+                return $this->success('', '', $rs_list);
+            }
+        }
+
+        return $this->error('非法访问');
     }
 }

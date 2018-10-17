@@ -3,6 +3,7 @@
 <head>
     <title>会员中心 - @yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
+    @yield('style')
 </head>
 <body style="background-color: rgb(244, 244, 244);">
     @include(themePath('.','web').'web.include.partials.top')
@@ -34,7 +35,7 @@
                         @if(session('_curr_deputy_user')['is_self'] || session('_curr_deputy_user')['can_stock_out'])
                         <li><a href="/stockOut">出库管理</a></li>
                         @endif
-                        <li><a href="/stockNum">库存查询</a></li>
+                        <li><a href="/stock/list">库存查询</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
@@ -68,12 +69,20 @@
                     </ul>
                 </div>
             </div>
+
+            <div class="member_right">
+                <div><h1><i class="iconfont icon-align-left" style="margin-right: 5px;"></i>@yield('title')</h1></div>
+                @yield('content')
+            </div>
         </div>
     </div>
-    @yield('content')
+
+
+
 
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')
+    @yield('js')
 </body>
 </html>
