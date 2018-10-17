@@ -59,9 +59,16 @@ class FirmStockService
         return FirmStockFlowRepo::getListByStockOut($id);
     }
 
-    //出库记录列表
-    public static function stockList($id){
-        return FirmStockFlowRepo::getList([],['firm_id'=>$id]);
+    //库存记录列表
+    public static function stockList($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+        $condition = [];
+        if($firm_id > 0){
+            $condition['firm_id'] = $firm_id;
+        }
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%'.$goods_name.'%';
+        }
+        return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
     //库存商品流水
     public static function stockFlowList($id){

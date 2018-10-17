@@ -277,6 +277,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
 
+        Route::get('/stock/list','FirmStockController@stockList');
+        Route::post('/stock/list','FirmStockController@stockList');
+
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
         Route::post('/cart','GoodsController@cart');//加入购物车

@@ -4,3 +4,4 @@
 
 @include('partials.base_header')
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/style.css')}}" />
+<script src="{{asset(themePath('/','web').'js/base.js')}}"></script>
