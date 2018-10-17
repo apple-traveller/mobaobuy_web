@@ -303,6 +303,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/article/{id}','IndexController@article');//资讯
 
         Route::get('/logout', 'UserController@logout');//登出
+
+
+        Route::get('/news.html', 'NewsController@index'); // 新闻中心
+
     });
 });
 
