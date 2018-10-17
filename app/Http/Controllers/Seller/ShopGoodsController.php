@@ -25,21 +25,16 @@ class ShopGoodsController extends Controller
     public function list(Request $request)
     {
         $currpage = $request->input('currentPage',1);
-        $shop_id = session('_seller_id')['shop_id'];
         $goods_name = $request->input('goods_name','');
         $condition = [];
-        $condition['shop_id']= $shop_id;
         if(!empty($goods_name)){
             $condition['goods_name']= "%".$goods_name."%";;
         }
-
         $pageSize =5;
-        $shopGoods = ShopGoodsService::getShopGoodsList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
-        $search = ShopGoodsService::getGoodsList(['shop_id'=>$shop_id]);
+        $shopGoods = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['id'=>'desc']],$condition);
         return $this->display('seller.ShopGoods.list',[
             'total'=>$shopGoods['total'],
             'list'=>$shopGoods['list'],
-            'search' => $search,
             'goods_name' => $goods_name,
             'currentPage'=>$currpage,
             'pageSize'=>$pageSize

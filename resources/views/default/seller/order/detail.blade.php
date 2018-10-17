@@ -275,7 +275,7 @@
                                     <div class="item">
                                         <div class="label">操作备注：</div>
                                         <div class="value">
-                                            <div class="bf100 fl"><textarea name="action_note" class="textarea"></textarea></div>
+                                            <div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
                                             <div class="order_operation_btn">
 
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
@@ -357,12 +357,12 @@
             layui.use('layer', function(){
                 let layer = layui.layer;
                 layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
-                    let to_buyer = $("input[ name='to_buyer' ]").val();
+                    let action_note = $("#action_note").val();
                     $.ajax({
                         'url':'/seller/order/updateOrderStatus',
                         'data': {
                             'id':id,
-                            'to_buyer':to_buyer,
+                            'action_note':action_note,
                             'order_status': 3
                         },
                         'type': 'post',

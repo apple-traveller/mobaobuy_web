@@ -340,7 +340,6 @@ class OrderInfoController extends Controller
         $order_delivery_data['postscript'] = $orderInfo['postscript'];
         $order_delivery_data['update_time'] = Carbon::now();
         $order_delivery_data['status'] = 0;
-        //dd($order_delivery_data);
         try{
             $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
             if(!empty($orderDelivery)){

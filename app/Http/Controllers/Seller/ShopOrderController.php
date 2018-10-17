@@ -89,25 +89,45 @@ class ShopOrderController extends Controller
         $shop_id = session('_seller_id')['shop_id'];
         $id = $request->input('id', '');
         $order_status = $request->input('order_status', '0');
-        $to_buyer = $request->input('to_buyer', '');
+        $action_note = $request->input('action_note', '');
         $where = [
             'id' => $id,
             'shop_id' => $shop_id
         ];
         // 判断订单是否存在
-        $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
-        if (!empty($orderInfo)) {
-            $data = [
-                'id' => $id,
-                'order_status' => $order_status,
-                'to_buyer' => $to_buyer,
-                'confirm_time' => Carbon::now()
-            ];
-            $re = OrderInfoService::modify($data);
-            if (!empty($re)) {
-                return $this->success('修改成功', url('/seller/order/list'));
+        try {
+            $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
+            if (!empty($orderInfo)) {
+                $data = [
+                    'id' => $id,
+                    'order_status' => $order_status,
+                    'confirm_time' => Carbon::now()
+                ];
+                $re = OrderInfoService::modify($data);
+
+                if (!empty($re)) {
+                    // order_log
+                    if(empty($action_note)){
+                        $action_note = "修改订单状态";
+                    }
+               //存储日志信息
+                    $logData = [
+                        'action_note' => $action_note,
+                        'action_user' => session('_seller')['user_name'],
+                        'order_id' => $id,
+                        'order_status' => $re['order_status'],
+                        'action_place' => $orderInfo['order_status'],
+                        'shipping_status' => $re['shipping_status'],
+                        'pay_status' => $re['pay_status'],
+                        'log_time' => Carbon::now()
+                    ];
+                    OrderInfoService::createLog($logData);
+                    return $this->success('修改成功', url('/seller/order/list'));
+                }
+            } else {
+                return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
-        } else {
+        }catch (\Exception $e){
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }
@@ -295,6 +315,11 @@ class ShopOrderController extends Controller
         return json_encode(['count'=>$orderGoods['total'],'data'=>$orderGoods['list'],'code'=>0,'msg'=>'']);
     }
 
+    /**
+     * 生成发货单 订单商品数量在此处修改
+     * @param Request $request
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
     public function saveDelivery(Request $request)
     {
         $data = $request->all();
