@@ -277,6 +277,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::resource('goodsCate', 'GoodsCategoryController');//产品信息
         Route::get('goodsList', 'GoodsController@goodsList');//产品列表
 
+
+        Route::get('/stockNum','FirmStockController@stockList');//企业库存
+        Route::get('/stockFlowList','FirmStockController@stockFlowList');//企业库存详细
         Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
         Route::post('/addStockIn','FirmStockController@addFirmStock');
@@ -284,6 +287,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+
+        Route::get('/stock/list','FirmStockController@stockList');
+        Route::post('/stock/list','FirmStockController@stockList');
 
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
@@ -308,11 +314,15 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/article/{id}','IndexController@article');//资讯
 
         Route::get('/logout', 'UserController@logout');//登出
+
+
+        Route::get('/news.html', 'NewsController@index'); // 新闻中心
+
     });
 });
 
 
-//商户
+// 商户
 Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/login.html', 'LoginController@login')->name('seller_login');
     Route::post('/login', 'LoginController@login');
@@ -335,10 +345,10 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/shopUser/delete', 'ShopUserController@delete');
 
         Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
-        Route::get('/goods/add', 'ShopGoodsController@add');
-        Route::get('/goods/edit', 'ShopGoodsController@edit');
-        Route::post('/goods/save', 'ShopGoodsController@save');
-        Route::post('/goods/delete', 'ShopGoodsController@delete');
+//        Route::get('/goods/add', 'ShopGoodsController@add');
+//        Route::get('/goods/edit', 'ShopGoodsController@edit');
+//        Route::post('/goods/save', 'ShopGoodsController@save');
+//        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
@@ -354,9 +364,18 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
+        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate');
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
         Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
         Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+        Route::get('/order/delivery', 'ShopOrderController@delivery'); // 发货订单
+        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');
+        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery');
+
+        Route::get('/delivery/list', 'ShopDeliveryController@list');// 发货订单
+        Route::get('/delivery/detail', 'ShopDeliveryController@detail');// 发货订单详情
+        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');
+        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno');
 
         Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
         Route::get('/seckill/add', 'SeckillController@addForm');

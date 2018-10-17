@@ -4,23 +4,6 @@
         body{padding:10px; font-size:14px; background:#fff; width:95%; margin:0 auto; font-size:14px; line-height:20px; overflow:auto;}
         p{margin-bottom:10px;}
         input{border:1px solid #999; padding:5px 10px; margin:0 10px 10px 0;}
-
-        .layui-form-item {
-            margin-top: 15px;
-        }
-        .layui-input-block{
-            float: left;
-            margin-left: 0;
-            margin-right: 2%;
-        }
-        td.on{
-            border-bottom: 1px solid #D60711;
-            color: #D60711;
-        }
-        td.active{
-            background: #D60711;
-            color: #fff;
-        }
         .search_div{
             width: 95%;
             position: fixed;
@@ -28,16 +11,11 @@
             background-color: #fff;
             border: 1px solid #e6e6e6;
         }
-        .layui-table {
-            width: 100%;
-            background-color: #fff;
-            color: #666;
-        }
     </style>
 @endsection
 @section('body')
     <div class="warpper">
-        <div class="title"><a href="/seller/seckill/list" class="s-back">返回</a>订单 - 编辑商品</div>
+        <div class="title"><a href="/seller/seckill/list" class="s-back">返回</a>秒杀申请列表</div>
         <div class="title">商品</div>
         <div class="search_div">
             <table class="layui-hide" id="test_goods"></table>

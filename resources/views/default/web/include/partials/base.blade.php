@@ -3,4 +3,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 @include('partials.base_header')
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/style.css')}}" />
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="{{asset(themePath('/','web').'js/base.js')}}"></script>

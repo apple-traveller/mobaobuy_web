@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -147,4 +147,5 @@
 			alert('请选择商品');return;
 		}
 	}
-</script>
+</script> -->
+
