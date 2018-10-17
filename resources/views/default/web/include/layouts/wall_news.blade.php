@@ -13,55 +13,7 @@
     <div class="w1200">
         <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/subject/list/56/page/1.html">今日资讯</a> &gt;<span class="gray">中石化华中PP价格上调通知</span></div>
         <!--左边部分-->
-        <div class="today_news whitebg fl">
-            <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">今日资讯</span><span class="fr mr10">共<span class="orange">16</span>条数据</span></h1>
-            <ul class="ovh ml15 today_news_list mt15">
-                <li>
-                    <div class="fl mb15"><img src="img/new_img01.png"/></div>
-                    <div class="fl ml20">
-                        <h1 class="fs18 mt10">科学家揭露真相</h1>
-                        <div class="mt30 gray"><span class="ovh">时间：2018-09-21</span><span class="ml25">浏览量：20</span><span class="ml25">来源：秣宝网</span></div>
-                        <p class="news_content ovhwp">2013年12月17日美国权威性学术杂志，美国内科协会年鉴杂志上，出现了</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="fl mb15"><img src="img/new_img01.png"/></div>
-                    <div class="fl ml20">
-                        <h1 class="fs18 mt10">科学家揭露真相</h1>
-                        <div class="mt30 gray"><span class="ovh">时间：2018-09-21</span><span class="ml25">浏览量：20</span><span class="ml25">来源：秣宝网</span></div>
-                        <p class="news_content ovhwp">2013年12月17日美国权威性学术杂志，美国内科协会年鉴杂志上，出现了</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="fl mb15"><img src="img/new_img01.png"/></div>
-                    <div class="fl ml20">
-                        <h1 class="fs18 mt10">科学家揭露真相</h1>
-                        <div class="mt30 gray"><span class="ovh">时间：2018-09-21</span><span class="ml25">浏览量：20</span><span class="ml25">来源：秣宝网</span></div>
-                        <p class="news_content ovhwp">2013年12月17日美国权威性学术杂志，美国内科协会年鉴杂志上，出现了</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="fl mb15"><img src="img/new_img01.png"/></div>
-                    <div class="fl ml20">
-                        <h1 class="fs18 mt10">科学家揭露真相</h1>
-                        <div class="mt30 gray"><span class="ovh">时间：2018-09-21</span><span class="ml25">浏览量：20</span><span class="ml25">来源：秣宝网</span></div>
-                        <p class="news_content ovhwp">2013年12月17日美国权威性学术杂志，美国内科协会年鉴杂志上，出现了</p>
-                    </div>
-                </li>
-            </ul>
-            <!--页码-->
-            <div class="news_pages">
-                <ul class="pagination">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">上一页</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a class="active" href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">下一页</a></li>
-                    <li><a href="#">尾页</a></li>
-                </ul>
-            </div>
-        </div>
+        @yield('content')
         <!--右边部分-->
 
         <div class="today_right_news fl ml15">
@@ -96,9 +48,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 @include(themePath('.','web').'web.include.partials.footer_service')
 @include(themePath('.','web').'web.include.partials.footer_new')
