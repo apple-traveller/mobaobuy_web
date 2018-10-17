@@ -100,12 +100,20 @@ class FirmStockController extends Controller
             if($request->isMethod('get')){
                 return $this->display('web.user.stock.list');
             }else{
-                $page = $request->input('page', 1);
-                $page_size = $request->input('page_size', 10);
+                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+                $page_size = $request->input('length', 10);
                 $firm_id = session('_curr_deputy_user')['firm_id'];
                 $goods_name = $request->input('goods_name');
                 $rs_list = FirmStockService::stockList($firm_id, $goods_name, $page, $page_size);
-                return $this->success('', '', $rs_list);
+
+                $data = [
+                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                    'recordsTotal' => $rs_list['total'], //数据总行数
+                    'recordsFiltered' => $rs_list['total'], //数据总行数
+                    'data' => $rs_list['list']
+                ];
+
+                return $this->success('', '', $data);
             }
         }
 
