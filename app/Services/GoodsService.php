@@ -207,7 +207,14 @@ class GoodsService
 
     //订单列表
     public static function orderList($userId){
-        return OrderInfoRepo::orderList($userId);
+        $orderInfo = OrderInfoRepo::orderList($userId);
+        $arr = [];
+        foreach($orderInfo as $k=>$v){
+            $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$v->id]);
+            $arr[] = $orderGoodsInfo;
+
+        }
+        return ['orderInfo'=>$orderInfo,'orderGoodsInfo'=>$arr];
     }
 
     //显示收获地址

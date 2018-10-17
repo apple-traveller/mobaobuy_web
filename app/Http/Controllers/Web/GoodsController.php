@@ -151,6 +151,7 @@ class GoodsController extends Controller
     public function orderList(){
         $userId = session('_web_user_id');
         $orderList = GoodsService::orderList($userId);
+        dump($orderList);
         return $this->display('web.order.order',compact('orderList'));
     }
 
