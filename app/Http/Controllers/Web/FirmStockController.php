@@ -91,12 +91,12 @@ class FirmStockController extends Controller
     //企业库存商品流水
     public function stockFlowList(){
         $stockFlowInfo = FirmStockService::stockFlowList(session('_web_info')['id']);
-        return $this->display('web.x',compact('stockFlowInfo'));
+        return $this->display('web.firm.stockFlowList',compact('stockFlowInfo'));
     }
 
     //企业实时库存列表
     public function stockList(){
-        $firmStock = FirmStockService::stockList(session('_web_info')['id']);
-        return $this->display('web',compact('firmStock'));
+        $firmStock = FirmStockService::stockList(session('_web_user_id'));
+        return $this->display('web.firm.stockNum',compact('firmStock'));
     }
 }

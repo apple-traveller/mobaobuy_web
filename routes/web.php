@@ -269,6 +269,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::resource('goodsCate', 'GoodsCategoryController');//产品信息
         Route::get('goodsList', 'GoodsController@goodsList');//产品列表
 
+
+        Route::get('/stockNum','FirmStockController@stockList');//企业库存
+        Route::get('/stockFlowList','FirmStockController@stockFlowList');//企业库存详细
         Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
         Route::post('/addStockIn','FirmStockController@addFirmStock');

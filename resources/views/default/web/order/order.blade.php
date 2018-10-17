@@ -1,15 +1,3 @@
-
-		{{--@foreach($orderList as $v)--}}
-		{{--<tr>--}}
-		{{--<input type="hidden" name="" value="{{encrypt($v->id)}}">--}}
-		{{--<td>{{$v->order_sn}}</td>--}}
-		{{--<td>{{$v->shop_name}}</td>--}}
-		{{--<td>{{$v->order_amount}}</td>--}}
-		{{--<td></td>--}}
-		{{--<td><a href="/orderDetails/{{encrypt($v->id)}}">详情</a></td>--}}
-		{{--<td>@if($v->order_status == 1)待企业审核 <span style="cursor: pointer;color:blue;" onclick="egis(this);">审核通过</span> <span style="cursor: pointer;color:blue;" onclick="cancel(this)">作废</span> @elseif($v->order_status == 2)待商家确认 @elseif($v->order_status == 3)已确认 <a href="pay">去付款</a>@elseif($v->order_status == 0)已作废 @endif</td>--}}
-		{{--</tr>--}}
-		{{--@endforeach--}}
 <!doctype html>
 <html lang="en">
 <head>
@@ -194,15 +182,29 @@
 					</tr>
 					</thead>
 				</table>
+
+				{{--@foreach($orderList as $v)--}}
+				{{--<tr>--}}
+				{{--<input type="hidden" name="" value="{{encrypt($v->id)}}">--}}
+				{{--<td>{{$v->order_sn}}</td>--}}
+				{{--<td>{{$v->shop_name}}</td>--}}
+				{{--<td>{{$v->order_amount}}</td>--}}
+				{{--<td></td>--}}
+				{{--<td><a href="/orderDetails/{{encrypt($v->id)}}">详情</a></td>--}}
+				{{--<td>@if($v->order_status == 1)待企业审核 <span style="cursor: pointer;color:blue;" onclick="egis(this);">审核通过</span> <span style="cursor: pointer;color:blue;" onclick="cancel(this)">作废</span> @elseif($v->order_status == 2)待商家确认 @elseif($v->order_status == 3)已确认 <a href="pay">去付款</a>@elseif($v->order_status == 0)已作废 @endif</td>--}}
+				{{--</tr>--}}
+				{{--@endforeach--}}
 				<ul class="product_list">
 					<li style="display: block;">
 						<div class="product-orader-list ">
+							@if($orderList)
+								@foreach($orderList['orderInfo'] as $v)
 							<table class="product-orader-tabs mt10">
 								<tr class="tr-td" >
 									<td colspan="5" class="order_time">
 										<span class="pl20"><b class="gray" style="font-weight: 100;color: #666;">订单单号：</b></span>
-										<a style="color: #666;" href="/user/orderdetail/17800" >2018092000003</a>
-										<span class="gray pr20 pl10 fr">下单时间：2018-09-20 18:45:38</span>
+										<a style="color: #666;" href="/user/orderdetail/17800" >{{$v->order_sn}}</a>
+										<span class="gray pr20 pl10 fr">下单时间：{{$v->add_time}}</span>
 									</td>
 								</tr>
 								<tr>
@@ -217,11 +219,12 @@
 
 
 									</td>
+
 									<td style="width: 242px;">
 										<div >
-											<p class="pl10 pt15 tac" style="color: #666;">应付款：￥100.00</p>
+											<p class="pl10 pt15 tac" style="color: #666;">应付款：￥{{$v->order_amount}}</p>
 											<p class="pl10 pb10 tac">
-												<span style="color: #999;">已付款：￥0.00</span>
+												<span style="color: #999;">已付款：￥{{$v->money_paid}}</span>
 											</p>
 										</div>
 									</td>
@@ -279,6 +282,10 @@
 									<td></td><td></td><td></td>
 								</tr>
 							</table>
+								@endforeach
+								@else
+								暂时没有订单
+								@endif
 
 
 
