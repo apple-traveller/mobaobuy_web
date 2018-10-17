@@ -22,7 +22,7 @@
 <li class="layui-nav-item">
     <a href="javascript:;" data-url="/seller/shopUser" s_id="S030">职员</a>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:;" data-url="/seller/shopUser" s_id="S040">职员列表</a></dd>
+        <dd><a href="javascript:;" data-url="/seller/shopUser" s_id="S030">职员列表</a></dd>
     </dl>
 </li>
 <li class="layui-nav-item">

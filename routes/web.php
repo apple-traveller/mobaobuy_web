@@ -327,10 +327,10 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::post('/shopUser/delete', 'ShopUserController@delete');
 
         Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
-        Route::get('/goods/add', 'ShopGoodsController@add');
-        Route::get('/goods/edit', 'ShopGoodsController@edit');
-        Route::post('/goods/save', 'ShopGoodsController@save');
-        Route::post('/goods/delete', 'ShopGoodsController@delete');
+//        Route::get('/goods/add', 'ShopGoodsController@add');
+//        Route::get('/goods/edit', 'ShopGoodsController@edit');
+//        Route::post('/goods/save', 'ShopGoodsController@save');
+//        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');

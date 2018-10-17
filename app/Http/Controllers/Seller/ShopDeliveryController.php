@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ShopDeliveryController extends Controller
@@ -81,6 +82,17 @@ class ShopDeliveryController extends Controller
         ];
         try{
             $flag = OrderInfoService::modifyDeliveryStatus($data);
+            $logData = [
+                'action_note' => '发货',
+                'action_user' => session('_seller')['user_name'],
+                'order_id' => $id,
+                'order_status' => $flag['order_status'],
+                'action_place' => 0,
+                'shipping_status' => $flag['shipping_status'],
+                'pay_status' => $flag['pay_status'],
+                'log_time' => Carbon::now()
+            ];
+            OrderInfoService::createLog($logData);
             //修改订单表的发货状态
             return $this->result('',200,'修改成功');
         }catch(\Exception $e){

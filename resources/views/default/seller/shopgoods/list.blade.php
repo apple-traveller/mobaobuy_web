@@ -6,9 +6,6 @@
         <div class="content">
             <div class="flexilist">
                 <div class="common-head">
-                    <div class="fl">
-                        <a href="/seller/goods/add"><div class="fbutton"><div class="add" title="添加商品"><span><i class="icon icon-plus"></i>添加商品</span></div></div></a>
-                    </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                         <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
@@ -16,12 +13,7 @@
                     <div class="search">
                         <form action="/seller/goods/list" name="searchForm" >
                             <div class="input">
-                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="goods_name" id="cat_id">
-                                    <option value="0">全部商品</option>
-                                    @foreach($search as $vo)
-                                        <option @if($vo['goods_name']== $goods_name) selected @endif value="{{$vo['goods_name']}}">{{$vo['goods_name']}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="产品名称" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>
@@ -33,28 +25,25 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">产品编码</div></th>
-                                    <th width="10%"><div class="tDiv">产品名称</div></th>
-                                    <th width="10%"><div class="tDiv">库存数量</div></th>
-                                    <th width="10%"><div class="tDiv">店铺售价</div></th>
-                                    <th width="10%"><div class="tDiv">是否在售</div></th>
-                                    <th width="20%" class="handle">操作</th>
+                                    <th width="5%"><div class="tDiv">编号</div></th>
+                                    <th width="5%"><div class="tDiv">产品编码</div></th>
+                                    <th><div class="tDiv">产品名称</div></th>
+                                    <th width="10%"><div class="tDiv">所属品牌</div></th>
+                                    <th width="1%"><div class="tDiv">单位</div></th>
+                                    <th width="8%"><div class="tDiv">产品型号</div></th>
+                                    <th width="8%"><div class="tDiv">包装规格</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($list as $vo)
                                     <tr class="">
+                                        <td><div class="tDiv">{{$vo['id']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['shop_price']}}</div></td>
-                                        <td><div class="tDiv">{{status($vo['is_on_sale'])}}</div></td>
-                                        <td class="handle">
-                                            <div class="tDiv a3">
-                                                <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="删除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                                <a href="/seller/goods/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                            </div>
-                                        </td>
+                                        <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['goods_model']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['packing_spec']}}</div></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -102,17 +91,5 @@
                 });
             });
         }
-        function remove(id)
-        {
-            layui.use('layer', function(){
-                var layer = layui.layer;
-                layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/shopgoods/delete?id="+id;
-                    layer.close(index);
-                });
-            });
-        }
-
-
     </script>
 @stop
