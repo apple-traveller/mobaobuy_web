@@ -80,7 +80,7 @@
 
     <script type="text/javascript">
         $(function(){
-            $("#shop_name").val($("$shop_id").find("option:selected").text());
+            $("#shop_name").val($("#shop_id").find("option:selected").text());
         });
         $("#shop_id").change(function(){
             var shop_name = $(this).find("option:selected").text();

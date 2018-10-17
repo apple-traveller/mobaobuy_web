@@ -152,6 +152,7 @@
                     element.parents('div.label_value').find(".notic").hide();
                     error_div.append(error);
                 },
+                ignore : [],
                 rules:{
                     title :{
                         required : true,

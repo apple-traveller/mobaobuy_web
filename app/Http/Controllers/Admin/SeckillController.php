@@ -88,6 +88,9 @@ class SeckillController extends Controller
         if(empty($data['end_time'])){
             $errorMsg[] = "结束时间不能为空";
         }
+        if(strtotime($data['end_time'])<strtotime($data['begin_time'])){
+            $errorMsg[] = "结束时间不能小于开始时间";
+        }
         if(empty($data['tb_id'])){
             $errorMsg[] = "秒杀时段ID不能为空";
         }
