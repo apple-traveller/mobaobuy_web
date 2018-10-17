@@ -3,7 +3,7 @@
 <head>
     <title>会员中心 - @yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
-    @yield('style')
+    @yield('css')
 </head>
 <body style="background-color: rgb(244, 244, 244);">
     @include(themePath('.','web').'web.include.partials.top')
