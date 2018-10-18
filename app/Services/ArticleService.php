@@ -58,12 +58,82 @@ class ArticleService
         return $cat_list;
     }
 
+    /**
+     * 资讯中心文章列表
+     * @param $cat_id
+     * @param $title
+     * @param $page
+     * @param $page_size
+     * @return mixed
+     */
+    public static function getNewsList($cat_id,$title,$page=1,$page_size=10)
+    {
+        $condition = [];
+        if($cat_id > 0){
+            $condition['cat_id'] = $cat_id;
+        } else {
+            $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id']);
+            $cat_id = '';
+            foreach ($cat_list as $k=>$v){
+                $cat_id .= $v['id'].'|';
+            }
+            $condition['cat_id'] = $cat_id;
+        }
+        if(!empty($title)){
+            $con['opt'] = "OR";
+            $con['title'] = '%'.$title.'%';
+            $con['keywords'] = '%'.$title.'%';
+            $con['author'] = '%'.$title.'%';
+            $con['content'] = '%'.$title.'%';
+            $condition[] = $con;
+        }
+        $condition['is_show'] = 1;
+        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+    }
 
+    /**
+     * 热门资讯
+     * @param int $page
+     * @param int $page_size
+     * @return mixed
+     */
+    public static function getTopClick($page=1,$page_size=6)
+    {
+        $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id']);
+        $cat_id = '';
+        foreach ($cat_list as $k=>$v){
+            $cat_id .= $v['id'].'|';
+        }
+        $condition['cat_id'] = $cat_id;
+        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+    }
 
+    /**
+     * 更新点击量
+     * @param $id
+     * @return bool
+     */
+    public static function updateClick($id)
+    {
+        $article = ArticleRepo::getInfo($id);
+        $data = ['click'=>$article['click']+1];
+        return ArticleRepo::modify($id,$data);
+    }
 
-
-
-
-
-
+    /**
+     * 判断文章是否在该分类下
+     * @param $id
+     * @param $cat_id
+     * @return bool
+     */
+    public static function check_cat($id,$cat_id)
+    {
+        $cat = ArticleCatRepo::getList([],['parent_id'=>$cat_id],['id']);
+        $article_cat = ArticleRepo::getInfo($id);
+        if (in_array($article_cat['cat_id'],$cat)){
+            return true;
+        }else{
+            return false;
+        };
+    }
 }

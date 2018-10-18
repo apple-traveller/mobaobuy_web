@@ -323,6 +323,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
+        Route::post('/detail.html', 'NewsController@detail');
 
     });
 });
