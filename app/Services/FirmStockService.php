@@ -2,22 +2,29 @@
 namespace App\Services;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
+use App\Repositories\UserRepo;
+use Carbon\Carbon;
 class FirmStockService
 {
     use CommonService;
 
     //新增出入库记录
     public static function createFirmStock($data){
+        $data['flow_time'] = Carbon::now();
         $insertData = [];
         $insertData['firm_id'] = $data['firm_id'];
         $insertData['goods_name'] = $data['goods_name'];
-//        $insertData['goods_id'] = $data[''];
         $result = FirmStockRepo::getInfoByFields($insertData);
+        //如果库存表里有此商品就更新
         if($result){
             try{
                 self::beginTransaction();
                 FirmStockFlowRepo::create($data);
-                FirmStockRepo::modify($result['id'],['number'=>$result['number'] + $data['number']]);
+                if($data['flow_type'] == 2 || $data['flow_type'] == 1){
+                    FirmStockRepo::modify($result['id'],['number'=>$result['number'] + $data['number']]);
+                }else{
+                    FirmStockRepo::modify($result['id'],['number'=>$result['number'] - $data['number']]);
+                }
                 self::commit();
             }catch (\Exception $e){
                 self::rollBack();
@@ -26,7 +33,7 @@ class FirmStockService
         }else{
             $stockData = [];
             $stockData['firm_id'] = $data['firm_id'];
-            $stockData['goods_id'] = $data[''];
+            $stockData['goods_id'] = '';
             $stockData['goods_name'] = $data['goods_name'];
             $stockData['number'] = $data['number'];
             try{
@@ -50,13 +57,34 @@ class FirmStockService
     }
 
     //入库记录列表
-    public static function firmStockIn($id){
-       return FirmStockFlowRepo::getListByStockIn($id);
+    public static function firmStockIn($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+        $condition = [];
+        if($firm_id > 0){
+            $condition['firm_id'] = $firm_id;
+        }
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%'.$goods_name.'%';
+        }
+        $condition['flow_type'] = 2;
+        $firmStockFlowInfo =  FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
+        foreach($firmStockFlowInfo['list'] as $k=>$v){
+            $v['nick_name'] = UserRepo::getInfo($v['created_by'])['nick_name'];
+            $firmStockFlowInfo['list'][$k] = $v;
+        }
+        return $firmStockFlowInfo;
     }
 
     //出库记录列表
-    public static function firmStockOut($id){
-        return FirmStockFlowRepo::getListByStockOut($id);
+    public static function firmStockOut($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+        $condition = [];
+        if($firm_id > 0){
+            $condition['firm_id'] = $firm_id;
+        }
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%'.$goods_name.'%';
+        }
+        $condition['flow_type'] = 3;
+        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
 
     //库存记录列表
@@ -68,11 +96,24 @@ class FirmStockService
         if(!empty($goods_name)){
             $condition['goods_name'] = '%'.$goods_name.'%';
         }
+
         return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
     //库存商品流水
     public static function stockFlowList($id){
         return FirmStockFlowRepo::getList([],['firm_id'=>$id]);
+    }
+
+    public static function canStockOut($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+        $condition = [];
+        if($firm_id > 0){
+            $condition['firm_id'] = $firm_id;
+        }
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%'.$goods_name.'%';
+        }
+        $condition['number'] = '>|0';
+        return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
 
 

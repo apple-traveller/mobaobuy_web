@@ -14,24 +14,66 @@ class FirmStockController extends Controller
      */
     protected $redirectTo = '/';
 
-
     //入库记录列表
-    public function createFirmStock(Request $request){
-        $goods_name = $request->input('goods_name');
-        $start_time = $request->input('start_time');
-        $end_time = $request->input('end_time');
-        if($goods_name && $start_time &&$end_time){
-            $firmstock = FirmStockService::search($goods_name,$start_time,$end_time);
-        }else{
-            $firmstock = FirmStockService::firmStockIn(session('_web_user_id'));
+    public function FirmStockIn(Request $request){
+        if(session('_curr_deputy_user')['is_firm']) {
+            if ($request->isMethod('get')) {
+                $goods_name = $request->input('goods_name');
+                $start_time = $request->input('start_time');
+                $end_time = $request->input('end_time');
+                if ($goods_name && $start_time && $end_time) {
+                    $firmstock = FirmStockService::search($goods_name, $start_time, $end_time);
+                    return $this->display('web.user.stock.stockIn', ['firmstock' => $firmstock]);
+                }
+                return $this->display('web.user.stock.stockIn');
+            } else {
+                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+                $page_size = $request->input('length', 10);
+                $firm_id = session('_curr_deputy_user')['firm_id'];
+                $goods_name = $request->input('goods_name');
+                $rs_list = FirmStockService::firmStockIn($firm_id, $goods_name, $page, $page_size);
+
+                $data = [
+                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                    'recordsTotal' => $rs_list['total'], //数据总行数
+                    'recordsFiltered' => $rs_list['total'], //数据总行数
+                    'data' => $rs_list['list']
+                ];
+                return $this->success('', '', $data);
+            }
         }
-        return view('default.web.firm.stockIn',['firmstock'=>$firmstock]);
+        return $this->error('非法访问');
     }
 
     //出库记录列表
     public function firmStockOut(Request $request){
-        $firmstock = FirmStockService::firmStockOut(session('_web_info')['id']);
-        return $this->display('web.firm.stockOut',compact('firmstock'));
+        if(session('_curr_deputy_user')['is_firm']) {
+            if ($request->isMethod('get')) {
+                $goods_name = $request->input('goods_name');
+                $start_time = $request->input('start_time');
+                $end_time = $request->input('end_time');
+                if ($goods_name && $start_time && $end_time) {
+                    $firmstock = FirmStockService::search($goods_name, $start_time, $end_time);
+                    return $this->display('web.user.stock.stockOut', ['firmstock' => $firmstock]);
+                }
+                return $this->display('web.user.stock.stockOut');
+            } else {
+                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+                $page_size = $request->input('length', 10);
+                $firm_id = session('_curr_deputy_user')['firm_id'];
+                $goods_name = $request->input('goods_name');
+                $rs_list = FirmStockService::firmStockOut($firm_id, $goods_name, $page, $page_size);
+
+                $data = [
+                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                    'recordsTotal' => $rs_list['total'], //数据总行数
+                    'recordsFiltered' => $rs_list['total'], //数据总行数
+                    'data' => $rs_list['list']
+                ];
+                return $this->success('', '', $data);
+            }
+        }
+        return $this->error('非法访问');
     }
 
     //新增出库记录
@@ -68,24 +110,28 @@ class FirmStockController extends Controller
 
     //新增入库记录
     public function addFirmStock(Request $request){
-        if($request->isMethod('get')){
-            return $this->display('web.xx');
-        }else{
-            $rule = [
-                'partner_name'=>'nullable',
-                'goods_name'=>'required',
-                'order_sn'=>'nullable',
-                'number'=>'required|numeric',
-                'flow_desc'=>'nullable'
-            ];
-            $data = $this->validate($request,$rule);
-            $data['firm_id'] = session('_web_info')['id'];
-            try{
-                FirmStockService::createFirmStock($data);
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
+        if(session('_curr_deputy_user')['is_firm']) {
+            if ($request->isMethod('get')) {
+                return $this->display('web.xx');
+            } else {
+                $stockInData = [];
+                $stockInData['created_by'] = session('_web_user_id');
+                $stockInData['partner_name'] = $request->input('partner_name');
+                $stockInData['goods_name'] = $request->input('goods_name');
+                $stockInData['number'] = $request->input('number');
+                $stockInData['flow_desc'] = $request->input('flow_desc');
+                $stockInData['order_sn'] = $request->input('order_sn');
+                $stockInData['firm_id'] = session('_curr_deputy_user')['firm_id'];
+                $stockInData['flow_type'] = 2;
+                try {
+                    FirmStockService::createFirmStock($stockInData);
+                    return $this->success();
+                } catch (\Exception $e) {
+                    return $this->error($e->getMessage());
+                }
             }
         }
+        return $this->error('非法访问');
     }
 
     //企业库存商品流水
@@ -112,7 +158,31 @@ class FirmStockController extends Controller
                     'recordsFiltered' => $rs_list['total'], //数据总行数
                     'data' => $rs_list['list']
                 ];
+                return $this->success('', '', $data);
+            }
+        }
 
+        return $this->error('非法访问');
+    }
+
+    //企业可出库列表
+    public function canStockOut(Request $request){
+        if(session('_curr_deputy_user')['is_firm']){
+            if($request->isMethod('get')){
+                return $this->display('web.user.stock.canStockOut');
+            }else{
+                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+                $page_size = $request->input('length', 10);
+                $firm_id = session('_curr_deputy_user')['firm_id'];
+                $goods_name = $request->input('goods_name');
+                $rs_list = FirmStockService::canStockOut($firm_id, $goods_name, $page, $page_size);
+
+                $data = [
+                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                    'recordsTotal' => $rs_list['total'], //数据总行数
+                    'recordsFiltered' => $rs_list['total'], //数据总行数
+                    'data' => $rs_list['list']
+                ];
                 return $this->success('', '', $data);
             }
         }
