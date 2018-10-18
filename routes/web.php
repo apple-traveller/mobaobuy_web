@@ -189,8 +189,16 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
         Route::get('/seckill/detail', 'SeckillController@detail');//秒杀活动商品详情
         Route::get('/seckill/delete', 'SeckillController@delete');//秒杀删除
+        Route::get('/seckill/addForm', 'SeckillController@addForm');//添加秒杀
+        Route::post('/seckill/save', 'SeckillController@save');//保存秒杀
+        Route::post('/seckill/getGoodsCat', 'SeckillController@getGoodsCat');//ajax获取商品分类
+        Route::post('/seckill/getGood', 'SeckillController@getGood');//ajax获取商品
         Route::get('/seckill/verify', 'SeckillController@verify');//审核
         Route::get('/seckill/time/list', 'SeckillController@timeList');//秒杀时间段列表
+        Route::get('/seckill/time/add', 'SeckillController@addTime');//添加秒杀时间段
+        Route::get('/seckill/time/edit', 'SeckillController@editTime');//编辑秒杀时间段
+        Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
+        Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
         Route::get('/template/index', 'TemplateController@index');//首页可视化
         Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
@@ -306,6 +314,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/article/{id}','IndexController@article');//资讯
 
         Route::get('/logout', 'UserController@logout');//登出
+
+
+        Route::get('/news.html', 'NewsController@index'); // 新闻中心
+
     });
 });
 

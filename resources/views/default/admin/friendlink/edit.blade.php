@@ -42,15 +42,8 @@
                                     <button type="button" class="layui-btn upload-file" data-type="friend_link" data-path="friend_link">上传图片</button>
                                     <input type="text"  class="text" id="link_logo" name="link_logo" style="display:none;" @if(!starts_with($link['link_logo'],'http://') && !starts_with($link['link_logo'],'https://'))value="{{$link['link_logo']}}" @endif>
                                     <img @if(empty($link['link_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($link['link_logo'])}}"  @endif  class="layui-upload-img" id="demo1" ><br/>
+                                    <div class="form_prompt"></div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="label">或LOGO地址：</div>
-                            <div class="label_value">
-                                <input name="url_logo" class="text" autocomplete="off" @if(starts_with($link['link_logo'],'http://') || starts_with($link['link_logo'],'https://'))value="{{$link['link_logo']}}" @endif type="text">
-                                <div class="notic m20">在指定远程LOGO图片时, LOGO图片的URL网址必须为http:// 或 https://开头的正确URL格式!</div>
                             </div>
                         </div>
 
@@ -112,7 +105,10 @@
                         required : true,
                     },
                     link_url :{
-                        required : true
+                        required : true,
+                    },
+                    link_logo :{
+                        required : true,
                     }
                 },
                 messages:{
@@ -121,6 +117,9 @@
                     },
                     link_url :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'链接地址不能为空'
+                    },
+                    link_logo :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'链接LOGO不能为空'
                     }
                 }
             });

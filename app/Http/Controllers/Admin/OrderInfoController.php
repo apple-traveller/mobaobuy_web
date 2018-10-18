@@ -409,10 +409,14 @@ class OrderInfoController extends Controller
     public function modifyDeliveryStatus(Request $request)
     {
         $data = $request->all();
+
         try{
             $flag = OrderInfoService::modifyDeliveryStatus($data);
             //修改订单表的发货状态
-            return $this->result('',200,'修改成功');
+            if(empty($flag)){
+                return $this->result("",400,'修改失败');
+            }
+            return $this->result($flag,200,'修改成功');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
