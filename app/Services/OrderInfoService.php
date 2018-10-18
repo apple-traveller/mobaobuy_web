@@ -23,6 +23,10 @@ class OrderInfoService
     //获取分页订单列表
     public static function getWebOrderList($condition, $page = 1 ,$pageSize=10){
         $condition['is_delete'] = 0;
+
+        $condition = array_merge($condition, self::setStatueCondition($condition['status']));
+        unset($condition['status']);
+
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
         foreach ($orderList['list'] as &$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
@@ -55,9 +59,34 @@ class OrderInfoService
                 case 0: $status .= ', 未发货';break;
                 case 1: $status .= ', 已发货';break;
                 case 2: $status .= ', 部分发货';break;
+                case 3: $status .= ', 已收货';break;
             }
         }
         return $status;
+    }
+
+    private static function setStatueCondition($status_code){
+        $condition = [];
+        switch ($status_code){
+            case 'waitApproval':
+                $condition['order_status'] = 1;break;
+            case 'waitAffirm':
+                $condition['order_status'] = 2;break;
+            case 'waitPay':
+                $condition['order_status'] = 3;
+                $condition['pay_status'] = '0|2';break;
+            case 'waitSend':
+                $condition['order_status'] = 3;
+                $condition['shipping_status'] = '0|2';break;
+            case 'waitConfirm':
+                $condition['order_status'] = 3;
+                $condition['shipping_status'] = 1;break;
+            case 'finish':
+                $condition['order_status'] = 4;break;
+            case 'cancel':
+                $condition['order_status'] = 0;break;
+        }
+        return $condition;
     }
 
     public static function getOrderStatusCount($user_id, $firm_id){
@@ -77,26 +106,23 @@ class OrderInfoService
             'waitConfirm' => 0
         ];
         //待审批数量
-        $condition['order_status'] = 1;
+        $condition = array_merge($condition, self::setStatueCondition('waitApproval'));
         $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
 
         //待确认数量
-        $condition['order_status'] = 2;
+        $condition = array_merge($condition, self::setStatueCondition('waitAffirm'));
         $status['waitAffirm'] = OrderInfoRepo::getTotalCount($condition);
 
         //待付款数量
-        $condition['order_status'] = 3;
-        $condition['pay_status'] = '0|2';
+        $condition = array_merge($condition, self::setStatueCondition('waitPay'));
         $status['waitPay'] = OrderInfoRepo::getTotalCount($condition);
 
         //待发货数量
-        $condition['order_status'] = 3;
-        $condition['shipping_status'] = '0|2';
-        $status['waitPay'] = OrderInfoRepo::getTotalCount($condition);
+        $condition = array_merge($condition, self::setStatueCondition('waitSend'));
+        $status['waitSend'] = OrderInfoRepo::getTotalCount($condition);
 
         //待收货
-        $condition['order_status'] = 3;
-        $condition['shipping_status'] = 1;
+        $condition = array_merge($condition, self::setStatueCondition('waitConfirm'));
         $status['waitConfirm'] = OrderInfoRepo::getTotalCount($condition);
 
         return $status;
