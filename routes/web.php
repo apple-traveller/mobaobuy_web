@@ -288,6 +288,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+        Route::post('/curCanStock','FirmStockController@curCanStock');//可出库单条记录
 
         Route::get('/stock/list','FirmStockController@stockList');//实时库存
         Route::post('/stock/list','FirmStockController@stockList');//实时库存

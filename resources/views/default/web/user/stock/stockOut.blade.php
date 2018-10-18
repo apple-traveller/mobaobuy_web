@@ -104,16 +104,16 @@
             <input type="text" class="border_text" onClick="WdatePicker()"/><span class="ml10 mr10">至</span><input type="text" class="border_text" onClick="WdatePicker()"/>
             </div>
             <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white">+新增出库</div>
+            <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}">+新增出库</a></div>
         </div>
         
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="30%">入库日期</th>
+                    <th width="30%">出库日期</th>
                     <th width="25%">商品名称</th>
-                    <th width="25%">入库数量（kg)</th>
+                    <th width="25%">出库数量（kg)</th>
                     <th>操作人</th>
                      <th>操作</th>
                 </tr>

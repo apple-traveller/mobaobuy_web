@@ -189,4 +189,33 @@ class FirmStockController extends Controller
 
         return $this->error('非法访问');
     }
+
+    //获取单条可出库数据
+    public function curCanStock(Request $request){
+        if(session('_curr_deputy_user')['is_firm']){
+                $id = $request->input('id');
+//                $firm_id = session('_curr_deputy_user')['firm_id'];
+                $firmStockInfo = FirmStockService::curCanStock($id);
+                return $this->success('', '', $firmStockInfo);
+        }
+        return $this->error('非法访问');
+    }
+
+    //出库更新
+    public function curStockSave(Request $request){
+        if(session('_curr_deputy_user')['is_firm']){
+            $currStockOut = [];
+            $currStockOut['id'] = $request->input('id');
+            $currStockOut['currStockNum'] = $request->input('currStockNum');
+            $currStockOut['flow_desc'] = $request->input('flow_desc');
+            $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
+            try{
+                FirmStockService::createFirmStockOut($currStockOut);
+                return $this->success();
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+        return $this->error('非法访问');
+    }
 }
