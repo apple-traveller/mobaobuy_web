@@ -16,7 +16,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href=""><div class="fbutton"><div class="add" title="添加秒杀时段"><span>添加秒杀时段</span></div></div></a>
+                        <a href="/admin/seckill/time/add"><div class="fbutton"><div class="add" title="添加秒杀时段"><span>添加秒杀时段</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -46,6 +46,7 @@
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                            <a href="/admin/seckill/time/edit?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -105,7 +106,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/seckill/delete?id="+id;
+                    window.location.href="/admin/seckill/time/delete?id="+id;
                     layer.close(index);
                 });
             });

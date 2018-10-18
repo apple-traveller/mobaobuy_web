@@ -71,7 +71,7 @@ class OrderInfoController extends Controller
         $user = UserService::getInfo($orderInfo['user_id']);
         $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
         $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
-        $order_goods = OrderInfoService::getOrderGoodsByOrderid($orderInfo['id']);//订单商品
+        $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
         return $this->display('admin.orderinfo.detail',[
             'currpage'=>$currpage,
@@ -205,7 +205,7 @@ class OrderInfoController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage');
-        $orderGoods = OrderInfoService::getOrderGoodsByOrderid($id);
+        $orderGoods = OrderInfoService::getOrderGoodsByOrderId($id);
         $goods_amount = OrderInfoService::getOrderInfoById($id)['goods_amount'];
         return $this->display('admin.orderinfo.good',[
             'orderGoods'=>$orderGoods,
@@ -275,7 +275,7 @@ class OrderInfoController extends Controller
         //查询所有的快递信息
         $shippings = OrderInfoService::getShippingList();
         //查询该订单的所有商品信息
-        $orderGoods = OrderInfoService::getOrderGoodsByOrderid($order_id);
+        $orderGoods = OrderInfoService::getOrderGoodsByOrderId($order_id);
 
         return $this->display('admin.orderinfo.delivery',[
 
@@ -409,10 +409,14 @@ class OrderInfoController extends Controller
     public function modifyDeliveryStatus(Request $request)
     {
         $data = $request->all();
+
         try{
             $flag = OrderInfoService::modifyDeliveryStatus($data);
             //修改订单表的发货状态
-            return $this->result('',200,'修改成功');
+            if(empty($flag)){
+                return $this->result("",400,'修改失败');
+            }
+            return $this->result($flag,200,'修改成功');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

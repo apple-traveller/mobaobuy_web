@@ -18,7 +18,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href=""><div class="fbutton"><div class="add" title="添加秒杀活动"><span><i class="icon icon-plus"></i>添加秒杀活动</span></div></div></a>
+                        <a href="/admin/seckill/addForm"><div class="fbutton"><div class="add" title="添加秒杀活动"><span><i class="icon icon-plus"></i>添加秒杀活动</span></div></div></a>
                         <a href="/admin/seckill/time/list"><div class="fbutton"><div class="add" title="秒杀时间段列表"><span>秒杀时间段列表</span></div></div></a>
                     </div>
                     <div class="refresh">

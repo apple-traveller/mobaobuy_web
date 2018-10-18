@@ -125,7 +125,7 @@
                                             @if($delivery['status']==0)
                                             <input  data-content="1" type="button" value="发货" class="btn btn25 red_btn delivery_status">                                        <input name="order_id" type="hidden" value="4">
                                             @else
-                                            <input  data-content="0" type="button" value="取消发货" class="btn btn25 blue_btn delivery_status">
+                                                <span>已发货</span>
                                             @endif
                                         </div>
                                     </div>
@@ -150,12 +150,13 @@
                     'id': "{{$delivery['id']}}",
                     'status': status,
                 }, function (res) {
+                    console.log(res.data);
                     if (res.code == 200) {
                         layer.msg(res.msg, {
                             icon: 6,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
-                            window.location.href="/admin/orderinfo/delivery/detail?id={{$delivery['id']}}&currpage={{$currpage}}";
+                            window.location.href="/admin/orderinfo/delivery/list?order_sn={{$delivery['order_sn']}}";
                         });
 
                     } else {
