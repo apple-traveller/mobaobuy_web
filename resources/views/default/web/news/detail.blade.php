@@ -40,7 +40,7 @@
 
 @endsection
 @section('content')
-    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/subject/list/56/page/1.html">今日资讯</a> &gt;<span class="gray">中石化华中PP价格上调通知</span></div>
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>
 
     <div class="today_news whitebg fl">
         <style type="text/css">
@@ -87,10 +87,10 @@
         </div>
         <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
             <p class="fl new_other">上一篇：
-                <a href="/subject/detail/13137.html">河北PP市场报盘观望为主</a>
+                <a href="detail.html?id={{ $page_data['up_news_id'] }}">{{ $page_data['up_news_title'] }}</a>
             </p>
             <p class="fr new_other">下一篇：
-                <a href="/subject/detail/13139.html">国内部分地区PVC市场报盘相对稳定</a>
+                <a href="detail.html?id={{ $page_data['down_news_id'] }}">{{ $page_data['down_news_title'] }}</a>
             </p>
         </div>
     </div>

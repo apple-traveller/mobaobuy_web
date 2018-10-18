@@ -156,16 +156,37 @@ class ArticleService
         foreach ($cat_ids as $k=>$v){
             $cat_id .= $v['id'].'|';
         }
+        $condition['is_show'] = 1;
+        $condition['cat_id'] = $cat_id;
+        $condition['id'] = '<|'.$id;
 
-//        $condition['is_show'] = 1;
-//        $condition['cat_id'] = $cat_id;
-        $condition['id'] = '<|16';
-//        dd($condition);
         $up_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'desc']],$condition);
-        dd($up_page);
+
         $condition['id'] = '>|'.$id;
         $down_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'asc']],$condition);
-        dd($down_page);
+
+        if(!empty($up_page['list'])){
+            $up_news_title = $up_page['list'][0]['title'];
+            $up_news_id = $up_page['list'][0]['id'];
+        }else{
+            $up_news_title = '没有了哦';
+            $up_news_id = '';
+        }
+        if(!empty($down_page['list'])){
+            $down_news_title = $down_page['list'][0]['title'];
+            $down_news_id = $down_page['list'][0]['id'];
+        }else{
+            $down_news_title = '没有了哦';
+            $down_news_id = '';
+        }
+
+        $data = [
+            "up_news_title" => $up_news_title,
+            "up_news_id" => $up_news_id,
+            "down_news_title" => $down_news_title,
+            "down_news_id" => $down_news_id,
+        ];
+        return $data;
     }
 
 
