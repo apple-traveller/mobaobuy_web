@@ -126,6 +126,20 @@ class OrderInfoService
                 //修改order_goods表的已发货数量
                 $order_goods = OrderGoodsRepo::getInfo($orderDeliveryGoods['order_goods_id']);
                 OrderGoodsRepo::modify($orderDeliveryGoods['order_goods_id'],['send_number'=>$order_goods['send_number']+$orderDeliveryGoods['send_number']]);
+
+            }
+            //修改order_info表的发货状态shipping_status
+            $order_goods = OrderGoodsRepo::getList([],['order_id'=>$orderDelivery['order_id']]);
+            $flag = true;
+            foreach($order_goods as $vo){
+                if($vo['goods_number']!=$vo['send_number']){
+                    $flag = false;
+                }
+            }
+            if($flag==false){
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2]);//部分发货
+            }else{
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1]);//全部发货
             }
             self::commit();
             return $orderDelivery;
@@ -182,34 +196,9 @@ class OrderInfoService
     //修改发货状态
     public static function modifyDeliveryStatus($data)
     {
-        try{
-            self::beginTransaction();
-            $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
-            $order_goods = OrderGoodsRepo::getList([],['order_id'=>$order_delivery['order_id']]);
-            $flag = false;
-            foreach($order_goods as $v){
-                if($v['goods_number']>$v['send_number'] && $v['send_number']!=0){
-                    $flag = true;
-                }
-            }
-            if($flag==true){
-               return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>2]);//部分发货
-            }
+        $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
+        return $order_delivery;
 
-            $flag1 = true;
-            foreach($order_goods as $v){
-                if($v['goods_number']!=$v['send_number']){
-                    $flag1 = false;
-                }
-            }
-            if($flag1==true){
-                return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>1]);//已全部发货
-            }
-            self::commit();
-        }catch(\Exception $e){
-            self::rollBack();
-            self::throwBizError($e->getMessage());
-        }
     }
 
 
