@@ -22,14 +22,14 @@
 	<script type="text/javascript">
         var tbl;
         $(function () {
-
             tbl = $('#data-table').dataTable({
                 "ajax": {
                     url: "{{url('order/list')}}",
                     type: "post",
                     dataType: "json",
                     data: function (d) {
-                        d.order_no = $('#order_no').val();
+                        d.tab_code = '{{$tab_code}}',
+                        d.order_no = $('#order_no').val()
                     },
                     dataSrc:
                         function (json) {
@@ -58,7 +58,7 @@
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款:￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
-                                        html += '<p><img src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
+                                        html += '<p><img class="track_tooltip" data-id='+ full.deliveries[i].shipping_id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
                                     }
                                     html += '<p><span><a href="">订单详情</a></span></p></td>';
                                     html += '<td rowspan="'+ full.goods.length +'"><p><button class="opt-btn">去支付</button></p><p class="mt5"><button class="opt-btn">取消</button></p></td>';
@@ -71,6 +71,27 @@
                     }
                 ]
             });
+
+            Ajax.call("{{url('order/status')}}", [] , function(result) {
+                if (result.code == 1) {
+                    var status = result.data;
+                    if(status.waitApproval > 0){
+                        $('#waitApproval').html(status.waitApproval);
+                    }
+                    if(status.waitAffirm > 0){
+                        $('#waitAffirm').html(status.waitAffirm);
+                    }
+                    if(status.waitPay > 0){
+                        $('#waitPay').html(status.waitPay);
+                    }
+                    if(status.waitSend > 0){
+                        $('#waitSend').html(status.waitSend);
+                    }
+                    if(status.waitConfirm > 0){
+                        $('#waitConfirm').html(status.waitConfirm);
+                    }
+                }
+            }, "POST", "JSON");
 
             $("#on-search").click(function () {
                 var oSettings = tbl.fnSettings();
@@ -128,13 +149,13 @@
 	<div class="mt20">
 		<ul class="order_list_state">
 			<li @if(empty($tab_code)) class="curr" @endif><a href="/order/list">所有</a></li>
-			<li @if(empty($tab_code)) class="waitApproval" @endif><a href="/order/list?tab_code=waitApproval">待审核<em>2</em></a></li>
-			<li @if(empty($tab_code)) class="waitAffirm" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em>2</em></a></li>
-			<li @if(empty($tab_code)) class="waitPay" @endif><a href="/order/list?tab_code=waitPay">待付款<em>2</em></a></li>
-			<li @if(empty($tab_code)) class="waitSend" @endif><a href="/order/list?tab_code=waitSend">待发货<em>2</em></a></li>
-			<li @if(empty($tab_code)) class="waitConfirm" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em>2</em></a></li>
-			<li @if(empty($tab_code)) class="finish" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
-			<li @if(empty($tab_code)) class="cancel" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
+			<li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
+			<li @if($tab_code == 'waitAffirm') class="curr" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em id="waitAffirm"></em></a></li>
+			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
+			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>
+			<li @if($tab_code == 'waitConfirm') class="curr" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em id="waitConfirm"></em></a></li>
+			<li @if($tab_code == 'finish') class="curr" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
+			<li @if($tab_code == 'cancel') class="curr" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
 		</ul>
 	</div>
 

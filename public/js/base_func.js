@@ -120,4 +120,35 @@ $(document).tooltip({
     }
 });
 
+$(document).tooltip({
+    items: ".track-tooltip",
+    content: function() {
+        var element = $( this );
+        var id = element.data('id');
+        var name = element.data('name');
+        var code = element.data('code');
+        Ajax.call("{{url('order/status')}}", [] , function(result) {
+            if (result.code == 1) {
+                var status = result.data;
+                if(status.waitApproval > 0){
+                    $('#waitApproval').html(status.waitApproval);
+                }
+                if(status.waitAffirm > 0){
+                    $('#waitAffirm').html(status.waitAffirm);
+                }
+                if(status.waitPay > 0){
+                    $('#waitPay').html(status.waitPay);
+                }
+                if(status.waitSend > 0){
+                    $('#waitSend').html(status.waitSend);
+                }
+                if(status.waitConfirm > 0){
+                    $('#waitConfirm').html(status.waitConfirm);
+                }
+            }
+        }, "POST", "JSON");
+        return "<img class='map' src='"+url+"'>";
+    }
+});
+
 /*************************文件上传 end**********************/

@@ -21,15 +21,16 @@ class OrderController extends Controller
 
     //我的订单
     public function orderList(Request $request){
+        $tab_code = $request->input('tab_code', '');
         if($request->isMethod('get')){
-            return $this->display('web.user.order.all_list');
+            return $this->display('web.user.order.list', compact('tab_code'));
         }else{
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
             $page_size = $request->input('length', 10);
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $order_no = $request->input('order_no');
 
-            $condition = [];
+            $condition['status'] = $tab_code;
             //todo 测试看数据，暂查询所有数据，不带订单用户ID条件
             /*if(session('_curr_deputy_user')['is_firm']){
                 $condition['firm_id'] = $firm_id;
@@ -56,12 +57,14 @@ class OrderController extends Controller
 
     public function orderStatusCount(){
         $deputy_user = session('_curr_deputy_user');
-        if($deputy_user['is_firm']){
+        //todo 测试看数据，暂查询所有数据，不带订单用户ID条件
+        /*if($deputy_user['is_firm']){
             $firm_id = $deputy_user['firm_id'];
             $status = OrderInfoService::getOrderStatusCount(0, $firm_id);
         }else{
-            $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id']);
-        }
+            $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);
+        }*/
+        $status = OrderInfoService::getOrderStatusCount(0, 0);
         return $this->success('', '', $status);
     }
 
