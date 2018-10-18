@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-@section('title', '资讯首页')
+@section('title', '资讯详情')
 @section('style')
     <style>
         .crumbs {padding: 5px 0;overflow: hidden;clear: both;zoom: 1;}
@@ -40,7 +40,60 @@
 
 @endsection
 @section('content')
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/subject/list/56/page/1.html">今日资讯</a> &gt;<span class="gray">中石化华中PP价格上调通知</span></div>
 
+    <div class="today_news whitebg fl">
+        <style type="text/css">
+            .w800p {width: 800px;margin: 0 auto;overflow: hidden;clear: both;}
+            .info-detail-title {font-size: 22px; overflow: hidden;clear: both;text-align: center;padding: 20px 0;border-bottom: 1px solid #ebebeb;}
+            .info-detail-bq {line-height: 40px;text-align: center;}
+            .bshare-custom a {padding-left: 19px;height: 16px;_height: 18px;text-decoration: none;display: none;
+                zoom: 1;vertical-align: middle;cursor: pointer;color: #333;margin-right: 3px;-moz-opacity: 1;-khtml-opacity: 1;opacity: 1;}
+
+            .bshare-custom .bshare-qzone {background: url(img/top_logos_sprite.png) no-repeat 0 -234px;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-sinaminiblog {background: url(img/top_logos_sprite.png) no-repeat 0 -270px;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-renren {background: url(img/top_logos_sprite.png) no-repeat 0 -252px;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-qqmb {background: url(img/top_logos_sprite.png) no-repeat 0 -198px;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-neteasemb {background: url(img/top_logos_sprite.png) no-repeat 0 -162px;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-more {padding-left: 0 !important;color: #333 !important;*display: inline;display: inline-block;}
+            .bshare-custom .bshare-more.more-style-addthis {background: url(img/more-style-addthis.png) no-repeat;}
+            .bshare-custom #bshare-more-icon, .bshare-custom .bshare-more-iconcustom .bshare-more-icon { background: url(img/more.png) no-repeat;padding-left: 19px !important;}
+            .bshare-custom .bshare-more-icon {background: url(img/more.png) no-repeat;padding-left: 19px !important;}
+            .info-detail-content {
+                padding-top: 10px;
+            }
+            .new_other {
+                max-width: 45%;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        </style>
+        <div class="w800p">
+            <h1 class="info-detail-title">
+                {{ $article['title'] }}
+            </h1>
+            <div class="info-detail-bq gray">
+                <div style="display: inline-block;">发布时间： {{ $article['add_time'] }}</div>
+                <div style="display: inline-block;margin-left: 40px;">来源：{{ $article['author'] }}</div>
+                <div class="bshare-custom" style="line-height:38px !important;display: inline-block;margin-left: 40px;"><div class="bsPromo bsPromo2"></div>
+                    <div class="bsPromo bsPromo2"></div>
+                </div>
+
+            </div>
+            <div class="info-detail-content">
+                {{ $article['content'] }}
+            </div>
+        </div>
+        <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
+            <p class="fl new_other">上一篇：
+                <a href="/subject/detail/13137.html">河北PP市场报盘观望为主</a>
+            </p>
+            <p class="fr new_other">下一篇：
+                <a href="/subject/detail/13139.html">国内部分地区PVC市场报盘相对稳定</a>
+            </p>
+        </div>
+    </div>
 @endsection
 @section('js')
     <script>

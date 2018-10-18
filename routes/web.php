@@ -317,7 +317,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
-        Route::post('/detail.html', 'NewsController@detail');
+        Route::get('/detail.html', 'NewsController@detail'); // 详情
+        Route::post('/side_bar', 'NewsController@side_bar'); // 详情
 
     });
 });

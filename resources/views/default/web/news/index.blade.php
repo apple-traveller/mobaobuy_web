@@ -87,6 +87,7 @@
     {{--</script>--}}
 @endsection
 @section('content')
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['title'] }}</a</div>
 
     <div class="today_news whitebg fl">
         <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">今日资讯</span><span class="fr mr10">共<span class="orange">16</span>条数据</span></h1>

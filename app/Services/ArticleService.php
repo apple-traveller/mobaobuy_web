@@ -32,6 +32,11 @@ class ArticleService
         return ArticleRepo::getInfo($id);
     }
 
+    public static function getInfoByfields($where)
+    {
+        return ArticleRepo::getInfoByFields($where);
+    }
+
     //修改
     public static function modify($id,$data)
     {
@@ -130,10 +135,38 @@ class ArticleService
     {
         $cat = ArticleCatRepo::getList([],['parent_id'=>$cat_id],['id']);
         $article_cat = ArticleRepo::getInfo($id);
-        if (in_array($article_cat['cat_id'],$cat)){
+        $cat_ids = [];
+        foreach ($cat as $k=>$v){
+            $cat_ids[] = $v['id'];
+        }
+        if (in_array($article_cat['cat_id'],$cat_ids)){
             return true;
         }else{
             return false;
         };
     }
+
+    public static function getUpDown($id)
+    {
+        $article_info = ArticleRepo::getInfo($id);
+        $cat = ArticleCatRepo::getInfoByFields(['id'=>$article_info['cat_id']]);
+
+        $cat_ids = ArticleCatRepo::getList([],['parent_id'=>$cat['parent_id']],['id']);
+        $cat_id = '';
+        foreach ($cat_ids as $k=>$v){
+            $cat_id .= $v['id'].'|';
+        }
+
+//        $condition['is_show'] = 1;
+//        $condition['cat_id'] = $cat_id;
+        $condition['id'] = '<|16';
+//        dd($condition);
+        $up_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'desc']],$condition);
+        dd($up_page);
+        $condition['id'] = '>|'.$id;
+        $down_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'asc']],$condition);
+        dd($down_page);
+    }
+
+
 }

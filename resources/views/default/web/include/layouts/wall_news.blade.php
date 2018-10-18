@@ -11,7 +11,6 @@
 
 <div class="clearfix mt25 mb25">
     <div class="w1200">
-        <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/subject/list/56/page/1.html">今日资讯</a> &gt;<span class="gray">中石化华中PP价格上调通知</span></div>
         <!--左边部分-->
         @yield('content')
         <!--右边部分-->
@@ -25,10 +24,8 @@
             <!--资讯中心-->
             <div class="today_news_search whitebg mt20">
                 <h1 class="today_news_top ovh"><span class="ml10">资讯中心</span></h1>
-                <ul class="news_center">
-                    @foreach($cat as $k=>$v)
-                    <li><a href="/news.html?cat_id={{$v['id']}}" data_id = {{ $v['id'] }}>{{ $v['cat_name'] }}</a></li>
-                    @endforeach
+                <ul class="news_center cat_list">
+
                 </ul>
             </div>
             <!--热门资讯-->
@@ -36,9 +33,6 @@
                 <h1 class="today_news_top ovh"><span class="ml10">热门资讯</span></h1>
                 <ul class="news_Hot">
 
-                    @foreach($hot_news as $k=>$v)
-                    <li><div class="news_list_num article_id @if($k+1<4) code_greenbg @else cdbg @endif fl mr10" data_id="{{ $v['id'] }}">{{ $k+1 }}</div><a class="fl">{{ $v['title'] }}</a></li>
-                    @endforeach
                 </ul>
             </div>
         </div>
@@ -50,13 +44,36 @@
 @include(themePath('.','web').'web.include.partials.copyright')
 @yield('js')
 <script>
+    $(function () {
+        $.ajax({
+            'url': '/side_bar',
+            'type':'post',
+            success:function (res) {
+                let cat = '';
+                res['cat'].map(function (item,index) {
+                    cat +='<li><a href="/news.html?cat_id='+item.id+'" data_id = '+item.id+'>'+item.cat_name+'</a></li>';
+                });
+                $('.cat_list').append(cat);
+
+                let hot_new = '';
+                res['hot_news'].map(function (item,index) {
+                    if (index+1<4){
+                        hot_new +='<li class="article_id" data_id="'+item.id+'"><div class="news_list_num code_greenbg fl mr10" >'+(index+1)+'</div><a class="fl">'+item.title+'</a></li>';
+                    }else {
+                        hot_new +='<li class="article_id" data_id="'+item.id+'"><div class="news_list_num cdbg fl mr10" >'+(index+1)+'</div><a class="fl">'+item.title+'</a></li>';
+                    }
+                });
+                $(".news_Hot").append(hot_new);
+            }
+        });
+    });
     $('#search_submit').click(function () {
         let title = $('#search_info').val();
         window.location.href = "/news.html?title="+title;
     });
-    $('.article_id').click(function () {
-        let article = $("#data_id").val();
-        window.location.href = "/news.html?id="+article;
+    $('.news_Hot').on('click','.article_id',function () {
+        let article = $(this).attr('data_id');
+        window.location.href = "/detail.html?id="+article;
     });
 </script>
 </body>
