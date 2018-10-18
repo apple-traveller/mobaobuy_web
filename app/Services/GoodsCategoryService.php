@@ -86,6 +86,13 @@ class GoodsCategoryService
         return $res['list'];
     }
 
+    //获取所有分类
+    public static function getCatesByCondition($condition)
+    {
+        $res = GoodsCategoryRepo::getList([],$condition);
+        return $res;
+    }
+
     //分类树,获取所有分类
     public static function getCatesTree($cates,$id=0,$level=1)
     {

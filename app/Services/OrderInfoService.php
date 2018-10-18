@@ -20,6 +20,88 @@ class OrderInfoService
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
+    //获取分页订单列表
+    public static function getWebOrderList($condition, $page = 1 ,$pageSize=10){
+        $condition['is_delete'] = 0;
+        $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+        foreach ($orderList['list'] as &$item){
+            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
+            $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
+
+            $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['shipping_name','shipping_billno']);
+        }
+
+        return $orderList;
+    }
+
+    private static function getOrderStatusName($order_status, $pay_status, $shipping_status){
+        $status = '';
+        switch ($order_status){
+            case 0: $status = '已作废';break;
+            case 1: $status = '待审批';break;
+            case 2: $status = '待确认';break;
+            case 3: $status = '已确认';break;
+            case 4: $status = '已完成';break;
+        }
+
+        if($order_status > 0 && $order_status <> 4){
+            switch ($pay_status){
+                case 0: $status .= ', 未付款';break;
+                case 1: $status .= ', 已付款';break;
+                case 2: $status .= ', 部分付款';break;
+            }
+
+            switch ($shipping_status){
+                case 0: $status .= ', 未发货';break;
+                case 1: $status .= ', 已发货';break;
+                case 2: $status .= ', 部分发货';break;
+            }
+        }
+        return $status;
+    }
+
+    public static function getOrderStatusCount($user_id, $firm_id){
+        $condition['is_delete'] = 0;
+        if($user_id > 0){
+            $condition['user_id'] = $user_id;
+        }
+        if($firm_id > 0){
+            $condition['firm_id'] = $firm_id;
+        }
+
+        $status = [
+            'waitApproval' => 0,
+            'waitAffirm' => 0,
+            'waitPay' => 0,
+            'waitSend' => 0,
+            'waitConfirm' => 0
+        ];
+        //待审批数量
+        $condition['order_status'] = 1;
+        $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待确认数量
+        $condition['order_status'] = 2;
+        $status['waitAffirm'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待付款数量
+        $condition['order_status'] = 3;
+        $condition['pay_status'] = '0|2';
+        $status['waitPay'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待发货数量
+        $condition['order_status'] = 3;
+        $condition['shipping_status'] = '0|2';
+        $status['waitPay'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待收货
+        $condition['order_status'] = 3;
+        $condition['shipping_status'] = 1;
+        $status['waitConfirm'] = OrderInfoRepo::getTotalCount($condition);
+
+        return $status;
+    }
+
     //查询一条数据
     public static function getOrderInfoById($id)
     {
@@ -33,13 +115,11 @@ class OrderInfoService
     }
 
     //获取订单商品信息
-    public static function getOrderGoodsByOrderid($order_id)
+    public static function getOrderGoodsByOrderId($order_id)
     {
         $order_goods = OrderGoodsRepo::getList([], ['order_id' => $order_id]);
         foreach ($order_goods as $k => $vo) {
-            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($vo['shop_goods_quote_id']);
             $good = GoodsRepo::getInfo($vo['goods_id']);
-            $order_goods[$k]['shop_name'] = $shop_goods_quote['shop_name'];
             $order_goods[$k]['brand_name'] = $good['brand_name'];
         }
         return $order_goods;
@@ -126,6 +206,20 @@ class OrderInfoService
                 //修改order_goods表的已发货数量
                 $order_goods = OrderGoodsRepo::getInfo($orderDeliveryGoods['order_goods_id']);
                 OrderGoodsRepo::modify($orderDeliveryGoods['order_goods_id'],['send_number'=>$order_goods['send_number']+$orderDeliveryGoods['send_number']]);
+
+            }
+            //修改order_info表的发货状态shipping_status
+            $order_goods = OrderGoodsRepo::getList([],['order_id'=>$orderDelivery['order_id']]);
+            $flag = true;
+            foreach($order_goods as $vo){
+                if($vo['goods_number']!=$vo['send_number']){
+                    $flag = false;
+                }
+            }
+            if($flag==false){
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2]);//部分发货
+            }else{
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1]);//全部发货
             }
             self::commit();
             return $orderDelivery;
@@ -182,34 +276,9 @@ class OrderInfoService
     //修改发货状态
     public static function modifyDeliveryStatus($data)
     {
-        try{
-            self::beginTransaction();
-            $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
-            $order_goods = OrderGoodsRepo::getList([],['order_id'=>$order_delivery['order_id']]);
-            $flag = false;
-            foreach($order_goods as $v){
-                if($v['goods_number']>$v['send_number'] && $v['send_number']!=0){
-                    $flag = true;
-                }
-            }
-            if($flag==true){
-               return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>2]);//部分发货
-            }
+        $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
+        return $order_delivery;
 
-            $flag1 = true;
-            foreach($order_goods as $v){
-                if($v['goods_number']!=$v['send_number']){
-                    $flag1 = false;
-                }
-            }
-            if($flag1==true){
-                return OrderInfoRepo::modify($order_delivery['order_id'],['shipping_status'=>1]);//已全部发货
-            }
-            self::commit();
-        }catch(\Exception $e){
-            self::rollBack();
-            self::throwBizError($e->getMessage());
-        }
     }
 
 

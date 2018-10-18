@@ -105,10 +105,19 @@ trait CommonRepo
                             $q = $q->Where($key, 'like', $value);
                         }
                     }elseif(strpos($value, '|') !== false){
-                        if($opt == 'OR'){
-                            $q = $q->orWhereIn($key, explode('|', $value));
+                        $arr = explode('|', $value);
+                        if(in_array($arr[0], ['>','>=','<','<='])){
+                            if($opt == 'OR'){
+                                $q = $q->orWhere($key, $arr[0], $arr[1]);
+                            }else{
+                                $q = $q->Where($key, $arr[0], $arr[1]);
+                            }
                         }else{
-                            $q = $q->WhereIn($key, explode('|', $value));
+                            if($opt == 'OR'){
+                                $q = $q->orWhereIn($key, explode('|', $value));
+                            }else{
+                                $q = $q->WhereIn($key, explode('|', $value));
+                            }
                         }
                     }elseif(strpos($value, '!') === 0 ){
                         if($opt == 'OR'){
@@ -133,9 +142,7 @@ trait CommonRepo
         $clazz = self::getBaseModel();
         $query = $clazz::query();
         if(!empty($where) && is_array($where)){
-            foreach ($where as $name => $value){
-                $query = $query->where($name, $value);
-            }
+            $query = self::setCondition($query, $where);
         }
         $value = $query->count();
         return $value;
