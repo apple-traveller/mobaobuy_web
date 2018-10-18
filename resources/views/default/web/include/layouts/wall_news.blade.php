@@ -20,15 +20,15 @@
             <!--相关搜索-->
             <div class="today_news_search whitebg">
                 <h1 class="today_news_top ovh"><span class="ml10">相关搜索</span></h1>
-                <div class="ovh mt20 ml15 mb20"><input type="text" class="search_input br1 fl"/><div class="fl search_btn tac code_greenbg white">搜索</div></div>
+                <div class="ovh mt20 ml15 mb20"><input type="text" class="search_input br1 fl" id="search_info"/><div class="fl search_btn tac code_greenbg white" id="search_submit">搜索</div></div>
             </div>
             <!--资讯中心-->
             <div class="today_news_search whitebg mt20">
                 <h1 class="today_news_top ovh"><span class="ml10">资讯中心</span></h1>
                 <ul class="news_center">
-                    <li><a>今日资讯</a></li>
-                    <li><a>最新资讯</a></li>
-                    <li><a>热门资讯</a></li>
+                    @foreach($cat as $k=>$v)
+                    <li><a href="/news.html?cat_id={{$v['id']}}" data_id = {{ $v['id'] }}>{{ $v['cat_name'] }}</a></li>
+                    @endforeach
                 </ul>
             </div>
             <!--热门资讯-->
@@ -36,13 +36,9 @@
                 <h1 class="today_news_top ovh"><span class="ml10">热门资讯</span></h1>
                 <ul class="news_Hot">
 
-                    <li><div class="news_list_num orangebg fl mr10">1</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num code_greenbg fl mr10">2</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num code_greenbg fl mr10">3</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num cdbg fl mr10">4</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num cdbg fl mr10">5</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num cdbg fl mr10">4</div><a class="fl">猪饲料分为哪些类别?</a></li>
-                    <li><div class="news_list_num cdbg fl mr10">5</div><a class="fl">猪饲料分为哪些类别?</a></li>
+                    @foreach($hot_news as $k=>$v)
+                    <li><div class="news_list_num article_id @if($k+1<4) code_greenbg @else cdbg @endif fl mr10" data_id="{{ $v['id'] }}">{{ $k+1 }}</div><a class="fl">{{ $v['title'] }}</a></li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -53,5 +49,15 @@
 @include(themePath('.','web').'web.include.partials.footer_new')
 @include(themePath('.','web').'web.include.partials.copyright')
 @yield('js')
+<script>
+    $('#search_submit').click(function () {
+        let title = $('#search_info').val();
+        window.location.href = "/news.html?title="+title;
+    });
+    $('.article_id').click(function () {
+        let article = $("#data_id").val();
+        window.location.href = "/news.html?id="+article;
+    });
+</script>
 </body>
 </html>
