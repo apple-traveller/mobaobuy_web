@@ -110,7 +110,7 @@ trait CommonRepo
                             if($opt == 'OR'){
                                 $q = $q->orWhere($key, $arr[0], $arr[1]);
                             }else{
-                                $q = $q->WhereIn($key, $arr[0], $arr[1]);
+                                $q = $q->Where($key, $arr[0], $arr[1]);
                             }
                         }else{
                             if($opt == 'OR'){
