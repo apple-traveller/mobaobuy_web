@@ -66,7 +66,7 @@ class ShopOrderController extends Controller
         ];
         $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
         $region = RegionService::getRegion($orderInfo['country'], $orderInfo['province'], $orderInfo['city'], $orderInfo['district']);
-        $order_goods = OrderInfoService::getOrderGoodsByOrderid($orderInfo['id']);//订单商品
+        $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
         $user = UserService::getInfo($orderInfo['user_id']);
         return $this->display('seller.order.detail', [
@@ -197,7 +197,7 @@ class ShopOrderController extends Controller
     {
         $id = $request->input('id');
         $currentPage = $request->input('currentPage');
-        $orderGoods = OrderInfoService::getOrderGoodsByOrderid($id);
+        $orderGoods = OrderInfoService::getOrderGoodsByOrderId($id);
         $goods_amount = OrderInfoService::getOrderInfoById($id)['goods_amount'];
         return $this->display('seller.order.goods',[
             'orderGoods'=>$orderGoods,
@@ -293,7 +293,7 @@ class ShopOrderController extends Controller
         //查询所有的快递信息
         $shippings = OrderInfoService::getShippingList();
         //查询该订单的所有商品信息
-        $orderGoods = OrderInfoService::getOrderGoodsByOrderid($order_id);
+        $orderGoods = OrderInfoService::getOrderGoodsByOrderId($order_id);
 
         return $this->display('seller.order.delivery',[
             'shippings'=>$shippings,

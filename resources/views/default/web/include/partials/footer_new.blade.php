@@ -13,7 +13,7 @@
                 <div class="tel">
                     <p class="fs24 tac" style="color: #75b335;">{{getConfig('service_phone')}}</p>
                     <p class="tac" style="width: 190px; margin: 5px auto; color: #666;">周一至周日8:00-18:00（仅收市话费）</p>
-                    <p class="tac"><a rel="nofollow" href="#"><img border="0" class="mr5p" style="margin-top:3px;" src="{{url(themePath('/','web').'img/custom.png')}}"></a></p>
+                    <p class="tac"><a rel="nofollow" href="#"><img border="0" class="mr5p" style="margin-top:3px;" src="{{asset(themePath('/','web').'img/custom.png')}}"></a></p>
                 </div>
             </li>
         </ul>
