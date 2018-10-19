@@ -32,7 +32,7 @@ class OrderInfoService
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
 
-            $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['shipping_name','shipping_billno']);
+            $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
         }
 
         return $orderList;
@@ -131,7 +131,9 @@ class OrderInfoService
     //查询一条数据
     public static function getOrderInfoById($id)
     {
-        return OrderInfoRepo::getInfo($id);
+        $order_info = OrderInfoRepo::getInfo($id);
+        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street']);
+        return $order_info;
     }
 
 

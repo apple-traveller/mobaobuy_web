@@ -19,6 +19,8 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 //省市县
 Route::post('/region/level', 'RegionController@regionLevelList');
 
+Route::get('/payment/orderPay','PayController@orderPay');//去付款
+Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
@@ -233,6 +235,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
     Route::group(['middleware' => 'web.auth'], function () {
+        Route::get('/logout', 'UserController@logout');//登出
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
 
         Route::get('/member', 'UserController@index'); //会员中心
@@ -312,11 +315,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
 
         Route::get('/article/{id}','IndexController@article');//资讯
-
-        Route::get('/logout', 'UserController@logout');//登出
-
-
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
+
+        Route::get('/payment','FlowController@toPay');//去付款
+        Route::get('/payment','FlowController@toPay');//去付款
 
     });
 });

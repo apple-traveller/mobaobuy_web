@@ -127,26 +127,16 @@ $(document).tooltip({
         var id = element.data('id');
         var name = element.data('name');
         var code = element.data('code');
-        Ajax.call("{{url('order/status')}}", [] , function(result) {
+        Ajax.call("/logistics/detail", {delivery_id:id} , function(result) {
+            console.log(result);
             if (result.code == 1) {
-                var status = result.data;
-                if(status.waitApproval > 0){
-                    $('#waitApproval').html(status.waitApproval);
-                }
-                if(status.waitAffirm > 0){
-                    $('#waitAffirm').html(status.waitAffirm);
-                }
-                if(status.waitPay > 0){
-                    $('#waitPay').html(status.waitPay);
-                }
-                if(status.waitSend > 0){
-                    $('#waitSend').html(status.waitSend);
-                }
-                if(status.waitConfirm > 0){
-                    $('#waitConfirm').html(status.waitConfirm);
-                }
+                var html = '';
+                html += '<div>';
+                html += '快递公司：'+name + '  运单号：'+code;
+                html += '</div>';
+                return html;
             }
-        }, "POST", "JSON");
+        }, "GET", "JSON");
         return "<img class='map' src='"+url+"'>";
     }
 });
