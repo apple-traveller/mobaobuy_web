@@ -19,8 +19,6 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 //省市县
 Route::post('/region/level', 'RegionController@regionLevelList');
 
-Route::get('/payment/orderPay','PayController@orderPay');//去付款
-Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
@@ -236,6 +234,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
+        Route::get('/payment/orderPay','PayController@orderPay');//去付款
+        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
 
         Route::get('/member', 'UserController@index'); //会员中心
@@ -277,18 +278,23 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('goodsList', 'GoodsController@goodsList');//产品列表
 
 
-        Route::get('/stockNum','FirmStockController@stockList');//企业库存
+//        Route::get('/stockNum','FirmStockController@stockList');//企业库存
+        Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
+        Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::get('/stockFlowList','FirmStockController@stockFlowList');//企业库存详细
-        Route::get('/stockIn','FirmStockController@createFirmStock');//入库记录列表
+        Route::get('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
+        Route::post('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
         Route::post('/addStockIn','FirmStockController@addFirmStock');
 
         Route::get('/stockOut','FirmStockController@firmStockOut');//出库记录列表
+        Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+        Route::post('/curCanStock','FirmStockController@curCanStock');//可出库单条记录
 
-        Route::get('/stock/list','FirmStockController@stockList');
-        Route::post('/stock/list','FirmStockController@stockList');
+        Route::get('/stock/list','FirmStockController@stockList');//实时库存
+        Route::post('/stock/list','FirmStockController@stockList');//实时库存
 
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
@@ -316,9 +322,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::get('/article/{id}','IndexController@article');//资讯
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
-
-        Route::get('/payment','FlowController@toPay');//去付款
-        Route::get('/payment','FlowController@toPay');//去付款
+        Route::get('/detail.html', 'NewsController@detail'); // 详情
+        Route::post('/side_bar', 'NewsController@side_bar'); // 详情
 
     });
 });
