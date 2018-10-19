@@ -261,6 +261,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/getCounty','UserController@getCounty');//通过省获取市
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
+        Route::post('/deleteAddress','UserController@deleteAddress'); // 删除地址
 
         Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
         Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
@@ -324,7 +325,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
         Route::get('/detail.html', 'NewsController@detail'); // 详情
-        Route::post('/side_bar', 'NewsController@side_bar'); // 详情
+        Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     });
 });

@@ -82,7 +82,7 @@
 
             </div>
             <div class="info-detail-content">
-                {{ $article['content'] }}
+                {!! $article['content'] !!}
             </div>
         </div>
         <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
