@@ -120,4 +120,25 @@ $(document).tooltip({
     }
 });
 
+$(document).tooltip({
+    items: ".track-tooltip",
+    content: function() {
+        var element = $( this );
+        var id = element.data('id');
+        var name = element.data('name');
+        var code = element.data('code');
+        Ajax.call("/logistics/detail", {delivery_id:id} , function(result) {
+            console.log(result);
+            if (result.code == 1) {
+                var html = '';
+                html += '<div>';
+                html += '快递公司：'+name + '  运单号：'+code;
+                html += '</div>';
+                return html;
+            }
+        }, "GET", "JSON");
+        return "<img class='map' src='"+url+"'>";
+    }
+});
+
 /*************************文件上传 end**********************/

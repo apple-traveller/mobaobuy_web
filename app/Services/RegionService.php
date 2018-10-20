@@ -104,26 +104,26 @@ class RegionService
     }
 
     //根据id获取地区(订单模块)
-    public static function getRegion($countryid,$cityid,$provinceid,$districtid)
+    public static function getRegion($country_id, $province_id, $city_id, $district_id)
     {
         $country = "";
         $city = "";
         $province = "";
         $district = "";
-        if($countryid!=0){
-            $country = RegionRepo::getInfo($countryid)['region_name'];
+        if($country_id!=0){
+            $country = RegionRepo::getInfo($country_id)['region_name'];
         }
-        if($cityid!=0){
-            $city = RegionRepo::getInfo($cityid)['region_name'];
+        if($province_id!=0){
+            $province = RegionRepo::getInfo($province_id)['region_name'];
         }
-        if($provinceid!=0){
-            $province = RegionRepo::getInfo($provinceid)['region_name'];
+        if($city_id!=0){
+            $city = RegionRepo::getInfo($city_id)['region_name'];
         }
-        if($districtid!=0){
-            $district = RegionRepo::getInfo($districtid)['region_name'];
+        if($district_id!=0){
+            $district = RegionRepo::getInfo($district_id)['region_name'];
         }
 
-        return $country." ".$city." ".$province." "."$district";
+        return $country." ".$province." ".$city." "."$district";
     }
 
 
