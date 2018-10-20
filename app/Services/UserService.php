@@ -8,6 +8,7 @@ use App\Repositories\GsxxSupplierRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
+use App\Repositories\UserPaypwdRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -326,6 +327,11 @@ class UserService
         return UserRepo::modify($data['id'],$data);
     }
 
+    public static function getUserInfo($id)
+    {
+        return UserRepo::getInfo($id);
+    }
+
     public static function getInfo($id)
     {
         $info = UserRepo::getInfo($id);
@@ -338,5 +344,25 @@ class UserService
     {
         return UserRepo::getList([],$condition,$column);
     }
+
+    //获取支付密码信息
+    public static function getPayPwdInfo($user_id)
+    {
+        return UserPaypwdRepo::getInfoByFields(['user_id'=>$user_id]);
+    }
+
+    //新增支付密码
+    public static function createPayWad($data)
+    {
+        return UserPaypwdRepo::create($data);
+    }
+
+    //修改支付密码
+    public static function modifyPayWad($data)
+    {
+        return UserPaypwdRepo::modify($data['id'],$data);
+    }
+
+
 
 }

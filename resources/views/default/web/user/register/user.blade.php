@@ -41,7 +41,7 @@
                             <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
                         </div>
                         <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
-                        <div class="input-tip"><label id="verify_error" class="error" for="phone"></div>
+                        <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
                     </div>
                     <div class="item">
                         <div class="item-libel">手机验证码</div>
