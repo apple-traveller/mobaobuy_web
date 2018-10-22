@@ -30,9 +30,6 @@ class GoodsController extends Controller
     //购物车
     public function cart(Request $request){
         $userId = session('_web_user_id');
-        dump($userId);
-        dump(session('_curr_deputy_user'));
-        dump(session('_web_user'));
         if($request->isMethod('get')){
             try{
                 $cartInfo = GoodsService::cart($userId);
@@ -43,8 +40,9 @@ class GoodsController extends Controller
         }else{
             //报价表添加到购物车.
             $id = $request->input('id');
+            $number = $request->input('number');
             try{
-                 GoodsService::searchGoodsQuote($userId,$id);
+                 GoodsService::searchGoodsQuote($userId,$id,$number);
                  return $this->success('加入购物车成功');
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -52,6 +50,39 @@ class GoodsController extends Controller
 
         }
 
+    }
+
+    //删除购物车商品
+    public function delCart(Request $request){
+        $id = $request->input('id');
+        try{
+            GoodsService::delCart($id);
+            return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递加产品数量
+    public function addCartGoodsNum(Request $request){
+        $id = $request->input('id');
+        try{
+             GoodsService::addCartGoodsNum($id);
+             return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递减产品数量
+    public function reduceCartGoodsNum(Request $request){
+        $id = $request->input('id');
+        try{
+            GoodsService::reduceCartGoodsNum($id);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     //清空购物车
