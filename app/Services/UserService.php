@@ -101,6 +101,7 @@ class UserService
                 'license_fileImg' => $data['license_fileImg'],
                 'taxpayer_id' => '',
                 'add_time' => Carbon::now(),
+                'review_status' => $data['is_validated']
             ];
             $company_info = GsxxCompanyRepo::getInfoByFields(['Name'=>$data['nick_name']]);
             if($company_info){
@@ -330,7 +331,11 @@ class UserService
     //修改
     public static function modify($data)
     {
-        return UserRepo::modify($data['id'],$data);
+        $info = UserRepo::modify($data['id'],$data);
+        if($info){
+            unset($info['password']);
+        }
+        return $info;
     }
 
     public static function getUserInfo($id)

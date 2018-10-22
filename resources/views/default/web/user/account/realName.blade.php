@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '账号信息')
+@section('title', '实名认证')
 @section('css')
     <style>
         .account_infor_list{margin-top: 30px;margin-left: 40px;}
@@ -12,6 +12,15 @@
 @endsection
 @section('js')
     <script type="text/javascript">
+        $(document).tooltip({
+            items: ".img-tooltip",
+            content: function() {
+                var element = $( this );
+                var url = element.data('img');
+                return "<img class='map' src='"+url+"'>";
+            }
+        });
+
         function formToJson(data){
             data= decodeURIComponent(data,true);//防止中文乱码
             data = data.replace(/&/g, "','" );
@@ -95,38 +104,47 @@
                         </span>
                     </li>
 
-                    <input type="hidden" name="id" @if(!empty($user_real['id'])) value="{{$user_real['id']}}" @else value="" @endif>
                @else
-                    <input type="hidden" name="id" @if(!empty($user_real['id'])) value="{{$user_real['id']}}" @else value="" @endif>
-                    <li class="mt25">
-                        <span class="infor_title">营业执照注册号：</span>
-                        <span class=" fl">
-                            <input name="business_license_id" class="infor_input" type="text" @if(!empty($user_real['business_license_id'])) value="{{$user_real['business_license_id']}}" @else value="" @endif  >
+                    <li class="mt25"><span class="infor_title">企业全称：</span>
+                        <span class="ml10">
+                        {{$user_real['real_name']}}
                         </span>
                     </li>
                     <li class="mt25">
                         <span class="infor_title">纳税人识别号：</span>
                         <span class=" fl">
-                            <input name="taxpayer_id" class="infor_input" type="text" @if(!empty($user_real['taxpayer_id'])) value="{{$user_real['taxpayer_id']}}" @else value="" @endif  >
+                            {{$user_real['taxpayer_id']}}
                         </span>
                     </li>
-
                     <li class="mt25">
-                        <span class="infor_title">营业执照副本电子版：</span>
-                        <span class="ml10 fl">
-                            @if(!empty($user_real['license_fileImg']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'firm/license_fileImg','name'=>'license_fileImg'])@endcomponent
-                                @endif
-                            @else
-                                @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'firm/license_fileImg','name'=>'license_fileImg'])@endcomponent
-                            @endif
+                        <span class="infor_title">营业执照注册号：</span>
+                        <span class=" fl">
+                            {{$user_real['business_license_id']}}
                         </span>
                     </li>
+                    <li class="mt25">
+                        <span class="infor_title">营业执照电子版：</span>
+                        <span class="ml10 fl">
+                            <i class="iconfont icon-image img-tooltip" @if(!isset($user_real['license_fileImg']) || empty($user_real['license_fileImg'])) style="display: none;" @else data-img="{{getFileUrl($user_real['license_fileImg'])}}" @endif ></i>
+                        </span>
+                    </li>
+                        <li class="mt25">
+                            <span class="infor_title">审核状态：</span>
+                            <span class=" fl">
+                                @if($user_real['review_status'] == 0)
+                                    待审核
+                                @elseif($user_real['review_status'] == 1)
+                                    已审核
+                                @else
+                                    审核不通过
+                                @endif
+                        </span>
+                        </li>
                @endif
                 </ul>
-            <button   class="account_infor_btn code_greenbg fs18 white">保 存</button>
+            @if($is_firm==0)
+                <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
+            @endif
         </div>
         </form>
     </div>

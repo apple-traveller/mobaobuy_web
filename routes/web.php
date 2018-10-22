@@ -257,8 +257,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/account/viewPoints', 'UserController@viewPoints');//查看积分
         Route::get('/account/userRealInfo', 'UserController@userRealInfo');//实名认证
         Route::post('/account/saveUserReal', 'UserController@saveUserReal');//保存实名
-        Route::any('/account/editPassword', 'UserController@editPassword');//修改密码
-        Route::get('/account/sendSms', 'UserController@sendSms');//手机验证码
         Route::any('/account/editPayPassword', 'UserController@editPayPassword');//修改支付密码
         /********************************************************************/
 

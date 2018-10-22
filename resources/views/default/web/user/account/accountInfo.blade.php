@@ -12,6 +12,15 @@
 @endsection
 @section('js')
     <script type="text/javascript">
+        $(document).tooltip({
+            items: ".img-tooltip",
+            content: function() {
+                var element = $( this );
+                var url = element.data('img');
+                return "<img class='map' src='"+url+"'>";
+            }
+        });
+
         $(".attorney_letter_fileImg").click(function(){
             var img = $(this).attr('data-img');
             index = layer.open({
@@ -36,15 +45,15 @@
 
             var data = $("#user_real_form").serialize();
             var jsonData = formToJson(data);
-            $.post('/account/saveUser',jsonData,function(res){
+            Ajax.call('/account/saveUser',jsonData,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
                     $.msg.success('保存成功');
-                    window.location.href="/account/userInfo?id="+res.data;
+                    window.location.reload();
                 } else {
                     $.msg.alert(res.msg);
                 }
-            },"json");
+            },'POST','JSON');
         });
     </script>
 @endsection
@@ -55,17 +64,17 @@
         <div class="w1200">
                 <ul class="account_infor_list">
                     <input type="hidden" name="id" value="{{$userInfo['id']}}">
-                    <li><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else昵称：@endif</span><span class="ml10"><input name="nick_name" type="text"  class="infor_input nick_name" value="{{$userInfo['nick_name']}}"></span></li>
-                    <li class="mt25"><span class="infor_title">积分：</span><span class="ml20 fl">{{$userInfo['points']}}</span><a href="/account/viewPoints" class="fl ml30 orange">查看积分</a></li>
+                    <li><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else昵称：@endif</span><span class="ml10"><input name="nick_name" type="text" @if($userInfo['is_firm']==1) disabled="disabled" @endif class="infor_input nick_name" value="{{$userInfo['nick_name']}}"></span></li>
+                    <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="email" value="{{$userInfo['email']}}" class="infor_input"></span></li>
                     @if($userInfo['is_firm']==1)
-                        <li class="mt25"><span class="infor_title">授权委托书：</span><span class="fl ml20"><a data-img="{{getFileUrl($userInfo['attorney_letter_fileImg'])}}"  class="fl ml10 orange attorney_letter_fileImg">查看</a></span></li>
-                        <li class="mt25"><span class="infor_title">负责人姓名：</span><span class="fl ml10"><input name="contactName" type="text" @if(!empty($userInfo['contactName'])) value="{{$userInfo['contactName']}}" @else value="" @endif  class="infor_input contactName"  /></span></li>
-                        <li class="mt25"><span class="infor_title">负责人手机：</span><span class="fl ml10"><input name="contactPhone" type="text" @if(!empty($userInfo['contactPhone'])) value="{{$userInfo['contactPhone']}}" @else value="" @endif class="infor_input contactPhone" /></span></li>
+                        <li class="mt25"><span class="infor_title">授权委托书：</span><span class="fl ml20"><i class="iconfont icon-image img-tooltip" @if(!isset($userInfo['attorney_letter_fileImg']) || empty($userInfo['attorney_letter_fileImg'])) style="display: none;" @else data-img="{{getFileUrl($userInfo['attorney_letter_fileImg'])}}" @endif ></i></span></li>
+                        <li class="mt25"><span class="infor_title">负责人姓名：</span><span class="fl ml10"><input name="contactName" disabled="disabled" type="text" @if(!empty($userInfo['contactName'])) value="{{$userInfo['contactName']}}" @else value="" @endif  class="infor_input contactName"  /></span></li>
+                        <li class="mt25"><span class="infor_title">负责人手机：</span><span class="fl ml10"><input name="contactPhone" disabled="disabled" type="text" @if(!empty($userInfo['contactPhone'])) value="{{$userInfo['contactPhone']}}" @else value="" @endif class="infor_input contactPhone" /></span></li>
                         <li class="mt25">
                             <span class="infor_title">订单是否需审批：</span>
                             <span class="ml20 fl">
-                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0"> 否
-                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1"> 是
+                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0" id="no"> <label for="no">否</label>
+                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1" id="yes"> <label for="yes">是</label>
                         </span>
                         </li>
                     @else

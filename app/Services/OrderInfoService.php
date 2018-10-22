@@ -27,6 +27,15 @@ class OrderInfoService
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
         unset($condition['status']);
 
+        if(!empty($condition['begin_time'])){
+            $condition['add_time|>='] = $condition['begin_time'];
+        }
+        unset($condition['begin_time']);
+        if (!empty($condition['end_time'])) {
+            $condition['add_time|<='] = $condition['end_time'];
+        }
+        unset($condition['end_time']);
+
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
         foreach ($orderList['list'] as &$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
