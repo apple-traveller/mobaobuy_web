@@ -319,48 +319,80 @@ class UserController extends Controller
      * @return UserController|\Illuminate\Http\RedirectResponse
      */
     public function createInvoices(Request $request){
-        dd($request->all());
-        $data['user_id'] = session('_web_user_id');
-        $data['country'] = 1;
+        $id = $request->input('id','');
+        $address_ids = $request->input('address_ids','');
+        $consignee_address = $request->input('consignee_address','');
+        $company_address = $request->input('company_address','');
+        $company_name = $request->input('company_name','');
+        $tax_id = $request->input('tax_id','');
+        $bank_of_deposit = $request->input('bank_of_deposit','');
+        $bank_account = $request->input('bank_account','');
+        $company_telephone = $request->input('company_telephone','');
+        $consignee_name = $request->input('consignee_name','');
+        $consignee_mobile_phone = $request->input('consignee_mobile_phone','');
+
+        $address_ids = explode('|',$address_ids);
+        $data = [
+            "consignee_address" => $consignee_address,
+            "company_address" => $company_address,
+            "company_name" => $company_name,
+            "tax_id" => $tax_id,
+            "bank_of_deposit" => $bank_of_deposit,
+            "bank_account" => $bank_account,
+            "company_telephone" => $company_telephone,
+            "consignee_name" => $consignee_name,
+            "consignee_mobile_phone" => $consignee_mobile_phone,
+            'country' => $address_ids[0],
+            'province' => $address_ids[1],
+            'city' => $address_ids[2],
+            'district' => $address_ids[3]
+        ];
+
         try{
-            UserInvoicesService::create($data);
-            return $this->success();
+            if (!empty($id)){
+               $re =  UserInvoicesService::editInvoices($id,$data);
+            } else {
+                $data['user_id'] = session('_web_user_id');
+                $re =  UserInvoicesService::create($data);
+            }
+            if ($re){
+                return $this->success('成功');
+            } else {
+                return $this->error('失败');
+            }
+
         }catch (\Exception $e){
+            dd($e->getMessage());
             return $this->error($e->getMessage());
         }
     }
 
     //编辑用户发票信息
     public function editInvoices(Request $request){
-//        if($request->isMethod('get')){
-//            return $this->display('');
-//        }else{
-//            $rule = [
-//                'company_name' => 'required',
-//                'tax_id' => 'required',
-//                'bank_of_deposit' =>'required',
-//                'bank_account' => 'required',
-//                'company_address' => 'required',
-//                'company_telephone' => 'required',
-//                'consignee_name' => 'required',
-//                'consignee_mobile_phone' =>'required',
-//                'country' => 'required',
-//                'province' => 'required',
-//                'city' => 'required',
-//                'district' => 'required',
-//                'street' => 'required',
-//                'consignee_address' => 'required',
-//            ];
-//        $data['user_id'] = session('_web_user_id');
         $id = $request->input('id','');
-        $invoice_info = UserInvoicesService::getInvoice($id);
-        if ($invoice_info){
+        if ($id){
+            $invoice_info = UserInvoicesService::getInvoice($id);
             $data = $invoice_info;
         } else {
             $data = [];
         }
         return $this->display('web.user.editInvoice',['data'=>$data]);
 
+    }
+
+    public function deleteInvoices(Request $request)
+    {
+        $id = $request->input('id','');
+        if (empty($id)){
+            return $this->error('参数错误');
+        }
+        $re = UserInvoicesService::delete($id);
+
+        if ($re){
+            return $this->success('删除成功');
+        } else {
+            return $this->error('删除失败');
+        }
     }
 
     //用户发票信息

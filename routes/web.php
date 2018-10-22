@@ -253,6 +253,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
         Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
         Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
 
         Route::get('/addressList','UserController@shopAddressList');//收货地址列表
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地

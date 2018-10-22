@@ -96,13 +96,13 @@
             <li>
                 <div class=" mt10 ml30">
                     <span class="add_left fl">收票地址:</span>
-                    <input type="text" readonly="readonly" name="address_ids" id="area2" style="display: none">
+                    <input type="text" readonly="readonly" name="address_ids" value="@if(!empty($data)) {{ $data['address_ids'] }} @endif " id="area2" style="display: none">
                     <input type="text" readonly="readonly" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif" style="display: none">
-                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="{{ $data['address_str'] }}" style="width: 343px;margin-left: 20px" id="test">
+                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data)) {{ $data['address_str'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
                     </div>
                 </div>
             </li>
-            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['consignee_address'] }}" @endif style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
+            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['consignee_address'] }} @endif " style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
             <li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['company_address'] }} @endif" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
             <li>
                 <div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" value="@if(!empty($data)) {{ $data['company_name'] }} @endif" class="pay_text" style="width: 219px;"/></div>
@@ -133,18 +133,18 @@
         $(function(){
             //	增加
             $('.add_address').click(function(){
-                let input = $("#address_form").serialize();
+                let input = $("#invoice_from").serialize();
                 $.ajax({
                     url:'/createInvoices',
                     data: input,
                     type: 'POST',
                     success:function (res) {
+                        setTimeout( parent.location.reload(),2000);
                         if (res.code == 1){
                             alert(res.msg);
                             setTimeout( parent.location.reload(),2000);
                         } else {
                             alert(res.msg);
-                            // document.getElementById("address_form").reset();
                             setTimeout( parent.location.reload(),2000);
                         }
                     }

@@ -95,7 +95,7 @@
 		<ul class="Receive_address">
 			@foreach($invoicesInfo as $k=>$v)
 			<li class="curr">
-				<div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address" data-id="{{ $v['id'] }}">修改</a><a class="ml10 del_address">删除</a></div></div>
+				<div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address" data-id="{{ $v['id'] }}">修改</a><a class="ml10 del_address " data-id="{{ $v['id'] }}">删除</a></div></div>
 				<div class="address_name mt15"><span>{{ $v['company_name'] }}</span></div>
 				<div class="address_name mt15 default_addr dno"><span class="fr lcolor cp">设为默认地址</span></div>
 			</li>
@@ -117,9 +117,9 @@
             })
             //	删除
             $('.del_address').click(function(){
-                let id = $(this).attr('data_id');
+                let id = $(this).attr('data-id');
                 $.ajax({
-                    url:'/deleteAddress',
+                    url:'/deleteInvoices',
                     data:{id:id},
                     type:'POST',
                     success:function (res) {
@@ -174,8 +174,14 @@
                     $.msg.alert('最多输入十个地址');
                     return false;
                 } else {
-                    $('.block_bg,#addr_frame').show();
-                    $('.block_bg,#addr_frame').toggle();
+                    layer.open({
+                        title:'开票信息',
+                        type: 2,
+                        area: ['850px', '550px'],
+                        maxmin: true,
+                        content: '/editInvoices',
+                        zIndex: layer.zIndex
+                    });
                 }
             });
             //  修改-弹窗

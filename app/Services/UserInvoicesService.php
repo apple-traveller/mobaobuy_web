@@ -38,5 +38,10 @@ class UserInvoicesService
         return $invoiceInfo;
     }
 
+    public static function delete($id)
+    {
+        return UserInvoicesRepo::delete($id);
+    }
+
 
 }
