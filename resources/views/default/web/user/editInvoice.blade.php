@@ -96,28 +96,28 @@
             <li>
                 <div class=" mt10 ml30">
                     <span class="add_left fl">收票地址:</span>
-                    <input type="text" readonly="readonly" name="address_ids" value="@if(!empty($data)) {{ $data['address_ids'] }} @endif " id="area2" style="display: none">
-                    <input type="text" readonly="readonly" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif" style="display: none">
-                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data)) {{ $data['address_str'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
+                    <input type="text" readonly="readonly" name="address_ids" value="@if(!empty($data['address_ids'])) {{ $data['address_ids'] }} @endif " id="area2" style="display: none">
+                    <input type="text" readonly="readonly" name="id" value="@if(!empty($data['id'])) {{ $data['id'] }} @endif" style="display: none">
+                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data['address_str'])) {{ $data['address_str'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
                     </div>
                 </div>
             </li>
-            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['consignee_address'] }} @endif " style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
-            <li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['company_address'] }} @endif" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
+            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data['consignee_address'])) {{ $data['consignee_address'] }} @endif " style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
+            <li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data['company_address'])) {{ $data['company_address'] }} @endif" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" value="@if(!empty($data)) {{ $data['company_name'] }} @endif" class="pay_text" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">税号:</span><input type="text" value="@if(!empty($data)) {{ $data['tax_id']}} @endif"  name="tax_id" class="pay_text" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" value="@if(!empty($data['company_name'])) {{ $data['company_name'] }} @endif" @if(!empty( $data['company_name'])) readonly @endif class="pay_text" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">税号:</span><input type="text" value="@if(!empty($data['tax_id'])) {{ $data['tax_id']}} @endif"  @if(!empty($data['tax_id'])) readonly @endif name="tax_id" class="pay_text" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">开户银行:</span><input type="text" class="pay_text" value="@if(!empty($data)) {{ $data['bank_of_deposit']}} @endif"  name="bank_of_deposit" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">银行账号:</span><input type="text" value="@if(!empty($data)) {{ $data['bank_account']}} @endif"  class="pay_text" name="bank_account" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">开户银行:</span><input type="text" class="pay_text" value="@if(!empty($data['bank_of_deposit'])) {{ $data['bank_of_deposit']}} @endif"  name="bank_of_deposit" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">银行账号:</span><input type="text" value="@if(!empty($data['bank_account'])) {{ $data['bank_account']}} @endif"  class="pay_text" name="bank_account" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl" style="width: 587px;"><span class="add_left fl">开票电话:</span><input type="text" value="@if(!empty($data)) {{ $data['company_telephone']}} @endif"  class="pay_text" name="company_telephone" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl" style="width: 587px;"><span class="add_left fl">开票电话:</span><input type="text" value="@if(!empty($data['company_telephone'])) {{ $data['company_telephone']}} @endif"  class="pay_text" name="company_telephone" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" value="@if(!empty($data)) {{ $data['consignee_name']}} @endif"  name="consignee_name" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" value="@if(!empty($data)) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" value="@if(!empty($data['consignee_name'])) {{ $data['consignee_name']}} @endif"  name="consignee_name" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" value="@if(!empty($data['consignee_mobile_phone'])) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
             </li>
 
         </ul>
