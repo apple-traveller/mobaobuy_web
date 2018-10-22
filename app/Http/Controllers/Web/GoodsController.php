@@ -37,17 +37,17 @@ class GoodsController extends Controller
             $condition = [];
         }
         if($lowest=="" && $highest!=""){
-            $condition['shop_price'] = '<|'.$highest;
+            $condition['shop_price|<'] = $highest;
         }
         if($highest=="" && $lowest!=""){
-            $condition['shop_price'] = '>|'.$lowest;
+            $condition['shop_price|<'] = $lowest;
         }
         if($lowest!="" && $highest!=""&&$lowest<$highest){
-            $condition['<shop_price'] = $highest;
-            $condition['>shop_price'] = $lowest;
+            $condition['shop_price|<'] = $highest;
+            $condition['shop_price|>'] = $lowest;
         }
         if($lowest>$highest){
-            $condition['shop_price'] = '>|'.$lowest;
+            $condition['shop_price|<'] = $lowest;
         }
         $pageSize = 10;
         $userId = session('_web_user_id');
