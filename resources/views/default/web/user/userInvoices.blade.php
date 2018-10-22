@@ -171,7 +171,7 @@
             $('.news_addr').click(function(){
                 var Rlength=$('.Receive_address li').length;
                 if (Rlength>10){
-                    $.msg.alert('最多输入十个地址');
+                    $.msg.alert('最多输入十个开票信息');
                     return false;
                 } else {
                     layer.open({
