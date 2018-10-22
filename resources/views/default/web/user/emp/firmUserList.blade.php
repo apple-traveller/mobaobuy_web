@@ -96,7 +96,7 @@
 
 @section('js')
 	<script type="text/javascript">
-                    $(function(){
+        $(function(){
 //          显示编辑框
             $('span').delegate('.edit_member','click',function(){
                 $('#power_edit_frame').show();
@@ -135,7 +135,7 @@
                         // }
                     }
                 })
-            })
+            });
 //          显示删除框
 //          $('span').delegate('.del_power','click',function(){
 //              $('.confirm_del').show();
@@ -150,76 +150,52 @@
             $('.addFirmUser').click(function(){
                 $('#power_edit_frame').show();
                 $('.block_bg').show();
-
-
             })
-    });
-            function del(id) {
-                var flag = confirm("Are you sure?");
-                if(flag===true){
-                    var o = $(id).parents('.product_table li');
-                    o.remove();
-                }   
-            }
+        });
 
-            //保存
-            function addFirmUserSave(){
-                var phone = $('#firmUserPhone').val();
-                var realName = $('#firmUserName').val();
-                var arr = Array();
-                $.each($('input:checkbox:checked'),function(){
-                    arr.push($(this).val());
-                })
-                
-                $.ajax({
-                'type':'post',
-                'data':{'phone':phone,'permi':arr,'user_name':realName},
-                'url':'{{url('/addFirmUser')}}',
-                success:function(res){
-                    // var result = JSON.parse(res);
-                    if(res.code){
-                        alert('企业会员添加成功');
-                        window.location.reload();
-                    }else{
-                        alert('企业会员添加成功');
-                        window.location.reload();
-                    }
+        function del(id) {
+            var flag = confirm("Are you sure?");
+            if(flag===true){
+                var o = $(id).parents('.product_table li');
+                o.remove();
+            }
+        }
+
+        //保存
+        function addFirmUserSave(){
+            var phone = $('#firmUserPhone').val();
+            var realName = $('#firmUserName').val();
+            var arr = Array();
+            $.each($('input:checkbox:checked'),function(){
+                arr.push($(this).val());
+            });
+
+            Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName}, function(result){
+                if(result.code){
+                    $.msg.alert('添加成功');
+                    window.location.reload();
+                }else{
+                    $.msg.alert(result.msg);
                 }
-         })
-            }
+            }, "POST", "JSON");
+        }
 	</script>
-
 @endsection
 
 @section('content')
-
-               
-            <!-- <div class="member_top_right member_down_right whitebg fl ml15 br1 pr mt10"> -->
-            <div class="ovh">
-                <div class="fr add_stock tac white addFirmUser">+新增职员</div>
-            </div>
-                <ul class="product_table ovh mt20">
-                    <li><span class="wh226">编号</span><span class="wh226">职员姓名</span><span class="wh226">手机号</span><span class="wh226">操作</span></li>
-                    @foreach($firmUserInfo['firmUserInfo'] as $k=>$v)
-                    <li><span class="wh226">{{$v->id}}</span><span class="wh226">{{$v->real_name}}</span><span class="wh226">{{$firmUserInfo['userData'][$k]}}</span><span class="wh226"><button class="product_table_btn code_greenbg br0 edit_member" id="{{$v->id}}">编辑</button><button id="{{$v->id}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
-                   @endforeach
-                </ul>       
-                <div class="no_infor">
-                    <img src="img/serach_infor.png" />
-                    <p class="tac">暂无会员信息！</p>
-                </div>
-                <!--页码-->
-                <div class="reward_table_bottom">
-                <ul class="pagination">
-                <li><a href="#">首页</a></li>
-                  <li><a href="#">上一页</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a class="active" href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">下一页</a></li>
-                  <li><a href="#">尾页</a></li>
-                </ul>
-                </div>
+<div class="ovh">
+    <div class="fr add_stock tac white addFirmUser">+新增职员</div>
+</div>
+<ul class="product_table ovh mt20">
+    <li><span class="wh226">编号</span><span class="wh226">职员姓名</span><span class="wh226">手机号</span><span class="wh226">操作</span></li>
+    @foreach($firmUserInfo as $k=>$v)
+    <li><span class="wh226">{{$v['id']}}</span><span class="wh226">{{$v['real_name']}}</span><span class="wh226">{{$v['phone']}}</span><span class="wh226"><button class="product_table_btn code_greenbg br0 edit_member" id="{{$v['id']}}">编辑</button><button id="{{$v['id']}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
+   @endforeach
+</ul>
+<div class="no_infor">
+    <img src="img/serach_infor.png" />
+    <p class="tac">暂无会员信息！</p>
+</div>
            <!--  </div> -->
 
 

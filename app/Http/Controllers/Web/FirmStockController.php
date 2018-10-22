@@ -18,20 +18,17 @@ class FirmStockController extends Controller
     public function FirmStockIn(Request $request){
         if(session('_curr_deputy_user')['is_firm']) {
             if ($request->isMethod('get')) {
-                $goods_name = $request->input('goods_name');
-                $begin_time = $request->input('begin_time');
-                $end_time = $request->input('end_time');
-                if ($goods_name && $begin_time && $end_time) {
-                    $firmstock = FirmStockService::searchStockIn($goods_name, $begin_time, $end_time);
-                    return $this->display('web.user.stock.stockIn', ['firmstock' => $firmstock]);
-                }
                 return $this->display('web.user.stock.stockIn');
             } else {
                 $page = $request->input('start', 0) / $request->input('length', 10) + 1;
                 $page_size = $request->input('length', 10);
-                $firm_id = session('_curr_deputy_user')['firm_id'];
-                $goods_name = $request->input('goods_name');
-                $rs_list = FirmStockService::firmStockIn($firm_id, $goods_name, $page, $page_size);
+                $params = [
+                    'firm_id' => session('_curr_deputy_user')['firm_id'],
+                    'goods_name' => $request->input('goods_name'),
+                    'begin_time' => $request->input('begin_time'),
+                    'end_time' => $request->input('end_time')
+                ];
+                $rs_list = FirmStockService::firmStockIn($params, $page, $page_size);
 
                 $data = [
                     'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复

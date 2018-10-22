@@ -18,7 +18,6 @@
                     <h1 class=""><i class="iconfont icon-46"></i>企业管理</h1>
                     <ul class="member_left_list">
                         <li @if(request()->path() == 'createFirmUser') class="curr" @endif><a href="/createFirmUser">职员管理</a></li>
-                        <li @if(request()->path() == 'firmUserAuthList') class="curr" @endif><a href="/firmUserAuthList">审核设置</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
