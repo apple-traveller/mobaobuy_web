@@ -12,6 +12,7 @@ class FirmStockService
     //新增入库记录
     public static function createFirmStock($data){
         $data['flow_time'] = Carbon::now();
+
         $insertData = [];
         $insertData['firm_id'] = $data['firm_id'];
         $insertData['goods_id'] = $data['goods_id'];

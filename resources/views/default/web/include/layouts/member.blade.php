@@ -32,7 +32,7 @@
                         <li @if(request()->path() == 'stockIn') class="curr" @endif><a href="/stockIn">入库管理</a></li>
                         @endif
                         @if(session('_curr_deputy_user')['is_self'] || session('_curr_deputy_user')['can_stock_out'])
-                        <li @if(request()->path() == 'stockOut') class="curr" @endif><a href="/stockOut">出库管理</a></li>
+                        <li @if(request()->path() == 'stockOut' || request()->path() == 'canStockOut' ) class="curr" @endif><a href="/stockOut">出库管理</a></li>
                         @endif
                         <li @if(request()->path() == 'stock/list') class="curr" @endif><a href="/stock/list">库存查询</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
@@ -50,10 +50,10 @@
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-userset"></i>账号管理</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == '') class="curr" @endif><a href="/account/userInfo">用户信息</a></li>
-                        <li @if(request()->path() == 'updateUserInfo') class="curr" @endif><a href="/account/userRealInfo">实名认证</a></li>
-                        <li @if(request()->path() == 'forgotPwd') class="curr" @endif><a href="/account/editPassword">修改密码</a></li>
-                        <li @if(request()->path() == 'paypwd') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>
+                        <li @if(request()->path() == 'account/userInfo') class="curr" @endif><a href="/account/userInfo">用户信息</a></li>
+                        <li @if(request()->path() == 'account/userRealInfo') class="curr" @endif><a href="/account/userRealInfo">实名认证</a></li>
+                        <li @if(request()->path() == 'updatePwd') class="curr" @endif><a href="/updatePwd">修改密码</a></li>
+                        <li @if(request()->path() == 'account/editPayPassword') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>
                         <li @if(request()->path() == 'collectGoodsList') class="curr" @endif><a href="/collectGoodsList">我的收藏</a></li>
                         <li @if(request()->path() == 'addressList') class="curr" @endif><a href="/addressList">收货地址</a></li>
                         <li @if(request()->path() == 'invoices') class="curr" @endif><a href="/invoices">发票维护</a></li>

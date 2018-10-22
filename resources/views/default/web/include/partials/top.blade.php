@@ -22,7 +22,7 @@
 
                 @else
                     <li class="site-nav-menu"><div><a href="{{url('logout')}}" class="link-login">请登录</a></div></li>
-                    <li class="site-nav-menu"><div><a href="{{url('register')}}">免费注册</a></div></li>
+                    <li class="site-nav-menu"><div><a href="{{route('register')}}">免费注册</a></div></li>
                 @endif
             </ul>
         </div>

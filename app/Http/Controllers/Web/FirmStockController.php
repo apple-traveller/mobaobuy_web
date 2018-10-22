@@ -20,23 +20,34 @@ class FirmStockController extends Controller
             if ($request->isMethod('get')) {
                 return $this->display('web.user.stock.stockIn');
             } else {
-                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-                $page_size = $request->input('length', 10);
-                $params = [
-                    'firm_id' => session('_curr_deputy_user')['firm_id'],
-                    'goods_name' => $request->input('goods_name'),
-                    'begin_time' => $request->input('begin_time'),
-                    'end_time' => $request->input('end_time')
-                ];
-                $rs_list = FirmStockService::firmStockIn($params, $page, $page_size);
+                try{
+                    $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+                    $page_size = $request->input('length', 10);
+                    $params = [
+                        'firm_id' => session('_curr_deputy_user')['firm_id'],
+                        'goods_name' => $request->input('goods_name'),
+                        'begin_time' => $request->input('begin_time'),
+                        'end_time' => $request->input('end_time')
+                    ];
+                    $rs_list = FirmStockService::firmStockIn($params, $page, $page_size);
 
-                $data = [
-                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
-                    'recordsTotal' => $rs_list['total'], //数据总行数
-                    'recordsFiltered' => $rs_list['total'], //数据总行数
-                    'data' => $rs_list['list']
-                ];
-                return $this->success('', '', $data);
+                    $data = [
+                        'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                        'recordsTotal' => $rs_list['total'], //数据总行数
+                        'recordsFiltered' => $rs_list['total'], //数据总行数
+                        'data' => $rs_list['list']
+                    ];
+                    return $this->success('', '', $data);
+                }catch (\Exception $e){
+                    $data = [
+                        'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                        'recordsTotal' => 0, //数据总行数
+                        'recordsFiltered' => 0, //数据总行数
+                        'data' => []
+                    ];
+                    return $this->success('', '', $data);
+                }
+
             }
         }
         return $this->error('非法访问');
@@ -46,20 +57,17 @@ class FirmStockController extends Controller
     public function firmStockOut(Request $request,$goodsName='',$beginTime='',$endTime=''){
         if(session('_curr_deputy_user')['is_firm']) {
             if ($request->isMethod('get')) {
-                $goods_name = $request->input('goods_name');
-                $start_time = $request->input('start_time');
-                $end_time = $request->input('end_time');
-                if ($goods_name && $start_time && $end_time) {
-                    $firmstock = FirmStockService::search($goods_name, $start_time, $end_time);
-                    return $this->display('web.user.stock.stockOut', ['firmstock' => $firmstock]);
-                }
                 return $this->display('web.user.stock.stockOut');
             } else {
                 $page = $request->input('start', 0) / $request->input('length', 10) + 1;
                 $page_size = $request->input('length', 10);
-                $firm_id = session('_curr_deputy_user')['firm_id'];
-                $goods_name = $request->input('goods_name');
-                $rs_list = FirmStockService::firmStockOut($firm_id, $goods_name, $page, $page_size);
+                $params = [
+                    'firm_id' => session('_curr_deputy_user')['firm_id'],
+                    'goods_name' => $request->input('goods_name'),
+                    'begin_time' => $request->input('begin_time'),
+                    'end_time' => $request->input('end_time')
+                ];
+                $rs_list = FirmStockService::firmStockOut($params, $page, $page_size);
 
                 $data = [
                     'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
@@ -73,60 +81,25 @@ class FirmStockController extends Controller
         return $this->error('非法访问');
     }
 
-    //新增出库记录
-    public function addFirmSotckOut(Request $request){
-        if($request->isMethod('get')){
-            return $this->display('web.xx');
-        }else{
-            $rule = [
-                'partner_name'=>'nullable',
-                'goods_name'=>'required',
-                'order_sn'=>'nullable',
-                'number'=>'required|numeric',
-                'flow_desc'=>'nullable'
-            ];
-            $message = [
-                'required' => ':attribute 不能为空'
-            ];
-            $attributes = [
-                'partner_name'=>'业务伙伴名称',
-                'goods_name'=>'商品名称',
-                'order_sn'=>'订单号',
-                'number'=>'数量',
-                'flow_desc'=>'描述'
-            ];
-            $data = $this->validate($request,$rule);
-            $data['firm_id'] = session('_web_info')['id'];
-            try{
-                FirmStockService::createFirmStock($data);
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
-        }
-    }
-
     //新增入库记录
     public function addFirmStock(Request $request){
         if(session('_curr_deputy_user')['is_firm']) {
-            if ($request->isMethod('get')) {
-                return $this->display('web.xx');
-            } else {
-                $stockInData = [];
-                $stockInData['goods_id'] = $request->input('goods_id');
-                $stockInData['created_by'] = session('_web_user_id');
-                $stockInData['partner_name'] = $request->input('partner_name');
-                $stockInData['goods_name'] = $request->input('goods_name');
-                $stockInData['number'] = $request->input('number');
-                $stockInData['flow_desc'] = $request->input('flow_desc');
-                $stockInData['order_sn'] = $request->input('order_sn');
-                $stockInData['firm_id'] = session('_curr_deputy_user')['firm_id'];
-                $stockInData['flow_type'] = 2;
-                try {
-                    FirmStockService::createFirmStock($stockInData);
-                    return $this->success();
-                } catch (\Exception $e) {
-                    return $this->error($e->getMessage());
-                }
+            $stockInData = [];
+            $stockInData['goods_id'] = $request->input('goods_id');
+            $stockInData['created_by'] = session('_web_user_id');
+            $stockInData['partner_name'] = $this->requestGetNotNull('partner_name','');
+            $stockInData['goods_name'] = $request->input('goods_name');
+            $stockInData['number'] = $request->input('number', 1);
+            $stockInData['flow_desc'] = $this->requestGetNotNull('flow_desc','');
+            $stockInData['order_sn'] = $this->requestGetNotNull('order_sn','');
+            $stockInData['price'] = $this->requestGetNotNull('price', 0);
+            $stockInData['firm_id'] = session('_curr_deputy_user')['firm_id'];
+            $stockInData['flow_type'] = 2;
+            try {
+                FirmStockService::createFirmStock($stockInData);
+                return $this->success();
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
             }
         }
         return $this->error('非法访问');
@@ -204,10 +177,11 @@ class FirmStockController extends Controller
         if(session('_curr_deputy_user')['is_firm']){
             $currStockOut = [];
             $currStockOut['id'] = $request->input('id');
-            $currStockOut['currStockNum'] = $request->input('currStockNum');
-            $currStockOut['flow_desc'] = $request->input('flow_desc');
+            $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
+            $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
             $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
             $currStockOut['created_by'] = session('_web_user_id');
+            $currStockOut['price'] = $this->requestGetNotNull('price', '0');
             try{
                 FirmStockService::createFirmStockOut($currStockOut);
                 return $this->success();

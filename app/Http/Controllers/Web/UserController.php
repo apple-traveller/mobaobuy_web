@@ -99,7 +99,6 @@ class UserController extends Controller
                 }else{
                     return $this->success('注册成功！', '/');
                 }
-                return $this->success('注册成功','/');
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -608,11 +607,6 @@ class UserController extends Controller
         }
     }
 
-
-    /**
-     * 以下为账号管理相关代码
-     *   "id" => 26
-     */
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
@@ -624,16 +618,27 @@ class UserController extends Controller
     //保存
     public function saveUser(Request $request)
     {
-        $data = $request->all();
+        $params = $request->all();
         try{
-            $flag = UserRepo::modify($data['id'],$data);
-            session()->put("_web_user",$flag);
-            if(!empty($flag)){
-                return $this->result($flag['id'],1,'保存成功');
+            $data = [];
+            $data['email'] = $params['email'];
+            $data['id'] = session('_web_user_id');
+            if(session('_web_user.is_firm')){
+                //企业
+                $data['need_approval'] = $params['need_approval'];
+            }else{
+                //个人，可以修改昵称
+                $data['nick_name'] = $params['nick_name'];
             }
-            return $this->result('',0,'保存失败');
+            $flag = UserService::modify($data);
+            if($flag){
+                session()->put('_web_user', $flag);
+                return $this->success('保存成功', '', $flag);
+            }
+            return $this->success('保存失败', '', $flag);
         }catch(\Exception $e){
-            return $this->result('',0,"保存失败");
+            //return $this->result('',0,$e->getLine().$e->getMessage());
+            return $this->success('保存失败', '', $flag);
         }
 
     }
@@ -663,7 +668,7 @@ class UserController extends Controller
         $user_name = session()->get("_web_user")['user_name'];
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
-        //dd($user_real);
+
         return $this->display("web.user.account.realName",[
             'user_name'=>$user_name,
             'is_firm'=>$is_firm,
@@ -702,53 +707,6 @@ class UserController extends Controller
             return $this->result('',0,$e->getMessage());
         }
     }
-
-    //修改密码
-    public function editPassword(Request $request)
-    {
-        $userInfo = session()->get("_web_user");
-        if($request->isMethod('post')){
-            $data = $request->all();
-            try{
-                $info = UserService::getUserInfo($userInfo['id']);
-                if(empty($data['password'])){
-                    return $this->result("",0,'旧密码不能为空');
-                }
-                if(!Hash::check($data['password'], $info['password'])){
-                    return $this->result("",0,'旧密码输入有误');
-                }
-                if(empty($data['newpassword'])){
-                    return $this->result("",0,'新密码不能为空');
-                }
-                if($data['newpassword']!=$data['renewpassword']){
-                    return $this->result("",0,'两次输入的密码不一致');
-                }
-                UserService::modify(['id'=>$info['id'],'password'=>Hash::make($data['newpassword'])]);
-                return $this->result("",1,'修改密码成功，请重新登录');
-            }catch(\Exception $e){
-                return $this->result("",0,$e->getMessage());
-            }
-        }
-        return $this->display("web.user.account.password",[
-            'userInfo'=>$userInfo,
-        ]);
-    }
-
-    //发送验证码
-    public function sendSms(Request $request)
-    {
-        $accountName = $request->input('accountName');
-
-        $type = 'sms_signup';
-        //生成的随机数
-        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
-        createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-
-        return $this->success();
-    }
-
 
     //修改支付密码
     public function editPayPassword(Request $request)

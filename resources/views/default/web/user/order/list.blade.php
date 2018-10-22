@@ -3,7 +3,6 @@
 
 @section('css')
 	<style>
-		.reward_table{width: 100%;margin: 0 auto;margin-top: 20px;}
 		.order_list_state{height: 37px;line-height: 35px;background-color: #F7F7F7;}
 		.order_list_state li{height: 37px;line-height: 35px;width: 85px;text-align: center;float: left;color: #666;cursor: pointer;}
 		.order_list_state li a em{margin-left: 3px;color: red;}
@@ -29,7 +28,9 @@
                     dataType: "json",
                     data: function (d) {
                         d.tab_code = '{{$tab_code}}',
-                        d.order_no = $('#order_no').val()
+                        d.order_no = $('#order_no').val(),
+                        d.begin_time = $('#begin_time').val(),
+                        d.end_time = $('#end_time').val()
                     },
                     dataSrc:
                         function (json) {
@@ -167,10 +168,10 @@
 				<input type="text" class="text" id="order_no" placeholder="订单单号">
 			</div>
 			<div class="item">
-				<input type="text" class="text Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="下单时间从">
+				<input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="下单时间从">
 			</div>
 			<div class="item">
-				<input type="text" class="text Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="下单时间至">
+				<input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="下单时间至">
 			</div>
 			<button id="on-search" class="search-btn">查询</button>
 		</div>

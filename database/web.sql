@@ -200,6 +200,7 @@ CREATE TABLE `firm_stock_flow` (
 	`goods_id` int(10) NOT NULL DEFAULT '0' COMMENT '商品ID',
 	`goods_name` varchar(100) NOT NULL COMMENT '商品名称',
 	`number` int(10) NOT NULL COMMENT '出入库数量',
+	`price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
   `flow_desc` varchar(500) NOT NULL DEFAULT '' COMMENT '描述',
   `flow_time` datetime NOT NULL COMMENT '流水时间',
   `order_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '订单号',
