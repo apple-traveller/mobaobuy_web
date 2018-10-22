@@ -322,6 +322,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
         Route::post('/clearCart','GoodsController@clearCart');//清空购物车
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
+        Route::post('/delCart','GoodsController@delCart');//删除购物车数量  //addCartGoodsNum
+        Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
+        Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
