@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '收藏列表')
+@section('title', '会员列表')
 
 @section('css')
 	<style>
@@ -154,25 +154,11 @@
 
             })
     });
-            function del(obj) {
-                var flag = confirm("是否删除?");
-                var id = $(obj).attr('id');
+            function del(id) {
+                var flag = confirm("Are you sure?");
                 if(flag===true){
-                     $.ajax({
-		                'type':'post',
-		                'data':{'id':id},
-		                'url':'{{url('/delCollectGoods')}}',
-		                success:function(res){
-		                    // var result = JSON.parse(res);
-		                    if(res.code){
-		                        alert('收藏商品删除成功');
-		                        window.location.reload();
-		                    }else{
-		                        alert('收藏商品删除失败');
-		                        window.location.reload();
-		                    }
-	               		}
-         			})
+                    var o = $(id).parents('.product_table li');
+                    o.remove();
                 }   
             }
 
@@ -209,16 +195,12 @@
 
                
             <!-- <div class="member_top_right member_down_right whitebg fl ml15 br1 pr mt10"> -->
-                <!-- <div class="fr add_stock tac white addFirmUser">+新增会员</div> -->
+                <div class="fr add_stock tac white addFirmUser">+新增会员</div>
                 <ul class="product_table ovh mt20">
-                    <li><span class="wh226">编号</span><span class="wh226">商品名称</span><span class="wh226">是否关注</span><span class="wh226">操作</span></li>
-                    @if($collectGoods)
-	                  	@foreach($collectGoods['goodsInfo'] as $k=>$v)
-	                    <li><span class="wh226">{{$k+1}}</span><span class="wh226">{{$v->goods_name}}</span><span class="wh226">@if($collectGoods['collect'][$k]['is_attention']) 是 @else 否 @endif</span><span class="wh226"><button id="{{$collectGoods['collect'][$k]['id']}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
-	                  	@endforeach
-	                  	@else 
-	                  	收藏列表为空
-	                @endif
+                    <li><span class="wh226">编号</span><span class="wh226">员工姓名</span><span class="wh226">会员手机号</span><span class="wh226">操作</span></li>
+                    @foreach($firmUserInfo['firmUserInfo'] as $k=>$v)
+                    <li><span class="wh226">{{$v->id}}</span><span class="wh226">{{$v->real_name}}</span><span class="wh226">{{$firmUserInfo['userData'][$k]}}</span><span class="wh226"><button class="product_table_btn code_greenbg br0 edit_member" id="{{$v->id}}">编辑</button><button id="{{$v->id}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
+                   @endforeach
                 </ul>       
                 <div class="no_infor">
                     <img src="img/serach_infor.png" />

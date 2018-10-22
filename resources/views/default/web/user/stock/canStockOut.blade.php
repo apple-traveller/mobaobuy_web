@@ -153,7 +153,7 @@
             var flow_desc = $('#flow_desc').val();
             var id = $('.currStockOut').attr('id');
              $.ajax({
-                url: "/curCanStock",
+                url: "/curStockSave",
                 dataType: "json",
                 data: {
                 'currStockNum':currStockNum,

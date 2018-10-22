@@ -19,10 +19,10 @@ class FirmStockController extends Controller
         if(session('_curr_deputy_user')['is_firm']) {
             if ($request->isMethod('get')) {
                 $goods_name = $request->input('goods_name');
-                $start_time = $request->input('start_time');
+                $begin_time = $request->input('begin_time');
                 $end_time = $request->input('end_time');
-                if ($goods_name && $start_time && $end_time) {
-                    $firmstock = FirmStockService::search($goods_name, $start_time, $end_time);
+                if ($goods_name && $begin_time && $end_time) {
+                    $firmstock = FirmStockService::searchStockIn($goods_name, $begin_time, $end_time);
                     return $this->display('web.user.stock.stockIn', ['firmstock' => $firmstock]);
                 }
                 return $this->display('web.user.stock.stockIn');
@@ -46,7 +46,7 @@ class FirmStockController extends Controller
     }
 
     //出库记录列表
-    public function firmStockOut(Request $request){
+    public function firmStockOut(Request $request,$goodsName='',$beginTime='',$endTime=''){
         if(session('_curr_deputy_user')['is_firm']) {
             if ($request->isMethod('get')) {
                 $goods_name = $request->input('goods_name');
@@ -115,6 +115,7 @@ class FirmStockController extends Controller
                 return $this->display('web.xx');
             } else {
                 $stockInData = [];
+                $stockInData['created_by'] = $request->input('goods_id');
                 $stockInData['created_by'] = session('_web_user_id');
                 $stockInData['partner_name'] = $request->input('partner_name');
                 $stockInData['goods_name'] = $request->input('goods_name');
@@ -209,6 +210,7 @@ class FirmStockController extends Controller
             $currStockOut['currStockNum'] = $request->input('currStockNum');
             $currStockOut['flow_desc'] = $request->input('flow_desc');
             $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
+            $currStockOut['created_by'] = session('_web_user_id');
             try{
                 FirmStockService::createFirmStockOut($currStockOut);
                 return $this->success();
@@ -217,5 +219,17 @@ class FirmStockController extends Controller
             }
         }
         return $this->error('非法访问');
+    }
+
+    //入库检索商品名称
+    public function searchGoodsName(Request $request){
+        $goodsName = $request->input('goodsName');
+        try{
+            $goodsInfo = FirmStockService::searchGoodsName($goodsName);
+            return $this->success('','',$goodsInfo);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
     }
 }
