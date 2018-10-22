@@ -7,13 +7,12 @@ class FirmUserService
     use CommonService;
     //企业用户列表
     public static function firmUserList($firmId){
-        $firmUserInfo =  FirmUserRepo::firmUserList($firmId);
-        $userData = [];
-        foreach($firmUserInfo as $v){
+        $firmUsers =  FirmUserRepo::getList([], ['firm_id'=>$firmId]);
+        foreach($firmUsers as &$v){
             $userInfo = UserRepo::getInfo($v['user_id']);
-            $userData[] = $userInfo['user_name'];
+            $v['phone'] = $userInfo['user_name'];
         }
-        return ['firmUserInfo'=>$firmUserInfo,'userData'=>$userData];
+        return $firmUsers;
     }
 
     //删除企业会员
@@ -24,9 +23,9 @@ class FirmUserService
     //增加企业用户
     public static function addFirmUser($firmId,$phone,$permi,$userName){
         //查询此手机号是否存在，
-        $userInfo = UserRepo::getInfoByFields(['user_name'=>$phone]);
+        $userInfo = UserRepo::getInfoByFields(['user_name'=>$phone, 'is_firm'=>0]);
         if(empty($userInfo)){
-            self::throwBizError('用户不存在!');
+            self::throwBizError('手机用户不存在!');
         }
         $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userInfo['id']]);
         if($firmUserInfo){

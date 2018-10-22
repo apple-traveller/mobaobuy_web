@@ -12,6 +12,7 @@ class FirmStockService
     //新增入库记录
     public static function createFirmStock($data){
         $data['flow_time'] = Carbon::now();
+
         $insertData = [];
         $insertData['firm_id'] = $data['firm_id'];
         $insertData['goods_id'] = $data['goods_id'];
@@ -85,34 +86,39 @@ class FirmStockService
     }
 
     //入库记录列表
-    public static function firmStockIn($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+    public static function firmStockIn($params, $page = 1 ,$pageSize=10){
         $condition = [];
-        if($firm_id > 0){
-            $condition['firm_id'] = $firm_id;
+        $condition['firm_id'] = $params['firm_id'];
+        if(!empty($params['goods_name'])){
+            $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
-        if(!empty($goods_name)){
-            $condition['goods_name'] = '%'.$goods_name.'%';
+        if(!empty($params['begin_time'])){
+            $condition['flow_time|>='] = $params['begin_time'];
         }
-        $condition['flow_type'] = 2;
-        $firmStockFlowInfo =  FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
-        foreach($firmStockFlowInfo['list'] as $k=>$v){
-            $v['nick_name'] = UserRepo::getInfo($v['created_by'])['nick_name'];
-            $firmStockFlowInfo['list'][$k] = $v;
+        if(!empty($params['end_time'])){
+            $condition['flow_time|<='] = $params['end_time'];
         }
+        $condition['flow_type'] = '1|2';
+        $firmStockFlowInfo =  FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
         return $firmStockFlowInfo;
     }
 
     //出库记录列表
-    public static function firmStockOut($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+    public static function firmStockOut($params, $page = 1 ,$pageSize=10){
         $condition = [];
-        if($firm_id > 0){
-            $condition['firm_id'] = $firm_id;
+        $condition['firm_id'] = $params['firm_id'];
+        if(!empty($params['goods_name'])){
+            $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
-        if(!empty($goods_name)){
-            $condition['goods_name'] = '%'.$goods_name.'%';
+        if(!empty($params['begin_time'])){
+            $condition['flow_time|>='] = $params['begin_time'];
         }
+        if(!empty($params['end_time'])){
+            $condition['flow_time|<='] = $params['end_time'];
+        }
+
         $condition['flow_type'] = 3;
-        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
+        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_type'=>'desc']],$condition);
     }
 
     //库存记录列表

@@ -375,12 +375,16 @@ class UserController extends Controller
 
     //编辑用户发票信息
     public function editInvoices(Request $request){
+        $userInfo = session('_curr_deputy_user');
         $id = $request->input('id','');
         if ($id){
             $invoice_info = UserInvoicesService::getInvoice($id);
             $data = $invoice_info;
         } else {
             $data = [];
+            if ($userInfo['is_firm']){
+                $data['company_name'] = $userInfo['name'];
+            }
         }
         return $this->display('web.user.editInvoice',['data'=>$data]);
 
