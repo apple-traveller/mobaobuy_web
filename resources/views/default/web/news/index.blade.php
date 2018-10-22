@@ -87,15 +87,16 @@
     {{--</script>--}}
 @endsection
 @section('content')
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name']}}</a></div>
 
     <div class="today_news whitebg fl">
-        <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">今日资讯</span><span class="fr mr10">共<span class="orange">16</span>条数据</span></h1>
+        <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">今日资讯</span><span class="fr mr10">共<span class="orange">{{ $list['total'] }}</span>条数据</span></h1>
         <ul class="ovh ml15 today_news_list mt15">
             @foreach($list['list'] as $k=>$v)
             <li>
-                <div class="fl mb15" style="width: 200px;height: 128px"><img src="{{ getFileUrl($v['image']) }}"/></div>
+                <div class="fl mb15" style="width: 200px;height: 128px"><a href="detail.html?id={{ $v['id'] }}"><img src="{{ getFileUrl($v['image']) }}"/></a></div>
                 <div class="fl ml20">
-                    <h1 class="fs18 mt10">{{ $v['title'] }}</h1>
+                    <h1 class="fs18 mt10"><a href="detail.html?id={{ $v['id'] }}">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
                     <p class="news_content ovhwp">{{ $v['description'] }}</p>
                 </div>
@@ -103,17 +104,19 @@
             @endforeach
         </ul>
         <!--页码-->
-        <div class="news_pages">
-            <ul class="pagination">
-                <li><a href="#">首页</a></li>
-                <li><a href="#">上一页</a></li>
-                <li><a href="#">1</a></li>
-                <li><a class="active" href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">下一页</a></li>
-                <li><a href="#">尾页</a></li>
-            </ul>
-        </div>
+        {{--<div class="news_pages">--}}
+            {{--<ul class="pagination">--}}
+                {{--<li><a href="#">首页</a></li>--}}
+                {{--<li><a href="#">上一页</a></li>--}}
+                {{--<li><a href="#">1</a></li>--}}
+                {{--<li><a class="active" href="#">2</a></li>--}}
+                {{--<li><a href="#">3</a></li>--}}
+                {{--<li><a href="#">下一页</a></li>--}}
+                {{--<li><a href="#">尾页</a></li>--}}
+            {{--</ul>--}}
+
+        {{--</div>--}}
+        {!! $linker !!}
     </div>
     <!--右边部分-->
 @endsection

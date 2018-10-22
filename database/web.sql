@@ -58,6 +58,7 @@ CREATE TABLE `user` (
   `visit_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '访问次数',
   `is_validated` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否通过审核 0-否 1-是',
   `is_firm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否企业用户 0-否 1-是',
+  `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单是否需审批 0-否 1-是',
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)

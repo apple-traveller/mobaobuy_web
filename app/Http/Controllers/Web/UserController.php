@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Repositories\UserRepo;
 use App\Services\UserInvoicesService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
+use App\Services\UserRealService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Services\SmsService;
-
+use Illuminate\Support\Facades\Hash;
+use App\Services\UserAccountLogService;
 
 class UserController extends Controller
 {
@@ -577,5 +580,196 @@ class UserController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+
+    /**
+     * 以下为账号管理相关代码
+     *   "id" => 26
+     */
+    public function userInfo(Request $request)
+    {
+        $userInfo = session()->get("_web_user");
+        return $this->display("web.user.account.accountInfo",[
+            'userInfo'=>$userInfo,
+        ]);
+    }
+
+    //保存
+    public function saveUser(Request $request)
+    {
+        $data = $request->all();
+        try{
+            $flag = UserRepo::modify($data['id'],$data);
+            session()->put("_web_user",$flag);
+            if(!empty($flag)){
+                return $this->result($flag['id'],1,'保存成功');
+            }
+            return $this->result('',0,'保存失败');
+        }catch(\Exception $e){
+            return $this->result('',0,"保存失败");
+        }
+
+    }
+
+    //查看积分
+    public function viewPoints(Request $request)
+    {
+        $user_id = session()->get("_web_user")['id'];
+        $condition['user_id']=$user_id;
+        $pageSize = 10;
+        $currpage = $request->input("currpage",1);
+        //积分列表
+        $user_account_logs = UserAccountLogService::getInfoByUserId(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['change_time'=>'desc']],$condition);
+        return $this->display("web.user.account.accountLog",[
+            'user_account_logs'=>$user_account_logs['list'],
+            'total'=>$user_account_logs['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'totalPoints'=>session()->get("_web_user")['points']
+        ]);
+    }
+
+    //实名信息
+    public function userRealInfo(Request $request)
+    {
+        $user_id = session()->get("_web_user")['id'];
+        $user_name = session()->get("_web_user")['user_name'];
+        $is_firm = session()->get("_web_user")['is_firm'];
+        $user_real = UserRealService::getInfoByUserId($user_id);
+        //dd($user_real);
+        return $this->display("web.user.account.realName",[
+            'user_name'=>$user_name,
+            'is_firm'=>$is_firm,
+            'user_real'=>$user_real,
+            'user_id'=>$user_id
+        ]);
+    }
+
+    //保存实名
+    public function saveUserReal(Request $request)
+    {
+        $data = $request->all();
+        $errorMsg = [];
+        if(empty($data['real_name'])){
+            $errorMsg[] = "请输入真实姓名";
+        }
+        if(!empty($errorMsg)){
+            return $this->result("",0,implode("|",$errorMsg));
+        }
+        try{
+            if($data['id']==""){
+                unset($data['id']);
+                $flag = UserRealService::create($data);
+                if(!empty($flag)){
+                    return $this->result("",1,"保存成功");
+                }
+            }else{
+
+                $flag = UserRealService::modify($data);
+                if(!empty($flag)){
+                    return $this->result("",1,"保存成功");
+                }
+            }
+            return $this->result('',0,"保存失败");
+        }catch(\Exception $e){
+            return $this->result('',0,$e->getMessage());
+        }
+    }
+
+    //修改密码
+    public function editPassword(Request $request)
+    {
+        $userInfo = session()->get("_web_user");
+        if($request->isMethod('post')){
+            $data = $request->all();
+            try{
+                $info = UserService::getUserInfo($userInfo['id']);
+                if(empty($data['password'])){
+                    return $this->result("",0,'旧密码不能为空');
+                }
+                if(!Hash::check($data['password'], $info['password'])){
+                    return $this->result("",0,'旧密码输入有误');
+                }
+                if(empty($data['newpassword'])){
+                    return $this->result("",0,'新密码不能为空');
+                }
+                if($data['newpassword']!=$data['renewpassword']){
+                    return $this->result("",0,'两次输入的密码不一致');
+                }
+                UserService::modify(['id'=>$info['id'],'password'=>Hash::make($data['newpassword'])]);
+                return $this->result("",1,'修改密码成功，请重新登录');
+            }catch(\Exception $e){
+                return $this->result("",0,$e->getMessage());
+            }
+        }
+        return $this->display("web.user.account.password",[
+            'userInfo'=>$userInfo,
+        ]);
+    }
+
+    //发送验证码
+    public function sendSms(Request $request)
+    {
+        $accountName = $request->input('accountName');
+
+        $type = 'sms_signup';
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+        createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
+
+    //修改支付密码
+    public function editPayPassword(Request $request)
+    {
+        $userInfo = session()->get("_web_user");
+        $paywadInfo = UserService::getPayPwdInfo($userInfo['id']);
+        if($request->isMethod('post')){
+            $data = $request->all();
+            try{
+                if(key_exists('id',$data)){
+                    //{user_id: "29", id: "1", pay_password: "12312312", newpay_password: "111111"}
+                    if(empty($data['pay_password'])){
+                        return $this->result("",0,'旧密码不能为空');
+                    }
+
+                    $paywadInfo = UserService::getPayPwdInfo($data['user_id']);
+                    //return $this->result($paywadInfo,0,"");
+                    if(!Hash::check($data['pay_password'], $paywadInfo['pay_password'])){
+                        return $this->result("",0,'旧密码输入有误');
+                    }
+                    if(empty($data['newpay_password'])){
+                        return $this->result("",0,'新密码不能为空');
+                    }
+                    if($data['renewpay_password']!=$data['newpay_password']){
+                        return $this->result("",0,'两次输入的密码不一致');
+                    }
+
+                    UserService::modifyPayWad(['id'=>$data['id'],'pay_password'=>Hash::make($data['newpay_password'])]);
+                    return $this->result("",1,'修改支付密码成功');
+                }else{
+                    //return $this->result($data,1,"");
+                    $data['pay_password'] = Hash::make($data['pay_password']);
+                    $flag = UserService::createPayWad($data);
+                    if(!empty($flag)){
+                        return $this->result("",1,'修改支付密码成功');
+                    }
+                    return $this->result("",0,'修改支付密码失败');
+                }
+            }catch(\exception $e){
+                return $this->result("",0,$e->getMessage());
+            }
+
+        }
+        return $this->display("web.user.account.payPassword",[
+            'userInfo'=>$userInfo,
+            'paywadInfo'=>$paywadInfo
+        ]);
+    }
+
 
 }
