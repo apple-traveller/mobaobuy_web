@@ -24,7 +24,13 @@ class UserRealService
     //修改
     public static function modify($data)
     {
-        return UserRealRepo::modify($data['id'],$data);
+        return UserRealRepo::modify($data);
+    }
+
+    //保存
+    public static function create($data)
+    {
+        return UserRealRepo::create($data);
     }
 
 

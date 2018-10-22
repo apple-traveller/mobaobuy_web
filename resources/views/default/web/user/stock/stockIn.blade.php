@@ -42,7 +42,13 @@
      .til_btn{width: 120px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius:3px;margin-left: 139px;cursor: pointer;}
      .blackgraybg{background-color: #a0a0a0;}
      .xcConfirm .popBox .sgBtn.cancel{background-color: #546a79; color: #FFFFFF;}
+
+     .pro_select{width: 330px; position: absolute; top: 39px; left: 144px; background-color: #fff;  border: 1px solid #dedede;  box-sizing: border-box;}
+     .pro_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
+.pro_select li:hover{background-color: #f1f1f1;}
 </style>
+ <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+    <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         var tbl;
@@ -116,47 +122,123 @@
                 ]
             });
 
-            $("#on-search").click(function () {
-                var oSettings = tbl.fnSettings();
-                tbl.fnClearTable(0);
-                tbl.fnDraw();
+            // $("#on-search").click(function () {
+            //     var oSettings = tbl.fnSettings();
+            //     tbl.fnClearTable(0);
+            //     tbl.fnDraw();
 
-            });
+            // });
+
+            $("#on-search").click(function () {
+                var goods_name = $('#goods_name').val();
+                var begin_time = $('#begin_time').val();
+                var end_time = $('#end_time').val();
+                $.ajax({
+                    url: "/stockInSearch",
+                    dataType: "json",
+                    data: {
+                    'begin_time':begin_time,
+                    'end_time':end_time,
+                    'goods_name':goods_name,
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            alert('添加成功');
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
+                    }
+                })
+
+             });
 
              $('.add_stock').click(function(){
                     $('.block_bg,.putIn').toggle()
-                })
+                });
                 $('.close,.cancel').click(function(){
                     $('.block_bg,.putIn').hide()
+                });
+
+                $('#goodName').keyup(function(){
+                    var goodsName = $('#goodName').val();
+                     $.ajax({
+                         url: "/searchGoodsName",
+                        dataType: "json",
+                        data: {
+                            'goodsName':goodsName
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            var i = 0;
+                            // console.log(data);
+                            if(data['data'].length>0){
+                                    $('#appendGoodsName ul').remove();
+                                    var str = '';
+                                    for(var i = 0;i<data['data'].length;i++){
+                                         str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['goods_name']+'</li>';
+                                    }
+                                    var strHtml = '<ul id="pointUl"  class="pro_select" >'+str+'</ul>';
+                                    $('#appendGoodsName').append(strHtml);
+
+                                
+                            }else{
+                                
+                            }
+                        }
+                     })
                 })
+
+
+               
+            
+        });
+
+        //选择下拉列表的值
+        $(document).on('click', '.pro_select li', function(e) {
+             var goodsName = $(this).text();
+             var goodsId = $(this).attr('id');
+             $('#goodName').val(goodsName);
+             $('#goodName').attr('goodsId',goodsId);
+             $('.pro_select li').remove();
+            
+         
         });
 
         function addStockSave(){
             var partner_name = $('input[name=partner_name]').val();
             var order_sn = $('input[name=order_sn]').val();
             var goods_name = $('input[name=goods_name]').val();
+            var goods_id = $('#goodName').attr('goodsId');
             var number = $('input[name=number]').val();
             var flow_desc = $('textarea[name=flow_desc]').val();
-            $.ajax({
-                url: "/addStockIn",
-                dataType: "json",
-                data: {
-                'partner_name':partner_name,
-                'order_sn':order_sn,
-                'goods_name':goods_name,
-                'number':number,
-                'flow_desc':flow_desc
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data.code){
-                        alert('添加成功');
-                        window.location.reload();
-                    }else{
-                        alert('出错,请重试')
+            if(goods_id){
+                $.ajax({
+                    url: "/addStockIn",
+                    dataType: "json",
+                    data: {
+                    'partner_name':partner_name,
+                    'order_sn':order_sn,
+                    'goods_name':goods_name,
+                    'number':number,
+                    'flow_desc':flow_desc,
+                    'goods_id':goods_id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            alert('添加成功');
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
                     }
-                }
-            })
+                 })
+            }else{
+                alert('商品名称必须从下拉列表选择');
+            }
+            
         }
     </script>
 
@@ -164,15 +246,19 @@
 
 @section('content')
     <!--标题-->
+    <form action="" method="get">
     <div class="data-table-box">
         <div class="table-condition">
-            <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
-             <div class="fl ml20">
-             <input type="text" class="border_text" onClick="WdatePicker()"/><span class="ml10 mr10">至</span><input type="text" class="border_text" onClick="WdatePicker()"/>
+            <div class="item"><input type="text" name="goods_name" class="text" id="goods_name" placeholder="商品名称"></div>
+             <div class="fl ml20 item">
+            <!--  <input type="text" class="border_text" onClick="WdatePicker()"/><span class="ml10 mr10">至</span><input type="text" class="border_text" onClick="WdatePicker()"/> -->
+            <input type="text" class="text Wdate" name="begin_time" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
+            <input type="text" class="text Wdate" name="end_time" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
             <div class="fr add_stock tac white">+新增出库</div>
         </div>
+        </form>
         
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
@@ -196,14 +282,19 @@
         <div class="block_bg" style="display:none;"></div>
         <div class="pay_method whitebg putIn"  style="display:none;">
             <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增入库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
-            <ul class="pay_content ovh" style="margin-top: 35px;">
+            <ul class="pay_content" style="margin-top: 35px;">
                 <li><div class="ovh mt10"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" /></div></li>
                 <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" /></div></li>
-                <li><div class="ovh mt10"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" /></div></li>
+                <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;">
+                    <span>商品名称:</span>
+                    <input type="text" class="pay_text" name="goods_name" id="goodName" />
+
+                </div>
+                </li>
                 <li><div class="ovh mt10"><span>入库数量(kg):</span><input type="text" class="pay_text" name="number" /><i class="red ml5">*</i></div></li>
                <!--  <li><div class="ovh mt10"><span>入库单价:</span><input type="text" class="pay_text"/><i class="red ml5">*</i></div></li> -->
                 <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" name="flow_desc"></textarea></li>
-                <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
+                <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();" style="margin-bottom: 30px">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;margin-bottom: 30px">取消</div></li>
             </ul>
         </div>
 @endsection

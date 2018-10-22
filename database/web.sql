@@ -52,12 +52,14 @@ CREATE TABLE `user` (
   `frozen_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '会员冻结金额',
   `points` int(10) NOT NULL DEFAULT '0' COMMENT '会员积分',
   `address_id` int(10) NOT NULL DEFAULT '0' COMMENT '默认收货地址',
+  `invoice_id` int(10) NOT NULL DEFAULT '0' COMMENT '默认开票ID',
   `reg_time` datetime NOT NULL COMMENT '注册时间',
   `last_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '上次登录IP',
   `visit_count` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '访问次数',
   `is_validated` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否通过审核 0-否 1-是',
   `is_firm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否企业用户 0-否 1-是',
+  `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单是否需审批 0-否 1-是',
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)
@@ -288,7 +290,7 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (1, 'firm_exist_check', 'select','0|否,1|是','','是否企业工商验证','0','',''),
 (1, 'firm_reg_closed', 'select','0|否,1|是','','是否关闭企业注册','0','',''),
 (1, 'firm_reg_check', 'select','0|否,1|是','','企业注册是否需要审核','1','',''),
-(1, 'firm_trade_closed', 'select','0|否,1|是','','是否关闭企业交易','0','关闭企业交易，则企业用户只能查看产品',''),
+(1, 'firm_trade_closed', 'select','0|否,1|是','','是否关闭企业交易','0','关闭企业交易，则企业用户只能查看商品',''),
 (1, 'firm_stock_closed', 'select','0|否,1|是','','是否关闭企业库存管理','0','',''),
 (1, 'shop_must_firm', 'select','0|否,1|是','','开店必须是企业会员','0','',''),
 (1, 'shop_reg_closed', 'select','0|否,1|是','','是否关闭店铺入驻','0','',''),
@@ -305,7 +307,7 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (2, 'firm_register_points', 'text','','','企业注册赠送积分','0','',''),
 (2, 'upload_size_limit', 'select','0|不限,64|64KB,128|128KB,256|256KB,512|512KB,1024|1M,2048|2M,4096|4M','','附件上传大小','64','',''),
 (2, 'visit_stats', 'select','0|关闭,1|开启','','站点访问统计','1','',''),
-(2, 'goods_sn_prefix', 'text','','','产品编码前缀','P','',''),
+(2, 'goods_sn_prefix', 'text','','','商品编码前缀','P','',''),
 (3, 'search_keywords', 'text','','','首页搜索的关键字','周大福,内衣,Five Plus,手机','首页显示的搜索关键字,请用半角逗号(,)分隔多个关键字',''),
 (3, 'date_format', 'text','','','日期格式','Y-m-d','',''),
 (3, 'time_format', 'text','','','时间格式','Y-m-d H:i:s','',''),
@@ -391,7 +393,7 @@ insert into article(cat_id,title,content,author,keywords,add_time,file_url) VALU
 (6,'投诉与建议','','','', now(), 'http://'),
 (7,'我的订单','','','', now(), 'http://'),
 (7,'我的收藏','','','', now(), 'http://'),
-(8,'产品质量保障','','','', now(), 'http://'),
+(8,'商品质量保障','','','', now(), 'http://'),
 (8,'售后服务保障','','','', now(), 'http://'),
 (8,'退换货原则','','','', now(), 'http://');
 
@@ -437,7 +439,7 @@ CREATE TABLE `goods_category` (
   KEY `cat_name` (`cat_name`),
   KEY `is_nav_show` (`is_nav_show`),
   KEY `is_top_show` (`is_top_show`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类表';
 INSERT INTO goods_category(id, cat_name, parent_id) VALUES
 (1, '维生素', 0),
 (2, '微量元素', 0),
@@ -472,7 +474,7 @@ CREATE TABLE `brand` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   KEY `brand_name` (`brand_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品品牌表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品品牌表';
 INSERT INTO brand(id, brand_name, brand_first_char, brand_desc, add_time) VALUES
 (1, '新和成', 'X', '', now()),
 (2, '花园', 'H', '', now()),
@@ -521,26 +523,26 @@ DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cat_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
   `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词，多个用|分隔',
   `brand_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '品牌ID',
   `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
   `unit_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '单位ID',
   `unit_name` varchar(15) NOT NULL DEFAULT 'KG' COMMENT '单位名称',
-  `goods_model` varchar(50) NOT NULL DEFAULT '' COMMENT '产品型号',
+  `goods_model` varchar(50) NOT NULL DEFAULT '' COMMENT '商品型号',
   `packing_spec` int NOT NULL DEFAULT 1 COMMENT '包装规格',
   `packing_unit` varchar(20) NOT NULL DEFAULT '包' COMMENT '包装单位',
-  `goods_thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '产品小图',
-  `goods_img` varchar(255) NOT NULL DEFAULT '' COMMENT '产品大图',
-  `original_img` varchar(255) NOT NULL DEFAULT '' COMMENT '产品原图',
-  `goods_attr_ids` varchar(255) NOT NULL DEFAULT '' COMMENT '产品属性id值 属性名_属性值，多个之间用;分隔 如:1_12',
-  `goods_attr` varchar(255) NOT NULL DEFAULT '' COMMENT '产品属性,中文，颜色:红， 多个之间用;分隔',
+  `goods_thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '商品小图',
+  `goods_img` varchar(255) NOT NULL DEFAULT '' COMMENT '商品大图',
+  `original_img` varchar(255) NOT NULL DEFAULT '' COMMENT '商品原图',
+  `goods_attr_ids` varchar(255) NOT NULL DEFAULT '' COMMENT '商品属性id值 属性名_属性值，多个之间用;分隔 如:1_12',
+  `goods_attr` varchar(255) NOT NULL DEFAULT '' COMMENT '商品属性,中文，颜色:红， 多个之间用;分隔',
   `goods_desc` text NOT NULL COMMENT 'PC商品详情',
   `desc_mobile` text NOT NULL COMMENT '移动端商品详情',
   `market_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '市场价',
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
-  `goods_weight` decimal(10,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '产品重量',
+  `goods_weight` decimal(10,3) unsigned NOT NULL DEFAULT '0.000' COMMENT '商品重量',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
   `last_update` datetime NOT NULL COMMENT '更新时间',
@@ -549,7 +551,7 @@ CREATE TABLE `goods` (
   KEY `cat_id` (`cat_id`),
   KEY `brand_id` (`brand_id`),
   KEY `is_delete` (`is_delete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
 INSERT INTO goods(id, cat_id, goods_sn, goods_name, brand_id, brand_name, unit_id, unit_name, goods_model, packing_spec, packing_unit, goods_attr_ids, goods_attr, goods_desc, desc_mobile, market_price, add_time, last_update) VALUES
 (1, 5, 'P000001', '蛋鸡维生素', 4, '优利保', 1, 'KG', '', '10', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now()),
 (2, 6, 'P000002', '饲料级维生素A', 1, '新和成', 1, 'KG', '', '25', '箱', ';1_2;', '含量:50万 IU/g', 'PC详情', '移动端详情','800', now(), now()),
@@ -618,25 +620,25 @@ CREATE TABLE `shop_goods` (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`shop_id` int(10) NOT NULL COMMENT '店铺ID',
 	`shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-  `goods_id` int(10) NOT NULL COMMENT '产品ID',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_id` int(10) NOT NULL COMMENT '商品ID',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
   `is_on_sale` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否在售 0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺产品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺商品表';
 
 DROP TABLE IF EXISTS `shop_goods_quote`;
 CREATE TABLE `shop_goods_quote` (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
 	`shop_id` int(10) NOT NULL COMMENT '店铺ID',
 	`shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-  `goods_id` int(10) NOT NULL COMMENT '产品ID',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `goods_id` int(10) NOT NULL COMMENT '商品ID',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
   `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '交货地',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
@@ -648,7 +650,7 @@ CREATE TABLE `shop_goods_quote` (
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺产品报价表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
 
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
@@ -656,13 +658,13 @@ CREATE TABLE `cart` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
   `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
   `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
-  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品报价ID',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '平台商品ID',
   `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '平台商品编码',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
-  `goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '产品价格',
-  `goods_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '产品数量',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
+  `goods_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品数量',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_checked` tinyint(1) NOT NULL DEFAULT '1' COMMENT '选中状态，0未选中，1选中',
   `is_invalid` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '购物车商品是否无效',
@@ -737,12 +739,12 @@ DROP TABLE IF EXISTS `order_goods`;
 CREATE TABLE `order_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
-  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
-  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
-  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
-  `goods_number` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '产品数量',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台商品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
+  `goods_number` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '商品数量',
   `goods_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
   `send_number` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '已发货数量',
   PRIMARY KEY (`id`),
@@ -824,11 +826,11 @@ CREATE TABLE `order_delivery_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `delivery_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发货单ID',
   `order_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单明细ID',
-  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
-  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
-  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台商品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `send_number` smallint(5) unsigned DEFAULT '0' COMMENT '发货数量',
   PRIMARY KEY (`id`),
   KEY `delivery_id` (`delivery_id`,`goods_id`),
@@ -878,11 +880,11 @@ CREATE TABLE `order_back_goods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `back_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '退货单ID',
   `order_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单明细ID',
-  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品ID',
-  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺产品报价ID',
-  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台产品ID',
-  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '产品名称',
-  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '产品编码',
+  `shop_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品ID',
+  `shop_goods_quote_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺商品报价ID',
+  `goods_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '平台商品ID',
+  `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `back_number` smallint(5) unsigned DEFAULT '0' COMMENT '退货数量',
   PRIMARY KEY (`id`),
   KEY `back_id` (`back_id`),
@@ -931,7 +933,7 @@ CREATE TABLE `seckill_goods` (
   PRIMARY KEY (`id`),
   KEY `seckill_id` (`seckill_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动产品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动商品';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (

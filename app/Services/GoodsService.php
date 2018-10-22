@@ -17,7 +17,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 class GoodsService
 {
     use CommonService;
-    //产品列表（分页）
+    //商品列表（分页）
     public static function getGoodsList($pager,$condition)
     {
         return GoodsRepo::getListBySearch($pager,$condition);
@@ -35,7 +35,7 @@ class GoodsService
         $info = GoodsRepo::getInfoByFields(['goods_name'=>$goods_name]);
         //dd($info);
         if(!empty($info)){
-            self::throwBizError('该产品已经存在！');
+            self::throwBizError('该商品已经存在！');
         }
         return $info;
     }
@@ -52,7 +52,7 @@ class GoodsService
         return GoodsRepo::modify($data['id'],$data);
     }
 
-    //获取一条产品
+    //获取一条商品
     public static function getGoodInfo($id)
     {
         return GoodsRepo::getInfo($id);
@@ -101,7 +101,7 @@ class GoodsService
     }
 
     //web
-    //产品列表
+    //商品列表
     public static function goodsList(){
         return GoodsRepo::goodsList();
     }
@@ -147,7 +147,7 @@ class GoodsService
                 $id = decrypt($v);
                 $cartInfo = CartRepo::getInfo($id);
                 if(empty($cartInfo)){
-                    self::throwBizError('购物车产品不存在！');
+                    self::throwBizError('购物车商品不存在！');
                 }
                 $cartSession[] = $cartInfo;
             }
@@ -184,7 +184,7 @@ class GoodsService
 //                decrypt($v['id']);
                 $cartInfo = CartRepo::getInfo($id);
                 if(empty($cartInfo)){
-                    self::throwBizError('购物车产品不存在！');
+                    self::throwBizError('购物车商品不存在！');
                 }
 
                 $orderGoods = ['order_id'=>$orderInfoResult['id'],'shop_goods_id'=>$cartInfo['shop_goods_id'],'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],                   'goods_id'=>$cartInfo['goods_id'],'goods_name'=>$cartInfo['goods_name'],'goods_sn'=>$cartInfo['goods_sn'],'goods_number'=>$cartInfo['goods_number'],'goods_price'=>$cartInfo['goods_price']];

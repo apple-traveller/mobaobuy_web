@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>会员 - 产品列表</div>
+        <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>会员 - 商品列表</div>
         <div class="content">
 
 
@@ -12,12 +12,12 @@
                         <form method="post" action="" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品名称：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value font14">{{$good['goods_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品编码：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品编码：</div>
                                 <div class="label_value font14">{{$good['goods_sn']}}</div>
                             </div>
 
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品型号：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
                                 <div class="label_value font14">{{$good['goods_model']}}</div>
                             </div>
 
@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品属性：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
                                 <div class="label_value font14">{{$good['goods_attr']}}</div>
                             </div>
 
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品重量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
                                 <div class="label_value font14">{{$good['goods_weight']}}</div>
                             </div>
 

@@ -15,7 +15,7 @@
 					<input type="hidden" name="id" value="{{encrypt($v->id)}}">
 					<input type="hidden" name="shop_id" value="{{encrypt($v->shop_id)}}">
 					店铺名称:<div class="shop_name">{{$v->shop_name}}</div>
-					<p>产品名称:{{$v->goods_name}}</p><p>库存数量:{{$v->goods_number}}</p>
+					<p>商品名称:{{$v->goods_name}}</p><p>库存数量:{{$v->goods_number}}</p>
 					<p class="shop_price">售价:{{$v->shop_price}}</p><p>截至时间：{{$v->expiry_time}}</p>
 					<input type="button" name="" onclick="addCart(this)" value="加入购物车">
 				</div>

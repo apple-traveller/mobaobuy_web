@@ -113,7 +113,7 @@
                                                             <ul style="display: none;">
                                                                 <li><a href="article.php?id=61" target="_blank">堂主的一封信：大商创被同行抄袭 证明我们已获得初步成功！</a></li>
                                                                 <li><a href="article.php?id=58" target="_blank">大商创多用户商城系统版本升级 1.2版正式发布</a></li>
-                                                                <li><a href="article.php?id=64" target="_blank">模板堂问答系统“问答堂”正式上线，产品相关问答一搜全知道</a></li>
+                                                                <li><a href="article.php?id=64" target="_blank">模板堂问答系统“问答堂”正式上线，商品相关问答一搜全知道</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>

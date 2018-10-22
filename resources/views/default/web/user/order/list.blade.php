@@ -58,10 +58,12 @@
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款:￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
-                                        html += '<p><img class="track_tooltip" data-id='+ full.deliveries[i].shipping_id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
+                                        console.log(full.deliveries);
+                                        html += '<p><img class="track-tooltip" data-id='+ full.deliveries[i].id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
                                     }
                                     html += '<p><span><a href="">订单详情</a></span></p></td>';
-                                    html += '<td rowspan="'+ full.goods.length +'"><p><button class="opt-btn">去支付</button></p><p class="mt5"><button class="opt-btn">取消</button></p></td>';
+                                    html += '<td rowspan="'+ full.goods.length +'">';
+                                    html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">去支付</a></p><p class="mt5"><a class="opt-btn">取消</a></p></td>';
                                 }
                                 html += '</tr>';
                             }

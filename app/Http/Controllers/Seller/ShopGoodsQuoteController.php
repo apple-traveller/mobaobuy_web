@@ -102,7 +102,7 @@ class ShopGoodsQuoteController extends Controller
         $shop_price = $request->input('shop_price','');
 
         if($goods_id==0||!$goods_id){
-            return $this->error('产品不能为空');
+            return $this->error('商品不能为空');
         }
         if(!$delivery_place){
             return $this->error('交货地不能为空');
