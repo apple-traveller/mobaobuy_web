@@ -7,7 +7,7 @@ region.view_country = true;
 region.init = function(target_div)
 {
     var html = '';
-    var init_name = $(target_div).data('init-name');console.log(init_name);
+    var init_name = $(target_div).data('init-name');
     if(Utils.isEmpty(init_name)){
         init_name = '请选择';
     }

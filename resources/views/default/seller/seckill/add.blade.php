@@ -116,15 +116,15 @@
                 goods_info.data.map(function (item, index, input) {
                     var Reg = /^\+?[1-9][0-9]*$/;
                     if (!Reg.test(item['sec_price'])) {
-                        layer.msg('请选择填写产品的秒杀价格,请填写数字');
+                        layer.msg('请选择填写商品的秒杀价格,请填写数字');
                         return false;
                     }
                     if (!Reg.test(item['sec_num'])) {
-                        layer.msg('请选择填写产品的秒杀总数量,请填写数字');
+                        layer.msg('请选择填写商品的秒杀总数量,请填写数字');
                         return false;
                     }
                     if (!Reg.test(item['sec_limit'])) {
-                        layer.msg('请选择填写产品的限制数量,请填写数字');
+                        layer.msg('请选择填写商品的限制数量,请填写数字');
                         return false;
                     }
                     sec_data[index] = {

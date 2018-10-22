@@ -24,7 +24,7 @@ class AppChargeData extends ChargeBaseData
             'out_trade_no'  => strval($this->order_no),
             'total_amount'  => strval($this->amount),
 
-            // 销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
+            // 销售商品码，商家和支付宝签约的商品码，为固定值QUICK_MSECURITY_PAY
             'product_code'  => 'QUICK_MSECURITY_PAY',
             'goods_type'    => $this->goods_type,
             'passback_params' => $this->return_param,

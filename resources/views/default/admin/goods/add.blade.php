@@ -5,7 +5,7 @@
         .mian-info .item .label {width: 15%;}
     </style>
     <div class="warpper">
-        <div class="title"><a href="/admin/goods/list" class="s-back">返回</a>产品 - 添加产品</div>
+        <div class="title"><a href="/admin/goods/list" class="s-back">返回</a>商品 - 添加商品</div>
         <div class="content">
 
             <div class="flexilist">
@@ -14,7 +14,7 @@
                         <div class="switch_info" style="display: block;">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品名称：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_name" class="text" value="" maxlength="40" autocomplete="off" id="goods_name">
                                     <div class="form_prompt"></div>
@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品型号：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_model" class="text" value="" maxlength="40" autocomplete="off" id="goods_model">
                                     <div class="form_prompt"></div>
@@ -100,7 +100,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品属性：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
                                 <div class="label_value">
                                     <div class="attribute"></div>
                                     <input type="hidden" id="goods_attr" name="goods_attr">
@@ -121,7 +121,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品重量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_weight" class="text" value="" maxlength="40" autocomplete="off" id="goods_weight">
                                     <div class="form_prompt"></div>
