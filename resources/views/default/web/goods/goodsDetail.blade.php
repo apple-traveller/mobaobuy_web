@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>产品列表</title>
+	<title>产品详情</title>
 	@include(themePath('.','web').'web.include.partials.base')
 	<link rel="stylesheet" type="text/css" href="{{'/css/index.css'}}" />
 	<link rel="stylesheet" type="text/css" href="{{'/css/global.css'}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
-	<script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
+
+    <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
 	<script type="text/javascript">
         $(function(){
             // 更多/收起
@@ -54,7 +55,7 @@
 					, theme: "#88be51"
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/goodsList?currpage="+obj.curr;
+                            window.location.href="/goodsDetail?currpage="+obj.curr+"&shop_id={{$shop_id}}&id={{$id}}";
                         }
                     }
                 });
@@ -72,8 +73,7 @@
 			<a>注册</a>
 			<a>帮助中心</a>
 			<a>会员中心</a>
-			<a>快速下单</a><span class="top_tel">400-000-0000</span>
-		</div>
+			<a>快速下单</a><span class="top_tel">400-000-0000</span></div>
 	</div>
 </div>
 <div class="header">
@@ -183,80 +183,94 @@
 	</div>
 </div>
 <div class="clearfix">
-	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a> <div class="mode_add tac">江西 、湖北<i class="mode_close"></i></div><div class="mode_add tac ml10">湖北<i class="mode_close"></i></div> <div class="pro_Open pro_Open_up"></div><div class="fr">共<font class="orange">60</font>个相关产品</div></div>
+	<div class="w1200 pr ovh">
+		<div class="crumbs mt5">当前位置：<a href="/">产品列表</a> &gt; <a href="/subject/list/56/page/1.html">产品详情</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
+		<style type="text/css">
+			.Self-product-list li span{width: 13%;float: left;text-align: center;}
+			.pro_chart{float:left;width: 528px; }
+			.pro_chart_title{line-height: 70px;text-align: center;font-size: 18px;border: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
+			.pro_chart_img{height: 355px;border: 1px solid #DEDEDE;}
+			.pro_price{width: 635px;height: 56px;line-height: 56px;overflow: hidden;}
+			.pro_detail{overflow: hidden;margin-top: 20px;}
+			.pro_price_dj{width: 493px;border-right: 1px solid #DEDEDE;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
+			.start_amount{float: left;width: 141px;line-height:20px;text-align: center;margin-top: 7px;}
+			.pro_value{width: 270px;margin-left: 15px;float: left;}
+			.letter-space{letter-spacing: 30px;}
+			.pro_detail_title{width: 88px;}
+			.pro_chart_opert{width: 50px;height: 18px;display: inline-block;color: #666;padding-left: 23px;margin-top: 10px;}
+			.follow{background: url(/images/pro_detail_icon.png)no-repeat 0px -61px;}
+			.share{background: url(/images/pro_detail_icon.png)no-repeat -124px 3px;}
+			.follow_btn{background: #b1b1b1 url(/images/pro_detail_icon.png)no-repeat 20px 14px;}
+		</style>
+		<div class="pro_chart mt5">
+			<h1 class="pro_chart_title">
+				商品价格走势
+			</h1>
+			<div class="pro_chart_img">
 
-
-		<div class="pro_screen">
-			<div class="pro_brand">
-
-				<dl class="fl filter_item"><dt class="fl">品牌:</dt> <dd class="pro_brand_list ml30"><a>海大</a><a>恒兴</a><a>通威</a><a>禾丰</a><a>骆驼</a><a>正红</a><a>五谷丰登</a><a>成农</a><a>五谷丰登</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a></dd><div class="fl pro_brand_btn ml20 pro_more">更多</div><div class="fl pro_brand_btn ml20 pro_m_select">多选</div></dl>
-			</div>
-			<div class="pro_brand">
-				<dl class="fl filter_item"><dt class="fl">种类:</dt> <dd class="pro_brand_list ml30"><a>VA</a><a>VE</a><a>VD3</a><a>泛酸钙</a><a>VB1</a><a>VB2</a><a>生物素</a><a>烟酰胺/烟酸</a><a>氯化胆碱</a><a>肌醇</a><a>VB6</a><a>成农</a><a>VB6</a><a>VB6</a><a>成农</a><a>成农</a><a>成农</a></dd><div class="fl pro_brand_btn ml20 pro_more">更多</div><div class="fl pro_brand_btn ml20 pro_m_select">多选</div></dl>
-			</div>
-			<div class="pro_brand" style="border-bottom: none;">
-				<dl class="fl filter_item"><dt class="fl">地区:</dt>
-					<dd class="fl"><label class=" check_box region ml20"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">全部</span></label></dd>
-					<dd class="pro_brand_list" style="width: 770px;">
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">江西</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">上海</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-
-					</dd>
-					<div class="fl pro_brand_btn region_btn ml20">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>
-				</dl>
 			</div>
 
 		</div>
-		<div class="more_filter_box">更多选项...</div>
-	</div>
-	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">产品列表</h1>
-		<div class="scr">
-			<div class="width1200">
-				<div class="sequence-bar" style="padding:0;padding-right:10px;">
-					<div class="fl">
-						<a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
-					</div>
-					<div class="fl">
-						<ul>
-							<li class="sm_breed goods_number"><span class="sm_breed_span num_bg1">数量</span></li>
-							<li class="sm_breed"><span class="sm_breed_span price_bg">价格</span></li>
-							<li class="sm_breed add_time"><span class="sm_breed_span shelftime_bg1" style="width: 113px;">上架时间</span></li>
-						</ul>
-					</div>
-					<div class="fr">
-						<span class="fl fs13 mr10"><font class="orange">1</font>/4</span>
-						<div class="fl page_mode page_border_left page_leftbg"></div>
-						<div class="fl page_mode page_border_right page_rightbg"></div>
-					</div>
-					<form class="fl">
-						<input class="min-max" name="minPrice" id="minPrice" value="" placeholder="￥最低价" style="margin-left: 5px">
-						<span class="line">-</span>
-						<input class="min-max" name="minPrice" id="minPrice" value="" placeholder="￥最高价" style="margin-left: 5px">
-						<input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="submit" style="margin-left: 5px">
-					</form>
+		<div class="fl ml35 mt5">
+			<h1 class="fwb fs16">{{$good_info['goods_name']}}</h1>
+			<span class="red mt5 db"></span>
+			<div class="pro_price f4bg mt10">
+				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
+				<div class="start_amount">
+
 				</div>
 			</div>
+			<div class="pro_detail">
+				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
+			</div>
+			<div class="pro_detail">
+				<span class="ml15 letter-space fl">编号</span><span  class="pro_value">{{$good_info['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$good_info['brand_name']}}</span>
+			</div>
+			<div class="pro_detail">
+				<span class="ml15 pro_detail_title fl">产品属性</span>
+				@foreach($good_info['goods_attr'] as $vo)
+					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
+				@endforeach
+			</div>
+			<div class="pro_detail bd1"></div>
+			<div class="pro_detail">
+				<style type="text/css">
+					.pur_volume{float:left;border: 1px solid #DEDEDE; box-sizing:border-box;}
+					.pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
+					.pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
+					.pro_detail_btn{cursor:pointer;width: 140px;height: 42px;line-height: 42px;border: none;font-size:16px;color: #fff;border-radius:3px;}
+				</style>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" class="pur_num" value="1" /><span class="pur bbleft">+</span></div>
+
+			</div>
+
+			<div class="mt30" style="margin-left: 115px;">
+				<button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">关注商品</button>
+			</div>
 		</div>
+
+	</div>
+	<div class="w1200" style="margin-top: 80px;">
+		<style type="text/css">
+			.History_offo{height: 40px;line-height: 40px;border-bottom: 2px solid #75b335;background-color: #f0f0f0;box-sizing: border-box;}
+			.History_offo h1{background-color: #75b335;text-align: center;width: 106px;color: #fff;font-size: 16px;}
+
+			.History-product-list{margin-top: 10px;}
+
+			.History-product-list li span{width: 14.2%;float: left;text-align: center;}
+			.History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
+			.History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
+			.History-product-list li:last-child{border-bottom: none;}
+		</style>
+		<div class="History_offo">
+			<h1>历史报价</h1>
+		</div>
+
 		<ul class="Self-product-list">
 
-			<li><span class="num_bg1">店铺</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>操作</span></li>
+			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span></li>
 			@foreach($goodsList as $vo)
-				<li><span>{{$vo['shop_name']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span><button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button></span></li>
+				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?goods_id={{$vo['goods_id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span></li>
 			@endforeach
 		</ul>
 		<!--页码-->
@@ -267,31 +281,38 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(".bbright").click(function(){
+	    var number = parseInt($(".pur_num").val());
+	    var packing_spec = parseInt("{{$good_info['packing_spec']}}");
+	    if(number<packing_spec){
+            $(".pur_num").val(number);
+		}else{
+            $(".pur_num").val(number-packing_spec);
+		}
+	});
 
+    $(".bbleft").click(function(){
+        var number = parseInt($(".pur_num").val());
+        var packing_spec = parseInt("{{$good_info['packing_spec']}}");
+        $(".pur_num").val(number+packing_spec);
+    });
+
+    $(".orangebg").click(function(){
+        var id = "{{$good_info['id']}}";
+        var number =  $(".pur_num").val();
+        $.post("/cart",{'id':id,'number':number},function(res){
+            if(res.code==1){
+
+            }else{
+                $.msg.alert(res.msg);
+            }
+        },"json");
+    });
+</script>
 <!--底部-->
 @include(themePath('.','web').'web.include.partials.footer_service')
 @include(themePath('.','web').'web.include.partials.footer_new')
 @include(themePath('.','web').'web.include.partials.copyright')
-<script>
-    $(".goods_number").click(function(){
-        window.location.href="/goodsList?orderType=goods_number:desc";
-    });
-
-    $(".add_time").click(function(){
-        window.location.href="/goodsList?orderType=add_time:desc";
-	});
-
-    $(".P_cart_btn").click(function(){
-        var id = $(this).attr("data-id");
-        var number = 1;
-		$.post("/cart",{'id':id,'number':number},function(res){
-			if(res.code==1){
-
-			}else{
-			    $.msg.alert(res.msg);
-			}
-		},"json");
-	});
-</script>
 </body>
 </html>

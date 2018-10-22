@@ -48,9 +48,6 @@ class UserController extends Controller
         }
     }
 
-
-
-
     //用户审核(修改状态)
     public function verifyForm(Request $request)
     {
@@ -67,7 +64,7 @@ class UserController extends Controller
         $is_firm = $request->input("is_firm");
         $currpage = $request->input('currpage');
         $data = $request->all();
-        $data['is_validated']=$data['is_validated']==1?0:1;
+        $data['is_validated']=1;
         unset($data['currpage']);
         try{
             $user = UserService::modify($data);
@@ -90,7 +87,6 @@ class UserController extends Controller
         $user_invoices = UserInvoicesService::getInfoByUserId($id);//会员发票信息
         $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
         $region = RegionService::getList($pager=[],$condition=[]);
-        //dd($region);
         return $this->display('admin.user.detail',
             [ 'info'=>$info,
               'user_invoices'=>$user_invoices,
@@ -126,7 +122,6 @@ class UserController extends Controller
         $userid = $request->input('id');
         $is_firm = $request->input('is_firm');
         $currpage = $request->input("currpage");
-
         $info = UserRealService::getInfoByUserId($userid);
         if(empty($info)){
             return $this->error("该用户未提交实名信息");
@@ -142,13 +137,12 @@ class UserController extends Controller
         $currpage = $request->input('currpage');
         $data = $request->all();
         $data['review_time'] = Carbon::now();
-        $data['review_status']=$data['review_status']==2?1:2;
         unset($data['is_firm']);
         unset($data['currpage']);
         try{
             $user = UserRealService::modify($data);
             if($user){
-                return $this->success("修改成功",url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage);
+                return $this->result(url('/admin/user/list')."?is_firm=".$is_firm."&currpage=".$currpage,1,"修改状态成功");
             }else{
                 return  $this->error("修改失败");
             }

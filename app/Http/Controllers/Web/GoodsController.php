@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Web;
 use App\Services\GoodsService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
-use App\Services\SmsService;
+use App\Services\ShopGoodsQuoteService;
 
 
 class GoodsController extends Controller
@@ -22,9 +21,55 @@ class GoodsController extends Controller
     }
 
     //产品列表
-    public function goodsList(){
-        $goodsList = GoodsService::goodsList();
-        return $this->display('web.goods.goodsList',compact('goodsList'));
+    public function goodsList(Request $request)
+    {
+        $currpage = $request->input("currpage",1);
+        $highest = $request->input("highest");
+        $lowest = $request->input("lowest");
+        $orderType = $request->input("orderType","id:asc");
+        if(!empty($orderType)){
+            $order = explode(":",$orderType);
+        }
+        $condition = [];
+       /* if($lowest!="" && $highest!=""){
+
+        }*/
+        $pageSize = 10;
+        //积分列表
+        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
+        return $this->display("web.goods.goodsList",[
+            'goodsList'=>$goodList['list'],
+            'total'=>$goodList['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'orderType'=>$orderType
+        ]);
+    }
+
+    //产品详情
+    public function goodsDetail(Request $request)
+    {
+        $id = $request->input("id");
+        $shop_id = $request->input("shop_id");
+        $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        $currpage = $request->input("currpage",1);
+        $goods_id = $good_info['goods_id'];
+        $condition = [
+            'shop_id'=>$shop_id,
+            'goods_id'=>$goods_id
+        ];
+        $pageSize = 10;
+        $currpage = $request->input("currpage");
+        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->display("web.goods.goodsDetail",[
+            'good_info'=>$good_info,
+            'goodsList'=>$goodList['list'],
+            'total'=>$goodList['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'id'=>$id,
+            'shop_id'=>$shop_id
+        ]);
     }
 
     //购物车
