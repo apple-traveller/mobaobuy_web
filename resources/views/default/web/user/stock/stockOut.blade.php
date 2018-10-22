@@ -12,6 +12,7 @@
     .add_stock{width: 104px; height: 35px;line-height: 35px;background-color: #fe853b;border-radius: 3px;cursor: pointer;}
     .ml20{margin-left:20px;}
 </style>
+    <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
     <script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         var tbl;
@@ -100,8 +101,11 @@
     <div class="data-table-box">
         <div class="table-condition">
             <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
-            <div class="fl ml20">
-            <input type="text" class="border_text" onClick="WdatePicker()"/><span class="ml10 mr10">至</span><input type="text" class="border_text" onClick="WdatePicker()"/>
+            <div class="fl ml20 item">
+            <!-- <input type="text" class="border_text" onClick="WdatePicker()"/><span class="ml10 mr10">至</span><input type="text" class="border_text" onClick="WdatePicker()"/> -->
+
+            <input type="text" class="text Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
+            <input type="text" class="text Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
             <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}">+新增出库</a></div>

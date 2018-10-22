@@ -285,7 +285,8 @@ class UserService
             foreach($collectGoods as $v){
                 $goodsId[] = $v['goods_id'];
             }
-            return GoodsRepo::userCollectGoodsList($goodsId);
+            $goodsInfo = GoodsRepo::userCollectGoodsList($goodsId);
+            return ['goodsInfo'=>$goodsInfo,'collect'=>$collectGoods];
         }
         return [];
     }
@@ -293,6 +294,11 @@ class UserService
     //收藏商品
     public static function addCollectGoods($goodsId,$userId){
         return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+    }
+
+    //删除搜藏商品
+    public static function delCollectGoods($id){
+        return UserCollectGoodsRepo::delete($id);
     }
 
 

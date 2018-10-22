@@ -564,9 +564,18 @@ class UserController extends Controller
             UserService::addCollectGoods($id,$userId);
             return $this->success();
         }catch (\Exception $e){
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
-
+    //删除收藏夹商品
+    public function delCollectGoods(Request $request){
+        $id = $request->input('id');
+        try{
+             UserService::delCollectGoods($id);
+             return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
+        }
+    }
 
 }
