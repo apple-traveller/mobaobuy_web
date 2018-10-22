@@ -154,11 +154,25 @@
 
             })
     });
-            function del(id) {
-                var flag = confirm("Are you sure?");
+            function del(obj) {
+                var id = $(obj).attr('id');
+                var flag = confirm("是否确认删除?");
                 if(flag===true){
-                    var o = $(id).parents('.product_table li');
-                    o.remove();
+                      $.ajax({
+                        'type':'post',
+                        'data':{'id':id},
+                        'url':'{{url('/delFirmUser')}}',
+                        success:function(res){
+                            // var result = JSON.parse(res);
+                            if(res.code){
+                                alert('删除成功');
+                                window.location.reload();
+                            }else{
+                                alert('删除失败');
+                                window.location.reload();
+                            }
+                        }
+                    })
                 }   
             }
 

@@ -115,7 +115,7 @@ class FirmStockController extends Controller
                 return $this->display('web.xx');
             } else {
                 $stockInData = [];
-                $stockInData['created_by'] = $request->input('goods_id');
+                $stockInData['goods_id'] = $request->input('goods_id');
                 $stockInData['created_by'] = session('_web_user_id');
                 $stockInData['partner_name'] = $request->input('partner_name');
                 $stockInData['goods_name'] = $request->input('goods_name');
