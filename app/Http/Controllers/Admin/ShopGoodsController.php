@@ -75,7 +75,7 @@ class ShopGoodsController extends Controller
         $data = $request->all();
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
-            $errorMsg[] = '产品不能为空';
+            $errorMsg[] = '商品不能为空';
         }
         if(empty($data['shop_id'])){
             $errorMsg[] = '店铺不能为空';
@@ -117,7 +117,7 @@ class ShopGoodsController extends Controller
     }
 
 
-    //ajax获取产品
+    //ajax获取商品
     public function getGoods(Request $request)
     {
         $cat_id = $request->input('cat_id');
@@ -126,9 +126,9 @@ class ShopGoodsController extends Controller
             $goods = GoodsService::getGoods([],['id','goods_name']);
         }
         if(!empty($goods)){
-            return $this->result($goods,200,'获取产品成功');
+            return $this->result($goods,200,'获取商品成功');
         }else{
-            return $this->result('',400,'获取产品失败');
+            return $this->result('',400,'获取商品失败');
         }
     }
 

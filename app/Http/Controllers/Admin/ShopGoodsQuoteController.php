@@ -77,7 +77,7 @@ class ShopGoodsQuoteController extends Controller
         $data = $request->all();
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
-            $errorMsg[] = '产品不能为空';
+            $errorMsg[] = '商品不能为空';
         }
         if($data['shop_id']==0||empty($data['shop_id'])){
             $errorMsg[] = '店铺不能为空';

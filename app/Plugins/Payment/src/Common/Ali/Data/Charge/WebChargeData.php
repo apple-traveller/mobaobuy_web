@@ -27,7 +27,7 @@ class WebChargeData extends ChargeBaseData
     {
         $content = [
             'out_trade_no'  => strval($this->order_no),
-            // 销售产品码，商家和支付宝签约的产品码，为固定值QUICK_WAP_PAY
+            // 销售商品码，商家和支付宝签约的商品码，为固定值QUICK_WAP_PAY
             'product_code'  => 'FAST_INSTANT_TRADE_PAY',
             'total_amount'  => strval($this->amount),
             'subject'       => strval($this->subject),

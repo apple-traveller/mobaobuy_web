@@ -1,7 +1,7 @@
 @extends(themePath('.')."seller.include.layouts.master")
 @section('body')
     <div class="warpper">
-        <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加产品报价</div>
+        <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加商品报价</div>
         <div class="content">
 
             <div class="flexilist">
@@ -9,7 +9,7 @@
                     <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择产品：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
                                         <option value="0">请选择分类</option>
@@ -18,19 +18,19 @@
                                         @endforeach
                                     </select>
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
-                                        <option value="">请选择产品</option>
+                                        <option value="">请选择商品</option>
                                         @foreach($goods as $vo)
                                             <option  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
                                         @endforeach
                                     </select>
                                     <div class="form_prompt"></div>
-                                    <div class="notic">分类用于辅助选择产品</div>
+                                    <div class="notic">分类用于辅助选择商品</div>
                                 </div>
 
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
@@ -101,7 +101,7 @@
                         $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
-                    $(".goods_id").append('<option value="">该分类下没有产品</option>');
+                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
                 }
             },"json");
         });

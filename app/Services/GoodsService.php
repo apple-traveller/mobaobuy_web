@@ -17,7 +17,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 class GoodsService
 {
     use CommonService;
-    //产品列表（分页）
+    //商品列表（分页）
     public static function getGoodsList($pager,$condition)
     {
         return GoodsRepo::getListBySearch($pager,$condition);
@@ -35,7 +35,7 @@ class GoodsService
         $info = GoodsRepo::getInfoByFields(['goods_name'=>$goods_name]);
         //dd($info);
         if(!empty($info)){
-            self::throwBizError('该产品已经存在！');
+            self::throwBizError('该商品已经存在！');
         }
         return $info;
     }
@@ -52,7 +52,7 @@ class GoodsService
         return GoodsRepo::modify($data['id'],$data);
     }
 
-    //获取一条产品
+    //获取一条商品
     public static function getGoodInfo($id)
     {
         return GoodsRepo::getInfo($id);
@@ -101,25 +101,51 @@ class GoodsService
     }
 
     //web
-    //产品列表
+    //商品列表
     public static function goodsList(){
         return GoodsRepo::goodsList();
     }
 
     //购车车列表
     public static function cart($userId){
-        return CartRepo::cartList($userId);
+        $cartInfo =  CartRepo::cartList($userId);
+        $quoteInfo =  [];
+        foreach($cartInfo as $k=>$v){
+            $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+            $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
+            $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
+            $quoteInfo[$k]['account'] = $v['goods_number'] * $v['goods_price'];
+        }
+        return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo];
+
     }
 
     //报价表添加到购物车
-    public static function searchGoodsQuote($userId,$id){
+    public static function searchGoodsQuote($userId,$id,$number){
         $addTime = Carbon::now();
-        $id = decrypt($id);
+//        $id = decrypt($id);
         $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($id);
         if(empty($shopGoodsQuoteInfo)){
             self::throwBizError('报价信息不存在！');
         }
-        $cartInfo = ['user_id'=>$userId,'shop_id'=>$shopGoodsQuoteInfo['shop_id'],'shop_name'=>$shopGoodsQuoteInfo['shop_name'],'shop_goods_quote_id'=>$shopGoodsQuoteInfo['id'],'goods_id'=>$shopGoodsQuoteInfo['goods_id'],'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],'goods_name'=>$shopGoodsQuoteInfo['goods_name'],'goods_price'=>$shopGoodsQuoteInfo['shop_price'],'goods_number'=>$shopGoodsQuoteInfo['goods_number'],'add_time'=>$addTime];
+        $goodsInfo = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息不存在！');
+        }
+        if($number % $goodsInfo['packing_spec'] == 0){
+            $goodsNumber = $number;
+        }else{
+            if($number > $goodsInfo['packing_spec']){
+                $yuNumber = $number % $goodsInfo['packing_spec'];
+                $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
+                $goodsNumber = $number + $dNumber;
+
+            }else{
+                $goodsNumber = $goodsInfo['packing_spec'];
+            }
+
+        }
+        $cartInfo = ['user_id'=>$userId,'shop_id'=>$shopGoodsQuoteInfo['shop_id'],'shop_name'=>$shopGoodsQuoteInfo['shop_name'],'shop_goods_quote_id'=>$shopGoodsQuoteInfo['id'],'goods_id'=>$shopGoodsQuoteInfo['goods_id'],'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],'goods_name'=>$shopGoodsQuoteInfo['goods_name'],'goods_price'=>$shopGoodsQuoteInfo['shop_price'],'goods_number'=>$goodsNumber,'add_time'=>$addTime];
         return CartRepo::create($cartInfo);
     }
 
@@ -147,7 +173,7 @@ class GoodsService
                 $id = decrypt($v);
                 $cartInfo = CartRepo::getInfo($id);
                 if(empty($cartInfo)){
-                    self::throwBizError('购物车产品不存在！');
+                    self::throwBizError('购物车商品不存在！');
                 }
                 $cartSession[] = $cartInfo;
             }
@@ -184,7 +210,7 @@ class GoodsService
 //                decrypt($v['id']);
                 $cartInfo = CartRepo::getInfo($id);
                 if(empty($cartInfo)){
-                    self::throwBizError('购物车产品不存在！');
+                    self::throwBizError('购物车商品不存在！');
                 }
 
                 $orderGoods = ['order_id'=>$orderInfoResult['id'],'shop_goods_id'=>$cartInfo['shop_goods_id'],'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],                   'goods_id'=>$cartInfo['goods_id'],'goods_name'=>$cartInfo['goods_name'],'goods_sn'=>$cartInfo['goods_sn'],'goods_number'=>$cartInfo['goods_number'],'goods_price'=>$cartInfo['goods_price']];
@@ -203,6 +229,24 @@ class GoodsService
             self::rollBack();
             throw $e;
         }
+    }
+
+    //删除购物车某条商品
+    public static function delCart($id){
+        return CartRepo::delete($id);
+    }
+
+    //递增购物车数量
+    public static function addCartGoodsNum($id){
+        $cartInfo = CartRepo::getInfo($id);
+        return CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+1]);
+
+    }
+
+    //递减购物车数量
+    public static function reduceCartGoodsNum($id){
+        $cartInfo = CartRepo::getInfo($id);
+        return CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-1]);
     }
 
     //订单列表

@@ -280,13 +280,14 @@ class UserService
     public static function userCollectGoodsList($id){
         //查找收藏商品表
         $collectGoods = UserCollectGoodsRepo::getList([],['user_id'=>$id]);
-        //通过商品id查找对应的产品
+        //通过商品id查找对应的商品
         if($collectGoods){
             $goodsId = [];
             foreach($collectGoods as $v){
                 $goodsId[] = $v['goods_id'];
             }
-            return GoodsRepo::userCollectGoodsList($goodsId);
+            $goodsInfo = GoodsRepo::userCollectGoodsList($goodsId);
+            return ['goodsInfo'=>$goodsInfo,'collect'=>$collectGoods];
         }
         return [];
     }
@@ -294,6 +295,11 @@ class UserService
     //收藏商品
     public static function addCollectGoods($goodsId,$userId){
         return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+    }
+
+    //删除搜藏商品
+    public static function delCollectGoods($id){
+        return UserCollectGoodsRepo::delete($id);
     }
 
 

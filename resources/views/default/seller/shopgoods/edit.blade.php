@@ -3,7 +3,7 @@
 
     <div class="warpper">
         <p class="title"><a href="/seller">【主页】</a></p>
-        <div class="title"><a href="/seller/goods/list?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 编辑店铺产品</div>
+        <div class="title"><a href="/seller/goods/list?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 编辑店铺商品</div>
         <div class="content">
 
             <div class="flexilist">
@@ -11,7 +11,7 @@
                     <form action="/seller/goods/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择产品：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;float:left;" class="cat_id" >
                                         <option value="0">请选择分类</option>
@@ -28,7 +28,7 @@
                                 <input type="hidden" name="id" value="{{$shopGood['id']}}">
                                 <input type="hidden" name="currentPage" value="{{$currentPage}}">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{$shopGood['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
@@ -79,7 +79,7 @@
                         $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
-                    $(".goods_id").append('<option value="0">该分类下没有产品</option>');
+                    $(".goods_id").append('<option value="0">该分类下没有商品</option>');
                 }
             },"json");
         });

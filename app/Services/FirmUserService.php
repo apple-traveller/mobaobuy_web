@@ -7,19 +7,33 @@ class FirmUserService
     use CommonService;
     //企业用户列表
     public static function firmUserList($firmId){
-        return FirmUserRepo::firmUserList($firmId);
+        $firmUsers =  FirmUserRepo::getList([], ['firm_id'=>$firmId]);
+        foreach($firmUsers as &$v){
+            $userInfo = UserRepo::getInfo($v['user_id']);
+            $v['phone'] = $userInfo['user_name'];
+        }
+        return $firmUsers;
+    }
+
+    //删除企业会员
+    public static function delFirmUser($id){
+        return FirmUserRepo::delete($id);
     }
 
     //增加企业用户
-    public static function create($firmId,$userId,$permi,$userName){
-        //查询是否已绑定
-        $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userId]);
+    public static function addFirmUser($firmId,$phone,$permi,$userName){
+        //查询此手机号是否存在，
+        $userInfo = UserRepo::getInfoByFields(['user_name'=>$phone, 'is_firm'=>0]);
+        if(empty($userInfo)){
+            self::throwBizError('手机用户不存在!');
+        }
+        $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userInfo['id']]);
         if($firmUserInfo){
             self::throwBizError('企业用户已绑定!');
         }
         $userPermi = [];
         $userPermi['firm_id'] = $firmId;
-        $userPermi['user_id'] = $userId;
+        $userPermi['user_id'] = $userInfo['id'];
         $userPermi['real_name'] = $userName;
             if(in_array(1,$permi)){
                 $userPermi['can_po'] = 1;
@@ -64,4 +78,30 @@ class FirmUserService
         }
         self::throwBizError('未找到该用户');
     }
+    //编辑企业会员弹层获取数据
+    public static function editFirmUser($id){
+        //获取firmuser表数据
+        $firmUserInfo = FirmUserRepo::getInfo($id);
+        if(empty($firmUserInfo)){
+            self::throwBizError('企业用户不存在');
+        }
+        //获取user表user_name
+        $userInfo = UserRepo::getInfo($firmUserInfo['user_id']);
+        if(empty($userInfo)){
+            self::throwBizError('用户不存在');
+        }
+        return ['firm_user_info'=>$firmUserInfo,'user_phone'=>$userInfo['user_name']];
+    }
+
+    //审批属性页面
+    public static function Approval($userId){
+        return UserRepo::getInfo($userId)['need_approval'];
+    }
+
+    //审批设置
+    public static function OrderNeedApproval($userId,$approvalId){
+        return UserRepo::modify($userId,['need_approval'=>$approvalId]);
+    }
+
+
 }

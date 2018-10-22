@@ -52,23 +52,23 @@ class GoodsController extends Controller
         $id = $request->input("id");
         $shop_id = $request->input("shop_id");
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        $currpage = $request->input("currpage",1);
+        $currpage = $request->input("currpage", 1);
         $goods_id = $good_info['goods_id'];
         $condition = [
-            'shop_id'=>$shop_id,
-            'goods_id'=>$goods_id
+            'shop_id' => $shop_id,
+            'goods_id' => $goods_id
         ];
         $pageSize = 10;
         $currpage = $request->input("currpage");
-        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        return $this->display("web.goods.goodsDetail",[
-            'good_info'=>$good_info,
-            'goodsList'=>$goodList['list'],
-            'total'=>$goodList['total'],
-            'currpage'=>$currpage,
-            'pageSize'=>$pageSize,
-            'id'=>$id,
-            'shop_id'=>$shop_id
+        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
+        return $this->display("web.goods.goodsDetail", [
+            'good_info' => $good_info,
+            'goodsList' => $goodList['list'],
+            'total' => $goodList['total'],
+            'currpage' => $currpage,
+            'pageSize' => $pageSize,
+            'id' => $id,
+            'shop_id' => $shop_id
         ]);
     }
 
@@ -85,15 +85,47 @@ class GoodsController extends Controller
         }else{
             //报价表添加到购物车.
             $id = $request->input('id');
+            $number = $request->input('number');
             try{
-                 GoodsService::searchGoodsQuote($userId,$id);
+                 GoodsService::searchGoodsQuote($userId,$id,$number);
                  return $this->success('加入购物车成功');
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
-
         }
+    }
 
+    //删除购物车商品
+    public function delCart(Request $request){
+        $id = $request->input('id');
+        try{
+            GoodsService::delCart($id);
+            return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递加产品数量
+    public function addCartGoodsNum(Request $request){
+        $id = $request->input('id');
+        try{
+             GoodsService::addCartGoodsNum($id);
+             return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递减产品数量
+    public function reduceCartGoodsNum(Request $request){
+        $id = $request->input('id');
+        try{
+            GoodsService::reduceCartGoodsNum($id);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     //清空购物车
@@ -151,7 +183,7 @@ class GoodsController extends Controller
         $invoices = $request->input('invoices');
 
         if(empty($cartInfo)){
-            return $this->error('产品信息不存在');
+            return $this->error('商品信息不存在');
         }
         try{
             GoodsService::createOrder($cartInfo,$userId,$userAddress,$invoices);

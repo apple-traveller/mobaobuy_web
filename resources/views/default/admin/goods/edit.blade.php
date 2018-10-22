@@ -5,7 +5,7 @@
         .mian-info .item .label {width: 15%;}
     </style>
     <div class="warpper">
-        <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>产品 - 编辑产品</div>
+        <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>商品 - 编辑商品</div>
         <div class="content">
 
             <div class="flexilist">
@@ -15,7 +15,7 @@
                             <input type="hidden" name="id" value="{{$good['id']}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品名称：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_name" class="text" value="{{$good['goods_name']}}" maxlength="40" autocomplete="off" id="goods_name">
                                     <div class="form_prompt"></div>
@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品编码：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品编码：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_sn" class="text" value="{{$good['goods_sn']}}" maxlength="40" autocomplete="off" id="goods_sn">
                                     <div class="form_prompt"></div>
@@ -81,7 +81,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品型号：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_model" class="text" value="{{$good['goods_model']}}" maxlength="40" autocomplete="off" id="goods_model">
                                     <div class="form_prompt"></div>
@@ -108,7 +108,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品属性：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
                                 <div class="label_value">
                                     <div class="attribute">
                                         @foreach($attrArr as $arr)
@@ -136,7 +136,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;产品重量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_weight" class="text" value="{{$good['goods_weight']}}" maxlength="40" autocomplete="off" id="goods_weight">
                                     <div class="form_prompt"></div>

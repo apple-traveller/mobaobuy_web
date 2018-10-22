@@ -6,7 +6,7 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>该页面展示了商城所有的产品单位信息，可对单位进行编辑修改操作。</li>
+                    <li>该页面展示了商城所有的商品单位信息，可对单位进行编辑修改操作。</li>
                 </ul>
             </div>
             <div class="flexilist">

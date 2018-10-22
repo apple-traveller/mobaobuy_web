@@ -87,7 +87,7 @@ class ShopGoodsController extends Controller
         $shop_price = $request->input('shop_price','');
         $is_on_sale = $request->input('is_on_sale',1);
         if(!$goods_id){
-            return $this->error('产品不能为空');
+            return $this->error('商品不能为空');
         }
         if(!$shop_id){
             return $this->error('店铺不能为空');
@@ -156,7 +156,7 @@ class ShopGoodsController extends Controller
     }
 
     /**
-     * 获取产品
+     * 获取商品
      * @param Request $request
      * @return ShopGoodsController
      */
@@ -168,9 +168,9 @@ class ShopGoodsController extends Controller
             $goods = GoodsService::getGoods([],['id','goods_name']);
         }
         if(!empty($goods)){
-            return $this->result($goods,200,'获取产品成功');
+            return $this->result($goods,200,'获取商品成功');
         }else{
-            return $this->result('',400,'获取产品失败');
+            return $this->result('',400,'获取商品失败');
         }
     }
 

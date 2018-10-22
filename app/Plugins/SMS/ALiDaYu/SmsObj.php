@@ -17,8 +17,8 @@ Config::load();
 /**
  * Class SmsDemo
  *
- * 这是短信服务API产品的DEMO程序，直接执行此文件即可体验短信服务产品API功能
- * (只需要将AK替换成开通了云通信-短信服务产品功能的AK即可)
+ * 这是短信服务API商品的DEMO程序，直接执行此文件即可体验短信服务商品API功能
+ * (只需要将AK替换成开通了云通信-短信服务商品功能的AK即可)
  * 备注:Demo工程编码采用UTF-8
  */
 class SmsObj implements SmsInterface
@@ -43,10 +43,10 @@ class SmsObj implements SmsInterface
      */
     public function getAcsClient()
     {
-        //产品名称:云通信短信服务API产品,开发者无需替换
+        //商品名称:云通信短信服务API商品,开发者无需替换
         $product = "Dysmsapi";
 
-        //产品域名,开发者无需替换
+        //商品域名,开发者无需替换
         $domain = "dysmsapi.aliyuncs.com";
 
         $accessKeyId = $this->_config['AccessKeyID']; // AccessKeyId

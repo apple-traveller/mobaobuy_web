@@ -11,6 +11,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected function requestGetNotNull($name, $default=''){
+        $value = request($name, $default);
+        if(is_null($value)){
+            $value = $default;
+        }
+        return $value;
+    }
+
     protected function display($view, $data = [], $mergeData = []){
         $prefix = strstr($view, '.', TRUE);
         if($prefix && in_array($prefix, ['admin','web','seller'])){

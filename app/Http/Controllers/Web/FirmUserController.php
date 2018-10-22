@@ -22,8 +22,13 @@ class FirmUserController extends Controller
 
     //新增企业会员
     public function createFirmUser(Request $request){
+        $user = session('_web_user');
+        if(!$user['is_firm']){
+            return $this->error('个人会并无此功能！');
+        }
         if($request->isMethod('get')){
-            return $this->display('web.firm.createFirmUser');
+            $firmUserInfo = FirmUserService::firmUserList($user['id']);
+            return $this->display('web.user.emp.firmUserList',compact('firmUserInfo'));
         }else{
 //            $rule = [
 //                'firm_id'=>'required|numeric',
@@ -37,33 +42,40 @@ class FirmUserController extends Controller
 //            ];
 
          $userName = $request->input('user_name');
-         $firmId = session('_web_info')['id'];
+         $firmId = session('_web_user_id')['id'];
             try{
                 $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
+                return $this->success('','',$userInfo);
             }catch (\Exception $e){
-                return json_encode(array('code'=>0,'info'=>$e->getMessage()));
+                return $this->error($e->getMessage());
             }
 
+        }
+    }
+
+    // //删除企业会员
+    public function delFirmUser(Request $request){
+        $id = $request->input('id');
+        try{
+            FirmUserService::delFirmUser($id);
+            return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
         }
     }
 
     //绑定企业会员和权限
     public function addFirmUser(Request $request){
         $firmId = session('_web_user_id');
-        $userId = $request->input('user_id');
         $userName = $request->input('user_name');
-        if(!$firmId || !$userId){
-            return json_encode(array('code'=>0,'msg'=>'企业和用户id为空'));
-        }
+        $phone = $request->input('phone');
         $permi = $request->input('permi');
-        //$permi数组1能采购 2能付款 3能收货 4能其它入库 5能库存出库
-
         try{
-            $firmInfo = FirmUserService::create($firmId,$userId,$permi,$userName);
-            return json_encode(array('code'=>1,'msg'=>$firmInfo));
+            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName);
+            return $this->success();
         }catch (\Exception $e){
-            return json_encode(array('code'=>0,'msg'=>$e->getMessage()));
+            return $this->error($e->getMessage());
         }
     }
 
@@ -91,10 +103,38 @@ class FirmUserController extends Controller
 
     }
 
-    public function firmUserAuthList(){
-        $userInfo = session('_web_user');
-        $firmId = session('_web_user_id');
-        $firmUser = FirmUserService::firmUserList($firmId);
-        return $this->display('web.firm.firmUserAuth',compact('userInfo','firmUser'));
+    //权限审批属性设置页面
+    public function Approval(){
+        $userId = session('_web_user_id');
+        $approvalInfo = FirmUserService::Approval($userId);
+        return $this->display('web.user.emp.authList',compact('approvalInfo'));
+    }
+
+    //编辑企业会员弹层获取数据
+    public function editFirmUser(Request $request){
+        $id = $request->input('id');
+        try{
+            $firmUserInfo = FirmUserService::editFirmUser($id);
+            return $this->success('','',$firmUserInfo);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
+    }
+
+    //审核设置 下单是否需要审批
+    public function OrderNeedApproval(Request $request){
+        $userId = session('_web_user_id');
+        $approvalId = $request->input('approvalId');
+        try{
+            $approvalInfo = FirmUserService::OrderNeedApproval($userId,$approvalId);
+            if($approvalInfo){
+                return $this->success();
+            }
+            return $this->error();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
     }
 }

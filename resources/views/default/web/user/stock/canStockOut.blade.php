@@ -43,45 +43,10 @@
      .blackgraybg{background-color: #a0a0a0;}
      .xcConfirm .popBox .sgBtn.cancel{background-color: #546a79; color: #FFFFFF;}
 </style>
-   <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
-    <script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         var tbl;
         $(function () {
-        
             tbl = $('#data-table').dataTable({
-                "bLengthChange": false,                  //是否允许用户自定义每页显示条数。
-                "bPaginate": true,                      //是否分页。
-                "bFilter": false,
-                "bProcessing": true,                    //当datatable获取数据时候是否显示正在处理提示信息。
-                "bSort":false,
-                "sPaginationType": 'full_numbers',      //分页样式
-                "serverSide": true,
-                "language": {
-                    "processing": "请稍后。。。",
-                    // 当前页显示多少条
-                    "lengthMenu": "Display _MENU_ records",
-                    // _START_（当前页的第一条的序号） ,_END_（当前页的最后一条的序号）,_TOTAL_（筛选后的总件数）,
-                    // _MAX_(总件数),_PAGE_(当前页号),_PAGES_（总页数）
-                    "info": "",
-                    // 没有数据的显示（可选），如果没指定，会用zeroRecords的内容
-                    "emptyTable": "暂无数据",
-                    // 筛选后，没有数据的表示信息，注意emptyTable优先级更高
-                    "zeroRecords": "No records to display",
-                    // 千分位的符号，只对显示有效，默认就是","  一般不要改写
-                    //"thousands": "'",
-                    // 小数点位的符号，对输入解析有影响，默认就是"." 一般不要改写
-                    //"decimal": "-",
-                    // 翻页按钮文字控制
-                    "paginate": {
-                        "first": "首页",
-                        "last": "尾页",
-                        "next": "下一页",
-                        "previous": "上一页"
-                    },
-                    // Client-Side用，Server-Side不用这个属性
-                    "loadingRecords": "Please wait - loading..."
-                },
                 "ajax": {
                     url: "{{url('canStockOut')}}",
                     type: "post",
@@ -101,7 +66,6 @@
                             return json.data.data;
                         },
                 },
-                "retrieve": false,
                 "columns": [
                     {"data": "goods_name", "bSortable": false},
                     {"data": "number", "bSortable": false},
@@ -117,9 +81,7 @@
                 var oSettings = tbl.fnSettings();
                 tbl.fnClearTable(0);
                 tbl.fnDraw();
-
             });
-           
         });
 
         function add_stock_toggle(obj){
@@ -145,35 +107,23 @@
 
         $('.close,.cancel').click(function(){
             $('.block_bg,.putIn').hide()
-        })
+        });
 
-        //baocun
         function addStockOutSave(){
             var currStockNum = $('#currStockNum').val();
+            var price = $('#price').val();
             var flow_desc = $('#flow_desc').val();
             var id = $('.currStockOut').attr('id');
-             $.ajax({
-                url: "/curCanStock",
-                dataType: "json",
-                data: {
-                'currStockNum':currStockNum,
-                'flow_desc':flow_desc,
-                'id':id
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data.code){
-                        alert('添加出库记录成功');
-                        window.location.reload();
-                    }else{
-                        alert('添加失败');
-                    }
+            Ajax.call('/curStockSave',{currStockNum:currStockNum,flow_desc:flow_desc,id:id,price:price}, function(data){
+                if(data.code){
+                    $.msg.tips('添加出库记录成功');
+                    window.location.reload();
+                }else{
+                    $.msg.error(data.msg);
                 }
-                
-            })
+            },'POST','JSON');
         }
     </script>
-
 @endsection
 
 @section('content')
@@ -182,6 +132,7 @@
         <div class="table-condition">
             <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
             <button id="on-search" class="search-btn">查询</button>
+            <div class="fr add_stock tac white"><a href="{{url('stockOut')}}">返回</a></div>
         </div>
 
         <div class="table-body">
@@ -193,7 +144,6 @@
                     <th>操作</th>
                 </tr>
                 </thead>
-
             </table>
         </div>
     </div>
@@ -204,12 +154,10 @@
         <div class="pay_method whitebg putIn"  style="display:none;">
             <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增出库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
             <ul class="pay_content ovh" style="margin-top: 35px;">
-                <!-- <li><div class="ovh mt10"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" /></div></li>
-                <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" /></div></li> -->
                 <li><div class="ovh mt10"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="good_name"/></div></li>
-                <li><div class="ovh mt10"><span>可出库数量(kg):</span><input type="text" class="pay_text" name="number" id="number" /><i class="red ml5">*</i></div></li>
-                <li><div class="ovh mt10"><span>本次出库数量(kg):</span><input type="text" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
-               <!--  <li><div class="ovh mt10"><span>入库单价:</span><input type="text" class="pay_text"/><i class="red ml5">*</i></div></li> -->
+                <li><div class="ovh mt10"><span>库存数量(kg):</span><input type="text" class="pay_text" name="number" id="number" /><i class="red ml5">*</i></div></li>
+                <li><div class="ovh mt10"><span>出库数量(kg):</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
+                <li><div class="ovh mt10"><span>入库单价:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
                 <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></li>
                 <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
             </ul>

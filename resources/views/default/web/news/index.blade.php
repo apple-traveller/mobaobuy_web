@@ -98,7 +98,7 @@
                 <div class="fl ml20">
                     <h1 class="fs18 mt10"><a href="detail.html?id={{ $v['id'] }}">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
-                    <p class="news_content ovhwp">{{ $v['description'] }}</p>
+                    <p class="news_content ovhwp">{!! $v['description'] !!}</p>
                 </div>
             </li>
             @endforeach
