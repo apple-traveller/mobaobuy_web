@@ -1,7 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use App\Repositories\CartRepo;
+use App\Services\CartService;
 use App\Services\GoodsService;
+use App\Services\UserAddressService;
+use App\Services\UserInvoicesService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -78,23 +83,45 @@ class GoodsController extends Controller
         }
     }
 
-    //确认订单页面
-    public function confirmOrder(Request $request){
-        //公司id
-        $firmId = session('_web_firm_id');
-        //个人id
-        $userId = session('_web_user_id');
+    /**
+     * 订单维护页面
+     * @param Request $request
+     * @return GoodsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function confirmOrder(){
+        $info = session('_curr_deputy_user');
         //获取发票信息
         try{
-            if($firmId){
-                $invoicesInfo = GoodsService::getInvoices($firmId);
+            if(!$info['is_firm']){
+                $userInfo = UserService::getInfo($info['firm_id']);
+                $invoicesInfo = GoodsService::getInvoices($userInfo['id']);
             }else{
-                $invoicesInfo = GoodsService::getInvoices($userId);
+                $userInfo = session('_web_user');
+                $invoicesList = GoodsService::getInvoices($userInfo['id']);
+                foreach ($invoicesList as $k=>$v){
+                    $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
+                }
+                if (!empty($userInfo['invoice_id'])) {
+                    $invoicesInfo = UserInvoicesService::getInvoice($userInfo['id']);
+                } else {
+                    $invoicesInfo = $invoicesList[0];
+                }
             }
-            $goodsInfo = session('cartSession');
-            //获取收货地
-            $addressInfo = GoodsService::showAddress($userId);
-            return $this->display('web.goods.confirmOrder',compact('addressInfo','invoicesInfo'));
+
+            // 收货地址列表
+            $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+
+            foreach ($addressList as $k=>$v){
+                $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                if ($v['id'] == $userInfo['address_id']){
+                    $addressList[$k]['is_default'] =1;
+                } else {
+                    $addressList[$k]['is_default'] ='';
+                };
+            }
+            $goodsList = CartService::getCheckGoodsList($userInfo['id']);
+
+            return $this->display('web.goods.confirmOrder',compact('invoicesInfo','invoicesList','addressList','goodsList'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -104,6 +131,8 @@ class GoodsController extends Controller
     //确认提交订单
     public function createOrder(Request $request){
         $userId = session('_web_user_id');
+        $carList = CartService::getCheckGoodsList($userId);
+        dd($carList);
         $cartInfo = session('cartSession');
         $userAddress = $request->input('address');
         $invoices = $request->input('invoices');

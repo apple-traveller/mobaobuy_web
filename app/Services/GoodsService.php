@@ -173,7 +173,21 @@ class GoodsService
         try{
             self::beginTransaction();
             //订单表
-            $orderInfo = ['order_sn'=>$order_no,'user_id'=>$userId,'order_status'=>1,'add_time'=>$addTime,'address'=>$userAddressMes['address'],'shop_id'=>$cartInfo_session[0]['shop_id'],'zipcode'=>$userAddressMes['zipcode'],'mobile_phone'=>$userAddressMes['mobile_phone'],'province'=>$userAddressMes['province'],'city'=>$userAddressMes['city'],'district'=>$userAddressMes['district'],'consignee'=>$userAddressMes['consignee'],'invoice_id'=>$invoicesId];
+            $orderInfo = [
+                'order_sn'=>$order_no,
+                'user_id'=>$userId,
+                'order_status'=>1,
+                'add_time'=>$addTime,
+                'address'=>$userAddressMes['address'],
+                'shop_id'=>$cartInfo_session[0]['shop_id'],
+                'zipcode'=>$userAddressMes['zipcode'],
+                'mobile_phone'=>$userAddressMes['mobile_phone'],
+                'province'=>$userAddressMes['province'],
+                'city'=>$userAddressMes['city'],
+                'district'=>$userAddressMes['district'],
+                'consignee'=>$userAddressMes['consignee'],
+                'invoice_id'=>$invoicesId
+            ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 //            'shop_name'=>$cartInfo['shop_name'],
 
@@ -187,7 +201,15 @@ class GoodsService
                     self::throwBizError('购物车商品不存在！');
                 }
 
-                $orderGoods = ['order_id'=>$orderInfoResult['id'],'shop_goods_id'=>$cartInfo['shop_goods_id'],'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],                   'goods_id'=>$cartInfo['goods_id'],'goods_name'=>$cartInfo['goods_name'],'goods_sn'=>$cartInfo['goods_sn'],'goods_number'=>$cartInfo['goods_number'],'goods_price'=>$cartInfo['goods_price']];
+                $orderGoods = [
+                    'order_id'=>$orderInfoResult['id'],
+                    'shop_goods_id'=>$cartInfo['shop_goods_id'],
+                    'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],
+                    'goods_id'=>$cartInfo['goods_id'],
+                    'goods_name'=>$cartInfo['goods_name'],
+                    'goods_sn'=>$cartInfo['goods_sn'],
+                    'goods_number'=>$cartInfo['goods_number'],
+                    'goods_price'=>$cartInfo['goods_price']];
                 OrderGoodsRepo::create($orderGoods);
                 $goods_amount += $cartInfo['goods_number'] * $cartInfo['goods_price'];
 
@@ -195,7 +217,13 @@ class GoodsService
                 CartRepo::modify($id,['is_invalid'=>1]);
             }
             //更新订单总金额
-            OrderInfoRepo::modify($orderInfoResult['id'],['goods_amount'=>$goods_amount,'order_amount'=>$goods_amount,'shop_name'=>$cartInfo['shop_name']]);
+            OrderInfoRepo::modify(
+                $orderInfoResult['id'],
+                ['goods_amount'=>$goods_amount,
+                    'order_amount'=>$goods_amount,
+                    'shop_name'=>$cartInfo['shop_name']
+                ]
+            );
 
             self::commit();
             return $order_no;

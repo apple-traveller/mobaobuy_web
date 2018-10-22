@@ -269,6 +269,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
         Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
         Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
+        Route::post('/updateDefaultInvoice','UserController@updateDefaultInvoice');//修改会员默认发票
 
         Route::get('/addressList','UserController@shopAddressList');//收货地址列表
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
@@ -278,6 +279,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
         Route::post('/deleteAddress','UserController@deleteAddress'); // 删除地址
+        Route::post('/updateDefaultAddress','UserController@updateDefaultAddress'); // 修改默认地址
 
         Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
         Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
