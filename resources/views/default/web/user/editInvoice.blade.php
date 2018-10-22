@@ -6,7 +6,7 @@
         .tac{text-align:center !important;}
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
         /*会员中心-我的发票-页面*/
-        .invoice_method{display:none;z-index: 2;width:800px;  left:50%; top:50%;margin-top:-275px;position:fixed;margin-left:-250px;}
+        .invoice_method{margin-left: 24px;margin-right: 20px;}
         /*会员中心-收货地址*/
         .address_border{width: 905px; margin: 0 auto;}
         .Receive_address{overflow: hidden;margin-left: -15px;}
@@ -87,55 +87,37 @@
 
 
     </style>
-    <!--标题-->
-    <div class="address_border">
-        <ul class="Receive_address">
-            @foreach($invoicesInfo as $k=>$v)
-                <li class="curr">
-                    <div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address">修改</a><a class="ml10 del_address">删除</a></div></div>
-                    <div class="address_name mt15"><span>{{ $v['company_name'] }}</span></div>
-                    <div class="address_name mt15 default_addr dno"><span class="fr lcolor cp">设为默认地址</span></div>
-                </li>
-            @endforeach
-            <li>
-                <a class="tac mt30 db news_addr" style="text-decoration: none;">
-                    <div class="tac  mt30"><img src="{{asset(themePath('/').'img/add_adr.png')}}"/></div>
-                    <p class="fs16 gray">新增发票</p>
-                </a>
-            </li>
-        </ul>
-    </div>
-
     <!--遮罩-->
+
 <div class="invoice_method whitebg" id="invoice_frame">
-    <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增收货地址</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+    <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增开票信息</span></div>
     <form id="invoice_from">
         <ul class="addr_list ml30 mt25 ovh">
             <li>
                 <div class=" mt10 ml30">
-                    <span class="add_left fl">收货地址:</span>
-                    <input type="text" readonly="readonly" name="str_address" id="area2" style="display: none">
-                    <input type="text" readonly="readonly" name="id" style="display: none">
-                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="" style="width: 343px;margin-left: 20px" id="test">
+                    <span class="add_left fl">收票地址:</span>
+                    <input type="text" readonly="readonly" name="address_ids" id="area2" style="display: none">
+                    <input type="text" readonly="readonly" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif" style="display: none">
+                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="{{ $data['address_str'] }}" style="width: 343px;margin-left: 20px" id="test">
                     </div>
                 </div>
             </li>
-            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
-            <li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
+            <li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['consignee_address'] }}" @endif style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
+            <li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" value="@if(!empty($data)) {{ $data['company_address'] }} @endif" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" class="pay_text" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">税号:</span><input type="text" name="tax_id" class="pay_text" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" value="@if(!empty($data)) {{ $data['company_name'] }} @endif" class="pay_text" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">税号:</span><input type="text" value="@if(!empty($data)) {{ $data['tax_id']}} @endif"  name="tax_id" class="pay_text" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">开户银行:</span><input type="text" class="pay_text" name="bank_of_deposit" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">银行账号:</span><input type="text" class="pay_text" name="bank_account" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">开户银行:</span><input type="text" class="pay_text" value="@if(!empty($data)) {{ $data['bank_of_deposit']}} @endif"  name="bank_of_deposit" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">银行账号:</span><input type="text" value="@if(!empty($data)) {{ $data['bank_account']}} @endif"  class="pay_text" name="bank_account" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl" style="width: 587px;"><span class="add_left fl">开票电话:</span><input type="text" class="pay_text" name="company_telephone" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl" style="width: 587px;"><span class="add_left fl">开票电话:</span><input type="text" value="@if(!empty($data)) {{ $data['company_telephone']}} @endif"  class="pay_text" name="company_telephone" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" name="consignee_name" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" value="@if(!empty($data)) {{ $data['consignee_name']}} @endif"  name="consignee_name" style="width: 219px;"/></div>
+                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" value="@if(!empty($data)) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
             </li>
 
         </ul>
@@ -149,46 +131,6 @@
 
     <script>
         $(function(){
-            $('.Receive_address li').click(function(){
-                $(this).addClass('curr').siblings().removeClass('curr')
-            })
-            //	删除
-            $('.del_address').click(function(){
-                let id = $(this).attr('data_id');
-                $.ajax({
-                    url:'/deleteAddress',
-                    data:{id:id},
-                    type:'POST',
-                    success:function (res) {
-                        if (res.code == 1){
-                            $.msg.alert(res.msg);
-                        } else {
-                            $.msg.alert(res.msg);
-                            return false;
-                        }
-                    }
-                });
-                $(this).parents(".Receive_address li").remove();
-            })
-            //	编辑
-            $(".edit_address").click(function () {
-                let address_id = $(this).attr('data_id');
-                $.ajax({
-                    url:'/editAddressList',
-                    type:'GET',
-                    data:{'id':address_id},
-                    success:function (res) {
-                        if (res.code == 1){
-                            var data = res.data.data.form;
-                            $("#test").attr('data-init-name',res.data.data.address_names);
-                            for(var k in data){
-                                let test = $("input[ name= "+k+" ]").val(data[k]);
-                            }
-                            $('.block_bg,#addr_frame').show();
-                        }
-                    }
-                });
-            });
             //	增加
             $('.add_address').click(function(){
                 let input = $("#address_form").serialize();
@@ -198,39 +140,19 @@
                     type: 'POST',
                     success:function (res) {
                         if (res.code == 1){
-                            $('.block_bg,#addr_frame').hide();
-                            $.msg.alert(res.msg);
-                            setTimeout(window.location.reload(),2000);
+                            alert(res.msg);
+                            setTimeout( parent.location.reload(),2000);
                         } else {
-                            $('.block_bg,#addr_frame').hide();
-                            $.msg.alert(res.msg);
-                            document.getElementById("address_form").reset()
+                            alert(res.msg);
+                            // document.getElementById("address_form").reset();
+                            setTimeout( parent.location.reload(),2000);
                         }
                     }
                 });
 
             });
-            let index =
-            $('.Receive_address li:last-child').unbind('click');
-            //	新增地址、
-            $('.news_addr').click(function(){
-                var Rlength=$('.Receive_address li').length;
-                if (Rlength>10){
-                    $.msg.alert('最多输入十个地址');
-                    return false;
-                } else {
-                    $('.block_bg,#addr_frame').show();
-                    $('.block_bg,#addr_frame').toggle();
-                }
-            });
-            //  修改-弹窗
-            $('.edit_address').click(function(){
-                $('.block_bg,#addr_frame').toggle();
-            })
-            //  关闭地址
             $('.frame_close,.cancel').click(function(){
-                document.getElementById("address_form").reset()
-                $('.block_bg,#addr_frame').hide();
+                parent.location.reload(); //刷新父亲对象（用于框架）
             })
         })
 

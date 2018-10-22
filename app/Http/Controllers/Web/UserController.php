@@ -286,14 +286,6 @@ class UserController extends Controller
         $id = $request->input('id','');
         if ($id){
             $address_info = UserAddressService::getAddressInfo($id);
-            $address_info['form']= [
-                'id' => $address_info['id'],
-                'consignee' => $address_info['consignee'],
-                'address' => $address_info['address'],
-                'zipcode' => $address_info['zipcode'],
-                'mobile_phone' => $address_info['mobile_phone'],
-                'str_address' => $address_info['str_address']
-            ];
         } else {
             $address_info = [];
         }
@@ -339,35 +331,36 @@ class UserController extends Controller
     }
 
     //编辑用户发票信息
-    public function editInvoices(Request $request,$id){
-        if($request->isMethod('get')){
-            return $this->display('');
-        }else{
-            $rule = [
-                'company_name' => 'required',
-                'tax_id' => 'required',
-                'bank_of_deposit' =>'required',
-                'bank_account' => 'required',
-                'company_address' => 'required',
-                'company_telephone' => 'required',
-                'consignee_name' => 'required',
-                'consignee_mobile_phone' =>'required',
-                'country' => 'required',
-                'province' => 'required',
-                'city' => 'required',
-                'district' => 'required',
-                'street' => 'required',
-                'consignee_address' => 'required',
-            ];
-            $data = $this->validate($request,$rule);
-            $data['user_id'] = session('_web_user_id');
-            try{
-                UserInvoicesService::editInvoices($id,$data);
-                return $this->success('保存成功');
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
+    public function editInvoices(Request $request){
+//        if($request->isMethod('get')){
+//            return $this->display('');
+//        }else{
+//            $rule = [
+//                'company_name' => 'required',
+//                'tax_id' => 'required',
+//                'bank_of_deposit' =>'required',
+//                'bank_account' => 'required',
+//                'company_address' => 'required',
+//                'company_telephone' => 'required',
+//                'consignee_name' => 'required',
+//                'consignee_mobile_phone' =>'required',
+//                'country' => 'required',
+//                'province' => 'required',
+//                'city' => 'required',
+//                'district' => 'required',
+//                'street' => 'required',
+//                'consignee_address' => 'required',
+//            ];
+//        $data['user_id'] = session('_web_user_id');
+        $id = $request->input('id','');
+        $invoice_info = UserInvoicesService::getInvoice($id);
+        if ($invoice_info){
+            $data = $invoice_info;
+        } else {
+            $data = [];
         }
+        return $this->display('web.user.editInvoice',['data'=>$data]);
+
     }
 
     //用户发票信息

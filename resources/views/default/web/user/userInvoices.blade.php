@@ -95,7 +95,7 @@
 		<ul class="Receive_address">
 			@foreach($invoicesInfo as $k=>$v)
 			<li class="curr">
-				<div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address">修改</a><a class="ml10 del_address">删除</a></div></div>
+				<div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address" data-id="{{ $v['id'] }}">修改</a><a class="ml10 del_address">删除</a></div></div>
 				<div class="address_name mt15"><span>{{ $v['company_name'] }}</span></div>
 				<div class="address_name mt15 default_addr dno"><span class="fr lcolor cp">设为默认地址</span></div>
 			</li>
@@ -107,48 +107,6 @@
 				</a>
 			</li>
 		</ul>
-	</div>
-
-	<!--遮罩-->
-	<div class="block_bg"></div>
-	<!--我的发票-弹窗-->
-	<div class="invoice_method whitebg" id="invoice_frame">
-		<div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增收货地址</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
-		<form id="invoice_from">
-			<ul class="addr_list ml30 mt25 ovh">
-				<li>
-					<div class=" mt10 ml30">
-						<span class="add_left fl">收货地址:</span>
-						<input type="text" readonly="readonly" name="str_address" id="area2" style="display: none">
-						<input type="text" readonly="readonly" name="id" style="display: none">
-						<div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="" style="width: 343px;margin-left: 20px" id="test">
-						</div>
-					</div>
-				</li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text fl" style="width: 587px;" name="consignee_address"/><span class="fl red ml10">*</span></div></li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">开票地址:</span><input type="text" class="pay_text fl" style="width: 587px;" name="company_address"/><span class="fl red ml10">*</span></div></li>
-				<li>
-					<div class="ovh mt10 ml30 fl"><span class="add_left fl">公司抬头:</span><input type="text" name="company_name" class="pay_text" style="width: 219px;"/></div>
-					<div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">税号:</span><input type="text" name="tax_id" class="pay_text" style="width: 219px;"/></div>
-				</li>
-				<li>
-					<div class="ovh mt10 ml30 fl"><span class="add_left fl">开户银行:</span><input type="text" class="pay_text" name="bank_of_deposit" style="width: 219px;"/></div>
-					<div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">银行账号:</span><input type="text" class="pay_text" name="bank_account" style="width: 219px;"/></div>
-				</li>
-				<li>
-					<div class="ovh mt10 ml30 fl" style="width: 587px;"><span class="add_left fl">开票电话:</span><input type="text" class="pay_text" name="company_telephone" style="width: 219px;"/></div>
-				</li>
-				<li>
-					<div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" name="consignee_name" style="width: 219px;"/></div>
-					<div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
-				</li>
-
-			</ul>
-
-			<div class="ovh mb30 mt20" style="margin-left: 154px;">
-				<button class="add_btn code_greenbg add_address">保 存</button><button class="add_btn cccbg ml35 cancel">取 消</button>
-			</div>
-		</form>
 	</div>
 @endsection
 @section('js')
@@ -177,21 +135,14 @@
             })
             //	编辑
             $(".edit_address").click(function () {
-                let address_id = $(this).attr('data_id');
-                $.ajax({
-                    url:'/editAddressList',
-                    type:'GET',
-                    data:{'id':address_id},
-                    success:function (res) {
-                        if (res.code == 1){
-                            var data = res.data.data.form;
-                            $("#test").attr('data-init-name',res.data.data.address_names);
-                            for(var k in data){
-                                let test = $("input[ name= "+k+" ]").val(data[k]);
-                            }
-                            $('.block_bg,#addr_frame').show();
-                        }
-                    }
+                let address_id = $(this).attr('data-id');
+                layer.open({
+                    title:'开票信息',
+                    type: 2,
+                    area: ['850px', '550px'],
+                    maxmin: true,
+                    content: '/editInvoices?id='+address_id,
+                    zIndex: layer.zIndex
                 });
             });
             //	增加

@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '我的发票')
+@section('title', '我的地址')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('ui/area/1.0.0/area.css')}}" />
 

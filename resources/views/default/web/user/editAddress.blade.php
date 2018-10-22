@@ -107,24 +107,21 @@
 
 	<script type="text/javascript">
         $(function(){
-            layer.closeAll();
 			//	增加
             $('.add_address').click(function(){
-                alert('99');
 				let input = $("#address_form").serialize();
 				$.ajax({
 					url:'/createAddressList',
 					data: input,
 					type: 'POST',
 					success:function (res) {
-					    console.log(res);
 						if (res.code == 1){
                             alert(res.msg);
-                            // setTimeout( parent.location.reload(),2000);
+                            setTimeout( parent.location.reload(),2000);
 						} else {
 						    alert(res.msg);
-                            document.getElementById("address_form").reset();
-                            // setTimeout( parent.location.reload(),3000);
+                            // document.getElementById("address_form").reset();
+                            setTimeout( parent.location.reload(),2000);
 						}
                     }
 				});
