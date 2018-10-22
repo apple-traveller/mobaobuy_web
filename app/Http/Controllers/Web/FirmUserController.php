@@ -22,9 +22,12 @@ class FirmUserController extends Controller
 
     //新增企业会员
     public function createFirmUser(Request $request){
-        $firmId = session('_web_user_id');
+        $user = session('_web_user');
+        if(!$user['is_firm']){
+            return $this->error('个人会并无此功能！');
+        }
         if($request->isMethod('get')){
-            $firmUserInfo = FirmUserService::firmUserList($firmId);
+            $firmUserInfo = FirmUserService::firmUserList($user['id']);
             return $this->display('web.user.emp.firmUserList',compact('firmUserInfo'));
         }else{
 //            $rule = [
@@ -43,10 +46,22 @@ class FirmUserController extends Controller
             try{
                 $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
+                return $this->success('','',$userInfo);
             }catch (\Exception $e){
-                return json_encode(array('code'=>0,'info'=>$e->getMessage()));
+                return $this->error($e->getMessage());
             }
 
+        }
+    }
+
+    // //删除企业会员
+    public function delFirmUser(Request $request){
+        $id = $request->input('id');
+        try{
+            FirmUserService::delFirmUser($id);
+            return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
         }
     }
 
@@ -56,12 +71,8 @@ class FirmUserController extends Controller
         $userName = $request->input('user_name');
         $phone = $request->input('phone');
         $permi = $request->input('permi');
-//        if(!$firmId || !$userId){
-//            return json_encode(array('code'=>0,'msg'=>'企业和用户id为空'));
-//        }
-        //$permi数组1能采购 2能付款 3能收货 4能其它入库 5能库存出库
         try{
-            $firmInfo = FirmUserService::addFirmUser($firmId,$phone,$permi,$userName);
+            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());

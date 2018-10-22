@@ -249,6 +249,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/OrderNeedApproval', 'FirmUserController@OrderNeedApproval');//订单是否需要审批
         Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
         Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
+        Route::post('/delFirmUser', 'FirmUserController@delFirmUser');//企业会员删除
 
         /********************************************************************/
         Route::get('/account/userInfo', 'UserController@userInfo');//用户信息编辑
