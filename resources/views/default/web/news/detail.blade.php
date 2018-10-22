@@ -82,15 +82,23 @@
 
             </div>
             <div class="info-detail-content">
-                {{ $article['content'] }}
+                {!! $article['content'] !!}
             </div>
         </div>
         <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
             <p class="fl new_other">上一篇：
+                @if(!empty($page_data['up_news_id']))
                 <a href="detail.html?id={{ $page_data['up_news_id'] }}">{{ $page_data['up_news_title'] }}</a>
+                    @else
+                    <a href="javascript:void(0);">{{ $page_data['up_news_title'] }}</a>
+                    @endif
             </p>
             <p class="fr new_other">下一篇：
+                @if(!empty($page_data['down_news_id']))
                 <a href="detail.html?id={{ $page_data['down_news_id'] }}">{{ $page_data['down_news_title'] }}</a>
+                    @else
+                    <a href="javascript:void(0);">{{ $page_data['down_news_title'] }}</a>
+                    @endif
             </p>
         </div>
     </div>

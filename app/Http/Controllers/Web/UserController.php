@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+
+use App\Services\UserAddressService;
+
 use App\Repositories\UserRepo;
+
 use App\Services\UserInvoicesService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
@@ -204,51 +208,53 @@ class UserController extends Controller
         return $this->display('web.user.userAddress',compact('addressInfo'));
     }
 
-    //新增收获地址
+    /**
+     * 新增 编辑 收获地址
+     * @param Request $request
+     * @return UserController|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function addShopAddress(Request $request){
-        if($request->isMethod('post')){
+            $id =$request->input('id','');
             $user_id = session('_web_user_id');
-            $message = [
-                'required' => ':attribute 不能为空'
+            $str_address = $request->input('str_address','');
+            $address = $request->input('address','');
+            $zipcode = $request->input('zipcode','');
+            $consignee=$request->input('consignee','');
+            $mobile_phone=$request->input('mobile_phone','');
+            if (empty($str_address)){
+                return $this->error('请选择地址');
+            }
+            if (empty($consignee)){
+                return $this->error('请填写收货人');
+            }
+            if (empty($mobile_phone)){
+                return $this->error('请填写收货电话');
+            }
+            $address_ids = explode('|',$str_address);
+            $data = [
+                'user_id' => $user_id,
+                'consignee' => $consignee,
+                'country' => $address_ids[0],
+                'province' => $address_ids[1],
+                'city' => $address_ids[2],
+                'district' => $address_ids[3],
+                'address' => $address,
+                'zipcode' => $zipcode,
+                'mobile_phone' => $mobile_phone
             ];
-            $attributes = [
-                'address_name'=>'地址别名',
-                'consignee'=>'收货人',
-                'country'=>'国家',
-                'province'=>'省',
-                'city'=>'市',
-                'district'=>'县',
-                'street'=>'街道',
-                'address'=>'详细地址',
-                'zipcode'=>'邮编',
-                'mobile_phone'=>'手机'
-            ];
-            $rule = [
-//                'address_name'=>'required',
-                'consignee'=>'required',
-//                'country'=>'required',
-                'province'=>'required',
-                'city'=>'required',
-                'district'=>'required',
-//                'street'=>'required',
-                'address'=>'required',
-                'zipcode'=>'required',
-                'mobile_phone'=>'required',
-            ];
-            $data = $this->validate($request,$rule,$message,$attributes);
-            $data['user_id'] = $user_id;
-            $data['country'] = 1;
             try{
-                UserService::addShopAddress($data);
-                return $this->success('添加收获地址成功');
+                if ($id){
+                    $res = UserService::updateShopAdderss($id,$data);
+                    if ($res){
+                        return $this->success('修改成功');
+                    }
+                } else{
+                   $re =  UserService::addShopAddress($data);
+                    return $this->success('添加收获地址成功');
+                }
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
-        }else{
-            $region_type = 1;
-            $addressInfo = UserService::provinceInfo($region_type);
-            return $this->display('web.user.createAddress',compact('addressInfo'));
-        }
     }
 
     //通过省获取市区
@@ -277,104 +283,121 @@ class UserController extends Controller
     }
 
 
-    //编辑收获地址
-    public function updateShopAddress(Request $request,$id){
-        if($request->isMethod('post')){
-            $rule = [
-                'address_name'=>'required',
-                'user_id'=>'required|numeric',
-                'consignee'=>'required',
-                'country'=>'required',
-                'province'=>'required',
-                'city'=>'required',
-                'district'=>'required',
-                'street'=>'required',
-                'address'=>'required',
-                'zipcode'=>'required',
-                'mobile_phone'=>'required',
-            ];
-            $data = $this->validate($request,$rule);
-            try{
-                UserService::updateShopAdderss($id,$data);
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
-        }else{
-            return $this->display('web.xx');
+    /**
+     * 编辑收获地址获取数据
+     * @param Request $request
+     * @return UserController|\Illuminate\Http\RedirectResponse
+     */
+    public function updateShopAddress(Request $request){
+        $id = $request->input('id','');
+        if ($id){
+            $address_info = UserAddressService::getAddressInfo($id);
+        } else {
+            $address_info = [];
         }
+        return $this->display('web.user.editAddress',['data'=>$address_info]);
 
     }
 
-    //会员发票信息新增
+    /**
+     * delete address
+     * @param Request $request
+     * @return UserController|\Illuminate\Http\RedirectResponse
+     */
+    public function deleteAddress(Request $request)
+    {
+        $id = $request->input('id','');
+        if (empty($id)){
+            return $this->error('参数错误');
+        }
+        $re = UserAddressService::delete($id);
+
+        if ($re){
+            return $this->success('删除成功');
+        } else {
+            return $this->error('删除失败');
+        }
+    }
+
+    /**
+     * 发票新增
+     * @param Request $request
+     * @return UserController|\Illuminate\Http\RedirectResponse
+     */
     public function createInvoices(Request $request){
-        if($request->isMethod('get')){
-            try{
-                $region_type = 1;
-                $addressInfo = UserService::provinceInfo($region_type);
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
+        $id = $request->input('id','');
+        $address_ids = $request->input('address_ids','');
+        $consignee_address = $request->input('consignee_address','');
+        $company_address = $request->input('company_address','');
+        $company_name = $request->input('company_name','');
+        $tax_id = $request->input('tax_id','');
+        $bank_of_deposit = $request->input('bank_of_deposit','');
+        $bank_account = $request->input('bank_account','');
+        $company_telephone = $request->input('company_telephone','');
+        $consignee_name = $request->input('consignee_name','');
+        $consignee_mobile_phone = $request->input('consignee_mobile_phone','');
+
+        $address_ids = explode('|',$address_ids);
+        $data = [
+            "consignee_address" => $consignee_address,
+            "company_address" => $company_address,
+            "company_name" => $company_name,
+            "tax_id" => $tax_id,
+            "bank_of_deposit" => $bank_of_deposit,
+            "bank_account" => $bank_account,
+            "company_telephone" => $company_telephone,
+            "consignee_name" => $consignee_name,
+            "consignee_mobile_phone" => $consignee_mobile_phone,
+            'country' => $address_ids[0],
+            'province' => $address_ids[1],
+            'city' => $address_ids[2],
+            'district' => $address_ids[3]
+        ];
+
+        try{
+            if (!empty($id)){
+               $re =  UserInvoicesService::editInvoices($id,$data);
+            } else {
+                $data['user_id'] = session('_web_user_id');
+                $re =  UserInvoicesService::create($data);
+            }
+            if ($re){
+                return $this->success('成功');
+            } else {
+                return $this->error('失败');
             }
 
-            return $this->display('web.user.createInvoices',compact('addressInfo'));
-        }else{
-            $rule = [
-                'company_name' => 'required',
-                'tax_id' => 'required',
-                'bank_of_deposit' =>'required',
-                'bank_account' => 'required',
-                'company_address' => 'required',
-                'company_telephone' => 'required',
-                'consignee_name' => 'required',
-                'consignee_mobile_phone' =>'required',
-//                'country' => 'required',
-                'province' => 'required',
-                'city' => 'required',
-                'district' => 'required',
-//                'street' => 'required',
-                'consignee_address' => 'required',
-            ];
-            $data = $this->validate($request,$rule);
-            $data['user_id'] = session('_web_user_id');
-            $data['country'] = 1;
-            try{
-                UserInvoicesService::create($data);
-                return $this->success();
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
+        }catch (\Exception $e){
+            dd($e->getMessage());
+            return $this->error($e->getMessage());
         }
     }
-
 
     //编辑用户发票信息
-    public function editInvoices(Request $request,$id){
-        if($request->isMethod('get')){
-            return $this->display('');
-        }else{
-            $rule = [
-                'company_name' => 'required',
-                'tax_id' => 'required',
-                'bank_of_deposit' =>'required',
-                'bank_account' => 'required',
-                'company_address' => 'required',
-                'company_telephone' => 'required',
-                'consignee_name' => 'required',
-                'consignee_mobile_phone' =>'required',
-                'country' => 'required',
-                'province' => 'required',
-                'city' => 'required',
-                'district' => 'required',
-                'street' => 'required',
-                'consignee_address' => 'required',
-            ];
-            $data = $this->validate($request,$rule);
-            $data['user_id'] = session('_web_user_id');
-            try{
-                UserInvoicesService::editInvoices($id,$data);
-                return $this->success('保存成功');
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
+    public function editInvoices(Request $request){
+        $id = $request->input('id','');
+        if ($id){
+            $invoice_info = UserInvoicesService::getInvoice($id);
+            $data = $invoice_info;
+        } else {
+            $data = [];
+        }
+        return $this->display('web.user.editInvoice',['data'=>$data]);
+
+    }
+
+    public function deleteInvoices(Request $request)
+    {
+        $id = $request->input('id','');
+        if (empty($id)){
+            return $this->error('参数错误');
+        }
+        $re = UserInvoicesService::delete($id);
+
+        if ($re){
+            return $this->success('删除成功');
+        } else {
+            return $this->error('删除失败');
         }
     }
 

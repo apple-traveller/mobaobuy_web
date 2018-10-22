@@ -249,6 +249,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/OrderNeedApproval', 'FirmUserController@OrderNeedApproval');//订单是否需要审批
         Route::get('/updateUserInfo', 'UserController@userUpdate');//用户信息编辑
         Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
+        Route::post('/delFirmUser', 'FirmUserController@delFirmUser');//企业会员删除
 
         /********************************************************************/
         Route::get('/account/userInfo', 'UserController@userInfo');//用户信息编辑
@@ -267,6 +268,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
         Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
         Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
 
         Route::get('/addressList','UserController@shopAddressList');//收货地址列表
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
@@ -275,6 +277,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/getCounty','UserController@getCounty');//通过省获取市
         Route::get('/editAddressList','UserController@updateShopAddress');//编辑收获地
         Route::post('/editAddressList','UserController@updateShopAddress');
+        Route::post('/deleteAddress','UserController@deleteAddress'); // 删除地址
 
         Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
         Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
@@ -338,7 +341,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/article/{id}','IndexController@article');//资讯
         Route::get('/news.html', 'NewsController@index'); // 新闻中心
         Route::get('/detail.html', 'NewsController@detail'); // 详情
-        Route::post('/side_bar', 'NewsController@side_bar'); // 详情
+        Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     });
 });

@@ -19,7 +19,7 @@
 
 
 /*底部*/
-.footer{position absolute;bottom 0;left 0;right 0;}
+.footer{position:absolute;bottom:0;left:0;right:0;}
 .copyright{text-align: center;padding: 45px 0;color: #ccc;}
 .copy-text a{color: #999;padding: 0 10px;}
 .copy{padding-top: 10px;color: #999;}
@@ -66,7 +66,7 @@
 .reg_text_til span img{padding-right: 5px;}
 .code_btn{width: 125px;height: 45px;line-height: 45px;border: 0;margin-left: 10px;cursor: pointer;}
 .code_clr{color:#2a9eef;}
-.code_greenbg{background-color: #75b335;} 
+.code_greenbg{background-color: #75b335;}
 .register_pro{display:block;width: 330px;height: 46px;line-height: 46px;background-color: #75b335;border: 0;margin:20px auto 40px; color: #fff;font-size: 16px;}
 input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-appearance:none;border: 1px solid #c9c9c9;border-radius: 2px;outline: none;}
 .check_box input[type=checkbox]:checked{background: url(img/interface-tickdone.png)no-repeat center;}
@@ -87,7 +87,7 @@ input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-a
 .acount_tab {float: left;position: relative;height: 40px;z-index: 0;}
 .acount_tab .acount_name {cursor: pointer;z-index: 5;position: relative;color: #9c9c9c;float: left;
     padding-left: 10px;padding-right: 22px;margin-left: 10px;background: url(../img/common_icon.png) no-repeat right 17px ;}
-    
+
 .member_left{width: 216px;height: 842px;border-top:4px solid #75b335;border-left:1px solid #DEDEDE;border-right:1px solid #DEDEDE;border-bottom:1px solid #DEDEDE;background-color: #fff;box-sizing: border-box;}
 .member_list_mode{margin-top: 30px;}
 .member_list_mode h1{font-size: 16px;padding-left: 24px;margin-left: 30px;}
@@ -195,7 +195,7 @@ position: absolute;right: 10px;top: 40%;pointer-events: none;}
 .tooltip .prompt-01 .pc{min-height: 235px;}
 .prompt-01 .pc{background: #fff;padding: 0;color: #333;text-align: left;overflow: hidden;}
 .prompt-01 .p-tit{margin: -10px 0 0 -10px;height: 40px;line-height: 40px;padding: 0 0 0 20px;font-weight: 700;border-bottom: 1px solid #e3e3e3;}
-.prompt-01 .logistics-cont {position: relative;margin-left: 15px;max-height: 410px;overflow-y: auto;padding-left: 5px;margin-bottom: 20px;line-height: 20px;}                                	
+.prompt-01 .logistics-cont {position: relative;margin-left: 15px;max-height: 410px;overflow-y: auto;padding-left: 5px;margin-bottom: 20px;line-height: 20px;}
 .prompt-01 .logistics-cont li.first {color: #e4393c;}
 .prompt-01 .logistics-cont li.first .node-icon {background-position: 0 -115px;}
 .prompt-01 .logistics-cont li {line-height: 21px;position: relative;overflow: visible;width: 340px;color: #666;padding: 15px 0 0 15px;border-left: 1px solid #e3e3e3;background: none;}
@@ -206,7 +206,7 @@ top: 21px;left: -4px;width: 8px;height: 8px;overflow: hidden;background: url(//m
 /*信息确认*/
 .confirm_product{box-sizing:border-box;width: 88px;margin:0 auto;margin-top:5px;height: 30px;line-height:30px;border-radius:3px;color: #fff;cursor: pointer;}
 .confirm_product_red{background-color: #e5383c;}.confirm_product_green{background-color: #75b335;}
-/*剩余时间*/ 
+/*剩余时间*/
 .remain_time{text-align:center;background: url(../img/remain_time.png)no-repeat 20px 5px;color: #666;margin-top: 15px;}
 
 /*会员中心-首页*/
@@ -245,7 +245,7 @@ top: 21px;left: -4px;width: 8px;height: 8px;overflow: hidden;background: url(//m
 .select_file{float:right;width: 70px; height: 24px;line-height: 24px;background-color:#75b335;color: #fff;text-align: center;border-radius:4px;margin-top: 9px;
     margin-right: 10px;}
 .fileInput{position:absolute;width: 330px;height: 40px;left: 0;opacity: 0;}
-		
+
 .close{width: 20px;height: 20px;line-height:0;padding-top: 17px;
      display: block;outline: medium none;
      transition: All 0.6s ease-in-out;
@@ -254,8 +254,8 @@ top: 21px;left: -4px;width: 8px;height: 8px;overflow: hidden;background: url(//m
      -o-transition: All 0.6s ease-in-out;}
 /*.close:hover{transform: rotate(360deg);-webkit-transform: rotate(360deg);-moz-transform: rotate(360deg);-o-transform: rotate(360deg);-ms-transform: rotate(360deg);}
 */
-    
- 
+
+
 .til_btn{width: 120px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius:3px;margin-left: 139px;cursor: pointer;}
 .pay_border{float:left;width: 330px;height:40px;line-height: 40px;border: 1px solid #e6e6e6;background-color: #fff;}
 .pay_content span{display:inline-block;width: 100px;text-align: right;margin-left: 20px;color: #666;}

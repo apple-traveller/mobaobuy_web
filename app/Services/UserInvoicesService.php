@@ -30,7 +30,17 @@ class UserInvoicesService
     //根据id获取信息
     public static function getInvoice($id)
     {
-        return UserInvoicesRepo::getInfo($id);
+        $invoiceInfo =  UserInvoicesRepo::getInfo($id);
+
+        // 收票地址
+        $invoiceInfo['address_ids'] =  $invoiceInfo['country'] ."|". $invoiceInfo['province'] ."|".$invoiceInfo['city'] ."|".$invoiceInfo['district'];
+        $invoiceInfo['address_str'] = RegionService::getRegion($invoiceInfo['country'], $invoiceInfo['province'], $invoiceInfo['city'], $invoiceInfo['district'] );
+        return $invoiceInfo;
+    }
+
+    public static function delete($id)
+    {
+        return UserInvoicesRepo::delete($id);
     }
 
 

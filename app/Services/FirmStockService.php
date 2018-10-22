@@ -16,7 +16,7 @@ class FirmStockService
         $insertData['firm_id'] = $data['firm_id'];
         $insertData['goods_id'] = $data['goods_id'];
         $result = FirmStockRepo::getInfoByFields($insertData);
-        $data['goods_name'] = $result['goods_name'];
+
         //如果库存表里有此商品就更新
         if($result){
             try{

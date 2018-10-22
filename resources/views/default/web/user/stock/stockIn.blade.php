@@ -162,7 +162,7 @@
         function addStockSave(){
             var partner_name = $('input[name=partner_name]').val();
             var order_sn = $('input[name=order_sn]').val();
-            var goods_name = $('input[name=goods_name]').val();
+            var goods_name = $('#goodName').val();
             var goods_id = $('#goodName').attr('goodsId');
             var number = $('input[name=number]').val();
             var flow_desc = $('textarea[name=flow_desc]').val();

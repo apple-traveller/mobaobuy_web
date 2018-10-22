@@ -126,22 +126,10 @@
                         if(data['data']['firm_user_info']['can_stock_out']){
                             $('#can_stock_out').attr("checked",'checked');
                         }
-                        // if(data['data']['firm_user_info']['can_po']){}
-                        // if(data.code){
-                        //     alert('添加成功');
-                        //     window.location.reload();
-                        // }else{
-                        //     alert('出错,请重试')
-                        // }
                     }
                 })
             });
-//          显示删除框
-//          $('span').delegate('.del_power','click',function(){
-//              $('.confirm_del').show();
-//              $('.block_bg').show();
-//          })
-//          隐藏关闭框
+            //隐藏关闭框
             $('.cancel,.frame_close').click(function(){
                 $('#power_edit_frame,.block_bg').hide();
                 window.location.reload();
@@ -151,15 +139,28 @@
                 $('#power_edit_frame').show();
                 $('.block_bg').show();
             })
-        });
-
-        function del(id) {
-            var flag = confirm("Are you sure?");
-            if(flag===true){
-                var o = $(id).parents('.product_table li');
-                o.remove();
+            function del(obj) {
+                var id = $(obj).attr('id');
+                var flag = confirm("是否确认删除?");
+                if(flag===true){
+                      $.ajax({
+                        'type':'post',
+                        'data':{'id':id},
+                        'url':'{{url('/delFirmUser')}}',
+                        success:function(res){
+                            // var result = JSON.parse(res);
+                            if(res.code){
+                                alert('删除成功');
+                                window.location.reload();
+                            }else{
+                                alert('删除失败');
+                                window.location.reload();
+                            }
+                        }
+                    })
+                }   
             }
-        }
+        });
 
         //保存
         function addFirmUserSave(){

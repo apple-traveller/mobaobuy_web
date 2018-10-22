@@ -7,3 +7,4 @@
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/style.css')}}" />
 <script type="text/javascript" src="http://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 <script src="{{asset(themePath('/','web').'js/base.js')}}"></script>
+<script src="{{asset('ui/area/1.0.0/area.js')}}"></script>

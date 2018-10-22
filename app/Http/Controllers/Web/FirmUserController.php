@@ -46,10 +46,22 @@ class FirmUserController extends Controller
             try{
                 $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
+                return $this->success('','',$userInfo);
             }catch (\Exception $e){
-                return json_encode(array('code'=>0,'info'=>$e->getMessage()));
+                return $this->error($e->getMessage());
             }
 
+        }
+    }
+
+    // //删除企业会员
+    public function delFirmUser(Request $request){
+        $id = $request->input('id');
+        try{
+            FirmUserService::delFirmUser($id);
+            return $this->success();
+        }catch(\Exection $e){
+            return $this->error($e->getMessage());
         }
     }
 

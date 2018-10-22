@@ -30,6 +30,9 @@ class GoodsController extends Controller
     //购物车
     public function cart(Request $request){
         $userId = session('_web_user_id');
+        dump($userId);
+        dump(session('_curr_deputy_user'));
+        dump(session('_web_user'));
         if($request->isMethod('get')){
             try{
                 $cartInfo = GoodsService::cart($userId);
