@@ -84,8 +84,8 @@
                                     <table class="table" border="0" cellpadding="0" cellspacing="0">
                                         <thead>
                                         <tr>
-                                            <th width="30%" class="first">产品名称</th>
-                                            <th width="15%">产品编码</th>
+                                            <th width="30%" class="first">商品名称</th>
+                                            <th width="15%">商品编码</th>
                                             <th width="15%">所属店铺</th>
                                             <th width="20%">价格</th>
                                             <th width="10%">发货数量</th>

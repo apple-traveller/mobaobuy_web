@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '会员列表')
+@section('title', '职员列表')
 
 @section('css')
 	<style>
@@ -195,9 +195,11 @@
 
                
             <!-- <div class="member_top_right member_down_right whitebg fl ml15 br1 pr mt10"> -->
-                <div class="fr add_stock tac white addFirmUser">+新增会员</div>
+            <div class="ovh">
+                <div class="fr add_stock tac white addFirmUser">+新增职员</div>
+            </div>
                 <ul class="product_table ovh mt20">
-                    <li><span class="wh226">编号</span><span class="wh226">员工姓名</span><span class="wh226">会员手机号</span><span class="wh226">操作</span></li>
+                    <li><span class="wh226">编号</span><span class="wh226">职员姓名</span><span class="wh226">手机号</span><span class="wh226">操作</span></li>
                     @foreach($firmUserInfo['firmUserInfo'] as $k=>$v)
                     <li><span class="wh226">{{$v->id}}</span><span class="wh226">{{$v->real_name}}</span><span class="wh226">{{$firmUserInfo['userData'][$k]}}</span><span class="wh226"><button class="product_table_btn code_greenbg br0 edit_member" id="{{$v->id}}">编辑</button><button id="{{$v->id}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
                    @endforeach
@@ -225,27 +227,29 @@
     <div class="block_bg"></div>
     <!--编辑框-->
     <div class="power_edit whitebg" id="power_edit_frame">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">设置个人会员权限</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增/编辑</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
         <ul class="power_list ml30 mt25">
-        <!-- <li><div class="ovh mt10"><span>编号:</span><span class="fl ">008</span></div></li> -->
-        <li><div class="ovh mt10"><span>员工姓名:</span><input type="text" class="pay_text fl" id="firmUserName" placeholder="请输入员工姓名"/></div></li>
-        <li><div class="ovh mt10"><span>手机号码:</span><input type="text" class="pay_text fl" id="firmUserPhone" placeholder="请输入员工手机号码"/></div></li>
-        <li>
-            <div class="power_cate mt10 br1 ovh">
-            <ul class="power_cate_check_box ovh">
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="1" id="can_po" /><span class="fl">提交订单</span></label></li>
-            <li><label class="check_box"><input id="can_pay" class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3"/><span class="fl">查看订单</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_confirm" /><span class="fl">确认收货</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7"/><span class="fl">审核订单</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8"/><span class="fl">参与拼团</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="9"/><span class="fl">查看库存</span></label></li>
-            </ul>
-            </div>
-        </li>
-        <li><div class="til_btn fl tac  code_greenbg" style="margin-left: 80px;" onclick="addFirmUserSave()">保 存</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
+            <li>
+                <div class="ovh mt10"><span>手机号码:</span><input type="text" class="pay_text fl" id="firmUserPhone" placeholder="请输入员工手机号码"/></div>
+                <div class="ml">注：职员必须先用手机号在平台注册个人账号</div>
+            </li>
+            <li><div class="ovh mt10"><span>职员姓名:</span><input type="text" class="pay_text fl" id="firmUserName" placeholder="请输入员工姓名"/></div></li>
+            <li>
+                <div class="power_cate mt10 br1 ovh">
+                <ul class="power_cate_check_box ovh">
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="1" id="can_po" /><span class="fl">提交订单</span></label></li>
+                <li><label class="check_box"><input id="can_pay" class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3"/><span class="fl">查看订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_confirm" /><span class="fl">确认收货</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7"/><span class="fl">审核订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8"/><span class="fl">参与拼团</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="9"/><span class="fl">查看库存</span></label></li>
+                </ul>
+                </div>
+            </li>
+            <li><div class="til_btn fl tac  code_greenbg" style="margin-left: 80px;" onclick="addFirmUserSave()">保 存</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
         </ul>
     </div>
     <!--确认删除-->

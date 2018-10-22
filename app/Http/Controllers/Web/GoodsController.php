@@ -21,7 +21,7 @@ class GoodsController extends Controller
 
     }
 
-    //产品列表
+    //商品列表
     public function goodsList(){
         $goodsList = GoodsService::goodsList();
         return $this->display('web.goods.goodsList',compact('goodsList'));
@@ -106,7 +106,7 @@ class GoodsController extends Controller
         $invoices = $request->input('invoices');
 
         if(empty($cartInfo)){
-            return $this->error('产品信息不存在');
+            return $this->error('商品信息不存在');
         }
         try{
             GoodsService::createOrder($cartInfo,$userId,$userAddress,$invoices);

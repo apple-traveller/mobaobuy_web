@@ -280,7 +280,7 @@ class UserService
     public static function userCollectGoodsList($id){
         //查找收藏商品表
         $collectGoods = UserCollectGoodsRepo::getList([],['user_id'=>$id]);
-        //通过商品id查找对应的产品
+        //通过商品id查找对应的商品
         if($collectGoods){
             $goodsId = [];
             foreach($collectGoods as $v){

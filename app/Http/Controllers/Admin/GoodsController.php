@@ -91,19 +91,19 @@ class GoodsController extends Controller
         unset($data['_token']);
         $errorMsg = [];
         if($data['cat_id']==0){
-            $errorMsg[] = '产品分类不能为空';
+            $errorMsg[] = '商品分类不能为空';
         }
         if($data['brand_id']==0){
-            $errorMsg[] = '产品品牌不能为空';
+            $errorMsg[] = '商品品牌不能为空';
         }
         if(empty($data['goods_name'])){
-            $errorMsg[] = '产品名称不能为空';
+            $errorMsg[] = '商品名称不能为空';
         }
         if(empty($data['keywords'])){
-            $errorMsg[] = '产品关键字不能为空';
+            $errorMsg[] = '商品关键字不能为空';
         }
         if(empty($data['goods_model'])){
-            $errorMsg[] = '产品型号不能为空';
+            $errorMsg[] = '商品型号不能为空';
         }
         if(empty($data['packing_spec'])){
             $errorMsg[] = '包装规格不能为空';
@@ -115,13 +115,13 @@ class GoodsController extends Controller
             $errorMsg[] = '市场价不能为空';
         }
         if(empty($data['goods_weight'])){
-            $errorMsg[] = '产品重量不能为空';
+            $errorMsg[] = '商品重量不能为空';
         }
         if(empty($data['goods_desc'])){
-            $errorMsg[] = '产品pc端描述不能为空';
+            $errorMsg[] = '商品pc端描述不能为空';
         }
         if(empty($data['desc_mobile'])){
-            $errorMsg[] = '产品移动端描述不能为空';
+            $errorMsg[] = '商品移动端描述不能为空';
         }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));

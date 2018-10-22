@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">店铺 - 店铺产品报价列表</div>
+        <div class="title">店铺 - 店铺商品报价列表</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -13,7 +13,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加产品报价"><span><i class="icon icon-plus"></i>添加产品报价</span></div></div></a>
+                        <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -40,8 +40,8 @@
                                 <thead>
                                 <tr>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
-                                    <th width="5%"><div class="tDiv">产品编码</div></th>
-                                    <th width="10%"><div class="tDiv">产品名称</div></th>
+                                    <th width="5%"><div class="tDiv">商品编码</div></th>
+                                    <th width="10%"><div class="tDiv">商品名称</div></th>
                                     <th width="5%"><div class="tDiv">库存数量</div></th>
                                     <th width="5%"><div class="tDiv">店铺售价</div></th>
                                     <th width="10%"><div class="tDiv">交货地</div></th>

@@ -46,7 +46,7 @@ class ShopGoodsService
     {
         $info = ShopGoodsRepo::getInfoByFields(['shop_id'=>$condition['shop_id'],'goods_id'=>$condition['goods_id']]);
         if(!empty($info)){
-            self::throwBizError('该产品已经存在！');
+            self::throwBizError('该商品已经存在！');
         }
         return $info;
     }

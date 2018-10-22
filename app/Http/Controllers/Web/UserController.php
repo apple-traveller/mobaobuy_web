@@ -552,7 +552,7 @@ class UserController extends Controller
         return $this->display('web.user.emp.list');
     }
 
-    //用户收藏产品列表
+    //用户收藏商品列表
     public function userCollectGoodsList(){
         $id = session('_web_user_id');
         $collectGoods = UserService::userCollectGoodsList($id);

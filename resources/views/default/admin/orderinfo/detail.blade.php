@@ -189,7 +189,7 @@
                                         <thead>
                                         <tr>
                                             <th width="15%" class="first">商品名称 [ 品牌 ]</th>
-                                            <th width="15%">产品编码</th>
+                                            <th width="15%">商品编码</th>
                                             <th width="10%">价格</th>
                                             <th width="10%">购买数量</th>
                                             <th width="10%">已发货数量</th>

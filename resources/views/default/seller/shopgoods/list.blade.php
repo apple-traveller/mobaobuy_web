@@ -2,7 +2,7 @@
 @section('body')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
     <div class="warpper">
-        <div class="title">店铺 - 店铺产品列表 </div>
+        <div class="title">店铺 - 店铺商品列表 </div>
         <div class="content">
             <div class="flexilist">
                 <div class="common-head">
@@ -13,7 +13,7 @@
                     <div class="search">
                         <form action="/seller/goods/list" name="searchForm" >
                             <div class="input">
-                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="产品名称" autocomplete="off">
+                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>
@@ -26,11 +26,11 @@
                                 <thead>
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
-                                    <th width="5%"><div class="tDiv">产品编码</div></th>
-                                    <th><div class="tDiv">产品名称</div></th>
+                                    <th width="5%"><div class="tDiv">商品编码</div></th>
+                                    <th><div class="tDiv">商品名称</div></th>
                                     <th width="10%"><div class="tDiv">所属品牌</div></th>
                                     <th width="1%"><div class="tDiv">单位</div></th>
-                                    <th width="8%"><div class="tDiv">产品型号</div></th>
+                                    <th width="8%"><div class="tDiv">商品型号</div></th>
                                     <th width="8%"><div class="tDiv">包装规格</div></th>
                                 </tr>
                                 </thead>

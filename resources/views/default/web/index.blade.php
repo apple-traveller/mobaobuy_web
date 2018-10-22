@@ -8,7 +8,6 @@
 @include(themePath('.','web').'web.include.partials.top')
 <div>
 <ul>
-    <li><a href="/member">会员中心</a></li>
         <li><a href="/goodsQuote">报价列表</a></li>
         <li><a href="/goodsList">商品列表</a></li>
 </ul>

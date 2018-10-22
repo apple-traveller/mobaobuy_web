@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">产品 - 产品列表</div>
+        <div class="title">商品 - 商品列表</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -13,7 +13,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/goods/addForm"><div class="fbutton"><div class="add" title="添加新产品"><span><i class="icon icon-plus"></i>添加新产品</span></div></div></a>
+                        <a href="/admin/goods/addForm"><div class="fbutton"><div class="add" title="添加新商品"><span><i class="icon icon-plus"></i>添加新商品</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -22,7 +22,7 @@
                     <div class="search">
                         <form action="/admin/goods/list" name="searchForm" >
                             <div class="input">
-                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="产品名称" autocomplete="off">
+                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>
@@ -35,11 +35,11 @@
                                 <thead>
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
-                                    <th width="5%"><div class="tDiv">产品编码</div></th>
-                                    <th><div class="tDiv">产品名称</div></th>
+                                    <th width="5%"><div class="tDiv">商品编码</div></th>
+                                    <th><div class="tDiv">商品名称</div></th>
                                     <th width="10%"><div class="tDiv">所属品牌</div></th>
                                     <th width="1%"><div class="tDiv">单位</div></th>
-                                    <th width="8%"><div class="tDiv">产品型号</div></th>
+                                    <th width="8%"><div class="tDiv">商品型号</div></th>
                                     <th width="8%"><div class="tDiv">包装规格</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
