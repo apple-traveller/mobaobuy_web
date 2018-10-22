@@ -290,7 +290,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
         /********************************产品信息************************************/
-        Route::get('/goodsList', 'GoodsController@goodsList');//产品列表
+        Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
         Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
         /********************************************************************/
 

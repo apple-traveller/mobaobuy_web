@@ -26,15 +26,32 @@ class GoodsController extends Controller
         $currpage = $request->input("currpage",1);
         $highest = $request->input("highest");
         $lowest = $request->input("lowest");
+        $price_bg1 = $request->input("price_bg1");
+        $condition = [];
         $orderType = $request->input("orderType","id:asc");
         if(!empty($orderType)){
             $order = explode(":",$orderType);
         }
-        $condition = [];
-       /* if($lowest!="" && $highest!=""){
 
-        }*/
+        if(empty($lowest)&&empty($highest)){
+            $condition = [];
+        }
+        if($lowest=="" && $highest!=""){
+            $condition['shop_price'] = '<|'.$highest;
+        }
+        if($highest=="" && $lowest!=""){
+            $condition['shop_price'] = '>|'.$lowest;
+        }
+        if($lowest!="" && $highest!=""&&$lowest<$highest){
+            $condition['<shop_price'] = $highest;
+            $condition['>shop_price'] = $lowest;
+        }
+        if($lowest>$highest){
+            $condition['shop_price'] = '>|'.$lowest;
+        }
         $pageSize = 10;
+        $userId = session('_web_user_id');
+        $cart_count = GoodsService::getCartCount($userId);
         //积分列表
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
         return $this->display("web.goods.goodsList",[
@@ -42,7 +59,11 @@ class GoodsController extends Controller
             'total'=>$goodList['total'],
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
-            'orderType'=>$orderType
+            'orderType'=>$orderType,
+            'cart_count'=>$cart_count,
+            'lowest'=>$lowest,
+            'highest'=>$highest,
+            'price_bg1'=>$price_bg1?$price_bg1:""
         ]);
     }
 
@@ -60,6 +81,8 @@ class GoodsController extends Controller
         ];
         $pageSize = 10;
         $currpage = $request->input("currpage");
+        $userId = session('_web_user_id');
+        $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
         return $this->display("web.goods.goodsDetail", [
             'good_info' => $good_info,
@@ -68,7 +91,8 @@ class GoodsController extends Controller
             'currpage' => $currpage,
             'pageSize' => $pageSize,
             'id' => $id,
-            'shop_id' => $shop_id
+            'shop_id' => $shop_id,
+            'cart_count'=>$cart_count
         ]);
     }
 
@@ -87,8 +111,9 @@ class GoodsController extends Controller
             $id = $request->input('id');
             $number = $request->input('number');
             try{
-                 GoodsService::searchGoodsQuote($userId,$id,$number);
-                 return $this->success('加入购物车成功');
+                GoodsService::searchGoodsQuote($userId,$id,$number);
+                $count = GoodsService::getCartCount($userId);
+                return $this->success('加入购物车成功',"",$count);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }

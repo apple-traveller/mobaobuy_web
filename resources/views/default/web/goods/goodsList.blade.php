@@ -61,7 +61,6 @@
             });
         }
 
-
 	</script>
 </head>
 <body>
@@ -93,7 +92,7 @@
 				</div>
 			</div>
 
-			<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">1</span></a>
+			<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">{{$cart_count}}</span></a>
 		</div>
 		<div class="clearfix">
 
@@ -234,7 +233,7 @@
 					<div class="fl">
 						<ul>
 							<li class="sm_breed goods_number"><span class="sm_breed_span num_bg1">数量</span></li>
-							<li class="sm_breed"><span class="sm_breed_span price_bg">价格</span></li>
+							<li class="sm_breed shop_price1"><span @if($price_bg1!="") class="sm_breed_span price_bg price_bg1" @else class="sm_breed_span price_bg" @endif>价格</span></li>
 							<li class="sm_breed add_time"><span class="sm_breed_span shelftime_bg1" style="width: 113px;">上架时间</span></li>
 						</ul>
 					</div>
@@ -243,10 +242,10 @@
 						<div class="fl page_mode page_border_left page_leftbg"></div>
 						<div class="fl page_mode page_border_right page_rightbg"></div>
 					</div>
-					<form class="fl">
-						<input class="min-max" name="minPrice" id="minPrice" value="" placeholder="￥最低价" style="margin-left: 5px">
+					<form class="fl" id="formid" action="/goodsList">
+						<input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
 						<span class="line">-</span>
-						<input class="min-max" name="minPrice" id="minPrice" value="" placeholder="￥最高价" style="margin-left: 5px">
+						<input class="min-max" name="highest" id="minPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
 						<input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="submit" style="margin-left: 5px">
 					</form>
 				</div>
@@ -281,17 +280,32 @@
         window.location.href="/goodsList?orderType=add_time:desc";
 	});
 
-    $(".P_cart_btn").click(function(){
-        var id = $(this).attr("data-id");
-        var number = 1;
+    $(".price_bg").click(function () {
+        $(this).toggleClass('price_bg1');
+        var flag = $(this).hasClass("price_bg1");
+        if(flag===true){
+            window.location.href="/goodsList?orderType=shop_price:asc&price_bg1=1";
+		}else{
+            window.location.href="/goodsList?orderType=shop_price:desc&price_bg1=0";
+		}
+    })
+
+
+	$(".P_cart_btn").click(function(){
+		var id = $(this).attr("data-id");
+		var number = 1;
 		$.post("/cart",{'id':id,'number':number},function(res){
 			if(res.code==1){
-
+				var cart_count = res.data;
+				$(".pro_cart_num").text(cart_count);
+				$.msg.success(res.msg);
 			}else{
-			    $.msg.alert(res.msg);
+				$.msg.alert(res.msg);
 			}
 		},"json");
 	});
+
+
 </script>
 </body>
 </html>

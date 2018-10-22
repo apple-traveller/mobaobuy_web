@@ -93,7 +93,7 @@
 				</div>
 			</div>
 
-			<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">1</span></a>
+			<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">{{$cart_count}}</span></a>
 		</div>
 		<div class="clearfix">
 
@@ -303,7 +303,9 @@
         var number =  $(".pur_num").val();
         $.post("/cart",{'id':id,'number':number},function(res){
             if(res.code==1){
-
+                var cart_count = res.data;
+                $(".pro_cart_num").text(cart_count);
+                $.msg.success(res.msg);
             }else{
                 $.msg.alert(res.msg);
             }
