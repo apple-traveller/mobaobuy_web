@@ -251,7 +251,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
         Route::post('/delFirmUser', 'FirmUserController@delFirmUser');//企业会员删除
 
-        /********************************************************************/
+        /*******************************用户信息*************************************/
         Route::get('/account/userInfo', 'UserController@userInfo');//用户信息编辑
         Route::post('/account/saveUser', 'UserController@saveUser');//保存用户信息
         Route::get('/account/viewPoints', 'UserController@viewPoints');//查看积分
@@ -287,8 +287,12 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwd', 'UserController@setPayPwd');
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
-        Route::resource('goodsCate', 'GoodsCategoryController');//商品信息
-        Route::get('goodsList', 'GoodsController@goodsList');//商品列表
+
+        /********************************产品信息************************************/
+        Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
+        Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
+        /********************************************************************/
+
 
 
 //        Route::get('/stockNum','FirmStockController@stockList');//企业库存

@@ -7,7 +7,7 @@
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
-                        <form method="post" action="/admin/user/userReal" name="theForm" id="user_update" novalidate="novalidate">
+                        <form method="post" action="#" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;真实姓名：</div>
@@ -52,7 +52,8 @@
                                     <div class="label"><span class="require-field">*</span>&nbsp;身份证正面：</div>
                                     <div class="label_value font14">
                                         @if($info['front_of_id_card']=="") 未上传
-                                        @else<img src="{{$info['front_of_id_card']}}" style="width:200px;height:200px;">
+                                        @else
+                                        <div  content="{{getFileUrl($info['front_of_id_card'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
                                     </div>
                                 </div>
@@ -61,7 +62,8 @@
                                     <div class="label"><span class="require-field">*</span>&nbsp;身份证反面：</div>
                                     <div class="label_value font14">
                                         @if($info['front_of_id_card']=="") 未上传
-                                        @else<img src="{{$info['reverse_of_id_card']}}" style="width:200px;height:200px;">
+                                        @else
+                                        <div  content="{{getFileUrl($info['reverse_of_id_card'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
                                     </div>
                                 </div>
@@ -81,8 +83,7 @@
 
                                         @if($info['license_fileImg']=="") 未上传
                                         @else
-                                            <p ><a href="{{$info['license_fileImg']}}" style="color:red;font-size: 25px" download="license_fileImg">下载原图</a></p>
-                                            <img src="{{$info['license_fileImg']}}" style="width:200px;height:200px;">
+                                            <div  content="{{getFileUrl($info['license_fileImg'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
                                     </div>
                                 </div>
@@ -96,10 +97,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
                                 <div class="label_value font14">
-                                    @if($info['review_status']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
-                                    @elseif($info['review_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
-                                    @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
-                                    @endif
+                                        <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
+                                        <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==1) @else layui-btn-primary @endif '>已实名</div>
+                                        <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
                                 </div>
                             </div>
 
@@ -109,18 +109,7 @@
                             <input type="hidden" name="id" value="{{$info['id']}}">
                             <input type="hidden" name="is_firm" value="{{$is_firm}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
-                            <input type="hidden" name="review_status" value="{{$info['review_status']}}">
-                            <div class="item">
-                                <div class="label">&nbsp;</div>
-                                <div class="label_value info_btn">
-                                    @if($info['review_status']==2)
-                                        <input value="审核通过" class="button" id="submitBtn" type="submit">
-                                    @else
-                                        <input value="审核不通过" class="button" id="submitBtn" type="submit">
-                                    @endif
 
-                                </div>
-                            </div>
 
 
                         </form>
@@ -130,6 +119,42 @@
         </div>
     </div>
     <script>
+
+        layui.use(['layer'], function() {
+            var layer = layui.layer;
+
+            $(".viewImg").click(function(){
+                var content = $(this).attr('content');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['700px', '500px'],
+                    content: '<img src="'+content+'">'
+                });
+            });
+
+            $(".review_status").click(function () {
+                var postData = {
+                    "id": "{{$info['id']}}",
+                    "is_firm": "{{$is_firm}}",
+                    "currpage": "{{$currpage}}",
+                    "review_status": $(this).attr("data-status"),
+                };
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg,{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            window.location.href=res.data;
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
+            });
+        });
+
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
