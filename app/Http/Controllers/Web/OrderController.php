@@ -31,13 +31,16 @@ class OrderController extends Controller
             $order_no = $request->input('order_no');
 
             $condition['status'] = $tab_code;
-            //todo 测试看数据，暂查询所有数据，不带订单用户ID条件
-            /*if(session('_curr_deputy_user')['is_firm']){
+            $condition['begin_time'] = $request->input('begin_time');
+            $condition['end_time'] = $request->input('end_time');
+
+            if(session('_curr_deputy_user')['is_firm']){
                 $condition['firm_id'] = $firm_id;
             }else{
                 $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = 0;
-            }*/
+            }
+
             if(!empty($order_no)){
                 $condition['order_sn'] = '%'.$order_no.'%';
             }
@@ -58,13 +61,13 @@ class OrderController extends Controller
     public function orderStatusCount(){
         $deputy_user = session('_curr_deputy_user');
         //todo 测试看数据，暂查询所有数据，不带订单用户ID条件
-        /*if($deputy_user['is_firm']){
+        if($deputy_user['is_firm']){
             $firm_id = $deputy_user['firm_id'];
             $status = OrderInfoService::getOrderStatusCount(0, $firm_id);
         }else{
             $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);
-        }*/
-        $status = OrderInfoService::getOrderStatusCount(0, 0);
+        }
+        //$status = OrderInfoService::getOrderStatusCount(0, 0);
         return $this->success('', '', $status);
     }
 

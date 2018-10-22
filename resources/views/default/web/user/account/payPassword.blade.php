@@ -1,37 +1,115 @@
 @extends(themePath('.','web').'web.include.layouts.member')
 @section('title', '重置密码')
-@section('css')
-    <style>
-        .account_infor_list{margin-top: 30px;margin-left: 40px;}
-        .account_infor_list li{overflow: hidden;line-height: 40px;}
-        .account_infor_list li .infor_title{width: 85px;float: left; text-align: right;line-height: 40px;}
-        .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
-        .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
-        .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
-    </style>
+
+@section('content')
+    <div class="clearfix mt25">
+        <div class="form">
+            <div class="item">
+                <div class="item-libel">@if(session('_web_user.is_firm'))公司名称：@else昵称：@endif</div>
+                <div class="item-info blackgraybg"><input type="text" class="text" autocomplete="false" disabled="disabled" value="{{session('_web_user.nick_name')}}"></div>
+                <div class="input-tip"></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">手机号</div>
+                <div class="item-info blackgraybg"><input type="text" class="text" autocomplete="false" disabled="disabled" value="{{session('_web_user.user_name')}}"></div>
+                <div class="input-tip"></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">图形验证码</div>
+                <div class="item-info" style="width: 178px;">
+                    <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                </div>
+                <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">手机验证码</div>
+                <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
+                    <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
+                </div>
+                <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">支付密码</div>
+                <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="支付密码由6-16个字符组成" id="password" onblur="pwdValidate()"></div>
+                <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
+            </div>
+        </div>
+        <button class="register-button" id="sub-btn" style="margin-left: 170px;">修 改</button>
+    </div>
 @endsection
+
 @section('js')
-    <script type="text/javascript">
-        var InterValObj; //timer变量，控制时间
+    <script>
         var countdown = 60; //间隔函数，1秒执行
-        //        var curCount; //当前剩余秒数
         var isNull = /^[\s]{0,}$/;
-        var pwdReg = /^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9@#\$%\^&\*\/\.]{8,16})$/;  // 正则密码
+        var pwdReg = /^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9@#\$%\^&\*\/\.]{6,16})$/;  // 正则密码
         var verify = /^\d{6}$/; // 正则短信验证码
         var veriCodeExep = /^\w{4}$/; // 正则图形验证
-        var checkAccount = false;
         var msType = false;
         var msType02 = true;
         var registerCode = false;
         var t = 0;
 
+        gv();
+
+        // 密码格式检查
+        function pwdValidate() {
+            $("#pwd_error").html('');
+            if (isNull.test($("#password").val())) {
+                $("#pwd_error").html("请输入密码");
+                return false;
+            } else if (!pwdReg.test($("#password").val())) {
+                $("#pwd_error").html("密码必须包含字母和数字长度8-16位字符");
+                return false;
+            }
+            return true;
+        }
+
+        $('#imVcode').click(function(){
+            gv();
+        });
+        function gv() {
+            t = new Date().getTime();
+            $('#imVcode').attr('src', "{{url('verifyCode')}}" + "?t=" + t + "&width=80&height=20");
+        }
+        // 图形验证码格式检查
+        function verifyValidate() {
+            $("#verify_error").html("&nbsp;");
+            if (isNull.test($("#verify").val())) {
+                $("#verify_error").html("验证码不能为空");
+                registerCode = false;
+                return false;
+            } else if (!veriCodeExep.test($("#verify").val())) {
+                $("#verify_error").html("您输入的验证码有误");
+                registerCode = false;
+                return false;
+            }
+            params = {
+                t: t,
+                verifyCode: $('#verify').val()
+            };
+            Ajax.call("{{url('checkVerifyCode')}}", params, function (result){
+                if(result.msg) {
+                    registerCode = true;
+                    $("#verify_error").text('');
+                    return true;
+                } else {
+                    registerCode = false;
+                    gv();
+                    $("#verify_error").text("验证码不正确");
+                }
+            }, "POST", "JSON");
+        }
+        //  手机验证码格式检查
         function msgCodeValidate() {
             $("#msgCode_error").html("");
             if (isNull.test($("#messCode").val())) {
-                $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机验证码不能为空");
+                $("#msgCode_error").html("手机验证码不能为空");
                 return false;
             } else if (!verify.test($("#messCode").val())) {
-                $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的手机验证码有误");
+                $("#msgCode_error").html("您输入的手机验证码有误");
                 return false;
             }
             return true;
@@ -41,12 +119,18 @@
                 sendMessage(true);
             }
         });
-
+        // 点击获取短信验证码
         function sendMessage(type) {
+            verifyValidate ();
+
+            if (!registerCode) {
+                return false;
+            }
             params = {
-                accountName: "{{$userInfo['user_name']}}",
+                verifyCode: $("#verify").val(),
+                t: t,
             };
-            Ajax.call("{{url('/account/sendSms2')}}", params, function (result){
+            Ajax.call("{{url('/updatePwd/sendSms')}}", params, function (result){
                 if (result.code == 1) {
                     Settime (type);
                     $('.msgCode-swap').removeClass('blackgraybg');
@@ -56,13 +140,15 @@
                 }
             }, "GET", "JSON");
         }
-
         function Settime(type) {
             if (countdown == 0) {
                 $("#messCode_but").val("获取手机验证码");
                 $("#messCode_but").attr("class", "messCode_but");
                 countdown = 60;
                 msType = true;
+                if(type) {
+                    $('#numnerTip').hide();
+                }
                 msType02 = true;
             } else {
                 msType = false;
@@ -75,83 +161,24 @@
                 }, 1000);
             }
         }
-
-        function checkPassword(){
-            var password = $(".password").val();
-            var repassword = $(".repassword").val();
-            if(password===repassword){
-                return true;
-            }else{
-                $(".repassword").after('<span class="ml5 red errorMsg">两次输入的密码不一致</span>');
-                return false;
-
-            }
-
-        }
-
-        function formToJson(data){
-            data= decodeURIComponent(data,true);//防止中文乱码
-            data = data.replace(/&/g, "','" );
-            data = data.replace(/=/g, "':'" );
-            data = "({'" +data + "'})" ;
-            obj = eval(data);
-            return obj;
-        }
-
-        $('.account_infor_btn').click(function (){
-
-            if (!checkPassword() || !msgCodeValidate()) {
+        $('#sub-btn').click(function ()  {
+            verifyValidate ();
+            if (!pwdValidate() || !registerCode || !msgCodeValidate()) {
                 return false;
             }
-           /* if(!checkPassword()){
-                return false;
-            }*/
-
-            var data = $("#user_real_form").serialize();
-            var jsonData = formToJson(data);
-            $.post('/account/editPayPassword',jsonData,function(res){
-                console.log(res.data);//return false;
-                if (res.code == 1) {
-                    $.msg.success(res.msg,3000);
-                    window.location.href="/account/editPayPassword";
-                } else {
-                    $.msg.alert(res.msg);
+            params = {
+                password: window.btoa($("#password").val()),
+                messCode: $("#messCode").val()
+            };
+            Ajax.call("{{url('/updatePwd')}}", params, function (result){
+                if (result.code == 1) {
+                    $.msg.tips('修改成功！');
+                    window.location.reload();
+                }else{
+                    $.msg.error(result.msg);
                 }
-            },"json");
+            }, "POST", "JSON");
+            gv()
         });
     </script>
-@endsection
-
-@section('content')
-    <div class="clearfix mt25">
-        <form method="post" action="javascript:void(0);" id="user_real_form">
-            <ul class="account_infor_list">
-                <li><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else昵称：@endif</span><span class="ml10">{{$userInfo['nick_name']}}</span></li>
-                <li class="mt20"><span class="infor_title_input">手机号：</span><span class="ml10">{{$userInfo['user_name']}}</span></li>
-                <input type="hidden" name="user_id" value="{{$userInfo['id']}}">
-                @if(empty($paywadInfo))
-                    <li class="mt20"><span class="infor_title_input">设置密码：</span><input name="pay_password" type="password" class="infor_input" placeholder="请填写原密码"/></li>
-                    <li class="mt20">
-                        <span class="infor_title_input">手机验证码：</span>
-                        <input style="float:left;" type="text" id="messCode" maxlength="6" onblur="msgCodeValidate();" class="infor_input" placeholder="请输入手机验证码"/>
-                        <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;float:left;" id="messCode_but" value="获取手机验证码">
-                        <div style="padding-left:25px;line-height: 40px;" class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
-                    </li>
-                @else
-                    <input type="hidden" name="id" value="{{$paywadInfo['id']}}">
-                    <li class="mt20"><span class="infor_title_input">旧密码：</span><input name="pay_password" type="password" class="infor_input" placeholder="请填写原密码"/></li>
-                    <li class="mt20"><span class="infor_title_input">新密码：</span><input name="newpay_password" type="password" class="infor_input password" placeholder="请填写新密码"/></li>
-                    <li class="mt20"><span class="infor_title_input">确认密码：</span><input name="renewpay_password" type="password" class="infor_input repassword" placeholder="请再次填写新密码"/></li>
-
-                    <li class="mt20">
-                        <span class="infor_title_input">手机验证码：</span>
-                        <input style="float:left;" type="text" id="messCode" maxlength="6" onblur="msgCodeValidate();" class="infor_input" placeholder="请输入手机验证码"/>
-                        <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;float:left;" id="messCode_but" value="获取手机验证码">
-                        <div style="padding-left:25px;line-height: 40px;" class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
-                    </li>
-                @endif
-            </ul>
-            <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
-        </form>
-    </div>
 @endsection
