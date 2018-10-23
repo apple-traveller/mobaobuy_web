@@ -30,8 +30,9 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-box .account li.site-nav-menu{float: left}
 .top-box .account li.site-nav-menu .site-nav-menu-list{z-index: 10001;position: relative;display: none;margin-top: -1px;}
 .site-nav-menu-list .menu-bd-panel{position: absolute;left: 0;top: 0;padding: 8px;line-height: normal;border: 1px solid #EEE;background: #FFF;}
-.site-nav-menu-list li{height: 29px;line-height: 29px;padding-left: 8px;cursor: pointer;}
-.site-nav-menu-list li:hover{background-color: #f4f4f4;}
+.site-nav-menu-list .menu-bd-panel a{display: block;padding: 0 5px;line-height: 28px;white-space: nowrap;color: #6C6C6C;}
+.site-nav-menu-list .menu-bd-panel a:hover{color: #6C6C6C;background: #F5F5F5;}
+
 .top-box .account a{padding: 0 5px;}
 .top-box .account a.link-login{color:red;}
 .top-box .account .company-select{color:#999;cursor:pointer;position: absolute;top:35px;left:-1px;z-index:5;width: 98px;text-align: center;border-left: 1px solid #DEDEDE;border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
@@ -39,8 +40,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-box .quick-menu span{padding: 0 12px;}
 
 .top-title{width: 1200px;height: 115px;margin: 0 auto;}
-.top-title .logo{height: 100%;float: left; width: 200px;position: relative;}
-.top-title .logo img{max-height: 50%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.top-title .logo{height: 100%;float: left; width: 200px;position: relative;display:table;}
+.top-title .logo img{max-height: 50%;vertical-align:middle; display:table-cell;}
 .top-title .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
@@ -66,8 +67,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .copyright-box .copyright{padding-top: 10px;color: #999;}
 
 .logo-box{width: 1200px;height: 95px;margin: 0 auto;}
-.logo-box .logo{height: 100%;float: left; width: 200px;position: relative;}
-.logo-box .logo img{max-height: 70%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.logo-box .logo{height: 100%;float: left; width: 200px;display:table;}
+.logo-box .logo img{max-height: 50%;vertical-align:middle; display:table-cell;}
 .logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
 
 .login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
