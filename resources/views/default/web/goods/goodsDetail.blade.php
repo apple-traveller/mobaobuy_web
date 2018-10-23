@@ -240,7 +240,7 @@
 					.pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
 					.pro_detail_btn{cursor:pointer;width: 140px;height: 42px;line-height: 42px;border: none;font-size:16px;color: #fff;border-radius:3px;}
 				</style>
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" class="pur_num" value="1" /><span class="pur bbleft">+</span></div>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
 
 			</div>
 
@@ -285,7 +285,7 @@
 	$(".bbright").click(function(){
 	    var number = parseInt($(".pur_num").val());
 	    var packing_spec = parseInt("{{$good_info['packing_spec']}}");
-	    if(number<packing_spec){
+	    if(number<=packing_spec){
             $(".pur_num").val(number);
 		}else{
             $(".pur_num").val(number-packing_spec);
@@ -305,7 +305,7 @@
             if(res.code==1){
                 var cart_count = res.data;
                 $(".pro_cart_num").text(cart_count);
-                $.msg.success(res.msg);
+                $.msg.success(res.msg,1);
             }else{
                 $.msg.alert(res.msg);
             }
@@ -316,7 +316,7 @@
 		var goods_id = "{{$good_info['goods_id']}}";
         $.post("/addCollectGoods",{'id':goods_id},function(res){
             if(res.code==1){
-                $.msg.success("收藏成功");
+                $.msg.success("收藏成功",1);
             }else{
                 $.msg.alert(res.msg);
             }

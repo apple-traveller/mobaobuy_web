@@ -237,7 +237,7 @@
 
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a class="fr gray" style="line-height: 50px;">< 返回购物车</a>
+		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回购物车</a>
 		</form>
 	</div>
 </div>
@@ -320,7 +320,7 @@
 			type:'post',
 			success:function (res) {
                 if (res.code==1){
-                    window.location.href="/orderSubmission.html?re="+res.data;
+                    window.location.href="/orderSubmission.html?re="+JSON.stringify(res.data);
                 } else {
                     layer.msg(res.msg);
                 }

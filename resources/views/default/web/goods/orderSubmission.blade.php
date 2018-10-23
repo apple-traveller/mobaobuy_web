@@ -97,14 +97,15 @@
     <div class="w1200 whitebg ovh" style="margin-top: 20px;">
         <div class="til_bg tac fs26" style="margin-top: 75px;">订单等待确认</div>
         @foreach($re as $k=>$v)
-        <div class=" til_text fs16" >订单号：{{ $v }} <a class="blue">【查询订单】</a><br/>由于行情波动、库存变化等原因、订单需要客服人员确认。</div>
+        <div class=" til_text fs16" >订单号：{{ $v }} <a href="/order/list" class="blue">【查询订单】</a><br/>由于行情波动、库存变化等原因、订单需要客服人员确认。</div>
         @endforeach
     </div>
     <div class="w1200 graybg ovh" style="color: #666;">
         <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
         <div class="mt15 tac fs16">客服 : 王经理   <span class="ml15">电话 : <font class="orange">021-02136452</font></span><span class="ml15">QQ :<font class="orange">321456129</font></span></div>
         <div class="comfirm ovh">
-            <div class="comfirm_btn code_greenbg">会员中心</div><div class="comfirm_btn comfirm_btn_blue ml20">返回首页</div>
+            <div class="comfirm_btn code_greenbg"><a href="/member">会员中心</a></div><div class="comfirm_btn comfirm_btn_blue ml20">
+                <a href="/">返回首页</a></div>
         </div>
     </div>
 

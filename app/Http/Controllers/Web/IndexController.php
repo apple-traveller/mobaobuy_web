@@ -30,9 +30,11 @@ class IndexController extends Controller
             $info = [
                 'is_self' => 1,
                 'is_firm' => session('_web_user')['is_firm'],
+                'firm_id'=> session('_web_user_id'),
                 'name' => session('_web_user')['nick_name']
             ];
             session()->put('_curr_deputy_user', $info);
+            return $this->success();
         }else{
             //获取用户所代表的公司
             $firms = UserService::getUserFirms(session('_web_user_id'));
@@ -41,6 +43,7 @@ class IndexController extends Controller
                     //修改代表信息
                     $firm['is_self'] = 0;
                     $firm['is_firm'] = 1;
+                    $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
                     session()->put('_curr_deputy_user', $firm);
                     return $this->success();

@@ -299,7 +299,7 @@
 			if(res.code==1){
 				var cart_count = res.data;
 				$(".pro_cart_num").text(cart_count);
-				$.msg.success(res.msg);
+				$.msg.success(res.msg,1);
 			}else{
 				$.msg.alert(res.msg);
 			}

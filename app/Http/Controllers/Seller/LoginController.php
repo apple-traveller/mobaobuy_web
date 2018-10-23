@@ -90,7 +90,7 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         if ($request->isMethod('get')){
-            return $this->display('seller.register');
+            return $this->display('seller.register2');
         } else {
             $user_id = $request->input('user_id','0');
             $shop_name = $request->input('shop_name','');
@@ -103,7 +103,7 @@ class LoginController extends Controller
             $user_name = $request->input('name','');
             $password = base64_decode($request->input('password', ''));
 
-//            $password = $request->input('password', '');
+            //$password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
 
