@@ -37,6 +37,8 @@
 
     <script>
         $('.login_btn').click(function (){
+            $('.error-content').text('');
+            $('.login-error').hide();
             data = {
                 user_name: $("#user_name").val(),
                 password: window.btoa($("#password").val()),
@@ -47,7 +49,7 @@
                 } else {
                     $("#password").val('');
                     $('.error-content').text(result.msg);
-                    $('.login-error').addClass('show');
+                    $('.login-error').show();
 
                 }
             }, "POST", "JSON");

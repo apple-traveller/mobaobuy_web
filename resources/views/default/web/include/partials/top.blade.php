@@ -8,7 +8,7 @@
                     @if(!empty(session('_web_user')['firms']))
                     <li class="site-nav-menu"><div>当前操作对象：</div></li>
                     <li class="site-nav-menu">
-                        <div><a href="jacascript::void(0)">{{session('_curr_deputy_user')['name']}}<i class="iconfont iconfont-down"></i></a></div>
+                        <div><a href="jacascript::void(0)">@if(session('_curr_deputy_user.is_self'))个人 @else{{session('_curr_deputy_user.name')}}@endif<i class="iconfont iconfont-down"></i></a></div>
                         <div class="site-nav-menu-list">
                             <div class="menu-bd-panel">
                                 <a href="" data-value="0" onclick="changeDeputy()">个人</a>

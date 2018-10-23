@@ -29,7 +29,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account li.site-nav-menu{float: left}
 .top-box .account li.site-nav-menu .site-nav-menu-list{z-index: 10001;position: relative;display: none;margin-top: -1px;}
-.site-nav-menu-list .menu-bd-panel{position: absolute;left: 0;top: 0;padding: 8px;line-height: normal;border: 1px solid #EEE;background: #FFF;}
+.site-nav-menu-list .menu-bd-panel{position: absolute;left: 0;top: 0;padding: 8px 0;line-height: normal;border: 1px solid #EEE;background: #FFF;}
 .site-nav-menu-list .menu-bd-panel a{display: block;padding: 0 5px;line-height: 28px;white-space: nowrap;color: #6C6C6C;}
 .site-nav-menu-list .menu-bd-panel a:hover{color: #6C6C6C;background: #F5F5F5;}
 
@@ -41,7 +41,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .top-title{width: 1200px;height: 115px;margin: 0 auto;}
 .top-title .logo{height: 100%;float: left; width: 200px;position: relative;display:table;}
-.top-title .logo img{max-height: 50%;vertical-align:middle; display:table-cell;}
+.top-title .logo a{vertical-align:middle; display:table-cell;}
+.top-title .logo img{height: 90px;vertical-align:middle; display:table-cell;}
 .top-title .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
@@ -68,7 +69,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .logo-box{width: 1200px;height: 95px;margin: 0 auto;}
 .logo-box .logo{height: 100%;float: left; width: 200px;display:table;}
-.logo-box .logo img{height: 50px;vertical-align:middle; display:table-cell;}
+.logo-box .logo a{vertical-align:middle; display:table-cell;}
+.logo-box .logo img{height: 80px;}
 .logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
 
 .login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
@@ -85,8 +87,9 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .login-box .login-error .error-content{font-size: 14px;margin-left: 15px;}
 
 .register-title{width: 1200px;height: 95px;margin: 0 auto;}
-.register-title .logo{height: 100%;float: left; width: 200px;position: relative;}
-.register-title .logo img{max-height: 70%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.register-title .logo{height: 100%;float: left; width: 200px;display:table;}
+.register-title .logo a{vertical-align:middle; display:table-cell;}
+.register-title .logo img{height: 80px;}
 .register-title .go-login{height: 100%;line-height: 95px;color: #666;font-size: 14px;float: right;}
 
 .register-type {display: block;background-color: #f4f4f4;border-bottom: 1px solid #ddd;}
