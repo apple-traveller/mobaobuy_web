@@ -298,7 +298,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 //        Route::get('/stockNum','FirmStockController@stockList');//企业库存
         Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
-        Route::get('/stockFlowList','FirmStockController@stockFlowList');//企业库存详细
+
         Route::get('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::post('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
@@ -310,11 +310,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
-        Route::post('/curCanStock','FirmStockController@curCanStock');//可出库单条记录
+        Route::post('/stock/info','FirmStockController@stockInfo');//可出库单条记录
         Route::post('/curStockSave','FirmStockController@curStockSave');//出库更新保存
 
         Route::get('/stock/list','FirmStockController@stockList');//实时库存
         Route::post('/stock/list','FirmStockController@stockList');//实时库存
+        Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+        Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
 
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
