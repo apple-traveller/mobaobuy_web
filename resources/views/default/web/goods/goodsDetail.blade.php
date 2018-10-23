@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>产品详情</title>
 	@include(themePath('.','web').'web.include.partials.base')
+	<link rel="stylesheet" type="text/css" href="/css/index.css" />
 	<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
 	<style>
 		.Self-product-list li span{width:14%;}
