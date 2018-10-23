@@ -266,7 +266,6 @@ class GoodsController extends Controller
             }
         }
         try{
-
             $re=[];
             foreach ($shop_data as $k4=>$v4){
                 $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$userInfo['invoice_id'],$words);
@@ -290,7 +289,12 @@ class GoodsController extends Controller
      */
     public function orderSubmission(Request $request)
     {
-        $re = $request->input('re');
+        $re = $request->input('re','');
+        if (!empty($re)){
+            $re = json_decode($re);
+        } else {
+            return $this->error('参数错误');
+        }
         return $this->display('web.goods.orderSubmission',['re'=>$re]);
     }
 
