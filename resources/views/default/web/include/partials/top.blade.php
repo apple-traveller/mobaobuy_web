@@ -8,12 +8,12 @@
                     @if(!empty(session('_web_user')['firms']))
                     <li class="site-nav-menu"><div>当前操作对象：</div></li>
                     <li class="site-nav-menu">
-                        <div><a href="jacascript::void(0);"> @if(session('_curr_deputy_user.is_self'))个人 @else{{session('_curr_deputy_user.name')}}@endif <i class="iconfont iconfont-down"></i></a></div>
+                        <div><a href="javascript:void(0);"> @if(session('_curr_deputy_user.is_self'))个人 @else{{session('_curr_deputy_user.name')}}@endif <i class="iconfont iconfont-down"></i></a></div>
                         <div class="site-nav-menu-list">
                             <div class="menu-bd-panel">
-                                <a href="jacascript::void(0);" data-value="0" onclick="changeDeputy(this)">个人</a>
+                                <a href="javascript:void(0);" data-value="0" onclick="changeDeputy(this)">个人</a>
                                 @foreach(session('_web_user')['firms'] as $v)
-                                    <a href="jacascript::void(0);" data-value="{{$v['firm_id']}}" onclick="changeDeputy(this)">{{$v['firm_name']}}</a>
+                                    <a href="javascript:void(0);" data-value="{{$v['firm_id']}}" onclick="changeDeputy(this)">{{$v['firm_name']}}</a>
                                 @endforeach
                             </div>
                         </div>
