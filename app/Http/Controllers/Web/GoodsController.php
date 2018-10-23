@@ -219,9 +219,9 @@ class GoodsController extends Controller
                     $addressList[$k]['is_default'] ='';
                 };
             }
-            $goodsList = CartService::getCheckGoodsList($userInfo['id']);
+//            $goodsList = CartService::getCheckGoodsList($userInfo['id']);
 
-//            $goodsList = session('cartSession');
+            $goodsList = session('cartSession');
 
 
             return $this->display('web.goods.confirmOrder',compact('invoicesInfo','invoicesList','addressList','goodsList'));

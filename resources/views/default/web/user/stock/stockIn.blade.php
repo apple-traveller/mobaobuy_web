@@ -88,7 +88,7 @@
                 var goods_name = $('#goods_name').val();
                 var begin_time = $('#begin_time').val();
                 var end_time = $('#end_time').val();
-                if(!goods_name || !begin_time || !end_time){
+                if(!goods_name && (!begin_time && !end_time)){
                     alert('请完整输入查询条件');
                     return;
                 }

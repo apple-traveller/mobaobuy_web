@@ -59,8 +59,9 @@ class FirmUserController extends Controller
         $userName = $request->input('user_name');
         $phone = $request->input('phone');
         $permi = $request->input('permi');
+        $isEdit = $request->input('isEdit');
         try{
-            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName);
+            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName,$isEdit);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());

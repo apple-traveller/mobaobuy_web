@@ -165,7 +165,7 @@
 		                success:function(res){
 		                    // var result = JSON.parse(res);
 		                    if(res.code){
-		                        alert('收藏商品删除成功');
+		                        // alert('收藏商品删除成功');
 		                        window.location.reload();
 		                    }else{
 		                        alert('收藏商品删除失败');
@@ -211,10 +211,14 @@
             <!-- <div class="member_top_right member_down_right whitebg fl ml15 br1 pr mt10"> -->
                 <!-- <div class="fr add_stock tac white addFirmUser">+新增会员</div> -->
                 <ul class="product_table ovh mt20">
-                    <li><span class="wh226">编号</span><span class="wh226">商品名称</span><span class="wh226">是否关注</span><span class="wh226">操作</span></li>
+                    <li><span class="wh226">编号</span><span class="wh226">商品名称</span>
+                    	<!-- <span class="wh226">是否关注</span> -->
+                    	<span class="wh226">操作</span></li>
                     @if($collectGoods)
 	                  	@foreach($collectGoods['goodsInfo'] as $k=>$v)
-	                    <li><span class="wh226">{{$k+1}}</span><span class="wh226">{{$v->goods_name}}</span><span class="wh226">@if($collectGoods['collect'][$k]['is_attention']) 是 @else 否 @endif</span><span class="wh226"><button id="{{$collectGoods['collect'][$k]['id']}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
+	                    <li><span class="wh226">{{$k+1}}</span><span class="wh226">{{$v->goods_name}}</span>
+	                    	<!-- <span class="wh226">@if($collectGoods['collect'][$k]['is_attention']) 是 @else 否 @endif</span> -->
+	                    	<span class="wh226"><button id="{{$collectGoods['collect'][$k]['id']}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
 	                  	@endforeach
 	                  	@else 
 	                  	收藏列表为空
