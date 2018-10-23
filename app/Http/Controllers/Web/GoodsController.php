@@ -215,15 +215,21 @@ class GoodsController extends Controller
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
                 if ($v['id'] == $userInfo['address_id']){
                     $addressList[$k]['is_default'] =1;
+                    $first_one[$k] = $addressList[$k];
                 } else {
                     $addressList[$k]['is_default'] ='';
                 };
             }
-            $goodsList = CartService::getCheckGoodsList($userInfo['id']);
+            foreach ($first_one as $k1=>$v1){
+                unset($addressList[$k1]);
+                array_unshift($addressList,$first_one[$k1]);
+            }
 
-//            $goodsList = session('cartSession');
+            $goodsList = session('cartSession');
 
-
+            foreach ($goodsList as $k3=>$v3){
+                $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
+            }
             return $this->display('web.goods.confirmOrder',compact('invoicesInfo','invoicesList','addressList','goodsList'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -247,8 +253,6 @@ class GoodsController extends Controller
             $userIds['firm_id'] = '';
         }
         $words = $request->input('words',' ');
-        $user_id = session('_web_user_id');
-//        $carList = CartService::getCheckGoodsList($user_id);
         $carList = session('cartSession');
         $shop_data = [];
 
@@ -280,7 +284,6 @@ class GoodsController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
 
     /**
      *

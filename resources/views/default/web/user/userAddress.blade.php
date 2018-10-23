@@ -94,11 +94,18 @@
 	<!--标题-->
 	<div class="address_border">
 		<ul class="Receive_address">
-			@foreach($addressInfo as $k=>$v)
-			<li class="#curr">
+			@foreach($addressList as $k=>$v)
+			<li class="@if($v['is_default']==1) curr @endif">
 				<div class="address_name mt20"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
 				<div class="address_name mt5"><span>{{ $v['country'] }}-{{ $v['province'] }}-{{ $v['district'] }}{{ $v['address'] }}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
+				<div class="address_name mt15 default_addr dno" style="margin-top: 3px">
+					@if($v['is_default'])
+						<span class="fr lcolor cp" ><a href="javascript:void(0);" style="color: #75b335; ">默认地址</a></span>
+					@else
+						<span class="fr lcolor cp checked_btn" data-id = "{{$v['id']}}" style="cursor: pointer">设为默认地址</span>
+					@endif
+				</div>
 			</li>
 			@endforeach
 			<li>
@@ -111,57 +118,36 @@
 		<div></div>
 	</div>
 
-	<!--遮罩-->
-	<div class="block_bg"></div>
-
-	<div class="pay_method whitebg" id="addr_frame">
-		<div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增收货地址</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
-		<form id="address_form">
-		<ul class="addr_list ml30 mt25">
-			<li>
-				<div class=" mt10 ml30">
-					<span class="add_left fl">收货地址:</span>
-					<input type="text" readonly="readonly" name="str_address" id="area2" style="display: none">
-					<input type="text" readonly="readonly" name="id" style="display: none">
-					<div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="" style="width: 343px;margin-left: 20px" id="test">
-					</div>
-				</div>
-			</li>
-			<li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text" name="address"/></div></li>
-			<li><div class="ovh mt10 ml30"><span class="add_left fl">邮政编码:</span><input type="text" class="pay_text"  name="zipcode"/></div></li>
-			<li><div class="ovh mt10 ml30"><span class="add_left fl">收货人姓名:</span><input type="text" class="pay_text" name="consignee"/></div></li>
-			<li><div class="ovh mt10 ml30"><span class="add_left fl">手机号码:</span><input type="text" class="pay_text"  name="mobile_phone"/></div></li>
-		</ul>
-		<div class="ovh mb30 mt20" style="margin-left: 154px;">
-			<button type="button" class="add_btn code_greenbg add_address">保 存</button><button type="button" class="add_btn cccbg ml35 cancel">取 消</button>
-		</div>
-		</form>
-	</div>
-
 @endsection
 @section('js')
 	<script type="text/javascript">
         $(function(){
-            $('.Receive_address li').click(function(){
-                $(this).addClass('curr').siblings().removeClass('curr')
-            })
+            // $('.Receive_address li').click(function(){
+            //     $(this).addClass('curr').siblings().removeClass('curr')
+            // })
 			//	删除
             $('.del_address').click(function(){
+                let io = $(this);
                 let id = $(this).attr('data_id');
-               	$.ajax({
-					url:'/deleteAddress',
-					data:{id:id},
-					type:'POST',
-					success:function (res) {
-						if (res.code == 1){
-                            $.msg.alert(res.msg);
-						} else {
-						    $.msg.alert(res.msg);
-						    return false;
-						}
-                    }
-				});
-                $(this).parents(".Receive_address li").remove();
+                layer.confirm('确认删除么？', {
+                    btn: ['确认','取消']
+                }, function(index, layero){
+                    $.ajax({
+                        url:'/deleteAddress',
+                        data:{id:id},
+                        type:'POST',
+                        success:function (res) {
+                            if (res.code == 1){
+                                $.msg.alert(res.msg);
+                               io.parents(".Receive_address li").remove();
+                            } else {
+                                $.msg.alert(res.msg);
+                                return false;
+                            }
+                        }
+                    });
+                }, function(index){
+                });
             })
 			//	编辑
 			$(".edit_address").click(function () {
@@ -174,22 +160,24 @@
                     content: '/editAddressList?id='+address_id,
                     zIndex: layer.zIndex
                 });
-                // $.ajax({
-                //     url:'/createInvoices',
-					// type:'GET',
-					// data:{'id':address_id},
-					// success:function (res) {
-                //         if (res.code == 1){
-                //             var data = res.data.data.form;
-                //             console.log(res.data.data.address_names);
-					// 		$("#test").attr('data-init-name',res.data.data.address_names);
-                //             for(var k in data){
-                //                 let test = $("input[ name= "+k+" ]").val(data[k]);
-                //             }
-                //             $('.block_bg,#addr_frame').show();
-                //         }
-                //     }
-                // });
+            });
+            /**
+             * 修改默认地址
+             */
+            $(".checked_btn").click(function () {
+                let address_id = $(this).attr('data-id');
+                $.ajax({
+                    url:'/updateDefaultAddress',
+                    data:{'address_id':address_id},
+                    type:"POST",
+                    success:function (res) {
+                        if (res.code == 1){
+                            setTimeout(window.location.reload(),1000);
+                        }else{
+                            setTimeout(window.location.reload(),1000);
+                        }
+                    }
+                });
             });
 			//	增加
             $('.add_address').click(function(){
@@ -217,27 +205,24 @@
             // $('.Receive_address li:last-child').unbind('click');
 				// // 新增地址、
             $('.news_addr').click(function(){
-                layer.open({
-                    title:'用户地址',
-                    type: 2,
-                    area: ['600px', '500px'],
-                    maxmin: true,
-                    content: '/editAddressList?id=',
-                    zIndex: layer.zIndex
-                });
 
-                // var Rlength=$('.Receive_address li').length;
-                // if (Rlength>10){
-                 //    $.msg.alert('最多输入十个地址');
-                 //    return false;
-                // } else {
-                 //    $('.block_bg,#addr_frame').toggle();
-				// }
+                var Rlength=$('.Receive_address li').length;
+                if (Rlength>10){
+                    $.msg.alert('最多输入十个地址信息');
+                    return false;
+                } else {
+                    layer.open({
+                        title:'用户地址',
+                        type: 2,
+                        area: ['600px', '500px'],
+                        maxmin: true,
+                        content: '/editAddressList',
+                        zIndex: layer.zIndex
+                    });
+
+                }
             });
-            // //  修改-弹窗
-            // $('.edit_address').click(function(){
-            //     $('.block_bg,#addr_frame').toggle();
-            // })
+
 			//  关闭地址
             $('.frame_close,.cancel').click(function(){
                 document.getElementById("address_form").reset()
