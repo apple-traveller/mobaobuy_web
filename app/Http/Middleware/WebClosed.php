@@ -31,7 +31,7 @@ class WebClosed
                 session()->put('_web_user', $user_info);
             }
 
-            if(!session()->has('_curr_deputy_user')){
+                if(!session()->has('_curr_deputy_user')){
                 $info = [
                     'is_self' => 1,
                     'is_firm' => session('_web_user')['is_firm'],

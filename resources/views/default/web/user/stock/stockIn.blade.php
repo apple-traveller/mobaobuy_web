@@ -81,9 +81,39 @@
             });
 
             $("#on-search").click(function () {
-                var oSettings = tbl.fnSettings();
-                tbl.fnClearTable(0);
-                tbl.fnDraw();
+                // var oSettings = tbl.fnSettings();
+                // tbl.fnClearTable(0);
+                // tbl.fnDraw();
+
+                var goods_name = $('#goods_name').val();
+                var begin_time = $('#begin_time').val();
+                var end_time = $('#end_time').val();
+                if(!goods_name || !begin_time || !end_time){
+                    alert('请完整输入查询条件');
+                    return;
+                }
+                $.ajax({
+                    url: "/stockIn",
+                    dataType: "json",
+                    data: {
+                        'goods_name':goods_name,
+                        'begin_time':begin_time,
+                        'end_time':end_time
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            var strHtml = '';
+                            for(var i = 0;i<data['data']['data'].length;i++){
+                                   strHtml += '<tr role="row" class="odd"><td>'+data['data']['data'][i]['flow_time']+'</td><td>'+data['data']['data'][i]['order_sn']+'</td><td>'+data['data']['data'][i]['goods_name']+'</td><td>'+data['data']['data'][i]['number']+'</td><td>0.00</td></tr>';
+                            }
+                            $('tbody').html(strHtml);
+                
+                        }else{
+                            $.msg.error(data.msg);
+                        }
+                    }
+                })
             });
 
             $('.add_stock').click(function(){
@@ -179,7 +209,7 @@
                 <input type="text" class="text Wdate" name="end_time" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white">+新增出库</div>
+            <div class="fr add_stock tac white">+新增入库</div>
         </div>
 
         <div class="table-body">

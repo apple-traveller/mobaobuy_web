@@ -158,11 +158,11 @@ class ArticleService
         }
         $condition['is_show'] = 1;
         $condition['cat_id'] = $cat_id;
-        $condition['id'] = '<|'.$id;
+        $condition['id|<'] = $id;
 
         $up_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'desc']],$condition);
 
-        $condition['id'] = '>|'.$id;
+        $condition['id|>'] = $id;
         $down_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'asc']],$condition);
 
         if(!empty($up_page['list'])){
