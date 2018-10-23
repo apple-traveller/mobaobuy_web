@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '重置密码')
+@section('title', '支付密码')
 
 @section('content')
     <div class="clearfix mt25">
