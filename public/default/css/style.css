@@ -7,6 +7,7 @@
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 h1{font-size: 16px;}
 .back_btn {background-color: #ff6f17;border-radius: 2px;cursor: pointer;padding: 4px 20px;color: #fff;font-size: 14px;}
+.member_right_title_icon {width:60px;background: url(/img/member_title_icon.png)no-repeat 0px 6px;}
 
 .data-table-box{margin-top: 20px;overflow: hidden;}
 .data-table-box .table-condition{overflow: hidden;}
