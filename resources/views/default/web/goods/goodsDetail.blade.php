@@ -310,6 +310,17 @@
             }
         },"json");
     });
+
+    $(".follow_btn").click(function(){
+		var goods_id = "{{$good_info['goods_id']}}";
+        $.post("/addCollectGoods",{'id':goods_id},function(res){
+            if(res.code==1){
+                $.msg.success("收藏成功");
+            }else{
+                $.msg.alert(res.msg);
+            }
+        },"json");
+	});
 </script>
 <!--底部-->
 @include(themePath('.','web').'web.include.partials.footer_service')
