@@ -4,6 +4,7 @@
     <title>@yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
     <link rel="stylesheet" type="text/css" href="/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="/css/global.css" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
     @yield('css')
@@ -12,9 +13,8 @@
 <body style="background-color: rgb(244, 244, 244);">
     @include(themePath('.','web').'web.include.partials.top')
     @include(themePath('.','web').'web.include.partials.goods_header')
-    <div class="clearfix">
-        @yield('content')
-    </div>
+
+    @yield('content')
 
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')

@@ -58,6 +58,7 @@
 @endsection
 
 @section('content')
+    <div class="clearfix">
 	<div class="w1200 pr ovh">
 		<div class="crumbs mt5">当前位置：<a href="/">产品详情</a> &gt; <a href="/subject/list/56/page/1.html">产品详情</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
@@ -131,6 +132,7 @@
 			</ul>
 		</div>
 	</div>
+    </div>
 @endsection
 
 @section('bottom_js')

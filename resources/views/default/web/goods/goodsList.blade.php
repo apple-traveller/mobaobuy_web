@@ -40,6 +40,7 @@
 @endsection
 
 @section('content')
+	<div class="clearfix">
 	<div class="w1200 pr">
 		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a> <div class="mode_add tac">江西 、湖北<i class="mode_close"></i></div><div class="mode_add tac ml10">湖北<i class="mode_close"></i></div> <div class="pro_Open pro_Open_up"></div><div class="fr">共<font class="orange">60</font>个相关产品</div></div>
 
@@ -122,6 +123,7 @@
 
 			</ul>
 		</div>
+	</div>
 	</div>
 @endsection
 

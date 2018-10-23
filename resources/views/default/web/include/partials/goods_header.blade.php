@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">{{$cart_count}}</span></a>
+            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">@if(isset($count)) {{$cart_count}} @else 0 @endif</span></a>
         </div>
         <div class="clearfix">
 
