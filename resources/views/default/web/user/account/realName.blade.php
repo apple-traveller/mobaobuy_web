@@ -38,6 +38,7 @@
                     $.msg.success('保存成功');
                     window.location.href="/account/userRealInfo";
                 } else {
+                    console.log(res.data);
                     $.msg.alert(res.msg);
                 }
             },"json");
@@ -56,6 +57,7 @@
                         </span>
                     </li>
                     <input type="hidden" name="user_id"  value="{{$user_id}}" >
+                    @if(!empty($user_real)) <input type="hidden" name="id"  value="{{$user_real['id']}}" >  @else <input type="hidden" name="id"  value="" >   @endif
                 @if($is_firm==0)
                     <li class="mt25">
                         <span class="infor_title">真实姓名：</span>
@@ -128,23 +130,23 @@
                             <i class="iconfont icon-image img-tooltip" @if(!isset($user_real['license_fileImg']) || empty($user_real['license_fileImg'])) style="display: none;" @else data-img="{{getFileUrl($user_real['license_fileImg'])}}" @endif ></i>
                         </span>
                     </li>
-                        <li class="mt25">
-                            <span class="infor_title">审核状态：</span>
-                            <span class=" fl">
-                                @if($user_real['review_status'] == 0)
-                                    待审核
-                                @elseif($user_real['review_status'] == 1)
-                                    已审核
-                                @else
-                                    审核不通过
-                                @endif
+                    <li class="mt25">
+                        <span class="infor_title">审核状态：</span>
+                        <span class=" fl">
+                            @if($user_real['review_status'] == 0)
+                                待审核
+                            @elseif($user_real['review_status'] == 1)
+                                已审核
+                            @else
+                                审核不通过
+                            @endif
                         </span>
-                        </li>
+                    </li>
                @endif
                 </ul>
-            @if($is_firm==0)
-                <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
-            @endif
+
+             <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
+
         </div>
         </form>
     </div>
