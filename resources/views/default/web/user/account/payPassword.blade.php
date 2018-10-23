@@ -44,7 +44,7 @@
     <script>
         var countdown = 60; //间隔函数，1秒执行
         var isNull = /^[\s]{0,}$/;
-        var pwdReg = /^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9@#\$%\^&\*\/\.]{6,16})$/;  // 正则密码
+        var pwdReg = /^\w{6,16}$/;  // 正则密码
         var verify = /^\d{6}$/; // 正则短信验证码
         var veriCodeExep = /^\w{4}$/; // 正则图形验证
         var msType = false;
@@ -61,7 +61,7 @@
                 $("#pwd_error").html("请输入密码");
                 return false;
             } else if (!pwdReg.test($("#password").val())) {
-                $("#pwd_error").html("密码必须包含字母和数字长度8-16位字符");
+                $("#pwd_error").html("密码必须长度6-16位字符");
                 return false;
             }
             return true;
@@ -130,7 +130,7 @@
                 verifyCode: $("#verify").val(),
                 t: t,
             };
-            Ajax.call("{{url('/updatePwd/sendSms')}}", params, function (result){
+            Ajax.call("{{url('/account/editPayPassword/sendSms')}}", params, function (result){
                 if (result.code == 1) {
                     Settime (type);
                     $('.msgCode-swap').removeClass('blackgraybg');
@@ -170,9 +170,9 @@
                 password: window.btoa($("#password").val()),
                 messCode: $("#messCode").val()
             };
-            Ajax.call("{{url('/updatePwd')}}", params, function (result){
+            Ajax.call("{{url('/account/editPayPassword')}}", params, function (result){
                 if (result.code == 1) {
-                    $.msg.tips('修改成功！');
+                    $.msg.tips('设置成功！');
                     window.location.reload();
                 }else{
                     $.msg.error(result.msg);

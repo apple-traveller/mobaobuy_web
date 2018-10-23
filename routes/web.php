@@ -258,6 +258,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/account/userRealInfo', 'UserController@userRealInfo');//实名认证
         Route::post('/account/saveUserReal', 'UserController@saveUserReal');//保存实名
         Route::any('/account/editPayPassword', 'UserController@editPayPassword');//修改支付密码
+        Route::any('/account/editPayPassword/sendSms', 'UserController@sendPayPwdSms');//发送支付密码短信
         /********************************************************************/
 
 
