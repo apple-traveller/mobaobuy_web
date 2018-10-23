@@ -67,8 +67,8 @@ class GoodsController extends Controller
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
-             GoodsService::addCartGoodsNum($id);
-             return $this->success();
+             $account = GoodsService::addCartGoodsNum($id);
+             return $this->success('','',$account);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -78,8 +78,8 @@ class GoodsController extends Controller
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
-            GoodsService::reduceCartGoodsNum($id);
-            return $this->success();
+            $account = GoodsService::reduceCartGoodsNum($id);
+            return $this->success('','',$account);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -111,6 +111,13 @@ class GoodsController extends Controller
 
     //确认订单页面
     public function confirmOrder(Request $request){
+
+        $arr = [];
+        foreach(session('cartSession') as $v){
+            if(!in_array($v['shop_id'],$arr)){
+                $arr[] = $v['shop_id'];
+            }
+        }
         //公司id
         $firmId = session('_web_firm_id');
         //个人id
@@ -134,6 +141,7 @@ class GoodsController extends Controller
 
     //确认提交订单
     public function createOrder(Request $request){
+        $curr_deputy_user = session('_curr_deputy_user');
         $userId = session('_web_user_id');
         $cartInfo = session('cartSession');
         $userAddress = $request->input('address');
@@ -143,7 +151,7 @@ class GoodsController extends Controller
             return $this->error('商品信息不存在');
         }
         try{
-            GoodsService::createOrder($cartInfo,$userId,$userAddress,$invoices);
+            GoodsService::createOrder($cartInfo,$userId,$curr_deputy_user,$userAddress,$invoices);
 //            Session::forget('cartSession');
             return $this->success('订单提交成功');
         }catch (\Exception $e){
@@ -185,7 +193,7 @@ class GoodsController extends Controller
     public function orderList(){
         $userId = session('_web_user_id');
         $orderList = GoodsService::orderList($userId);
-        dump($orderList);
+//        dump($orderList);
         return $this->display('web.order.order',compact('orderList'));
     }
 

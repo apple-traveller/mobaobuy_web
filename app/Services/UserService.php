@@ -294,7 +294,11 @@ class UserService
 
     //收藏商品
     public static function addCollectGoods($goodsId,$userId){
-        return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+        $userCollect = UserCollectGoodsRepo::getList([],['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!$userCollect){
+            return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+        }
+        self::throwBizError('已收藏过此商品！');
     }
 
     //删除搜藏商品

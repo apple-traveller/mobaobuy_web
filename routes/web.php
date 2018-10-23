@@ -324,7 +324,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
         Route::post('/delCart','GoodsController@delCart');//删除购物车数量  //addCartGoodsNum
         Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
-        Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
+        Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
