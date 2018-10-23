@@ -100,9 +100,9 @@
         }
 
         $('.account_infor_btn').click(function (){
-            if (!checkPassword() || !msgCodeValidate()) {
+           /* if (!checkPassword() || !msgCodeValidate()) {
                 return false;
-            }
+            }*/
             /*if (!checkPassword()) {
                 return false;
             }*/
@@ -112,8 +112,9 @@
             $.post('/account/editPassword',jsonData,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
-                    $.msg.success(res.msg);
-                    window.location.href="/account/editPassword";
+                    layer.msg(res.msg,{icon:1,time:3000,},function () {
+                        window.location.href="/account/editPassword";
+                    });
                 } else {
                     $.msg.alert(res.msg);
                 }

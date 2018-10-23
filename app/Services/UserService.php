@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
+
 class UserService
 {
     use CommonService;
@@ -101,6 +102,7 @@ class UserService
                 'license_fileImg' => $data['license_fileImg'],
                 'taxpayer_id' => '',
                 'add_time' => Carbon::now(),
+                'review_status' => $data['is_validated']
             ];
             $company_info = GsxxCompanyRepo::getInfoByFields(['Name'=>$data['nick_name']]);
             if($company_info){
@@ -334,7 +336,11 @@ class UserService
     //修改
     public static function modify($data)
     {
-        return UserRepo::modify($data['id'],$data);
+        $info = UserRepo::modify($data['id'],$data);
+        if($info){
+            unset($info['password']);
+        }
+        return $info;
     }
 
     public static function getUserInfo($id)
@@ -355,22 +361,19 @@ class UserService
         return UserRepo::getList([],$condition,$column);
     }
 
-    //获取支付密码信息
-    public static function getPayPwdInfo($user_id)
-    {
-        return UserPaypwdRepo::getInfoByFields(['user_id'=>$user_id]);
-    }
-
-    //新增支付密码
-    public static function createPayWad($data)
-    {
-        return UserPaypwdRepo::create($data);
-    }
-
     //修改支付密码
-    public static function modifyPayWad($data)
+    public static function modifyPayPwd($user_id, $pay_pwd)
     {
-        return UserPaypwdRepo::modify($data['id'],$data);
+        $info = UserPaypwdRepo::getInfoByFields(['user_id'=>$user_id]);
+        if(empty($info)){
+            $data = [
+                'user_id' => $user_id,
+                'pay_password' => bcrypt($pay_pwd)
+            ];
+            return UserPaypwdRepo::create($data);
+        }else{
+            return UserPaypwdRepo::modify($info['id'], ['pay_password'=>bcrypt($pay_pwd)]);
+        }
     }
 
 

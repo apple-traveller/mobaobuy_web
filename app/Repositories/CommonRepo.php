@@ -105,25 +105,27 @@ trait CommonRepo
                             $q = $q->Where($key, 'like', $value);
                         }
                     }elseif(strpos($value, '|') !== false){
-                        $arr = explode('|', $value);
-                        if(in_array($arr[0], ['>','>=','<','<='])){
-                            if($opt == 'OR'){
-                                $q = $q->orWhere($key, $arr[0], $arr[1]);
-                            }else{
-                                $q = $q->Where($key, $arr[0], $arr[1]);
-                            }
+                        if($opt == 'OR'){
+                            $q = $q->orWhereIn($key, explode('|', $value));
                         }else{
-                            if($opt == 'OR'){
-                                $q = $q->orWhereIn($key, explode('|', $value));
-                            }else{
-                                $q = $q->WhereIn($key, explode('|', $value));
-                            }
+                            $q = $q->WhereIn($key, explode('|', $value));
                         }
                     }elseif(strpos($value, '!') === 0 ){
                         if($opt == 'OR'){
                             $q = $q->orWhere($key, '<>', substr($value, 1));
                         }else{
                             $q = $q->Where($key, '<>', substr($value, 1));
+                        }
+                    }elseif(strpos($key, '|') !== false){
+                        $arr = explode('|', $key);
+                        if(sizeof($arr) == 2 && in_array($arr[1], ['>','>=','<','<=','!=','<>'])){
+                            if($opt == 'OR'){
+                                $q = $q->orWhere($arr[0], $arr[1], $value);
+                            }else{
+                                $q = $q->Where($arr[0], $arr[1], $value);
+                            }
+                        }else{
+                            throw new \Exception('参数名称格式不正确：'.$key);
                         }
                     }else{
                         if($opt == 'OR'){

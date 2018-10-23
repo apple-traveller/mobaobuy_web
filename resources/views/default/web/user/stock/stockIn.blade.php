@@ -59,7 +59,7 @@
                         d.end_time = $('#end_time').val()
                     },
                     dataSrc:
-                        function (json) {console.log(json);
+                        function (json) {
                             json.draw = json.data.draw;
                             if (json.data.recordsTotal == null) {
                                 json.recordsTotal = 0;

@@ -6,6 +6,7 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 h1{font-size: 16px;}
+.back_btn {background-color: #ff6f17;border-radius: 2px;cursor: pointer;padding: 4px 20px;color: #fff;font-size: 14px;}
 
 .data-table-box{margin-top: 20px;overflow: hidden;}
 .data-table-box .table-condition{overflow: hidden;}
@@ -25,18 +26,13 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .dataTables_wrapper .dataTables_paginate .paginate_button {height: 30px;line-height: 20px;color: #ccc;float: left;padding: 4px 16px;text-decoration: none;transition: background-color .3s;border: 1px solid #ddd;margin: 0 4px;}
 .dataTables_wrapper .dataTables_paginate .paginate_button.current{color: #75b335;border: 1px solid #75b335;}
 
-/*.data-table-box .table-pager {margin-top:20px;text-align: right;}
-.data-table-box .table-pager ul.pagination {display: inline-block;padding: 0;margin: 0;}
-.data-table-box .table-pager ul.pagination li {height: 20px;line-height: 20px;display: inline;}
-.data-table-box .table-pager ul.pagination li a {color: #ccc;float: left;padding: 4px 16px;text-decoration: none;transition: background-color .3s;border: 1px solid #ddd;margin: 0 4px;}
-.data-table-box .table-pager ul.pagination li a.active {color: #75b335;border: 1px solid #75b335;}*/
-
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account li.site-nav-menu{float: left}
 .top-box .account li.site-nav-menu .site-nav-menu-list{z-index: 10001;position: relative;display: none;margin-top: -1px;}
 .site-nav-menu-list .menu-bd-panel{position: absolute;left: 0;top: 0;padding: 8px;line-height: normal;border: 1px solid #EEE;background: #FFF;}
-.site-nav-menu-list li{height: 29px;line-height: 29px;padding-left: 8px;cursor: pointer;}
-.site-nav-menu-list li:hover{background-color: #f4f4f4;}
+.site-nav-menu-list .menu-bd-panel a{display: block;padding: 0 5px;line-height: 28px;white-space: nowrap;color: #6C6C6C;}
+.site-nav-menu-list .menu-bd-panel a:hover{color: #6C6C6C;background: #F5F5F5;}
+
 .top-box .account a{padding: 0 5px;}
 .top-box .account a.link-login{color:red;}
 .top-box .account .company-select{color:#999;cursor:pointer;position: absolute;top:35px;left:-1px;z-index:5;width: 98px;text-align: center;border-left: 1px solid #DEDEDE;border-right: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
@@ -44,9 +40,9 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-box .quick-menu span{padding: 0 12px;}
 
 .top-title{width: 1200px;height: 115px;margin: 0 auto;}
-.top-title .logo{height: 100%;float: left; width: 200px;position: relative;}
-.top-title .logo img{max-height: 50%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
-.top-title .title-name{float: left; font-size: 24px;margin: 33px; 20px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
+.top-title .logo{height: 100%;float: left; width: 200px;position: relative;display:table;}
+.top-title .logo img{max-height: 50%;vertical-align:middle; display:table-cell;}
+.top-title .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
 .footer-service-box .icons {overflow: hidden;}
@@ -54,10 +50,10 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .footer-service-box .icons li:first-child{margin-left: 0;}
 .footer-service-box .icons li div{width: 50px;height: 50px;float:left !important;}
 .footer-service-box .icons li h1{height: 50px;line-height: 50px;font-size: 16px;margin-left: 10px;float: left;}
-.footer-service-box .icons li .icon01{background: url('/images/service_01.png')no-repeat;background-size: 100% 100%;}
-.footer-service-box .icons li .icon02{background: url('/images/service_02.png')no-repeat;background-size: 100% 100%;}
-.footer-service-box .icons li .icon03{background: url('/images/service_03.png')no-repeat;background-size: 100% 100%;}
-.footer-service-box .icons li .icon04{background: url('/images/service_04.png')no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon01{background: url("/images/service_01.png")no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon02{background: url("/images/service_02.png")no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon03{background: url("/images/service_03.png")no-repeat;background-size: 100% 100%;}
+.footer-service-box .icons li .icon04{background: url("/images/service_04.png")no-repeat;background-size: 100% 100%;}
 
 .footer-new-box{background-color: #FFFFFF;border-top: 1px solid #DEDEDE;font-size: 0;padding: 20px; 0px;overflow: hidden;}
 .footer-new-box .new-list{}
@@ -71,8 +67,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .copyright-box .copyright{padding-top: 10px;color: #999;}
 
 .logo-box{width: 1200px;height: 95px;margin: 0 auto;}
-.logo-box .logo{height: 100%;float: left; width: 200px;position: relative;}
-.logo-box .logo img{max-height: 70%;position: absolute;top: 50%;left: 50%;transform: translate(-45%,-50%);}
+.logo-box .logo{height: 100%;float: left; width: 200px;display:table;}
+.logo-box .logo img{height: 50px;vertical-align:middle; display:table-cell;}
 .logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
 
 .login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
@@ -117,3 +113,4 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .member_right{width: 968px;box-sizing: border-box;min-height: 842px;height: auto;position: relative;border: 1px solid #DEDEDE;background: #FFFFFF;margin-left: 15px;float: left;padding: 25px 30px;}
 
+/**------------------------------------------------------------------------------------------------------------------------------**/

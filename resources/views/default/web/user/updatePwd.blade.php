@@ -1,44 +1,46 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends(themePath('.','web').'web.include.layouts.member')
+@section('title', '重置密码')
 
-	<title>Document</title>
-</head>
-@include('partials.base_header')
-<link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/base.css')}}">
-<body>
-	<form id="ff" method="post">
-		<div>
-			<label for="email">手机号码:</label>
-			<input type="text" id="phone" value="{{session('_web_user.user_name')}}" readonly/>
-		</div>
-		<div>
-			<label for="email">图型验证码:</label>
-			<input style="width: 98px;" type="text" maxlength="4" placeholder="图形验证码"
-				   id="verify" onblur="verifyValidate();"><img src="" title="点击换一个校验码"
-															   alt="点击换一个校验码" id="imVcode">
-			<div style="height: 20px;" class="reg_error" id="verify_error"></div>
-		</div>
-		<div>
-			<label for="email">手机验证码:</label>
-			<input name="msgCode" id="messCode" type="text" maxlength="6" placeholder="手机验证码" onblur="msgCodeValidate();">
-			<input type="button" class="messCode_but" id="messCode_but" value="获取手机验证码">
-			<div style="height: 20px;" class="reg_error" id="msgCode_error"></div>
-		</div>
-		<div>
-			<label for="email">新密码:</label>
-			<input type="password" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()">
-			<div style="height: 20px;" class="reg_error" id="pwd_error"></div>
-		</div>
-		<div>
-			<input type="button" id="sub-btn" value="注册">
-		</div>
-	</form>
+@section('content')
+    <div class="clearfix mt25">
+        <div class="form">
+            <div class="item">
+                <div class="item-libel">@if(session('_web_user.is_firm'))公司名称：@else昵称：@endif</div>
+                <div class="item-info blackgraybg"><input type="text" class="text" autocomplete="false" disabled="disabled" value="{{session('_web_user.nick_name')}}"></div>
+                <div class="input-tip"></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">手机号</div>
+                <div class="item-info blackgraybg"><input type="text" class="text" autocomplete="false" disabled="disabled" value="{{session('_web_user.user_name')}}"></div>
+                <div class="input-tip"></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">图形验证码</div>
+                <div class="item-info" style="width: 178px;">
+                    <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                </div>
+                <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">手机验证码</div>
+                <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
+                    <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
+                </div>
+                <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
+            </div>
+            <div class="item">
+                <div class="item-libel">新密码</div>
+                <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
+                <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
+            </div>
+        </div>
+        <button class="register-button" id="sub-btn" style="margin-left: 170px;">修 改</button>
+    </div>
+@endsection
 
+@section('js')
 	<script>
         var countdown = 60; //间隔函数，1秒执行
         var isNull = /^[\s]{0,}$/;
@@ -126,20 +128,16 @@
                 return false;
             }
             params = {
-                accountName: $("#phone").val(),
                 verifyCode: $("#verify").val(),
                 t: t,
             };
             Ajax.call("{{url('/updatePwd/sendSms')}}", params, function (result){
                 if (result.code == 1) {
-                    $('#numnerTip .tipName').text('短信验证码已发送到');
-                    $('#numnerTip .numer').text($('#phone').val());
-                    $('#numnerTip .tip_las').text('，请注意查收');
-                    $('#numnerTip').show();
-
                     Settime (type);
+                    $('.msgCode-swap').removeClass('blackgraybg');
+                    $('.msgCode-swap input').removeAttr('readonly');
                 }else{
-                    $("#msgCode_error").html(result.msg);
+                    $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>"+result.msg);
                 }
             }, "GET", "JSON");
         }
@@ -175,7 +173,8 @@
             };
             Ajax.call("{{url('/updatePwd')}}", params, function (result){
                 if (result.code == 1) {
-                    window.location.href="{{url('/member')}}";
+                    $.msg.tips('修改成功！');
+                    window.location.reload();
                 }else{
                     $.msg.error(result.msg);
                 }
@@ -183,5 +182,4 @@
             gv()
         });
 	</script>
-</body>
-</html>
+@endsection

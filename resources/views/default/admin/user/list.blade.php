@@ -52,6 +52,7 @@
                                 <th width="10%"><div class="tDiv">用户名</div></th>
                                 <th width="10%"><div class="tDiv">昵称</div></th>
                                 <th width="8%"><div class="tDiv">是否实名</div></th>
+                                <th width="8%"><div class="tDiv">是否通过审核</div></th>
                                 <th width="8%"><div class="tDiv">积分</div></th>
                                 <th width="8%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
@@ -68,10 +69,18 @@
                                 <td><div class="tDiv">{{$user['id']}}</div></td>
                                 <td><div class="tDiv">{{$user['user_name']}}</div></td>
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
-                                <td><div class="tDiv">
+                                <td>
+                                    <div class="tDiv">
                                         @if($user['userreal']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
                                         @elseif($user['userreal']==0 && $user['is_validated'] == 0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                         @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="tDiv">
+                                        @if($user['is_validated']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已通过</div>
+                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                         @endif
                                     </div>
                                 </td>

@@ -149,6 +149,12 @@ class GoodsService
         return CartRepo::create($cartInfo);
     }
 
+    //查询购物车的数量
+    public static function getCartCount($userId)
+    {
+        return CartRepo::getTotalCount(['user_id'=>$userId]);
+    }
+
     //清空购物车
     public static function clearCart($userId){
         $cartInfo = CartRepo::getList([],['user_id'=>$userId]);

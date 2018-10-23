@@ -40,7 +40,7 @@ a:focus{ outline:none;}
 .redbg{background: #ed1e2d;}
 .bluebg{background: #36a3ef;}
 .f4bg{background-color: #f4f4f4;}
-.blackgraybg{background-color: #a0a0a0;}
+.blackgraybg{background-color: #ebebe4;}
 
 input[disabled],input[disabled="disabled"],input[readonly],input[readonly="readonly"]{ background-color:#ebebe4;}
 
