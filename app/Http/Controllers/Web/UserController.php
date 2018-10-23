@@ -537,43 +537,6 @@ class UserController extends Controller
         }
     }
 
-    //发送支付密码验证码
-    public function sendCodeByPay(Request $request){
-        $mobile = session('_web_user')['user_name'];
-        $type = $request->input('type');
-        $mobile_code = rand(1000, 9999);
-        session()->put('pay_send_code', $mobile_code);
-        try{
-            UserLoginService::sendCode($mobile,$type,$mobile_code);
-            return json_encode(array('code'=>1,'msg'=>'succ'));
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
-    //设置支付密码
-    public function setPayPwd(Request $request){
-        if($request->isMethod('get')){
-            return $this->display('web.user.forgotPwd');
-        }else{
-
-            $payInfo = [];
-            $payInfo['password'] = $request->input('password');
-            $payInfo['passwords'] = $request->input('passwords');
-            $payInfo['code'] = $request->input('code');
-            $payInfo['user_id'] = session('_web_user_id');
-            if($payInfo['code'] != session('pay_send_code')){
-                return $this->error('验证码错误');exit;
-            }
-            try{
-                UserService::setPayPwd($payInfo);
-                return $this->success('支付密码设置成功','/');
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
-        }
-    }
-
     public function empList(Request $request){
         return $this->display('web.user.emp.list');
     }
@@ -696,7 +659,6 @@ class UserController extends Controller
                     return $this->result("",1,"保存成功");
                 }
             }else{
-
                 $flag = UserRealService::modify($data);
                 if(!empty($flag)){
                     return $this->result("",1,"保存成功");
@@ -708,52 +670,50 @@ class UserController extends Controller
         }
     }
 
+    //发送支付密码手机验证码
+    public function sendPayPwdSms(Request $request){
+        $t = $request->input('t');
+        $code = $request->input('verifyCode');
+        $s_code = Cache::get(session()->getId().'captcha'.$t, '');
+        if($s_code != $code){
+            return $this->error('图形验证有误');
+        }
+        if(!UserService::checkNameExists(session('_web_user.user_name'))){
+            return $this->error('手机号未注册');
+        }
+
+        $type = 'sms_pay_pwd';
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.session('_web_user.user_name'), $mobile_code, 5);
+        createEvent('sendSms', ['phoneNumbers'=>session('_web_user.user_name'), 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
     //修改支付密码
     public function editPayPassword(Request $request)
     {
-        $userInfo = session()->get("_web_user");
-        $paywadInfo = UserService::getPayPwdInfo($userInfo['id']);
         if($request->isMethod('post')){
-            $data = $request->all();
-            try{
-                if(key_exists('id',$data)){
-                    //{user_id: "29", id: "1", pay_password: "12312312", newpay_password: "111111"}
-                    if(empty($data['pay_password'])){
-                        return $this->result("",0,'旧密码不能为空');
-                    }
-
-                    $paywadInfo = UserService::getPayPwdInfo($data['user_id']);
-                    //return $this->result($paywadInfo,0,"");
-                    if(!Hash::check($data['pay_password'], $paywadInfo['pay_password'])){
-                        return $this->result("",0,'旧密码输入有误');
-                    }
-                    if(empty($data['newpay_password'])){
-                        return $this->result("",0,'新密码不能为空');
-                    }
-                    if($data['renewpay_password']!=$data['newpay_password']){
-                        return $this->result("",0,'两次输入的密码不一致');
-                    }
-
-                    UserService::modifyPayWad(['id'=>$data['id'],'pay_password'=>Hash::make($data['newpay_password'])]);
-                    return $this->result("",1,'修改支付密码成功');
-                }else{
-                    //return $this->result($data,1,"");
-                    $data['pay_password'] = Hash::make($data['pay_password']);
-                    $flag = UserService::createPayWad($data);
-                    if(!empty($flag)){
-                        return $this->result("",1,'修改支付密码成功');
-                    }
-                    return $this->result("",0,'修改支付密码失败');
-                }
-            }catch(\exception $e){
-                return $this->result("",0,$e->getMessage());
+            $password = base64_decode($request->input('password', ''));
+            $messCode = $request->input('messCode', '');
+            $type = 'sms_pay_pwd';
+            //手机验证码是否正确
+            if(Cache::get(session()->getId().$type.session('_web_user.user_name')) != $messCode){
+                return $this->error('手机验证码不正确');
             }
 
+            $id = session('_web_user.id');
+
+            try{
+                UserService::modifyPayPwd($id,$password);
+                return $this->success('设置支付密码成功','/');
+            }catch(\Exception $e){
+                return $this->error($e->getMessage());
+            }
         }
-        return $this->display("web.user.account.payPassword",[
-            'userInfo'=>$userInfo,
-            'paywadInfo'=>$paywadInfo
-        ]);
+        return $this->display("web.user.account.payPassword");
     }
 
     /**

@@ -20,6 +20,11 @@ class VerifyCodeController extends Controller
         $code = $phrase->build($length);
 
         $builder = new CaptchaBuilder($code, $phrase);
+        // 设置背景颜色
+        $builder->setBackgroundColor(220, 210, 230);
+        $builder->setMaxAngle(25);
+        $builder->setMaxBehindLines(0);
+        $builder->setMaxFrontLines(0);
         //可以设置图片宽高及字体
         $builder->build($width, $height, $font = null);
         // 获取验证码的内容

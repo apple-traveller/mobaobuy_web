@@ -67,8 +67,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value font14">
-                                    @if($info['is_validated']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已审核</div>
-                                    @elseif($info['is_validated']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-warm'>待审核</div>
+                                    @if($info['is_validated']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已通过</div>
+                                    @elseif($info['is_validated']==0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                     @endif
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                 </div>
                             @endif
 
-                            <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
+
                             <input type="hidden" name="id" value="{{$info['id']}}">
                             <input type="hidden" name="is_firm" value="{{$info['is_firm']}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
@@ -102,11 +102,9 @@
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
-                                    @if($info['is_validated']==0)
-                                        <input value="审核通过" class="button" id="submitBtn" type="submit">
-                                    @else
-                                        <input value="审核不通过" class="button" id="submitBtn" type="submit">
-                                    @endif
+
+                                <input value="审核通过" class="button" id="submitBtn" type="submit">
+
 
                                 </div>
                             </div>

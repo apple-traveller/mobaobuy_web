@@ -149,6 +149,12 @@ class GoodsService
         return CartRepo::create($cartInfo);
     }
 
+    //查询购物车的数量
+    public static function getCartCount($userId)
+    {
+        return CartRepo::getTotalCount(['user_id'=>$userId]);
+    }
+
     //清空购物车
     public static function clearCart($userId){
         $cartInfo = CartRepo::getList([],['user_id'=>$userId]);
@@ -170,8 +176,8 @@ class GoodsService
         $cartSession = [];
 //        try{
             foreach($cartIds as $v){
-                $id = decrypt($v);
-                $cartInfo = CartRepo::getInfo($id);
+//                $id = decrypt($v);
+                $cartInfo = CartRepo::getInfo($v);
                 if(empty($cartInfo)){
                     self::throwBizError('购物车商品不存在！');
                 }
@@ -185,12 +191,12 @@ class GoodsService
     }
 
     //提交订单
+
     public static function createOrder($cartInfo_session,$userId,$userAddressId,$invoicesId,$words){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         $userAddressMes = UserAddressRepo::getInfo($userAddressId);
-
         try{
             self::beginTransaction();
             //订单表
@@ -263,15 +269,26 @@ class GoodsService
 
     //递增购物车数量
     public static function addCartGoodsNum($id){
-        $cartInfo = CartRepo::getInfo($id);
-        return CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+1]);
-
+        try{
+            $cartInfo = CartRepo::getInfo($id);
+            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $cartInfo['goods_price'],2);
+            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+1]);
+            return $account;
+        }catch (\Exception $e){
+            throw $e;
+        }
     }
 
     //递减购物车数量
     public static function reduceCartGoodsNum($id){
-        $cartInfo = CartRepo::getInfo($id);
-        return CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-1]);
+        try{
+            $cartInfo = CartRepo::getInfo($id);
+            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'],2);
+            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-1]);
+            return $account;
+        }catch (\Exception $e){
+            throw $e;
+        }
     }
 
     //订单列表

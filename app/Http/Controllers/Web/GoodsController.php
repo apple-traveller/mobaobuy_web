@@ -9,8 +9,7 @@ use App\Services\UserInvoicesService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
-use App\Services\SmsService;
+use App\Services\ShopGoodsQuoteService;
 use Illuminate\Support\Facades\Session;
 
 
@@ -25,10 +24,80 @@ class GoodsController extends Controller
 
     }
 
-    //商品列表
-    public function goodsList(){
-        $goodsList = GoodsService::goodsList();
-        return $this->display('web.goods.goodsList',compact('goodsList'));
+    //产品列表
+    public function goodsList(Request $request)
+    {
+        $currpage = $request->input("currpage",1);
+        $highest = $request->input("highest");
+        $lowest = $request->input("lowest");
+        $price_bg1 = $request->input("price_bg1");
+        $condition = [];
+        $orderType = $request->input("orderType","id:asc");
+        if(!empty($orderType)){
+            $order = explode(":",$orderType);
+        }
+
+        if(empty($lowest)&&empty($highest)){
+            $condition = [];
+        }
+        if($lowest=="" && $highest!=""){
+            $condition['shop_price|<'] = $highest;
+        }
+        if($highest=="" && $lowest!=""){
+            $condition['shop_price|<'] = $lowest;
+        }
+        if($lowest!="" && $highest!=""&&$lowest<$highest){
+            $condition['shop_price|<'] = $highest;
+            $condition['shop_price|>'] = $lowest;
+        }
+        if($lowest>$highest){
+            $condition['shop_price|<'] = $lowest;
+        }
+        $pageSize = 10;
+        $userId = session('_web_user_id');
+        $cart_count = GoodsService::getCartCount($userId);
+        //积分列表
+        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
+        return $this->display("web.goods.goodsList",[
+            'goodsList'=>$goodList['list'],
+            'total'=>$goodList['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'orderType'=>$orderType,
+            'cart_count'=>$cart_count,
+            'lowest'=>$lowest,
+            'highest'=>$highest,
+            'price_bg1'=>$price_bg1?$price_bg1:""
+        ]);
+    }
+
+    //产品详情
+    public function goodsDetail(Request $request)
+    {
+        $id = $request->input("id");
+        $shop_id = $request->input("shop_id");
+        $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        $currpage = $request->input("currpage", 1);
+        $goods_id = $good_info['goods_id'];
+        $condition = [
+            'shop_id' => $shop_id,
+            'goods_id' => $goods_id
+        ];
+        $pageSize = 10;
+        $currpage = $request->input("currpage");
+        $userId = session('_web_user_id');
+        $cart_count = GoodsService::getCartCount($userId);
+        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
+        return $this->display("web.goods.goodsDetail", [
+            'good_info' => $good_info,
+            'goodsList' => $goodList['list'],
+            'total' => $goodList['total'],
+            'currpage' => $currpage,
+            'pageSize' => $pageSize,
+            'id' => $id,
+            'shop_id' => $shop_id,
+            'cart_count'=>$cart_count
+        ]);
     }
 
     //购物车
@@ -46,14 +115,13 @@ class GoodsController extends Controller
             $id = $request->input('id');
             $number = $request->input('number');
             try{
-                 GoodsService::searchGoodsQuote($userId,$id,$number);
-                 return $this->success('加入购物车成功');
+                GoodsService::searchGoodsQuote($userId,$id,$number);
+                $count = GoodsService::getCartCount($userId);
+                return $this->success('加入购物车成功',"",$count);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
-
         }
-
     }
 
     //删除购物车商品
@@ -71,8 +139,8 @@ class GoodsController extends Controller
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
-             GoodsService::addCartGoodsNum($id);
-             return $this->success();
+             $account = GoodsService::addCartGoodsNum($id);
+             return $this->success('','',$account);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -82,8 +150,8 @@ class GoodsController extends Controller
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
-            GoodsService::reduceCartGoodsNum($id);
-            return $this->success();
+            $account = GoodsService::reduceCartGoodsNum($id);
+            return $this->success('','',$account);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -113,6 +181,7 @@ class GoodsController extends Controller
         }
     }
 
+
     /**
      * 订单维护页面
      * @param Request $request
@@ -120,6 +189,7 @@ class GoodsController extends Controller
      */
     public function confirmOrder(){
         $info = session('_curr_deputy_user');
+
         //获取发票信息
         try{
             // 判断是否为企业用户
@@ -163,6 +233,7 @@ class GoodsController extends Controller
 
     //确认提交订单
     public function createOrder(Request $request){
+
         $info = session('_curr_deputy_user');
         $userIds = [];
         // 判断是否为企业用户
@@ -177,7 +248,8 @@ class GoodsController extends Controller
         }
         $words = $request->input('words',' ');
         $user_id = session('_web_user_id');
-        $carList = CartService::getCheckGoodsList($user_id);
+//        $carList = CartService::getCheckGoodsList($user_id);
+        $carList = session('cartSession');
         $shop_data = [];
 
         foreach ($carList as $k=>$v){
@@ -185,7 +257,6 @@ class GoodsController extends Controller
                 $shop_data[$v['shop_id']] = $v['shop_id'];
             }
         }
-
         foreach ($shop_data as $k2=>$v2){
             $shop_data[$v2] = [];
             foreach ($carList as $k3=>$v3){
@@ -195,13 +266,13 @@ class GoodsController extends Controller
             }
         }
         try{
+
             $re=[];
             foreach ($shop_data as $k4=>$v4){
                 $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$userInfo['invoice_id'],$words);
             }
            if (!empty($re)){
                Session::forget('cartSession');
-//               $this->redirectTo('/orderSubmission',['123123123']);
                return $this->success('订单提交成功','',$re);
            } else {
                 return $this->error('订单提交失败');
@@ -256,7 +327,7 @@ class GoodsController extends Controller
     public function orderList(){
         $userId = session('_web_user_id');
         $orderList = GoodsService::orderList($userId);
-        dump($orderList);
+//        dump($orderList);
         return $this->display('web.order.order',compact('orderList'));
     }
 

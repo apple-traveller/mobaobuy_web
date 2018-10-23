@@ -67,7 +67,11 @@
 		}
     </style>
     <script type="text/javascript">
+    	//购物车选中的数据
+    	var check_arr = new Array();  
     	$(function(){
+    		//购物车数据总条数
+    		var accountTotal = $('#accountTotal').text();
     		var MaxNum;
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
@@ -75,7 +79,7 @@
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
-			
+				var thisDom = $(this);
 				if(Number(ipts.val())+1>Number(MaxNum)){
 					ipts.val(Number(MaxNum));
 					return;
@@ -90,8 +94,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        
-	                        // window.location.reload();
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
 	                    }else{
 	                        alert('增加失败请重试');
 	                        window.location.reload();
@@ -105,13 +108,13 @@
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
+				var thisDom = $(this);
 				if (Number(ipts.val())-1<1) {
 					ipts.val(1);
 					return;
 				}else{
 					NumNew=Number(ipts.val())-1;
 					ipts.val(NumNew);
-					
 				}
 				$.ajax({
 	                'type':'post',
@@ -120,7 +123,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        // window.location.reload();
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
 	                    }else{
 	                        alert('减少失败请重试');
 	                        window.location.reload();
@@ -129,7 +132,42 @@
      			})
 
 			})
+
+			//单选框
+			$('.shop_list .check_all span label input').change(function(){
+				check_arr = [];
+				$('.shop_list .check_all span label input:checked').each(function(){
+					check_arr.push($(this).val());
+				})
+				$('#checkedSel').html(check_arr.length);
+				if(check_arr.length == accountTotal){
+					$('#check_all').prop('checked',true);
+					check_all();
+				}else{
+					$('#check_all').prop('checked',false);
+				}
+				
+			})
 		})
+
+		//全选
+		function check_all(){
+			$('#check_all').change(function(){
+				check_arr = [];
+				if($(this).is(':checked')){
+					$('.shop_list .check_all span label input:checkbox').prop('checked',true);
+					$('.shop_list .check_all span label input:checkbox').each(function(){
+						check_arr.push($(this).val());
+					})
+					$('#checkedSel').html(check_arr.length);
+				}else{
+					check_arr = [];
+					$('.shop_list .check_all span label input:checkbox').prop('checked',false);
+					$('#checkedSel').html(0);
+				}
+			})
+		}
+
 
     	//删除购物车某商品
     	function del(obj){
@@ -175,6 +213,54 @@
 				})
     		}
 		}
+
+		
+		//checkbox框
+		function checkListen(){
+			var arr = new Array();
+			$('.shop_list .check_all span label input:checkbox').each(function(){
+				arr.push($(this).val());
+			})
+			
+			if(arr.length>0){
+				$.ajax({
+					url: "/checkListen",
+					dataType: "json",
+					data: {
+					'cartId':arr
+					},
+					type: "POST",
+					success: function (data) {
+
+					}
+				})
+			}else{
+				alert('请选择商品');return;
+			}
+		}
+
+		//去结算
+		function toBalance(){
+			if(check_arr.length>0){
+				$.ajax({
+					url: "/toBalance",
+					dataType: "json",
+					data: {
+					'cartId':check_arr
+					},
+					type: "POST",
+					success: function (data) {
+						if(data.code){
+							window.location.href='/confirmOrder';
+						}else{
+							alert('出错,请重试')
+						}
+					}
+				})
+			}else{
+				alert('请选择商品');return;
+			}
+		}
     </script>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -198,7 +284,7 @@
 	<div class="w1200 whitebg" style="margin-top: 20px;">
 		
 		<ul class="shop_title">
-			<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value=""/><span class="fl ">全选</span></label></li>
+			<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
 			<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
 			<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
 		</ul>
@@ -207,7 +293,7 @@
 		<ul class="shop_list">
 			<li class="check_all">
 				<span class="check_tick fl" style="margin: 33px 0px;">
-					<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value=""/> </label>
+					<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v->id}}"/> </label>
 				</span>
 				<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v->goods_name}}</a>
 				<span class="shop_price_t orange fl tac">￥{{$v->goods_price}}元</span>
@@ -234,8 +320,8 @@
 	
 		
 	<div class="sumbit_cart whitebg ovh">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange">{{count($cartInfo['cartInfo'])}}</font>件商品，已选择<font class="orange">1</font>件</span>
-			<div class="sumbit_cart_btn">提交订单</div>
+			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">{{count($cartInfo['cartInfo'])}}</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
+			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 
      @include(themePath('.','web').'web.include.partials.footer_service')

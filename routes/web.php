@@ -251,13 +251,14 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/updateUserInfo', 'UserController@userUpdate');//用户信息保存
         Route::post('/delFirmUser', 'FirmUserController@delFirmUser');//企业会员删除
 
-        /********************************************************************/
+        /*******************************用户信息*************************************/
         Route::get('/account/userInfo', 'UserController@userInfo');//用户信息编辑
         Route::post('/account/saveUser', 'UserController@saveUser');//保存用户信息
         Route::get('/account/viewPoints', 'UserController@viewPoints');//查看积分
         Route::get('/account/userRealInfo', 'UserController@userRealInfo');//实名认证
         Route::post('/account/saveUserReal', 'UserController@saveUserReal');//保存实名
         Route::any('/account/editPayPassword', 'UserController@editPayPassword');//修改支付密码
+        Route::any('/account/editPayPassword/sendSms', 'UserController@sendPayPwdSms');//发送支付密码短信
         /********************************************************************/
 
 
@@ -288,14 +289,18 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwd', 'UserController@setPayPwd');
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
-        Route::resource('goodsCate', 'GoodsCategoryController');//商品信息
-        Route::get('goodsList', 'GoodsController@goodsList');//商品列表
+
+        /********************************产品信息************************************/
+        Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
+        Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
+        /********************************************************************/
+
 
 
 //        Route::get('/stockNum','FirmStockController@stockList');//企业库存
         Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
-        Route::get('/stockFlowList','FirmStockController@stockFlowList');//企业库存详细
+
         Route::get('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::post('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
@@ -307,11 +312,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
-        Route::post('/curCanStock','FirmStockController@curCanStock');//可出库单条记录
+        Route::post('/stock/info','FirmStockController@stockInfo');//可出库单条记录
         Route::post('/curStockSave','FirmStockController@curStockSave');//出库更新保存
 
         Route::get('/stock/list','FirmStockController@stockList');//实时库存
         Route::post('/stock/list','FirmStockController@stockList');//实时库存
+        Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+        Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
 
         Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
@@ -324,8 +331,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
         Route::post('/delCart','GoodsController@delCart');//删除购物车数量  //addCartGoodsNum
         Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
+
         Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
         Route::get('/orderSubmission.html','GoodsController@orderSubmission');// 订单确认页面
+        Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
+
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单

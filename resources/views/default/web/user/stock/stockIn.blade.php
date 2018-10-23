@@ -81,9 +81,31 @@
             });
 
             $("#on-search").click(function () {
-                var oSettings = tbl.fnSettings();
-                tbl.fnClearTable(0);
-                tbl.fnDraw();
+                // var oSettings = tbl.fnSettings();
+                // tbl.fnClearTable(0);
+                // tbl.fnDraw();
+
+                var goods_name = $('#goods_name').val();
+                var begin_time = $('#begin_time').val();
+                var end_time = $('#end_time').val();
+                $.ajax({
+                    url: "/FirmStockIn",
+                    dataType: "json",
+                    data: {
+                        'goods_name':goods_name,
+                        'begin_time':begin_time,
+                        'end_time':end_time
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            $.msg.alert('添加成功！');
+                            window.location.reload();
+                        }else{
+                            $.msg.error(data.msg);
+                        }
+                    }
+                })
             });
 
             $('.add_stock').click(function(){
@@ -179,7 +201,7 @@
                 <input type="text" class="text Wdate" name="end_time" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white">+新增出库</div>
+            <div class="fr add_stock tac white">+新增入库</div>
         </div>
 
         <div class="table-body">

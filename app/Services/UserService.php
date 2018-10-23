@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
+
 class UserService
 {
     use CommonService;
@@ -295,7 +296,11 @@ class UserService
 
     //收藏商品
     public static function addCollectGoods($goodsId,$userId){
-        return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+        $userCollect = UserCollectGoodsRepo::getList([],['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!$userCollect){
+            return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+        }
+        self::throwBizError('已收藏过此商品！');
     }
 
     //删除搜藏商品
@@ -356,22 +361,19 @@ class UserService
         return UserRepo::getList([],$condition,$column);
     }
 
-    //获取支付密码信息
-    public static function getPayPwdInfo($user_id)
-    {
-        return UserPaypwdRepo::getInfoByFields(['user_id'=>$user_id]);
-    }
-
-    //新增支付密码
-    public static function createPayWad($data)
-    {
-        return UserPaypwdRepo::create($data);
-    }
-
     //修改支付密码
-    public static function modifyPayWad($data)
+    public static function modifyPayPwd($user_id, $pay_pwd)
     {
-        return UserPaypwdRepo::modify($data['id'],$data);
+        $info = UserPaypwdRepo::getInfoByFields(['user_id'=>$user_id]);
+        if(empty($info)){
+            $data = [
+                'user_id' => $user_id,
+                'pay_password' => bcrypt($pay_pwd)
+            ];
+            return UserPaypwdRepo::create($data);
+        }else{
+            return UserPaypwdRepo::modify($info['id'], ['pay_password'=>bcrypt($pay_pwd)]);
+        }
     }
 
 

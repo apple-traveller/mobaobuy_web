@@ -24,6 +24,7 @@ class ShopGoodsQuoteController extends Controller
         $pageSize =5;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+       //dd($shopGoodsQuote['list']);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
