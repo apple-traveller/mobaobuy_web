@@ -153,7 +153,7 @@
 
 <div class="clearfix whitebg">
 	<div class="w1200">
-		<a class="logo" style="margin-top: 45px;"></a>
+		<a href="/" class="logo" style="margin-top: 45px;"></a>
 		<div class="fr fs14 order_progress" >
 			<div class="cart_progress cart_progress_02"></div>
 			<div class="progress_text">
@@ -225,6 +225,7 @@
 			</li>
 			@endforeach
 		</ul>
+		<form action="/createOrder" method="post" id="form">
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
@@ -237,6 +238,7 @@
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
 		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a class="fr gray" style="line-height: 50px;">< 返回购物车</a>
+		</form>
 	</div>
 </div>
 
@@ -308,18 +310,23 @@
         });
     });
     $(".address_sumb").click(function () {
-		let words =  $("input[ name='test' ]").val();
+		let words =  $("input[ name='words' ]").val();
+		console.log(words);
 		$.ajax({
 			url:'/createOrder',
 			data:{
 			    'words':words
 			},
-			tpye:'POST',
+			type:'post',
 			success:function (res) {
-			    console.log(res);
-				window.location.reload();
+                if (res.code==1){
+                    window.location.href="/orderSubmission.html?re="+res.data;
+                } else {
+                    layer.msg(res.msg);
+                }
             }
 		});
+		// $("#form").submit();
     });
 </script>
 </body>

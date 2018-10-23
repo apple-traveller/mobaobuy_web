@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Services\SmsService;
+use Illuminate\Support\Facades\Session;
 
 
 class GoodsController extends Controller
@@ -20,8 +21,6 @@ class GoodsController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
-
     public function  index(){
 
     }
@@ -123,20 +122,20 @@ class GoodsController extends Controller
         $info = session('_curr_deputy_user');
         //获取发票信息
         try{
-            if(!$info['is_firm']){
+            // 判断是否为企业用户
+            if($info['is_firm']){
                 $userInfo = UserService::getInfo($info['firm_id']);
-                $invoicesInfo = GoodsService::getInvoices($userInfo['id']);
             }else{
                 $userInfo = session('_web_user');
-                $invoicesList = GoodsService::getInvoices($userInfo['id']);
-                foreach ($invoicesList as $k=>$v){
-                    $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
-                }
-                if (!empty($userInfo['invoice_id'])) {
-                    $invoicesInfo = UserInvoicesService::getInvoice($userInfo['id']);
-                } else {
-                    $invoicesInfo = $invoicesList[0];
-                }
+            }
+            $invoicesList = GoodsService::getInvoices($userInfo['id']);
+            foreach ($invoicesList as $k=>$v){
+                $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
+            }
+            if (!empty($userInfo['invoice_id'])) {
+                $invoicesInfo = UserInvoicesService::getInvoice($userInfo['invoice_id']);
+            } else {
+                $invoicesInfo = $invoicesList[0];
             }
 
             // 收货地址列表
@@ -152,6 +151,9 @@ class GoodsController extends Controller
             }
             $goodsList = CartService::getCheckGoodsList($userInfo['id']);
 
+//            $goodsList = session('cartSession');
+
+
             return $this->display('web.goods.confirmOrder',compact('invoicesInfo','invoicesList','addressList','goodsList'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -161,24 +163,64 @@ class GoodsController extends Controller
 
     //确认提交订单
     public function createOrder(Request $request){
-        $userId = session('_web_user_id');
-        $carList = CartService::getCheckGoodsList($userId);
-        dd($carList);
-        $cartInfo = session('cartSession');
-        $userAddress = $request->input('address');
-        $invoices = $request->input('invoices');
+        $info = session('_curr_deputy_user');
+        $userIds = [];
+        // 判断是否为企业用户
+        if($info['is_firm']){
+            $userInfo = UserService::getInfo($info['firm_id']);
+            $userIds['user_id'] = session('_web_user_id');
+            $userIds['firm_id'] = $info['firm_id'];
+        }else{
+            $userInfo = session('_web_user');
+            $userIds['user_id'] = session('_web_user_id');
+            $userIds['firm_id'] = '';
+        }
+        $words = $request->input('words',' ');
+        $user_id = session('_web_user_id');
+        $carList = CartService::getCheckGoodsList($user_id);
+        $shop_data = [];
 
-        if(empty($cartInfo)){
-            return $this->error('商品信息不存在');
+        foreach ($carList as $k=>$v){
+            if (!isset($shop_data[$v['shop_id']])){
+                $shop_data[$v['shop_id']] = $v['shop_id'];
+            }
+        }
+
+        foreach ($shop_data as $k2=>$v2){
+            $shop_data[$v2] = [];
+            foreach ($carList as $k3=>$v3){
+                if ($k2 == $v3['shop_id']){
+                    $shop_data[$v2][]=$v3;
+                }
+            }
         }
         try{
-            GoodsService::createOrder($cartInfo,$userId,$userAddress,$invoices);
-//            Session::forget('cartSession');
-            return $this->success('订单提交成功');
+            $re=[];
+            foreach ($shop_data as $k4=>$v4){
+                $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$userInfo['invoice_id'],$words);
+            }
+           if (!empty($re)){
+               Session::forget('cartSession');
+//               $this->redirectTo('/orderSubmission',['123123123']);
+               return $this->success('订单提交成功','',$re);
+           } else {
+                return $this->error('订单提交失败');
+           }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
 
+
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function orderSubmission(Request $request)
+    {
+        $re = $request->input('re');
+        return $this->display('web.goods.orderSubmission',['re'=>$re]);
     }
 
 
