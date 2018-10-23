@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
+
 class UserService
 {
     use CommonService;
@@ -295,7 +296,7 @@ class UserService
 
     //收藏商品
     public static function addCollectGoods($goodsId,$userId){
-        return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+        return UserCollectGoodsRepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
     }
 
     //删除搜藏商品

@@ -4,10 +4,11 @@
 	<meta charset="UTF-8">
 	<title>产品详情</title>
 	@include(themePath('.','web').'web.include.partials.base')
-	<link rel="stylesheet" type="text/css" href="{{'/css/index.css'}}" />
-	<link rel="stylesheet" type="text/css" href="{{'/css/global.css'}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
-
+	<style>
+		.Self-product-list li span{width:14%;}
+		.news_pages ul.pagination {text-align: center;}
+	</style>
     <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
 	<script type="text/javascript">
         $(function(){
@@ -216,9 +217,7 @@
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
 				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
-				<div class="start_amount">
 
-				</div>
 			</div>
 			<div class="pro_detail">
 				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
@@ -311,6 +310,17 @@
             }
         },"json");
     });
+
+    $(".follow_btn").click(function(){
+		var goods_id = "{{$good_info['goods_id']}}";
+        $.post("/addCollectGoods",{'id':goods_id},function(res){
+            if(res.code==1){
+                $.msg.success("收藏成功");
+            }else{
+                $.msg.alert(res.msg);
+            }
+        },"json");
+	});
 </script>
 <!--底部-->
 @include(themePath('.','web').'web.include.partials.footer_service')

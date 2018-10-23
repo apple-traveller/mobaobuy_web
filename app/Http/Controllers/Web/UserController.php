@@ -659,7 +659,6 @@ class UserController extends Controller
                     return $this->result("",1,"保存成功");
                 }
             }else{
-
                 $flag = UserRealService::modify($data);
                 if(!empty($flag)){
                     return $this->result("",1,"保存成功");
