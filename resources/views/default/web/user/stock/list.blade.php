@@ -32,7 +32,7 @@
                     {"data": "number", "bSortable": false},
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, full, meta) {
-                            return '<button class="opt-btn">查看</button>';
+                            return '<a href="/stock/flow?id='+ data +'" class="opt-btn">查看</a>';
                         }
                     }
                 ]

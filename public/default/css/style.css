@@ -6,6 +6,7 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 h1{font-size: 16px;}
+.back_btn {background-color: #ff6f17;border-radius: 2px;cursor: pointer;padding: 4px 20px;color: #fff;font-size: 14px;}
 
 .data-table-box{margin-top: 20px;overflow: hidden;}
 .data-table-box .table-condition{overflow: hidden;}
@@ -24,12 +25,6 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .dataTables_wrapper .dataTables_paginate {margin-top:20px;}
 .dataTables_wrapper .dataTables_paginate .paginate_button {height: 30px;line-height: 20px;color: #ccc;float: left;padding: 4px 16px;text-decoration: none;transition: background-color .3s;border: 1px solid #ddd;margin: 0 4px;}
 .dataTables_wrapper .dataTables_paginate .paginate_button.current{color: #75b335;border: 1px solid #75b335;}
-
-/*.data-table-box .table-pager {margin-top:20px;text-align: right;}
-.data-table-box .table-pager ul.pagination {display: inline-block;padding: 0;margin: 0;}
-.data-table-box .table-pager ul.pagination li {height: 20px;line-height: 20px;display: inline;}
-.data-table-box .table-pager ul.pagination li a {color: #ccc;float: left;padding: 4px 16px;text-decoration: none;transition: background-color .3s;border: 1px solid #ddd;margin: 0 4px;}
-.data-table-box .table-pager ul.pagination li a.active {color: #75b335;border: 1px solid #75b335;}*/
 
 .top-box{display: block;background: #f7f7f7;height: 35px;line-height: 35px;color: #999;}
 .top-box .account li.site-nav-menu{float: left}

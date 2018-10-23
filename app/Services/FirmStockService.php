@@ -53,18 +53,25 @@ class FirmStockService
         if(empty($currStockInfo)){
             self::throwBizError('库存商品不存在');
         }
-        //firmstock数据
         $firmStockData = [];
         $firmStockData['flow_time'] = Carbon::now();
         $firmStockData['flow_type'] = 3 ;
+        $firmStockData['order_sn'] = $data['order_sn'];
+        $firmStockData['partner_name'] = $data['partner_name'];
         $firmStockData['number'] = $data['currStockNum'];
         $firmStockData['firm_id'] = $data['firm_id'];
         $firmStockData['flow_desc'] = $data['flow_desc'];
+        $firmStockData['price'] = $data['price'];
         $firmStockData['created_by'] = $data['created_by'];
         $firmStockData['goods_name'] = $currStockInfo['goods_name'];
+        $firmStockData['goods_id'] = $currStockInfo['goods_id'];
 
         //更新库存表，新增库存流水记录
         if($currStockInfo){
+            if($currStockInfo['number'] < $data['currStockNum']){
+                self::throwBizError('出库数量不能大于库存数量！');
+            }
+
             try{
                 self::beginTransaction();
                 FirmStockFlowRepo::create($firmStockData);
@@ -118,7 +125,7 @@ class FirmStockService
         }
 
         $condition['flow_type'] = 3;
-        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_type'=>'desc']],$condition);
+        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
     }
 
     //库存记录列表
@@ -134,8 +141,12 @@ class FirmStockService
         return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
     //库存商品流水
-    public static function stockFlowList($id){
-        return FirmStockFlowRepo::getList([],['firm_id'=>$id]);
+    public static function stockFlowList($params, $page = 1, $pageSize = 10){
+        $condition = [];
+        $condition['firm_id'] = $params['firm_id'];
+        $condition['goods_id'] = $params['goods_id'];
+
+        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
     }
 
     //可出库列表
@@ -147,12 +158,18 @@ class FirmStockService
         if(!empty($goods_name)){
             $condition['goods_name'] = '%'.$goods_name.'%';
         }
-        $condition['number'] = '>|0';
+        $condition['number|>'] = '0';
         return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
     }
+
     //单条可出库
-    public static function curCanStock($id){
-        return FirmStockRepo::getInfo($id);
+    public static function stockInfo($id, $firm_id=0){
+        if($firm_id > 0){
+            return FirmStockRepo::getInfoByFields(['id'=>$id, 'firm_id'=>$firm_id]);
+        }else{
+            return FirmStockRepo::getInfo($id);
+        }
+
     }
 
     //入库检索商品名称

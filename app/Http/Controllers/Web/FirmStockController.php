@@ -106,9 +106,33 @@ class FirmStockController extends Controller
     }
 
     //企业库存商品流水
-    public function stockFlowList(){
-        $stockFlowInfo = FirmStockService::stockFlowList(session('_web_info')['id']);
-        return $this->display('web.firm.stockFlowList',compact('stockFlowInfo'));
+    public function stockFlowList(Request $request){
+        $id = $request->input('id');
+        $firm_id = session('_curr_deputy_user.firm_id');
+        $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
+        if(empty($firmStockInfo)){
+            return $this->error('非法访问操作！');
+        }
+        $goods_id = $firmStockInfo['goods_id'];
+        if($request->isMethod('get')){
+            return $this->display('web.user.stock.waterList', compact('firmStockInfo'));
+        }else{
+            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+            $page_size = $request->input('length', 10);
+            $params = [
+                'firm_id' => session('_curr_deputy_user.firm_id'),
+                'goods_id' => $goods_id
+            ];
+            $rs_list = FirmStockService::stockFlowList($params, $page, $page_size);
+
+            $data = [
+                'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                'recordsTotal' => $rs_list['total'], //数据总行数
+                'recordsFiltered' => $rs_list['total'], //数据总行数
+                'data' => $rs_list['list']
+            ];
+            return $this->success('', '', $data);
+        }
     }
 
     //企业实时库存列表
@@ -162,11 +186,11 @@ class FirmStockController extends Controller
     }
 
     //获取单条可出库数据
-    public function curCanStock(Request $request){
+    public function stockInfo(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
                 $id = $request->input('id');
-//                $firm_id = session('_curr_deputy_user')['firm_id'];
-                $firmStockInfo = FirmStockService::curCanStock($id);
+                $firm_id = session('_curr_deputy_user.firm_id');
+                $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
                 return $this->success('', '', $firmStockInfo);
         }
         return $this->error('非法访问');
@@ -177,6 +201,8 @@ class FirmStockController extends Controller
         if(session('_curr_deputy_user')['is_firm']){
             $currStockOut = [];
             $currStockOut['id'] = $request->input('id');
+            $currStockOut['order_sn'] = $this->requestGetNotNull('order_sn', '');
+            $currStockOut['partner_name'] = $this->requestGetNotNull('partner_name', '');
             $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
             $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
             $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
