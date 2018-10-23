@@ -4,11 +4,13 @@
 	<meta charset="UTF-8">
 	<title>产品列表</title>
 	@include(themePath('.','web').'web.include.partials.base')
-	<link rel="stylesheet" type="text/css" href="{{'/css/index.css'}}" />
-	<link rel="stylesheet" type="text/css" href="{{'/css/global.css'}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
-	<script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
-	<script type="text/javascript">
+    <style>
+        .Self-product-list li span{width:12.2%;}
+        .news_pages ul.pagination {text-align: center;}
+    </style>
+    <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
+    <script type="text/javascript">
         $(function(){
             // 更多/收起
             $('.pro_more').click(function(){
@@ -17,12 +19,10 @@
                 if (mPro=='收起') {
                     $(this).text('更多');
                     $(this).prev('.pro_brand_list').removeClass('heightcurr');
-
                 } else{
                     $(this).text('收起');
                     $(this).prev('.pro_brand_list').addClass('heightcurr');
                 }
-
             })
 			//更多选项
             $('.more_filter_box').click(function(){
@@ -32,7 +32,6 @@
                     $('.pro_screen').addClass('heightcurr')
                     $('.more_filter_box').text('隐藏选项...');
                     $('.pro_Open').toggleClass('pro_Open_down');
-
                 }else{
                     $('.pro_screen').removeClass('heightcurr');
                     $('.more_filter_box').text('更多选项...');
@@ -51,7 +50,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , prev: "上一页"
                     , next: "下一页"
-					, theme: "#88be51"
+					, theme: "#88be51" //样式
                     , jump: function (obj, first) {
                         if (!first) {
                             window.location.href="/goodsList?currpage="+obj.curr;
@@ -291,6 +290,7 @@
     })
 
 
+    //加入购物车
 	$(".P_cart_btn").click(function(){
 		var id = $(this).attr("data-id");
 		var number = 1;
