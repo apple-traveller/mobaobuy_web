@@ -15,7 +15,6 @@
 	function search(){
 		var user_name = $('#user_name').val();
 		$.ajax({
-                headers:{ 'X-CSRF-TOKEN': $('input[name="_token"]').val()},
                 'type':'post',
                 'data':{'user_name':user_name},
                 'url':'{{url('/createFirmUser')}}',

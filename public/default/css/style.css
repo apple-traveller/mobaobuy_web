@@ -43,7 +43,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-title{width: 1200px;height: 115px;margin: 0 auto;}
 .top-title .logo{height: 100%;float: left; width: 200px;position: relative;display:table;}
 .top-title .logo a{vertical-align:middle; display:table-cell;}
-.top-title .logo img{height: 90px;vertical-align:middle; display:table-cell;}
+.top-title .logo img{height: 70px;vertical-align:middle; display:table-cell;}
 .top-title .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
@@ -71,7 +71,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .logo-box{width: 1200px;height: 95px;margin: 0 auto;}
 .logo-box .logo{height: 100%;float: left; width: 200px;display:table;}
 .logo-box .logo a{vertical-align:middle; display:table-cell;}
-.logo-box .logo img{height: 80px;}
+.logo-box .logo img{height: 60px;}
 .logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
 
 .login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
@@ -90,7 +90,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .register-title{width: 1200px;height: 95px;margin: 0 auto;}
 .register-title .logo{height: 100%;float: left; width: 200px;display:table;}
 .register-title .logo a{vertical-align:middle; display:table-cell;}
-.register-title .logo img{height: 80px;}
+.register-title .logo img{height: 60px;}
 .register-title .go-login{height: 100%;line-height: 95px;color: #666;font-size: 14px;float: right;}
 
 .register-type {display: block;background-color: #f4f4f4;border-bottom: 1px solid #ddd;}
@@ -115,6 +115,6 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .member_list_mode .bottom {position: absolute;top: -7px;z-index: 1;width: 66px;height: 3px;background-color: #75b335;}
 .member_list_mode .line {width: 100%;position: absolute;top: -6px;height: 1px;background-color: #DEDEDE;}
 
-.member_right{width: 968px;box-sizing: border-box;min-height: 842px;height: auto;position: relative;border: 1px solid #DEDEDE;background: #FFFFFF;margin-left: 15px;float: left;padding: 25px 30px;}
+.member_right{width: 968px;box-sizing: border-box;min-height: 600px;height: auto;position: relative;border: 1px solid #DEDEDE;background: #FFFFFF;margin-left: 15px;float: left;padding: 25px 30px;}
 
 /**------------------------------------------------------------------------------------------------------------------------------**/
