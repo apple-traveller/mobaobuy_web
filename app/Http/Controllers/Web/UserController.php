@@ -716,5 +716,55 @@ class UserController extends Controller
         return $this->display("web.user.account.payPassword");
     }
 
+    /**
+     * 修改默认发票
+     * @param Request $request
+     * @return UserController|\Illuminate\Http\RedirectResponse
+     */
+    public function updateDefaultInvoice(Request $request)
+    {
+        $invoice_id = $request->input('invoice_id','');
+        if (empty($invoice_id)){
+            return $this->error('参数错误');
+        }
+        $userInfo  = session('_web_user');
+        $data = [
+            'id'=>$userInfo['id'],
+            'invoice_id' =>$invoice_id
+        ];
 
+        $re = UserService::modify($data);
+        if ($re){
+            session()->forget('_web_user');
+            return $this->success('修改成功');
+        } else {
+            return $this->error('修改失败');
+        }
+    }
+
+    /**
+     * 更新默认地址
+     * @param Request $request
+     * @return UserController|\Illuminate\Http\RedirectResponse
+     */
+    public function updateDefaultAddress(Request $request)
+    {
+        $address_id = $request->input('address_id','');
+        if (empty($address_id)){
+            return $this->error('参数错误');
+        }
+        $userInfo  = session('_web_user');
+        $data = [
+            'id'=>$userInfo['id'],
+            'address_id' =>$address_id
+        ];
+
+        $re = UserService::modify($data);
+        if ($re){
+            session()->forget('_web_user');
+            return $this->success('修改成功');
+        } else {
+            return $this->error('修改失败');
+        }
+    }
 }
