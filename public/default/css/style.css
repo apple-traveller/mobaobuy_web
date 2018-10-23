@@ -68,7 +68,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .logo-box{width: 1200px;height: 95px;margin: 0 auto;}
 .logo-box .logo{height: 100%;float: left; width: 200px;display:table;}
-.logo-box .logo img{max-height: 50%;vertical-align:middle; display:table-cell;}
+.logo-box .logo img{height: 50px;vertical-align:middle; display:table-cell;}
 .logo-box .service-tel{height: 100%;line-height: 95px;color: #666;font-size: 22px;float: right;}
 
 .login-box{ width: 360px; background: #FFFFFF; float: right;margin-top: 100px;}
