@@ -213,9 +213,11 @@ class UserController extends Controller
                 $addressList[$k]['is_default'] ='';
             };
         }
-        foreach ($first_one as $k1=>$v1){
-            unset($addressList[$k1]);
-            array_unshift($addressList,$first_one[$k1]);
+        if(!empty($first_one)) {
+            foreach ($first_one as $k1 => $v1) {
+                unset($addressList[$k1]);
+                array_unshift($addressList, $first_one[$k1]);
+            }
         }
         return $this->display('web.user.userAddress',compact('addressList'));
     }
@@ -459,9 +461,11 @@ class UserController extends Controller
                 $invoicesInfo[$k]['is_default'] ='';
             };
         }
-        foreach ($first_one as $k1=>$v1){
-            unset($invoicesInfo[$k1]);
-            array_unshift($invoicesInfo,$first_one[$k1]);
+        if(!empty($first_one)) {
+            foreach ($first_one as $k1 => $v1) {
+                unset($invoicesInfo[$k1]);
+                array_unshift($invoicesInfo, $first_one[$k1]);
+            }
         }
         return $this->display('web.user.userInvoices',compact('invoicesInfo'));
     }
