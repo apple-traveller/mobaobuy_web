@@ -206,7 +206,7 @@ class GoodsController extends Controller
             if (!empty($userInfo['invoice_id'])) {
                 $invoicesInfo = UserInvoicesService::getInvoice($userInfo['invoice_id']);
             } else {
-                $invoicesInfo = $invoicesList[0];
+                $invoicesInfo = [];
             }
 
             // 收货地址列表
