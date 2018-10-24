@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Services\SmsService;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserAccountLogService;
+use Monolog\Handler\IFTTTHandler;
 
 class UserController extends Controller
 {
@@ -336,6 +337,7 @@ class UserController extends Controller
      * @return UserController|\Illuminate\Http\RedirectResponse
      */
     public function createInvoices(Request $request){
+        $current_user = session('_curr_deputy_user');
         $id = $request->input('id','');
         $address_ids = $request->input('address_ids','');
         $consignee_address = $request->input('consignee_address','');
@@ -347,6 +349,33 @@ class UserController extends Controller
         $company_telephone = $request->input('company_telephone','');
         $consignee_name = $request->input('consignee_name','');
         $consignee_mobile_phone = $request->input('consignee_mobile_phone','');
+
+        if ($current_user['is_firm']==1){
+            if (empty($company_name)){
+                return $this->error('请填写公司抬头');
+            }
+            if (empty($tax_id)){
+                return $this->error('请填写税号');
+            }
+            if (empty($bank_of_deposit)){
+                return $this->error('请填写开户银行');
+            }
+            if (empty($bank_account)){
+                return $this->error('请填写银行账号');
+            }
+        }
+        if (empty($address_ids)){
+            return $this->error('请填写银行账号');
+        }
+        if (empty($bank_account)){
+            return $this->error('请填写银行账号');
+        }
+        if (empty($bank_account)){
+            return $this->error('请填写银行账号');
+        }
+        if (empty($bank_account)){
+            return $this->error('请填写银行账号');
+        }
 
         $address_ids = explode('|',$address_ids);
         $data = [

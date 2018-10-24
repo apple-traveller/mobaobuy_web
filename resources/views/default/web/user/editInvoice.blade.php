@@ -80,7 +80,6 @@
                 line-height: 40px;
                 cursor: pointer;
             }
-
             .ui-area .area-warp {
                 position: absolute;
                 border: 1px solid #d2d2d2;
@@ -128,11 +127,22 @@
                 <div class="ovh mt10 fl" style="margin-left: 53px;">
                     <span class="add_left fl">开票地址:</span>
                     <input type="text" class="pay_text fl" value="@if(!empty($data['company_address'])) {{ $data['company_address'] }} @endif" style="width: 219px;" name="company_address"/>
-                    <span class="fl red ml10">*</span></div>
+                    </div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl"><span class="add_left fl">收票人:</span><input type="text" class="pay_text" value="@if(!empty($data['consignee_name'])) {{ $data['consignee_name']}} @endif"  name="consignee_name" style="width: 219px;"/></div>
-                <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" value="@if(!empty($data['consignee_mobile_phone'])) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
+                <div class="ovh mt10 ml30 fl">
+                    <span class="add_left fl">
+                        收票人:
+                    </span>
+                    <input type="text" class="pay_text" value="@if(!empty($data['consignee_name'])) {{ $data['consignee_name']}} @endif"  name="consignee_name" style="width: 219px;"/>
+
+                </div>
+                <span class="fl red ml10">*</span>
+                <div class="ovh mt10  fl" style="margin-left: 38px;">
+                    <span class="add_left fl">收票人电话:</span>
+                    <input type="text" value="@if(!empty($data['consignee_mobile_phone'])) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/>
+                </div>
+                <span class="fl red ml10">*</span>
             </li>
             <li>
                 <div class=" mt10 ml30 fl">
@@ -141,6 +151,7 @@
                     <input type="text" readonly="readonly" name="id" value="@if(!empty($data['id'])) {{ $data['id'] }} @endif" style="display: none">
                     <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data['address_str'])) {{ $data['address_str'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
                     </div>
+                    <span class="fl red ml10">*</span>
                 </div>
             </li>
             <li>

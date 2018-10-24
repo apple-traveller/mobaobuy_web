@@ -221,12 +221,12 @@ class GoodsController extends Controller
                     $addressList[$k]['is_default'] ='';
                 };
             }
-
-            foreach ($first_one as $k1=>$v1){
-                unset($addressList[$k1]);
-                array_unshift($addressList,$first_one[$k1]);
+            if(!empty($first_one)){
+                foreach ($first_one as $k1=>$v1){
+                    unset($addressList[$k1]);
+                    array_unshift($addressList,$first_one[$k1]);
+                }
             }
-
             $goodsList = session('cartSession');
 
             foreach ($goodsList as $k3=>$v3){
