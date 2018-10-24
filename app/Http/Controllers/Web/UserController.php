@@ -95,9 +95,9 @@ class UserController extends Controller
             try{
                 UserService::userRegister($data);
                 if(getConfig('individual_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', '/');
+                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', '/');
+                    return $this->success('注册成功！', route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -136,10 +136,9 @@ class UserController extends Controller
                 UserService::userRegister($data);
 
                 if(getConfig('firm_reg_check')) {
-                      return redirect('/verifyReg');
-//                    return $this->success('提交成功，请等待审核！', '/');
+                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', '/');
+                    return $this->success('注册成功！', route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
