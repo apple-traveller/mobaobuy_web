@@ -283,7 +283,7 @@
 </div>
 
 
-
+<div class="clearfix whitebg ovh mt40" style="font-size: 0;">
 @include(themePath('.','web').'web.include.partials.footer_new')
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>
