@@ -1,7 +1,7 @@
 <div class="header">
     <div class="w1200">
         <div class="clearfix">
-            <div class="logo" style="margin-top: 38px;"></div>
+            <a><div class="logo" style="margin-top: 38px;"></div></a>
             <div class="index_search fl mt40">
                 <input type="text" class="index_search_text fl" placeholder="请输入关键词、类别进行搜索"/><input type="button" class="index_search_btn white fs16 fl" value="搜 索"/>
                 <a class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
