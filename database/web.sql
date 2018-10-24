@@ -44,15 +44,10 @@ CREATE TABLE `user` (
   `email` varchar(60) NOT NULL DEFAULT '' COMMENT '邮箱',
   `avatar` varchar(500) NOT NULL DEFAULT '' COMMENT '用户头像',
 
-  `contactName` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人姓名',
-  `contactPhone` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人手机',
-  `attorney_letter_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '授权委托书电子版',
-
   `user_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '会员可用金额',
   `frozen_money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '会员冻结金额',
   `points` int(10) NOT NULL DEFAULT '0' COMMENT '会员积分',
   `address_id` int(10) NOT NULL DEFAULT '0' COMMENT '默认收货地址',
-  `invoice_id` int(10) NOT NULL DEFAULT '0' COMMENT '默认开票ID',
   `reg_time` datetime NOT NULL COMMENT '注册时间',
   `last_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '上次登录IP',
@@ -94,6 +89,7 @@ CREATE TABLE `user_paypwd` (
 DROP TABLE IF EXISTS `user_real`;
 CREATE TABLE `user_real` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `is_firm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否企业认证 0-否 1-是',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
   `real_name` varchar(60) NOT NULL DEFAULT '' COMMENT '真实姓名',
   `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别 0-保密 1-男 2-女',
@@ -101,9 +97,18 @@ CREATE TABLE `user_real` (
   `front_of_id_card` varchar(60) NOT NULL DEFAULT '' COMMENT '身份证正面',
   `reverse_of_id_card` varchar(60) NOT NULL DEFAULT '' COMMENT '身份证反面',
 
-  `business_license_id` varchar(255) NOT NULL DEFAULT '' COMMENT '营业执照注册号',
   `license_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '营业执照副本电子版',
-  `taxpayer_id` varchar(255) NOT NULL DEFAULT '' COMMENT '纳税人识别号',
+  `attorney_letter_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '授权委托书电子版',
+  `invoice_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '开票资料电子版',
+  `contactName` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人姓名',
+  `contactPhone` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人手机',
+  `is_special` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否能开专票 0-否 1-是',
+  `company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '公司抬头',
+  `tax_id` varchar(20) NOT NULL DEFAULT '' COMMENT '税号',
+  `bank_of_deposit` varchar(20) NOT NULL DEFAULT '' COMMENT '开户银行',
+  `bank_account` varchar(30) NOT NULL DEFAULT '' COMMENT '银行账号',
+  `company_address` varchar(255) NOT NULL DEFAULT '' COMMENT '开票地址',
+  `company_telephone` varchar(20) NOT NULL DEFAULT '' COMMENT '开票电话',
 
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `review_content` varchar(200) NOT NULL DEFAULT '' COMMENT '审核意见',
@@ -130,31 +135,6 @@ CREATE TABLE `user_address` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收货地址表';
-
-DROP TABLE IF EXISTS `user_invoices`;
-CREATE TABLE `user_invoices` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '公司抬头',
-  `tax_id` varchar(20) NOT NULL DEFAULT '' COMMENT '税号',
-  `bank_of_deposit` varchar(20) NOT NULL DEFAULT '' COMMENT '开户银行',
-  `bank_account` varchar(30) NOT NULL DEFAULT '' COMMENT '银行账号',
-  `company_address` varchar(255) NOT NULL DEFAULT '' COMMENT '开票地址',
-  `company_telephone` varchar(20) NOT NULL DEFAULT '' COMMENT '开票电话',
-  `consignee_name` varchar(20) NOT NULL DEFAULT '' COMMENT '收票人',
-  `consignee_mobile_phone` varchar(15) NOT NULL DEFAULT '' COMMENT '收票人电话',
-  `country` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-国家',
-  `province` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-省',
-  `city` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-市',
-  `district` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-县',
-  `street` smallint(5) NOT NULL DEFAULT '0' COMMENT '收票地址-街道',
-  `consignee_address` varchar(255) NOT NULL DEFAULT '' COMMENT '收票地址-详细地址',
-  `audit_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态 0-待审核 1-已审核',
-  `add_time` datetime NOT NULL COMMENT '添加时间',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `audit_status` (`audit_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员发票';
 
 DROP TABLE IF EXISTS `user_account_log`;
 CREATE TABLE `user_account_log` (
@@ -186,7 +166,7 @@ CREATE TABLE `firm_stock` (
 	`firm_id` int(10) NOT NULL COMMENT '会员ID',
 	`goods_id` int(10) NOT NULL DEFAULT '0' COMMENT '商品ID',
 	`goods_name` varchar(100) NOT NULL COMMENT '商品名称',
-	`number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数',
+	`number` decimal(10,3) NOT NULL DEFAULT 0 COMMENT '库存数',
   PRIMARY KEY (`id`),
   KEY `firm_id` (`firm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='企业库存表';
@@ -199,7 +179,7 @@ CREATE TABLE `firm_stock_flow` (
 	`flow_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '流水类型 1-平台购物入库 2-其它入库 3-库存出库',
 	`goods_id` int(10) NOT NULL DEFAULT '0' COMMENT '商品ID',
 	`goods_name` varchar(100) NOT NULL COMMENT '商品名称',
-	`number` int(10) NOT NULL COMMENT '出入库数量',
+	`number` decimal(10,3) NOT NULL COMMENT '出入库数量',
 	`price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
   `flow_desc` varchar(500) NOT NULL DEFAULT '' COMMENT '描述',
   `flow_time` datetime NOT NULL COMMENT '流水时间',
@@ -220,6 +200,7 @@ CREATE TABLE `firm_user` (
 	`can_approval` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能审批 0-否 1-是',
 	`can_pay` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能付款 0-否 1-是',
 	`can_confirm` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能确认收货 0-否 1-是',
+	`can_invoice` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能申请开票 0-否 1-是',
 	`can_stock_in` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能入库 0-否 1-是',
 	`can_stock_out` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能出库 0-否 1-是',
 	`can_stock_view` tinyint(1) NOT NULL DEFAULT '0' COMMENT '能查看库存 0-否 1-是',
@@ -321,6 +302,36 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (5, 'friend_link_path', 'text','','','友情链接路径','../friend_link','',''),
 (5, 'firm_path', 'text','','','企业资质路径','../firm','','');
 
+DROP TABLE IF EXISTS `ad_position`;
+CREATE TABLE `ad_position` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `position_name` varchar(60) NOT NULL DEFAULT '',
+  `ad_width` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `ad_height` smallint(5) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='广告位置表';
+insert into ad_position(position_name,ad_width,ad_height) VALUES
+('首页大轮播图','1920','344');
+
+DROP TABLE IF EXISTS `ad`;
+CREATE TABLE `ad` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `position_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '位置ID',
+  `ad_name` varchar(60) NOT NULL DEFAULT '' COMMENT '广告名称',
+  `ad_link` varchar(255) NOT NULL DEFAULT '' COMMENT '广告链接',
+  `start_time` datetime NOT NULL COMMENT '有效时间从',
+  `end_time` datetime NOT NULL COMMENT '有效时间至',
+  `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用 0-否 1-是',
+  `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `position_id` (`position_id`),
+  KEY `enabled` (`enabled`),
+  KEY `start_time` (`start_time`),
+  KEY `end_time` (`end_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='广告表';
+
+DROP TABLE IF EXISTS `friend_link`;
 CREATE TABLE `friend_link` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `link_name` varchar(255) NOT NULL DEFAULT '' COMMENT '链接名称',
@@ -421,7 +432,18 @@ insert into article_cat(cat_name,sort_order,parent_id) VALUES
 ('服务保证', '5','3'),
 ('发票问题', '1','1');
 
-
+DROP TABLE IF EXISTS `demand`;
+CREATE TABLE `demand` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '咨询发布者会员编号(0：游客)',
+  `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
+  `desc` varchar(255) DEFAULT '' COMMENT '求购信息',
+  `action_state` tinyint(1) NOT NULL DEFAULT '0' COMMENT '求购有效状态0待处理 1已处理',
+  `action_log` varchar(2000) DEFAULT '' COMMENT '处理日志',
+  `created_at` datetime NOT NULL COMMENT '添加时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户需求表';
 
 
 DROP TABLE IF EXISTS `goods_category`;
@@ -642,11 +664,15 @@ CREATE TABLE `shop_goods_quote` (
   `goods_id` int(10) NOT NULL COMMENT '商品ID',
   `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
-  `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '交货地',
+  `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '发货地',
+  `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT 0 COMMENT '店铺职员ID',
-  `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部职员ID',
+  `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
+  `salesman` varchar(10) NOT NULL DEFAULT '' COMMENT '业务员名称',
+  `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
+  `production_date` varchar(50) NOT NULL COMMENT '生产日期',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `expiry_time` datetime NOT NULL COMMENT '截止时间',
   `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
@@ -699,7 +725,6 @@ CREATE TABLE `order_info` (
   `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
   `postscript` varchar(255) NOT NULL DEFAULT '' COMMENT '买家留言',
   `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态 0-待付款 1-已付款 2-部分付款',
-  `invoice_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员发票信息ID',
   `goods_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品总金额',
   `tax` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '发票税额',
   `shipping_fee` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '运费金额',
@@ -893,6 +918,60 @@ CREATE TABLE `order_back_goods` (
   KEY `back_id` (`back_id`),
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='退货明细';
+
+DROP TABLE IF EXISTS `invoice`;
+CREATE TABLE `invoice` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '索引id',
+  `shop_id` int(10) unsigned NOT NULL COMMENT '卖家店铺id',
+  `shop_name` varchar(50) NOT NULL COMMENT '卖家店铺名称',
+  `user_id` int(10) unsigned NOT NULL COMMENT '买家id',
+  `member_phone` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '买家手机',
+  `invoice_amount` decimal(20,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '发票总金额',
+  `order_quantity` int(10) NOT NULL DEFAULT 0 COMMENT '订单数量',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '申请状态：0-已取消 1-待开票 2-已开票',
+  `invoice_numbers` varchar(300) NOT NULL DEFAULT '' COMMENT '发票号',
+  `shipping_id` int(10) unsigned DEFAULT '0' COMMENT '快递公司ID',
+  `shipping_name` varchar(120) DEFAULT NULL COMMENT '快递名称',
+  `shipping_billno` varchar(120) DEFAULT NULL COMMENT '运单号',
+
+  `consignee` varchar(60) NOT NULL DEFAULT '' COMMENT '收票人',
+  `country` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '国家',
+  `province` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '省份',
+  `city` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '城市',
+  `district` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '县',
+  `street` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '街道',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
+  `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮政编码',
+  `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
+
+  `invoice_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '发票类型 1-普票 2-专票',
+  `company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '公司抬头',
+  `tax_id` varchar(20) NOT NULL DEFAULT '' COMMENT '税号',
+  `bank_of_deposit` varchar(20) NOT NULL DEFAULT '' COMMENT '开户银行',
+  `bank_account` varchar(30) NOT NULL DEFAULT '' COMMENT '银行账号',
+  `company_address` varchar(255) NOT NULL DEFAULT '' COMMENT '开票地址',
+  `company_telephone` varchar(20) NOT NULL DEFAULT '' COMMENT '开票电话',
+
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发票申请表';
+
+DROP TABLE IF EXISTS `invoice_goods`;
+CREATE TABLE `invoice_goods` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单商品表索引id',
+  `invoice_id` int(10) NOT NULL COMMENT '申请id',
+  `order_goods_id` int(10) NOT NULL COMMENT '订单明细id',
+  `goods_id` int(10) NOT NULL COMMENT '商品id',
+  `goods_name` varchar(50) NOT NULL COMMENT '商品名称',
+  `goods_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '价格',
+  `invoice_num` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '开票数量',
+  `created_at` datetime NOT NULL COMMENT '创建时间',
+  `updated_at` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `invoice_id` (`invoice_id`),
+  KEY `order_goods_id` (`order_goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发票商品表';
 
 DROP TABLE IF EXISTS `seckill_time_bucket`;
 CREATE TABLE `seckill_time_bucket` (
