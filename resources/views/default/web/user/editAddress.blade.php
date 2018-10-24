@@ -82,7 +82,6 @@
 	</style>
 
 	<div class="pay_method whitebg " id="addr_frame">
-		<div class="pay_title f4bg mt20"><span class="fl pl30 gray fs16">收货地址</span></div>
 		<form  method="post" id="address_form">
 			<ul class="addr_list ml30 mt25">
 				<li>
@@ -99,10 +98,11 @@
 				<li><div class="ovh mt10 ml30"><span class="add_left fl">收货人姓名:</span><input type="text" class="pay_text" value="@if(!empty($data)) {{ $data['consignee'] }} @endif" name="consignee"/></div></li>
 				<li><div class="ovh mt10 ml30"><span class="add_left fl">手机号码:</span><input type="text" class="pay_text"  value="@if(!empty($data)) {{ $data['mobile_phone'] }} @endif" name="mobile_phone"/></div></li>
 			</ul>
-			<div class="ovh mb30 mt20" style="margin-left: 154px;">
-				<button type="submit" class="add_btn code_greenbg add_address">保 存</button><button type="button" class="add_btn cccbg ml35 cancel">取 消</button>
-			</div>
+
 		</form>
+		<div class="ovh mb30 mt20 whitebg" style="margin-left: 154px;">
+			<button type="submit" class="add_btn code_greenbg add_address">保 存</button><button type="button" class="add_btn cccbg ml35 cancel">取 消</button>
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -115,12 +115,12 @@
 					data: input,
 					type: 'POST',
 					success:function (res) {
+                        parent.location.reload();
 						if (res.code == 1){
-                            alert(res.msg);
+                            $.msg.alert(res.msg);
                             setTimeout( parent.location.reload(),2000);
 						} else {
-						    alert(res.msg);
-                            // document.getElementById("address_form").reset();
+                            $.msg.alert(res.msg);
                             setTimeout( parent.location.reload(),2000);
 						}
                     }

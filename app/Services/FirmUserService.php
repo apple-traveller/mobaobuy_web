@@ -21,20 +21,56 @@ class FirmUserService
     }
 
     //增加企业用户
-    public static function addFirmUser($firmId,$phone,$permi,$userName){
+    public static function addFirmUser($firmId,$phone,$permi,$userName,$isEdit){
         //查询此手机号是否存在，
         $userInfo = UserRepo::getInfoByFields(['user_name'=>$phone, 'is_firm'=>0]);
         if(empty($userInfo)){
             self::throwBizError('手机用户不存在!');
         }
         $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userInfo['id']]);
-        if($firmUserInfo){
-            self::throwBizError('企业用户已绑定!');
-        }
         $userPermi = [];
-        $userPermi['firm_id'] = $firmId;
-        $userPermi['user_id'] = $userInfo['id'];
-        $userPermi['real_name'] = $userName;
+        if($isEdit){
+            //编辑
+            if($firmUserInfo){
+                $userPermi['real_name'] = $userName;
+                if(in_array(1,$permi)){
+                    $userPermi['can_po'] = 1;
+                }
+                if(in_array(2,$permi)){
+                    $userPermi['can_pay'] = 1;
+                }
+                if(in_array(3,$permi)){
+                    $userPermi['can_confirm'] = 1;
+                }
+                if(in_array(4,$permi)){
+                    $userPermi['can_stock_out'] = 1;
+                }
+                if(in_array(5,$permi)){
+                    $userPermi['can_approval'] = 1;
+                }
+//            if(in_array(6,$permi)){
+//                $userPermi['can_stock_out'] = 1;
+//            }
+                if(in_array(7,$permi)){
+                    $userPermi['can_stock_in'] = 1;
+                }
+                if(in_array(8,$permi)){
+                    $userPermi['can_stock_view'] = 1;
+                }
+                return FirmUserRepo::modify($firmUserInfo['id'],$userPermi);
+
+            }
+            self::throwBizError('用户未绑定企业');
+        }else{
+            //新增
+
+            if($firmUserInfo){
+                self::throwBizError('企业用户已绑定!');
+            }
+
+            $userPermi['firm_id'] = $firmId;
+            $userPermi['user_id'] = $userInfo['id'];
+            $userPermi['real_name'] = $userName;
             if(in_array(1,$permi)){
                 $userPermi['can_po'] = 1;
             }
@@ -45,12 +81,26 @@ class FirmUserService
                 $userPermi['can_confirm'] = 1;
             }
             if(in_array(4,$permi)){
-                $userPermi['can_stock_in'] = 1;
-            }
-            if(in_array(5,$permi)){
                 $userPermi['can_stock_out'] = 1;
             }
-        return FirmUserRepo::create($userPermi);
+            if(in_array(5,$permi)){
+                $userPermi['can_approval'] = 1;
+            }
+//            if(in_array(6,$permi)){
+//                $userPermi['can_stock_out'] = 1;
+//            }
+            if(in_array(7,$permi)){
+                $userPermi['can_stock_in'] = 1;
+            }
+            if(in_array(8,$permi)){
+                $userPermi['can_stock_view'] = 1;
+            }
+
+            return FirmUserRepo::create($userPermi);
+        }
+
+
+
     }
 
     //

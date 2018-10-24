@@ -95,9 +95,9 @@ class UserController extends Controller
             try{
                 UserService::userRegister($data);
                 if(getConfig('individual_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', '/');
+                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', '/');
+                    return $this->success('注册成功！', route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -136,10 +136,9 @@ class UserController extends Controller
                 UserService::userRegister($data);
 
                 if(getConfig('firm_reg_check')) {
-                      return redirect('/verifyReg');
-//                    return $this->success('提交成功，请等待审核！', '/');
+                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', '/');
+                    return $this->success('注册成功！', route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -200,11 +199,24 @@ class UserController extends Controller
 
     //显示用户收获地
     public function shopAddressList(){
-        $userId = session('_web_user_id');
+        $user_info = session('_web_user');
         $condition = [];
-        $condition['user_id'] = $userId;
-        $addressInfo = UserService::shopAddressList($condition);
-        return $this->display('web.user.userAddress',compact('addressInfo'));
+        $condition['user_id'] = $user_info['id'];
+        $addressList = UserService::shopAddressList($condition);
+        foreach ($addressList as $k=>$v){
+            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            if ($v['id'] == $user_info['address_id']){
+                $addressList[$k]['is_default'] =1;
+                $first_one[$k] = $addressList[$k];
+            } else {
+                $addressList[$k]['is_default'] ='';
+            };
+        }
+        foreach ($first_one as $k1=>$v1){
+            unset($addressList[$k1]);
+            array_unshift($addressList,$first_one[$k1]);
+        }
+        return $this->display('web.user.userAddress',compact('addressList'));
     }
 
     /**
@@ -367,7 +379,6 @@ class UserController extends Controller
             }
 
         }catch (\Exception $e){
-            dd($e->getMessage());
             return $this->error($e->getMessage());
         }
     }
@@ -406,10 +417,23 @@ class UserController extends Controller
 
     //用户发票信息
     public function invoicesList(){
-        $userId = session('_web_user_id');
+        $user_info = session('_web_user');
         $condition = [];
-        $condition['user_id'] = $userId;
+        $condition['user_id'] = $user_info['id'];
         $invoicesInfo = UserInvoicesService::invoicesById($condition);
+        foreach ($invoicesInfo as $k=>$v){
+            $invoicesInfo[$k] = UserInvoicesService::getInvoice($v['id']);
+            if ($v['id'] == $user_info['invoice_id']){
+                $invoicesInfo[$k]['is_default'] =1;
+                $first_one[$k] = $invoicesInfo[$k];
+            } else {
+                $invoicesInfo[$k]['is_default'] ='';
+            };
+        }
+        foreach ($first_one as $k1=>$v1){
+            unset($invoicesInfo[$k1]);
+            array_unshift($invoicesInfo,$first_one[$k1]);
+        }
         return $this->display('web.user.userInvoices',compact('invoicesInfo'));
     }
 

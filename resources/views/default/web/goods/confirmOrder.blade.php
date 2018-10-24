@@ -30,6 +30,7 @@
 			border: 1px solid #ff6f17;
 			box-sizing: border-box;
 			background-color: #fefce9;
+			position: relative;
 		}
 		.Collect_goods_address {
 			margin-left: 10px;
@@ -38,6 +39,7 @@
 		.Collect_goods_address li:hover {
 			border: 1px solid #75b335;
 		}
+		.Collect_goods_address li.mrxs-curr{border:1px solid #75b335;background: url("default/img/addr_curr.png")no-repeat -22px -8px;}
 		.Collect_goods_address li {
 			float: left;
 			margin-left: 20px;
@@ -49,6 +51,8 @@
 			position: relative;
 			box-sizing: border-box;
 		}
+		.Collect_goods_address li:hover{border: 1px solid #75b335;}
+		.Collect_goods_address li:last-child:hover{border: 1px solid #D9D9D9;}
 		.Collect_goods_address {
 			margin-left: 10px;
 			margin-top: 0px;
@@ -115,12 +119,6 @@
 			margin: 20px auto;
 			overflow: hidden;
 		}
-		.default_text {
-			float: right;
-			margin-right: 20px;
-			color: #999;
-			display: block;
-		}
 		.fs14{font-size:14px;}
 		.order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
 		.cart_progress{width: 303px;margin:0 auto;height: 33px;}
@@ -146,6 +144,25 @@
 			margin-right: 30px;font-size: 15px;border: 1px solid #dedede;text-align: center;cursor: pointer;color: #999;}
 		.qiehuan.active{background: url(default/img/pro_more.png)no-repeat 63px -14px;}
 		.ml300 { margin-left: 400px !important; }
+
+		.select_btn{padding: 6px 24px;
+			border: 1px solid #eca57a;
+			color: #eca57a;
+			background: none;
+			border-radius: 3px;
+			position: absolute;
+			top: 16px;
+			right: 16px;cursor: pointer;}
+		.select_btn:hover{background-color: #eca57a;color: #fff;}
+
+		.address_default {
+			width: 270px;
+			line-height: 36px;
+			position: absolute;
+			bottom: 0;
+			top: 84px;
+			right: -164px;
+		}
 	</style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -182,9 +199,8 @@
 
 		</div>
 		<div  id ="change_list" style="display:none;">
-			<span class="ml300" style="color: #00CC00"><b>********************** 双击选择 **********************</b></span>
 			@foreach($invoicesList as $k=>$v)
-		<div class="company_information change_list" data-id="{{ $v['id'] }}" readonly="readonly">
+		<div class="company_information" readonly="readonly">
 			<ul class="company_list">
 				<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $v['company_name'] }}</span></li>
 				<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $v['tax_id'] }}</span></li>
@@ -195,6 +211,7 @@
 				<li><span class="company_title">收票人 :</span><span class="ml5">{{ $v['consignee_name'] }} {{ $v['consignee_mobile_phone'] }}</span></li>
 				<li><span class="company_title">收票人地址 :</span><span class="ml5">{{ $v['address_str'] }}{{ $v['consignee_address'] }}</span></li>
 			</ul>
+			<button class="select_btn change_list" data-id="{{ $v['id'] }}" >点击选择</button>
 		</div>
 				@endforeach
 		</div>
@@ -204,24 +221,34 @@
 
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
 			@foreach($addressList as $k=>$v)
-			<li class="address_list" data-id="{{ $v['id'] }}">
-				<div class="mt20 ml20 ovh"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
+			<li class="address_list @if($v['is_default'] == 1) mrxs-curr @endif">
+				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
-				@if($v['is_default'] == 1) <span class="default_text cp">默认</span> @endif
+				<div class="address_default">
+					<div class="address_default_edit">
+						@if($v['is_default'] == 1)
+							<span class="mr20 cp " style="color: #74b334">默认</span>
+						@else
+							<span class="mr20 cp check_address " data-id="{{ $v['id'] }}" >设置默认</span>
+						@endif
+					</div>
+
+				</div>
+
+			{{--@if($v['is_default'] == 1) <span class="default_text cp">默认</span> @endif--}}
 			</li>
 			@endforeach
 		</ul>
-		<span class="ml300" style="color: #00CC00"><b>********************** 双击选择 **********************</b></span>
 	</div>
 	<div class="address whitebg ovh mt20">
 		<h1 class="ml30 fs18 mt30">商品信息</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
 			<li class="graybg">
-				<span>商品</span><span>单价（元）</span><span>数量（公斤）</span><span>运费（元）</span><span></span><span>小计</span>
+				<span>商品</span><span>单价（元）</span><span>数量（公斤）</span><span>发货地</span><span></span><span>小计</span>
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>待商家审核</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>{{ $v['delivery_place'] }}</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
 			</li>
 			@endforeach
 		</ul>
@@ -274,7 +301,7 @@
     /**
 	 * 修改默认开票
      */
-	$(".change_list").dblclick(function () {
+	$(".change_list").click(function () {
 		let invoice_id = $(this).attr('data-id');
       	$.ajax({
 			url:'/updateDefaultInvoice',
@@ -293,7 +320,7 @@
     /**
 	 * 修改默认地址
      */
-    $(".address_list").dblclick(function () {
+    $(".check_address").click(function () {
         let address_id = $(this).attr('data-id');
         $.ajax({
             url:'/updateDefaultAddress',

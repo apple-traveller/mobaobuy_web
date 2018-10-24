@@ -94,7 +94,7 @@
         <ul class="ovh ml15 today_news_list mt15">
             @foreach($list['list'] as $k=>$v)
             <li>
-                <div class="fl mb15" style="width: 200px;height: 128px"><a href="detail.html?id={{ $v['id'] }}"><img src="{{ getFileUrl($v['image']) }}"/></a></div>
+                <div class="fl mb15" style="width: 200px;height: 128px"><a href="detail.html?id={{ $v['id'] }}"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 128px"/></a></div>
                 <div class="fl ml20">
                     <h1 class="fs18 mt10"><a href="detail.html?id={{ $v['id'] }}">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
@@ -103,19 +103,6 @@
             </li>
             @endforeach
         </ul>
-        <!--页码-->
-        {{--<div class="news_pages">--}}
-            {{--<ul class="pagination">--}}
-                {{--<li><a href="#">首页</a></li>--}}
-                {{--<li><a href="#">上一页</a></li>--}}
-                {{--<li><a href="#">1</a></li>--}}
-                {{--<li><a class="active" href="#">2</a></li>--}}
-                {{--<li><a href="#">3</a></li>--}}
-                {{--<li><a href="#">下一页</a></li>--}}
-                {{--<li><a href="#">尾页</a></li>--}}
-            {{--</ul>--}}
-
-        {{--</div>--}}
         {!! $linker !!}
     </div>
     <!--右边部分-->

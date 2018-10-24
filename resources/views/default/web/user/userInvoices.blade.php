@@ -94,10 +94,16 @@
 	<div class="address_border">
 		<ul class="Receive_address">
 			@foreach($invoicesInfo as $k=>$v)
-			<li class="curr">
+			<li class="@if($v['is_default'] == 1) curr @endif">
 				<div class="address_name mt20 ovh"><div class="fr red"><a class="edit_address" data-id="{{ $v['id'] }}">修改</a><a class="ml10 del_address " data-id="{{ $v['id'] }}">删除</a></div></div>
 				<div class="address_name mt15"><span>{{ $v['company_name'] }}</span></div>
-				<div class="address_name mt15 default_addr dno"><span class="fr lcolor cp">设为默认地址</span></div>
+				<div class="address_name mt15 default_addr dno">
+					@if($v['is_default'])
+						<span class="fr lcolor cp" ><a href="javascript:void(0);" style="color: #75b335; ">默认地址</a></span>
+					@else
+						<span class="fr lcolor cp checked_btn" data-id = "{{$v['id']}}" style="cursor: pointer">设为默认地址</span>
+					@endif
+				</div>
 			</li>
 			@endforeach
 			<li>
@@ -112,27 +118,49 @@
 @section('js')
 	<script>
         $(function(){
-            $('.Receive_address li').click(function(){
-                $(this).addClass('curr').siblings().removeClass('curr')
-            })
             //	删除
             $('.del_address').click(function(){
+                let io = $(this);
                 let id = $(this).attr('data-id');
+                layer.confirm('确认删除么？', {
+                    btn: ['确认','取消']
+                }, function(index, layero){
+                    $.ajax({
+                        url:'/deleteInvoices',
+                        data:{id:id},
+                        type:'POST',
+                        success:function (res) {
+                            if (res.code == 1){
+                                $.msg.alert(res.msg);
+                                io.parents(".Receive_address li").remove();
+                            } else {
+                                $.msg.alert(res.msg);
+                                return false;
+                            }
+                        }
+                    });
+                }, function(index){
+                });
+
+            })
+            /**
+             * 修改默认开票
+             */
+            $(".checked_btn").click(function () {
+                let invoice_id = $(this).attr('data-id');
                 $.ajax({
-                    url:'/deleteInvoices',
-                    data:{id:id},
-                    type:'POST',
+                    url:'/updateDefaultInvoice',
+                    data:{'invoice_id':invoice_id},
+                    type:"POST",
                     success:function (res) {
                         if (res.code == 1){
-                            $.msg.alert(res.msg);
-                        } else {
-                            $.msg.alert(res.msg);
-                            return false;
+                            setTimeout(window.location.reload(),1000);
+                        }else{
+                            setTimeout(window.location.reload(),1000);
                         }
                     }
                 });
-                $(this).parents(".Receive_address li").remove();
-            })
+            });
             //	编辑
             $(".edit_address").click(function () {
                 let address_id = $(this).attr('data-id');

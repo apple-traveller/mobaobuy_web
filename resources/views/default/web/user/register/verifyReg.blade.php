@@ -18,7 +18,7 @@
 			.tac{text-align:center !important;}
 			.mt35{margin-top:35px;}
 			.orange,a.orange,a.orange:hover{color:#ff6600;}
-			.enter_index{width:175px;height:40px;line-height: 40px;margin:0 auto;margin-top:35px;background-color: #50b200;border: none;}
+			.enter_index{width:175px;height:40px;line-height: 40px;margin:30px auto;background-color: #50b200;border: none;text-align: center;}
 			.db{display:block;}
 			.white,a.white,a.white:hover{color:#fff; text-decoration:none;}
 			.tac{text-align:center !important;}
@@ -33,8 +33,7 @@
 		<div class="succes_main ovh">
 			<div class="succes_main_til fs18">恭喜您，注册申请提交成功！</div>
 			<p class="tac mt35">请等待客服人员审核，如有问题请咨询客服：<font class="orange">{{getConfig('service_phone')}}</font></p>
-			<button class="enter_index db white ">进入官网首页</button>
-			<p class="tac mt5 gray mb50"><span class="orange">10s</span> 后返回官网首页</p>
+			<a class="enter_index db white" href="/">进入平台首页</a>
 		</div>
 	</div>
 	@include(themePath('.','web').'web.include.partials.footer_service')
