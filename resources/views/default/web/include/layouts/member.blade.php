@@ -22,22 +22,30 @@
                 </div>
                 @endif
 
-                @if(session('_curr_deputy_user')['is_firm'] && (session('_curr_deputy_user')['is_self'] || session('_curr_deputy_user')['can_stock_in'] || session('_curr_deputy_user')['can_stock_out']))
+                @if(session('_curr_deputy_user.is_firm') && (session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_in') || session('_curr_deputy_user.can_stock_out') || session('_curr_deputy_user.can_stock_view')))
                 {{--只有企业才能进行库存管理--}}
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-icons_goods"></i>库存管理</h1>
                     <ul class="member_left_list">
-                        @if(session('_curr_deputy_user')['is_self'] || session('_curr_deputy_user')['can_stock_in'])
+                        @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_in'))
                         <li @if(request()->path() == 'stockIn') class="curr" @endif><a href="/stockIn">入库管理</a></li>
                         @endif
-                        @if(session('_curr_deputy_user')['is_self'] || session('_curr_deputy_user')['can_stock_out'])
+                        @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_out'))
                         <li @if(request()->path() == 'stockOut' || request()->path() == 'canStockOut' ) class="curr" @endif><a href="/stockOut">出库管理</a></li>
                         @endif
+                        @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_out'))
                         <li @if(request()->path() == 'stock/list') class="curr" @endif><a href="/stock/list">库存查询</a></li>
+                        @endif
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
                 @endif
+                @if((session('_curr_deputy_user.is_self') && ((session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed')) || (!session('_curr_deputy_user.is_firm') && !getConfig('individual_trade_closed')))) ||
+                  (!session('_curr_deputy_user.is_self') && session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed')))
+
+                {{-- 代表自己，如果是企业且平台开启了企业交易 或 如果是个人且平台开启了个人交易
+                     代表公司，如果用户有平台开启了企业交易
+                  --}}
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-svgorder"></i>订单管理</h1>
                     <ul class="member_left_list">
@@ -46,6 +54,9 @@
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
+                @endif
+
+                @if(session('_curr_deputy_user.is_self'))
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-userset"></i>账号管理</h1>
                     <ul class="member_left_list">
@@ -59,6 +70,7 @@
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
+                @endif
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-huodong"></i>活动中心</h1>
                     <ul class="member_left_list">

@@ -232,6 +232,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+    /********************************产品信息************************************/
+    Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
+    Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
+    /********************************************************************/
+
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
         Route::get('/payment/orderPay','PayController@orderPay');//去付款
@@ -290,10 +295,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
 
-        /********************************产品信息************************************/
-        Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
-        Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
-        /********************************************************************/
+
 
 
 
@@ -368,7 +370,7 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
     Route::get('/register.html', 'LoginController@register');
     Route::post('/register', 'LoginController@register');
     Route::post('/getSmsCode', 'LoginController@getSmsCode');
-    Route::get('/checkShopName', 'LoginController@checkShopName');
+    Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {
 

@@ -30,9 +30,10 @@ class GoodsController extends Controller
         $currpage = $request->input("currpage",1);
         $highest = $request->input("highest");
         $lowest = $request->input("lowest");
-        $price_bg1 = $request->input("price_bg1");
-        $condition = [];
+        $price_bg1 = $request->input("price_bg1",1);
         $orderType = $request->input("orderType","id:asc");
+        $condition = [];
+        //$userId = session('_web_user_id');//判断用户是否登录
         if(!empty($orderType)){
             $order = explode(":",$orderType);
         }
@@ -67,7 +68,7 @@ class GoodsController extends Controller
             'cart_count'=>$cart_count,
             'lowest'=>$lowest,
             'highest'=>$highest,
-            'price_bg1'=>$price_bg1?$price_bg1:""
+            'price_bg1'=>$price_bg1,
         ]);
     }
 
@@ -220,11 +221,12 @@ class GoodsController extends Controller
                     $addressList[$k]['is_default'] ='';
                 };
             }
+
             foreach ($first_one as $k1=>$v1){
                 unset($addressList[$k1]);
                 array_unshift($addressList,$first_one[$k1]);
             }
-
+            
             $goodsList = session('cartSession');
 
             foreach ($goodsList as $k3=>$v3){

@@ -673,9 +673,16 @@ class UserController extends Controller
         if(empty($data['real_name'])){
             $errorMsg[] = "请输入真实姓名";
         }
+        if(empty($data['front_of_id_card'])){
+            $errorMsg[] = "请上传身份证正面";
+        }
+        if(empty($data['reverse_of_id_card'])){
+            $errorMsg[] = "请上传身份证反面";
+        }
         if(!empty($errorMsg)){
             return $this->result("",0,implode("|",$errorMsg));
         }
+
         try{
             if($data['id']==""){
                 unset($data['id']);

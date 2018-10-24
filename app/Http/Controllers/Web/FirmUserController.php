@@ -24,25 +24,14 @@ class FirmUserController extends Controller
     public function createFirmUser(Request $request){
         $user = session('_web_user');
         if(!$user['is_firm']){
-            return $this->error('个人会并无此功能！');
+            return $this->error('个人会员并无此功能！');
         }
         if($request->isMethod('get')){
             $firmUserInfo = FirmUserService::firmUserList($user['id']);
             return $this->display('web.user.emp.firmUserList',compact('firmUserInfo'));
         }else{
-//            $rule = [
-//                'firm_id'=>'required|numeric',
-//                'user_id'=>'required|numeric',
-//                'real_name'=>'required|max:30',
-//                'can_po'=>'required|numeric',
-//                'can_pay'=>'required|numeric ',
-//                'can_confirm'=>'required|numeric',
-//                'can_stock_in'=>'required|numeric',
-//                'can_stock_out'=>'required|numeric'
-//            ];
-
-         $userName = $request->input('user_name');
-         $firmId = session('_web_user_id')['id'];
+            $userName = $request->input('user_name');
+            $firmId = session('_web_user_id')['id'];
             try{
                 $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
@@ -50,7 +39,6 @@ class FirmUserController extends Controller
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
-
         }
     }
 
@@ -71,8 +59,9 @@ class FirmUserController extends Controller
         $userName = $request->input('user_name');
         $phone = $request->input('phone');
         $permi = $request->input('permi');
+        $isEdit = $request->input('isEdit');
         try{
-            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName);
+            FirmUserService::addFirmUser($firmId,$phone,$permi,$userName,$isEdit);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());

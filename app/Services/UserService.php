@@ -298,7 +298,7 @@ class UserService
     public static function addCollectGoods($goodsId,$userId){
         $userCollect = UserCollectGoodsRepo::getList([],['user_id'=>$userId,'goods_id'=>$goodsId]);
         if(!$userCollect){
-            return UserCollectGoodsRpepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
+            return UserCollectGoodsRepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
         }
         self::throwBizError('已收藏过此商品！');
     }
