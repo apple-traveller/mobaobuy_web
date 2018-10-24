@@ -75,18 +75,22 @@
     		var MaxNum;
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
+				var thisMul = $(this).attr('data-id');
 				MaxNum = $(this).parent().parent().siblings('.shop_price').text();
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
 				var thisDom = $(this);
-				if(Number(ipts.val())+1>Number(MaxNum)){
-					ipts.val(Number(MaxNum));
+				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
+					// ipts.val(Number(MaxNum));
+					alert('不能大于可售');
 					return;
 				}else{
-					NumNew=Number(ipts.val())+1;
-					ipts.val(NumNew);
+					
+					NumNew=Number(ipts.val())+Number(thisMul);
+					ipts.val(Number(NumNew));
 				}
+				
 				$.ajax({
 	                'type':'post',
 	                'data':{'id':id},
@@ -105,16 +109,18 @@
 			});
 
 			$(document).delegate('.shop_num_reduce','click',function(){
+				var thisMul = $(this).attr('data-id');
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
 				var thisDom = $(this);
-				if (Number(ipts.val())-1<1) {
-					ipts.val(1);
+				if (Number(ipts.val())-Number(thisMul)<1) {
+					// ipts.val(1);
 					return;
 				}else{
-					NumNew=Number(ipts.val())-1;
-					ipts.val(NumNew);
+					
+					NumNew=Number(ipts.val())-Number(thisMul);
+					ipts.val(Number(NumNew));
 				}
 				$.ajax({
 	                'type':'post',
@@ -300,9 +306,9 @@
 				<span class="shop_price fl tac">{{$cartInfo['quoteInfo'][$k]['goods_number']}}</span>
 				<div class="shop_num_t fl">
 					<div class="shop_nienb">
-						<a class="shop_num_reduce num_nim" id="{{$v->id}}">-</a>
+						<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
 						<input type="text" class="shop_num_amount Bidders_record_text" value="{{$v->goods_number}}"/>
-						<a class="shop_num_plus num_nim" id="{{$v->id}}">+</a>
+						<a class="shop_num_plus num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
 					</div>
 				</div>
 			    

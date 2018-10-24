@@ -6,7 +6,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Services\IndexService;
 use App\Http\Controllers\Controller;
-
+use App\Services\ShopGoodsQuoteService;
 
 
 class IndexController extends Controller
@@ -19,7 +19,11 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
-        return $this->display('web.index');
+        $currpage = $request->input("currpage",1);
+        $condition = [];
+        $pageSize = 10;
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->display('web.index',['goodsList'=>$goodsList['list']]);
     }
 
     //选择公司

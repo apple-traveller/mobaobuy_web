@@ -109,22 +109,27 @@ class GoodsService
     //购车车列表
     public static function cart($userId){
         $cartInfo =  CartRepo::cartList($userId);
+        dump($cartInfo);
         $quoteInfo =  [];
+        $goodsInfo = [];
         foreach($cartInfo as $k=>$v){
             $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] = $v['goods_number'] * $v['goods_price'];
+            $quoteInfo[$k]['account'] = number_format($v['goods_number'] * $v['goods_price'],2);
+
+            //取goods表的规格
+            $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
-        return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo];
+        return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo,'goodsInfo'=>$goodsInfo];
 
     }
 
     //报价表添加到购物车
-    public static function searchGoodsQuote($userId,$id,$number){
+    public static function searchGoodsQuote($userId,$shopGoodsQuoteId,$number){
         $addTime = Carbon::now();
 //        $id = decrypt($id);
-        $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($id);
+        $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($shopGoodsQuoteId);
         if(empty($shopGoodsQuoteInfo)){
             self::throwBizError('报价信息不存在！');
         }
@@ -132,6 +137,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('产品信息不存在！');
         }
+        //规格判断处理
         if($number % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $number;
         }else{
@@ -143,10 +149,24 @@ class GoodsService
             }else{
                 $goodsNumber = $goodsInfo['packing_spec'];
             }
-
         }
-        $cartInfo = ['user_id'=>$userId,'shop_id'=>$shopGoodsQuoteInfo['shop_id'],'shop_name'=>$shopGoodsQuoteInfo['shop_name'],'shop_goods_quote_id'=>$shopGoodsQuoteInfo['id'],'goods_id'=>$shopGoodsQuoteInfo['goods_id'],'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],'goods_name'=>$shopGoodsQuoteInfo['goods_name'],'goods_price'=>$shopGoodsQuoteInfo['shop_price'],'goods_number'=>$goodsNumber,'add_time'=>$addTime];
-        return CartRepo::create($cartInfo);
+        $cartResult = CartRepo::getInfoByFields(['user_id'=>$userId,'shop_goods_quote_id'=>$shopGoodsQuoteId]);
+        if($cartResult){
+            return CartRepo::modify($cartResult['id'],['goods_number'=>$cartResult['goods_number']+$number]);
+        }else{
+            $cartInfo = [
+                'user_id'=>$userId,
+                'shop_id'=>$shopGoodsQuoteInfo['shop_id'],
+                'shop_name'=>$shopGoodsQuoteInfo['shop_name'],
+                'shop_goods_quote_id'=>$shopGoodsQuoteInfo['id'],
+                'goods_id'=>$shopGoodsQuoteInfo['goods_id'],
+                'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],
+                'goods_name'=>$shopGoodsQuoteInfo['goods_name'],
+                'goods_price'=>$shopGoodsQuoteInfo['shop_price'],
+                'goods_number'=>$goodsNumber,'add_time'=>$addTime];
+            return CartRepo::create($cartInfo);
+        }
+
     }
 
     //查询购物车的数量
@@ -174,20 +194,15 @@ class GoodsService
     //去结算操作
     public static function toBalance($cartIds,$userId){
         $cartSession = [];
-//        try{
-            foreach($cartIds as $v){
+        foreach($cartIds as $v){
 //                $id = decrypt($v);
-                $cartInfo = CartRepo::getInfo($v);
-                if(empty($cartInfo)){
-                    self::throwBizError('购物车商品不存在！');
-                }
-                $cartSession[] = $cartInfo;
+            $cartInfo = CartRepo::getInfo($v);
+            if(empty($cartInfo)){
+                self::throwBizError('购物车商品不存在！');
             }
-            return $cartSession;
-
-//        }catch (\Exception $e){
-//            throw $e;
-//        }
+            $cartSession[] = $cartInfo;
+        }
+        return $cartSession;
     }
 
     //提交订单
@@ -271,8 +286,9 @@ class GoodsService
     public static function addCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
-            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $cartInfo['goods_price'],2);
-            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+1]);
+            $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
+            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
             return $account;
         }catch (\Exception $e){
             throw $e;
@@ -283,8 +299,9 @@ class GoodsService
     public static function reduceCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
-            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'],2);
-            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-1]);
+            $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2);
+            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
             return $account;
         }catch (\Exception $e){
             throw $e;

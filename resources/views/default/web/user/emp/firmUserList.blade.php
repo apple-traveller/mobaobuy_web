@@ -123,6 +123,18 @@
                         if(data['data']['firm_user_info']['can_stock_out']){
                             $('#can_stock_out').attr("checked",'checked');
                         }
+                        if(data['data']['firm_user_info']['can_confirm']){
+                            $('#can_confirm').attr("checked",'checked');
+                        }
+                        if(data['data']['firm_user_info']['can_approval']){
+                            $('#can_approval').attr("checked",'checked');
+                        }
+                        if(data['data']['firm_user_info']['can_stock_view']){
+                            $('#can_stock_view').attr("checked",'checked');
+                        }
+                        // if(data['data']['firm_user_info']['can_stock_out']){
+                        //     $('#can_stock_out').attr("checked",'checked');
+                        // }
                     }
                 })
             });
@@ -136,7 +148,10 @@
                 $('#power_edit_frame').show();
                 $('.block_bg').show();
             })
-            function del(obj) {
+
+        });
+
+        function del(obj) {
                 var id = $(obj).attr('id');
                 var flag = confirm("是否确认删除?");
                 if(flag===true){
@@ -157,7 +172,6 @@
                     })
                 }   
             }
-        });
 
         //保存
         function addFirmUserSave(){
@@ -167,15 +181,30 @@
             $.each($('input:checkbox:checked'),function(){
                 arr.push($(this).val());
             });
+           
+           //编辑
+            if($('#firmUserPhone').attr('disabled') == 'disabled'){
+                 Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName,'isEdit':1}, function(result){
+                    if(result.code){
+                        $.msg.alert('修改成功');
+                        window.location.reload();
+                    }else{
+                        $.msg.alert(result.msg);
+                    }
+                 }, "POST", "JSON");
+            }else{
+                //新增
+                 Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName,'isEdit':0}, function(result){
+                    if(result.code){
+                        $.msg.alert('添加成功');
+                        window.location.reload();
+                    }else{
+                        $.msg.alert(result.msg);
+                    }
+                 }, "POST", "JSON");
 
-            Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName}, function(result){
-                if(result.code){
-                    $.msg.alert('添加成功');
-                    window.location.reload();
-                }else{
-                    $.msg.alert(result.msg);
-                }
-            }, "POST", "JSON");
+            }
+           
         }
 	</script>
 @endsection
@@ -212,13 +241,13 @@
                 <div class="power_cate mt10 br1 ovh">
                 <ul class="power_cate_check_box ovh">
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="1" id="can_po" /><span class="fl">提交订单</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7"/><span class="fl">审核订单</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3"/><span class="fl">查看订单</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_confirm" /><span class="fl">确认收货</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="9"/><span class="fl">查看库存</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3" id="can_confirm" /><span class="fl">确认收货</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5"/><span class="fl" id="can_approval">审核订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6"/><span class="fl" id="">查看订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7" id="can_stock_in" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8"/><span class="fl" id="can_stock_view">查看库存</span></label></li>
 
                 </ul>
                 </div>

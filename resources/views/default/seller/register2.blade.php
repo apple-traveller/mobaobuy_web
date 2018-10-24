@@ -39,7 +39,7 @@
                 </div>
                 <div class="item">
                     <div class="item-libel">营业执照注册号</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="business_license_id" name="business_license_id" placeholder="请输入营业执照注册号" /></div>
+                    <div class="item-info"><input type="text" class="text" maxlength="11" id="business_license_id" name="business_license_id" placeholder="请输入营业执照注册号" onblur="licenseValidate()" /></div>
                     <div class="input-tip"><label id="business_license_error" class="error"></label></div>
                 </div>
                 <div class="item">
@@ -49,8 +49,8 @@
                 </div>
                 <div class="item">
                     <div class="item-libel">纳税人识别号</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="taxpayer_id" name="taxpayer_id" placeholder="纳税人识别号" /></div>
-                    <div class="input-tip"><label id="business_license_error" class="error"></label></div>
+                    <div class="item-info"><input type="text" class="text" maxlength="11" id="taxpayer_id" name="taxpayer_id" placeholder="纳税人识别号" onblur="taxpayerValidate()" /></div>
+                    <div class="input-tip"><label id="taxpayer_error" class="error"></label></div>
                 </div>
 
                 <div class="item">
@@ -63,12 +63,12 @@
 
                 <div class="item">
                     <div class="item-libel">负责人姓名</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactName" name="contactName" placeholder="店铺负责人姓名" /></div>
+                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactName" name="contactName" placeholder="店铺负责人姓名" onblur="contactNameValidate()" /></div>
                     <div class="input-tip"><label id="contactName_error" class="error"></label></div>
                 </div>
                 <div class="item">
                     <div class="item-libel">负责人电话</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactPhone" name="contactPhone" placeholder="负责人电话" /></div>
+                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactPhone" name="contactPhone" placeholder="负责人电话" onblur="contactPhoneValidate()" /></div>
                     <div class="input-tip"><label id="contactPhone_error" class="error"></label></div>
                 </div>
 
@@ -176,6 +176,43 @@
             });
         }
     }
+
+    //验证注册号
+    function licenseValidate(){
+        var business_license_id = $("#business_license_id").val();
+        if(jQuery.trim(business_license_id).length==0){
+            $("#business_license_error").html("<i class='iconfont icon-minus-circle-fill'></i>注册号不能为空");
+            return false;
+        }
+    }
+
+    //验证纳税号
+    function taxpayerValidate(){
+        var taxpayer_id = $("#taxpayer_id").val();
+        if(jQuery.trim(taxpayer_id).length==0){
+            $("#taxpayer_error").html("<i class='iconfont icon-minus-circle-fill'></i>纳税号不能为空");
+            return false;
+        }
+    }
+
+    //验证店铺负责人
+    function contactNameValidate(){
+        var contactName = $("#contactName").val();
+        if(jQuery.trim(contactName).length==0){
+            $("#contactName_error").html("<i class='iconfont icon-minus-circle-fill'></i>负责人不能为空");
+            return false;
+        }
+    }
+
+    //验证店铺负责人电话
+    function contactPhoneValidate(){
+        var contactPhone = $("#contactPhone").val();
+        if(jQuery.trim(contactPhone).length==0){
+            $("#contactPhone_error").html("<i class='iconfont icon-minus-circle-fill'></i>负责人电话不能为空");
+            return false;
+        }
+    }
+
 
     // 验证手机是否注册
     function nameValidate() {
