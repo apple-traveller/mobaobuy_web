@@ -226,7 +226,7 @@ class GoodsController extends Controller
                 unset($addressList[$k1]);
                 array_unshift($addressList,$first_one[$k1]);
             }
-            
+
             $goodsList = session('cartSession');
 
             foreach ($goodsList as $k3=>$v3){

@@ -5,7 +5,7 @@
     @include(themePath('.','web').'web.include.partials.base')
 
 </head>
-<body style="background-color: rgb(244, 244, 244);">
+<body style="background-color: #ffffff">
 
 <link rel="stylesheet" type="text/css" href="{{asset('ui/area/1.0.0/area.css')}}" />
 
@@ -80,6 +80,7 @@
                 line-height: 40px;
                 cursor: pointer;
             }
+
             .ui-area .area-warp {
                 position: absolute;
                 border: 1px solid #d2d2d2;
@@ -96,9 +97,9 @@
 </style>
 <!--遮罩-->
 
-<div class="invoice_method whitebg" id="invoice_frame">
+<div class="invoice_method whitebg mt20" id="invoice_frame">
     <form id="invoice_from">
-        <ul class="addr_list ml30 mt25 ovh">
+        <ul class="addr_list ml30 mt20 " style="display: inline-block">
             <li>
                 <div class="ovh mt10 ml30 fl">
                     <span class="add_left fl">公司抬头:</span>
@@ -134,7 +135,7 @@
                 <div class="ovh mt10  fl" style="margin-left: 53px;"><span class="add_left fl">收票人电话:</span><input type="text" value="@if(!empty($data['consignee_mobile_phone'])) {{ $data['consignee_mobile_phone']}} @endif" class="pay_text" name="consignee_mobile_phone" style="width: 219px;"/></div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl">
+                <div class=" mt10 ml30 fl">
                     <span class="add_left fl">收票地址:</span>
                     <input type="text" readonly="readonly" name="address_ids" value="@if(!empty($data['address_ids'])) {{ $data['address_ids'] }} @endif " id="area2" style="display: none">
                     <input type="text" readonly="readonly" name="id" value="@if(!empty($data['id'])) {{ $data['id'] }} @endif" style="display: none">
@@ -143,7 +144,7 @@
                 </div>
             </li>
             <li>
-                <div class="ovh mt10 ml30 fl mt40">
+                <div class="ovh mt10 ml30 fl mt20">
                     <span class="add_left fl">详细地址:</span>
                     <input type="text" class="pay_text fl" value="@if(!empty($data['consignee_address'])) {{ $data['consignee_address'] }} @endif " style="width: 587px;" name="consignee_address"/>
                     <span class="fl red ml10">*</span>
