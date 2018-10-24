@@ -293,7 +293,7 @@
         </div>
     </div>
     <!--合作品牌-->
-    <div class="w1200" style="margin-top: 30px;">
+    <div class="w1200" style="margin:30px auto">
         <div class="ovh"><h1 class="Self-support-title">合作品牌</h1></div>
 
         <ul class="Cooperative_brand">
