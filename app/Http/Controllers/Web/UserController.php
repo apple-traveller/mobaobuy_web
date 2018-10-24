@@ -366,18 +366,6 @@ class UserController extends Controller
                 return $this->error('请填写银行账号');
             }
         }
-        if (empty($address_ids)){
-            return $this->error('请填写银行账号');
-        }
-        if (empty($bank_account)){
-            return $this->error('请填写银行账号');
-        }
-        if (empty($bank_account)){
-            return $this->error('请填写银行账号');
-        }
-        if (empty($bank_account)){
-            return $this->error('请填写银行账号');
-        }
 
         $address_ids = explode('|',$address_ids);
         $data = [
