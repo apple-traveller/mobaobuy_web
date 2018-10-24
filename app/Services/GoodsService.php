@@ -109,7 +109,6 @@ class GoodsService
     //购车车列表
     public static function cart($userId){
         $cartInfo =  CartRepo::cartList($userId);
-        dump($cartInfo);
         $quoteInfo =  [];
         $goodsInfo = [];
         foreach($cartInfo as $k=>$v){
