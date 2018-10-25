@@ -32,7 +32,7 @@ class ShopGoodsController extends Controller
         }
         $pageSize =5;
         $shopGoods = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['id'=>'desc']],$condition);
-        return $this->display('seller.ShopGoods.list',[
+        return $this->display('seller.shopgoods.list',[
             'total'=>$shopGoods['total'],
             'list'=>$shopGoods['list'],
             'goods_name' => $goods_name,
@@ -49,7 +49,7 @@ class ShopGoodsController extends Controller
     {
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        return $this->display('seller.ShopGoods.add',[
+        return $this->display('seller.shopgoods.add',[
             'goodsCatTree'=>$goodsCatTree,
         ]);
     }
@@ -66,7 +66,7 @@ class ShopGoodsController extends Controller
         $shopGood = ShopGoodsService::getShopGoodsById($id);
         $goodsCat = GoodsCategoryService::getCates();
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        return $this->display('seller.ShopGoods.edit',[
+        return $this->display('seller.shopgoods.edit',[
             'shopGood'=>$shopGood,
             'currentPage'=>$currentPage,
             'goodsCatTree'=>$goodsCatTree,
