@@ -1,7 +1,7 @@
 <div class="header">
     <div class="w1200">
         <div class="clearfix">
-            <a href="/"><div class="logo" style="margin-top: 38px;"></div></a>
+            <a><div class="logo" style="margin-top: 38px;"></div></a>
             <div class="index_search fl mt40">
                 <input type="text" class="index_search_text fl" placeholder="请输入关键词、类别进行搜索"/><input type="button" class="index_search_btn white fs16 fl" value="搜 索"/>
                 <a class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
@@ -15,13 +15,13 @@
                 </div>
             </div>
 
-            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">@if(isset($count)) {{$cart_count}} @else 0 @endif</span></a>
+            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">1</span></a>
         </div>
         <div class="clearfix">
 
             <div class="nav">
                 <div class="fication_menu">原料分类</div>
-                <ul class="ass_menu" style="display: none;">
+                <ul class="ass_menu">
                     <li><span class="ass_title">维生素</span> <span class="ass_list-right ass_list-right_icon ass_list-right_icon01"></span>
                         <div class="ass_fn whitebg">
                             <ul class="ass_fn_list">
@@ -104,11 +104,10 @@
         </div>
     </div>
 </div>
+
 <script>
     $(function(){
-        $('.nav').hover(function(){
-            $('.ass_menu').toggle();
-        })
+/*
         //导航
         $('.ass_menu li').hover(function(){
             $(this).find('.ass_fn').toggle();
@@ -117,7 +116,7 @@
         $(document).delegate('.pro_Open','click',function(){
             $(this).toggleClass('pro_Open_down');
             $('.pro_screen').toggleClass('height0');
-        })
+        })*/
     });
 
     $(".shopping_cart").click(function(){

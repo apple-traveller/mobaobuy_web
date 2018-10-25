@@ -241,7 +241,7 @@
         };
         Ajax.call("{{url('/userRegister')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href="{{route('login')}}";
+                window.location.href = result.url;
             }else{
                 $.msg.error(result.msg);
             }

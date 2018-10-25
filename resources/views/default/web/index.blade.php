@@ -1,4 +1,4 @@
-@extends(themePath('.','web').'web.include.layouts.goods')
+@extends(themePath('.','web').'web.include.layouts.home')
 @section('title', '首页')
 @section('css')
     <style>
@@ -9,6 +9,12 @@
 @section('js')
     <script>
         $(function(){
+
+            $('#change_2 .ys_bigimg').soChange({
+                thumbObj:'#change_2 .ys_banner_icon span',
+                thumbNowClass:'on',
+                changeTime:2000,
+            });
 
             $(document).delegate('.supply_list>li','mouseenter',function(){
 
@@ -287,7 +293,7 @@
         </div>
     </div>
     <!--合作品牌-->
-    <div class="w1200" style="margin-top: 30px;">
+    <div class="w1200" style="margin:30px auto">
         <div class="ovh"><h1 class="Self-support-title">合作品牌</h1></div>
 
         <ul class="Cooperative_brand">
