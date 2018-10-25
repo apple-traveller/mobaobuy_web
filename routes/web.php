@@ -213,14 +213,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
         Route::get('/ad/delete', 'AdController@delete');//广告图片删除
 
-        Route::get('/template/index', 'TemplateController@index');//首页可视化
-        Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
-        Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存
-        Route::post('/template/publish', 'TemplateController@publish');//确认发布
-        Route::post('/template/partEdit', 'TemplateController@partEdit');//模板编辑
-        Route::get('/template/preview', 'TemplateController@preview');//模板预览
-        Route::get('/template/decoratetest', 'TemplateController@decoratetest');//装修模板(测试)
-        Route::get('/template/getPics', 'TemplateController@getPics');//测试方法
 
     });
 

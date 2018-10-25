@@ -1041,7 +1041,6 @@ CREATE TABLE `activity_promote` (
   `available_quantity` smallint(5) NOT NULL COMMENT '当前可售数量',
   `min_limit` smallint(5) NOT NULL DEFAULT 1 COMMENT '最小起售数量',
   `max_limit` smallint(5) NOT NULL DEFAULT 0 COMMENT '最大限购数量 0-不限',
-
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
   PRIMARY KEY (`id`),

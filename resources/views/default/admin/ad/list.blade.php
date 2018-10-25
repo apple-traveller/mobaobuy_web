@@ -11,6 +11,7 @@
             </div>
             <ul>
                 <li>展示网站页面所有的广告图片。</li>
+                <li>点击广告名查看图片。</li>
             </ul>
         </div>
     </div>
@@ -58,7 +59,7 @@
                             <tbody>
                             @foreach($ads as $vo)
                             <tr class="">
-                                <td><div class="tDiv">{{$vo['ad_name']}}</div></td>
+                                <td><div style="cursor: pointer;color:green;" data-pic="{{getFileUrl($vo['ad_img'])}}" class="tDiv viwAdPicture">{{$vo['ad_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['position_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['ad_link']}}</div></td>
                                 <td><div class="tDiv">{{$vo['start_time']}}</div></td>
@@ -105,7 +106,6 @@
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -128,6 +128,20 @@
             });
         }
 
+        layui.use(['layer'], function() {
+            var layer = layui.layer;
+            $(".viwAdPicture").click(function(){
+                var pic = $(this).attr('data-pic');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['700px', '500px'],
+                    content: '<img src="'+pic+'">'
+                });
+            });
+        });
+
+
 
         function remove(id)
         {
@@ -138,7 +152,6 @@
                     layer.close(index);
                 });
             });
-
         }
 
     </script>
