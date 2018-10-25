@@ -104,6 +104,10 @@ class GoodsController extends Controller
     //购物车
     public function cart(Request $request){
         $userId = session('_web_user_id');
+        if(session('_curr_deputy_user')['is_firm']){
+            $userId = session('_curr_deputy_user')['firm_id'];
+        }
+
         if($request->isMethod('get')){
             try{
                 $cartInfo = GoodsService::cart($userId);
@@ -200,35 +204,40 @@ class GoodsController extends Controller
                 $userInfo = session('_web_user');
             }
             $invoicesList = GoodsService::getInvoices($userInfo['id']);
-            foreach ($invoicesList as $k=>$v){
-                $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
-            }
-            if (!empty($userInfo['invoice_id'])) {
-                $invoicesInfo = UserInvoicesService::getInvoice($userInfo['invoice_id']);
+            if (!empty($invoicesList)){
+                foreach ($invoicesList as $k=>$v){
+                    $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
+                }
+                if (!empty($userInfo['invoice_id'])) {
+                    $invoicesInfo = UserInvoicesService::getInvoice($userInfo['invoice_id']);
+                } else {
+
+                }
             } else {
-                $invoicesInfo = $invoicesList[0];
+                $invoicesInfo = [];
+                $invoicesList = [];
             }
 
             // 收货地址列表
             $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-
-            foreach ($addressList as $k=>$v){
-                $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
-                if ($v['id'] == $userInfo['address_id']){
-                    $addressList[$k]['is_default'] =1;
-                    $first_one[$k] = $addressList[$k];
-                } else {
-                    $addressList[$k]['is_default'] ='';
-                };
+            if (!empty($addressList)){
+                foreach ($addressList as $k=>$v){
+                    $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                    if ($v['id'] == $userInfo['address_id']){
+                        $addressList[$k]['is_default'] =1;
+                        $first_one[$k] = $addressList[$k];
+                    } else {
+                        $addressList[$k]['is_default'] ='';
+                    };
+                }
+                if(!empty($first_one)){
+                    foreach ($first_one as $k1=>$v1){
+                        unset($addressList[$k1]);
+                        array_unshift($addressList,$first_one[$k1]);
+                    }
+                }
             }
-
-            foreach ($first_one as $k1=>$v1){
-                unset($addressList[$k1]);
-                array_unshift($addressList,$first_one[$k1]);
-            }
-            
             $goodsList = session('cartSession');
-
             foreach ($goodsList as $k3=>$v3){
                 $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
             }
@@ -243,6 +252,7 @@ class GoodsController extends Controller
     public function createOrder(Request $request){
 
         $info = session('_curr_deputy_user');
+
         $userIds = [];
         // 判断是否为企业用户
         if($info['is_firm']){
@@ -255,6 +265,17 @@ class GoodsController extends Controller
             $userIds['firm_id'] = '';
         }
         $words = $request->input('words',' ');
+
+        // 判断是否有开票信息 地址可用
+        $invoicesList = GoodsService::getInvoices($userInfo['id']);
+        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        if (empty($invoicesList)){
+            return $this->error('无开票信息请前去维护');
+        }
+        if (empty($addressList)){
+            return $this->error('无地址信息请前去维护');
+        }
+
         $carList = session('cartSession');
         $shop_data = [];
 
@@ -270,6 +291,14 @@ class GoodsController extends Controller
                     $shop_data[$v2][]=$v3;
                 }
             }
+        }
+        // 没有默认地址的情况下
+        if (empty($userInfo['address_id'])){
+            $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
+        }
+        // 没有默认开票的情况下
+        if (empty($userInfo['invoice_id'])){
+            $userInfo['invoice_id'] = GoodsService::getInvoices($userInfo['id'])[0]['id'];
         }
         try{
             $re=[];
@@ -351,26 +380,17 @@ class GoodsController extends Controller
         }
     }
 
-    //审核不通过 作废
-    public function cancel(Request $request){
+    //订单取消
+    public function orderCancel(Request $request){
         $id = $request->input('id');
         try{
-            GoodsService::cancel($id);
-            return $this->success('作废成功');
+            GoodsService::orderCancel($id);
+            return $this->success('取消成功');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
-    //订单详情
-    public function orderDetails($id){
-        try{
-            $orderGoodsInfo = GoodsService::orderDetails($id);
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-        return $this->display('web.order.orderDetails',compact('orderGoodsInfo'));
-    }
 
     //支付界面
     public function pay(){

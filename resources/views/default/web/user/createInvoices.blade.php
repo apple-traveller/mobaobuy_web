@@ -27,11 +27,11 @@
 		</select>
 		收票地址-市
 		<select id="cityId" onchange="cityChange()" name="city">
-			
+
 		</select>
 		收票地址-县
-		<select id="countyId"" name="district">
-			
+		<select id="countyId" name="district">
+
 		</select><br>
 		<!-- 收票地址-省<input type="text" name="province"><br>
 		收票地址-市<input type="text" name="city"><br>
@@ -44,7 +44,7 @@
 </html>
 <script type="text/javascript">
 	$(function(){
-	
+
 			$('form').submit(function(){
 				 event.preventDefault();
 				$.ajax({
@@ -61,8 +61,8 @@
 					}
 				})
 			})
-		
-		
+
+
 	})
 
 	function provinceChange(){

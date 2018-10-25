@@ -99,9 +99,9 @@
 				<div class="address_name mt15"><span>{{ $v['company_name'] }}</span></div>
 				<div class="address_name mt15 default_addr dno">
 					@if($v['is_default'])
-						<span class="fr lcolor cp" ><a href="javascript:void(0);" style="color: #75b335; ">默认地址</a></span>
+						<span class="fr lcolor cp" ><a href="javascript:void(0);" style="color: #75b335; ">默认</a></span>
 					@else
-						<span class="fr lcolor cp checked_btn" data-id = "{{$v['id']}}" style="cursor: pointer">设为默认地址</span>
+						<span class="fr lcolor cp checked_btn" data-id = "{{$v['id']}}" style="cursor: pointer">设为默认</span>
 					@endif
 				</div>
 			</li>

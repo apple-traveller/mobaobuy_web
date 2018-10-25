@@ -242,7 +242,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::get('/findPwd','UserController@userFindPwd');//忘记密码
     Route::post('/findPwd','UserController@userFindPwd');
-    Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//重置密码获取验证码
+    Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
     /********************************产品信息************************************/
@@ -298,9 +298,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/deleteAddress','UserController@deleteAddress'); // 删除地址
         Route::post('/updateDefaultAddress','UserController@updateDefaultAddress'); // 修改默认地址
 
-        Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');
-        Route::get('/updatePwd','UserController@userUpdatePwd');//修改密码
+
+        Route::get('/updatePwd','UserController@userUpdatePwd');//忘记密码界面
         Route::post('/updatePwd','UserController@userUpdatePwd');
+        Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');//修改密码发送验证码
 
 
         Route::get('/paypwd', 'UserController@setPayPwd');//设置支付密码
@@ -344,7 +345,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
         Route::post('/clearCart','GoodsController@clearCart');//清空购物车
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
-        Route::post('/delCart','GoodsController@delCart');//删除购物车数量  //addCartGoodsNum
+        Route::post('/delCart','GoodsController@delCart');//删除购物车数量
         Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
 
         Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
@@ -355,11 +356,12 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
+        Route::post('/orderDel','OrderController@orderDel');//订单删除
 
 
         Route::post('/egis','GoodsController@egis');//订单审核通过
-        Route::post('/cancel','GoodsController@cancel');//订单审核不通过
-        Route::get('/orderDetails/{id}','GoodsController@orderDetails');//订单详情
+        Route::post('/orderCancel','GoodsController@orderCancel');//订单取消
+        Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
         Route::get('/pay','GoodsController@pay');//支付界面
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
 
@@ -377,7 +379,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
 // 商户
-Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
+Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::get('/login.html', 'LoginController@login')->name('seller_login');
     Route::post('/login', 'LoginController@login');
     Route::get('/register.html', 'LoginController@register');
