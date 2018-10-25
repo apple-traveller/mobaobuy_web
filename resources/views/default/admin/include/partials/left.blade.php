@@ -28,8 +28,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_05_banner"></i><h4>广告管理</h4></a></div>
                 <div class="sub-menu" style="top:0px; display:none;">
                     <ul>
-                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="ads.php?act=list" data-param="menuplatform|ad_list" target="workspace">广告列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="ad_position.php?act=list" data-param="menuplatform|ad_position" target="workspace">广告位置</a></li>
+                        <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/ad/list" data-param="menuplatform|ad_list" target="workspace">广告列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/ad/position/list" data-param="menuplatform|ad_position" target="workspace">广告位置</a></li>
                     </ul>
                 </div>
             </div>

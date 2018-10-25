@@ -1072,3 +1072,4 @@ CREATE TABLE `order_pay_log` (
   KEY `is_paid` (`is_paid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单付款日志表';
 
+
