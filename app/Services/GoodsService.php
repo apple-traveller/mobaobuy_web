@@ -121,7 +121,6 @@ class GoodsService
             $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
         return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo,'goodsInfo'=>$goodsInfo];
-
     }
 
     //报价表添加到购物车
@@ -330,17 +329,12 @@ class GoodsService
         return OrderInfoRepo::modify($id,['order_status'=>2]);
     }
 
-    //作废
-    public static function cancel($id){
-        $id = decrypt($id);
+    //订单取消
+    public static function orderCancel($id){
         return OrderInfoRepo::modify($id,['order_status'=>0]);
     }
 
-    //订单详情
-    public static function orderDetails($id){
-        $id = decrypt($id);
-        return OrderGoodsRepo::getList([],['order_id'=>$id]);
-    }
+
 
     //获取发票信息
     public static function getInvoices($id){

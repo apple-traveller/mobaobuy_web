@@ -327,4 +327,19 @@ class OrderInfoService
         return OrderInfoRepo::getInfoByFields($where);
     }
 
+    //web 订单删除
+    public static function orderDel($id){
+        return OrderInfoRepo::modify($id,['is_delete'=>1]);
+    }
+
+    // 订单详情
+    public static function orderDetails($id){
+        $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+
+        //获取会员发票信息
+        $userInvoceInfo = UserInvoicesRepo::getInfo($orderInfo['invoice_id']);
+        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo];
+    }
+
 }
