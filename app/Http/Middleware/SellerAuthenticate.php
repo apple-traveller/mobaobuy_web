@@ -24,6 +24,7 @@ class SellerAuthenticate
                 'is_super' => $user_info['is_super'],
                 'shop_info' => $shop_info
             ];
+            session()->put('_seller', '');
             session()->put('_seller', $data);
             //缓存模板信息
         }

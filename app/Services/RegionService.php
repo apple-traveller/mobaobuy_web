@@ -123,7 +123,7 @@ class RegionService
             $district = RegionRepo::getInfo($district_id)['region_name'];
         }
 
-        return $country." ".$province." ".$city." "."$district";
+        return $country."-".$province."-".$city."-"."$district";
     }
 
 

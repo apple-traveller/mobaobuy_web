@@ -237,6 +237,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+    Route::get('/article/{id}','IndexController@article');//资讯
+    Route::get('/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
@@ -360,11 +365,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
-
-        Route::get('/article/{id}','IndexController@article');//资讯
-        Route::get('/news.html', 'NewsController@index'); // 新闻中心
-        Route::get('/detail.html', 'NewsController@detail'); // 详情
-        Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     });
 });

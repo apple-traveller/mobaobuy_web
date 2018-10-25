@@ -38,7 +38,6 @@
                                 <thead>
                                 <tr>
                                     <th width="10%"><div class="tDiv">编号</div></th>
-                                    <th width="10%"><div class="tDiv">店铺</div></th>
                                     <th width="10%"><div class="tDiv">申请时间</div></th>
                                     <th width="10%"><div class="tDiv">活动开始时间</div></th>
                                     <th width="10%"><div class="tDiv">活动结束时间</div></th>
@@ -50,7 +49,6 @@
                                 @foreach($list as $k=>$v)
                                     <tr class="">
                                         <td><div class="tDiv">{{$v["id"]}}</div></td>
-                                        <td><div class="tDiv">{{$v['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['begin_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['end_time']}}</div></td>

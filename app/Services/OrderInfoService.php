@@ -167,9 +167,7 @@ class OrderInfoService
     {
         $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $orderid]);
         foreach ($order_goods['list'] as $k => $vo){
-            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($vo['shop_goods_quote_id']);
             $good = GoodsRepo::getInfo($vo['goods_id']);
-            $order_goods['list'][$k]['shop_name'] = $shop_goods_quote['shop_name'];
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
         }
         return $order_goods;

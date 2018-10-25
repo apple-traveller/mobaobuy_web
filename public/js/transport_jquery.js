@@ -52,16 +52,17 @@ var Transport =
   * @param   {Function}  callback        回调函数
   * @param   {string}    ransferMode     请求的方式，有"GET"和"POST"两种
   * @param   {string}    responseType    响应类型，有"JSON"、"XML"和"TEXT"三种
-  * @param   {boolean}   asyn            是否异步请求的方式
+  * @param   {boolean}   async            是否异步请求的方式
   * @param   {boolean}   quiet           是否安静模式请求
   */
-  run : function (url, params, callback, transferMode, responseType)
+  run : function (url, params, callback, transferMode, responseType,async = true)
   {
       $.ajax({
           url:url,
           type: transferMode,
           dataType: responseType,
           context: document.body,
+          async:async,
           data: params,
           success:callback
       });
