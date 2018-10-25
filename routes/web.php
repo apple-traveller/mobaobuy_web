@@ -364,7 +364,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
 // 商户
-Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
+Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::get('/login.html', 'LoginController@login')->name('seller_login');
     Route::post('/login', 'LoginController@login');
     Route::get('/register.html', 'LoginController@register');
