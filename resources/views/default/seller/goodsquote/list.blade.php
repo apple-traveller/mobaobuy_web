@@ -32,7 +32,6 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="5%"><div class="tDiv">商品编码</div></th>
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
                                     <th width="5%"><div class="tDiv">库存数量</div></th>
@@ -46,7 +45,6 @@
                                 <tbody>
                                 @foreach($shopGoodsQuote as $vo)
                                 <tr class="">
-                                    <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_number']}}</div></td>

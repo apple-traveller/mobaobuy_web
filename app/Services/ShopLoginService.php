@@ -7,11 +7,11 @@
  */
 namespace App\Services;
 
-use App\Helpers\BaseUpload;
 use App\Repositories\ShopRepo;
 use App\Repositories\ShopUserRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class ShopLoginService
@@ -36,21 +36,7 @@ class ShopLoginService
             if (self::checkUserExists($data['user_name'])){
                 self::throwBizError('该用户已注册');
             }
-            $upload = new BaseUpload('licence');
-            // 上传授权证书
-            $attorney_res = $upload->upload('attorney_letter_fileImg');
-            if ($attorney_res['code']) {
-                $attorney_letter_fileImg = $attorney_res['fileName'];
-            }else{
-                self::throwBizError('授权证书上传失败');
-            }
-            // 上传营业执照
-            $license_res = $upload->upload('license_fileImg');
-            if ($license_res['code']) {
-                $license_fileImg = $license_res['fileName'];
-            }else{
-                self::throwBizError('营业执照上传失败');
-            }
+
             $data['password'] = bcrypt($data['password']);
             $shop_data = [
                 'user_id' => $data['user_id'],
@@ -58,9 +44,9 @@ class ShopLoginService
                 'shop_name' => $data['shop_name'],
                 'contactName' => $data['user_name'],
                 'contactPhone' => $data['mobile'],
-                'attorney_letter_fileImg' => $attorney_letter_fileImg?$attorney_letter_fileImg:'',
+                'attorney_letter_fileImg' => $data['attorney_letter_fileImg'],
                 'business_license_id' => $data['business_license_id'],
-                'license_fileImg' => $license_fileImg?$license_fileImg:'',
+                'license_fileImg' => $data['license_fileImg'],
                 'taxpayer_id' => $data['taxpayer_id'],
                 'reg_time' => Carbon::now(),
                 'is_validated' => 0,
@@ -120,18 +106,17 @@ class ShopLoginService
      * @return mixed|\stdClass
      * @throws \Exception
      */
-    public static function sendRegisterCode($mobile)
+    public static function sendRegisterCode($type,$mobile,$code)
     {
-        $type = 'sms_signup';
-
-        $code = SmsService::getRandom(6);
-
         $params = [
             'code'=>$code
         ];
-        session()->put('register_code', $code);
-
         return SmsService::sendSms($mobile, $type, $params);
+    }
+
+    public static function getMsgSession()
+    {
+        return Session::get('register_code');
     }
 
     /**

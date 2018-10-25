@@ -43,7 +43,6 @@
                                 <tr>
                                     <th width="10%"><div class="tDiv">订单编号</div></th>
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
-                                    <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="10%"><div class="tDiv">收货人</div></th>
                                     <th width="5%"><div class="tDiv">订单状态</div></th>
                                     <th width="5%"><div class="tDiv">付款状态</div></th>
@@ -66,7 +65,6 @@
                                                 @endforeach
                                             </div>
                                         </td>
-                                        <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
                                         <td>
                                             <div class="tDiv">
