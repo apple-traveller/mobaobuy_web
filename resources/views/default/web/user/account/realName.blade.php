@@ -109,19 +109,27 @@
                @else
                     <li class="mt25"><span class="infor_title">企业全称：</span>
                         <span class="ml10">
-                        {{$user_real['real_name']}}
+                        @if(!empty($user_real)) {{$user_real['real_name']}}
+                        @else
+                        @endif
                         </span>
                     </li>
                     <li class="mt25">
                         <span class="infor_title">纳税人识别号：</span>
                         <span class=" fl">
-                            {{$user_real['taxpayer_id']}}
+                        @if(!empty($user_real)) {{$user_real['taxpayer_id']}}
+                        @else
+                        @endif
+                            
                         </span>
                     </li>
                     <li class="mt25">
                         <span class="infor_title">营业执照注册号：</span>
                         <span class=" fl">
-                            {{$user_real['business_license_id']}}
+                            @if(!empty($user_real))  {{$user_real['business_license_id']}}
+                             @else
+                            @endif
+                           
                         </span>
                     </li>
                     <li class="mt25">
@@ -133,13 +141,18 @@
                     <li class="mt25">
                         <span class="infor_title">审核状态：</span>
                         <span class=" fl">
-                            @if($user_real['review_status'] == 0)
-                                待审核
-                            @elseif($user_real['review_status'] == 1)
-                                已审核
+                            @if(!empty($user_real))  
+                                 @if($user_real['review_status'] == 0)
+                                    待审核
+                                @elseif($user_real['review_status'] == 1)
+                                    已审核
+                                @else
+                                    审核不通过
+                                @endif
                             @else
-                                审核不通过
+
                             @endif
+                           
                         </span>
                     </li>
                @endif

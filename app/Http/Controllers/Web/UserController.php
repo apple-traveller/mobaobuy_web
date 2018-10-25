@@ -582,6 +582,8 @@ class UserController extends Controller
         }
     }
 
+
+
     public function empList(Request $request){
         return $this->display('web.user.emp.list');
     }

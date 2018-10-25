@@ -116,6 +116,7 @@
 				var thisDom = $(this);
 				if (Number(ipts.val())-Number(thisMul)<1) {
 					// ipts.val(1);
+					alert('已经是最低的购买数量了');
 					return;
 				}else{
 					
@@ -154,6 +155,27 @@
 				}
 				
 			})
+
+			$('.goods_numberListen').keyup(function(){  
+				alert();return;
+                var goodsNumber = $(this).val();
+                var goodsName = $('#goodName').val();
+                Ajax.call('/searchGoodsName', {goodsName: goodsName}, function(data){
+                    if(data['data'].length>0){
+                        $('#appendGoodsName ul').remove();
+                        var str = '';
+                        for(var i = 0;i<data['data'].length;i++){
+                            str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['goods_name']+'</li>';
+                        }
+                        var strHtml = '<ul id="pointUl"  class="pro_select" >'+str+'</ul>';
+                        $('#appendGoodsName').append(strHtml);
+                    }else{
+                        $('#appendGoodsName ul').remove();
+                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此产品数据信息</li></ul>';
+                        $('#appendGoodsName').append(strHtml);
+                    }
+                },"POST", "JSON");
+            });
 		})
 
 		//全选
@@ -267,6 +289,8 @@
 				alert('请选择商品');return;
 			}
 		}
+
+		
     </script>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -294,39 +318,39 @@
 			<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
 			<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
 		</ul>
-		@if($cartInfo)
-		@foreach($cartInfo['cartInfo'] as $k=>$v)
-		<ul class="shop_list">
-			<li class="check_all">
-				<span class="check_tick fl" style="margin: 33px 0px;">
-					<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v->id}}"/> </label>
-				</span>
-				<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v->goods_name}}</a>
-				<span class="shop_price_t orange fl tac">￥{{$v->goods_price}}元</span>
-				<span class="shop_price fl tac">{{$cartInfo['quoteInfo'][$k]['goods_number']}}</span>
-				<div class="shop_num_t fl">
-					<div class="shop_nienb">
-						<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
-						<input type="text" class="shop_num_amount Bidders_record_text" value="{{$v->goods_number}}"/>
-						<a class="shop_num_plus num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
+		@if($cartInfo['cartInfo'])
+			@foreach($cartInfo['cartInfo'] as $k=>$v)
+			<ul class="shop_list">
+				<li class="check_all">
+					<span class="check_tick fl" style="margin: 33px 0px;">
+						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v->id}}"/> </label>
+					</span>
+					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v->goods_name}}</a>
+					<span class="shop_price_t orange fl tac">￥{{$v->goods_price}}元</span>
+					<span class="shop_price fl tac">{{$cartInfo['quoteInfo'][$k]['goods_number']}}</span>
+					<div class="shop_num_t fl">
+						<div class="shop_nienb">
+							<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
+							<input type="text" class="shop_num_amount Bidders_record_text" class="goods_numberListen" value="{{$v->goods_number}}"/>
+							<a class="shop_num_plus num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
+						</div>
 					</div>
-				</div>
-			    
-			    
-			    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-			    <span class="shop_price_d fl tac">￥{{$cartInfo['quoteInfo'][$k]['account']}}</span>
-			    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{$v->id}}" onclick="del(this)"></a></span>
-			</li>
-		</ul>
-		@endforeach
+				    
+				    
+				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
+				    <span class="shop_price_d fl tac">￥{{$cartInfo['quoteInfo'][$k]['account']}}</span>
+				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{$v->id}}" onclick="del(this)"></a></span>
+				</li>
+			</ul>
+			@endforeach
 		@else
-		购物车没有任何商品
+			购物车没有任何商品
 		@endif
 	</div>
 	
 		
 	<div class="sumbit_cart whitebg ovh">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">{{count($cartInfo['cartInfo'])}}</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
+			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 
