@@ -104,6 +104,10 @@ class GoodsController extends Controller
     //购物车
     public function cart(Request $request){
         $userId = session('_web_user_id');
+        if(session('_curr_deputy_user')['is_firm']){
+            $userId = session('_curr_deputy_user')['firm_id'];
+        }
+
         if($request->isMethod('get')){
             try{
                 $cartInfo = GoodsService::cart($userId);
@@ -347,26 +351,17 @@ class GoodsController extends Controller
         }
     }
 
-    //审核不通过 作废
-    public function cancel(Request $request){
+    //订单取消
+    public function orderCancel(Request $request){
         $id = $request->input('id');
         try{
-            GoodsService::cancel($id);
-            return $this->success('作废成功');
+            GoodsService::orderCancel($id);
+            return $this->success('取消成功');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
-    //订单详情
-    public function orderDetails($id){
-        try{
-            $orderGoodsInfo = GoodsService::orderDetails($id);
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-        return $this->display('web.order.orderDetails',compact('orderGoodsInfo'));
-    }
 
     //支付界面
     public function pay(){

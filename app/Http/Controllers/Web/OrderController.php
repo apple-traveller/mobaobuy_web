@@ -157,4 +157,27 @@ class OrderController extends Controller
         //
         GoodsCategoryService::delete($id);
     }
+
+    //订单删除
+    public function orderDel(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::orderDel($id);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //订单详情
+    public function orderDetails($id){
+        try{
+            $orderDetailsInfo = OrderInfoService::orderDetails($id);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+        dump($orderDetailsInfo);
+        return $this->display('web.user.order.orderDetails',compact('orderDetailsInfo'));
+    }
+
 }

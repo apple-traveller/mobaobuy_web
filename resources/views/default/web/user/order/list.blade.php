@@ -62,9 +62,14 @@
                                         console.log(full.deliveries);
                                         html += '<p><img class="track-tooltip" data-id='+ full.deliveries[i].id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
                                     }
-                                    html += '<p><span><a href="">订单详情</a></span></p></td>';
+                                    html += '<p><span><a href="/orderDetails/'+full.order_sn+'">订单详情</a></span></p></td>';
                                     html += '<td rowspan="'+ full.goods.length +'">';
-                                    html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">去支付</a></p><p class="mt5"><a class="opt-btn">取消</a></p></td>';
+                                   
+                                    if(full.order_status == 0){
+                                         html += '<p></p><p class="mt5"><a class="opt-btn" onclick="orderDel('+full.id+')">删除</a></p></td>';
+                                    }else{
+                                         html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">去支付</a></p><p class="mt5"><a class="opt-btn" onclick="orderCancel('+full.id+')">取消</a></p></td>';
+                                    }
                                 }
                                 html += '</tr>';
                             }
@@ -124,11 +129,11 @@
                 }
             })
         }
+        
 
-        function cancel(obj){
-            var id = $(obj).parent().siblings('input[type=hidden]').val();
+        function orderCancel(id){
             $.ajax({
-                url: "/cancel",
+                url: "/orderCancel",
                 dataType: "json",
                 data: {
                     'id':id
@@ -138,11 +143,31 @@
                     if(data.code){
                         window.location.reload();
                     }else{
-                        console.log(data.code);
                         alert('出错,请重试')
                     }
                 }
             })
+        }
+
+        function orderDel(id){
+            var flag = confirm('是否确认删除?');
+            if(flag === true){
+                 $.ajax({
+                    url: "/orderDel",
+                    dataType: "json",
+                    data: {
+                        'id':id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
+                    }
+                })
+            }
         }
 	</script>
 
