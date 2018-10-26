@@ -138,15 +138,16 @@ class FirmStockController extends Controller
     //企业实时库存列表
     public function stockList(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
+            $firm_id = session('_curr_deputy_user')['firm_id'];
+            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+            $page_size = $request->input('length', 10);
+            $goods_name = $request->input('goods_name');
+            $cat_id = $request->input('cat_id');
             if($request->isMethod('get')){
-                return $this->display('web.user.stock.list');
+                $catInfo = FirmStockService::stockList($firm_id, $cat_id,$goods_name, $page, $page_size,0);
+                return $this->display('web.user.stock.list',compact('catInfo'));
             }else{
-                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-                $page_size = $request->input('length', 10);
-                $firm_id = session('_curr_deputy_user')['firm_id'];
-                $goods_name = $request->input('goods_name');
-                $rs_list = FirmStockService::stockList($firm_id, $goods_name, $page, $page_size);
-
+                $rs_list = FirmStockService::stockList($firm_id,$cat_id,$goods_name, $page, $page_size,1);
                 $data = [
                     'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
                     'recordsTotal' => $rs_list['total'], //数据总行数
@@ -228,5 +229,17 @@ class FirmStockController extends Controller
             return $this->error($e->getMessage());
         }
 
+    }
+
+    //入库检索供应商名称
+    public function searchPartnerName(Request $request){
+        $id = session('_web_user_id');
+        $partnerName = $this->requestGetNotNull('partnerName','');
+        try{
+            $partnerNameInfo = FirmStockService::searchPartnerName($partnerName,$id);
+            return $this->success('','',$partnerNameInfo);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 }

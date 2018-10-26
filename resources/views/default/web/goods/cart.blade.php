@@ -296,11 +296,11 @@
 <body style="background-color: rgb(244, 244, 244);">
     @include(themePath('.','web').'web.include.partials.top')
    
-    <div class="clearfix whitebg">
+    <div class="clearfix whitebg mb30">
 		<div class="w1200">
-			<a class="logo" style="margin-top: 45px;"></a>
+			<a class="logo" style="margin-top: 45px;" href="/"></a>
 			<div class="fr fs14 order_progress" >
-				<div class="cart_progress cart_progress_02"></div>
+				<div class="cart_progress cart_progress_01"></div>
 				<div class="progress_text">
 					<div class="my_cart progress_text_curr">我的购物车</div>
 					<div class="order_information">订单信息完善</div>
@@ -318,7 +318,7 @@
 			<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
 			<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
 		</ul>
-		@if($cartInfo['cartInfo'])
+		@if(count($cartInfo['cartInfo']))
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
 			<ul class="shop_list">
 				<li class="check_all">
@@ -327,7 +327,7 @@
 					</span>
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v->goods_name}}</a>
 					<span class="shop_price_t orange fl tac">￥{{$v->goods_price}}元</span>
-					<span class="shop_price fl tac">{{$cartInfo['quoteInfo'][$k]['goods_number']}}</span>
+					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
@@ -345,11 +345,13 @@
 			@endforeach
 		@else
 			购物车没有任何商品
+			<!-- <div class="sumbit_cart_btn">去购物</div> -->
+			<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;">去购物</a>
 		@endif
 	</div>
 	
 		
-	<div class="sumbit_cart whitebg ovh">
+	<div class="sumbit_cart whitebg ovh mb30">
 			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>

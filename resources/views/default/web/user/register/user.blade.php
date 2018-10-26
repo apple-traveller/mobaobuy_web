@@ -18,7 +18,8 @@
     </div>
 
     <div class="register-type">
-        <div class="w1200"><ul><li class="curr" style="margin-left: 160px;">会员注册</li>
+        <div class="w1200">
+            <!-- <ul><li class="curr" style="margin-left: 160px;"></li> -->
             <!-- <li onclick="javascript:window.location.href='{{route('firmRegister')}}'">企业注册</li> -->
         </ul></div>
     </div>
