@@ -3,7 +3,6 @@
 <title>{{getConfig('shop_name')}}</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="shortcut icon" href="{{getFileUrl(getConfig('shop_ico', asset('images/favicon.ico')))}}" />
-
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/main.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/iconfont.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/font-awesome.min.css')}}" />
@@ -13,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/perfect-scrollbar/perfect-scrollbar.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/calendar/calendar.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+
 
 <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.json.js')}}" ></script>

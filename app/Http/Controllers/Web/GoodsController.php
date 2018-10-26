@@ -11,8 +11,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\ShopGoodsQuoteService;
 use Illuminate\Support\Facades\Session;
-
-
+use App\Services\GoodsCategoryService;
+use App\Services\BrandService;
+use App\Services\RegionService;
 class GoodsController extends Controller
 {
     /**
@@ -57,11 +58,18 @@ class GoodsController extends Controller
         $pageSize = 10;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
-        //积分列表
-        $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
+        //产品报价列表
+        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
+        //产品分类
+        $cate = GoodsCategoryService::getCatesByGoodsList($goodsList['list']);
+        //产品品牌
+        $brand = BrandService::getBrandsByGoodsList($goodsList['list']);
+        //发货地
+        $delivery_place = RegionService::getRegionsByGoodsList($goodsList['list']);
+        //dd($delivery_place);
         return $this->display("web.goods.goodsList",[
-            'goodsList'=>$goodList['list'],
-            'total'=>$goodList['total'],
+            'goodsList'=>$goodsList['list'],
+            'total'=>$goodsList['total'],
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
             'orderType'=>$orderType,
@@ -69,7 +77,29 @@ class GoodsController extends Controller
             'lowest'=>$lowest,
             'highest'=>$highest,
             'price_bg1'=>$price_bg1,
+            'cate'=>$cate,
+            'brand'=>$brand,
+            'delivery_place'=>$delivery_place
         ]);
+    }
+
+    //根据条件范围收索产品(ajax)
+    public function goodsListByCondition(Request $request)
+    {
+        $currpage = $request->input("currpage",1);
+        $brand_name = $request->input("brand_name","");
+        $condition = [];
+        if(!empty($brand_name)){
+            $goods_id = BrandService::getGoodsIds($brand_name);
+            $condition['goods_id'] = implode('|',$goods_id);
+        }
+        $pageSize = 2;
+        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        if(empty($goodsList['list'])){
+            return $this->result("",400,'error');
+        }else{
+            return $this->result(['list'=>$goodsList['list'],'currpage'=>$currpage,'total'=>$goodsList['total'],'pageSize'=>$pageSize],200,'success');
+        }
     }
 
     //产品详情
