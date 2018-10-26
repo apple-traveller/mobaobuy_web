@@ -97,7 +97,7 @@
 			@foreach($addressList as $k=>$v)
 			<li class="@if($v['is_default']==1) curr @endif">
 				<div class="address_name mt20"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
-				<div class="address_name mt5"><span>{{ $v['country'] }}-{{ $v['province'] }}-{{ $v['district'] }}{{ $v['address'] }}</span></div>
+				<div class="address_name mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
 				<div class="address_name mt15 default_addr dno" style="margin-top: 3px">
 					@if($v['is_default'])
@@ -122,9 +122,6 @@
 @section('js')
 	<script type="text/javascript">
         $(function(){
-            // $('.Receive_address li').click(function(){
-            //     $(this).addClass('curr').siblings().removeClass('curr')
-            // })
 			//	删除
             $('.del_address').click(function(){
                 let io = $(this);
@@ -181,25 +178,6 @@
             });
 			//	增加
             $('.add_address').click(function(){
-                console.log('s');
-
-				// let input = $("#address_form").serialize();
-				// $.ajax({
-				// 	url:'/createAddressList',
-				// 	data: input,
-				// 	type: 'POST',
-				// 	success:function (res) {
-				// 		if (res.code == 1){
-                 //            $('.block_bg,#addr_frame').hide();
-                 //            $.msg.alert(res.msg);
-				// 		    setTimeout(window.location.reload(),2000);
-				// 		} else {
-                 //            $('.block_bg,#addr_frame').hide();
-                 //            $.msg.alert(res.msg);
-                 //            document.getElementById("address_form").reset()
-				// 		}
-                 //    }
-				// });
 
             });
             // $('.Receive_address li:last-child').unbind('click');
@@ -229,7 +207,5 @@
                 $('.block_bg,#addr_frame').hide();
             })
         })
-
-
 	</script>
 @endsection

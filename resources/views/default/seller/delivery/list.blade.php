@@ -41,7 +41,6 @@
                                 <tr>
                                     <th width="10%"><div class="tDiv">发货单流水号</div></th>
                                     <th width="10%"><div class="tDiv">订单号</div></th>
-                                    <th width="10%"><div class="tDiv">商家名称</div></th>
                                     <th width="10%"><div class="tDiv">下单时间</div></th>
 
                                     <th width="5%"><div class="tDiv">收货人</div></th>
@@ -55,7 +54,6 @@
                                     <tr class="">
                                         <td><div class="tDiv">{{$vo['delivery_sn']}}</div></td>
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$vo['order_add_time']}}</div></td>
 
                                         <td>

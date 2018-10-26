@@ -1,9 +1,22 @@
 @extends(themePath('.')."seller.include.layouts.master")
+@section('styles')
+    <style>
+        [class^="icon-"], [class*=" icon-"] {
+            line-height: 23px;
+        }
+    </style>
+@endsection
 @section('body')
+    @include('partials.base_header')
+    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+    <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
+    <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
         <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加商品报价</div>
         <div class="content">
-
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -40,15 +53,18 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_place" class="text" value="" maxlength="40" autocomplete="off" id="delivery_place">
+                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="" style="display: none"/>
+                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="" style="display: none"/>
+                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="expiry_time" id="expiry_time" class="layui-input text" maxlength="40" >
+                                    <input type="text" name="production_date" id="production_date" class="layui-input text" maxlength="40" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -61,6 +77,20 @@
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
+                                <div class="label_value">
+                                    <input type="text" name="salesman" id="salesman" class=" text" maxlength="10" autocomplete="off">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;联系方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="contact_info" id="contact_info" class=" text" maxlength="40" autocomplete="off" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -78,19 +108,6 @@
     </div>
 
     <script type="text/javascript">
-
-        //时间选择器
-        layui.use('laydate', function(){
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#expiry_time' //指定元素
-                ,type: 'datetime'
-            });
-        });
-
-
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();

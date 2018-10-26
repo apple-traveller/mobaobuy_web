@@ -200,14 +200,19 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
         Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
-        Route::get('/template/index', 'TemplateController@index');//首页可视化
-        Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
-        Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存
-        Route::post('/template/publish', 'TemplateController@publish');//确认发布
-        Route::post('/template/partEdit', 'TemplateController@partEdit');//模板编辑
-        Route::get('/template/preview', 'TemplateController@preview');//模板预览
-        Route::get('/template/decoratetest', 'TemplateController@decoratetest');//装修模板(测试)
-        Route::get('/template/getPics', 'TemplateController@getPics');//测试方法
+        Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
+        Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
+        Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑
+        Route::post('/ad/position/save', 'AdPositionController@save');//广告位置保存
+        Route::get('/ad/position/delete', 'AdPositionController@delete');//广告位置删除
+
+        Route::get('/ad/list', 'AdController@list');//广告图片列表
+        Route::get('/ad/addForm', 'AdController@addForm');//广告图片添加
+        Route::get('/ad/editForm', 'AdController@editForm');//广告图片编辑
+        Route::post('/ad/save', 'AdController@save');//广告图片保存
+        Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
+        Route::get('/ad/delete', 'AdController@delete');//广告图片删除
+
 
     });
 
@@ -231,6 +236,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/findPwd','UserController@userFindPwd');
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
+
+    Route::get('/article/{id}','IndexController@article');//资讯
+    Route::get('/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
@@ -366,13 +376,12 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
 
 
-
     });
 });
 
 
 // 商户
-Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
+Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::get('/login.html', 'LoginController@login')->name('seller_login');
     Route::post('/login', 'LoginController@login');
     Route::get('/register.html', 'LoginController@register');
@@ -388,50 +397,52 @@ Route::group(['namespace' => 'seller','prefix' => 'seller'], function () {
         Route::get('/detail', 'indexController@detail');
 
         Route::get('/shopUser', 'ShopUserController@list');// 商户职员管理
-        Route::get('/shopUser/add', 'ShopUserController@add');
-        Route::get('/shopUser/edit', 'ShopUserController@edit');
-        Route::post('/shopUser/save', 'ShopUserController@save');
-        Route::post('/shopUser/delete', 'ShopUserController@delete');
+        Route::get('/shopUser/add', 'ShopUserController@add');// 添加
+        Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
+        Route::post('/shopUser/save', 'ShopUserController@save');// 保存
+        Route::post('/shopUser/delete', 'ShopUserController@delete');// 删除
 
         Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
 //        Route::get('/goods/add', 'ShopGoodsController@add');
 //        Route::get('/goods/edit', 'ShopGoodsController@edit');
 //        Route::post('/goods/save', 'ShopGoodsController@save');
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
-        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
+        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@list');// 商户商品报价
-        Route::get('/quote/add', 'ShopGoodsQuoteController@add');
-        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');
-        Route::post('/quote/save', 'ShopGoodsQuoteController@save');
-        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');
+        Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加
+        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
+        Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存
+        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');// 删除
 
         Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
-        Route::get('/order/detail', 'ShopOrderController@detail');
-        Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
-        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
-        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
-        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate');
-        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
-        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
-        Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+        Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
+        Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
+        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
+        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
+        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
+        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作
+        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree'); // 维护运费 & 折扣
+        Route::post('/order/saveFree', 'ShopOrderController@saveFree'); // 维护运费 & 折扣- 保存
         Route::get('/order/delivery', 'ShopOrderController@delivery'); // 发货订单
-        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');
-        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery');
+        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');  //  为发货订单提供商品接口
+        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery'); //  生成发货单 订单商品数量在此处修改
 
         Route::get('/delivery/list', 'ShopDeliveryController@list');// 发货订单
         Route::get('/delivery/detail', 'ShopDeliveryController@detail');// 发货订单详情
-        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');
-        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno');
+        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');  // 更改订单状态
+        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno'); // 修改订单号
 
-        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
-        Route::get('/seckill/add', 'SeckillController@addForm');
-        Route::post('/seckill/save', 'SeckillController@save');
-        Route::post('/seckill/delete', 'SeckillController@delete');
-        Route::get('/seckill/goods_list', 'SeckillController@goods_list');
-        Route::get('/seckill/list_detail', 'SeckillController@list_detail');
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀 //
+        Route::get('/seckill/add', 'SeckillController@addForm'); // 添加
+        Route::post('/seckill/save', 'SeckillController@save'); //  保存
+        Route::post('/seckill/delete', 'SeckillController@delete'); // 删除
+        Route::get('/seckill/goods_list', 'SeckillController@goods_list'); // 为添加秒杀商品提供页面
+        Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
+
+        Route::get('/activity/promoter', 'ActivityController@promoter'); // 优惠活动
     });
 });
 

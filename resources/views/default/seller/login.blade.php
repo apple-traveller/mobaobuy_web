@@ -60,7 +60,7 @@
                         window.location.href="{{url('/seller')}}";
                     } else {
                         $('#password').val('');
-                        layer.msg(res.msg);
+                       layer.msg(res.msg);
                     }
                 }
             });

@@ -299,8 +299,8 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (4, 'stock_dec_time', 'select','1|加入购物车,2|下单时,3|付款时,4|发货时','','减库存时机','2','',''),
 (5, 'site_domain', 'text','','','网站域名','','请输入您当前网站的域名，避免资源找不到（如：http://www.xxxx.com/）',''),
 (5, 'article_path', 'text','','','文章资源路径','../article','',''),
-(5, 'friend_link_path', 'text','','','友情链接路径','../friend_link','',''),
-(5, 'firm_path', 'text','','','企业资质路径','../firm','','');
+(5, 'friend_link_path', 'text','','','友情链接路径','friend_link','',''),
+(5, 'firm_path', 'text','','','企业资质路径','firm','','');
 
 DROP TABLE IF EXISTS `ad_position`;
 CREATE TABLE `ad_position` (
@@ -318,6 +318,7 @@ CREATE TABLE `ad` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `position_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '位置ID',
   `ad_name` varchar(60) NOT NULL DEFAULT '' COMMENT '广告名称',
+  `ad_img` varchar(200) NOT NULL DEFAULT '' COMMENT '广告图片',
   `ad_link` varchar(255) NOT NULL DEFAULT '' COMMENT '广告链接',
   `start_time` datetime NOT NULL COMMENT '有效时间从',
   `end_time` datetime NOT NULL COMMENT '有效时间至',
@@ -330,6 +331,16 @@ CREATE TABLE `ad` (
   KEY `start_time` (`start_time`),
   KEY `end_time` (`end_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='广告表';
+
+DROP TABLE IF EXISTS `keywords`;
+CREATE TABLE `keywords` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `date` date NOT NULL COMMENT '日期',
+  `engine` varchar(20) NOT NULL DEFAULT '' COMMENT '搜索引擎',
+  `keyword` varchar(90) NOT NULL DEFAULT '' COMMENT '关键字',
+  `count` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '次数',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='搜索关键字表';
 
 DROP TABLE IF EXISTS `friend_link`;
 CREATE TABLE `friend_link` (
@@ -1017,6 +1028,27 @@ CREATE TABLE `seckill_goods` (
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀活动商品';
 
+DROP TABLE IF EXISTS `activity_promote`;
+CREATE TABLE `activity_promote` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `begin_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '促销商品ID',
+  `price` decimal(10,2) NOT NULL COMMENT '促销价格',
+  `num` smallint(5) NOT NULL COMMENT '促销总数量',
+  `available_quantity` smallint(5) NOT NULL COMMENT '当前可售数量',
+  `min_limit` smallint(5) NOT NULL DEFAULT 1 COMMENT '最小起售数量',
+  `max_limit` smallint(5) NOT NULL DEFAULT 0 COMMENT '最大限购数量 0-不限',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  PRIMARY KEY (`id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='促销活动表';
+
+
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -1150,4 +1182,5 @@ CREATE TABLE `order_pay_log` (
   KEY `order_id` (`order_id`),
   KEY `is_paid` (`is_paid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单付款日志表';
+
 

@@ -54,6 +54,11 @@ class ShopDeliveryController extends Controller
         ]);
     }
 
+    /**
+     * 修改订单号
+     * @param Request $request
+     * @return ShopDeliveryController
+     */
     public function modifyShippingBillno(Request $request)
     {
         $data = [

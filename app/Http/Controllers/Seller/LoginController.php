@@ -10,7 +10,12 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\GsxxService;
 use App\Services\ShopLoginService;
+use App\Services\ShopLogService;
+use App\Services\ShopUserService;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -90,22 +95,30 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         if ($request->isMethod('get')){
-            return $this->display('seller.register2');
+            return $this->display('seller.register');
         } else {
             $user_id = $request->input('user_id','0');
             $shop_name = $request->input('shop_name','');
-            $company_name = $request->input('company_name','');
-            $attorney_letter_fileImg = $request->file('attorney_letter_fileImg','');
+            $user_name = $request->input('contactName','');
+            $company_name = $request->input('companyName','');
+            $attorney_letter_fileImg = $request->input('attorney_letter_fileImg','');
             $business_license_id = $request->input('business_license_id','');
-            $license_fileImg = $request->file('license_fileImg','');
+            $license_fileImg = $request->input('license_fileImg','');
             $taxpayer_id = $request->input('taxpayer_id','');
             $is_self_run = $request->input('is_self_run','0');
-            $user_name = $request->input('name','');
+            $user_name = $request->input('contactName','');
             $password = base64_decode($request->input('password', ''));
 
             //$password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
+
+
+            $type = 'sms_signup';
+            //手机验证码是否正确
+            if(Cache::get(session()->getId().$type.$mobile) != $mobile_code){
+                return $this->error('手机验证码不正确');
+            }
 
             if (empty($shop_name)){
                 return $this->error('店铺名称不能为空');
@@ -153,7 +166,7 @@ class LoginController extends Controller
             try{
                $re = ShopLoginService::Register($data);
                if ($re){
-                   return $this->success('注册申请提交成功','login.html');
+                   return $this->success('注册申请提交成功','seller_login');
                }
                 return $this->success($re);
             }catch (\Exception $e){
@@ -165,11 +178,17 @@ class LoginController extends Controller
     //获取手机验证码
     public function getSmsCode(Request $request){
         $mobile = $request->input('mobile');
-        $code = ShopLoginService::sendRegisterCode($mobile);
-        if($code){
-            echo json_encode(array('code'=>1,'msg'=>'success'));exit;
+        $type = 'sms_signup';
+        //生成的随机数
+        $code = SmsService::getRandom(6);
+        Cache::add(session()->getId().$type.$mobile, $code, 5);
+        $re = ShopLoginService::sendRegisterCode($type,$mobile,$code);
+        if ($re == 0){
+            return $this->success('发送成功');
+        } else {
+            return $this->error('发送失败,请稍后重试');
         }
-        echo json_encode(array('code'=>0,'msg'=>'error'));exit;
+
     }
 
     /**

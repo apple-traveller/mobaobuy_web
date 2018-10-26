@@ -63,8 +63,8 @@
         <div class="table-condition">
             <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
             <div class="fl ml20 item">
-            <input type="text" class="text Wdate" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
-            <input type="text" class="text Wdate" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
+            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
+            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
             <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}">+新增出库</a></div>

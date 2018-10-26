@@ -189,7 +189,7 @@ class ShopOrderController extends Controller
     }
 
     /**
-     *
+     * 修改订单中商品信息
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
