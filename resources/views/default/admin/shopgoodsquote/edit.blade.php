@@ -1,6 +1,12 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    @include('partials.base_header')
+    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+    <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
+    <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
         <div class="title"><a href="/admin/shopgoodsquote/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 修改商品报价</div>
         <div class="content">
@@ -19,6 +25,22 @@
                                         <option @if($goodsQuote['shop_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
                                         @endforeach
                                     </select>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员姓名：</div>
+                                <div class="label_value">
+                                    <input type="text" name="salesman" class="text" value="{{$goodsQuote['salesman']}}" maxlength="40" autocomplete="off" id="salesman">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="contact_info" class="text" value="{{$goodsQuote['contact_info']}}" maxlength="40" autocomplete="off" id="contact_info">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -55,18 +77,15 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_place" class="text" value="{{$goodsQuote['delivery_place']}}" maxlength="40" autocomplete="off" id="delivery_place">
+                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{$goodsQuote['delivery_place']}}" style="display: none"/>
+                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{$goodsQuote['place_id']}}" style="display: none"/>
+                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="{{$goodsQuote['delivery_place']}}" style="width: 321px;height:33px;" id="test">
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
-                                <div class="label_value">
-                                    <input type="text" name="expiry_time" value="{{$goodsQuote['expiry_time']}}" id="expiry_time" class="layui-input text" maxlength="40" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
                             <div class="item">

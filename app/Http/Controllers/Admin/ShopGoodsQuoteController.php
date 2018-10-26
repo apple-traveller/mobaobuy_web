@@ -21,10 +21,10 @@ class ShopGoodsQuoteController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name']="%".$shop_name."%";
         }
-        $pageSize =5;
+        $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-       //dd($shopGoodsQuote['list']);
+        //dd($shopGoodsQuote['list']);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
@@ -79,14 +79,14 @@ class ShopGoodsQuoteController extends Controller
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';
         }
+        if($data['delivery_place']==""){
+            $errorMsg[] = '发货地不能为空';
+        }
         if($data['shop_id']==0||empty($data['shop_id'])){
             $errorMsg[] = '店铺不能为空';
         }
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
-        }
-        if(empty($data['expiry_time'])){
-            $errorMsg[] = '截止时间不能为空';
         }
         if(empty($data['goods_number'])){
             $errorMsg[] = '库存不能为空';
@@ -97,6 +97,13 @@ class ShopGoodsQuoteController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('|',$errorMsg));
         }
+
+        $delivery_places = explode('/',$data['delivery_place']);//先转化为数组
+        $data['delivery_place'] = array_pop($delivery_places);//取最后的一个地区
+
+        $place_ids = explode('|',$data['place_id']);//先转化为数组
+        $data['place_id'] = array_pop($place_ids);//取最后的一个地区
+
         $data['shop_name'] = ShopService::getShopById($data['shop_id'])['shop_name'];
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
@@ -106,9 +113,6 @@ class ShopGoodsQuoteController extends Controller
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
-                if(strtotime($data['expiry_time'])<strtotime($goodsQuote['add_time'])){
-                    return $this->error('截止时间不能在添加时间之前');
-                }
                 $flag = ShopGoodsQuoteService::modify($data);
                 if(!empty($flag)){
                     return $this->success('修改成功',url('/admin/shopgoodsquote/list')."?currpage=".$currpage);
@@ -117,9 +121,6 @@ class ShopGoodsQuoteController extends Controller
                 $data['add_time'] = Carbon::now();
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
-                if(strtotime($data['expiry_time'])<strtotime($data['add_time'])){
-                    return $this->error('截止时间不能在添加时间之前');
-                }
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shopgoodsquote/list'));

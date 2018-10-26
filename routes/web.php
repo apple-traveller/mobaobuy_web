@@ -200,14 +200,19 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
         Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
-        Route::get('/template/index', 'TemplateController@index');//首页可视化
-        Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
-        Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存
-        Route::post('/template/publish', 'TemplateController@publish');//确认发布
-        Route::post('/template/partEdit', 'TemplateController@partEdit');//模板编辑
-        Route::get('/template/preview', 'TemplateController@preview');//模板预览
-        Route::get('/template/decoratetest', 'TemplateController@decoratetest');//装修模板(测试)
-        Route::get('/template/getPics', 'TemplateController@getPics');//测试方法
+        Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
+        Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
+        Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑
+        Route::post('/ad/position/save', 'AdPositionController@save');//广告位置保存
+        Route::get('/ad/position/delete', 'AdPositionController@delete');//广告位置删除
+
+        Route::get('/ad/list', 'AdController@list');//广告图片列表
+        Route::get('/ad/addForm', 'AdController@addForm');//广告图片添加
+        Route::get('/ad/editForm', 'AdController@editForm');//广告图片编辑
+        Route::post('/ad/save', 'AdController@save');//广告图片保存
+        Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
+        Route::get('/ad/delete', 'AdController@delete');//广告图片删除
+
 
     });
 

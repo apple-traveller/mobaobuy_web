@@ -789,12 +789,12 @@ i.ice_b{ background-position:-336px -214px;}
 .list-div.listMin table{ min-width:1639px;}
 .list-div th{ height:38px; line-height:38px; background:#f2f2f2; font-weight:bold; border-top:2px solid #dbdbdb;border-bottom:1px solid #eaeaea; color:#333;}
 .list-div th a{ color:#333;}
-.list-div td{ line-height:20px; height:38px; border-bottom:1px solid #eaeaea;word-break: keep-all; background:#fff;}
+.list-div td{ text-align:center;ine-height:20px; height:38px; border-bottom:1px solid #eaeaea;word-break: keep-all; background:#fff;}
 .list-div .tr_bg_org td{ background:#fffccb;}
 .list-div .tr_bg_blue td{ background:#f5faff;}
 .list-div th .tDiv a{ color:#333;}
 .list-div .tDiv{ padding:0 0 0 20px;}
-.list-div th .tDiv{ min-width:60px; overflow:hidden;white-space: nowrap;text-overflow: ellipsis;}
+.list-div th .tDiv{text-align: center; min-width:60px; overflow:hidden;white-space: nowrap;text-overflow: ellipsis;}
 .list-div td .tDiv{ padding:10px 0 10px 20px;}
 .list-div .sign .tDiv{ min-width:30px;text-align:center; padding-left:0;}
 .list-div .sign input[type='checkbox']{ display:none;}
