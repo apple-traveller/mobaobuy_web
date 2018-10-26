@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        \Carbon\Carbon::setLocale('zh');
 //        view()->share('sitename','text6');
 //        view()->composer('*',function($view){
 //            $view->with('user',array('name'=>'text','avatar'=>'/pah/to/test.jpg'));

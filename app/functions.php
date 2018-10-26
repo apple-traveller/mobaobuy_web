@@ -95,6 +95,13 @@ if(!function_exists('getFooterArticle')){
     }
 }
 
+if(!function_exists('amount_format')){
+    function amount_format($amount, $decimals=2, $currency_symbol='￥', $dec_point='.', $thousands_sep=','){
+        $value = number_format($amount, $decimals, $dec_point, $thousands_sep);
+        return $currency_symbol.$value;
+    }
+}
+
 if(!function_exists('make_treeTable')) {
     /**
      * 列表转树表格

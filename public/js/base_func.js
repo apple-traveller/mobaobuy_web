@@ -174,4 +174,16 @@ $(document).tooltip({
     }
 });
 
-/*************************文件上传 end**********************/
+function updateCountDownText(obj) {
+    var nowtime = new Date();
+    var endtime = new Date($(obj).data('endtime'));
+    var time = endtime - nowtime;
+    var day = parseInt(time / 1000 / 60 / 60 / 24);
+    var hour = parseInt(time / 1000 / 60 / 60 % 24);
+    var minute = parseInt(time / 1000 / 60 % 60);
+    var seconds = parseInt(time / 1000 % 60);
+    $(obj).find('.count-down-text').html(day + "天" + hour + "小时" + minute + "分钟" + seconds + "秒");
+    setTimeout(function () {
+        updateCountDownText(obj);
+    }, 1000);
+}

@@ -13,6 +13,28 @@ $(function(){
         thumbNowClass:'on',
         changeTime:2000,
     });
+
+    //活动倒计时
+    $(".count-down").each(function(){
+        var obj = $(this);
+        var time = obj.data('endtime');
+        //setTimeout("updateCountDownText('"+obj+"')", 1000);
+        updateCountDownText(obj)
+    });
+});
+$(function() {
+    var oUl = $('.trans_marquee ul');
+    var timer = null;
+    $(oUl).hover(function () {
+        clearInterval(timer);
+    }, function () {
+        timer = setInterval(function () {
+            var field = oUl.find('li:first');
+            field.animate({'marginTop': -50 + 'px'}, 600, function () {
+                field.css('marginTop', 0).appendTo(oUl);
+            });
+        }, 5000);
+    }).trigger('mouseleave');
 });
 
 $(".shopping_cart").click(function(){

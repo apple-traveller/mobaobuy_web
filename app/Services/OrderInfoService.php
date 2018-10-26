@@ -173,6 +173,24 @@ class OrderInfoService
         return $order_goods;
     }
 
+    public static function getOrderGoods($params=[], $page = 1 ,$pageSize=10){
+        $condition = [];
+        if(!empty($params['order_id'])){
+            $condition['order_id'] = $params['order_id'];
+        }
+        if(!empty($params['user_id'])){
+            $condition['user_id'] = $params['user_id'];
+        }
+        if(!empty($params['order_id'])){
+            $condition['order_id'] = $params['order_id'];
+        }
+        if(!empty($params['goods_name'])){
+            $condition['goods_name'] = '%'.$params['goods_name'].'%';
+        }
+
+        return OrderGoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+    }
+
     //获取收货地址信息
     public static function getConsigneeInfo($id)
     {

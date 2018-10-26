@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Web;
 use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\RegionRepo;
+use App\Services\ActivityPromoteService;
+use App\Services\ArticleService;
+use App\Services\BrandService;
 use App\Services\GoodsCategoryService;
+use App\Services\OrderInfoService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Services\IndexService;
@@ -21,18 +25,22 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
-        $currpage = $request->input("currpage",1);
-        $condition = [];
-        $pageSize = 10;
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-
         //获取分类树
         $cat_tree = GoodsCategoryService::getCategoryTree();
         //获取活动
+        $promote_list = ActivityPromoteService::getList(['status'=>2], 1, 2);
+        //成交动态
+        $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
+        //自营报价
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['add_time'=>'desc']],['is_self_run'=>1]);
+        //获取供应商
+        $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
+        //获取资讯
+        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
+        //合作品牌
+        $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 
-
-
-        return $this->display('web.index',['goodsList'=>$goodsList['list'], 'cat_tree'=>$cat_tree]);
+        return $this->display('web.index',['goodsList'=>$goodsList, 'cat_tree'=>$cat_tree, 'promote_list'=>$promote_list['list'], 'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list]);
     }
 
     //选择公司
