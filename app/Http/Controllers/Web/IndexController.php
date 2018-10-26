@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\RegionRepo;
+use App\Services\GoodsCategoryService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Services\IndexService;
@@ -23,7 +25,14 @@ class IndexController extends Controller
         $condition = [];
         $pageSize = 10;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        return $this->display('web.index',['goodsList'=>$goodsList['list']]);
+
+        //获取分类树
+        $cat_tree = GoodsCategoryService::getCategoryTree();
+        //获取活动
+        
+
+
+        return $this->display('web.index',['goodsList'=>$goodsList['list'], 'cat_tree'=>$cat_tree]);
     }
 
     //选择公司

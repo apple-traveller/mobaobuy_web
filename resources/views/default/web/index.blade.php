@@ -1,20 +1,14 @@
 @extends(themePath('.','web').'web.include.layouts.home')
 @section('title', '首页')
 @section('css')
-    <style>
-        .Self-product-list li span{width:12.2%;}
-        .news_pages ul.pagination {text-align: center;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/index.css')}}" />
 @endsection
 @section('js')
+    <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
     <script>
         $(function(){
 
-            $('#change_2 .ys_bigimg').soChange({
-                thumbObj:'#change_2 .ys_banner_icon span',
-                thumbNowClass:'on',
-                changeTime:2000,
-            });
+
 
             $(document).delegate('.supply_list>li','mouseenter',function(){
 
@@ -35,42 +29,34 @@
                     $(this).find('.Quotate_text').animate({bottom:"0px"});
                 },function(){$(this).find('.Quotate_text').animate({bottom:"-30px"});})
             })
-            //导航
-            $('.ass_menu li').hover(function(){
-                $(this).find('.ass_fn').toggle();
-            })
+
         })
     </script>
 @endsection
 
 @section('content')
-    <div class="clearfix play_banner" style="width:100%;height: 344px;position:relative;  z-index: 1;">
-        <div class="ys_banner" id="change_2">
-            <div class="ys_bigimg01">
-                <a class="ys_bigimg" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px; "></a>
-                <a class="ys_bigimg" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px; "></a>
-                <a class="ys_bigimg" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px; "></a>
-                <ul class="ys_banner_icon">
-                    <li><span>1</span></li>
-                    <li><span>2</span></li>
-                    <li><span>3</span></li>
-                </ul>
+    <div class="play_banner">
+        <div class="banner-imgs-div">
+            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+        </div>
+
+        <div class="member_center_div">
+            <div class="member_center">
+                <div class="member_header tac"><img src="/images/hd.png"/></div>
+                <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
+                <div class="mt5 pl10 pr10">
+                    <div class="login-btn">登录</div><div class="reg-btn">注册</div>
+                </div>
+                <input type="text" class="contact-input" autocomplete="off" placeholder="请输入手机号"/>
+                <textarea class="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                <button class="opt-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
     </div>
 
     <div class="w1200 pr" style="z-index: 1;">
-        <div class="member_center whitebg">
-            <div class="member_header tac"><img src="/images/hd.png"/></div>
-            <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
-            <div class="member_cnt">
-                <div class="member_btn code_greenbg white">快速登录</div><div class="member_btn br1 gray ml20">快速登录</div>
-                <input type="text" class="member_text member_lh32 graybg p5" placeholder="请输入手机号"/>
-                <textarea class="member_text graybg member_h72 p5" placeholder="填写您的真实需求，提交给我们"></textarea>
-                <button class="member_text tac member_lh32 code_greenbg white">立即找货</button>
-            </div>
-        </div>
-
         <div class="mt10 ovh">
             <!--限时秒杀-查看更多-->
             <div class="index_xs_ms"><a class="See_more tac ovh">查看更多></a></div>
@@ -135,13 +121,14 @@
         <div class="Self-support mt30">
             <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">61</font>条自营报价</span><a class="ml30 chakangengduo">查看更多></a></div></div>
             <ul class="Self-product-list">
-                <li><span class="num_bg1">店铺</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>操作</span></li>
+                <li><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地</span><span>操作</span></li>
                 @foreach($goodsList as $vo)
-                    <li><span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['shop_name']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span><button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button></span></li>
+                    <li><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{'￥'.number_format($vo['shop_price'], 2)}}</span><span>{{$vo['delivery_place']}}</span><span><button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button></span></li>
                 @endforeach
             </ul>
         </div>
     </div>
+
     <div class="w1200 tac fs30 fwb" style="margin-top: 30px;">一站式服务</div>
     <div class="One_service_bg">
 

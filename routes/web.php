@@ -232,6 +232,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+    Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
+
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
