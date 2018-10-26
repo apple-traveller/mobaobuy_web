@@ -97,11 +97,15 @@ class ShopGoodsQuoteController extends Controller
         $id = $request->input('id','');
         $goods_id = $request->input('goods_id','');
         $delivery_place = $request->input('delivery_place');
+        $place_id = $request->input('place_id','');
         $production_date = $request->input('production_date','');
         $goods_number = $request->input('goods_number','');
         $shop_price = $request->input('shop_price','');
         $salesman = $request->input('salesman','');
         $contact_info = $request->input('contact_info','');
+
+        $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
+        $place_id = substr($place_id,strripos($place_id,'|')+1);
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -136,6 +140,7 @@ class ShopGoodsQuoteController extends Controller
             'shop_id' => $shop_id,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
+            'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
             'shop_price' => $shop_price,

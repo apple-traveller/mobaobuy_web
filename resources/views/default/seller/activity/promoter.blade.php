@@ -38,6 +38,12 @@
                                 <tr>
                                     <th width="10%"><div class="tDiv">编号</div></th>
                                     <th width="10%"><div class="tDiv">申请时间</div></th>
+                                    <th width="10%"><div class="tDiv">促销商品</div></th>
+                                    <th width="10%"><div class="tDiv">促销价格</div></th>
+                                    <th width="10%"><div class="tDiv">促销总数量</div></th>
+                                    <th width="10%"><div class="tDiv">当前可销售数量</div></th>
+                                    <th width="10%"><div class="tDiv">最小起售量</div></th>
+                                    <th width="10%"><div class="tDiv">最大限购量</div></th>
                                     <th width="10%"><div class="tDiv">活动开始时间</div></th>
                                     <th width="10%"><div class="tDiv">活动结束时间</div></th>
                                     <th width="15%"><div class="tDiv">审核状态</div></th>
