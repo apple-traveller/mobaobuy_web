@@ -126,7 +126,21 @@ class RegionService
         return $country."-".$province."-".$city."-"."$district";
     }
 
-
+    //产品列表
+    public static function getRegionsByGoodsList($goodsList)
+    {
+        $region_ids = [];
+        $unique_regions = [];
+        foreach($goodsList as $vo)
+        {
+            $region_ids[] = $vo['place_id'];
+        }
+        $unique_region_ids = array_unique($region_ids);
+        foreach ($unique_region_ids as $item) {
+            $unique_regions[] = RegionRepo::getInfo($item);
+        }
+        return $unique_regions;
+    }
 
 
 

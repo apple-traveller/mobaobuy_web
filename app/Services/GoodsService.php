@@ -346,6 +346,7 @@ class GoodsService
         $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
+
 }
 
 

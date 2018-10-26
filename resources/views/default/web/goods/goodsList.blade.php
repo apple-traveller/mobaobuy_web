@@ -42,39 +42,47 @@
 @section('content')
 	<div class="clearfix">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a> <div class="mode_add tac">江西 、湖北<i class="mode_close"></i></div><div class="mode_add tac ml10">湖北<i class="mode_close"></i></div> <div class="pro_Open pro_Open_up"></div><div class="fr">共<font class="orange">60</font>个相关产品</div></div>
+		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
+			<div class="condition">
+				<div style="margin-left:20px;" class="mode_add tac">品牌<i class="mode_close"></i></div>
+			</div>
+			<div class="pro_Open pro_Open_up"></div>
+			<div class="fr">共<font class="orange">{{$total}}</font>个相关产品</div></div>
 
 
 		<div class="pro_screen">
 			<div class="pro_brand">
-
-				<dl class="fl filter_item"><dt class="fl">品牌:</dt> <dd class="pro_brand_list ml30"><a>海大</a><a>恒兴</a><a>通威</a><a>禾丰</a><a>骆驼</a><a>正红</a><a>五谷丰登</a><a>成农</a><a>五谷丰登</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a><a>成农</a></dd><div class="fl pro_brand_btn ml20 pro_more">更多</div><div class="fl pro_brand_btn ml20 pro_m_select">多选</div></dl>
+				<dl class="fl filter_item">
+					<dt class="fl">品牌:</dt>
+					<dd class="pro_brand_list ml30">
+						@foreach($brand as $vo)
+							<a onclick="choseByBrand(1,this)" class="choseByBrand" >{{$vo['brand_name']}}</a>
+						@endforeach
+					</dd>
+					<div class="fl pro_brand_btn ml20 pro_more">更多</div>
+					<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>
+				</dl>
 			</div>
 			<div class="pro_brand">
-				<dl class="fl filter_item"><dt class="fl">种类:</dt> <dd class="pro_brand_list ml30"><a>VA</a><a>VE</a><a>VD3</a><a>泛酸钙</a><a>VB1</a><a>VB2</a><a>生物素</a><a>烟酰胺/烟酸</a><a>氯化胆碱</a><a>肌醇</a><a>VB6</a><a>成农</a><a>VB6</a><a>VB6</a><a>成农</a><a>成农</a><a>成农</a></dd><div class="fl pro_brand_btn ml20 pro_more">更多</div><div class="fl pro_brand_btn ml20 pro_m_select">多选</div></dl>
+				<dl class="fl filter_item">
+					<dt class="fl">种类:</dt>
+					<dd class="pro_brand_list ml30">
+						@foreach($cate as $vo)
+						<a>{{$vo['cat_name']}}</a>
+						@endforeach
+					</dd>
+					<div class="fl pro_brand_btn ml20 pro_more">更多</div>
+					<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>
+				</dl>
 			</div>
 			<div class="pro_brand" style="border-bottom: none;">
 				<dl class="fl filter_item"><dt class="fl">地区:</dt>
-					<dd class="fl"><label class=" check_box region ml20"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">全部</span></label></dd>
-					<dd class="pro_brand_list" style="width: 770px;">
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">江西</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">上海</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">北京</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">浙江</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">安徽</span></label>
-						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">福建</span></label>
-
+					<dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
+						@foreach($delivery_place as $vo)
+						<label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value=""/><span class="fl">{{$vo['region_name']}}</span></label>
+						@endforeach
 					</dd>
-					<div class="fl pro_brand_btn region_btn ml20">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>
+					<div  class="fl pro_brand_btn region_btn ml20">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>
 				</dl>
 			</div>
 
@@ -97,9 +105,8 @@
 						</ul>
 					</div>
 					<div class="fr">
-						<span class="fl fs13 mr10"><font class="orange">1</font>/4</span>
-						<div class="fl page_mode page_border_left page_leftbg"></div>
-						<div class="fl page_mode page_border_right page_rightbg"></div>
+
+
 					</div>
 					<form class="fl" id="formid" action="/goodsList">
 						<input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
@@ -112,7 +119,7 @@
 		</div>
 		<ul class="Self-product-list">
 
-			<li><span class="num_bg1">店铺</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>操作</span></li>
+			<li class="table_title"><span class="num_bg1">店铺</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>操作</span></li>
 			@foreach($goodsList as $vo)
 				<li><span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['shop_name']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span><button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button></span></li>
 			@endforeach
@@ -143,7 +150,7 @@
                 , theme: "#88be51" //样式
                 , jump: function (obj, first) {
                     if (!first) {
-                        window.location.href="/goodsList?currpage="+obj.curr;
+                        window.location.href="/goodsList?currpage="+obj.curr+"&orderType={{$orderType}}"+"&lowest={{$lowest}}"+"&highest={{$highest}}";
                     }
                 }
             });
@@ -186,6 +193,57 @@
 			}
 		},"json");
 	});
+
+    //根据品牌筛选
+    function choseByBrand(currpage,b_obj){
+        var brand_name = $(b_obj).text();
+        $.ajax({
+            type: "POST",
+            url: "/condition/goodsList",
+            data: {"brand_name":brand_name,'currpage':currpage},
+            dataType: "json",
+            success: function(res){
+                if(res.code==200){
+                    $(".condition").append('<div style="margin-left:20px;" class="mode_add tac brand_   ">'+brand_name+'<i class="mode_close"></i></div>');
+                    var data = res.data;
+                    console.log(data);
+                    var currpage = data.currpage;
+                    var pageSize = data.pageSize;
+                    var total = data.total;
+                    var list = data.list;
+                    $(".table_title").nextAll().remove();//去除已经出现的数据
+                    $("#page").remove();//删除分页div
+                    for (var i=0;i<list.length;i++)
+                    {
+                        $(".table_title").after('<li><span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span><span>'+list[i].brand_name+'</span><span class="ovh">'+list[i].cat_name+'</span><span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span><span>'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span><span>'+list[i].delivery_place+'</span><span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span></li>');
+                        $(".news_pages").append('<ul id="page" class="pagination"></ul>');
+
+                    }
+                    //分页
+                    layui.use(['laypage'], function() {
+                        var laypage = layui.laypage;
+                        laypage.render({
+                            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                            , count: total //数据总数，从服务端得到
+                            , limit: pageSize   //每页显示的条数
+                            , curr: currpage  //当前页
+                            , prev: "上一页"
+                            , next: "下一页"
+                            , theme: "#88be51" //样式
+                            , jump: function (obj, first) {
+                                if (!first) {
+                                    choseByBrand(obj.curr,b_obj);
+                                }
+                            }
+                        });
+                    });
+                }else{
+                    $(".table_title").nextAll().remove();
+                    $(".table_title").after('<li style="color:red;">没有相关数据</li>');
+                }
+            }
+        });
+	}
 
 </script>
 @endsection
