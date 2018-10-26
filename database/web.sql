@@ -686,7 +686,7 @@ CREATE TABLE `shop_goods_quote` (
   `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
   `production_date` varchar(50) NOT NULL COMMENT '生产日期',
   `add_time` datetime NOT NULL COMMENT '添加时间',
-  `expiry_time` datetime NOT NULL COMMENT '截止时间',
+  `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
   `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
   PRIMARY KEY (`id`),

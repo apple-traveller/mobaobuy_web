@@ -1,4 +1,4 @@
-<div class="top-search-box">
+<div class="top-search-box clearfix">
     <div class="top-search-div">
         <div class="search-div">
             <div class="logo">
@@ -13,9 +13,9 @@
 
                 @if(!empty(getConfig('search_keywords')))
                     <div class="hot_search_m">热门推荐：
-                    @foreach(explode(',',getConfig('search_keywords')) as $item)
-                        <a href="#.html" target="_blank">{{$item}}</a>
-                    @endforeach
+                        @foreach(explode(',',getConfig('search_keywords')) as $item)
+                            <a href="#.html" target="_blank">{{$item}}</a>
+                        @endforeach
                     </div>
                 @endif
             </div>
@@ -26,25 +26,25 @@
                 <div class="cate_title"><span class="ml30">原料分类</span><i class="iconfont icon-menu mr20 fr fs22"></i></div>
                 <ul class="ass_menu">
                     @foreach($cat_tree as $level1_item)
-                    <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
-                        <i class="iconfont icon-right fr mr20"></i>
-                        <div class="ass_fn whitebg">
-                            <ul class="ass_fn_list">
-                                @foreach($level1_item['_child'] as $level2_item)
-                                <li>
-                                    <h1 class="fn_title fl">{{$level2_item['cat_name']}}</h1>
-                                    @if(isset($level2_item['_child']))
-                                    <div class="ass_fn_list_that ml35 ovh fl">
-                                        @foreach($level2_item['_child'] as $level3_item)
-                                        <span>{{$level3_item['cat_name']}}</span>
-                                        @endforeach
-                                    </div>
-                                    @endif
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </li>
+                        <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
+                            <i class="iconfont icon-right fr mr20"></i>
+                            <div class="ass_fn whitebg">
+                                <ul class="ass_fn_list">
+                                    @foreach($level1_item['_child'] as $level2_item)
+                                        <li>
+                                            <h1 class="fn_title fl">{{$level2_item['cat_name']}}</h1>
+                                            @if(isset($level2_item['_child']))
+                                                <div class="ass_fn_list_that ml35 ovh fl">
+                                                    @foreach($level2_item['_child'] as $level3_item)
+                                                        <span>{{$level3_item['cat_name']}}</span>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
                     @endforeach
                 </ul>
             </div>
