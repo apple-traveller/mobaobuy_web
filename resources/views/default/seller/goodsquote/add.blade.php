@@ -46,9 +46,9 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="expiry_time" id="expiry_time" class="layui-input text" maxlength="40" >
+                                    <input type="text" name="production_date" id="production_date" class="layui-input text" maxlength="40" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -61,6 +61,20 @@
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
+                                <div class="label_value">
+                                    <input type="text" name="salesman" id="salesman" class=" text" maxlength="10" autocomplete="off">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;联系方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="contact_info" id="contact_info" class=" text" maxlength="40" autocomplete="off" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -78,19 +92,6 @@
     </div>
 
     <script type="text/javascript">
-
-        //时间选择器
-        layui.use('laydate', function(){
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#expiry_time' //指定元素
-                ,type: 'datetime'
-            });
-        });
-
-
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
