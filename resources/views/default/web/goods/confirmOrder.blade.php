@@ -230,6 +230,7 @@
 	</div>
 	<div class="address whitebg ovh mt20 ">
 		<h1 class="ml30 fs18 mt30">收货地址</h1>
+
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
 			@foreach($addressList as $k=>$v)
@@ -237,7 +238,7 @@
 				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
 				<div class="address_default">
-					<div class="address_default_edit ml300">
+					<div class="address_default_edit">
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else

@@ -36,9 +36,11 @@
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
                                     <th width="5%"><div class="tDiv">库存数量</div></th>
                                     <th width="5%"><div class="tDiv">店铺售价</div></th>
+                                    <th width="5%"><div class="tDiv">业务员</div></th>
+                                    <th width="5%"><div class="tDiv">联系方式</div></th>
                                     <th width="10%"><div class="tDiv">交货地</div></th>
                                     <th width="15%"><div class="tDiv">添加时间</div></th>
-                                    <th width="15%"><div class="tDiv">截止时间</div></th>
+                                    <th width="15%"><div class="tDiv">生产日期</div></th>
                                     <th width="15%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
@@ -49,9 +51,11 @@
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
                                     <td><div class="tDiv">{{$vo['shop_price']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['salesman']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['contact_info']}}</div></td>
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['expiry_time']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['production_date']}}</div></td>
                                     <td>
                                         <div class="tDiv">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>

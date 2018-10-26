@@ -250,7 +250,14 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
     /********************************************************************/
 
+    Route::get('/article/{id}','IndexController@article');//资讯
+    Route::get('/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+
     Route::group(['middleware' => 'web.auth'], function () {
+
+
         Route::get('/logout', 'UserController@logout');//登出
         Route::get('/payment/orderPay','PayController@orderPay');//去付款
         Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
@@ -322,6 +329,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
         Route::post('/addStockIn','FirmStockController@addFirmStock');
         Route::post('/searchGoodsName','FirmStockController@searchGoodsName');//入库检索商品名称
+        Route::post('/searchPartnerName','FirmStockController@searchPartnerName');//入库检索供应商名称
         Route::post('/searchStockIn','FirmStockController@searchStockIn');//入库查询
 
         Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');   //出库记录列表
@@ -366,8 +374,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
 
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
+        Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
+
 
     });
 });
@@ -390,50 +400,52 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/detail', 'indexController@detail');
 
         Route::get('/shopUser', 'ShopUserController@list');// 商户职员管理
-        Route::get('/shopUser/add', 'ShopUserController@add');
-        Route::get('/shopUser/edit', 'ShopUserController@edit');
-        Route::post('/shopUser/save', 'ShopUserController@save');
-        Route::post('/shopUser/delete', 'ShopUserController@delete');
+        Route::get('/shopUser/add', 'ShopUserController@add');// 添加
+        Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
+        Route::post('/shopUser/save', 'ShopUserController@save');// 保存
+        Route::post('/shopUser/delete', 'ShopUserController@delete');// 删除
 
         Route::get('/goods/list', 'ShopGoodsController@list');// 商户商品操作
 //        Route::get('/goods/add', 'ShopGoodsController@add');
 //        Route::get('/goods/edit', 'ShopGoodsController@edit');
 //        Route::post('/goods/save', 'ShopGoodsController@save');
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
-        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');
+        Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@list');// 商户商品报价
-        Route::get('/quote/add', 'ShopGoodsQuoteController@add');
-        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');
-        Route::post('/quote/save', 'ShopGoodsQuoteController@save');
-        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');
+        Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加
+        Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
+        Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存
+        Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');// 删除
 
         Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
-        Route::get('/order/detail', 'ShopOrderController@detail');
-        Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus');
-        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify');
-        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo');
-        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate');
-        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods');
-        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree');
-        Route::post('/order/saveFree', 'ShopOrderController@saveFree');
+        Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
+        Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
+        Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
+        Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
+        Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
+        Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作
+        Route::get('/order/modifyFree', 'ShopOrderController@modifyFree'); // 维护运费 & 折扣
+        Route::post('/order/saveFree', 'ShopOrderController@saveFree'); // 维护运费 & 折扣- 保存
         Route::get('/order/delivery', 'ShopOrderController@delivery'); // 发货订单
-        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');
-        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery');
+        Route::post('/order/orderGoods', 'ShopOrderController@orderGoods');  //  为发货订单提供商品接口
+        Route::post('/order/saveDelivery', 'ShopOrderController@saveDelivery'); //  生成发货单 订单商品数量在此处修改
 
         Route::get('/delivery/list', 'ShopDeliveryController@list');// 发货订单
         Route::get('/delivery/detail', 'ShopDeliveryController@detail');// 发货订单详情
-        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');
-        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno');
+        Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');  // 更改订单状态
+        Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno'); // 修改订单号
 
-        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
-        Route::get('/seckill/add', 'SeckillController@addForm');
-        Route::post('/seckill/save', 'SeckillController@save');
-        Route::post('/seckill/delete', 'SeckillController@delete');
-        Route::get('/seckill/goods_list', 'SeckillController@goods_list');
-        Route::get('/seckill/list_detail', 'SeckillController@list_detail');
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀 //
+        Route::get('/seckill/add', 'SeckillController@addForm'); // 添加
+        Route::post('/seckill/save', 'SeckillController@save'); //  保存
+        Route::post('/seckill/delete', 'SeckillController@delete'); // 删除
+        Route::get('/seckill/goods_list', 'SeckillController@goods_list'); // 为添加秒杀商品提供页面
+        Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
+
+        Route::get('/activity/promoter', 'ActivityController@promoter'); // 优惠活动
     });
 });
 

@@ -604,10 +604,25 @@ class UserController extends Controller
     }
 
     //用户收藏商品列表
-    public function userCollectGoodsList(){
-        $id = session('_web_user_id');
-        $collectGoods = UserService::userCollectGoodsList($id);
-        return $this->display('web.user.userCellectGoodsList',compact('collectGoods'));
+    public function userCollectGoodsList(Request $request){
+        $firm_id = session('_web_user_id');
+        if($request->isMethod('get')){
+            return $this->display('web.user.userCellectGoodsList',compact('collectGoods'));
+        }else{
+            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+            $page_size = $request->input('length', 10);
+            $rs_list =UserService::userCollectGoodsList($firm_id,$page,$page_size);
+
+            $data = [
+                'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                'recordsTotal' => $rs_list['total'], //数据总行数
+                'recordsFiltered' => $rs_list['total'], //数据总行数
+                'data' => $rs_list['list']
+            ];
+            return $this->success('', '', $data);
+        }
+
+
     }
 
     //收藏商品

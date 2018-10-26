@@ -94,6 +94,11 @@ class SeckillController extends Controller
         }
     }
 
+    /**
+     * 为添加秒杀商品提供页面
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function goods_list(Request $request)
     {
         $goods_name = $request->input('goods_name','');
