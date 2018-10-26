@@ -98,7 +98,7 @@
             $('span').delegate('.edit_member','click',function(){
                 $('#power_edit_frame').show();
                 $('.block_bg').show();
-                var id = $('.edit_member').attr('id');
+                var id = $(this).attr('id');
                 $.ajax({
                      url: "/editFirmUser",
                      dataType: "json",
@@ -132,16 +132,17 @@
                         if(data['data']['firm_user_info']['can_stock_view']){
                             $('#can_stock_view').attr("checked",'checked');
                         }
-                        // if(data['data']['firm_user_info']['can_stock_out']){
-                        //     $('#can_stock_out').attr("checked",'checked');
-                        // }
+                        if(data['data']['firm_user_info']['can_invoice']){
+                            $('#can_invoice').attr("checked",'checked');
+                        }
                     }
                 })
             });
             //隐藏关闭框
             $('.cancel,.frame_close').click(function(){
-                $('#power_edit_frame,.block_bg').hide();
-                window.location.reload();
+
+                 $('#power_edit_frame,.block_bg').remove();
+                 window.location.reload();
             })
 
             $('.addFirmUser').click(function(){
@@ -190,6 +191,7 @@
                         window.location.reload();
                     }else{
                         $.msg.alert(result.msg);
+                        window.location.reload();
                     }
                  }, "POST", "JSON");
             }else{
@@ -200,6 +202,7 @@
                         window.location.reload();
                     }else{
                         $.msg.alert(result.msg);
+                        window.location.reload();
                     }
                  }, "POST", "JSON");
 
@@ -244,10 +247,10 @@
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3" id="can_confirm" /><span class="fl">确认收货</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5"/><span class="fl" id="can_approval">审核订单</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6"/><span class="fl" id="">查看订单</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7" id="can_stock_in" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8"/><span class="fl" id="can_stock_view">查看库存</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_approval" /><span class="fl">审核订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_invoice" /><span class="fl">申请开票</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8" id="can_stock_view" /><span class="fl">查看库存</span></label></li>
 
                 </ul>
                 </div>

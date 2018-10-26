@@ -24,7 +24,7 @@
                     <div class="login-title">会员登录</div>
                     <div class="login-item"><input type="text" id="user_name" name="user_name" class="login_input" placeholder="输入您的账户名"/></div>
                     <div class="login-item"><input type="password" id="password" name="password" class="login_input" placeholder="输入您的密码"/></div>
-                    <div class="login-item"><button class="login_btn fs16">登录</button></div>
+                    <div class="login-item"><button class="login_btn fs16" onclick="userLogin()">登录</button></div>
                     <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
                     <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
                 </div>
@@ -36,7 +36,15 @@
     @include(themePath('.','web').'web.include.partials.copyright')
 
     <script>
-        $('.login_btn').click(function (){
+        $(function(){
+            $('body').keydown(function(event){
+                if(event.keyCode == '13'){
+                    userLogin();
+                }
+            });
+        });
+
+        function userLogin(){
             $('.error-content').text('');
             $('.login-error').hide();
             data = {
@@ -53,7 +61,9 @@
 
                 }
             }, "POST", "JSON");
-        });
+        
+        }
+     
     </script>
 </body>
 </html>

@@ -1,6 +1,19 @@
 @extends(themePath('.')."seller.include.layouts.master")
+@section('styles')
+    <style>
+        [class^="icon-"], [class*=" icon-"] {
+            line-height: 23px;
+        }
+    </style>
+@endsection
 @section('body')
-
+    @include('partials.base_header')
+    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+    <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
+    <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
         <div class="title"><a href="/seller/quote/list?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 修改商品报价</div>
         <div class="content">
@@ -40,16 +53,17 @@
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
-                                <div class="label_value">
-                                    <input type="text" name="delivery_place" class="text" value="{{$goodsQuote['delivery_place']}}" maxlength="40" autocomplete="off" id="delivery_place">
-                                    <div class="form_prompt"></div>
+                                <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{ $goodsQuote['delivery_place'] }}" style="display: none"/>
+                                <input type="text" readonly="readonly" id="area2" name="place_id" value="{{ $goodsQuote['place_id'] }}" style="display: none"/>
+                                <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="{{ $goodsQuote['delivery_place'] }}" style="width: 321px;height:33px;" id="test">
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="expiry_time" value="{{$goodsQuote['expiry_time']}}" id="expiry_time" class="layui-input text" maxlength="40" >
+                                    <input type="text" name="production_date" id="production_date" value="{{ $goodsQuote['production_date'] }}" class="layui-input text" maxlength="40" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -59,6 +73,20 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
+                                <div class="label_value">
+                                    <input type="text" name="salesman" id="salesman" class=" text" value="{{ $goodsQuote['salesman'] }}" maxlength="10" autocomplete="off">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;联系方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="contact_info" id="contact_info"  value="{{ $goodsQuote['contact_info'] }}" class=" text" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>

@@ -279,17 +279,20 @@ class UserService
     }
 
     //收藏商品列表
-    public static function userCollectGoodsList($id){
+    public static function userCollectGoodsList($firm_id,$page = 1,$pageSize = 10){
+        $condition = [];
+        if($firm_id > 0){
+            $condition['user_id'] = $firm_id;
+        }
+
         //查找收藏商品表
-        $collectGoods = UserCollectGoodsRepo::getList([],['user_id'=>$id]);
+        $collectGoods = UserCollectGoodsRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page,'orderType'=>['add_time'=>'desc']],$condition);
         //通过商品id查找对应的商品
         if($collectGoods){
-            $goodsId = [];
-            foreach($collectGoods as $v){
-                $goodsId[] = $v['goods_id'];
+            foreach($collectGoods['list'] as $k=>$v){
+                $collectGoods['list'][$k]['goods_name'] = GoodsRepo::getInfo($v['goods_id'])['goods_name'];
             }
-            $goodsInfo = GoodsRepo::userCollectGoodsList($goodsId);
-            return ['goodsInfo'=>$goodsInfo,'collect'=>$collectGoods];
+            return $collectGoods;
         }
         return [];
     }

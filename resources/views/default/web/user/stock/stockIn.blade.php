@@ -43,6 +43,12 @@
         .pro_select{width: 330px; position: absolute; top: 39px; left: 140px; background-color: #fff;  border: 1px solid #dedede;  box-sizing: border-box;}
         .pro_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
         .pro_select li:hover{background-color: #f1f1f1;}
+
+        .partner_select{width: 330px; position: absolute; top: 124px; left: 171px; background-color: #fff;  border: 1px solid #dedede;  box-sizing: border-box;z-index:1;}
+        .partner_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
+        .partner_select li:hover{background-color: #f1f1f1;}
+
+     
     </style>
     <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
     <script type="text/javascript">
@@ -85,6 +91,7 @@
                 // tbl.fnClearTable(0);
                 // tbl.fnDraw();
 
+
                 var goods_name = $('#goods_name').val();
                 var begin_time = $('#begin_time').val();
                 var end_time = $('#end_time').val();
@@ -102,7 +109,8 @@
                     },
                     type: "POST",
                     success: function (data) {
-                        if(data.code){
+                        console.log(data);
+                        if(data['data']['data'].length > 0){
                             var strHtml = '';
                             for(var i = 0;i<data['data']['data'].length;i++){
                                    strHtml += '<tr role="row" class="odd"><td>'+data['data']['data'][i]['flow_time']+'</td><td>'+data['data']['data'][i]['order_sn']+'</td><td>'+data['data']['data'][i]['goods_name']+'</td><td>'+data['data']['data'][i]['number']+'</td><td>0.00</td></tr>';
@@ -110,7 +118,7 @@
                             $('tbody').html(strHtml);
                 
                         }else{
-                            $.msg.error(data.msg);
+                           $('tbody').html('无此记录');
                         }
                     }
                 })
@@ -142,10 +150,60 @@
                     }
                 },"POST", "JSON");
             });
+
+            $('#partner_name').keyup(function(){
+
+                // $('#goodName').attr('goodsId', 0);
+                 var partnerName = $('#partner_name').val();
+                Ajax.call('/searchPartnerName', {partnerName: partnerName}, function(data){
+                    console.log(data);
+                    if(data['data'].length>0){
+                        $('#appendPartnerName ul').remove();
+                        var str = '';
+                        for(var i = 0;i<data['data'].length;i++){
+                            str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['partner_name']+'</li>';
+                        }
+                        var strHtml = '<ul id="partnerUl"  class="partner_select" >'+str+'</ul>';
+                        $('#appendPartnerName').append(strHtml);
+                    }else{
+                        $('#appendPartnerName ul').remove();
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此供应商数据信息</li></ul>';
+                        $('#appendPartnerName').append(strHtml);
+                    }
+                },"POST", "JSON");
+            });
+
+            $('#partner_name').click(function(){
+                var partnerName = $('#partner_name').val();
+                Ajax.call('/searchPartnerName', {partnerName: partnerName}, function(data){
+                     console.log(typeof(data));
+                     var arr = []
+                    for (var i in data['data']) {
+                        arr.push(data['data'][i]); //属性
+                        //arr.push(object[i]); //值
+                    }
+                    console.log(arr);
+                    if(arr.length>0){
+                        $('#appendPartnerName ul').remove();
+                        var str = '';
+                        for(var i = 0;i<arr.length;i++){
+                            str += '<li id="'+arr[i]['id']+'">'+arr[i]['partner_name']+'</li>';
+                        }
+                        var strHtml = '<ul id="partnerUl"  class="partner_select" >'+str+'</ul>';
+                        $('#appendPartnerName').append(strHtml);
+                       
+                    }else{
+                         $('#appendPartnerName ul').remove();
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此产品数据信息</li></ul>';
+                        $('#appendPartnerName').append(strHtml);
+                    }
+                },"POST", "JSON");
+            });
+            
         });
 
 
-        //选择下拉列表的值
+        //商品名称选择下拉列表的值
         $(document).on('click', '.pro_select li', function(e) {
             var goodsName = $(this).text();
             var goodsId = $(this).attr('id');
@@ -154,6 +212,17 @@
                 $('#goodName').attr('goodsId',goodsId);
             }
             $('#appendGoodsName ul').remove();
+        });
+
+         //供应商名称选择下拉列表的值
+        $(document).on('click', '.partner_select li', function(e) {
+            var partnerName = $(this).text();
+            var partnerId = $(this).attr('id');
+            if(partnerId > 0){
+                $('#partner_name').val(partnerName);
+                $('#partner_name').attr('partnerId',partnerId);
+            }
+            $('#appendPartnerName ul').remove();
         });
 
         function addStockSave(){
@@ -232,7 +301,7 @@
     <div class="pay_method whitebg putIn"  style="display:none;">
         <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增入库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
         <ul class="pay_content" style="margin-top: 35px;">
-            <li><div class="ovh mt10"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" /></div></li>
+            <li><div class="ovh mt10" id="appendPartnerName"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" id="partner_name" /></div></li>
             <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" /></div></li>
             <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="goodName" /><i class="red ml5">*</i>
                 </div>
