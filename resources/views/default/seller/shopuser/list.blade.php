@@ -26,7 +26,6 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="10%"><div class="tDiv">登录用户名</div></th>
                                     <th width="10%"><div class="tDiv">注册时间</div></th>
                                     <th width="10%"><div class="tDiv">上次登录时间</div></th>
@@ -39,7 +38,6 @@
                                 <tbody>
                                 @foreach($shopUsers as $vo)
                                 <tr class="">
-                                    <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['user_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['last_time']}}</div></td>

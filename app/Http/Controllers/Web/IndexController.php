@@ -29,7 +29,7 @@ class IndexController extends Controller
         //获取分类树
         $cat_tree = GoodsCategoryService::getCategoryTree();
         //获取活动
-        
+
 
 
         return $this->display('web.index',['goodsList'=>$goodsList['list'], 'cat_tree'=>$cat_tree]);

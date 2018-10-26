@@ -46,7 +46,7 @@
                                             <tr>
                                                 <th lay-data="{type:'checkbox'}"></th>
                                                 <th lay-data="{field:'goods_name'}">商品名称</th>
-                                                <th lay-data="{field:'shop_name'}">所属店铺</th>
+
                                                 <th lay-data="{field:'goods_sn'}">商品编码</th>
                                                 <th lay-data="{field:'goods_price'}">价格</th>
                                                 <th lay-data="{field:'goods_number'}">购买数量</th>

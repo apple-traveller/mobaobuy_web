@@ -146,6 +146,11 @@ class ArticleService
         };
     }
 
+    /**
+     * 获取上下页
+     * @param $id
+     * @return array
+     */
     public static function getUpDown($id)
     {
         $article_info = ArticleRepo::getInfo($id);
@@ -161,10 +166,9 @@ class ArticleService
         $condition['id|<'] = $id;
 
         $up_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'desc']],$condition);
-
+        unset($condition['id|<']) ;
         $condition['id|>'] = $id;
         $down_page = ArticleRepo::getListBySearch(['page'=>1,'pageSize'=>1,'orderType'=>['id'=>'asc']],$condition);
-
         if(!empty($up_page['list'])){
             $up_news_title = $up_page['list'][0]['title'];
             $up_news_id = $up_page['list'][0]['id'];
@@ -179,7 +183,6 @@ class ArticleService
             $down_news_title = '没有了哦';
             $down_news_id = '';
         }
-
         $data = [
             "up_news_title" => $up_news_title,
             "up_news_id" => $up_news_id,

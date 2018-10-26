@@ -101,10 +101,10 @@ class FirmStockService
             $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
         if(!empty($params['begin_time'])){
-            $condition['flow_time|>='] = date('Y-m-d H:i:s',strtotime($params['begin_time'] . '00:00:00'));
+            $condition['flow_time|>='] = $params['begin_time'] . ' 00:00:00';
         }
         if(!empty($params['end_time'])){
-            $condition['flow_time|<='] = date('Y-m-d H:i:s',strtotime($params['end_time'] . '23:59:59'));
+            $condition['flow_time|<='] = $params['end_time'] . ' 23:59:59';
         }
         $condition['flow_type'] = '1|2';
         $firmStockFlowInfo =  FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
@@ -119,10 +119,10 @@ class FirmStockService
             $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
         if(!empty($params['begin_time'])){
-            $condition['flow_time|>='] = $params['begin_time'];
+            $condition['flow_time|>='] = $params['begin_time'] . ' 00:00:00';
         }
         if(!empty($params['end_time'])){
-            $condition['flow_time|<='] = $params['end_time'];
+            $condition['flow_time|<='] = $params['end_time'] . ' 23:59:59';
         }
 
         $condition['flow_type'] = 3;

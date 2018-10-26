@@ -200,14 +200,19 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
         Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
-        Route::get('/template/index', 'TemplateController@index');//首页可视化
-        Route::get('/template/decorate', 'TemplateController@decorate');//装修模板
-        Route::post('/template/saveTemplate', 'TemplateController@saveTemplate');//模板缓存
-        Route::post('/template/publish', 'TemplateController@publish');//确认发布
-        Route::post('/template/partEdit', 'TemplateController@partEdit');//模板编辑
-        Route::get('/template/preview', 'TemplateController@preview');//模板预览
-        Route::get('/template/decoratetest', 'TemplateController@decoratetest');//装修模板(测试)
-        Route::get('/template/getPics', 'TemplateController@getPics');//测试方法
+        Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
+        Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
+        Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑
+        Route::post('/ad/position/save', 'AdPositionController@save');//广告位置保存
+        Route::get('/ad/position/delete', 'AdPositionController@delete');//广告位置删除
+
+        Route::get('/ad/list', 'AdController@list');//广告图片列表
+        Route::get('/ad/addForm', 'AdController@addForm');//广告图片添加
+        Route::get('/ad/editForm', 'AdController@editForm');//广告图片编辑
+        Route::post('/ad/save', 'AdController@save');//广告图片保存
+        Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
+        Route::get('/ad/delete', 'AdController@delete');//广告图片删除
+
 
     });
 
@@ -232,7 +237,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+
     Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
+
+    Route::get('/article/{id}','IndexController@article');//资讯
+    Route::get('/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
@@ -357,11 +368,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
-
-        Route::get('/article/{id}','IndexController@article');//资讯
-        Route::get('/news.html', 'NewsController@index'); // 新闻中心
-        Route::get('/detail.html', 'NewsController@detail'); // 详情
-        Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
     });
 });
