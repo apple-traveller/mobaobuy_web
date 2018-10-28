@@ -244,10 +244,18 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
+    Route::post('/condition/goodsList', 'GoodsController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
     /********************************************************************/
 
+    Route::get('/article/{id}','IndexController@article');//资讯
+    Route::get('/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+
     Route::group(['middleware' => 'web.auth'], function () {
+
+
         Route::get('/logout', 'UserController@logout');//登出
         Route::get('/payment/orderPay','PayController@orderPay');//去付款
         Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
@@ -319,6 +327,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
         Route::post('/addStockIn','FirmStockController@addFirmStock');
         Route::post('/searchGoodsName','FirmStockController@searchGoodsName');//入库检索商品名称
+        Route::post('/searchPartnerName','FirmStockController@searchPartnerName');//入库检索供应商名称
         Route::post('/searchStockIn','FirmStockController@searchStockIn');//入库查询
 
         Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');   //出库记录列表
@@ -363,8 +372,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
 
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
+        Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
+
 
     });
 });

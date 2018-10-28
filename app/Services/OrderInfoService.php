@@ -28,11 +28,11 @@ class OrderInfoService
         unset($condition['status']);
 
         if(!empty($condition['begin_time'])){
-            $condition['add_time|>='] = $condition['begin_time'];
+            $condition['add_time|>='] = $condition['begin_time'] . ' 00:00:00';
         }
         unset($condition['begin_time']);
         if (!empty($condition['end_time'])) {
-            $condition['add_time|<='] = $condition['end_time'];
+            $condition['add_time|<='] = $condition['end_time'] . ' 23:59:59';
         }
         unset($condition['end_time']);
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\GoodsCategoryRepo;
+use App\Repositories\GoodsRepo;
 class GoodsCategoryService
 {
     use CommonService;
@@ -139,6 +140,29 @@ class GoodsCategoryService
     public static function delete($ids)
     {
         return GoodsCategoryRepo::delete($ids);
+    }
+
+    //产品报价页面
+    public static function getCatesByGoodsList($goodList)
+    {
+        $cates = [];
+        foreach($goodList as $vo)
+        {
+            $good = GoodsRepo::getList([],['id'=>$vo['goods_id']],['id','cat_id'])[0];
+            $cates[] = GoodsCategoryRepo::getList([],['id'=>$good['cat_id']],['id','cat_name'])[0];
+        }
+        $cates_id = [];
+        foreach($cates as $k=>$v)
+        {
+            $cates_id[] = $v['id'];
+        }
+        $unique_cateids = array_unique($cates_id);
+        $unique_cates = [];
+        foreach ($unique_cateids as $item) {
+            $unique_cates[] = GoodsCategoryRepo::getList([],['id'=>$item],['id','cat_name'])[0];
+        }
+
+        return $unique_cates;
     }
 
 

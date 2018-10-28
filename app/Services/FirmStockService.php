@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
+use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\UserRepo;
 use Carbon\Carbon;
@@ -130,7 +131,7 @@ class FirmStockService
     }
 
     //库存记录列表
-    public static function stockList($firm_id, $goods_name, $page = 1 ,$pageSize=10){
+    public static function stockList($firm_id,$cat_id,$goods_name, $page = 1 ,$pageSize=10,$method){
         $condition = [];
         if($firm_id > 0){
             $condition['firm_id'] = $firm_id;
@@ -139,7 +140,44 @@ class FirmStockService
             $condition['goods_name'] = '%'.$goods_name.'%';
         }
 
-        return FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
+        $firmStockInfo = FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
+        $catInfo = [];
+        foreach($firmStockInfo['list'] as $k=>$v){
+            $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+            $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
+
+            //顶部多选框分类名
+            if(!in_array($goodsCatInfo['id'],$catInfo)){
+                $catInfo[$k]['cat_name'] = $goodsCatInfo['cat_name'];
+                $catInfo[$k]['cat_id'] = $goodsCatInfo['id'];
+            }
+
+            if(!empty($cat_id)){
+                //分类塞选数据
+                if(in_array($goodsInfo['cat_id'],$cat_id)){
+                    $firmStockInfo['list'][$k]['cat_name'] = $goodsCatInfo['cat_name'];
+                }else{
+                    unset($firmStockInfo['list'][$k]);
+                }
+            }else{
+                //全部数据
+                $firmStockInfo['list'][$k]['cat_name'] =  $goodsCatInfo['cat_name'];
+            }
+        }
+
+        //重置list键名
+        $resetArr = [];
+        foreach($firmStockInfo['list'] as $v){
+            $resetArr[] = $v;
+        }
+        $firmStockInfo['list'] = $resetArr;
+
+        //post返回table数据
+        if($method){
+            return $firmStockInfo;
+        }
+        //get返回分类列表
+        return $catInfo;
     }
     //库存商品流水
     public static function stockFlowList($params, $page = 1, $pageSize = 10){
@@ -178,6 +216,29 @@ class FirmStockService
         $condition = [];
         $condition['goods_name'] = '%'.$goodsName.'%';
         return GoodsRepo::getList([],$condition);
+    }
+
+    //入库检索供应商名称
+    public static function searchPartnerName($partnerName,$id){
+        if($partnerName){
+            //输入输入框检索
+            $condition = [];
+            $condition['partner_name'] = '%'.$partnerName.'%';
+            $condition['firm_id'] = $id;
+            return FirmStockFlowRepo::getList([],$condition);
+        }else{
+            //点击输入框检索
+            $condition = [];
+            $condition['firm_id'] = $id;
+            $firmStockFlowInfo = FirmStockFlowRepo::getList([],$condition);
+            foreach($firmStockFlowInfo as $k=>$v){
+                if(!$v['partner_name']){
+                    unset($firmStockFlowInfo[$k]);
+                }
+            }
+            return $firmStockFlowInfo;
+        }
+
     }
 
 

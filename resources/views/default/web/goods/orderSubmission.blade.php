@@ -85,7 +85,7 @@
     <div class="w1200">
         <a href="/" class="logo" style="margin-top: 45px;"></a>
         <div class="fr fs14 order_progress" >
-            <div class="cart_progress cart_progress_02"></div>
+            <div class="cart_progress cart_progress_03"></div>
             <div class="progress_text">
                 <div class="my_cart progress_text_curr">我的购物车</div>
                 <div class="order_information">订单信息完善</div>

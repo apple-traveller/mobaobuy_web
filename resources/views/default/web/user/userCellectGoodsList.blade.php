@@ -96,183 +96,87 @@
 
 @section('js')
 	<script type="text/javascript">
-                    $(function(){
-//          显示编辑框
-            $('span').delegate('.edit_member','click',function(){
-                $('#power_edit_frame').show();
-                $('.block_bg').show();
-                var id = $('.edit_member').attr('id');
-                $.ajax({
-                     url: "/editFirmUser",
-                     dataType: "json",
-                     data: {
-                        'id':id
+		  var tbl;
+        $(function () {
+            tbl = $('#data-table').dataTable({
+                "ajax": {
+                    url: "{{url('collectGoodsList')}}",
+                    type: "post",
+                    dataType: "json",
+                    data: function (d) {
+                        d.goods_name = $('#goods_name').val(),
+                        d.begin_time = $('#begin_time').val(),
+                        d.end_time = $('#end_time').val()
                     },
-                    type: "POST",
-                    success: function (data) {
-                        console.log(data);
-                        $('#firmUserName').val(data['data']['firm_user_info']['real_name']);
-                        $('#firmUserPhone').val(data['data']['user_phone']);
-                        $('#firmUserPhone').attr('disabled','disabled');
-                        if(data['data']['firm_user_info']['can_po']){
-                            $('#can_po').attr("checked",'checked');
+                    dataSrc:
+                        function (json) {
+                            json.draw = json.data.draw;
+                            if (json.data.recordsTotal == null) {
+                                json.recordsTotal = 0;
+                            }else{
+                                json.recordsTotal = json.data.recordsTotal;
+                            }
+                            json.recordsFiltered = json.data.recordsFiltered;
+
+                            return json.data.data;
+                        },
+                },
+                "columns": [
+                    {"data": "add_time", "bSortable": false},
+                    {"data": "goods_name", "bSortable": false},
+                    {"data": "id", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)">删除</button>';
                         }
-                        if(data['data']['firm_user_info']['can_pay']){
-                            $('#can_pay').attr("checked",'checked');
-                        }
-                        if(data['data']['firm_user_info']['can_stock_in']){
-                            $('#can_stock_in').attr("checked",'checked');
-                        }
-                        if(data['data']['firm_user_info']['can_stock_out']){
-                            $('#can_stock_out').attr("checked",'checked');
-                        }
-                        // if(data['data']['firm_user_info']['can_po']){}
-                        // if(data.code){
-                        //     alert('添加成功');
-                        //     window.location.reload();
-                        // }else{
-                        //     alert('出错,请重试')
-                        // }
                     }
-                })
-            })
-//          显示删除框
-//          $('span').delegate('.del_power','click',function(){
-//              $('.confirm_del').show();
-//              $('.block_bg').show();
-//          })
-//          隐藏关闭框
-            $('.cancel,.frame_close').click(function(){
-                $('#power_edit_frame,.block_bg').hide();
-                window.location.reload();
-            })
+               
+                ]
+            });
 
-            $('.addFirmUser').click(function(){
-                $('#power_edit_frame').show();
-                $('.block_bg').show();
+            $("#on-search").click(function () {
+                var oSettings = tbl.fnSettings();
+                tbl.fnClearTable(0);
+                tbl.fnDraw();
+            });
+        });
 
-
-            })
-    });
-            function del(obj) {
-                var flag = confirm("是否删除?");
-                var id = $(obj).attr('id');
-                if(flag===true){
-                     $.ajax({
-		                'type':'post',
-		                'data':{'id':id},
-		                'url':'{{url('/delCollectGoods')}}',
-		                success:function(res){
-		                    // var result = JSON.parse(res);
-		                    if(res.code){
-		                        // alert('收藏商品删除成功');
-		                        window.location.reload();
-		                    }else{
-		                        alert('收藏商品删除失败');
-		                        window.location.reload();
-		                    }
-	               		}
-         			})
-                }   
-            }
-
-            //保存
-            function addFirmUserSave(){
-                var phone = $('#firmUserPhone').val();
-                var realName = $('#firmUserName').val();
-                var arr = Array();
-                $.each($('input:checkbox:checked'),function(){
-                    arr.push($(this).val());
-                })
-                
-                $.ajax({
-                'type':'post',
-                'data':{'phone':phone,'permi':arr,'user_name':realName},
-                'url':'{{url('/addFirmUser')}}',
-                success:function(res){
-                    // var result = JSON.parse(res);
-                    if(res.code){
-                        alert('企业会员添加成功');
-                        window.location.reload();
-                    }else{
-                        alert('企业会员添加成功');
-                        window.location.reload();
-                    }
-                }
-         })
-            }
+	    function del(obj) {
+	        var flag = confirm("是否删除?");
+	        var id = $(obj).attr('id');
+	        if(flag===true){
+	             $.ajax({
+	                'type':'post',
+	                'data':{'id':id},
+	                'url':'{{url('/delCollectGoods')}}',
+	                success:function(res){
+	                    // var result = JSON.parse(res);
+	                    if(res.code){
+	                        // alert('收藏商品删除成功');
+	                        window.location.reload();
+	                    }else{
+	                        alert('收藏商品删除失败');
+	                        window.location.reload();
+	                    }
+	           		}
+	 			})
+	        }   
+	    }
 	</script>
 
 @endsection
 
 @section('content')
-
-               
-            <!-- <div class="member_top_right member_down_right whitebg fl ml15 br1 pr mt10"> -->
-                <!-- <div class="fr add_stock tac white addFirmUser">+新增会员</div> -->
-                <ul class="product_table ovh mt20">
-                    <li><span class="wh226">编号</span><span class="wh226">商品名称</span>
-                    	<!-- <span class="wh226">是否关注</span> -->
-                    	<span class="wh226">操作</span></li>
-                    @if($collectGoods)
-	                  	@foreach($collectGoods['goodsInfo'] as $k=>$v)
-	                    <li><span class="wh226">{{$k+1}}</span><span class="wh226">{{$v->goods_name}}</span>
-	                    	<!-- <span class="wh226">@if($collectGoods['collect'][$k]['is_attention']) 是 @else 否 @endif</span> -->
-	                    	<span class="wh226"><button id="{{$collectGoods['collect'][$k]['id']}}" onclick="del(this)"  class="product_table_btn br0 ml15 del_power">删除</button></span></li>
-	                  	@endforeach
-	                  	@else 
-	                  	收藏列表为空
-	                @endif
-                </ul>       
-                <div class="no_infor">
-                    <img src="img/serach_infor.png" />
-                    <p class="tac">暂无会员信息！</p>
-                </div>
-                <!--页码-->
-                <div class="reward_table_bottom">
-                <ul class="pagination">
-                <li><a href="#">首页</a></li>
-                  <li><a href="#">上一页</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a class="active" href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">下一页</a></li>
-                  <li><a href="#">尾页</a></li>
-                </ul>
-                </div>
-           <!--  </div> -->
-
-
-           <!--遮罩-->
-    <div class="block_bg"></div>
-    <!--编辑框-->
-    <div class="power_edit whitebg" id="power_edit_frame">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">设置个人会员权限</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
-        <ul class="power_list ml30 mt25">
-        <!-- <li><div class="ovh mt10"><span>编号:</span><span class="fl ">008</span></div></li> -->
-        <li><div class="ovh mt10"><span>员工姓名:</span><input type="text" class="pay_text fl" id="firmUserName" placeholder="请输入员工姓名"/></div></li>
-        <li><div class="ovh mt10"><span>手机号码:</span><input type="text" class="pay_text fl" id="firmUserPhone" placeholder="请输入员工手机号码"/></div></li>
-        <li>
-            <div class="power_cate mt10 br1 ovh">
-            <ul class="power_cate_check_box ovh">
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="1" id="can_po" /><span class="fl">提交订单</span></label></li>
-            <li><label class="check_box"><input id="can_pay" class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3"/><span class="fl">查看订单</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_confirm" /><span class="fl">确认收货</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7"/><span class="fl">审核订单</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8"/><span class="fl">参与拼团</span></label></li>
-            <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="9"/><span class="fl">查看库存</span></label></li>
-            </ul>
-            </div>
-        </li>
-        <li><div class="til_btn fl tac  code_greenbg" style="margin-left: 80px;" onclick="addFirmUserSave()">保 存</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
-        </ul>
-    </div>
-    <!--确认删除-->
-   <!--  <div class="confirm_del whitebg" id="confirm_del">
-        <p class="tac fs16 mt25 mb20">确定删除此条信息？</p>
-        <div class="confirm_del_btn"><button class="del_btn orangebg white">确认</button><button class="del_btn ml20">取消</button></div>
-    </div> -->
+  <div class="data-table-box">
+	 <div class="table-body">
+            <table id="data-table" class="table table-border table-bordered table-bg table-hover">
+                <thead>
+                <tr class="text-c">
+                    <th width="50%">时间</th>
+                    <th width="20%">商品名称</th>
+                    <th width="">操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+     </div>  
 @endsection

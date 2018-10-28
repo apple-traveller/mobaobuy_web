@@ -108,11 +108,15 @@ class GoodsService
 
     //购车车列表
     public static function cart($userId){
+        //当前用户购物车信息
         $cartInfo =  CartRepo::cartList($userId);
         $quoteInfo =  [];
         $goodsInfo = [];
         foreach($cartInfo as $k=>$v){
             $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+            if(empty($shopGoodsQuoteInfo)){
+                self::throwBizError('购物车产品不存在');
+            }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
             $quoteInfo[$k]['account'] = number_format($v['goods_number'] * $v['goods_price'],2);
@@ -346,6 +350,7 @@ class GoodsService
         $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
+
 }
 
 

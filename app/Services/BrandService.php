@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\BrandRepo;
+use App\Repositories\GoodsRepo;
 class BrandService
 {
     use CommonService;
@@ -42,5 +43,36 @@ class BrandService
     public static function delete($id)
     {
         return BrandRepo::delete($id);
+    }
+
+    //产品列表页品牌列表
+    public static function getBrandsByGoodsList($goodsList)
+    {
+        $brands = [];
+        foreach($goodsList as $vo){
+            $brands[] = GoodsRepo::getList([],['id'=>$vo['goods_id']],['brand_id','brand_name'])[0];
+        }
+        $brands_ids = [];
+        $unique_brands_ids = [];
+        foreach($brands as $vo){
+            $brands_ids[] = $vo['brand_id'];
+        }
+        $unique_brands_ids = array_unique($brands_ids);
+        $unique_brands = [];
+        foreach ($unique_brands_ids as $item) {
+            $unique_brands[] = BrandRepo::getList([],['id'=>$item],['id','brand_name'])[0];
+        }
+        return $unique_brands;
+    }
+
+    //根据brand_name获取goods数据
+    public static function getGoodsIds($brand_name)
+    {
+        $goods_id = GoodsRepo::getList([],['brand_name'=>$brand_name],['id']);
+        $res = [];
+        foreach ($goods_id as $item){
+            $res[] = $item['id'];
+        }
+        return $res;
     }
 }
