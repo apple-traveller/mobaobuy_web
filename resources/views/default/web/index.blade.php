@@ -37,13 +37,41 @@
 @section('content')
     <div class="play_banner">
         <div class="banner-imgs-div">
-            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
-            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
-            <a class="banner-item" target="_blank" href="#" style="background: url(/images/banner.png) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+            @foreach($banner_ad as $item)
+                <a class="banner-item" target="_blank" href="{{$item['ad_link']}}" style="background: url({{getFileUrl($item['ad_img'])}}) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+            @endforeach
         </div>
 
+        @if(session('_web_user_id'))
+            <div class="member_center_div">
+                <div class="member_center">
+                    <div class="member_header">
+                        <div class="header_img fl"><img src="/images/hd.png"/></div>
+                        <div class="header_text">
+                            <span>{{session('_web_user.nick_name')}}</span>
+                            @if(session('_web_user.is_firm'))
+                                <span class="db">【企业用户】</span>
+                            @else
+                                <span class="db">【个人用户】</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div>
+                        <ul class="order-stute">
+                            <li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span>
+                            <li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span>
+                            <li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span>
+                        </ul>
+                    </div>
+
+                    <textarea class="demand-text" style="height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                    <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
+                </div>
+            </div>
+        @else
         <div class="member_center_div">
-            <div class="member_center">
+            <div class="member_center tac">
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
                 <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
                 <div class="mt5 pl10 pr10">
@@ -54,6 +82,7 @@
                 <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
+        @endif
     </div>
 
     <div class="w1200 pr" style="z-index: 1;">

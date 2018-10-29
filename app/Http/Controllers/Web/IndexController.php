@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\RegionRepo;
 use App\Services\ActivityPromoteService;
+use App\Services\AdService;
 use App\Services\ArticleService;
 use App\Services\BrandService;
 use App\Services\GoodsCategoryService;
@@ -25,8 +26,20 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
+        //获取大轮播图
+        $banner_ad = AdService::getActiveAdvertListByPosition(1);
         //获取分类树
         $cat_tree = GoodsCategoryService::getCategoryTree();
+
+        //获取订单状态数
+        $deputy_user = session('_curr_deputy_user');
+        if($deputy_user['is_firm']){
+            $firm_id = $deputy_user['firm_id'];
+            $status = OrderInfoService::getOrderStatusCount(0, $firm_id);
+        }else{
+            $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);
+        }
+
         //获取活动
         $promote_list = ActivityPromoteService::getList(['status'=>2], 1, 2);
         //成交动态
@@ -40,7 +53,8 @@ class IndexController extends Controller
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 
-        return $this->display('web.index',['goodsList'=>$goodsList, 'cat_tree'=>$cat_tree, 'promote_list'=>$promote_list['list'], 'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list]);
+        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'cat_tree'=>$cat_tree, 'promote_list'=>$promote_list['list'],
+            'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list]);
     }
 
     //选择公司
