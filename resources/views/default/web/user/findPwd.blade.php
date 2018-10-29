@@ -1,54 +1,63 @@
-@extends(themePath('.','web').'web.include.layouts.member')
-@section('title', '忘记密码')
-<style type="text/css">
-    .member_left{
+<!doctype html>
+<html lang="en">
+<head>
+    <title>{{getConfig('shop_name')}}_找回密码</title>
+    @include(themePath('.','web').'web.include.partials.base')
+</head>
+<body style="background-color: #f4f4f4;">
+<div class="clearfix whitebg">
+    <div class="register-title">
+        <div class="logo">
+            <a href="/">
+                <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+            </a>
+        </div>
 
-        display: none;
-    }
-    .blackgraybg{
-       /*background-color:transparent;*/
-    }
-</style>
-@section('content')
+        <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+    </div>
+</div>
+
     <div class="clearfix mt25">
-        <div class="form">
-           <!--  <div class="item">
-                <div class="item-libel">@if(session('_web_user.is_firm'))公司名称：@else昵称：@endif</div>
-                <div class="item-info blackgraybg"><input type="text" class="text" autocomplete="false" disabled="disabled" value="{{session('_web_user.nick_name')}}"></div>
-                <div class="input-tip"></div>
-            </div> -->
-            <div class="item">
-                <div class="item-libel">手机号</div>
-                <div class="item-info"><input type="text" class="text" autocomplete="false" id="accountName" value=""></div>
-                <div class="input-tip"></div>
-            </div>
-            <div class="item">
-                <div class="item-libel">图形验证码</div>
-                <div class="item-info" style="width: 178px;">
-                    <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+        <div class="register-box">
+            <div class="register-form">
+            <div class="form">
+                <div class="item">
+                    <div class="item-libel">手机号</div>
+                    <div class="item-info"><input type="text" class="text" autocomplete="false" id="accountName" value=""></div>
+                    <div class="input-tip"></div>
                 </div>
-                <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
-                <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
-            </div>
-            <div class="item">
-                <div class="item-libel">手机验证码</div>
-                <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
-                    <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
+                <div class="item">
+                    <div class="item-libel">图形验证码</div>
+                    <div class="item-info" style="width: 178px;">
+                        <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                    </div>
+                    <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                    <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
                 </div>
-                <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
-                <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
-            </div>
-            <div class="item">
-                <div class="item-libel">新密码</div>
-                <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
-                <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
+                <div class="item">
+                    <div class="item-libel">手机验证码</div>
+                    <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
+                        <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
+                    </div>
+                    <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                    <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
+                </div>
+                <div class="item">
+                    <div class="item-libel">新密码</div>
+                    <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
+                    <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
+                </div>
             </div>
         </div>
-        <button class="register-button" id="sub-btn" style="margin-left: 170px;">确 定</button>
+        <button class="register-button" id="sub-btn">确 定</button>
     </div>
-@endsection
 
-@section('js')
+    <div class="clearfix" style="height: 35px;"></div>
+    @include(themePath('.','web').'web.include.partials.footer_service')
+    @include(themePath('.','web').'web.include.partials.footer_new')
+
+</body>
+</html>
     <script>
         var countdown = 60; //间隔函数，1秒执行
         var isNull = /^[\s]{0,}$/;
@@ -196,4 +205,3 @@
             gv()
         });
     </script>
-@endsection

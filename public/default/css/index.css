@@ -29,8 +29,8 @@
 .bottom_btn{width: 105px; float: left;text-align: center;}
 /*成交动态*/
 .Tran_dynamics{float:left;width: 256px;height: 260px; margin-left: 8px; border-top:4px solid #f94112;box-sizing: border-box;background-color: #fff;}
-.Tran_dynamics_list{width:222px;margin-left: 15px;height: 180px;overflow:hidden;}
-.Tran_dynamics_list li{height: 50px;overflow: hidden;margin-top: 10px;}
+.Tran_dynamics_list{width:222px;margin-left: 15px;height: 200px;overflow:hidden;}
+.Tran_dynamics_list li{height: 50px;overflow: hidden;}
 .Tran_dynamics_list li h1{color: #333;}
 .Tran_dynamics_list li:nth-child(odd){background-color: #f4f4f4;}
 
