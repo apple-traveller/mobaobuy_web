@@ -103,8 +103,6 @@
         </div>
     </div>
     <script>
-        // window.location.reload();
-
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
@@ -116,7 +114,7 @@
                     , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/seller/seckill/list?currentPage="+obj.curr;
+                            window.location.href="/seller/activity/promoter?currentPage="+obj.curr;
                         }
                     }
                 });
@@ -141,34 +139,5 @@
                 }
             })
         });
-        layui.use(['table','layer'],function () {
-            var table = layui.table;
-            var layer = layui.layer;
-            let seckill_id = $('#btn_see').attr('data_id');
-            $("#btn_see").click(function () {
-                // 定义弹窗数组
-                layer.open({
-                    type: 1,
-                    area: '500px',
-                    maxmin: true,
-                    content: '<table class="layui-hide" id="test_goods">'+'</table>',
-                    zIndex: layer.zIndex
-                });
-            });
-            var table = layui.table;
-            table.render({
-                elem: '#test_goods',
-                ur:'/seller/seckill/list_detail',
-                where:{
-                    'seckill_id':seckill_id
-                }
-                ,cols: [[
-                    {field:'id',  title: 'ID', sort: true}
-                    ,{field:'goods_sn',  title: '商品编号'}
-                    ,{field:'goods_name',  title: '商品名称'}
-                ]]
-            });
-
-        })
     </script>
 @stop
