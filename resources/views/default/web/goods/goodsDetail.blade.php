@@ -4,7 +4,7 @@
 	<style>
 		.Self-product-list li span{width:14%;}
 		.news_pages ul.pagination {text-align: center;}
-		.Self-product-list li span{width: 13%;float: left;text-align: center;}
+		.Self-product-list li span{width: 12.5%;float: left;text-align: center;}
 		.pro_chart{float:left;width: 528px; }
 		.pro_chart_title{line-height: 70px;text-align: center;font-size: 18px;border: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
 		.pro_chart_img{height: 355px;border: 1px solid #DEDEDE;}
@@ -23,7 +23,14 @@
 		.pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
 		.pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
 		.pro_detail_btn{cursor:pointer;width: 140px;height: 42px;line-height: 42px;border: none;font-size:16px;color: #fff;border-radius:3px;}
-	</style>
+        .History_offo{height: 40px;line-height: 40px;border-bottom: 2px solid #75b335;background-color: #f0f0f0;box-sizing: border-box;}
+        .History_offo h1{background-color: #75b335;text-align: center;width: 106px;color: #fff;font-size: 16px;}
+        .History-product-list{margin-top: 10px;}
+        .History-product-list li span{width: 14.2%;float: left;text-align: center;}
+        .History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
+        .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
+        .History-product-list li:last-child{border-bottom: none;}
+    </style>
 @endsection
 @section('js')
 	<script>
@@ -78,11 +85,24 @@
 
 			</div>
 			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
+				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
+                <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
 			</div>
+
 			<div class="pro_detail">
-				<span class="ml15 letter-space fl">编号</span><span  class="pro_value">{{$good_info['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$good_info['brand_name']}}</span>
+				<span class="ml15 letter-space fl">编号</span><span  class="pro_value">{{$good_info['goods_sn']}}</span>
+                <span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$good_info['brand_name']}}</span>
 			</div>
+
+            <div class="pro_detail">
+                <span class="ml15 pro_detail_title fl">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
+                <span class="fl">联系方式</span><span  class="ml35 fl">{{$good_info['contact_info']}}</span>
+            </div>
+
+            <div class="pro_detail">
+                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value fl">{{$good_info['production_date']}}</span>
+            </div>
+
 			<div class="pro_detail">
 				<span class="ml15 pro_detail_title fl">产品属性</span>
 				@foreach($good_info['goods_attr'] as $vo)
@@ -103,26 +123,14 @@
 
 	</div>
 	<div class="w1200" style="margin-top: 80px;">
-		<style type="text/css">
-			.History_offo{height: 40px;line-height: 40px;border-bottom: 2px solid #75b335;background-color: #f0f0f0;box-sizing: border-box;}
-			.History_offo h1{background-color: #75b335;text-align: center;width: 106px;color: #fff;font-size: 16px;}
-
-			.History-product-list{margin-top: 10px;}
-
-			.History-product-list li span{width: 14.2%;float: left;text-align: center;}
-			.History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
-			.History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
-			.History-product-list li:last-child{border-bottom: none;}
-		</style>
 		<div class="History_offo">
 			<h1>历史报价</h1>
 		</div>
-
 		<ul class="Self-product-list">
 
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span></li>
+			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>联系人</span></li>
 			@foreach($goodsList as $vo)
-				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?goods_id={{$vo['goods_id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span></li>
+				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
 			@endforeach
 		</ul>
 		<!--页码-->
