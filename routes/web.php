@@ -239,6 +239,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
     Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
+    Route::post('/demand/add','DemandController@addDemand');//获取用户需求信息
 
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心

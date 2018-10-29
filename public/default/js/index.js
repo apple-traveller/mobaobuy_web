@@ -33,8 +33,15 @@ $(function(){
             $.msg.alert('需求内容不能为空！');
             return ;
         }
-        console.log(phone);
-        console.log(text);
+
+        Ajax.call('/demand/add', {contact:phone,content:text}, function(res){
+            if(res.code){
+                $.msg.alert(res.msg);
+                $("#demand-text").val('');
+            }else{
+                $.msg.alert(res.msg)
+            }
+        },'POST');
     });
 });
 $(function() {
