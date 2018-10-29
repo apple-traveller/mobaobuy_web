@@ -4,6 +4,8 @@ use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\ShopGoodsRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\GoodsCategoryRepo;
+use App\Repositories\ShopRepo;
+
 class ShopGoodsQuoteService
 {
     use CommonService;
@@ -21,14 +23,31 @@ class ShopGoodsQuoteService
             $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
             $category = GoodsCategoryRepo::getInfo($good['cat_id']);
             $result['list'][$k]['cat_name'] = $category['cat_name'];
+            //$result['list'][$k]['cat_id'] = $category['id'];
             $result['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $result;
     }
 
+    public static function getShopOrderByQuote($top){
+        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
+        $shop_list = [];
+        foreach ($shops as $item){
+            $shop_info = ShopRepo::getInfo($item['shop_id']);
+            //获取报价
+            $quotes = self::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['add_time'=>'desc']], ['shop_id'=>$item['shop_id']]);
+            $shop_info['quotes'] = $quotes['list'];
+            $shop_list[] = $shop_info;
+        }
+
+        return $shop_list;
+    }
+
     //保存
     public static function create($data)
     {
+        $shop_info = ShopService::getShopById($data['shop_id']);
+        $data['is_self_run'] = $shop_info['is_self_run'];
         return ShopGoodsQuoteRepo::create($data);
     }
 

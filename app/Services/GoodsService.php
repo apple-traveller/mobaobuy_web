@@ -254,7 +254,8 @@ class GoodsService
                     'goods_name'=>$cartInfo['goods_name'],
                     'goods_sn'=>$cartInfo['goods_sn'],
                     'goods_number'=>$cartInfo['goods_number'],
-                    'goods_price'=>$cartInfo['goods_price']
+                    'goods_price'=>$cartInfo['goods_price'],
+                    'add_time' => Carbon::now()
                 ];
                 OrderGoodsRepo::create($orderGoods);
                 $goods_amount += $cartInfo['goods_number'] * $cartInfo['goods_price'];

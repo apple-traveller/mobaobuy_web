@@ -88,10 +88,19 @@ class GoodsController extends Controller
     {
         $currpage = $request->input("currpage",1);
         $brand_name = $request->input("brand_name","");
+        $cate_id = $request->input('cate_id',"");
+        $place_id = $request->input('place_id',"");
         $condition = [];
         if(!empty($brand_name)){
             $goods_id = BrandService::getGoodsIds($brand_name);
             $condition['goods_id'] = implode('|',$goods_id);
+        }
+        if(!empty($cate_id)){
+            $goods_id = GoodsCategoryService::getGoodsIds($cate_id);
+            $condition['goods_id'] = implode('|',$goods_id);
+        }
+        if(!empty($place_id)){
+            $condition['place_id'] = $place_id;
         }
         $pageSize = 2;
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
@@ -119,6 +128,7 @@ class GoodsController extends Controller
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
+        //dd($goodList);
         return $this->display("web.goods.goodsDetail", [
             'good_info' => $good_info,
             'goodsList' => $goodList['list'],

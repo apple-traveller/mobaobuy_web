@@ -237,6 +237,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+
+    Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
+    Route::post('/demand/add','DemandController@addDemand');//获取用户需求信息
+
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心
     Route::get('/detail.html', 'NewsController@detail'); // 详情

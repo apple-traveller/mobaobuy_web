@@ -6,6 +6,8 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 h1{font-size: 16px;}
+a:hover {color: #75b335;}
+.opt-btn{width: 100px;height: 38px;line-height: 38px;background-color: #75b335;cursor: pointer;border: 0px;color: #fff;float: left;}
 .back_btn {background-color: #ff6f17;border-radius: 2px;cursor: pointer;padding: 4px 20px;color: #fff;font-size: 14px;}
 .member_right_title_icon {width:60px;background: url(/img/member_title_icon.png)no-repeat 0px 6px;}
 
@@ -45,6 +47,34 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .top-title .logo a{vertical-align:middle; display:table-cell;}
 .top-title .logo img{height: 70px;vertical-align:middle; display:table-cell;}
 .top-title .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
+
+.top-search-box{background: #FFF;position: relative;width: 100%;border-bottom: 2px solid #75b335;}
+.top-search-div{width: 1200px;margin: 0 auto; }
+.top-search-div .search-div{height: 128px;}
+.top-search-div .search-div .logo{height: 100%;float: left; width: 250px;position: relative;display:table;}
+.top-search-div .search-div .logo a{vertical-align:middle; display:table-cell;}
+.top-search-div .search-div .logo img{height: 70px;vertical-align:middle; display:table-cell;}
+.top-search-div .search-div .search-box{float: left; margin-top:40px;width:655px;margin-left:50px;}
+.search-box .search-input {float: left;width: 430px;height: 38px;line-height: 38px;border: 2px solid #75b335;padding-left: 30px;box-sizing: border-box;background: url(/images/icon_t1.png) no-repeat 7px 9px #fff;}
+.search-box .hot_search_m {overflow: hidden;width: 457px;height: 30px;float: left;line-height: 30px;color: #666;}
+.search-box .contact_artificial {width: 112px;height: 38px;line-height: 35px;box-sizing: border-box;border: 1px solid #DEDEDE;margin-left: 10px;}
+.search-div a:hover {color: #777;}
+.top-search-div .search-div .shopping_cart{position:relative;float: right; margin-top:40px;width: 145px;height: 38px;line-height: 38px;border: 1px solid #DEDEDE;}
+.top-search-div .search-div .pro_cart_num {position: absolute;top: -10px;right: -9px;width: 18px;height: 18px;line-height: 18px;background-color: #e03523;border-radius: 25px;color: #FFF;}
+.top-search .title-name{float: left; font-size: 24px;margin: 33px;height:49px;line-height: 49px;padding: 0px 20px;border-left: 1px solid #DEDEDE;color: #aaa;}
+
+.nav-div .nav-cate{width: 224px;position: relative;z-index: 4; height: 38px;line-height: 38px;float: left;}
+.nav-div .nav-cate .cate_title{background-color:#75b335; width: 100%;height: 100%;line-height: 38px;color: #fff;position: absolute;font-size: 16px;}
+.nav-div .nav-cate .ass_menu {position: absolute;left: 0;top: 40px;width: 224px;height: 330px;z-index: 1;background-color: #282828;}
+.ass_menu li {height: 50px;line-height: 50px;font-size: 16px;color: #fff;padding-left: 20px;}
+.ass_menu .ass_fn {display: none;width: 976px;position: absolute;top: 0;left: 224px;}
+.ass_fn .ass_fn_list {margin-left: 20px;margin-top: 35px;margin-bottom: 60px;}
+.ass_fn .ass_fn_list li {color: #333333;display: flex;height: 40px;line-height: 40px;padding-left: 0;}
+.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px solid #DEDEDE;font-size: 14px;color: #999;}
+.ass_fn .ass_fn_list .ass_fn_list_that span {width: 120px;display: inline-block;}
+.ass_menu>li:hover {background-color: #fff; color: #75b335;}
+.nav-div .nav-menu{background: #fff;float: left;padding-left: 7px;float: left;height: 38px;line-height: 38px;}
+.nav-div .nav-menu li {float: left;position: relative;font-size: 16px;margin: 0 37px;cursor: pointer;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
 .footer-service-box .icons {overflow: hidden;}

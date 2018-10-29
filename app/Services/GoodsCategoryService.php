@@ -1,10 +1,23 @@
 <?php
 namespace App\Services;
+
 use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\GoodsRepo;
+
 class GoodsCategoryService
 {
     use CommonService;
+
+    //获取所有分类的树型数据
+    public static function getCategoryTree($only_show = 1){
+        $condition = [];
+        if($only_show){
+            $condition['is_show'] = 1;
+        }
+        $all_list = GoodsCategoryRepo::getList('',$condition);
+        return make_treeTable($all_list, 'id', 'parent_id');
+    }
+
     public static function GoodsCategoryInfo($where=[]){
         return GoodsCategoryRepo::search([],$where);
     }
@@ -43,7 +56,7 @@ class GoodsCategoryService
     //获取图标库文件所有文件
     public static function getIcons()
     {
-        $path = $_SERVER['DOCUMENT_ROOT'].'/default/icon';//G:/phpStudy/PHPTutorial/WWW/mbb_web/public/default/icon
+        $path = $_SERVER['DOCUMENT_ROOT'].'/default/icon';
         $filedata = array();
         if(!is_dir($path)) return false;
         $handle = opendir($path);
@@ -165,5 +178,15 @@ class GoodsCategoryService
         return $unique_cates;
     }
 
+    //根据cat_id获取goods数据
+    public static function getGoodsIds($cat_id)
+    {
+        $goods_id = GoodsRepo::getList([],['cat_id'=>$cat_id],['id']);
+        $res = [];
+        foreach ($goods_id as $item){
+            $res[] = $item['id'];
+        }
+        return $res;
+    }
 
 }

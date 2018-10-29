@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 
+use App\Services\CartService;
 use App\Services\UserAddressService;
 
 use App\Repositories\UserRepo;
@@ -195,6 +196,20 @@ class UserController extends Controller
         session()->forget('_web_user');
         session()->forget('_curr_deputy_user');
         return $this->success('退出登录成功！',  route('login'), '', 0);
+    }
+
+    //获取用户购物车产品数
+    public function getCartNum()
+    {
+        if(session()->has('_web_user_id')){
+            //登录用户
+            $user_id = session('_web_user_id');
+            $num = CartService::getUserCartNum($user_id);
+        }else{
+            $num = 0;
+
+        }
+        return $this->success('','',['cart_num'=>$num]);
     }
 
 
