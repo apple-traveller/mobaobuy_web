@@ -23,6 +23,7 @@ class ShopGoodsQuoteService
             $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
             $category = GoodsCategoryRepo::getInfo($good['cat_id']);
             $result['list'][$k]['cat_name'] = $category['cat_name'];
+            //$result['list'][$k]['cat_id'] = $category['id'];
             $result['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $result;

@@ -144,37 +144,37 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>@if(!empty($user_invoices['shop_name'])) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>
+                                    <dd>@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>
                                     <dt>税号:：</dt>
-                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>开票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dd>
                                     <dt>开票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
                                     <dt>收票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>收票人:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
 
                                 <dl style="width:30.6%">
                                     <dt>卖家留言：</dt>
-                                    <dd>@if(empty($orderInfo['to_buyer'])) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
+                                    <dd>@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
                                     <dt>买家留言：</dt>
-                                    <dd>@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</dd>
+                                    <dd>@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dd>
                                 </dl>
                             </div>
                         </div>
@@ -188,7 +188,6 @@
                                         <thead>
                                         <tr>
                                             <th width="15%" class="first" style="padding-left: 9px">商品名称 [ 品牌 ]</th>
-                                            <th width="10%">所属店铺</th>
                                             <th width="15%">商品编码</th>
                                             <th width="10%">价格</th>
                                             <th width="10%">购买数量</th>
@@ -199,7 +198,6 @@
                                         @foreach($order_goods as $vo)
                                             <tr>
                                                 <td style="padding-left: 9px">{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
-                                                <td>{{$vo['shop_name']}}</td>
                                                 <td>{{$vo['goods_sn']}}</td>
                                                 <td>{{$vo['goods_price']}}</td>
                                                 <td>{{$vo['goods_number']}}</td>
@@ -277,14 +275,14 @@
                                         <div class="value">
                                             <div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
                                             <div class="order_operation_btn">
-
+                                                @if($orderInfo['order_status'] == 1)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
-
+                                                @else
+                                                @endif
                                                 <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
-
                                                 <input name="order_id" type="hidden" value="4">
-
-                                                <input type="button" value="打印订单" class="btn btn25 blue_btn" onclick="javascript:window.open('tp_api.php?act=order_print&amp;order_id=4')">
+                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
+                                                {{--<input type="button" value="打印订单" class="btn btn25 blue_btn" onclick="javascript:window.open('tp_api.php?act=order_print&amp;order_id=4')">--}}
                                             </div>
                                         </div>
                                     </div>
@@ -301,15 +299,33 @@
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                            <td>seller</td>
-                                            <td>2018-10-09 08:46:28</td>
-                                            <td>已确认</td>
-                                            <td>未付款</td>
-                                            <td>未发货</td>
-                                            <td>23</td>
-                                        </tr>
+                                        @foreach($orderLogs as $vo)
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>{{$vo['action_user']}}</td>
+                                                <td>{{$vo['log_time']}}</td>
+                                                <td>
+                                                    @if($vo['order_status']==0)已作废
+                                                    @elseif($vo['order_status']==1)待企业审核
+                                                    @elseif($vo['order_status']==2)待商家确认
+                                                    @else已确认
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($vo['pay_status']==0)待付款
+                                                    @elseif($vo['pay_status']==1)已付款
+                                                    @else部分付款
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($orderInfo['shipping_status']==0)待发货
+                                                    @elseif($orderInfo['shipping_status']==1)已发货
+                                                    @elseif($orderInfo['shipping_status']==2)部分发货
+                                                    @endif
+                                                </td>
+                                                <td>{{$vo['action_note']}}</td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
 
@@ -352,6 +368,7 @@
                 layer.close(index);
             });
         });
+        // 确认订单
         function conf(id)
         {
             layui.use('layer', function(){
@@ -379,6 +396,8 @@
                 });
             });
         }
+
+        //作废订单
         function cancelOne(id)
         {
             layui.use('layer', function(){
@@ -404,6 +423,32 @@
                         }
                     });
 
+                });
+            });
+        }
+        function receiveM(id) {
+            layui.use('layer', function(){
+                let layer = layui.layer;
+                layer.confirm('确认收到付款?', {icon: 3, title:'提示'}, function(index){
+                    let action_note = $("#action_note").val();
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'action_note':action_note,
+                            'pay_status': 1
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:600});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
+                    // window.location.href="/seller/order/list?id="+id;
+                    layer.close(index);
                 });
             });
         }

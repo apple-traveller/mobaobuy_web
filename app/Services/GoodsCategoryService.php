@@ -178,5 +178,15 @@ class GoodsCategoryService
         return $unique_cates;
     }
 
+    //根据cat_id获取goods数据
+    public static function getGoodsIds($cat_id)
+    {
+        $goods_id = GoodsRepo::getList([],['cat_id'=>$cat_id],['id']);
+        $res = [];
+        foreach ($goods_id as $item){
+            $res[] = $item['id'];
+        }
+        return $res;
+    }
 
 }

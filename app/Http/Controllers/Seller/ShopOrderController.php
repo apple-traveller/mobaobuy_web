@@ -67,7 +67,15 @@ class ShopOrderController extends Controller
         $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
         $region = RegionService::getRegion($orderInfo['country'], $orderInfo['province'], $orderInfo['city'], $orderInfo['district']);
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
-        $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+        $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
+        if (!empty($orderInfo)){
+            $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+            if (empty($user_invoices)){
+                $user_invoices = [];
+            }
+        } else {
+            $user_invoices = [];
+        }
         $user = UserService::getInfo($orderInfo['user_id']);
         return $this->display('seller.order.detail', [
             'currentPage' => $currentPage,
@@ -75,7 +83,8 @@ class ShopOrderController extends Controller
             'user' => $user,
             'region' => $region,
             'order_goods' => $order_goods,
-            'user_invoices' => $user_invoices
+            'user_invoices' => $user_invoices,
+            'orderLogs' => $orderLogs
         ]);
     }
 
@@ -88,7 +97,8 @@ class ShopOrderController extends Controller
     {
         $shop_id = session('_seller_id')['shop_id'];
         $id = $request->input('id', '');
-        $order_status = $request->input('order_status', '0');
+        $order_status = $request->input('order_status', '');
+        $pay_status = $request->input('pay_status','');
         $action_note = $request->input('action_note', '');
         $where = [
             'id' => $id,
@@ -100,9 +110,14 @@ class ShopOrderController extends Controller
             if (!empty($orderInfo)) {
                 $data = [
                     'id' => $id,
-                    'order_status' => $order_status,
                     'confirm_time' => Carbon::now()
                 ];
+                if (!empty($order_status)){
+                    $data['order_status'] = $order_status;
+                }
+                if (!empty($pay_status)){
+                    $data['pay_status'] = $pay_status;
+                }
                 $re = OrderInfoService::modify($data);
 
                 if (!empty($re)) {
@@ -116,11 +131,15 @@ class ShopOrderController extends Controller
                         'action_user' => session('_seller')['user_name'],
                         'order_id' => $id,
                         'order_status' => $re['order_status'],
-                        'action_place' => $orderInfo['order_status'],
                         'shipping_status' => $re['shipping_status'],
                         'pay_status' => $re['pay_status'],
                         'log_time' => Carbon::now()
                     ];
+                    if (!empty($order_status)){
+                        $logData['order_status'] = $order_status;
+                    } else {
+                        $logData['pay_status'] = $pay_status;
+                    }
                     OrderInfoService::createLog($logData);
                     return $this->success('修改成功', url('/seller/order/list'));
                 }

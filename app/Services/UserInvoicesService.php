@@ -31,11 +31,14 @@ class UserInvoicesService
     public static function getInvoice($id)
     {
         $invoiceInfo =  UserInvoicesRepo::getInfo($id);
-
         // 收票地址
-        $invoiceInfo['address_ids'] =  $invoiceInfo['country'] ."|". $invoiceInfo['province'] ."|".$invoiceInfo['city'] ."|".$invoiceInfo['district'];
-        $invoiceInfo['address_str'] = RegionService::getRegion($invoiceInfo['country'], $invoiceInfo['province'], $invoiceInfo['city'], $invoiceInfo['district'] );
-        return $invoiceInfo;
+        if (!empty($invoiceInfo)){
+            $invoiceInfo['address_ids'] =  $invoiceInfo['country'] ."|". $invoiceInfo['province'] ."|".$invoiceInfo['city'] ."|".$invoiceInfo['district'];
+            $invoiceInfo['address_str'] = RegionService::getRegion($invoiceInfo['country'], $invoiceInfo['province'], $invoiceInfo['city'], $invoiceInfo['district'] );
+        } else {
+            return [];
+        }
+          return $invoiceInfo;
     }
 
     public static function delete($id)
