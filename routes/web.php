@@ -449,7 +449,10 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/activity/deletePromoter', 'ActivityController@delete'); // 删除
 
         Route::get('/invoice/list', 'InvoiceController@list'); // 客户开票申请列表
-        Route::get('/invoice/updateStatus', 'InvoiceController@updateStatus'); // 客户开票申请审核
+        Route::get('/invoice/detail', 'InvoiceController@detail'); // 详情页
+        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择地址
+        Route::post('/invoice/verifyInvoice', 'InvoiceController@verifyInvoice'); // 审核 - 动作
+        Route::post('/invoice/cancelInvoice', 'InvoiceController@cancelInvoice'); // 作废 - 动作
     });
 });
 

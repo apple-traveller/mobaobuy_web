@@ -376,13 +376,13 @@
                 layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
                     let action_note = $("#action_note").val();
                     $.ajax({
-                        'url':'/seller/order/updateOrderStatus',
-                        'data': {
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
                             'id':id,
                             'action_note':action_note,
                             'order_status': 3
                         },
-                        'type': 'post',
+                        type: 'post',
                         success: function (res) {
                             if (res.code == 1){
                                 layer.msg(res.msg, {icon: 1,time:600});
@@ -405,13 +405,13 @@
                 layer.confirm('是否作废订单?', {icon: 3, title:'提示'}, function(index){
                     let to_buyer = $("input[ name='to_buyer' ]").val();
                     $.ajax({
-                        'url':'/seller/order/updateOrderStatus',
-                        'data': {
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
                             'id':66,
                             'to_buyer':to_buyer,
                             'order_status': 0
                         },
-                        'type': 'post',
+                        type: 'post',
                         success: function (res) {
                             if (res.code == 1){
                                 layer.msg(res.msg, {icon: 1,time:600});

@@ -19,6 +19,11 @@ class ShopGoodsQuoteRepo
         return $query->paginate(5);
     }
 
+    /**
+     * 获取商家报价列表-没有分页
+     * @param $shop_id
+     * @return mixed
+     */
     public static function getQuoteGoods($shop_id)
     {
         $model = self::getBaseModel();

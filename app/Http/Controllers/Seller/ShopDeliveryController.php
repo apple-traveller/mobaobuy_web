@@ -15,6 +15,11 @@ use Illuminate\Http\Request;
 
 class ShopDeliveryController extends Controller
 {
+    /**
+     * 列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function list(Request $request)
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
@@ -36,6 +41,11 @@ class ShopDeliveryController extends Controller
         ]);
     }
 
+    /**
+     * 详情
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail(Request $request)
     {
         $id = $request->input('id');
@@ -77,6 +87,11 @@ class ShopDeliveryController extends Controller
         }
     }
 
+    /**
+     * 更新转态
+     * @param Request $request
+     * @return ShopDeliveryController
+     */
     public function updateStatus(Request $request)
     {
         $id = $request->input('id','');

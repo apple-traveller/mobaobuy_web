@@ -294,10 +294,13 @@ class OrderInfoService
         foreach($deliveryGoods as $k=>$v){
             //查询所属店铺
             $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-            //查询所属订单的商品信息
-            $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
-            $deliveryGoods[$k]['shop_name'] = $shop_goods_quote['shop_name'];
-            $deliveryGoods[$k]['goods_price'] = $order_good['goods_price'];
+            if (!empty($shop_goods_quote)){
+                //查询所属订单的商品信息
+                $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
+                $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
+            } else {
+                $deliveryGoods[$k]['goods_price'] = '';
+            }
         }
         return $deliveryGoods;
     }

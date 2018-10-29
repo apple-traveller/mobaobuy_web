@@ -138,11 +138,11 @@
                 })
                 console.log(sec_data);
                 $.ajax({
-                    'url': '/seller/seckill/save',
-                    'data': {
+                    url: '/seller/seckill/save',
+                    data: {
                         'sec_data': sec_data
                     },
-                    'type': 'post',
+                    type: 'post',
                     success: function (res) {
                         console.log(res);
                         if (res.code == 1) {
