@@ -444,6 +444,12 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
 
         Route::get('/activity/promoter', 'ActivityController@promoter'); // 优惠活动
+        Route::get('/activity/addPromoter', 'ActivityController@addPromoter'); // 添加 编辑 页面
+        Route::post('/activity/savePromoter', 'ActivityController@savePromoter'); // 添加 编辑 保存
+        Route::post('/activity/deletePromoter', 'ActivityController@delete'); // 删除
+
+        Route::get('/invoice/list', 'InvoiceController@list'); // 客户开票申请列表
+        Route::get('/invoice/updateStatus', 'InvoiceController@updateStatus'); // 客户开票申请审核
     });
 });
 
