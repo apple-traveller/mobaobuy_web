@@ -3,6 +3,7 @@
 .member_center_div .member_center{ background-color: #FFF;position: absolute;top:10px;right:0px; width: 200px;padding: 10px 20px;}
 .member_center .member_header {width: 65px;height: 60px;margin: 10px auto;}
 .member_center .login-btn {float:left;width: 82px;height: 28px;line-height: 26px;text-align: center;background-color: #75b335;color: #FFF;}
+.member_center .login-btn a:hover{color: #FFF; }
 .member_center .reg-btn {float:right;width: 80px;height: 26px;line-height: 26px;text-align: center;border: 1px solid #DEDEDE;color: #aaa;}
 .member_center .contact-input{background: #F7F7F7;height: 32px;line-height: 32px;margin-top: 10px;border: none;width: 100%;}
 .member_center .demand-text{background: #F7F7F7;height: 72px;margin-top: 10px;border: none;width: 100%;}

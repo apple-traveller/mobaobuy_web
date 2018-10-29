@@ -47,11 +47,11 @@
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
                 <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
                 <div class="mt5 pl10 pr10">
-                    <div class="login-btn">登录</div><div class="reg-btn">注册</div>
+                    <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
                 </div>
-                <input type="text" class="contact-input" autocomplete="off" placeholder="请输入手机号"/>
-                <textarea class="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
-                <button class="opt-btn" style="width:100%;">立即找货</button>
+                <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
+                <textarea class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
     </div>

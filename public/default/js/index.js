@@ -21,6 +21,21 @@ $(function(){
         //setTimeout("updateCountDownText('"+obj+"')", 1000);
         updateCountDownText(obj)
     });
+
+    $("#demand-btn").click(function(){
+        var phone = $("#demand-phone").val();
+        var text = $("#demand-text").val();
+        if(Utils.isEmpty(phone)){
+            $.msg.alert('联系方法不能为空！');
+            return ;
+        }
+        if(Utils.isEmpty(text)){
+            $.msg.alert('需求内容不能为空！');
+            return ;
+        }
+        console.log(phone);
+        console.log(text);
+    });
 });
 $(function() {
     var oUl = $('.trans_marquee ul');
