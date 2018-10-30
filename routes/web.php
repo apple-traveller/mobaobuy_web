@@ -44,12 +44,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
-        Route::get('/user/verifyForm', 'UserController@verifyForm');//用户审核
-        Route::post('/user/verify', 'UserController@verify');//用户审核
         Route::get('/user/export', 'UserController@export');//用户导出excel
         Route::get('/user/userRealForm', 'UserController@userRealForm');//实名认证
         Route::post('/user/userReal', 'UserController@userReal');//实名认证审核
         Route::get('/user/points', 'UserController@points');//查看积分
+        Route::get('/user/firmStock', 'UserController@firmStock');//查看企业库存
+        Route::post('/user/firmStockFlow', 'UserController@firmStockFlow');//查看企业库存流水
 
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -288,14 +288,15 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         /********************************************************************/
 
 
-        Route::get('/invoices','UserController@invoicesList');//会员发票
-        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
-        Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
-        Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
-        Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
-        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
-        Route::post('/updateDefaultInvoice','UserController@updateDefaultInvoice');//修改会员默认发票
-
+        /************************发票维护********************************/
+//        Route::get('/invoices','UserController@invoicesList');//会员发票
+//        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
+//        Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
+//        Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
+//        Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+//        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
+//        Route::post('/updateDefaultInvoice','UserController@updateDefaultInvoice');//修改会员默认发票
+        /********************************************************************/
         Route::get('/addressList','UserController@shopAddressList');//收货地址列表
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
         Route::post('/createAddressList','UserController@addShopAddress');
@@ -362,6 +363,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
         Route::post('/orderDel','OrderController@orderDel');//订单删除
+        Route::get('/invoice','InvoiceController@invoiceList');// 开票列表
 
 
         Route::post('/egis','OrderController@egis');//订单审核通过
