@@ -197,6 +197,40 @@
                         </span>
                     </li>
 
+                     <li class="mt25">
+                       <span class="infor_title">公司抬头：</span>
+                        <span class=" fl">
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['company_name'])) value="{{$user_real['company_name']}}" @else value="" @endif />
+                        </span>
+                    </li>
+
+                     <li class="mt25">
+                       <span class="infor_title">开户银行：</span>
+                        <span class=" fl">
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['bank_of_deposit'])) value="{{$user_real['bank_of_deposit']}}" @else value="" @endif />
+                        </span>
+                    </li>
+
+                    <li class="mt25">
+                       <span class="infor_title">银行账号：</span>
+                        <span class=" fl">
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['bank_account'])) value="{{$user_real['bank_account']}}" @else value="" @endif />
+                        </span>
+                    </li>
+
+                     <li class="mt25">
+                       <span class="infor_title">开票地址：</span>
+                        <span class=" fl">
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['company_address'])) value="{{$user_real['company_address']}}" @else value="" @endif />
+                        </span>
+                    </li>
+
+                     <li class="mt25">
+                       <span class="infor_title">开票电话：</span>
+                        <span class=" fl">
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['company_telephone'])) value="{{$user_real['company_telephone']}}" @else value="" @endif />
+                        </span>
+                    </li>
 
                       <li class="mt25">
                          <span class="infor_title">授权委托书电子版：</span>

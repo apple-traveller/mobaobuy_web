@@ -95,20 +95,19 @@
 			无抢购活动</ul>
 		@else
 			@foreach($promoteInfo as $v)	
-				
 			<li>
 				<div class="ms_list_center">
 					<div class="ovh">
-						<h1 class="fs24 fl" style="height: 36px;">维生素E粉</h1><span class="fr pt10 ovh di"><font class="orange">964</font>次浏览</span>
+						<h1 class="fs24 fl" style="height: 36px;">{{$v['goods_name']}}</h1><span class="fr pt10 ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
 					</div>
 					<div class="ovh mt30">
-						<div class="mx_addr fl" style="width: 117px;">恒兴</div><div class="mx_addr fl ml15" style="width: 117px;">1000公斤</div>
+						<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}公斤</div>
 					</div>
 					<div class="ovh mt20 ">
-						<div class="mx_progress"><div class="mx_progress_com"></div></div><span class="fl fs16 ml10 gray">已售20%</span>
+						<div class="mx_progress"><div class="mx_progress_com"></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}公斤</span>
 					</div>
 					<div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div>
-					<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥80.00</font>\公斤</div>
+					<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>\公斤</div>
 					<div class="mx_btn">立即抢购</div>
 				</div>
 			</li>

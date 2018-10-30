@@ -14,6 +14,7 @@ use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Repositories\ShopGoodsRepo;
 
 class GoodsService
 {
@@ -340,7 +341,24 @@ class GoodsService
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
 
+    //物性表
+    public static function goodsAttribute($page,$pageSize){
+        return GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],[]);
+    }
 
+    //物性表详情
+    public static function goodsAttributeDetails($id,$page,$pageSize){
+        if($id<0){
+            self::throwBizError('产品信息有误');
+        }
+        $goodsInfo = GoodsRepo::getInfo($id);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息不存在');
+        }
+        $shopGoodsInfo = ShopGoodsRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
+        $shopGoodsInfo['goodsInfo'] = $goodsInfo;
+        return $shopGoodsInfo;
+    }
 
 }
 
