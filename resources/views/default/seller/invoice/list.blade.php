@@ -44,7 +44,7 @@
                                             @if($v['status'] == 0) 已取消 @elseif($v['status'] == 1) 待开票 @elseif($v['status']==2) 已开票 @endif
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/seller/invoice/detail?invoice_id={{$v['id']}}&currentPage={{$currentPage}}" title="详情" class="btn_see"><i class="sc_icon sc_icon_see"></i>详情</a>
                                         </div>

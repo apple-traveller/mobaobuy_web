@@ -86,20 +86,19 @@ class InvoiceController extends Controller
        if (empty($invoice_id)){
            return $this->error('参数错误');
        }
-        // 生成唯一开票号
-        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
-        $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+        if (empty($shipping_name)){
+            return $this->error('缺少物流信息');
+        }
+        if (empty($shipping_billno)){
+            return $this->error('缺少物流单号');
+        }
        $data = [
-           'invoice_numbers' => $invoice_numbers,
            'shipping_id' => $shipping_id,
            'shipping_name' => $shipping_name,
            'shipping_billno' => $shipping_billno,
-           'status' => 2
        ];
-
-       $re = InvoiceService::verifyInvoice($invoice_id,$data);
-
-       if ($re){
+        $re = InvoiceService::verifyInvoice($invoice_id,$data);
+       if ($re == 1){
            return $this->success('操作成功');
        } else {
            return $this->error('操作失败');
@@ -120,7 +119,7 @@ class InvoiceController extends Controller
         $data = [
             'status' => 0
         ];
-        $re = InvoiceService::verifyInvoice($invoice_id,$data);
+        $re = InvoiceService::updateInvoice($invoice_id,$data);
         if ($re){
             return $this->success('操作成功');
         } else {
