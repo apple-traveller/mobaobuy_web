@@ -57,6 +57,13 @@ var Transport =
   */
   run : function (url, params, callback, transferMode, responseType,async = true)
   {
+      transferMode = typeof(transferMode) === "string"
+      && transferMode.toUpperCase() === "POST"
+          ? "POST"
+          : "GET";
+
+      responseType = "JSON";
+
       $.ajax({
           url:url,
           type: transferMode,

@@ -284,6 +284,24 @@ class OrderInfoService
         return $order_goods;
     }
 
+    public static function getOrderGoods($params=[], $page = 1 ,$pageSize=10){
+        $condition = [];
+        if(!empty($params['order_id'])){
+            $condition['order_id'] = $params['order_id'];
+        }
+        if(!empty($params['user_id'])){
+            $condition['user_id'] = $params['user_id'];
+        }
+        if(!empty($params['order_id'])){
+            $condition['order_id'] = $params['order_id'];
+        }
+        if(!empty($params['goods_name'])){
+            $condition['goods_name'] = '%'.$params['goods_name'].'%';
+        }
+
+        return OrderGoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+    }
+
     //获取收货地址信息
     public static function getConsigneeInfo($id)
     {
@@ -405,10 +423,13 @@ class OrderInfoService
         foreach($deliveryGoods as $k=>$v){
             //查询所属店铺
             $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-            //查询所属订单的商品信息
-            $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
-            $deliveryGoods[$k]['shop_name'] = $shop_goods_quote['shop_name'];
-            $deliveryGoods[$k]['goods_price'] = $order_good['goods_price'];
+            if (!empty($shop_goods_quote)){
+                //查询所属订单的商品信息
+                $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
+                $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
+            } else {
+                $deliveryGoods[$k]['goods_price'] = '';
+            }
         }
         return $deliveryGoods;
     }

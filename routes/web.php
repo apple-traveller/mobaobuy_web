@@ -237,6 +237,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
+
+    Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
+    Route::post('/demand/add','DemandController@addDemand');//获取用户需求信息
+
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心
     Route::get('/detail.html', 'NewsController@detail'); // 详情
@@ -244,6 +248,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     /********************************产品信息************************************/
     Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
+    Route::post('/condition/goodsList', 'GoodsController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
     /********************************************************************/
 
@@ -440,6 +445,15 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
 
         Route::get('/activity/promoter', 'ActivityController@promoter'); // 优惠活动
+        Route::get('/activity/addPromoter', 'ActivityController@addPromoter'); // 添加 编辑 页面
+        Route::post('/activity/savePromoter', 'ActivityController@savePromoter'); // 添加 编辑 保存
+        Route::post('/activity/deletePromoter', 'ActivityController@delete'); // 删除
+
+        Route::get('/invoice/list', 'InvoiceController@list'); // 客户开票申请列表
+        Route::get('/invoice/detail', 'InvoiceController@detail'); // 详情页
+        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择地址
+        Route::post('/invoice/verifyInvoice', 'InvoiceController@verifyInvoice'); // 审核 - 动作
+        Route::post('/invoice/cancelInvoice', 'InvoiceController@cancelInvoice'); // 作废 - 动作
     });
 });
 

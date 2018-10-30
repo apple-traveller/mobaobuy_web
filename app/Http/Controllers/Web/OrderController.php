@@ -63,7 +63,7 @@ class OrderController extends Controller
 
     public function orderStatusCount(){
         $deputy_user = session('_curr_deputy_user');
-        //todo 测试看数据，暂查询所有数据，不带订单用户ID条件
+
         if($deputy_user['is_firm']){
             $firm_id = $deputy_user['firm_id'];
             $status = OrderInfoService::getOrderStatusCount(0, $firm_id);
