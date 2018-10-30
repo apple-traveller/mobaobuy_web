@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回</a>会员 - 操作记录</div>
+        <div class="title"><a href="/admin/user/list?review_status={{$review_status}}&currpage={{$pcurrpage}}" class="s-back">返回</a>会员 - 操作记录</div>
         <div class="content">
 
             <div class="flexilist">
@@ -47,19 +47,14 @@
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
-
                                             <div class="list-page">
-
-
                                                 <ul id="page"></ul>
-
                                                 <style>
                                                     .pagination li{
                                                         float: left;
                                                         width: 30px;
                                                         line-height: 30px;}
                                                 </style>
-
 
                                             </div>
                                         </div>
@@ -85,7 +80,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/log?currpage="+obj.curr;
+                            window.location.href="/admin/user/log?currpage="+obj.curr+"&id={{$id}}"+"&review_status={{$review_status}}"+"&pcurrpage={{$pcurrpage}}";
                         }
                     }
                 });

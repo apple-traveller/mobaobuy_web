@@ -93,6 +93,7 @@
                 if (res.code == 1) {
                     window.location.href = "{{url('/admin/index')}}"
                 } else {
+                    $("#password").val("");
                     layer.msg(res.msg, {icon: 5});
                 }
             }, "json");

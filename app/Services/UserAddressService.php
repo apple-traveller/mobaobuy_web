@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Repositories\UserAddressRepo;
+use App\Repositories\RegionRepo;
 class UserAddressService
 {
     use CommonService;
@@ -10,7 +11,19 @@ class UserAddressService
     public static function getInfoByUserId($userid)
     {
 
-        return UserAddressRepo::getList(['id'=>'desc'],['user_id'=>$userid]);
+        $user_address = UserAddressRepo::getList(['id'=>'desc'],['user_id'=>$userid]);
+        foreach($user_address as $k=>$vo)
+        {
+            $user_address[$k]['province'] = RegionRepo::getInfo($vo['province'])['region_name'];
+            $user_address[$k]['country'] = RegionRepo::getInfo($vo['country'])['region_name'];
+            $user_address[$k]['city'] = RegionRepo::getInfo($vo['city'])['region_name'];
+            $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            if(!empty($user_address[$k]['street'])){
+                $user_address[$k]['street'] = RegionRepo::getInfo($vo['street'])['region_name'];
+            }
+
+        }
+        return $user_address;
     }
 
     public static function getAddressInfo($address_id)

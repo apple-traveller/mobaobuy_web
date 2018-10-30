@@ -2,8 +2,7 @@
 @section('iframe')
 <div class="warpper">
     <div class="title">会员 - 会员列表</div>
-    <div class="content visible">
-
+    <div class="content">
         <div class="explanation" id="explanation">
             <div class="ex_tit">
                 <i class="sc_icon"></i>
@@ -11,20 +10,26 @@
                 <span id="explanationZoom" title="收起提示"></span>
             </div>
             <ul>
-                <li>已经审核通过的会员，审核按钮不再显示。</li>
+                <li>点击积分按钮可以查看详细的积分流水。</li>
             </ul>
         </div>
-
-    </div>
-    <div class="content">
-
         <div class="flexilist">
+
             <div class="common-head">
-                <div class="fl">
+                <div class="order_state_tab">
+                    <a href="/admin/user/list?review_status=" @if($review_status=="") class="current" @endif  >全部@if($review_status=="") <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?review_status=-1" @if($review_status==-1) class="current" @endif>未实名@if($review_status==-1) <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?review_status=0" @if($review_status==0&&$review_status!="") class="current" @endif>待审核@if($review_status==0&&$review_status!="") <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?review_status=2" @if($review_status==2) class="current" @endif>未通过 @if($review_status==2) <em>({{$userCount}})</em> @endif</a>
+                    <a href="/admin/user/list?review_status=1" @if($review_status==1) class="current" @endif>已实名 @if($review_status==1) <em>({{$userCount}})</em> @endif</a>
+                   {{-- <a href="/admin/orderinfo/list?order_status=0">企业 <em>(20)</em></a>
+                    <a href="/admin/orderinfo/list?order_status=0">个人 <em>(20)</em></a>--}}
+                </div>
+                <div style="margin-left:10px;margin-top:4px;" class="fl">
                     <a href="javascript:download_userlist();"><div class="fbutton"><div class="csv" title="导出会员列表"><span><i class="icon icon-download-alt"></i>导出会员列表</span></div></div></a>
                 </div>
 
-                <div class="refresh">
+                <div  class="refresh">
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                     <div class="refresh_span">刷新 - 共{{$userCount}}条记录</div>
                 </div>
@@ -32,8 +37,6 @@
                 <div class="search">
                     <form action="/admin/user/list" name="searchForm" >
                         <div class="input">
-                            <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
-                            <input  type="hidden" name="is_firm" value="{{$is_firm}}"/>
                             <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                         </div>
@@ -43,26 +46,25 @@
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
-                    <div class="list-div" id="listDiv" data-id="{{$is_firm}}">
+                    <div class="list-div" id="listDiv" data-id="">
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
-
                                 <th width="5%"><div class="tDiv">编号</div></th>
                                 <th width="10%"><div class="tDiv">用户名</div></th>
                                 <th width="10%"><div class="tDiv">昵称</div></th>
                                 <th width="8%"><div class="tDiv">是否实名</div></th>
-                                <th width="8%"><div class="tDiv">是否通过审核</div></th>
+                                <th width="10%"><div class="tDiv">是否企业用户</div></th>
                                 <th width="8%"><div class="tDiv">积分</div></th>
                                 <th width="8%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
-
                                 <th width="6%"><div class="tDiv">是否冻结</div></th>
-                                <th width="12%" class="handle">操作</th>
+                                <th width="18%" class="handle">操作</th>
                             </tr>
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <tbody>
+                            @if(!empty($users))
                             @foreach($users as $user)
                             <tr class="">
 
@@ -71,22 +73,23 @@
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        @if($user['userreal']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
-                                        @elseif($user['userreal']==0 && $user['is_validated'] == 0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
-                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>待实名</div>
+                                        @if($user['review_status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已实名</div>
+                                        @elseif($user['review_status']==0 && $user['is_validated'] == 0)<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-normal'>待审核</div>
+                                        @elseif($user['review_status']==2)<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>未通过</div>
+                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary'>未实名</div>
                                         @endif
                                     </div>
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        @if($user['is_validated']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已通过</div>
-                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                        @if($user['is_firm']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>企业</div>
+                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary'>个人</div>
                                         @endif
                                     </div>
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        <a href="/admin/user/points?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
+                                        <a href="/admin/user/points?id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
@@ -103,14 +106,18 @@
 
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                        <a  href="{{url('/admin/user/log')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                        <a @if($user['is_validated']==1) style="display:none;" @endif href="{{url('/admin/user/verifyForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
-                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&is_firm={{$user['is_firm']}}&currpage={{$currpage}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&currpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a href="{{url('/admin/user/log')}}?id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a @if($user['is_firm']!=1) style="display:none;" @endif href="{{url('/admin/user/firmStock')}}?firm_id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>企业库存</a>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
+
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>
@@ -150,7 +157,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}&is_firm="+"{{$is_firm}}";
+                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}"+"&review_status={{$review_status}}";
                         }
                     }
                 });

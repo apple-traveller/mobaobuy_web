@@ -44,12 +44,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
-        Route::get('/user/verifyForm', 'UserController@verifyForm');//用户审核
-        Route::post('/user/verify', 'UserController@verify');//用户审核
         Route::get('/user/export', 'UserController@export');//用户导出excel
         Route::get('/user/userRealForm', 'UserController@userRealForm');//实名认证
         Route::post('/user/userReal', 'UserController@userReal');//实名认证审核
         Route::get('/user/points', 'UserController@points');//查看积分
+        Route::get('/user/firmStock', 'UserController@firmStock');//查看企业库存
+        Route::post('/user/firmStockFlow', 'UserController@firmStockFlow');//查看企业库存流水
 
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
