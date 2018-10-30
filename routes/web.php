@@ -286,14 +286,15 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         /********************************************************************/
 
 
-        Route::get('/invoices','UserController@invoicesList');//会员发票
-        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
-        Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
-        Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
-        Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
-        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
-        Route::post('/updateDefaultInvoice','UserController@updateDefaultInvoice');//修改会员默认发票
-
+        /************************发票维护********************************/
+//        Route::get('/invoices','UserController@invoicesList');//会员发票
+//        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
+//        Route::post('/createInvoices','UserController@createInvoices');//新增会员发票
+//        Route::get('/editInvoices','UserController@editInvoices');//编辑会员发票
+//        Route::post('/editInvoices','UserController@editInvoices');//编辑会员发票
+//        Route::post('/deleteInvoices','UserController@deleteInvoices');//编辑会员发票
+//        Route::post('/updateDefaultInvoice','UserController@updateDefaultInvoice');//修改会员默认发票
+        /********************************************************************/
         Route::get('/addressList','UserController@shopAddressList');//收货地址列表
         Route::get('/createAddressList','UserController@addShopAddress');//新增收获地
         Route::post('/createAddressList','UserController@addShopAddress');
@@ -364,6 +365,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
         Route::post('/orderDel','OrderController@orderDel');//订单删除
+        Route::get('/invoice','InvoiceController@invoiceList');// 开票列表
 
 
         Route::post('/egis','GoodsController@egis');//订单审核通过
