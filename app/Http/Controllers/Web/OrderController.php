@@ -32,6 +32,7 @@ class OrderController extends Controller
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $currUser  = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
+//            dump($currUser);
 
             $condition['status'] = $tab_code;
             $condition['begin_time'] = $request->input('begin_time');
@@ -179,8 +180,29 @@ class OrderController extends Controller
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
-        dump($orderDetailsInfo);
+//        dump($orderDetailsInfo);
         return $this->display('web.user.order.orderDetails',compact('orderDetailsInfo'));
     }
 
+    //审核通过
+    public function egis(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::egis($id);
+            return $this->success('审核成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //订单取消
+    public function orderCancel(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::orderCancel($id);
+            return $this->success('取消成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 }

@@ -33,4 +33,11 @@ class ActivityPromoteService
         }
         return $info_list;
     }
+
+
+    //web
+    //限时抢购
+    public static function buyLimit($review_status){
+        return ActivityPromoteRepo::getList([],['review_status'=>$review_status]);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -328,19 +329,6 @@ class GoodsService
         return UserAddressRepo::getList([],['user_id'=>$userId]);
     }
 
-    //审核通过操作
-    public static function egis($id){
-        $id = decrypt($id);
-        return OrderInfoRepo::modify($id,['order_status'=>2]);
-    }
-
-    //订单取消
-    public static function orderCancel($id){
-        return OrderInfoRepo::modify($id,['order_status'=>0]);
-    }
-
-
-
     //获取发票信息
     public static function getInvoices($id){
         return UserInvoicesRepo::getList([],['user_id'=>$id]);
@@ -351,6 +339,8 @@ class GoodsService
         $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
+
+
 
 }
 

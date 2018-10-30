@@ -39,8 +39,10 @@ class OrderInfoService
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
         //企业会员权限
-        if($currUser['is_firm'] == 1){
-            if($condition['firm_id'] != $currUser['user_id']){
+        if($currUser['is_firm']){
+
+            if($condition['firm_id'] && $currUser['is_self'] == 0){
+
                 $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$currUser['user_id']);
             }
         }
@@ -51,20 +53,24 @@ class OrderInfoService
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
             //企业
-            if($condition['firm_id'] == $currUser['user_id']){
+            if($condition['firm_id'] == $currUser['firm_id'] && $currUser['is_self']){
                 if($item['order_status'] == 0){
                     $orderList['list'][$k]['auth'][] = 'can_del';
                     $orderList['list'][$k]['auth_desc'][] = '删除';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
                 }
                 if($item['order_status'] == 1){
                     $orderList['list'][$k]['auth'][] = 'can_approval';
                     $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth_desc'][] = '去审批';
                     $orderList['list'][$k]['auth_desc'][] = '取消';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                 }
                 if($item['order_status'] == 2){
                     $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth_desc'][] = '取消';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                 }
                 if($item['order_status'] == 3){
                     if($item['pay_status'] == 0){
@@ -72,16 +78,19 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '去支付';
                         $orderList['list'][$k]['auth_desc'][] = '取消';
-                    }elseif($item['pay_status' == 1]){
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    }elseif($item['pay_status'] == 1){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
                         $orderList['list'][$k]['auth_desc'][] = '确认收货';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
 
                 }
             }
 
             //企业会员
-            if($condition['firm_id'] != $currUser['user_id'] && $currUser['is_firm'] == 1){
+            if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
 //                dump('企业会员');
                 if($currUserAuth){
                     //已作废订单
@@ -472,6 +481,16 @@ class OrderInfoService
         //获取会员发票信息
         $userInvoceInfo = UserInvoicesRepo::getInfo($orderInfo['invoice_id']);
         return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo];
+    }
+
+    //审核通过操作
+    public static function egis($id){
+        return OrderInfoRepo::modify($id,['order_status'=>2]);
+    }
+
+    //订单取消
+    public static function orderCancel($id){
+        return OrderInfoRepo::modify($id,['order_status'=>0]);
     }
 
 }

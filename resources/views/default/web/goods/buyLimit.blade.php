@@ -4,142 +4,137 @@
     <title>限时抢购 - @yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
-    <style type="text/css">
-    	.fr{float:right;}
-    	.fs14{font-size:14px;}
-    	.order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
-    	.cart_progress{width: 303px;margin:0 auto;height: 33px;}
-		.cart_progress_01{background: url(../img/cart_icon01.png)no-repeat;}
-		.cart_progress_02{background: url(../img/cart_icon02.png)no-repeat;}
-		.cart_progress_03{background: url(../img/cart_icon03.png)no-repeat;}
-		.progress_text{color: #999;margin-top: 5px;}
-		.progress_text_curr{color: #75b335;}
-		.my_cart{float: left;margin-left: 5px;}
-		.order_information{float: left;margin-left: 58px;}
-		.order_submit{float: left;margin-left: 50px;}
-		.w1200{width: 1200px;margin: 0 auto;}
-		.whitebg{background: #FFFFFF;}
-		.shop_title{width:1138px;margin:0 auto;clear: both; display: block; overflow: hidden; line-height: 70px; border-bottom: 1px solid #DEDEDE;}
-		.shop_title li{float: left; text-align: center;}
-		input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-appearance:none;border: 1px solid #c9c9c9;border-radius: 2px;outline: none;}
-		.check_box input[type=checkbox]:checked{background: url(../img/interface-tickdone.png)no-repeat center;}
-		.mr5{margin-right:5px;}
-		.mt25{margin-top:25px;}
-		.fl{float:left;}
-		.shop_good{width: 300px;}.shop_price{width: 130px;}.shop_num{width: 150px;}.shop_add{width: 130px;}.shop_sub{width: 125px;}
-		.shop_price{width: 130px;}.shop_num{width: 150px;}.shop_add{width: 130px;}.shop_sub{width: 125px;}
-		.shop_oper{width: 120px; }
-		.shop_list{width:1138px;margin:0 auto;overflow: hidden;}
-		.shop_list li {line-height: 115px;border-bottom: 1px solid #DEDEDE;overflow: hidden;}
-		.shop_list li:last-child{border-bottom:none;}
-		.mr5{margin-right:5px;}
-		.mt10{margin-top:10px;}
-		.shop_good_title{width: 323px;}
-		.shop_price_t{width: 130px;}
-		.orange,a.orange,a.orange:hover{color:#ff6600;}
-		.tac{text-align:center !important;}
-		.shop_num_t{width: 150px;}
-		.shop_nienb{width: 138px;height: 40px;border: 1px solid #DEDEDE;border-radius:3px;margin-top: 37px;}
-		.shop_num_reduce {cursor:pointer;float: left;display: block;width: 40px; height: 40px;text-align: center;line-height: 40px;color: #444;}
-		.num_nim:hover{background-color: #eeeeee;}
-		.shop_num_amount {float: left;width: 58px;height: 40px;line-height: 25px;border: none;color: #343434;
-					text-align: center;background-color: #fff;z-index: 2;left: 48px;}
-		.shop_num_plus {float: left;display: block; width: 40px;height: 40px;text-align: center;line-height: 40px;color: #444;
-				cursor: pointer;}
-		.num_nim:hover{background-color: #eeeeee;}
-		.shop_price_d{width: 125px;}
-		.shop_oper_icon{width: 20px;height: 20px;margin:47px auto;display: block;}
-		.shop_oper_bg{background: url(../img/cart_rash.png)no-repeat 0px 0px;}
-		.shop_oper_bg:hover{background: url(../img/cart_rash.png)no-repeat 0px -82px;}
-		.sumbit_cart{width:1200px;margin:0 auto;margin-top:20px;line-height: 50px;color: #999;}	
-		.sumbit_cart_btn{width: 200px;float: right;line-height: 50px;background-color: #75b335;color: #fff;font-size: 16px;text-align: center;cursor:pointer;}
-		.ovh{overflow: hidden;}
-		.ml30{margin-left:30px;}
-		.cp{cursor:pointer;}
-		.ml40{margin-left: 60px;}
-		.logo {
-		    width: 170px;
-		    height: 55px;
-		    margin-top: 20px;
-		    float: left;
-		    background: url(../img/mobao_logo.png)no-repeat;
-		    background-size: 100% 100%;
-		}
-    </style>
-    <script type="text/javascript">
-    
-
-		
-    </script>
-</head>
-<body style="background-color: rgb(244, 244, 244);">
-    @include(themePath('.','web').'web.include.partials.top')
-   
-    <div class="clearfix whitebg mb30">
+		<link rel="stylesheet" href="css/global.css" />
+		<link rel="stylesheet" href="css/index.css" />
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+		<script type="text/javascript">
+			$(function(){
+				function Remaine_time(ntime,nday,nhour,nminute,nsecond){
+					var intDiff=parseInt(ntime);//总秒数
+					window.setInterval(function(){
+						var day=0,hour=0,minute=0,second=0;
+						if(intDiff>0){
+							day=Math.floor(intDiff/(60*60*24));
+							hour=Math.floor(intDiff/(60*60))-(day*24);
+							minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
+							second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+						}
+						if(hour<=9)hour='0'+hour;
+						if(minute<=9)minute='0'+minute;
+						if(second<=9)second='0'+second;
+						nday.html(day+"天");
+						nhour.html('<s></s>'+hour);
+						nminute.html('<s></s>'+minute);
+						nsecond.html('<s></s>'+second);
+						intDiff--;
+					},1000)
+					
+				}
+				Remaine_time(10800,$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
+			})
+		</script>
+	</head>
+	<body>
+@include(themePath('.','web').'web.include.partials.top')
+	<div class="header">
 		<div class="w1200">
-			<a class="logo" style="margin-top: 45px;" href="/"></a>
-			<div class="fr fs14 order_progress" >
-				<div class="cart_progress cart_progress_01"></div>
-				<div class="progress_text">
-					<div class="my_cart progress_text_curr">我的购物车</div>
-					<div class="order_information">订单信息完善</div>
-					<div class="order_submit">成功提交订单</div>
+			<div class="clearfix">
+				<div class="logo" style="margin-top: 38px;"></div>
+				<div class="index_search fl mt40">
+					<input type="text" class="index_search_text fl" placeholder="请输入关键词、类别进行搜索"/><input type="button" class="index_search_btn white fs16 fl" value="搜 索"/>
+					<a class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
+					<div class="hot_search_m">热门推荐：
+                        <a href="#.html" target="_blank">7000F泰国PTT</a>
+                        <a href="#.html" target="_blank">218WJ</a>
+                        <a href="#.html" target="_blank">7000</a>
+                        <a href="#.html" target="_blank">218w</a>
+                        <a href="#.html" target="_blank">7000f</a>
+                        <a href="#.html" target="_blank">9001台湾台塑</a>
+                	</div>
+				</div>
+				
+				<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="img/cart_icon.png"/></i><span class="pro_cart_num white">1</span></a>
+			</div>
+			<div class="clearfix">
+				
+				<div class="nav">
+					<div class="fication_menu">原料分类</div>
+					<ul class="ass_menu" style="display: none;">
+						<li><span class="ass_title">维生素</span> <span class="ass_list-right ass_list-right_icon ass_list-right_icon01"></span>
+						<div class="ass_fn whitebg">
+							<ul class="ass_fn_list">
+								<li><h1 class="fn_title fl">VA</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+								<li><h1 class="fn_title fl">VE</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+								<li><h1 class="fn_title fl">VD3</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+								<li><h1 class="fn_title fl">VA</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+								<li><h1 class="fn_title fl">VA</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+								<li><h1 class="fn_title fl">烟酰胺/烟酸</h1><div class="ass_fn_list_that ml35 ovh fl"><span>常规VA</span><span>VA棕榈酸酯</span><span>常规VA</span><span>VA醋酸酯</span><span>常规VA</span><span>常规VA</span></div></li>
+							</ul>
+						</div>
+						</li>
+						
+					</ul>
+					
+				</div>
+				
+				<div class="menu">
+					<ul><li>首页</li><li>报价列表</li><li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>产品列表</li><li>帮助中心</li></ul>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-	<div class="w1200 whitebg" style="margin-top: 20px;">
+	
+	<div class="limit_bg">
+		<div class="ms_title"></div>
+		<div class="limit_date">2018年10月1日-2018年10月31日</div>
 		
-		<ul class="shop_title">
-			<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
-			<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
-			<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
-		</ul>
-		@if(count($cartInfo['cartInfo']))
-			@foreach($cartInfo['cartInfo'] as $k=>$v)
-			<ul class="shop_list">
-				<li class="check_all">
-					<span class="check_tick fl" style="margin: 33px 0px;">
-						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v->id}}"/> </label>
-					</span>
-					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v->goods_name}}</a>
-					<span class="shop_price_t orange fl tac">￥{{$v->goods_price}}元</span>
-					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
-					<div class="shop_num_t fl">
-						<div class="shop_nienb">
-							<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
-							<input type="text" class="shop_num_amount Bidders_record_text" class="goods_numberListen" value="{{$v->goods_number}}"/>
-							<a class="shop_num_plus num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
-						</div>
-					</div>
-				    
-				    
-				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-				    <span class="shop_price_d fl tac">￥{{$cartInfo['quoteInfo'][$k]['account']}}</span>
-				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{$v->id}}" onclick="del(this)"></a></span>
-				</li>
-			</ul>
-			@endforeach
+		
+		<div class="w1200 ovh">
+		<ul class="ms_list">
+		@if(empty($promoteInfo))
+			无抢购活动</ul>
 		@else
-			购物车没有任何商品
-			<!-- <div class="sumbit_cart_btn">去购物</div> -->
-			<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;">去购物</a>
+			@foreach($promoteInfo as $v)	
+				
+			<li>
+				<div class="ms_list_center">
+					<div class="ovh">
+						<h1 class="fs24 fl" style="height: 36px;">维生素E粉</h1><span class="fr pt10 ovh di"><font class="orange">964</font>次浏览</span>
+					</div>
+					<div class="ovh mt30">
+						<div class="mx_addr fl" style="width: 117px;">恒兴</div><div class="mx_addr fl ml15" style="width: 117px;">1000公斤</div>
+					</div>
+					<div class="ovh mt20 ">
+						<div class="mx_progress"><div class="mx_progress_com"></div></div><span class="fl fs16 ml10 gray">已售20%</span>
+					</div>
+					<div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div>
+					<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥80.00</font>\公斤</div>
+					<div class="mx_btn">立即抢购</div>
+				</div>
+			</li>
+			@endforeach
 		@endif
+		
+	</ul>
+	
+	</div>
+	<div class="w1200 redbg ovh" style="margin-bottom: 30px;">
+		
+		<div class="Rules_activity">活动规则</div>
+		<ul class="Rules_text">
+			<li>1.本活动对所有会员开放</li>
+			<li>2.秒杀订单需要在2个工作日内完成支付，逾期未付款，系统将自动取消订单</li>
+			<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：400-100-1234</li>
+		</ul>
+	</div>
 	</div>
 	
-		
-	<div class="sumbit_cart whitebg ovh mb30">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
-			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
-		</div>
-
-     @include(themePath('.','web').'web.include.partials.footer_service')
+	@include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')
     @yield('js')
-</body>
+	</body>
 </html>
+
 
 
