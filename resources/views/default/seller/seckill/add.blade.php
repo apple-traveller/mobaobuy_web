@@ -58,7 +58,7 @@
                    table.render({
                        elem: '#form_ui'
                        , cols: [[
-                           {type: 'checkbox'}
+                           {type: 'checkbox',LAY_CHECKED:true}
                            , {field: 'id', title: 'ID', sort: true}
                            , {field: 'goods_sn', title: '商品编号'}
                            , {field: 'goods_name', title: '商品名称'}
@@ -138,11 +138,11 @@
                 })
                 console.log(sec_data);
                 $.ajax({
-                    'url': '/seller/seckill/save',
-                    'data': {
+                    url: '/seller/seckill/save',
+                    data: {
                         'sec_data': sec_data
                     },
-                    'type': 'post',
+                    type: 'post',
                     success: function (res) {
                         console.log(res);
                         if (res.code == 1) {

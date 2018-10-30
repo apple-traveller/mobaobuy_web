@@ -409,29 +409,6 @@ class GoodsController extends Controller
         return $this->display('web.order.order',compact('orderList'));
     }
 
-    //审核通过
-    public function egis(Request $request){
-        $id = $request->input('id');
-        try{
-            GoodsService::egis($id);
-            return $this->success('审核成功');
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
-    //订单取消
-    public function orderCancel(Request $request){
-        $id = $request->input('id');
-        try{
-            GoodsService::orderCancel($id);
-            return $this->success('取消成功');
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
-
     //支付界面
     public function pay(){
 //        $payInfo = GoodsService::pay();
@@ -443,5 +420,7 @@ class GoodsController extends Controller
     public function waitConfirm(){
         return $this->display('web.order.waitConfirm');
     }
+
+
 
 }

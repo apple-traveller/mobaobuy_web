@@ -17,4 +17,14 @@ class CartService
     {
         return CartRepo::getList(['add_time'=>'desc'],['user_id'=>$user_id,'is_checked'=>1]);
     }
+
+    /**
+     * 获取用户购物车产品数
+     * @param $user_id
+     * @return mixed
+     *
+     */
+    public static function getUserCartNum($user_id){
+        return CartRepo::getTotalCount(['user_id'=>$user_id,'is_invalid'=>0]);
+    }
 }

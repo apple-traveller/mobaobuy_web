@@ -2,6 +2,8 @@
 namespace App\Services;
 use App\Repositories\AdRepo;
 use App\Repositories\AdPositionRepo;
+use Carbon\Carbon;
+
 class AdService
 {
     use CommonService;
@@ -18,11 +20,15 @@ class AdService
         return $ads;
     }
 
-
-    //单条数据
-    public static function getAdInfo($id)
+    /**
+     * 获取指定位置有效的广告记录列表
+     * @param $position_id
+     * @return mixed
+     */
+    public static function getActiveAdvertListByPosition($position_id)
     {
-        return AdRepo::getInfo($id);
+        $now = Carbon::now();
+        return AdRepo::getList(['sort_order'=>'asc'], ['position_id'=>$position_id, 'start_time|<='=>$now, 'end_time|>=' => $now]);
     }
 
     //修改

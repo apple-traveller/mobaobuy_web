@@ -116,12 +116,12 @@
             let seckill_id = $('#btn_trash').attr('data_id');
             let currentPage = $('#btn_trash').attr('data_page');
             $.ajax({
-                'url':'/seller/seckill/delete',
-                'data':{
+                url:'/seller/seckill/delete',
+                data:{
                     'seckill_id': seckill_id,
                     'currentPage':currentPage
                 },
-                'type':'post',
+                type:'post',
                 success:function (res) {
                     if (res.code == 1){
                         window.location.href="{{url('/seller/seckill/list')}}";

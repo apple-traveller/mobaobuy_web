@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -254,7 +255,8 @@ class GoodsService
                     'goods_name'=>$cartInfo['goods_name'],
                     'goods_sn'=>$cartInfo['goods_sn'],
                     'goods_number'=>$cartInfo['goods_number'],
-                    'goods_price'=>$cartInfo['goods_price']
+                    'goods_price'=>$cartInfo['goods_price'],
+                    'add_time' => Carbon::now()
                 ];
                 OrderGoodsRepo::create($orderGoods);
                 $goods_amount += $cartInfo['goods_number'] * $cartInfo['goods_price'];
@@ -327,19 +329,6 @@ class GoodsService
         return UserAddressRepo::getList([],['user_id'=>$userId]);
     }
 
-    //审核通过操作
-    public static function egis($id){
-        $id = decrypt($id);
-        return OrderInfoRepo::modify($id,['order_status'=>2]);
-    }
-
-    //订单取消
-    public static function orderCancel($id){
-        return OrderInfoRepo::modify($id,['order_status'=>0]);
-    }
-
-
-
     //获取发票信息
     public static function getInvoices($id){
         return UserInvoicesRepo::getList([],['user_id'=>$id]);
@@ -350,6 +339,8 @@ class GoodsService
         $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
+
+
 
 }
 

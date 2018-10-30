@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.member')
 @section('title', '实名认证')
+    <!-- <link rel="stylesheet" href="/defaultcss/global.css" /> -->
+        <!-- <link rel="stylesheet" href="/default/css/index.css" /> -->
 @section('css')
     <style>
         .account_infor_list{margin-top: 30px;margin-left: 40px;}
@@ -8,10 +10,38 @@
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
         .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
+        .account {
+        width: 376px;
+        margin: 0 auto;
+        }
+        .account li {
+            width: 188px;
+            height: 45px;
+            line-height: 45px;
+            font-size: 16px;
+            float: left;
+            text-align: center;
+            margin: 0;
+            cursor: default;
+        }
+
+        .account_curr {
+            border-bottom: 1px solid #75b335;
+            color: #75b335;
+        }
+
+
+
     </style>
 @endsection
 @section('js')
     <script type="text/javascript">
+        $(function(){
+        $(".account li").click(function(){
+            $(this).addClass('account_curr').siblings().removeClass('account_curr');
+            $('.tab_list>li').eq($(this).index()).show().siblings().hide();
+        });
+    })
         $(document).tooltip({
             items: ".img-tooltip",
             content: function() {
@@ -30,9 +60,12 @@
             return obj;
         }
         $('.account_infor_btn').click(function (){
+            var is_self = $(this).attr('id');
             var data = $("#user_real_form").serialize();
+            // console.log(is_firm);
+            // console.log(data);return;
             var jsonData = formToJson(data);
-            $.post('/account/saveUserReal',jsonData,function(res){
+            $.post('/account/saveUserReal',{jsonData,'is_self':is_self},function(res){
                 console.log(res.data);
                 if (res.code == 1) {
                     $.msg.success('保存成功');
@@ -49,20 +82,39 @@
 @section('content')
     <div class="clearfix mt25">
         <form method="post" action="javascript:void(0);" id="user_real_form">
-        <div class="w1200">
-                <ul class="account_infor_list">
+        
+            <div class="clearfix bb1 f4bg">
+
+                @if(!empty($user_real))
+                    @if($user_real['is_firm'] == '0')
+                        <ul class="account"><li class="account_curr">个人账户</li></ul> 
+                    @elseif($user_real['is_firm'] == '1')
+                         <ul class="account"><li id="firm">企业账户</li></ul>
+                     @else
+                        <ul class="account"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                    @endif
+
+
+                @else
+                 <ul class="account"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul> 
+                @endif
+             </div>
+
+                <ul class="tab_list">
+                <!-- 个人账户 -->
+                 <li>
+                     <ul class="account_infor_list">
                     <li><span class="infor_title">账号：</span>
                         <span class="ml10">
                             {{$user_name}}
                         </span>
                     </li>
                     <input type="hidden" name="user_id"  value="{{$user_id}}" >
-                    @if(!empty($user_real)) <input type="hidden" name="id"  value="{{$user_real['id']}}" >  @else <input type="hidden" name="id"  value="" >   @endif
-                @if($is_firm==0)
+                
                     <li class="mt25">
                         <span class="infor_title">真实姓名：</span>
                         <span class=" fl">
-                            <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif />
+                            <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                         </span>
                     </li>
                     <li class="mt25">
@@ -105,37 +157,64 @@
                             @endif
                         </span>
                     </li>
+                @if(!empty($user_real))
+                    @if($user_real['review_status'] == '0')
+                        
+                    @else
+                    <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
+                    @endif
+                @else
+                    <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
+                @endif
+                </ul>
+                </li>
+                
 
-               @else
-                    <li class="mt25"><span class="infor_title">企业全称：</span>
+               
+
+                 <!-- 企业账户 -->
+                       <li style="display: none;">
+                     <ul class="account_infor_list">
+                    <li><span class="infor_title">账号：</span>
                         <span class="ml10">
-                        @if(!empty($user_real)) {{$user_real['real_name']}}
-                        @else
-                        @endif
+                            {{$user_name}}
                         </span>
                     </li>
+                    <input type="hidden" name="user_id"  value="{{$user_id}}" >
+                   
+               
                     <li class="mt25">
-                        <span class="infor_title">纳税人识别号：</span>
+                         <span class="infor_title">企业全称：</span>
                         <span class=" fl">
-                        @if(!empty($user_real)) {{$user_real['taxpayer_id']}}
-                        @else
-                        @endif
-                            
+                            <input type="text" name="real_name_firm" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif />
                         </span>
                     </li>
+
                     <li class="mt25">
-                        <span class="infor_title">营业执照注册号：</span>
+                       <span class="infor_title">纳税人识别号：</span>
                         <span class=" fl">
-                            @if(!empty($user_real))  {{$user_real['business_license_id']}}
-                             @else
-                            @endif
-                           
+                            <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['tax_id'])) value="{{$user_real['tax_id']}}" @else value="" @endif />
+                        </span>
+                    </li>
+
+
+                      <li class="mt25">
+                         <span class="infor_title">授权委托书电子版：</span>
+                        <span class=" fl">
+                            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
+                        </span>
+                    </li>
+
+                    <li class="mt25">
+                         <span class="infor_title">开票资料电子版：</span>
+                        <span class=" fl">
+                            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                         </span>
                     </li>
                     <li class="mt25">
-                        <span class="infor_title">营业执照电子版：</span>
-                        <span class="ml10 fl">
-                            <i class="iconfont icon-image img-tooltip" @if(!isset($user_real['license_fileImg']) || empty($user_real['license_fileImg'])) style="display: none;" @else data-img="{{getFileUrl($user_real['license_fileImg'])}}" @endif ></i>
+                         <span class="infor_title">营业执照电子版：</span>
+                        <span class=" fl">
+                            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                         </span>
                     </li>
                     <li class="mt25">
@@ -155,12 +234,11 @@
                            
                         </span>
                     </li>
-               @endif
+              
+               <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button> 
                 </ul>
-
-             <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
-
-        </div>
+                </li>
+             </ul>
         </form>
     </div>
 @endsection

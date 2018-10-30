@@ -159,7 +159,7 @@
 	    	<!--发票信息-->
 	    	<div class="consignee ">
 	    		<h1>发票信息</h1>
-	    		<span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10">不开发票</span></span>
+	    		<span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10"></span></span>
 	    	</div>
 	    </div>
 	    <!--订单列表-->

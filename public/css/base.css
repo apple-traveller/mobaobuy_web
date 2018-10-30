@@ -9,12 +9,14 @@ input:-webkit-autofill { box-shadow: 0 0 0px 1000px white inset !important;}
 input:-moz-placeholder { color: #DEDEDE; opacity:1;/* Mozilla Firefox 4 to 18 */}
 input::-moz-placeholder {color: #DEDEDE;opacity:1; /* Mozilla Firefox 19+ */}
 input:-ms-input-placeholder{color: #DEDEDE;opacity:1;}
-input::-webkit-input-placeholder{color: #DEDEDE;opacity:1;}
+
+
 h1,h2,h3,h4,h5,h6{ font-size:100%;font-family: "microsoft yahei";font-weight: normal;}
 address,cite,dfn,em,var{ font-style:normal;}
 ul,ol{ list-style:none;}
 em, i, u { font-style: normal;}
-input, select, textarea {font-family: inherit;font-size: inherit;font-weight: inherit;}
+input, select, textarea {font-family: inherit;font-size: inherit;font-weight: inherit;outline:none;}
+
 
 button,input,select,textarea{ font-size:100%;}
 table{ border-collapse:collapse;border-spacing:0;}
@@ -43,6 +45,19 @@ a:focus{ outline:none;}
 .blackgraybg{background-color: #ebebe4;}
 
 input[disabled],input[disabled="disabled"],input[readonly],input[readonly="readonly"]{ background-color:#ebebe4;}
+
+.pr {position:relative; }
+.pa{position: absolute;}
+
+.ovh{overflow: hidden;}
+.ovhwp{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+.db{display:block;}
+.dno{display:none;}
+.di{display:inline-block;}
+
+.tal{text-align:left !important;}
+.tac{text-align:center !important;}
+.tar{text-align:right !important;}
 
 .w{ margin:0 auto;}
 .w:after,.w:before{ content: ".";display: block;height: 0;clear: both;visibility: hidden;}
@@ -76,6 +91,7 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 
 .w1200{width: 1200px;margin: 0 auto;}
 .w100{width: 100%;}
+.w{width: 180px;}
 .w180{width: 180px;}
 .w185{width: 185px;}
 .w230{width:230px;}
@@ -92,6 +108,15 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 .mt30{margin-top:30px;}
 .mt35{margin-top:35px;}
 .mt40{margin-top:40px;}
+
+.mr5{margin-right:5px;}
+.mr10{margin-right:10px;}
+.mr15{margin-right:15px;}
+.mr20{margin-right:20px;}
+.mr25{margin-right:25px;}
+.mr30{margin-right:30px;}
+.mr35{margin-right:35px;}
+.mr40{margin-right:40px;}
 
 .ml5{margin-left:5px;}
 .ml10{margin-left:10px;}
@@ -112,6 +137,7 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 .mb40{margin-bottom:40px;}
 .mb50{margin-bottom:50px;}
 
+.p5{padding:5px;}
 .pt10{padding-top:10px;}
 .pt5{padding-top:5px;}
 .plr5{padding:0 5px;}
@@ -139,6 +165,7 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 .pt50{padding-top:50px;}
 
 
+
 /*隐藏显示*/
 .hide{ display:none !important;}
 .show{ display:block !important;}
@@ -151,11 +178,6 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 .text {height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;width: 300px;}
 
 .ud-right{ float:left; margin-left:20px; width:calc(100% - 70px);}
-
-/*对齐方式*/
-.tal{ text-align:left !important;}
-.tac{ text-align:center !important;}
-.tar{ text-align:right !important;}
 
 .lh20{ line-height:20px !important;}
 .lh25{ line-height:25px !important;}

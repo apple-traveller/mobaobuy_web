@@ -15,6 +15,11 @@ use Illuminate\Http\Request;
 
 class ShopDeliveryController extends Controller
 {
+    /**
+     * 列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function list(Request $request)
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
@@ -36,6 +41,11 @@ class ShopDeliveryController extends Controller
         ]);
     }
 
+    /**
+     * 详情
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail(Request $request)
     {
         $id = $request->input('id');
@@ -77,6 +87,11 @@ class ShopDeliveryController extends Controller
         }
     }
 
+    /**
+     * 更新发货单状态
+     * @param Request $request
+     * @return ShopDeliveryController
+     */
     public function updateStatus(Request $request)
     {
         $id = $request->input('id','');
@@ -86,20 +101,13 @@ class ShopDeliveryController extends Controller
             'status'=>$status
         ];
         try{
-            $flag = OrderInfoService::modifyDeliveryStatus($data);
-            $logData = [
-                'action_note' => '发货',
-                'action_user' => session('_seller')['user_name'],
-                'order_id' => $id,
-                'order_status' => $flag['order_status'],
-                'action_place' => 0,
-                'shipping_status' => $flag['shipping_status'],
-                'pay_status' => $flag['pay_status'],
-                'log_time' => Carbon::now()
-            ];
-            OrderInfoService::createLog($logData);
             //修改订单表的发货状态
-            return $this->result('',200,'修改成功');
+            $re = OrderInfoService::modifyDeliveryStatus($data);
+            if ($re){
+                return $this->result('',200,'修改成功');
+            } else {
+                return $this->error('修改失败');
+            }
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

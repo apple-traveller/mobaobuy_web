@@ -277,9 +277,10 @@
                                             <div class="order_operation_btn">
                                                 @if($orderInfo['order_status'] == 1)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
+                                                <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
                                                 @else
                                                 @endif
-                                                <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
+
                                                 <input name="order_id" type="hidden" value="4">
                                                 @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
                                                 {{--<input type="button" value="打印订单" class="btn btn25 blue_btn" onclick="javascript:window.open('tp_api.php?act=order_print&amp;order_id=4')">--}}
@@ -376,13 +377,13 @@
                 layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
                     let action_note = $("#action_note").val();
                     $.ajax({
-                        'url':'/seller/order/updateOrderStatus',
-                        'data': {
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
                             'id':id,
                             'action_note':action_note,
                             'order_status': 3
                         },
-                        'type': 'post',
+                        type: 'post',
                         success: function (res) {
                             if (res.code == 1){
                                 layer.msg(res.msg, {icon: 1,time:600});
@@ -405,13 +406,13 @@
                 layer.confirm('是否作废订单?', {icon: 3, title:'提示'}, function(index){
                     let to_buyer = $("input[ name='to_buyer' ]").val();
                     $.ajax({
-                        'url':'/seller/order/updateOrderStatus',
-                        'data': {
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
                             'id':66,
                             'to_buyer':to_buyer,
                             'order_status': 0
                         },
-                        'type': 'post',
+                        type: 'post',
                         success: function (res) {
                             if (res.code == 1){
                                 layer.msg(res.msg, {icon: 1,time:600});
@@ -447,7 +448,6 @@
                             }
                         }
                     });
-                    // window.location.href="/seller/order/list?id="+id;
                     layer.close(index);
                 });
             });

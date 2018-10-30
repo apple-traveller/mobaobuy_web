@@ -95,4 +95,43 @@ if(!function_exists('getFooterArticle')){
     }
 }
 
+if(!function_exists('amount_format')){
+    function amount_format($amount, $decimals=2, $currency_symbol='￥', $dec_point='.', $thousands_sep=','){
+        $value = number_format($amount, $decimals, $dec_point, $thousands_sep);
+        return $currency_symbol.$value;
+    }
+}
+
+if(!function_exists('make_treeTable')) {
+    /**
+     * 列表转树表格
+     * @param $list 数据列表
+     * @param string $pk 主键字段
+     * @param string $pid 关联父字段
+     * @param string $child 子结点名称
+     * @param int $root 第一层父ID值
+     * @return array
+     */
+    function make_treeTable($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0)
+    {
+        $tree = array();
+        $packData = array();
+
+        //转换数组的结构
+        foreach ($list as $data) {
+            $packData[$data[$pk]] = $data;
+        }
+
+        foreach ($packData as $key => $val) {
+            if ($val[$pid] == $root) {//代表跟节点
+                $tree[] =& $packData[$key];
+            } else {
+                //找到其父类
+                $packData[$val[$pid]][$child][] =& $packData[$key];
+            }
+        }
+        return $tree;
+    }
+}
+
 

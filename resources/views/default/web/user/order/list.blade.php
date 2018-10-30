@@ -48,6 +48,7 @@
                 "columns": [
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, full, meta) {
+                            // console.log(full);
                         	var html = '<div style="height: 15px;"></div>';
 
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';
@@ -65,11 +66,17 @@
                                     html += '<p><span><a href="/orderDetails/'+full.order_sn+'">订单详情</a></span></p></td>';
                                     html += '<td rowspan="'+ full.goods.length +'">';
                                    
-                                    if(full.order_status == 0){
-                                         html += '<p></p><p class="mt5"><a class="opt-btn" onclick="orderDel('+full.id+')">删除</a></p></td>';
-                                    }else{
-                                         html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">去支付</a></p><p class="mt5"><a class="opt-btn" onclick="orderCancel('+full.id+')">取消</a></p></td>';
+                                    // if(full.order_status == 0){
+                                    //      html += '<p></p><p class="mt5"><a class="opt-btn" onclick="orderDel('+full.id+')">删除</a></p></td>';
+                                    // }else{
+                                    //      html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">去支付</a></p><p class="mt5"><a class="opt-btn" onclick="orderCancel('+full.id+')">取消</a></p></td>';
+                                    // }
+                                    var strhtml = '';
+                                    for(var i in full.auth){
+                                        strhtml += '<p><a class="opt-btn" '+ full.auth_html[i] +'>'+ full.auth_desc[i]+'</a></p>';
                                     }
+                                    html += strhtml + '</td>';
+                                    // html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">'+ full.auth[index]+'</a></p><p class="mt5"><a class="opt-btn" onclick="orderCancel('+full.id+')">取消</a></p></td>';
                                 }
                                 html += '</tr>';
                             }
@@ -132,21 +139,24 @@
         
 
         function orderCancel(id){
-            $.ajax({
-                url: "/orderCancel",
-                dataType: "json",
-                data: {
-                    'id':id
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data.code){
-                        window.location.reload();
-                    }else{
-                        alert('出错,请重试')
+            var flag = confirm('是否确认删除');
+            if(flag === true){
+                 $.ajax({
+                    url: "/orderCancel",
+                    dataType: "json",
+                    data: {
+                        'id':id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
                     }
-                }
-            })
+                })
+            }
         }
 
         function orderDel(id){
