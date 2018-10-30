@@ -252,7 +252,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
     /********************************************************************/
 
-    Route::get('/buyLimit', 'GoodsController@buyLimit');//限时抢购
+    Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
 
     Route::group(['middleware' => 'web.auth'], function () {
 
@@ -315,10 +315,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
 
-
-
-
-
 //        Route::get('/stockNum','FirmStockController@stockList');//企业库存
         Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
@@ -366,8 +362,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/orderDel','OrderController@orderDel');//订单删除
 
 
-        Route::post('/egis','GoodsController@egis');//订单审核通过
-        Route::post('/orderCancel','GoodsController@orderCancel');//订单取消
+        Route::post('/egis','OrderController@egis');//订单审核通过
+        Route::post('/orderCancel','OrderController@orderCancel');//订单取消
         Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
         Route::get('/pay','GoodsController@pay');//支付界面
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面

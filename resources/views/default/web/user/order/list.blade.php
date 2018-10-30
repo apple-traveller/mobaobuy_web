@@ -139,21 +139,24 @@
         
 
         function orderCancel(id){
-            $.ajax({
-                url: "/orderCancel",
-                dataType: "json",
-                data: {
-                    'id':id
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data.code){
-                        window.location.reload();
-                    }else{
-                        alert('出错,请重试')
+            var flag = confirm('是否确认删除');
+            if(flag === true){
+                 $.ajax({
+                    url: "/orderCancel",
+                    dataType: "json",
+                    data: {
+                        'id':id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
                     }
-                }
-            })
+                })
+            }
         }
 
         function orderDel(id){
