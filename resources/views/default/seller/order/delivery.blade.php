@@ -44,7 +44,7 @@
                                         <table class="layui-table" lay-data="{ url:'/seller/order/orderGoods', page:false, id:'idTest',method:'post',where:{'order_id':'{{$id}}'}}" lay-filter="test">
                                             <thead>
                                             <tr>
-                                                <th lay-data="{type:'checkbox'}"></th>
+                                                <th lay-data="{type:'checkbox',LAY_CHECKED:true}"></th>
                                                 <th lay-data="{field:'goods_name'}">商品名称</th>
 
                                                 <th lay-data="{field:'goods_sn'}">商品编码</th>

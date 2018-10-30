@@ -88,7 +88,7 @@ class ShopDeliveryController extends Controller
     }
 
     /**
-     * 更新转态
+     * 更新发货单状态
      * @param Request $request
      * @return ShopDeliveryController
      */
@@ -101,20 +101,13 @@ class ShopDeliveryController extends Controller
             'status'=>$status
         ];
         try{
-            $flag = OrderInfoService::modifyDeliveryStatus($data);
-            $logData = [
-                'action_note' => '发货',
-                'action_user' => session('_seller')['user_name'],
-                'order_id' => $id,
-                'order_status' => $flag['order_status'],
-                'action_place' => 0,
-                'shipping_status' => $flag['shipping_status'],
-                'pay_status' => $flag['pay_status'],
-                'log_time' => Carbon::now()
-            ];
-            OrderInfoService::createLog($logData);
             //修改订单表的发货状态
-            return $this->result('',200,'修改成功');
+            $re = OrderInfoService::modifyDeliveryStatus($data);
+            if ($re){
+                return $this->result('',200,'修改成功');
+            } else {
+                return $this->error('修改失败');
+            }
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

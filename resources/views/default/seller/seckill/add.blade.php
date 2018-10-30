@@ -58,7 +58,7 @@
                    table.render({
                        elem: '#form_ui'
                        , cols: [[
-                           {type: 'checkbox'}
+                           {type: 'checkbox',LAY_CHECKED:true}
                            , {field: 'id', title: 'ID', sort: true}
                            , {field: 'goods_sn', title: '商品编号'}
                            , {field: 'goods_name', title: '商品名称'}

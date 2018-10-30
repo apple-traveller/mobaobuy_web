@@ -167,6 +167,9 @@
                     area: ['600px', '300px'],
                     maxmin: true,
                     content: '/seller/invoice/choseExpress?invoice_id='+id,
+                    success: function(layero){
+                        layer.setTop(layero); //重点2
+                    },
                     end:function () {
                         window.location.reload();
                     }
