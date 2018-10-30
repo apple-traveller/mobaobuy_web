@@ -2,6 +2,8 @@
 namespace App\Services;
 
 use App\Repositories\UserRealRepo;
+use App\Repositories\UserRepo;
+use Carbon\Carbon;
 
 class UserRealService
 {
@@ -27,10 +29,56 @@ class UserRealService
         return UserRealRepo::modify($data);
     }
 
-    //保存
-    public static function create($data)
+    //实名认证保存
+    public static function saveUserReal($data,$is_self,$user_id)
     {
-        return UserRealRepo::create($data);
+        //is_self 1 个人  2企业
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$user_id]);
+
+        $userRealArr = [];
+        //修改
+        if($userRealInfo){
+            if($is_self == 1){
+                $userRealArr['user_id'] = $user_id;
+                $userRealArr['real_name'] = $data['real_name'];
+                $userRealArr['sex'] = $data['sex'];
+                $userRealArr['birthday'] = $data['birthday'];
+                $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
+                $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
+                $userRealArr['add_time'] = Carbon::now();
+            }else{
+                $userRealArr['user_id'] = $user_id;
+                $userRealArr['real_name'] = $data['real_name_firm'];
+                $userRealArr['tax_id'] = $data['tax_id'];
+                $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
+                $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
+                $userRealArr['license_fileImg'] = $data['license_fileImg'];
+                $userRealArr['add_time'] = Carbon::now();
+            }
+            return UserRealRepo::modify($userRealInfo['user_id'],$userRealArr);
+        }else{
+            //新增
+            if($is_self == 1){
+                $userRealArr['user_id'] = $user_id;
+                $userRealArr['real_name'] = $data['real_name'];
+                $userRealArr['sex'] = $data['sex'];
+                $userRealArr['birthday'] = $data['birthday'];
+                $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
+                $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
+                $userRealArr['add_time'] = Carbon::now();
+            }else{
+                $userRealArr['is_firm'] = 1;
+                $userRealArr['user_id'] = $user_id;
+                $userRealArr['real_name'] = $data['real_name_firm'];
+                $userRealArr['tax_id'] = $data['tax_id'];
+                $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
+                $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
+                $userRealArr['license_fileImg'] = $data['license_fileImg'];
+                $userRealArr['add_time'] = Carbon::now();
+            }
+            return UserRealRepo::create($userRealArr);
+        }
+
     }
 
 

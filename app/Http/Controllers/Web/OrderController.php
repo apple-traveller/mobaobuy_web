@@ -21,13 +21,16 @@ class OrderController extends Controller
 
     //我的订单
     public function orderList(Request $request){
+        //
         $tab_code = $request->input('tab_code', '');
+
         if($request->isMethod('get')){
             return $this->display('web.user.order.list', compact('tab_code'));
         }else{
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
             $page_size = $request->input('length', 10);
             $firm_id = session('_curr_deputy_user')['firm_id'];
+            $currUser  = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
 
             $condition['status'] = $tab_code;
@@ -35,7 +38,7 @@ class OrderController extends Controller
             $condition['end_time'] = $request->input('end_time');
 
             if(session('_curr_deputy_user')['is_firm']){
-                $condition['firm_id'] = $firm_id;
+                    $condition['firm_id'] = $firm_id;
             }else{
                 $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = 0;
@@ -45,7 +48,7 @@ class OrderController extends Controller
                 $condition['order_sn'] = '%'.$order_no.'%';
             }
 
-            $rs_list = OrderInfoService::getWebOrderList($condition, $page, $page_size);
+            $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);
 
             $data = [
                 'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复

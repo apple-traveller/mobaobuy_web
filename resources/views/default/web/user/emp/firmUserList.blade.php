@@ -244,14 +244,13 @@
                 <div class="power_cate mt10 br1 ovh">
                 <ul class="power_cate_check_box ovh">
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="1" id="can_po" /><span class="fl">提交订单</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_approval" /><span class="fl">审核订单</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="2" id="can_pay" /><span class="fl">订单支付</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="3" id="can_confirm" /><span class="fl">确认收货</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="5" id="can_approval" /><span class="fl">审核订单</span></label></li>
-                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_invoice" /><span class="fl">申请开票</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="7" id="can_stock_in" /><span class="fl">入库管理</span></label></li>
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="4" id="can_stock_out" /><span class="fl">出库管理</span></label></li>
                 <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="8" id="can_stock_view" /><span class="fl">查看库存</span></label></li>
-
+                <li><label class="check_box"><input class="check_box mr5 check_all fl" name="" type="checkbox" value="6" id="can_invoice" /><span class="fl">申请开票</span></label></li>
                 </ul>
                 </div>
             </li>

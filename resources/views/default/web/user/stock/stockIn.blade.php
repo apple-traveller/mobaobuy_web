@@ -155,7 +155,7 @@
 
                 // $('#goodName').attr('goodsId', 0);
                  var partnerName = $('#partner_name').val();
-                Ajax.call('/searchPartnerName', {partnerName: partnerName}, function(data){
+                Ajax.call('/searchPartnerName', {partnerName: partnerName,is_type:2}, function(data){
                     console.log(data);
                     if(data['data'].length>0){
                         $('#appendPartnerName ul').remove();
@@ -175,7 +175,7 @@
 
             $('#partner_name').click(function(){
                 var partnerName = $('#partner_name').val();
-                Ajax.call('/searchPartnerName', {partnerName: partnerName}, function(data){
+                Ajax.call('/searchPartnerName', {partnerName: partnerName,is_type:2}, function(data){
                      console.log(typeof(data));
                      var arr = []
                     for (var i in data['data']) {

@@ -21,7 +21,7 @@ class OrderInfoService
     }
 
     //获取分页订单列表
-    public static function getWebOrderList($condition, $page = 1 ,$pageSize=10){
+    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=10){
         $condition['is_delete'] = 0;
 
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
@@ -37,14 +37,125 @@ class OrderInfoService
         unset($condition['end_time']);
 
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
-        foreach ($orderList['list'] as &$item){
-            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
-            $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
 
-            $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
+        //企业会员权限
+        if($currUser['is_firm'] == 1){
+            if($condition['firm_id'] != $currUser['user_id']){
+                $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$currUser['user_id']);
+            }
         }
 
+        foreach ($orderList['list'] as $k=>&$item){
+            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
+            $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
+            $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
+
+            //企业
+            if($condition['firm_id'] == $currUser['user_id']){
+                if($item['order_status'] == 0){
+                    $orderList['list'][$k]['auth'][] = 'can_del';
+                    $orderList['list'][$k]['auth_desc'][] = '删除';
+                }
+                if($item['order_status'] == 1){
+                    $orderList['list'][$k]['auth'][] = 'can_approval';
+                    $orderList['list'][$k]['auth'][] = 'can_cancel';
+                    $orderList['list'][$k]['auth_desc'][] = '去审批';
+                    $orderList['list'][$k]['auth_desc'][] = '取消';
+                }
+                if($item['order_status'] == 2){
+                    $orderList['list'][$k]['auth'][] = 'can_cancel';
+                    $orderList['list'][$k]['auth_desc'][] = '取消';
+                }
+                if($item['order_status'] == 3){
+                    if($item['pay_status'] == 0){
+                        $orderList['list'][$k]['auth'][] = 'can_pay';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+                        $orderList['list'][$k]['auth_desc'][] = '去支付';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
+                    }elseif($item['pay_status' == 1]){
+                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
+                    }
+
+                }
+            }
+
+            //企业会员
+            if($condition['firm_id'] != $currUser['user_id'] && $currUser['is_firm'] == 1){
+//                dump('企业会员');
+                if($currUserAuth){
+                    //已作废订单
+                    if($item['order_status'] == 0){
+                        $orderList['list'][$k]['auth'][] = 'can_del';
+                        $orderList['list'][$k]['auth_desc'][] = '删除';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
+                    }
+                    //待企业审核订单
+                    if($item['order_status'] == 1){
+                        $orderList['list'][$k]['auth'][] = 'can_approval';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+                        $orderList['list'][$k]['auth_desc'][] = '去审批';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    }
+                    //待商家确认
+                    if($item['order_status'] == 2){
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    }
+                    //已确认
+                    if($item['order_status'] == 3){
+                        if($item['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                        }
+                        if($item['pay_status'] == 1 && $currUserAuth[0]['can_confirm']){
+                            $orderList['list'][$k]['auth'][] = 'can_confirm';
+                            $orderList['list'][$k]['auth_desc'][] = '确认收货';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+                        }
+
+                    }
+                }
+
+            }
+
+//            //个人
+//            if($currUser['is_firm'] == 0){
+//                //个人
+//                if($item['order_status'] == 0){
+//                    $orderList['list'][$k]['auth']['can_del'] = 1;
+//                }
+//                if($item['order_status'] == 1){
+//                    $orderList['list'][$k]['auth']['can_approval'] = 1;
+//                    $orderList['list'][$k]['auth']['can_cancel'] = 1;
+//                }
+//                if($item['order_status'] == 2){
+//                    $orderList['list'][$k]['auth']['can_cancel'] = 1;
+//                }
+//                if($item['order_status'] == 3){
+//                    if($item['pay_status'] == 0){
+//                        $orderList['list'][$k]['auth']['can_cancel'] = 1;
+//                        $orderList['list'][$k]['auth']['can_pay'] = 1;
+//                    }elseif($item['pay_status' == 1]){
+//                        $orderList['list'][$k]['auth']['can_confirm'] = 1;
+//                    }
+//                }
+//            }
+        }
+//        dd($orderList);
+
         return $orderList;
+    }
+    //得到对应的权限
+    private static function getFirmUserAuth($userId,$auth){
+
     }
 
     private static function getOrderStatusName($order_status, $pay_status, $shipping_status){

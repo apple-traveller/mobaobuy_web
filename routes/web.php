@@ -247,10 +247,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
     /********************************************************************/
 
-    Route::get('/article/{id}','IndexController@article');//资讯
-    Route::get('/news.html', 'NewsController@index'); // 新闻中心
-    Route::get('/detail.html', 'NewsController@detail'); // 详情
-    Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+    Route::get('/buyLimit', 'GoodsController@buyLimit');//限时抢购
 
     Route::group(['middleware' => 'web.auth'], function () {
 

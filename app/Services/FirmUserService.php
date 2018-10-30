@@ -119,9 +119,11 @@ class FirmUserService
 
             return FirmUserRepo::create($userPermi);
         }
+    }
 
-
-
+    //根据企业id，用户id读取出对应的权限
+    public static function getAuthByCurrUser($firmId,$userId){
+        return FirmUserRepo::getList([],['user_id'=>$userId,'firm_id'=>$firmId]);
     }
 
     //
