@@ -365,7 +365,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
         Route::post('/orderDel','OrderController@orderDel');//订单删除
-        Route::get('/invoice','InvoiceController@invoiceList');// 开票列表
+        Route::get('/invoice',  'InvoiceController@invoiceList'); // 开票列表
+        Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
+        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
 
 
         Route::post('/egis','OrderController@egis');//订单审核通过

@@ -2,11 +2,9 @@
 @section('title', '我的发票')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('ui/area/1.0.0/area.css')}}" />
+	<script src="{{asset('ui/area/1.0.0/area.js')}}"></script>
 	<style>
 		.tac{text-align:center !important;}
-		.block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-		/*会员中心-我的发票-页面*/
-		.invoice_method{display:none;z-index: 2;width:800px;  left:50%; top:50%;margin-top:-275px;position:fixed;margin-left:-250px;}
 		/*会员中心-收货地址*/
 		.address_border{width: 905px; margin: 0 auto;}
 		.Receive_address{overflow: hidden;margin-left: -15px;}
@@ -17,9 +15,6 @@
 		.address_name{margin-left: 24px;margin-right: 20px;}
 
 		.ovh{overflow: hidden;}
-		.mr15{margin-right:15px;}
-		.mt40{margin-top:40px;}
-		.pay_title{height: 50px;line-height: 50px;}
 		.news_addr{width: 65px;margin: 30px auto;}
 		.addr_list li{height: 40px;line-height: 40px;}
 		.addr_list li .pay_text{width: 343px;}

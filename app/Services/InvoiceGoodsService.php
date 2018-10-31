@@ -20,16 +20,15 @@ class InvoiceGoodsService
      * @param $condition
      * @return array
      */
-    public static function getInfoBySearch($condition)
+    public static function getListBySearch($condition)
     {
-        $info =  InvoiceGoodsRepo::getList($condition);
-
-        if (!empty($info)){
-            foreach ($info as $k=>$v){
+        $list=  InvoiceGoodsRepo::getList([],$condition);
+        if (!empty($list)){
+            foreach ($list as $k=>$v){
                 $order_id = OrderGoodsRepo::getInfo($v['order_goods_id'])['order_id'];
-                $info[$k]['order_sn'] = OrderInfoRepo::getInfo($order_id)['order_sn'];
+                $list[$k]['order_sn'] = OrderInfoRepo::getInfo($order_id)['order_sn'];
             }
-            return $info;
+            return $list;
         }
     }
 }

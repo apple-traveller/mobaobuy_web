@@ -11,6 +11,7 @@ use App\Repositories\InvoiceGoodsRepo;
 use App\Repositories\InvoiceRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\OrderInfoRepo;
+use Illuminate\Support\Carbon;
 use phpDocumentor\Reflection\Types\Self_;
 
 class InvoiceService
@@ -48,6 +49,7 @@ class InvoiceService
      */
     public static function updateInvoice($id,$data)
     {
+        $data['updated_at'] = Carbon::now();
         return InvoiceRepo::modify($id,$data);
     }
 
@@ -64,6 +66,7 @@ class InvoiceService
         $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
         $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
         $data['invoice_numbers'] = $invoice_numbers;
+        $data['updated_at'] = Carbon::now();
         $data['status'] = 2;
         try{
             // 查询订单商品id
@@ -109,7 +112,57 @@ class InvoiceService
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
+    }
 
+    /**
+     *  保存开票商品  更改订单状态已完成
+     * @param $invoice_data
+     * @param $goodsList
+     * @return bool
+     * @throws \Exception
+     */
+    public static function applyInvoice($invoice_data,$goodsList)
+    {
+        try{
+            $invoice_data['created_at'] = Carbon::now();
+            $invoice_data['updated_at'] = Carbon::now();
+            self::beginTransaction();
+            $invoice = InvoiceRepo::create($invoice_data);
+
+            if ($invoice){
+                $res = [];
+                $order_ids = []; // 用来存取订单id
+                foreach ($goodsList as $k=>$v){
+                                // 遍历获取订单id
+                    if(!isset($order_ids[$v->order_id])){
+                        $order_ids[$v->order_id] = $v->order_id;
+                    }
+                    $goods_data = [
+                        'invoice_id' => $invoice['id'],
+                        'order_goods_id' => $v->id,
+                        'goods_id' => $v->goods_id,
+                        'goods_name' => $v->goods_name,
+                        'goods_price' => $v->goods_price,
+                        'invoice_num' => $v->goods_number,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ];
+                    $res[] = InvoiceGoodsRepo::create($goods_data);
+                }
+                // 判断存入的数量和商品数量是否相同
+                if (count($res) == count($goodsList)){
+                    foreach ($order_ids as $k2=>$v2){
+                        // 更改订单状态已完成
+                        OrderInfoService::modify(['id'=>$v2,'order_status'=>4]);
+                    }
+                    self::commit();
+                    return true;
+                }
+            }
+        }catch (\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
 
     }
 }
