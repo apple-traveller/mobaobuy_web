@@ -746,7 +746,7 @@ i.ice_b{ background-position:-336px -214px;}
 
 .refresh .icon,.setup .icon{ font-size:14px;}
 .refresh{ float:left; margin:0 10px 0 15px;}
-.refresh .refresh_tit{ color: #999;width: 24px;height: 24px;float: left;text-align: center;line-height: 24px;position: relative;z-index: 1; margin-top:1px;}
+.refresh .refresh_tit{ color: #999;width: 24px;height: 24px;float: left;text-align: center;line-height: 24px;position: relative;z-index: 1; margin-top:5px;}
 .refresh .refresh_tit.loading i{ color: #090;display: inline-block;-webkit-animation: spin 0.2s infinite linear;animation: spin 0.2s infinite linear;}
 .refresh .refresh_tit:hover{ color: #333;background-color: #E6E6E6;border-radius: 5px;cursor: pointer;}
 .refresh .refresh_span{ margin-left:3px; float:left;}

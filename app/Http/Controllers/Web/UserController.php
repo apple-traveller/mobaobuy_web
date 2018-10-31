@@ -710,7 +710,7 @@ class UserController extends Controller
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
 
-        //如果实名认证通过
+        //
         if($user_real){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,
@@ -770,6 +770,27 @@ class UserController extends Controller
            if(empty($dataArr['license_fileImg'])){
                $errorMsg[] = "请输入营业执照电子版";
            }
+
+           if(empty($dataArr['company_name'])){
+               $errorMsg[] = "公司抬头";
+           }
+
+           if(empty($dataArr['bank_of_deposit'])){
+               $errorMsg[] = "开户银行";
+           }
+
+           if(empty($dataArr['bank_account'])){
+               $errorMsg[] = "银行账号";
+           }
+
+           if(empty($dataArr['company_address'])){
+               $errorMsg[] = "开票地址";
+           }
+
+           if(empty($dataArr['company_telephone'])){
+               $errorMsg[] = "开票电话";
+           }
+
            if(!empty($errorMsg)){
                return $this->result("",0,implode("|",$errorMsg));
            }

@@ -259,9 +259,36 @@ class FirmStockService
         }else{
             self::throwBizError('没有对应的出入库信息');
         }
+    }
+
+    /**
+     * 后台
+     */
+    public static function getFirmStocksByFirmId($pager,$condition)
+    {
+        $stocks = FirmStockRepo::getListBySearch($pager,$condition);
+        foreach ($stocks['list'] as $k=>$v) {
+            $user = UserRepo::getList([],['id'=>$v['firm_id']],['nick_name'])[0];
+            $stocks['list'][$k]['nick_name']=$user['nick_name'];
+        }
+        return $stocks;
+    }
 
 
-
+    //库存流水
+    public static function getStockFlowList($pager,$condition)
+    {
+        $stockFlow = FirmStockFlowRepo::getListBySearch($pager,$condition);
+        foreach($stockFlow['list'] as $k=>$v){
+            if($v['flow_type']==1){
+                $stockFlow['list'][$k]['flow_type'] = "平台购物入库";
+            }elseif($v['flow_type']==2){
+                $stockFlow['list'][$k]['flow_type'] = "其它入库";
+            }else{
+                $stockFlow['list'][$k]['flow_type'] = "库存出库";
+            }
+        }
+        return $stockFlow;
     }
 
 

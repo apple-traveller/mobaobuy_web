@@ -116,7 +116,7 @@
             });
         });
 
-
+        //审批通过
         function egis(obj){
             var id = $(obj).parent().siblings('input[type=hidden]').val();
             $.ajax({
@@ -137,7 +137,7 @@
             })
         }
         
-
+        //订单取消
         function orderCancel(id){
             var flag = confirm('是否确认删除');
             if(flag === true){
@@ -159,6 +159,7 @@
             }
         }
 
+        //订单删除
         function orderDel(id){
             var flag = confirm('是否确认删除?');
             if(flag === true){
@@ -178,6 +179,11 @@
                     }
                 })
             }
+        }
+
+        //确认收货
+        function confirmTake(){
+            
         }
 	</script>
 

@@ -44,12 +44,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
-        Route::get('/user/verifyForm', 'UserController@verifyForm');//用户审核
-        Route::post('/user/verify', 'UserController@verify');//用户审核
         Route::get('/user/export', 'UserController@export');//用户导出excel
         Route::get('/user/userRealForm', 'UserController@userRealForm');//实名认证
         Route::post('/user/userReal', 'UserController@userReal');//实名认证审核
         Route::get('/user/points', 'UserController@points');//查看积分
+        Route::get('/user/firmStock', 'UserController@firmStock');//查看企业库存
+        Route::post('/user/firmStockFlow', 'UserController@firmStockFlow');//查看企业库存流水
 
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -253,6 +253,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
+    Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+    Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
     Route::group(['middleware' => 'web.auth'], function () {
 
@@ -371,6 +373,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
         Route::get('/pay','GoodsController@pay');//支付界面
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
+        Route::post('/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
 
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表

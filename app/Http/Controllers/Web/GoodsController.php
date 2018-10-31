@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
+use function App\Helpers\createPage;
 class GoodsController extends Controller
 {
     /**
@@ -421,6 +422,44 @@ class GoodsController extends Controller
         return $this->display('web.order.waitConfirm');
     }
 
+    //物性表
+    public function goodsAttribute(Request $request){
+        $page = $request->input('page', 0);
+        $page_size = $request->input('length', 1);
 
+        $url = '/goodsAttribute?page=%d';
+        try{
+            $goodsInfo = GoodsService::goodsAttribute($page,$page_size);
+//            dump($goodsInfo);
+            if(!empty($goodsInfo['list'])){
+                $linker = createPage($url, $page,$goodsInfo['total']);
+            }else{
+                $linker = createPage($url, 1, 1);
+            }
+            return $this->display('web.goods.goodsAttribute',['list'=>$goodsInfo['list'],'linker'=>$linker]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
 
+    }
+
+    //物性表详情
+    public function goodsAttributeDetails(Request $request,$id){
+       $id = decrypt($id);
+       $page = $request->input('page',0);
+       $page_size = $request->input('length',1);
+       $url = $_SERVER['REQUEST_URI'] . '?page=%d';
+
+       try{
+           $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+           if(!empty($shopGoodsInfo['list'])){
+               $linker = createPage($url, $page,$shopGoodsInfo['total']);
+           }else{
+               $linker = createPage($url, 1, 1);
+           }
+           return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list'],'linker'=>$linker]);
+       }catch (\Exception $e){
+           return $this->error($e->getMessage());
+       }
+    }
 }
