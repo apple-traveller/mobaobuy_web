@@ -205,4 +205,14 @@ class OrderController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //确认收货
+    public function orderConfirmTake(Request $request){
+        $id = $request->input('id');
+        try{
+
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 }

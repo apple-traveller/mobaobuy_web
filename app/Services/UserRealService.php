@@ -53,6 +53,11 @@ class UserRealService
                 $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
                 $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
                 $userRealArr['license_fileImg'] = $data['license_fileImg'];
+                $userRealArr['company_name'] = $data['company_name'];
+                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
+                $userRealArr['bank_account'] = $data['bank_account'];
+                $userRealArr['company_address'] = $data['company_address'];
+                $userRealArr['company_telephone'] = $data['company_telephone'];
                 $userRealArr['add_time'] = Carbon::now();
             }
             return UserRealRepo::modify($userRealInfo['user_id'],$userRealArr);
@@ -74,6 +79,11 @@ class UserRealService
                 $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
                 $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
                 $userRealArr['license_fileImg'] = $data['license_fileImg'];
+                $userRealArr['company_name'] = $data['company_name'];
+                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
+                $userRealArr['bank_account'] = $data['bank_account'];
+                $userRealArr['company_address'] = $data['company_address'];
+                $userRealArr['company_telephone'] = $data['company_telephone'];
                 $userRealArr['add_time'] = Carbon::now();
             }
             return UserRealRepo::create($userRealArr);

@@ -264,6 +264,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
+    Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+    Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
     Route::group(['middleware' => 'web.auth'], function () {
 
@@ -380,6 +382,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
         Route::get('/pay','GoodsController@pay');//支付界面
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
+        Route::post('/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
 
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
