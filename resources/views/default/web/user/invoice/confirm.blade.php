@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>购物车 - @yield('title')</title>
+	<title>开票申请  @yield('title')</title>
 	@include(themePath('.','web').'web.include.partials.base')
 	@yield('css')
 	<style type="text/css">
@@ -10,7 +10,7 @@
 			height: 55px;
 			margin-top: 20px;
 			float: left;
-			background: url(default/img/mobao_logo.png)no-repeat;
+			background: url(../img/mobao_logo.png)no-repeat;
 			background-size: 100% 100%;
 		}
 		.company_list {
@@ -39,7 +39,6 @@
 		.Collect_goods_address li:hover {
 			border: 1px solid #75b335;
 		}
-		.Collect_goods_address li.mrxs-curr{border:1px solid #75b335;background: url("default/img/addr_curr.png")no-repeat -22px -8px;}
 		.Collect_goods_address li {
 			float: left;
 			margin-left: 20px;
@@ -122,7 +121,7 @@
 		.fs14{font-size:14px;}
 		.order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
 		.cart_progress{width: 303px;margin:0 auto;height: 33px;}
-		.cart_progress_02{background: url(default/img/cart_icon02.png)no-repeat;}
+		.cart_progress_02{background: url(../img/cart_icon02.png)no-repeat;}
 		.progress_text{color: #999;margin-top: 5px;}
 		.progress_text_curr{color: #75b335;}
 		.my_cart{float: left;margin-left: 5px;}
@@ -140,9 +139,9 @@
 		.tac{text-align:center !important;}
 		.ovh{overflow: hidden;}
 		.cp{cursor:pointer;}
-		.qiehuan{width: 90px;height: 30px;line-height: 30px;background: url(default/img/pro_more.png)no-repeat 63px 13px;
+		.qiehuan{width: 90px;height: 30px;line-height: 30px;background: url(../img/pro_more.png)no-repeat 63px 13px;
 			margin-right: 30px;font-size: 15px;border: 1px solid #dedede;text-align: center;cursor: pointer;color: #999;}
-		.qiehuan.active{background: url(default/img/pro_more.png)no-repeat 63px -14px;}
+		.qiehuan.active{background: url(../img/pro_more.png)no-repeat 63px -14px;}
 		.ml300 { margin-left: 400px !important; }
 
 		.select_btn{padding: 6px 24px;
@@ -172,11 +171,8 @@
 	<div class="w1200">
 		<a href="/" class="logo" style="margin-top: 45px;"></a>
 		<div class="fr fs14 order_progress" >
-			<div class="cart_progress cart_progress_02"></div>
 			<div class="progress_text">
-				<div class="my_cart progress_text_curr">我的购物车</div>
-				<div class="order_information">订单信息完善</div>
-				<div class="order_submit">成功提交订单</div>
+				<div class="my_cart progress_text_curr">申请开票</div>
 			</div>
 		</div>
 	</div>
@@ -185,19 +181,19 @@
 	<!--公司信息-->
 	<div class="whitebg mt20 ovh">
 		<h1 class="ml30 fs18 mt40">开票信息</h1>
-		<div class="company_information" id="invoiceInfo">
-			<ul class="company_list">
-				<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
-				<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
-				<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
-				<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
-				<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
-				<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
-			</ul>
-		</div>
+			<div class="company_information" id="invoiceInfo">
+				<ul class="company_list">
+					<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
+					<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
+					<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
+					<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
+					<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
+					<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
+				</ul>
+			</div>
 	</div>
 	<div class="address whitebg ovh mt20 ">
-		<h1 class="ml30 fs18 mt30">收货地址</h1>
+		<h1 class="ml30 fs18 mt30">收票地址</h1>
 
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
@@ -227,26 +223,39 @@
 		<h1 class="ml30 fs18 mt30">商品信息</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
 			<li class="graybg">
-				<span>商品</span><span>单价（元）</span><span>数量（公斤）</span><span>发货地</span><span></span><span>小计</span>
+				<span>商品</span>
+				<span>商品编码</span>
+				<span>单价（元）</span>
+				<span>已发货数量（公斤）</span>
+				<span></span>
+				<span>小计</span>
 			</li>
-			@foreach($goodsList as $k =>$v)
+			@foreach($goodsList['list'] as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>{{ $v['delivery_place'] }}</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span>
+				<span class="orange">¥{{ $v['goods_sn'] }}</span>
+				<span>{{ $v['goods_price'] }}</span>
+				<span>{{ $v['goods_number'] }}</span>
+				<span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
 			</li>
 			@endforeach
 		</ul>
-		<form action="/createOrder" method="post" id="form">
+		<form action="/invoice/apply" method="post" id="form">
+			<input type="hidden" name="address_id" value="{{ $addressList[0]['id'] }}">
 		<div class="address_line">
-			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
-			<div class="fr">
-				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">¥169.00</span></div>
-				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家审核</span></div>
-				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">¥229.00</span></div>
+			<div class="ovh mt10">
+				<span>开票类型:</span>
+				<input type="radio" name="invoice_type" value="1" id="1" title="普通发票" checked="" style="margin-left: 27px;"><label for="1" style="cursor: pointer">增值普通发票</label>
+				<input type="radio" name="invoice_type" value="2" id="2" title="增值发票" style="margin-left: 27px;"><label for="2" style="cursor: pointer">增值专用发票</label>
 			</div>
-
+			<div class="ovh mt10">
+				<input type="hidden" name="total_amount" value="{{ $total_amount }}" style="display: none" id="total_amount">
+				<input type="hidden" name="goodsList" value="{{ json_encode( $goodsList['list'])  }}" style="display: none">
+			</div>
+			<div class="fr mr20">开票总金额<span class="orange">￥{{ $total_amount }}</span></div>
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回购物车</a>
+		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交申请</a></div>
 		</form>
 	</div>
 </div>
@@ -319,23 +328,8 @@
         });
     });
     $(".address_sumb").click(function () {
-		let words =  $("input[ name='words' ]").val();
-		console.log(words);
-		$.ajax({
-			url:'/createOrder',
-			data:{
-			    'words':words
-			},
-			type:'post',
-			success:function (res) {
-                if (res.code==1){
-                    window.location.href="/orderSubmission.html?re="+JSON.stringify(res.data);
-                } else {
-                    layer.msg(res.msg);
-                }
-            }
-		});
-		// $("#form").submit();
+		$("#form").submit();
+
     });
 </script>
 </body>

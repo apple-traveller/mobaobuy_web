@@ -210,7 +210,7 @@ class GoodsService
 
     //提交订单
 
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$invoicesId,$words){
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -232,7 +232,6 @@ class GoodsService
                 'city'=>$userAddressMes['city'],
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
-                'invoice_id'=>$invoicesId,
                 'postscript'=>$words?$words:''
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);

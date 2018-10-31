@@ -6,6 +6,7 @@ use App\Services\CartService;
 use App\Services\GoodsService;
 use App\Services\UserAddressService;
 use App\Services\UserInvoicesService;
+use App\Services\UserRealService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -148,6 +149,14 @@ class GoodsController extends Controller
             $userId = session('_curr_deputy_user')['firm_id'];
         }
 
+        $invoiceInfo = UserRealService::getInfoByUserId($userId);
+        if (empty($invoiceInfo)){
+            return $this->error('您还没有实名认证，不能下单');
+        }
+        if ($invoiceInfo['review_status'] != 1 ){
+            return $this->error('您的实名认证还未通过，不能下单');
+        }
+
         if($request->isMethod('get')){
             try{
                 $cartInfo = GoodsService::cart($userId);
@@ -229,7 +238,6 @@ class GoodsController extends Controller
 
     /**
      * 订单维护页面
-     * @param Request $request
      * @return GoodsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function confirmOrder(){
@@ -243,19 +251,13 @@ class GoodsController extends Controller
             }else{
                 $userInfo = session('_web_user');
             }
-            $invoicesList = GoodsService::getInvoices($userInfo['id']);
-            if (!empty($invoicesList)){
-                foreach ($invoicesList as $k=>$v){
-                    $invoicesList[$k] = UserInvoicesService::getInvoice($v['id']);
-                }
-                if (!empty($userInfo['invoice_id'])) {
-                    $invoicesInfo = UserInvoicesService::getInvoice($userInfo['invoice_id']);
-                } else {
-
-                }
-            } else {
-                $invoicesInfo = [];
-                $invoicesList = [];
+            // 判断开票信息 地址可用
+            $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+            if (empty($invoiceInfo)){
+                return $this->error('您还没有实名认证，不能下单');
+            }
+            if ($invoiceInfo['review_status'] != 1 ){
+                return $this->error('您的实名认证还未通过，不能下单');
             }
 
             // 收货地址列表
@@ -281,7 +283,7 @@ class GoodsController extends Controller
             foreach ($goodsList as $k3=>$v3){
                 $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
             }
-            return $this->display('web.goods.confirmOrder',compact('invoicesInfo','invoicesList','addressList','goodsList'));
+            return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -292,11 +294,10 @@ class GoodsController extends Controller
     public function createOrder(Request $request){
 
         $info = session('_curr_deputy_user');
-
         $userIds = [];
         // 判断是否为企业用户
         if($info['is_firm']){
-            $userInfo = UserService::getInfo($info['firm_id']);
+            $userInfo = session('_web_user');;
             $userIds['user_id'] = session('_web_user_id');
             $userIds['firm_id'] = $info['firm_id'];
         }else{
@@ -307,11 +308,14 @@ class GoodsController extends Controller
         $words = $request->input('words',' ');
 
         // 判断是否有开票信息 地址可用
-        $invoicesList = GoodsService::getInvoices($userInfo['id']);
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-        if (empty($invoicesList)){
-            return $this->error('无开票信息请前去维护');
+        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        if (empty($invoiceInfo)){
+            return $this->error('您还没有实名认证，不能下单');
         }
+        if ($invoiceInfo['review_status'] != 1 ){
+            return $this->error('您的实名认证还未通过，不能下单');
+        }
+        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
         if (empty($addressList)){
             return $this->error('无地址信息请前去维护');
         }
@@ -336,14 +340,10 @@ class GoodsController extends Controller
         if (empty($userInfo['address_id'])){
             $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
         }
-        // 没有默认开票的情况下
-        if (empty($userInfo['invoice_id'])){
-            $userInfo['invoice_id'] = GoodsService::getInvoices($userInfo['id'])[0]['id'];
-        }
         try{
             $re=[];
             foreach ($shop_data as $k4=>$v4){
-                $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$userInfo['invoice_id'],$words);
+                $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$words);
             }
            if (!empty($re)){
                Session::forget('cartSession');
