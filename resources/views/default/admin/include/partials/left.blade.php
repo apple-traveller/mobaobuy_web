@@ -74,6 +74,15 @@
                 </div>
             </div>
 
+            <div class="item">
+                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_0100_demand"></i><h4>咨询管理</h4></a></div>
+                <div class="sub-menu" style="top: 0px; display: none;">
+                    <ul>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/demand/list" data-param="demand|01_goods_list" target="workspace">需求列表</a></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
         <div class="navLeftTab" id="adminNavTabs_menushopping" style="display:none;">
 
@@ -82,7 +91,7 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="bonus.php?act=list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
 
                     </ul>
                 </div>

@@ -200,6 +200,17 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
         Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
+        Route::any('/promote/list', 'PromoteController@list');//促销活动申请列表
+        Route::get('/promote/detail', 'PromoteController@detail');//促销活动申请详情
+        Route::get('/promote/addForm', 'PromoteController@addForm');//添加促销活动
+        Route::get('/promote/editForm', 'PromoteController@editForm');//编辑促销活动
+        Route::post('/promote/save', 'PromoteController@save');//保存促销活动
+        Route::post('/promote/verify', 'PromoteController@verify');//审核促销活动
+        Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
+
+        Route::any('/demand/list', 'DemandController@list');//需求提交列表
+        Route::any('/demand/detail', 'DemandController@detail');//查看审核需求
+
         Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
         Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
         Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑

@@ -191,9 +191,7 @@ class SeckillController extends Controller
     public function addTime(Request $request)
     {
         //查询id最大值
-        $timeid = SeckillService::getMaxSeckillTimeId();
-        $time = SeckillService::getSeckillTimeInfo($timeid);
-        return $this->display('admin.seckill.addtime',['time'=>$time]);
+        return $this->display('admin.seckill.addtime');
     }
 
     //编辑秒杀时段
@@ -213,7 +211,7 @@ class SeckillController extends Controller
     public function saveTime(Request $request)
     {
         $data = $request->all();
-        if(strtotime($data['end_time'])<strtotime($data['begin_time'])){
+        if(strtotime($data['end_time'])<=strtotime($data['begin_time'])){
             return $this->error("结束时间必须大于开始时间");
         }
         try{
