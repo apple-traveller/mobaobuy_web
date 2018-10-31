@@ -351,6 +351,14 @@ class UserService
     }
 
 
+    public static function getInfo($id)
+  {
+        $info = UserRepo::getInfo($id);
+        unset($info['password']);
+        return $info;
+   }
+
+
     //获取指定字段的所有数据
     public static function getUsersByColumn($condition,$column)
     {

@@ -371,6 +371,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
         Route::get('/pay','GoodsController@pay');//支付界面
         Route::get('/waitConfirm','GoodsController@waitConfirm');//等待审核界面
+        Route::post('/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
 
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
