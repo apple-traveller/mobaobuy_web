@@ -48,7 +48,7 @@
                 "columns": [
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, full, meta) {
-                            // console.log(full);
+                             console.log(full);
                         	var html = '<div style="height: 15px;"></div>';
 
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';
@@ -76,7 +76,7 @@
                                         strhtml += '<p><a class="opt-btn" '+ full.auth_html[i] +'>'+ full.auth_desc[i]+'</a></p>';
                                     }
                                     html += strhtml + '</td>';
-                                    // html += '<p><a href="{{url('payment')}}?order_id='+ full.id +'" class="opt-btn">'+ full.auth[index]+'</a></p><p class="mt5"><a class="opt-btn" onclick="orderCancel('+full.id+')">取消</a></p></td>';
+                                  
                                 }
                                 html += '</tr>';
                             }
@@ -117,24 +117,27 @@
         });
 
         //审批通过
-        function egis(obj){
-            var id = $(obj).parent().siblings('input[type=hidden]').val();
-            $.ajax({
-                url: "/egis",
-                dataType: "json",
-                data: {
-                    'id':id
-                },
-                type: "POST",
-                success: function (data) {
-                    if(data.code){
-                        window.location.reload();
-                    }else{
-                        console.log(data.code);
-                        alert('出错,请重试')
+        function orderApproval(id){
+            var flag = confirm('是否确认审批通过');
+            if(flag === true){
+                $.ajax({
+                    url: "/egis",
+                    dataType: "json",
+                    data: {
+                        'id':id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            window.location.reload();
+                        }else{
+                            console.log(data.code);
+                            alert('出错,请重试')
+                        }
                     }
-                }
-            })
+                })
+            }
+            
         }
         
         //订单取消
@@ -182,9 +185,28 @@
         }
 
         //确认收货
-        function confirmTake(){
-            
+        function confirmTake(id){
+             var flag = confirm('是否确认删除?');
+            if(flag === true){
+                 $.ajax({
+                    url: "/orderDel",
+                    dataType: "json",
+                    data: {
+                        'id':id
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code){
+                            window.location.reload();
+                        }else{
+                            alert('出错,请重试')
+                        }
+                    }
+                })
+            }
         }
+
+        //
 	</script>
 
 @endsection

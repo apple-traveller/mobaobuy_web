@@ -235,7 +235,7 @@ class GoodsController extends Controller
      */
     public function confirmOrder(){
         $info = session('_curr_deputy_user');
-
+        $userInfo = session('_web_user');
         //获取发票信息
         try{
             // 判断是否为企业用户
@@ -244,6 +244,7 @@ class GoodsController extends Controller
             }else{
                 $userInfo = session('_web_user');
             }
+            //获取用户发票信息
             $invoicesList = GoodsService::getInvoices($userInfo['id']);
             if (!empty($invoicesList)){
                 foreach ($invoicesList as $k=>$v){
@@ -424,32 +425,43 @@ class GoodsController extends Controller
 
     //物性表
     public function goodsAttribute(Request $request){
-        $page = $request->input('page', 0);
-        $page_size = $request->input('length', 1);
 
-        $url = '/goodsAttribute?page=%d';
-        try{
-            $goodsInfo = GoodsService::goodsAttribute($page,$page_size);
-//            dump($goodsInfo);
-            if(!empty($goodsInfo['list'])){
-                $linker = createPage($url, $page,$goodsInfo['total']);
-            }else{
-                $linker = createPage($url, 1, 1);
+        if($request->isMethod('get')){
+            $page = $request->input('page', 0);
+            $page_size = $request->input('length', 1);
+
+            $goods_name= $request->input('goods_name', '');
+//            dump($goods_name);
+            $condition = [];
+            if(!empty($goods_name)){
+                $condition['goods_name'] = '%' . $goods_name . '%';
             }
-            return $this->display('web.goods.goodsAttribute',['list'=>$goodsInfo['list'],'linker'=>$linker]);
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
+
+
+            $url = '/goodsAttribute?page=%d';
+            try{
+                $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
+                if(!empty($goodsInfo['list'])){
+                    $linker = createPage($url, $page,$goodsInfo['total']);
+                }else{
+                    $linker = createPage($url, 1, 1);
+                }
+                return $this->display('web.goods.goodsAttribute',['list'=>$goodsInfo['list'],'linker'=>$linker]);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }else{
+
         }
+
 
     }
 
     //物性表详情
     public function goodsAttributeDetails(Request $request,$id){
-       $id = decrypt($id);
        $page = $request->input('page',0);
        $page_size = $request->input('length',1);
-       $url = $_SERVER['REQUEST_URI'] . '?page=%d';
-
+        $url = '/goodsAttributeDetails/'.$id .'?page=%d';
        try{
            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
            if(!empty($shopGoodsInfo['list'])){

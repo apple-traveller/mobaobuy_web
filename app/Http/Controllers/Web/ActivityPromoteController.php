@@ -18,6 +18,18 @@ class ActivityPromoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //限时抢购详情
+    public function buyLimitDetails($id){
+        try{
+            $goodsInfo = ActivityPromoteService::buyLimitDetails($id);
+//            dump($goodsInfo);
+            return $this->display('web.goods.buyLimitDetails',compact('goodsInfo'));
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
+    }
    
  
 }

@@ -342,12 +342,14 @@ class GoodsService
     }
 
     //物性表
-    public static function goodsAttribute($page,$pageSize){
-        return GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],[]);
+    public static function goodsAttribute($condition,$page = 1,$pageSize = 1){
+        return  GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],$condition);
+
     }
 
     //物性表详情
     public static function goodsAttributeDetails($id,$page,$pageSize){
+        $id = decrypt($id);
         if($id<0){
             self::throwBizError('产品信息有误');
         }

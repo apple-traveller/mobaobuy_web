@@ -253,7 +253,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
+    Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
     Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+    Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
     Route::group(['middleware' => 'web.auth'], function () {

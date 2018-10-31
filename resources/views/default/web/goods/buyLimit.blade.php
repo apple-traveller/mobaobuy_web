@@ -106,9 +106,9 @@
 					<div class="ovh mt20 ">
 						<div class="mx_progress"><div class="mx_progress_com"></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}公斤</span>
 					</div>
-					<div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div>
+					<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
 					<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>\公斤</div>
-					<div class="mx_btn">立即抢购</div>
+					<div class="mx_btn"><a href="/buyLimitDetails/{{encrypt($v['id'])}}">立即抢购</a></div>
 				</div>
 			</li>
 			@endforeach
