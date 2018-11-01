@@ -31,6 +31,12 @@ class AdService
         return AdRepo::getList(['sort_order'=>'asc'], ['position_id'=>$position_id, 'start_time|<='=>$now, 'end_time|>=' => $now]);
     }
 
+    //获取一条数据
+    public static function getAdInfo($id)
+    {
+        return AdRepo::getInfo($id);
+    }
+
     //修改
     public static function modify($data)
     {

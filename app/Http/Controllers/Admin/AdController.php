@@ -74,27 +74,22 @@ class AdController extends Controller
         if(empty($data['ad_name'])){
             $errorMsg[] = '图片名称不能为空';
         }
-        if(empty($data['ad_link'])){
-            $errorMsg[] = '广告链接不能为空';
-        }
         if(empty($data['ad_img'])){
             $errorMsg[] = '广告图片不能为空';
         }
         if(empty($data['start_time'])){
             $errorMsg[] = '开始时间不能为空';
         }
-        if(empty($data['end_time'])){
-            $errorMsg[] = '结束时间不能为空';
-        }
-        if(strtotime($data['start_time'])>strtotime($data['end_time'])){
+        if(strtotime($data['start_time'])>strtotime($data['end_time'])&&strtotime($data['end_time']>0)){
             $errorMsg[] = '开始时间不能大于结束时间';
         }
+        $data['end_time'] = $this->requestGetNotNull('end_time',0);
+        $data['ad_link'] = $this->requestGetNotNull('ad_link'," ");
         if(!empty($errorMsg)){
             return $this->error(implode("|",$errorMsg));
         }
         try{
             if(!key_exists('id',$data)){
-
                 $flag = AdService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/ad/list'));
@@ -107,7 +102,6 @@ class AdController extends Controller
                 }
                 return $this->error('修改失败');
             }
-
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

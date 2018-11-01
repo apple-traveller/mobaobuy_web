@@ -1,11 +1,5 @@
 $(function(){
-  Ajax.call('/cart/num','',function(res){
-    $('#shopping-amount').text(res.data.cart_num);
-  });
 
-  $('.ass_menu li').hover(function(){
-      $(this).find('.ass_fn').toggle();
-  })
 
     //轮播图
     $('.banner-imgs-div .banner-item').soChange({

@@ -31,13 +31,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间段：</div>
                                 <div class="label_value">
-                                    @if(empty($time))
-                                        <input type="text" name="begin_time" class="text" value="" maxlength="40" autocomplete="off" id="begin_time">
-                                        @else
-                                        {{$time['end_time']}}
-                                        <input type="hidden" name="begin_time" value="{{$time['end_time']}}">
-                                    @endif
-
+                                    <input type="text" name="begin_time" class="text" value="" maxlength="40" autocomplete="off" id="begin_time">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -88,7 +82,6 @@
             });
 
         });
-
 
         $(function(){
             //表单验证
