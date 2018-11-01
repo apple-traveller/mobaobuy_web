@@ -189,3 +189,6 @@ input[disabled],input[disabled="disabled"],input[readonly],input[readonly="reado
 .type-file-box input[type="file"]{ position:absolute; left:0; opacity:0;filter: alpha(opacity=0); width:104px; height:30px; cursor:pointer;}
 .type-file-box .type-file-text{ float:left; height:20px; padding:4px 0; border:1px solid #fff; width:144px; overflow: hidden;white-space: nowrap;text-overflow: ellipsis; margin-left:10px; background:#fff;}
 .type-file-box .show{ float:left; margin-left:10px; height:30px; line-height:30px;}
+
+input[type='checkbox'] {width: 20px;height: 20px;background-color: #fff;-webkit-appearance: none;border: 1px solid #c9c9c9;border-radius: 2px;outline: none;}
+input[type=checkbox]:checked {background: url(/images/interface-tickdone.png)no-repeat center;}
