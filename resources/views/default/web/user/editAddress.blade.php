@@ -1,7 +1,7 @@
 @include(themePath('.','web').'web.include.partials.base')
 
 	<link rel="stylesheet" type="text/css" href="{{asset('ui/area/1.0.0/area.css')}}" />
-
+	<script src="{{asset('ui/area/1.0.0/area.js')}}"></script>
 	<style>
 		.Receive_address li{margin-top:15px;;float:left;width: 290px;height: 130px;position: relative;border: 1px solid #DEDEDE;margin-left: 15px;box-sizing: border-box;}
 		.Receive_address li:hover{border: 1px solid #75b335;}

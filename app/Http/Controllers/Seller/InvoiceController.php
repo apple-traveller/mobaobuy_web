@@ -48,7 +48,7 @@ class InvoiceController extends Controller
         $invoice_id = $request->input('invoice_id','');
         $invoiceInfo = InvoiceService::getInfoById($invoice_id);
         // 开票商品
-        $orderInfo = InvoiceGoodsService::getInfoBySearch(['invoice_id'=>$invoice_id]);
+        $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
         return $this->display('seller/invoice/detail', [
             'invoiceInfo' => $invoiceInfo,
             'orderInfo' =>$orderInfo,
@@ -76,6 +76,7 @@ class InvoiceController extends Controller
      * 审核发票 并保存快递信息
      * @param Request $request
      * @return InvoiceController|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function verifyInvoice(Request $request)
     {

@@ -263,7 +263,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
+    Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
     Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+    Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
     Route::group(['middleware' => 'web.auth'], function () {
@@ -373,7 +375,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
         Route::post('/orderDel','OrderController@orderDel');//订单删除
-        Route::get('/invoice','InvoiceController@invoiceList');// 开票列表
+        Route::get('/invoice',  'InvoiceController@invoiceList'); // 开票列表
+        Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
+        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
 
 
         Route::post('/egis','OrderController@egis');//订单审核通过

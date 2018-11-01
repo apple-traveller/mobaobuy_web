@@ -275,15 +275,16 @@
                                         <div class="value">
                                             <div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
                                             <div class="order_operation_btn">
-                                                @if($orderInfo['order_status'] == 1)
+                                                @if($orderInfo['order_status'] == 2)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
                                                 <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
+                                                @elseif($orderInfo['order_status'] == 1)
+                                                    <input type="button" value="待买家审核" class="btn btn25 red_btn">
                                                 @else
-                                                @endif
 
                                                 <input name="order_id" type="hidden" value="4">
                                                 @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
-                                                {{--<input type="button" value="打印订单" class="btn btn25 blue_btn" onclick="javascript:window.open('tp_api.php?act=order_print&amp;order_id=4')">--}}
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

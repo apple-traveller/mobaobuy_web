@@ -211,7 +211,7 @@ class GoodsService
 
     //提交订单
 
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$invoicesId,$words){
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -233,7 +233,6 @@ class GoodsService
                 'city'=>$userAddressMes['city'],
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
-                'invoice_id'=>$invoicesId,
                 'postscript'=>$words?$words:''
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
@@ -342,12 +341,14 @@ class GoodsService
     }
 
     //物性表
-    public static function goodsAttribute($page,$pageSize){
-        return GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],[]);
+    public static function goodsAttribute($condition,$page = 1,$pageSize = 1){
+        return  GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],$condition);
+
     }
 
     //物性表详情
     public static function goodsAttributeDetails($id,$page,$pageSize){
+        $id = decrypt($id);
         if($id<0){
             self::throwBizError('产品信息有误');
         }

@@ -75,7 +75,7 @@
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-huodong"></i>活动中心</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == '') class="curr" @endif>限时抢购</li>
+                        <li @if(request()->path() == 'buyLimit') class="curr" @endif><a href="/buyLimit">限时抢购</a></li>
                         <li></li>
                     </ul>
                 </div>
