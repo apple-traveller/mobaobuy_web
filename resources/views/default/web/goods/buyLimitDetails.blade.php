@@ -43,8 +43,13 @@
 
 
 			
+			
+			
 			//规格
     		var thisMul = $('.shop_num_plus').attr('pid');
+
+    		//最小可购数
+    		var min_limit = $('#min_limit').attr('min-limit');
     		//可售数量
 			var canSell = $('.shop_num_plus').attr('canSell');
 			var NumNew;
@@ -63,7 +68,7 @@
 			$(document).delegate('.shop_num_reduce','click',function(){
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
-				if (Number(ipts.val())-Number(thisMul)<Number(thisMul)) {
+				if (Number(ipts.val())-Number(thisMul)<Number(min_limit)) {
 					alert('已经是最低的购买数量了');
 					return;
 				}else{
@@ -72,12 +77,10 @@
 				}
 
 			})
-
 			})
 
 			function collectGoods(obj){
 				var id = $(obj).attr('id');
-			
 				if(id>0){
 					$.ajax({
 						url: "/addCollectGoods",
@@ -95,6 +98,34 @@
 						}
 					})
 				}
+			}
+
+			function toBalance(goodsId,activityId){
+				var goodsNum = $('#goodsNum').val();
+				var activityIdEncrypt = $('#activityId').val();
+				// console.log(goodsId);
+				// console.log(activityId);
+				// console.log(goodsNum);
+				// return;
+				$.ajax({
+					url: "/buyLimitToBalance",
+					dataType: "json",
+					data: {
+						'goodsId' : goodsId,
+						'activityId' : activityId,
+						'goodsNum' : goodsNum
+					},
+					type: "POST",
+					success: function(data){
+						// console.log(data);return;
+						if(data.code){
+							// console.log(data);
+							 window.location.href='/confirmOrder/'+activityIdEncrypt;
+						}else{
+							$.msg.alert("请重试");
+						}
+					}
+				})
 			}
 		</script>
 		
@@ -267,13 +298,14 @@
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 				
-			<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright shop_num_reduce" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">-</span><input type="text" class="pur_num Bidders_record_text" value="{{$goodsInfo['packing_spec']}}" /><span class="pur bbleft shop_num_plus" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">+</span></div>
+			<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright shop_num_reduce" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">-</span><input type="text" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" /><span id="min_limit" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">+</span></div>
 			
 			</div>
 			
 			<div class="mt30" style="margin-left: 115px;">
-				<button class="pro_detail_btn redbg">立即下单</button><button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">关注商品</button>
+				<button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button><button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">关注商品</button>
 			</div>
+			<input type="hidden" name="" value="{{encrypt($goodsInfo['activity_id'])}}" id="activityId" />
 		</div>
 		</div>	
 	</div>	

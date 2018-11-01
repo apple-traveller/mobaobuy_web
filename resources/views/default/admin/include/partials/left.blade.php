@@ -85,6 +85,16 @@
 
         </div>
         <div class="navLeftTab" id="adminNavTabs_menushopping" style="display:none;">
+            <div class="item">
+                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_04_order"></i><h4>订单管理</h4></a></div>
+                <div class="sub-menu" style="top: 0px; display: none;">
+                    <ul>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/invoice/list" data-param="menushopping|10_delivery_order" target="workspace">发票申请列表</a></li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="item fold_item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_promotion"></i><h4>促销管理</h4></a></div>
@@ -92,23 +102,9 @@
                     <ul>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
-
                     </ul>
                 </div>
             </div>
-
-
-            <div class="item">
-                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_04_order"></i><h4>订单管理</h4></a></div>
-                <div class="sub-menu" style="top: 0px; display: none;">
-                    <ul>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
-
-                    </ul>
-                </div>
-            </div>
-
 
             <div class="item">
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_17_merchants"></i><h4>店铺管理</h4></a></div>

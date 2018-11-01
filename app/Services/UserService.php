@@ -383,22 +383,32 @@ class UserService
     }
 
     //返回各实名状态的用户id
-    public static function getUserIds($review_status)
+    public static function getUserIds($is_firm)
     {
         $arr = [];
-        if($review_status==-1){
-            //未提交实名信息的用户
+        if($is_firm==-1){
+            //未提交实名信息的用户或者实名审核没通过的用户
             $users = UserRepo::getList([],[],['id']);
+            //没提交实名信息
             foreach($users as $vo){
-                $user = UserRealRepo::getList([],['user_id'=>$vo['id']],['id']);
+                $user = UserRealRepo::getInfoByFields(['user_id'=>$vo['id']]);
                 if(empty($user)){
                     $arr[] = $vo['id'];
                 }
             }
-        }else{
-            $user_reals = UserRealRepo::getList([],['review_status'=>$review_status],['id','user_id']);
+            //实名信息没通过
+            $user_reals = UserRealRepo::getList([],['review_status'=>"0|2"],['id','user_id']);
             foreach($user_reals as $vo){
-                $user = UserRepo::getList([],['id'=>$vo['user_id']],['id'])[0];
+                $user = UserRepo::getInfoByFields(["id"=>$vo['user_id']]);
+                if(!empty($user)){
+                    $arr[] = $vo['user_id'];
+                }
+            }
+        }else{
+            //实名通过
+            $user_reals = UserRealRepo::getList([],['is_firm'=>$is_firm,'review_status'=>1],['id','user_id']);
+            foreach($user_reals as $vo){
+                $user = UserRepo::getInfoByFields(["id"=>$vo['user_id'],"is_firm"=>$is_firm]);
                 if(!empty($user)){
                     $arr[] = $user['id'];
                 }

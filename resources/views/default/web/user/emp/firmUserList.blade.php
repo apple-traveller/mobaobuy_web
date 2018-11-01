@@ -163,7 +163,7 @@
                         success:function(res){
                             // var result = JSON.parse(res);
                             if(res.code){
-                                alert('删除成功');
+                                $.msg.alert('删除成功');
                                 window.location.reload();
                             }else{
                                 alert('删除失败');

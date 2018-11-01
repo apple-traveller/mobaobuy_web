@@ -13,6 +13,17 @@
 		.order-item-table td{border: 1px solid #DEDEDE;}
 		.data-table-box .order-item-table tr:first-child{background-color: #f4f4f4;height: 40px;}
 		.data-table-box table.order-item-table tbody td{padding: 8px 10px;}
+        .data-table-box .table-body .opt-btn {
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+    padding: 2px 10px;
+    background-color: #75b335;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 0px;
+    color: #fff;display: inline-block;float: none;margin-top: 10px;
+}
 	</style>
 @endsection
 
@@ -142,7 +153,7 @@
         
         //订单取消
         function orderCancel(id){
-            var flag = confirm('是否确认删除');
+            var flag = confirm('是否确认取消');
             if(flag === true){
                  $.ajax({
                     url: "/orderCancel",
@@ -153,6 +164,8 @@
                     type: "POST",
                     success: function (data) {
                         if(data.code){
+//                            $.msg.alert();
+                            $.msg.tips('取消成功');
                             window.location.reload();
                         }else{
                             alert('出错,请重试')
