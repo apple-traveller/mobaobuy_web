@@ -231,12 +231,15 @@ class FirmStockController extends Controller
 
     }
 
-    //入库检索供应商名称
+    //出入库检索供应商名称
     public function searchPartnerName(Request $request){
         $id = session('_web_user_id');
         $partnerName = $this->requestGetNotNull('partnerName','');
+        $is_type = $request->input('is_type');
+
+
         try{
-            $partnerNameInfo = FirmStockService::searchPartnerName($partnerName,$id);
+            $partnerNameInfo = FirmStockService::searchPartnerName($partnerName,$id,$is_type);
             return $this->success('','',$partnerNameInfo);
         }catch (\Exception $e){
             return $this->error($e->getMessage());

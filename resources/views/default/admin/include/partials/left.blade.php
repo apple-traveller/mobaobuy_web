@@ -47,7 +47,6 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/user/list" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/user/list?is_firm=1" data-param="menuplatform|06_list_integrate" target="workspace">企业列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/blacklist/list" data-param="menuplatform|08_unreply_msg" target="workspace">企业黑名单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
                     </ul>
@@ -75,6 +74,15 @@
                 </div>
             </div>
 
+            <div class="item">
+                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_0100_demand"></i><h4>咨询管理</h4></a></div>
+                <div class="sub-menu" style="top: 0px; display: none;">
+                    <ul>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/demand/list" data-param="demand|01_goods_list" target="workspace">需求列表</a></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
         <div class="navLeftTab" id="adminNavTabs_menushopping" style="display:none;">
 
@@ -83,7 +91,7 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="bonus.php?act=list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
 
                     </ul>
                 </div>

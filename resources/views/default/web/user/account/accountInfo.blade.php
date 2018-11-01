@@ -67,9 +67,6 @@
                     <li><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else昵称：@endif</span><span class="ml10"><input name="nick_name" type="text" @if($userInfo['is_firm']==1) disabled="disabled" @endif class="infor_input nick_name" value="{{$userInfo['nick_name']}}"></span></li>
                     <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="email" value="{{$userInfo['email']}}" class="infor_input"></span></li>
                     @if($userInfo['is_firm']==1)
-                        <li class="mt25"><span class="infor_title">授权委托书：</span><span class="fl ml20"><i class="iconfont icon-image img-tooltip" @if(!isset($userInfo['attorney_letter_fileImg']) || empty($userInfo['attorney_letter_fileImg'])) style="display: none;" @else data-img="{{getFileUrl($userInfo['attorney_letter_fileImg'])}}" @endif ></i></span></li>
-                        <li class="mt25"><span class="infor_title">负责人姓名：</span><span class="fl ml10"><input name="contactName" disabled="disabled" type="text" @if(!empty($userInfo['contactName'])) value="{{$userInfo['contactName']}}" @else value="" @endif  class="infor_input contactName"  /></span></li>
-                        <li class="mt25"><span class="infor_title">负责人手机：</span><span class="fl ml10"><input name="contactPhone" disabled="disabled" type="text" @if(!empty($userInfo['contactPhone'])) value="{{$userInfo['contactPhone']}}" @else value="" @endif class="infor_input contactPhone" /></span></li>
                         <li class="mt25">
                             <span class="infor_title">订单是否需审批：</span>
                             <span class="ml20 fl">

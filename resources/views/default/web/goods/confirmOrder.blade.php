@@ -184,48 +184,16 @@
 <div class="w1200">
 	<!--公司信息-->
 	<div class="whitebg mt20 ovh">
-		<h1 class="ml30 fs18 mt40">开票信息 <span class="fr qiehuan" id="change_btn">更多</span></h1>
-		@if(!empty($invoicesInfo))
-			<div class="company_information" id="invoiceInfo">
-				<ul class="company_list">
-					<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoicesInfo['company_name'] }}</span></li>
-					<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoicesInfo['tax_id'] }}</span></li>
-					<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoicesInfo['bank_of_deposit'] }}</span></li>
-					<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoicesInfo['bank_account'] }}</span></li>
-					<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoicesInfo['company_telephone'] }}</span></li>
-					<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoicesInfo['company_address'] }}</span></li>
-					<li><span class="company_title">收票人 :</span><span class="ml5">{{ $invoicesInfo['consignee_name'] }} {{ $invoicesInfo['consignee_mobile_phone'] }}</span></li>
-					<li><span class="company_title">收票人地址 :</span><span class="ml5">{{ $invoicesInfo['address_str'] }}{{ $invoicesInfo['consignee_address'] }}</span></li>
-				</ul>
-			</div>
-		@else
-			<div class="company_information" id="invoiceInfo">
-				暂无默认开票信息 <a href="/invoices" style="color: #74b334">前去维护开票信息</a>
-			</div>
-		@endif
-
-		<div  id ="change_list" style="display:none;">
-			@if(!empty($invoicesList))
-			@foreach($invoicesList as $k=>$v)
-		<div class="company_information" readonly="readonly">
+		<h1 class="ml30 fs18 mt40">开票信息</h1>
+		<div class="company_information" id="invoiceInfo">
 			<ul class="company_list">
-				<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $v['company_name'] }}</span></li>
-				<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $v['tax_id'] }}</span></li>
-				<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $v['bank_of_deposit'] }}</span></li>
-				<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $v['bank_account'] }}</span></li>
-				<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $v['company_telephone'] }}</span></li>
-				<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $v['company_address'] }}</span></li>
-				<li><span class="company_title">收票人 :</span><span class="ml5">{{ $v['consignee_name'] }} {{ $v['consignee_mobile_phone'] }}</span></li>
-				<li><span class="company_title">收票人地址 :</span><span class="ml5">{{ $v['address_str'] }}{{ $v['consignee_address'] }}</span></li>
+				<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
+				<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
+				<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
+				<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
+				<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
+				<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
 			</ul>
-			<button class="select_btn change_list" data-id="{{ $v['id'] }}" >点击选择</button>
-		</div>
-				@endforeach
-			@else
-				<div class="company_information" id="invoiceInfo">
-					暂无开票信息 <a href="/invoices" style="color: #74b334">前去维护开票信息</a>
-				</div>
-			@endif
 		</div>
 	</div>
 	<div class="address whitebg ovh mt20 ">
@@ -284,7 +252,7 @@
 </div>
 
 
-<div class="clearfix whitebg ovh mt40" style="font-size: 0;">
+<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 @include(themePath('.','web').'web.include.partials.footer_new')
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>

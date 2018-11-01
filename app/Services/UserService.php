@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
-
 class UserService
 {
     use CommonService;
@@ -329,13 +328,15 @@ class UserService
         foreach($info['list'] as $k=>$v) {
             $userreal = UserRealRepo::getInfoByFields(['user_id'=>$v['id']]);
             if(!empty($userreal)){
-                $info['list'][$k]['userreal']=$userreal['review_status'];
+                $info['list'][$k]['review_status']=$userreal['review_status'];
             }else{
-                $info['list'][$k]['userreal']=0;
+                $info['list'][$k]['review_status']=-1;
             }
         }
         return $info;
     }
+
+    
     //修改
     public static function modify($data)
     {
@@ -351,12 +352,14 @@ class UserService
         return UserRepo::getInfo($id);
     }
 
+
     public static function getInfo($id)
-    {
+  {
         $info = UserRepo::getInfo($id);
         unset($info['password']);
         return $info;
-    }
+   }
+
 
     //获取指定字段的所有数据
     public static function getUsersByColumn($condition,$column)
@@ -379,6 +382,40 @@ class UserService
         }
     }
 
+    //返回各实名状态的用户id
+    public static function getUserIds($review_status)
+    {
+        $arr = [];
+        if($review_status==-1){
+            //未提交实名信息的用户
+            $users = UserRepo::getList([],[],['id']);
+            foreach($users as $vo){
+                $user = UserRealRepo::getList([],['user_id'=>$vo['id']],['id']);
+                if(empty($user)){
+                    $arr[] = $vo['id'];
+                }
+            }
+        }else{
+            $user_reals = UserRealRepo::getList([],['review_status'=>$review_status],['id','user_id']);
+            foreach($user_reals as $vo){
+                $user = UserRepo::getList([],['id'=>$vo['user_id']],['id'])[0];
+                if(!empty($user)){
+                    $arr[] = $user['id'];
+                }
+            }
+        }
+        return $arr;
+    }
 
+    //获取用户收藏商品信息
+    public static function getCollectGoods($user_id)
+    {
+        $collect_goods = UserCollectGoodsRepo::getList([],['user_id'=>$user_id]);
+        foreach($collect_goods as $k=>$v){
+            $goods = GoodsRepo::getList([],['id'=>$v['goods_id']],['goods_name'])[0];
+            $collect_goods[$k]['goods_name']=$goods['goods_name'];
+        }
+        return $collect_goods;
+    }
 
 }

@@ -647,6 +647,7 @@ class UserController extends Controller
         }
     }
 
+    //用户信息
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
@@ -704,11 +705,20 @@ class UserController extends Controller
     //实名信息
     public function userRealInfo(Request $request)
     {
-        $user_id = session()->get("_web_user")['id'];
+        $user_id = session()->get("_web_user_id");
         $user_name = session()->get("_web_user")['user_name'];
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
 
+        //
+        if($user_real){
+            return $this->display("web.user.account.realNamePass",[
+                'user_name'=>$user_name,
+                'is_firm'=>$is_firm,
+                'user_real'=>$user_real,
+                'user_id'=>$user_id
+            ]);
+        }
         return $this->display("web.user.account.realName",[
             'user_name'=>$user_name,
             'is_firm'=>$is_firm,
@@ -720,34 +730,79 @@ class UserController extends Controller
     //保存实名
     public function saveUserReal(Request $request)
     {
+        $user_id = session('_web_user_id');
         $data = $request->all();
+
+        //is_firm 1是个人提交  2是企业
+        $is_self = $request->input('is_self');
         $errorMsg = [];
-        if(empty($data['real_name'])){
-            $errorMsg[] = "请输入真实姓名";
-        }
-        if(empty($data['front_of_id_card'])){
-            $errorMsg[] = "请上传身份证正面";
-        }
-        if(empty($data['reverse_of_id_card'])){
-            $errorMsg[] = "请上传身份证反面";
-        }
-        if(!empty($errorMsg)){
-            return $this->result("",0,implode("|",$errorMsg));
-        }
+        $dataArr = $data['jsonData'];
+       if($is_self == 1){
+           if(empty($dataArr['real_name'])){
+               $errorMsg[] = "请输入真实姓名";
+           }
+           if(empty($dataArr['front_of_id_card'])){
+               $errorMsg[] = "请上传身份证正面";
+           }
+           if(empty($dataArr['reverse_of_id_card'])){
+               $errorMsg[] = "请上传身份证反面";
+           }
+           if(!empty($errorMsg)){
+               return $this->result("",0,implode("|",$errorMsg));
+           }
+       }elseif($is_self == 2){
+           if(empty($dataArr['real_name_firm'])){
+               $errorMsg[] = "请输入企业全称";
+           }
+
+           if(empty($dataArr['tax_id'])){
+               $errorMsg[] = "税号";
+           }
+
+           if(empty($dataArr['attorney_letter_fileImg'])){
+               $errorMsg[] = "请上传授权电子版";
+           }
+
+           if(empty($dataArr['invoice_fileImg'])){
+               $errorMsg[] = "请上传开票电子版";
+           }
+
+           if(empty($dataArr['license_fileImg'])){
+               $errorMsg[] = "请输入营业执照电子版";
+           }
+
+           if(empty($dataArr['company_name'])){
+               $errorMsg[] = "公司抬头";
+           }
+
+           if(empty($dataArr['bank_of_deposit'])){
+               $errorMsg[] = "开户银行";
+           }
+
+           if(empty($dataArr['bank_account'])){
+               $errorMsg[] = "银行账号";
+           }
+
+           if(empty($dataArr['company_address'])){
+               $errorMsg[] = "开票地址";
+           }
+
+           if(empty($dataArr['company_telephone'])){
+               $errorMsg[] = "开票电话";
+           }
+
+           if(!empty($errorMsg)){
+               return $this->result("",0,implode("|",$errorMsg));
+           }
+       }else{
+           return $this->result("",0,'非法操作');
+       }
 
         try{
-            if($data['id']==""){
-                unset($data['id']);
-                $flag = UserRealService::create($data);
-                if(!empty($flag)){
+                $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
+                if($flag){
                     return $this->result("",1,"保存成功");
                 }
-            }else{
-                $flag = UserRealService::modify($data);
-                if(!empty($flag)){
-                    return $this->result("",1,"保存成功");
-                }
-            }
             return $this->result('',0,"保存失败");
         }catch(\Exception $e){
             return $this->result('',0,$e->getMessage());

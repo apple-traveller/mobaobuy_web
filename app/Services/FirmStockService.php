@@ -211,26 +211,84 @@ class FirmStockService
     }
 
     //入库检索供应商名称
-    public static function searchPartnerName($partnerName,$id){
-        if($partnerName){
-            //输入输入框检索
-            $condition = [];
-            $condition['partner_name'] = '%'.$partnerName.'%';
-            $condition['firm_id'] = $id;
-            return FirmStockFlowRepo::getList([],$condition);
-        }else{
-            //点击输入框检索
-            $condition = [];
-            $condition['firm_id'] = $id;
-            $firmStockFlowInfo = FirmStockFlowRepo::getList([],$condition);
-            foreach($firmStockFlowInfo as $k=>$v){
-                if(!$v['partner_name']){
-                    unset($firmStockFlowInfo[$k]);
+    public static function searchPartnerName($partnerName,$id,$is_type){
+        if($is_type == 2){
+            $flow_type = 2;
+            if($partnerName){
+                //输入输入框检索
+                $condition = [];
+                $condition['partner_name'] = '%'.$partnerName.'%';
+                $condition['firm_id'] = $id;
+                $condition['flow_type'] = $flow_type;
+                return FirmStockFlowRepo::getList([],$condition);
+            }else{
+                //点击输入框检索
+                $condition = [];
+                $condition['firm_id'] = $id;
+                $condition['flow_type'] = $flow_type;
+                $firmStockFlowInfo = FirmStockFlowRepo::getList([],$condition);
+                foreach($firmStockFlowInfo as $k=>$v){
+                    if(!$v['partner_name']){
+                        unset($firmStockFlowInfo[$k]);
+                    }
                 }
+                return $firmStockFlowInfo;
             }
-            return $firmStockFlowInfo;
+        }elseif($is_type == 3){
+            $flow_type = 3;
+            if($partnerName){
+                //输入输入框检索
+                $condition = [];
+                $condition['partner_name'] = '%'.$partnerName.'%';
+                $condition['firm_id'] = $id;
+                $condition['flow_type'] = $flow_type;
+                return FirmStockFlowRepo::getList([],$condition);
+            }else{
+                //点击输入框检索
+                $condition = [];
+                $condition['firm_id'] = $id;
+                $condition['flow_type'] = $flow_type;
+                $firmStockFlowInfo = FirmStockFlowRepo::getList([],$condition);
+                foreach($firmStockFlowInfo as $k=>$v){
+                    if(!$v['partner_name']){
+                        unset($firmStockFlowInfo[$k]);
+                    }
+                }
+                return $firmStockFlowInfo;
+            }
+        }else{
+            self::throwBizError('没有对应的出入库信息');
         }
+    }
 
+    /**
+     * 后台
+     */
+    public static function getFirmStocksByFirmId($pager,$condition)
+    {
+        $stocks = FirmStockRepo::getListBySearch($pager,$condition);
+        foreach ($stocks['list'] as $k=>$v) {
+            $user = UserRepo::getList([],['id'=>$v['firm_id']],['nick_name'])[0];
+            $stocks['list'][$k]['nick_name']=$user['nick_name'];
+        }
+        return $stocks;
+    }
+
+
+    //库存流水
+    public static function getStockFlowList($pager,$condition)
+    {
+        $stockFlow = FirmStockFlowRepo::getListBySearch($pager,$condition);
+        foreach($stockFlow['list'] as $k=>$v){
+            if($v['flow_type']==1){
+                $stockFlow['list'][$k]['flow_type'] = "平台购物入库";
+            }elseif($v['flow_type']==2){
+                $stockFlow['list'][$k]['flow_type'] = "其它入库";
+            }else{
+                $stockFlow['list'][$k]['flow_type'] = "库存出库";
+            }
+        }
+        return $stockFlow;
     }
 
 

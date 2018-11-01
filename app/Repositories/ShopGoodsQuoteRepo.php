@@ -23,9 +23,16 @@ class ShopGoodsQuoteRepo
         }
         return [];
     }
+    
+    //获取报价列表
+    public static function goodsQuoteList(){
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        return $query->paginate(5);
+    }
 
     /**
-     * 获取店铺已报价产品数据
+     * 获取商家报价列表-没有分页
      * @param $shop_id
      * @return mixed
      */

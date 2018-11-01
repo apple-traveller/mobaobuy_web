@@ -13,7 +13,7 @@
         <dd><a href="javascript:;" data-url="/seller/delivery/list" s_id="S021">发货列表</a></dd>
     </dl>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:;" data-url="/seller/invoice/list" s_id="S022">开票列表</a></dd>
+        <dd><a href="javascript:;" data-url="/seller/invoice/list" s_id="S022">发票管理</a></dd>
     </dl>
 </li>
 <li class="layui-nav-item">

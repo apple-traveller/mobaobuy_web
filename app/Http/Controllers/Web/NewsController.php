@@ -17,13 +17,12 @@ class NewsController extends Controller
 {
     public function index(Request $request)
     {
-        $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-        $page_size = $request->input('length', 10);
+        $page = $request->input('page',1);
+        $page_size = $request->input('length', 6);
         if ($request->isMethod('get')){
-            // 搜索条件
             $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');
-            $page = $request->input('page',1);
+
             // 路径
             if (!empty($cat_id)){
                 $cat_info = ArticleCatService::getInfo($cat_id);
@@ -36,11 +35,10 @@ class NewsController extends Controller
 
             // 分页
 
-            $url = '/news.html%d';
-            $total_page = ceil ( $list['total'] / 10 );
+            $url = '/news.html?page=%d';
 
             if(!empty($list['list'])){
-                $linker = createPage($url, $page,$total_page);
+                $linker = createPage($url, $page,$list['totalPage']);
             }else{
                 $linker = createPage($url, 1, 1);
             }

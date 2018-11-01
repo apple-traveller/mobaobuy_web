@@ -21,21 +21,25 @@ class OrderController extends Controller
 
     //我的订单
     public function orderList(Request $request){
+        //
         $tab_code = $request->input('tab_code', '');
+
         if($request->isMethod('get')){
             return $this->display('web.user.order.list', compact('tab_code'));
         }else{
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
             $page_size = $request->input('length', 10);
             $firm_id = session('_curr_deputy_user')['firm_id'];
+            $currUser  = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
+//            dump($currUser);
 
             $condition['status'] = $tab_code;
             $condition['begin_time'] = $request->input('begin_time');
             $condition['end_time'] = $request->input('end_time');
 
             if(session('_curr_deputy_user')['is_firm']){
-                $condition['firm_id'] = $firm_id;
+                    $condition['firm_id'] = $firm_id;
             }else{
                 $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = 0;
@@ -45,7 +49,7 @@ class OrderController extends Controller
                 $condition['order_sn'] = '%'.$order_no.'%';
             }
 
-            $rs_list = OrderInfoService::getWebOrderList($condition, $page, $page_size);
+            $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);
 
             $data = [
                 'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
@@ -176,8 +180,39 @@ class OrderController extends Controller
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
-        dump($orderDetailsInfo);
+//        dump($orderDetailsInfo);
         return $this->display('web.user.order.orderDetails',compact('orderDetailsInfo'));
     }
 
+    //审核通过
+    public function egis(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::egis($id);
+            return $this->success('审核成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //订单取消
+    public function orderCancel(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::orderCancel($id);
+            return $this->success('取消成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //确认收货
+    public function orderConfirmTake(Request $request){
+        $id = $request->input('id');
+        try{
+            OrderInfoService::orderConfirmTake($id);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -13,6 +14,7 @@ use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Repositories\ShopGoodsRepo;
 
 class GoodsService
 {
@@ -209,7 +211,7 @@ class GoodsService
 
     //提交订单
 
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$invoicesId,$words){
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -231,7 +233,6 @@ class GoodsService
                 'city'=>$userAddressMes['city'],
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
-                'invoice_id'=>$invoicesId,
                 'postscript'=>$words?$words:''
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
@@ -328,19 +329,6 @@ class GoodsService
         return UserAddressRepo::getList([],['user_id'=>$userId]);
     }
 
-    //审核通过操作
-    public static function egis($id){
-        $id = decrypt($id);
-        return OrderInfoRepo::modify($id,['order_status'=>2]);
-    }
-
-    //订单取消
-    public static function orderCancel($id){
-        return OrderInfoRepo::modify($id,['order_status'=>0]);
-    }
-
-
-
     //获取发票信息
     public static function getInvoices($id){
         return UserInvoicesRepo::getList([],['user_id'=>$id]);
@@ -350,6 +338,27 @@ class GoodsService
     public static function editCartNum($id,$cartNum){
         $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
+    }
+
+    //物性表
+    public static function goodsAttribute($condition,$page = 1,$pageSize = 1){
+        return  GoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['id'=>'desc']],$condition);
+
+    }
+
+    //物性表详情
+    public static function goodsAttributeDetails($id,$page,$pageSize){
+        $id = decrypt($id);
+        if($id<0){
+            self::throwBizError('产品信息有误');
+        }
+        $goodsInfo = GoodsRepo::getInfo($id);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息不存在');
+        }
+        $shopGoodsInfo = ShopGoodsRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
+        $shopGoodsInfo['goodsInfo'] = $goodsInfo;
+        return $shopGoodsInfo;
     }
 
 }

@@ -117,6 +117,10 @@ class ShopOrderController extends Controller
                 }
                 if (!empty($pay_status)){
                     $data['pay_status'] = $pay_status;
+                    // 已收款&&已收货 => 待开票
+                    if ($pay_status==1 || $orderInfo['shipping_status']==3){
+                        $data['order_status'] = 5;
+                    }
                 }
                 $re = OrderInfoService::modify($data);
 

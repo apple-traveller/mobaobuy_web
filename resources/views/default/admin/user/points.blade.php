@@ -2,7 +2,7 @@
 @section('iframe')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
-    <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回</a>会员 - 积分日志列表</div>
+    <div class="title"><a href="/admin/user/list?review_status={{$review_status}}&currpage={{$pcurrpage}}" class="s-back">返回</a>会员 - 积分日志列表</div>
     <div class="content">
 
         <div class="flexilist">
@@ -94,45 +94,13 @@
                     , jump: function (obj, first) {
                         if (!first) {
                             var user_name = $(".user_name").val();
-                            window.location.href="/user/list?curr="+obj.curr+"&is_firm={{$is_firm}}";
+                            window.location.href="/admin/user/points?currpage="+obj.curr+"&review_status={{$review_status}}"+"&id={{$id}}"+"&pcurrpage={{$pcurrpage}}";
                         }
                     }
                 });
             });
         }
 
-        $('.j_click').click(function(){
-                var is_freeze ;
-                var user_id = $(this).siblings('input').attr('data-id');
-                var input = $(this).siblings('input');
-                if (input.val() === '1') {
-                    is_freeze = 0;
-                } else {
-                    is_freeze = 1;
-                }
-
-                layui.use(['layer'], function() {
-                    layer = layui.layer;
-                    $.post("{{url('/user/modify')}}",{"id":user_id,"is_freeze":is_freeze,"_token":$("#_token").val()},function(res){
-                        if(res.code==1){
-                            layer.msg(res.msg, {icon: 1});
-                            input.val(res.data);
-                        }else{
-                            layer.msg(res.msg, {icon: 5});
-                        }
-                    },"json");
-
-                });
-        });
-
-
-
-
-        //导出会员
-        function download_userlist()
-        {
-            location.href = "/user/export";
-        }
 
     </script>
 @stop
