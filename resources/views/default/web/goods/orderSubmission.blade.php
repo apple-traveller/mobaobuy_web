@@ -96,9 +96,9 @@
 </div>
     <div class="w1200 whitebg ovh" style="margin-top: 20px;">
         <div class="til_bg tac fs26" style="margin-top: 75px;">订单等待确认</div>
-        @foreach($re as $k=>$v)
-        <div class=" til_text fs16" >订单号：{{ $v }} <a href="/order/list" class="blue">【查询订单】</a><br/>由于行情波动、库存变化等原因、订单需要客服人员确认。</div>
-        @endforeach
+
+        <div class=" til_text fs16" >订单号： @foreach($re as $k=>$v){{ $v }}   @endforeach <a href="/order/list" class="blue">【查询订单】</a><br/>由于行情波动、库存变化等原因、订单需要客服人员确认。</div>
+
     </div>
     <div class="w1200 graybg ovh" style="color: #666;">
         <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
