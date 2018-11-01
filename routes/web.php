@@ -260,10 +260,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/detail.html', 'NewsController@detail'); // 详情
     Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
-    /********************************产品信息************************************/
-    Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
-    Route::post('/condition/goodsList', 'GoodsController@goodsListByCondition');//产品列表
-    Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
+    /********************************报价信息************************************/
+    Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
+    Route::post('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
+    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
@@ -358,7 +358,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
         Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
 
-        Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
         Route::post('/cart','GoodsController@cart');//加入购物车
         Route::post('/checkListen','GoodsController@checkListen');//购物车多选框

@@ -23,7 +23,7 @@ class ShopGoodsQuoteRepo
         }
         return [];
     }
-
+    
     //获取报价列表
     public static function goodsQuoteList(){
         $clazz = self::getBaseModel();
@@ -43,6 +43,44 @@ class ShopGoodsQuoteRepo
         if (!empty($list)){
             return $list->toArray();
         }
+    }
+
+    //根据条件获取符合条件的报价分类
+    public static function getQuoteCategory($condition){
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b');
+        $query = self::setCondition($query, $condition);
+        $cats = $query->join('goods as g', 'b.goods_id', '=', 'g.id')->groupBy('g.cat_id')->select('g.cat_id')->pluck('cat_id');
+        if (!empty($cats)){
+            return $cats->toArray();
+        }
+        return [];
+    }
+
+    //根据条件获取符合条件的报价品牌
+    public static function getQuoteBrand($condition){
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b');
+        $query = self::setCondition($query, $condition);
+        $rs = $query->join('goods as g', 'b.goods_id', '=', 'g.id')->groupBy('g.brand_id')->select('g.brand_id')->pluck('brand_id');
+        if (!empty($rs)){
+            return $rs->toArray();
+        }
+        return [];
+    }
+
+    //根据条件获取符合条件的报价发货地
+    public static function getQuoteCity($condition){
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $query = self::setCondition($query, $condition);
+        $rs = $query->groupBy('place_id')->pluck('place_id');
+        if (!empty($rs)){
+            return $rs->toArray();
+        }
+        return [];
     }
 }
 
