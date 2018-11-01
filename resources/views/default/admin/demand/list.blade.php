@@ -27,7 +27,14 @@
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                     <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                 </div>
-
+                <div class="search">
+                    <form action="/admin/demand/list" name="searchForm" method="post" >
+                        <div class="input">
+                            <input type="text" id="test" name="add_time" placeholder="根据时间选择" value="{{$add_time}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
+                            <input type="submit" class="btn"  ectype="secrch_btn" value="">
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
@@ -35,7 +42,7 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
-                                <th width="10%"><div class="tDiv">用户名</div></th>
+                                <th width="10%"><div class="tDiv">编号</div></th>
                                 <th width="10%"><div class="tDiv">昵称</div></th>
                                 <th width="10%"><div class="tDiv">联系方式</div></th>
                                 <th width="10%"><div class="tDiv">状态</div></th>
@@ -48,7 +55,7 @@
                             @if(!empty($demand))
                             @foreach($demand as $vo)
                             <tr class="">
-                                <td><div class="tDiv">{{$vo['user_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['id']}}</div></td>
                                 <td><div class="tDiv">{{$vo['nick_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['contact_info']}}</div></td>
                                 <td>
@@ -59,11 +66,16 @@
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['created_at']}}</div></td>
-
-
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/admin/demand/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&action_state={{$action_state}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a href="{{url('/admin/demand/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&action_state={{$action_state}}" class="btn_see">
+                                            <i class="sc_icon sc_icon_see"></i>
+                                            @if($vo['action_state']==1)
+                                                查看
+                                            @else
+                                                去处理
+                                            @endif
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -111,13 +123,22 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/demand/list?currpage="+obj.curr+"&action_state={{$action_state}}";
+                            window.location.href="/admin/demand/list?currpage="+obj.curr+"&action_state={{$action_state}}&add_time={{$add_time}}";
                         }
                     }
                 });
             });
         }
 
+        $(function(){
+            layui.use(['laydate'], function() {
+                var laydate = layui.laydate;
+                laydate.render({
+                    elem: '#test'
+                    ,range: true //或 range: '~' 来自定义分割字符
+                });
+            });
+        });
 
     </script>
 @stop

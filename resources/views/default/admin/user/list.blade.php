@@ -18,8 +18,7 @@
             <div class="common-head">
                 <div class="order_state_tab">
                     <a href="/admin/user/list?review_status=" @if($review_status=="") class="current" @endif  >全部@if($review_status=="") <em>({{$userCount}})</em> @endif </a>
-                    <a href="/admin/user/list?review_status=-1" @if($review_status==-1) class="current" @endif>未实名@if($review_status==-1) <em>({{$userCount}})</em> @endif </a>
-                    <a href="/admin/user/list?review_status=0" @if($review_status==0&&$review_status!="") class="current" @endif>待审核@if($review_status==0&&$review_status!="") <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?review_status=-1" @if($review_status==-1) class="current" @endif>待实名@if($review_status==-1) <em>({{$userCount}})</em> @endif </a>
                     <a href="/admin/user/list?review_status=2" @if($review_status==2) class="current" @endif>未通过 @if($review_status==2) <em>({{$userCount}})</em> @endif</a>
                     <a href="/admin/user/list?review_status=1" @if($review_status==1) class="current" @endif>已实名 @if($review_status==1) <em>({{$userCount}})</em> @endif</a>
                    {{-- <a href="/admin/orderinfo/list?order_status=0">企业 <em>(20)</em></a>

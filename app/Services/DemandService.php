@@ -3,15 +3,20 @@ namespace App\Services;
 
 use App\Repositories\DemandRepo;
 use Carbon\Carbon;
-use App\Repositories\UserRepo;
+use App\Services\UserService;
 class DemandService
 {
     use CommonService;
 
     public static function getInfo($id){
         $info = DemandRepo::getInfo($id);
-        $info['user_name']=UserRepo::getList([],['id'=>$info['user_id']],['user_name','nick_name'])[0]['user_name'];
-        $info['nick_name']=UserRepo::getList([],['id'=>$info['user_id']],['user_name','nick_name'])[0]['nick_name'];
+        if($info['user_id']){
+            $user_info = UserService::getInfo($info['user_id']);
+            $info['nick_name']= $user_info['nick_name'];
+        }else{
+            $info['nick_name']="游客";
+        }
+
         return $info;
     }
 
@@ -31,9 +36,12 @@ class DemandService
     public static function getList($pager, $condition){
         $demand = DemandRepo::getListBySearch($pager,$condition);
         foreach($demand['list'] as $k=>$v){
-            $user = UserRepo::getList([],['id'=>$v['user_id']],['user_name','nick_name'])[0];
-            $demand['list'][$k]['user_name'] = $user['user_name'];
-            $demand['list'][$k]['nick_name'] = $user['nick_name'];
+            $user = UserService::getInfo($v['user_id']);
+            if(!empty($user)){
+                $demand['list'][$k]['nick_name']=$user['nick_name'];
+            }else{
+                $demand['list'][$k]['nick_name']="游客";
+            }
         }
         return $demand;
     }

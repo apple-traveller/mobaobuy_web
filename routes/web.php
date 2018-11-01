@@ -209,7 +209,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
 
         Route::any('/demand/list', 'DemandController@list');//需求提交列表
-        Route::any('/demand/detail', 'DemandController@detail');//查看审核需求
+        Route::get('/demand/detail', 'DemandController@detail');//查看审核需求
+        Route::post('/demand/save', 'DemandController@save');//保存
 
         Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
         Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
@@ -224,9 +225,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
         Route::get('/ad/delete', 'AdController@delete');//广告图片删除
 
-
     });
-
 });
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {

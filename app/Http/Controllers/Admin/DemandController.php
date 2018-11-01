@@ -11,12 +11,19 @@ class DemandController extends Controller
     //列表
     public function list(Request $request)
     {
+        $add_time = $request->input("add_time","");
         $currpage = $request->input('currpage',1);
         $action_state = $request->input('action_state',-1);
         $pageSize = 10;
         $condition = [];
         if($action_state!=-1){
             $condition['action_state'] = $action_state;
+        }
+        if(!empty($add_time)){
+            $begin_time = trim(substr($add_time , 0 , 10));
+            $end_time = trim(substr($add_time , -10));
+            $condition['created_at|<'] = $end_time;
+            $condition['created_at|>'] = $begin_time;
         }
         $demand = DemandService::getList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['created_at'=>'desc']],$condition);
 
@@ -25,12 +32,13 @@ class DemandController extends Controller
             'total'=>$demand['total'],
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
-            'action_state'=>$action_state
+            'action_state'=>$action_state,
+            'add_time'=>$add_time
         ]);
     }
 
 
-    //查看商品信息
+    //查看详细信息
     public function detail(Request $request)
     {
         $id = $request->input("id");
@@ -51,54 +59,24 @@ class DemandController extends Controller
     {
         $data = $request->all();
         $errorMsg=[];
-        if(empty($data['shop_id'])){
-            $errorMsg[] = "商家不能为空";
-        }
-        if(empty($data['goods_id'])){
-            $errorMsg[] = "商品不能为空";
-        }
-        if(empty($data['begin_time'])){
-            $errorMsg[] = "开始时间不能为空";
-        }
-        if(empty($data['end_time'])){
-            $errorMsg[] = "结束时间不能为空";
-        }
-        if(strtotime($data['end_time'])<strtotime($data['begin_time'])){
-            $errorMsg[] = "结束时间不能小于开始时间";
-        }
-        if(empty($data['price'])){
-            $errorMsg[] = "促销价格不能为空";
-        }
-        if(empty($data['num'])){
-            $errorMsg[] = "促销总数量不能为空";
-        }
-        if(empty($data['available_quantity'])){
-            $errorMsg[] = "当前可售数量不能为空";
-        }
-        if(empty($data['min_limit'])){
-            $errorMsg[] = "最小起售数量不能为空";
+        if(empty($data['action_log'])){
+            $errorMsg[] = "处理日志不能为空";
         }
 
         if(!empty($errorMsg)){
             return $this->error(implode("|",$errorMsg));
         }
         try{
-            if(!key_exists('id',$data)){
-                $data['add_time'] = Carbon::now();
-                $flag = ActivityService::create($data);
-                if(empty($flag)){
-                    return $this->error("添加失败");
-                }
-                return $this->success("添加成功",url("/admin/promote/list"));
-            }else{
-                $currpage = $data['currpage'];
-                unset($data['currpage']);
-                $flag = ActivityService::updateById($data['id'],$data);
-                if(empty($flag)){
-                    return $this->error("修改失败");
-                }
-                return $this->success("修改成功",url("/admin/promote/list")."?currpage=".$currpage);
+            $operator = session('_admin_user_info')['real_name'];
+            $time = Carbon::now();
+            $data['action_log'] = $operator.";".$time.";".$data['action_log'];
+            $data['action_state'] = 1;
+            $flag = DemandService::update($data['id'],$data);
+            if(empty($flag)){
+                return $this->error("保存失败");
             }
+            return $this->success("保存成功",url("/admin/demand/list"));
+
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
