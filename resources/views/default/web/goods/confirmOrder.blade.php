@@ -231,7 +231,7 @@
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>{{ $v['delivery_place'] }}</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} else @endif</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
 			</li>
 			@endforeach
 		</ul>
@@ -246,8 +246,9 @@
 
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回购物车</a>
+		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>
 		</form>
+		<input type="hidden" name="" id="activityPromoteId" @if(isset($id))  value="{{encrypt($id)}}" @else value="" @endif >
 	</div>
 </div>
 
@@ -319,12 +320,14 @@
         });
     });
     $(".address_sumb").click(function () {
+    	var activityPromoteId = $('#activityPromoteId').val();
 		let words =  $("input[ name='words' ]").val();
 		console.log(words);
 		$.ajax({
 			url:'/createOrder',
 			data:{
-			    'words':words
+			    'words':words,
+			    'activityPromoteId':activityPromoteId
 			},
 			type:'post',
 			success:function (res) {
