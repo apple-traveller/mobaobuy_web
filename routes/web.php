@@ -258,7 +258,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     /********************************报价信息************************************/
     Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
-    Route::post('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
+    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
     /********************************************************************/
 

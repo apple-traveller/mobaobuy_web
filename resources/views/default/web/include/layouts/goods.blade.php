@@ -5,7 +5,7 @@
     @include(themePath('.','web').'web.include.partials.base')
     <link rel="stylesheet" type="text/css" href="/css/index.css" />
     <link rel="stylesheet" type="text/css" href="/css/global.css" />
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'plugs/layui/css/layui.css')}}" />
     <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
     @yield('css')
     @yield('js')
