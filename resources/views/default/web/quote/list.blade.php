@@ -302,9 +302,9 @@
                 'orderType':_orderType,//排序
                 'cate_id':_cate_id,//分类
                 'place_id':_place_id,//地区
-                'sort_goods_number':_goods_number,//地区
-                'sort_shop_price':_shop_price,//地区
-                'sort_add_time':_add_time//地区
+                'sort_goods_number':_goods_number,//数量排序
+                'sort_shop_price':_shop_price,//价格排序
+                'sort_add_time':_add_time//时间排序
             },
             dataType: "json",
             success: function(res){

@@ -56,6 +56,7 @@ class ShopGoodsQuoteService
     //分页
     public static function getShopGoodsQuoteList($pager,$condition)
     {
+
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
         foreach($result['list'] as $k=>$vo){
             $good = GoodsRepo::getInfo($vo['goods_id']);
@@ -74,7 +75,7 @@ class ShopGoodsQuoteService
         foreach ($shops as $item){
             $shop_info = ShopRepo::getInfo($item['shop_id']);
             //获取报价
-            $quotes = self::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['add_time'=>'desc']], ['shop_id'=>$item['shop_id']]);
+            $quotes = self::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']], ['shop_id'=>$item['shop_id']]);
             $shop_info['quotes'] = $quotes['list'];
             $shop_list[] = $shop_info;
         }
