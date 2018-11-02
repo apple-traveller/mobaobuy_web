@@ -396,6 +396,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
 
+        Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
+        Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
+
 
     });
 });
@@ -470,7 +473,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 
         Route::get('/invoice/list', 'InvoiceController@list'); // 客户开票申请列表
         Route::get('/invoice/detail', 'InvoiceController@detail'); // 详情页
-        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择地址
+        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择快递
         Route::post('/invoice/verifyInvoice', 'InvoiceController@verifyInvoice'); // 审核 - 动作
         Route::post('/invoice/cancelInvoice', 'InvoiceController@cancelInvoice'); // 作废 - 动作
     });

@@ -94,8 +94,4 @@ class ArticleCatService
         return $ids;
     }
 
-
-
-
-
 }
