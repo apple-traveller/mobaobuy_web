@@ -7,8 +7,11 @@
                 </a>
             </div>
             <div class="search-box">
-                <input type="text" class="search-input" placeholder="请输入关键词、类别进行搜索"/>
-                <input type="button" class="opt-btn" value="搜 索"/>
+                <form action="/goodsList" method="get">
+                    <input type="text" name="keyword" value="@if(isset($keyword)) {{$keyword}} @endif" class="search-input" placeholder="请输入关键词、类别进行搜索"/>
+                    <input type="submit" class="opt-btn" value="搜 索"/>
+                </form>
+
                 <a class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
 
                 @if(!empty(getConfig('search_keywords')))

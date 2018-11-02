@@ -17,23 +17,19 @@ class ShopGoodsQuoteService
     public static function getQuoteByWebSearch($pager,$condition){
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
         foreach($result['list'] as $k=>$vo){
-            $good = GoodsRepo::getInfo($vo['goods_id']);
-            $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
-            $category = GoodsCategoryRepo::getInfo($good['cat_id']);
-            $result['list'][$k]['cat_name'] = $category['cat_name'];
-            $result['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $result['list'][$k]['brand_name'] = $vo['brand_name']?$vo['brand_name']:"无品牌";
         }
 
         //获取筛选过滤信息
         //1、获取分类
-        $cates = ShopGoodsQuoteRepo::getQuoteCategory($condition);
+        $cates = ShopGoodsQuoteRepo::getQuoteCategory([]);
         if(!empty($cates)){
             $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id'=>implode('|', $cates)]);
         }else{
             $filter['cates'] = [];
         }
         //2、获取品牌
-        $brands = ShopGoodsQuoteRepo::getQuoteBrand($condition);
+        $brands = ShopGoodsQuoteRepo::getQuoteBrand([]);
         if(!empty($brands)){
             $brand_list = BrandService::getBrandList([], ['id'=>implode('|', $brands)]);
             $filter['brands'] = $brand_list['list'];
@@ -41,7 +37,7 @@ class ShopGoodsQuoteService
             $filter['brands'] = [];
         }
         //3、获取发货地
-        $cities = ShopGoodsQuoteRepo::getQuoteCity($condition);
+        $cities = ShopGoodsQuoteRepo::getQuoteCity([]);
         if(!empty($cities)){
             $city_list = RegionService::getList([], ['region_id'=>implode('|', $cities)]);
             $filter['city_list'] = $city_list;
@@ -59,14 +55,20 @@ class ShopGoodsQuoteService
 
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
         foreach($result['list'] as $k=>$vo){
-            $good = GoodsRepo::getInfo($vo['goods_id']);
-            $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
-            $category = GoodsCategoryRepo::getInfo($good['cat_id']);
-            $result['list'][$k]['cat_name'] = $category['cat_name'];
-            //$result['list'][$k]['cat_id'] = $category['id'];
-            $result['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $result['list'][$k]['brand_name'] = $vo['brand_name']?$vo['brand_name']:"无品牌";
         }
         return $result;
+
+//        $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
+//        foreach($result['list'] as $k=>$vo){
+//            $good = GoodsRepo::getInfo($vo['goods_id']);
+//            $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
+//            $category = GoodsCategoryRepo::getInfo($good['cat_id']);
+//            $result['list'][$k]['cat_name'] = $category['cat_name'];
+//            //$result['list'][$k]['cat_id'] = $category['id'];
+//            $result['list'][$k]['packing_spec'] = $good['packing_spec'];
+//        }
+//        return $result;
     }
 
     public static function getShopOrderByQuote($top){
