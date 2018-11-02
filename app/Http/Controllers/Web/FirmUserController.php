@@ -58,7 +58,7 @@ class FirmUserController extends Controller
         $firmId = session('_web_user_id');
         $userName = $request->input('user_name');
         $phone = $request->input('phone');
-        $permi = $request->input('permi');
+        $permi = $request->input('permi','');
         $isEdit = $request->input('isEdit');
         try{
             FirmUserService::addFirmUser($firmId,$phone,$permi,$userName,$isEdit);

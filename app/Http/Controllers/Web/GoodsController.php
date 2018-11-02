@@ -427,6 +427,20 @@ class GoodsController extends Controller
         }
     }
 
+    //购物车input判断
+    public function checkListenCartInput(Request $request){
+        $id = $request->input('id');
+        $goodsNumber = $request->input('goodsNumber');
+
+
+        try{
+            $goods_number = GoodsService::checkListenCartInput($id,$goodsNumber);
+            return $this->success('','',$goods_number);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //修改购物车数量
     public function editCartNum(Request $request){
         $cartNum = $request->input('cartNum');

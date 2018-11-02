@@ -393,6 +393,36 @@ class GoodsService
         }
     }
 
+    //购物车数量判断
+    public static function checkListenCartInput($id,$goodsNumber){
+        $cartInfo = CartRepo::getInfo($id);
+        $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+        $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+        if(!is_numeric($goodsNumber)){
+            self::throwBizError('数量只能输入正整数');
+        }
+
+        if($goodsNumber > $shopGoodsQuoteInfo['goods_number']){
+            self::throwBizError('数量超过库存数');
+        }
+        if($goodsNumber < $goodsInfo['packing_spec']){
+            self::throwBizError('数量不能小于商品规格');
+        }
+
+        //规格判断处理
+        if($goodsNumber % $goodsInfo['packing_spec'] == 0){
+            $goods_number = $goodsNumber;
+        }else{
+            self::throwBizError('数量有误，请重新输入');
+        }
+        $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
+        if($cartResult){
+            return $goods_number;
+        }
+        self::throwBizError('修改数量失败');
+
+    }
+
 
 
 }
