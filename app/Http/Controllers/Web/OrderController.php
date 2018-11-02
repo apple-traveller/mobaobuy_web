@@ -210,7 +210,7 @@ class OrderController extends Controller
     public function orderConfirmTake(Request $request){
         $id = $request->input('id');
         try{
-
+            OrderInfoService::orderConfirmTake($id);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

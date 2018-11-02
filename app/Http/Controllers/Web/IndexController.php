@@ -28,9 +28,6 @@ class IndexController extends Controller
     public function  index(Request $request){
         //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
-        //获取分类树
-        $cat_tree = GoodsCategoryService::getCategoryTree();
-
         //获取订单状态数
         $deputy_user = session('_curr_deputy_user');
         if($deputy_user['is_firm']){
@@ -53,7 +50,7 @@ class IndexController extends Controller
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 
-        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'cat_tree'=>$cat_tree, 'promote_list'=>$promote_list['list'],
+        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list]);
     }
 

@@ -9,6 +9,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
+
 class ShopGoodsQuoteRepo
 {
     use CommonRepo;
@@ -23,7 +25,7 @@ class ShopGoodsQuoteRepo
         }
         return [];
     }
-
+    
     //获取报价列表
     public static function goodsQuoteList(){
         $clazz = self::getBaseModel();
@@ -44,5 +46,87 @@ class ShopGoodsQuoteRepo
             return $list->toArray();
         }
     }
+
+    //根据条件获取符合条件的报价分类
+    public static function getQuoteCategory($condition){
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b');
+        $query = self::setCondition($query, $condition);
+        $cats = $query->join('goods as g', 'b.goods_id', '=', 'g.id')->groupBy('g.cat_id')->select('g.cat_id')->pluck('cat_id');
+        if (!empty($cats)){
+            return $cats->toArray();
+        }
+        return [];
+    }
+
+    //根据条件获取符合条件的报价品牌
+    public static function getQuoteBrand($condition){
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b');
+        $query = self::setCondition($query, $condition);
+        $rs = $query->join('goods as g', 'b.goods_id', '=', 'g.id')->groupBy('g.brand_id')->select('g.brand_id')->pluck('brand_id');
+        if (!empty($rs)){
+            return $rs->toArray();
+        }
+        return [];
+    }
+
+    //根据条件获取符合条件的报价发货地
+    public static function getQuoteCity($condition){
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $query = self::setCondition($query, $condition);
+        $rs = $query->groupBy('place_id')->pluck('place_id');
+        if (!empty($rs)){
+            return $rs->toArray();
+        }
+        return [];
+    }
+    //根据条件获取报价列表
+    public static function getQuoteInfoBySearch($pager,$condition)
+    {
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id');
+
+        $query = self::setCondition($query, $condition);
+
+        $page = 1;
+        $page_size = -1;
+
+        if (isset($pager['pageSize']) || isset($pager['page'])) {
+            if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
+                $page_size = 10;
+            } else {
+                $page_size = intval($pager['pageSize']);
+            }
+
+            if (isset($pager['page']) && intval($pager['page']) > 0) {
+                $page = $pager['page'];
+            }
+        }
+        //总条数
+        $rs['total'] = $query->count();
+        //处理排序
+        if (isset($pager['orderType']) && !empty($pager['orderType'])) {
+            foreach ($pager['orderType'] as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+        if ($page_size > 0) {
+            $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
+        } else {
+            $rs['list'] = $query->get()->toArray();
+        }
+        $rs['list'] = \App\Helpers\object_array($rs['list']);
+        $rs['page'] = $page;
+        $rs['pageSize'] = $page_size;
+        $rs['totalPage'] = ceil($rs['total'] / $page_size);
+        return $rs;
+    }
+    
 }
 

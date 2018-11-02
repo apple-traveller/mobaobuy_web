@@ -30,13 +30,14 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;广告链接：</div>
+                                <div class="label">&nbsp;广告链接：</div>
                                 <div class="label_value">
                                     <input type="text" name="ad_link" class="text" value="{{$ad['ad_link']}}" maxlength="40" autocomplete="off" id="ad_link">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label">&nbsp;排序：</div>
                                 <div class="label_value">
@@ -44,6 +45,7 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                 <div class="label_value">
@@ -52,14 +54,16 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
+                                <div class="label">&nbsp;结束时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="end_time" value="{{$ad['end_time']}}" class="text"  maxlength="40" autocomplete="off" id="end_time">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;上传图片：</div>
                                 <div class="label_value">
@@ -69,6 +73,7 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -146,15 +151,11 @@
                     ad_name :{
                         required : true,
                     },
-                    ad_link:{
-                        required : true,
-                    },
+
                     start_time:{
                         required : true,
                     },
-                    end_time:{
-                        required : true,
-                    },
+
                     ad_img:{
                         required : true,
                     }
@@ -166,13 +167,7 @@
                     ad_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    ad_link :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     start_time :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    end_time :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     ad_img :{

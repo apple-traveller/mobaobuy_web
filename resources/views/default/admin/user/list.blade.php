@@ -17,11 +17,10 @@
 
             <div class="common-head">
                 <div class="order_state_tab">
-                    <a href="/admin/user/list?review_status=" @if($review_status=="") class="current" @endif  >全部@if($review_status=="") <em>({{$userCount}})</em> @endif </a>
-                    <a href="/admin/user/list?review_status=-1" @if($review_status==-1) class="current" @endif>未实名@if($review_status==-1) <em>({{$userCount}})</em> @endif </a>
-                    <a href="/admin/user/list?review_status=0" @if($review_status==0&&$review_status!="") class="current" @endif>待审核@if($review_status==0&&$review_status!="") <em>({{$userCount}})</em> @endif </a>
-                    <a href="/admin/user/list?review_status=2" @if($review_status==2) class="current" @endif>未通过 @if($review_status==2) <em>({{$userCount}})</em> @endif</a>
-                    <a href="/admin/user/list?review_status=1" @if($review_status==1) class="current" @endif>已实名 @if($review_status==1) <em>({{$userCount}})</em> @endif</a>
+                    <a href="/admin/user/list?is_firm=2" @if($is_firm==2) class="current" @endif>全部@if($is_firm==2) <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?is_firm=0" @if($is_firm==0&&$is_firm!="") class="current" @endif>个人@if($is_firm==0&&$is_firm!="") <em>({{$userCount}})</em> @endif</a>
+                    <a href="/admin/user/list?is_firm=1" @if($is_firm==1) class="current" @endif>企业@if($is_firm==1) <em>({{$userCount}})</em> @endif</a>
+                    <a href="/admin/user/list?is_firm=-1" @if($is_firm==-1) class="current" @endif>待审核@if($is_firm==-1) <em>({{$userCount}})</em> @endif </a>
                    {{-- <a href="/admin/orderinfo/list?order_status=0">企业 <em>(20)</em></a>
                     <a href="/admin/orderinfo/list?order_status=0">个人 <em>(20)</em></a>--}}
                 </div>
@@ -89,7 +88,7 @@
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        <a href="/admin/user/points?id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
+                                        <a href="/admin/user/points?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
@@ -106,10 +105,10 @@
 
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&currpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                        <a href="{{url('/admin/user/log')}}?id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
-                                        <a @if($user['is_firm']!=1) style="display:none;" @endif href="{{url('/admin/user/firmStock')}}?firm_id={{$user['id']}}&pcurrpage={{$currpage}}&review_status={{$review_status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>企业库存</a>
+                                        <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a href="{{url('/admin/user/log')}}?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
+                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a @if($user['is_firm']==1 && $user['review_status']==1)  @else style="display:none;" @endif href="{{url('/admin/user/firmStock')}}?firm_id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>企业库存</a>
                                     </div>
                                 </td>
                             </tr>
@@ -141,7 +140,6 @@
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -157,7 +155,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}"+"&review_status={{$review_status}}";
+                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}"+"&is_firm={{$is_firm}}";
                         }
                     }
                 });

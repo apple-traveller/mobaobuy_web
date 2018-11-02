@@ -7,7 +7,10 @@
 		<link rel="stylesheet" href="css/global.css" />
 	
 		<link rel="stylesheet" href="/css/index.css" />
-		<script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script>
+		<!-- <script type="text/javascript" src="js/jquery-1.10.2.min.js" ></script> -->
+		<script type="text/javascript">
+		
+		</script>
 	</head>
 	<body>
 	<div class="Physical_search_bg">
@@ -16,8 +19,10 @@
 	</div>
 	<div class="phy_serach_logo"></div>
 	<div class="phy_serach  mt40">
-		<input type="text" class="phy_serach_text fl" placeholder="请输入 品牌、种类、商品名称如 : 海大">
-		<input type="button" class="phy_search_btn white fs16 fl" value="搜 索">
+		<form>
+			<input type="text" class="phy_serach_text fl" name="goods_name" placeholder="请输入 品牌、种类、商品名称如 : 海大" id="goodsAttribute">
+			<input type="submit" class="phy_search_btn white fs16 fl" id="on-search" value="搜 索">
+		</form>
 			<div class="hot_search_m white mt3">热门推荐：
                         <a href="#.html" target="_blank">7000F泰国PTT</a>
                         <a href="#.html" target="_blank">218WJ</a>
@@ -30,7 +35,8 @@
 	</div>
 	
 	<ul class="phy_serach_list">
-		@if(!empty($list))
+		<table id="data-table" class="table table-border table-bordered table-bg table-hover dataTable order-table">
+		@if(isset($list))
 			@foreach($list as $v)
 			<li>
 				<div  class="phy_serach_Name gray">
@@ -45,6 +51,7 @@
 		@else
 		无产品
 		@endif
+		</table>
 	</ul>
 	 {!! $linker !!}
 	<!--页码-->	

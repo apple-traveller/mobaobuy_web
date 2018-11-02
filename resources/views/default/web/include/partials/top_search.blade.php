@@ -25,7 +25,7 @@
             <div class="nav-cate">
                 <div class="cate_title"><span class="ml30">原料分类</span><i class="iconfont icon-menu mr20 fr fs22"></i></div>
                 <ul class="ass_menu">
-                    @foreach($cat_tree as $level1_item)
+                    @foreach(getCategoryTree() as $level1_item)
                         <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
                             <i class="iconfont icon-right fr mr20"></i>
                             <div class="ass_fn whitebg">
@@ -60,4 +60,15 @@
         </div>
     </div>
 </div>
+<script>
+$(function() {
+    Ajax.call('/cart/num', '', function (res) {
+        $('#shopping-amount').text(res.data.cart_num);
+    });
+
+    $('.ass_menu li').hover(function () {
+        $(this).find('.ass_fn').toggle();
+    })
+});
+</script>
 

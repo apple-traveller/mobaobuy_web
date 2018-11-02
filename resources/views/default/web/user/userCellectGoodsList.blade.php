@@ -126,7 +126,7 @@
                     {"data": "goods_name", "bSortable": false},
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, row, meta) {
-                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)">删除</button>';
+                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)" style="margin-left:50px;width:47%;">取消收藏</button>';
                         }
                     }
                

@@ -209,7 +209,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        alert('删除成功');
+	                        // alert('删除成功');
 	                        window.location.reload();
 	                    }else{
 	                        alert('删除失败');
@@ -233,7 +233,8 @@
 	            type: "POST",
 	            success: function (data) {
 	               if(data.code){
-	               		alert('清空购物车成功');
+	               		$.msg.alert('清空购物车成功');
+	               		window.location.reload();
 	               }else{
 	               		alert('清空购物车失败');
 	               }

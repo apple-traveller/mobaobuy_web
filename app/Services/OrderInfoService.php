@@ -483,7 +483,7 @@ class OrderInfoService
         return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo];
     }
 
-    //审核通过操作
+    //企业订单审核通过操作
     public static function egis($id){
         return OrderInfoRepo::modify($id,['order_status'=>2]);
     }
@@ -491,6 +491,20 @@ class OrderInfoService
     //订单取消
     public static function orderCancel($id){
         return OrderInfoRepo::modify($id,['order_status'=>0]);
+    }
+
+    //订单确认收货
+    public static function orderConfirmTake($id){
+        $orderInfo = OrderInfoRepo::getInfo($id);
+        if(empty($orderInfo)){
+            self::throwBizError('订单信息不存在');
+        }
+        if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+            return OrderInfoRepo::modify($id,['shipping_status'=>3]);
+        }
+        self::throwBizError('订单状态有误!');
+
+
     }
 
 }

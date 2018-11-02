@@ -200,6 +200,18 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/seckill/time/save', 'SeckillController@saveTime');//保存秒杀时间段
         Route::get('/seckill/time/delete', 'SeckillController@deleteTime');//删除秒杀时间段
 
+        Route::any('/promote/list', 'PromoteController@list');//促销活动申请列表
+        Route::get('/promote/detail', 'PromoteController@detail');//促销活动申请详情
+        Route::get('/promote/addForm', 'PromoteController@addForm');//添加促销活动
+        Route::get('/promote/editForm', 'PromoteController@editForm');//编辑促销活动
+        Route::post('/promote/save', 'PromoteController@save');//保存促销活动
+        Route::post('/promote/verify', 'PromoteController@verify');//审核促销活动
+        Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
+
+        Route::any('/demand/list', 'DemandController@list');//需求提交列表
+        Route::get('/demand/detail', 'DemandController@detail');//查看审核需求
+        Route::post('/demand/save', 'DemandController@save');//保存
+
         Route::get('/ad/position/list', 'AdPositionController@list');//广告位置列表
         Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
         Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑
@@ -213,9 +225,11 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/ad/change/enabled', 'AdController@enabled');//广告图片状态修改
         Route::get('/ad/delete', 'AdController@delete');//广告图片删除
 
+        Route::any('/invoice/list', 'InvoiceController@list');//发票申请列表
+        Route::get('/invoice/detail', 'InvoiceController@detail');//查看发票详情
+        Route::post('/invoice/save', 'InvoiceController@save');//保存
 
     });
-
 });
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
@@ -246,14 +260,16 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/detail.html', 'NewsController@detail'); // 详情
     Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
 
-    /********************************产品信息************************************/
-    Route::any('/goodsList', 'GoodsController@goodsList');//产品列表
-    Route::post('/condition/goodsList', 'GoodsController@goodsListByCondition');//产品列表
-    Route::get('/goodsDetail', 'GoodsController@goodsDetail');//产品详情
+    /********************************报价信息************************************/
+    Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
+    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
+    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
+    Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
     Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+    Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
     Route::group(['middleware' => 'web.auth'], function () {
@@ -342,12 +358,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
         Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
 
-        Route::get('/goodsQuote','ShopGoodsQuoteController@goodsQuoteList');//报价列表
         Route::get('/cart','GoodsController@cart');//购物车列表
         Route::post('/cart','GoodsController@cart');//加入购物车
         Route::post('/checkListen','GoodsController@checkListen');//购物车多选框
         Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
-        Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
+        Route::get('/confirmOrder/{id?}','GoodsController@confirmOrder');//确认订单页面
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
         Route::post('/clearCart','GoodsController@clearCart');//清空购物车
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
@@ -358,6 +373,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/orderSubmission.html','GoodsController@orderSubmission');// 订单确认页面
         Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
 
+        Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
