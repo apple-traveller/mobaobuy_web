@@ -75,7 +75,7 @@
     		var MaxNum;
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
-				var thisMul = $(this).attr('data-id');
+				var thisMul = $(this).attr('data-id');//规格
 				MaxNum = $(this).parent().parent().siblings('.shop_price').text();
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
@@ -83,10 +83,9 @@
 				var thisDom = $(this);
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
 					// ipts.val(Number(MaxNum));
-					alert('不能大于可售');
+                    layer.msg('不能大于可售', {icon: 5});
 					return;
 				}else{
-					
 					NumNew=Number(ipts.val())+Number(thisMul);
 					ipts.val(Number(NumNew));
 				}
@@ -100,7 +99,7 @@
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
 	                    }else{
-	                        alert('增加失败请重试');
+                            layer.msg('增加失败请重试', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -115,8 +114,7 @@
 				var id = $(this).attr('id');
 				var thisDom = $(this);
 				if (Number(ipts.val())-Number(thisMul)<1) {
-					// ipts.val(1);
-					alert('已经是最低的购买数量了');
+                    layer.msg('已经是最低的购买数量了', {icon: 5});
 					return;
 				}else{
 					
@@ -132,7 +130,7 @@
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
 	                    }else{
-	                        alert('减少失败请重试');
+                            layer.msg('减少失败请重试', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -209,6 +207,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
+	                        //todo 删除成功不刷新页面
 	                        // alert('删除成功');
 	                        window.location.reload();
 	                    }else{
@@ -233,7 +232,7 @@
 	            type: "POST",
 	            success: function (data) {
 	               if(data.code){
-	               		$.msg.alert('清空购物车成功');
+//	               		$.msg.alert('清空购物车成功');
 	               		window.location.reload();
 	               }else{
 	               		alert('清空购物车失败');

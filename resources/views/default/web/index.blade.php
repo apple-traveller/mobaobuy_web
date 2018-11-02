@@ -152,15 +152,27 @@
             </div>
         </div>
         <!--自营报价-->
-
         <div class="Self-support mt30">
             <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
             <ul class="Self-product-list">
                 <li><span>品牌</span><span>种类</span><span>商品名称</span><span>剩余数量（公斤）</span><span>单价（元/公斤）</span><span>发货地</span><span>更新时间</span><span>操作</span></li>
                 @foreach($goodsList['list'] as $vo)
-                    <li><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{'￥'.number_format($vo['shop_price'], 2)}}</span><span>{{$vo['delivery_place']}}</span><span>{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
-                        <span>@if($vo['goods_number'])<button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>@else
-                                <button class="trade-close-btn">已售完</button> @endif</span></li>
+                    <li>
+                        <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span>
+                        <span class="ovh">{{$vo['cat_name']}}</span>
+                        <span><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span>
+                        <span>{{$vo['goods_number']}}</span>
+                        <span>{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                        <span>{{$vo['delivery_place']}}</span>
+                        <span>{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
+                        <span>
+                            @if($vo['goods_number'])
+                                <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                            @else
+                                <button class="trade-close-btn">已售完</button>
+                            @endif
+                        </span>
+                    </li>
                 @endforeach
             </ul>
         </div>

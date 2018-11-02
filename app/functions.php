@@ -141,4 +141,16 @@ if(!function_exists('make_treeTable')) {
     }
 }
 
+if(!function_exists('getRealNameBool')){
+    //获取用户是否实名认证
+    function getRealNameBool($user_id)
+    {
+        $res = \App\Services\UserRealService::getInfoByUserId($user_id);
+        if(!empty($res) && $res['review_status'] == 1){//已实名认证
+            return true;
+        }
+        return false;
+    }
+}
+
 
