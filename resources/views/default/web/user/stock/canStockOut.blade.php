@@ -180,6 +180,10 @@
             var price = $('#price').val();
             var flow_desc = $('#flow_desc').val();
             var id = $('.currStockOut').attr('id');
+            if(currStockNum == ''){
+                $.msg.alert(出库数量不能为空);
+                return;
+            }
             Ajax.call('/curStockSave',{currStockNum:currStockNum,flow_desc:flow_desc,id:id,price:price,partner_name:partner_name,order_sn:order_sn}, function(data){
                 if(data.code){
                     $.msg.tips('添加出库记录成功');

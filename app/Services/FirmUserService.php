@@ -33,51 +33,63 @@ class FirmUserService
             //编辑
             if($firmUserInfo){
                 $userPermi['real_name'] = $userName;
-                if(in_array(1,$permi)){
-                    $userPermi['can_po'] = 1;
+                if(!empty($permi)){
+                    if(in_array(1,$permi)){
+                        $userPermi['can_po'] = 1;
+                    }else{
+                        $userPermi['can_po'] = 0;
+                    }
+
+                    if(in_array(2,$permi)){
+                        $userPermi['can_pay'] = 1;
+                    }else{
+                        $userPermi['can_pay'] = 0;
+                    }
+
+                    if(in_array(3,$permi)){
+                        $userPermi['can_confirm'] = 1;
+                    }else{
+                        $userPermi['can_confirm'] = 0;
+                    }
+
+                    if(in_array(4,$permi)){
+                        $userPermi['can_stock_out'] = 1;
+                    }else{
+                        $userPermi['can_stock_out'] = 0;
+                    }
+
+                    if(in_array(5,$permi)){
+                        $userPermi['can_approval'] = 1;
+                    }else{
+                        $userPermi['can_approval'] = 0;
+                    }
+
+                    if(in_array(6,$permi)){
+                        $userPermi['can_invoice'] = 1;
+                    }else{
+                        $userPermi['can_invoice'] = 0;
+                    }
+                    if(in_array(7,$permi)){
+                        $userPermi['can_stock_in'] = 1;
+                    }else{
+                        $userPermi['can_stock_in'] = 0;
+                    }
+                    if(in_array(8,$permi)){
+                        $userPermi['can_stock_view'] = 1;
+                    }else{
+                        $userPermi['can_stock_view'] = 0;
+                    }
                 }else{
                     $userPermi['can_po'] = 0;
-                }
-
-                if(in_array(2,$permi)){
-                    $userPermi['can_pay'] = 1;
-                }else{
                     $userPermi['can_pay'] = 0;
-                }
-
-                if(in_array(3,$permi)){
-                    $userPermi['can_confirm'] = 1;
-                }else{
                     $userPermi['can_confirm'] = 0;
-                }
-
-                if(in_array(4,$permi)){
-                    $userPermi['can_stock_out'] = 1;
-                }else{
                     $userPermi['can_stock_out'] = 0;
-                }
-
-                if(in_array(5,$permi)){
-                    $userPermi['can_approval'] = 1;
-                }else{
                     $userPermi['can_approval'] = 0;
-                }
-
-                if(in_array(6,$permi)){
-                    $userPermi['can_invoice'] = 1;
-                }else{
                     $userPermi['can_invoice'] = 0;
-                }
-                if(in_array(7,$permi)){
-                    $userPermi['can_stock_in'] = 1;
-                }else{
                     $userPermi['can_stock_in'] = 0;
-                }
-                if(in_array(8,$permi)){
-                    $userPermi['can_stock_view'] = 1;
-                }else{
                     $userPermi['can_stock_view'] = 0;
                 }
+
                 return FirmUserRepo::modify($firmUserInfo['id'],$userPermi);
 
             }
@@ -92,31 +104,32 @@ class FirmUserService
             $userPermi['firm_id'] = $firmId;
             $userPermi['user_id'] = $userInfo['id'];
             $userPermi['real_name'] = $userName;
-            if(in_array(1,$permi)){
-                $userPermi['can_po'] = 1;
+            if(!empty($permi)){
+                if(in_array(1,$permi)){
+                    $userPermi['can_po'] = 1;
+                }
+                if(in_array(2,$permi)){
+                    $userPermi['can_pay'] = 1;
+                }
+                if(in_array(3,$permi)){
+                    $userPermi['can_confirm'] = 1;
+                }
+                if(in_array(4,$permi)){
+                    $userPermi['can_stock_out'] = 1;
+                }
+                if(in_array(5,$permi)){
+                    $userPermi['can_approval'] = 1;
+                }
+                if(in_array(6,$permi)){
+                    $userPermi['can_invoice'] = 1;
+                }
+                if(in_array(7,$permi)){
+                    $userPermi['can_stock_in'] = 1;
+                }
+                if(in_array(8,$permi)){
+                    $userPermi['can_stock_view'] = 1;
+                }
             }
-            if(in_array(2,$permi)){
-                $userPermi['can_pay'] = 1;
-            }
-            if(in_array(3,$permi)){
-                $userPermi['can_confirm'] = 1;
-            }
-            if(in_array(4,$permi)){
-                $userPermi['can_stock_out'] = 1;
-            }
-            if(in_array(5,$permi)){
-                $userPermi['can_approval'] = 1;
-            }
-            if(in_array(6,$permi)){
-                $userPermi['can_invoice'] = 1;
-            }
-            if(in_array(7,$permi)){
-                $userPermi['can_stock_in'] = 1;
-            }
-            if(in_array(8,$permi)){
-                $userPermi['can_stock_view'] = 1;
-            }
-
             return FirmUserRepo::create($userPermi);
         }
     }
