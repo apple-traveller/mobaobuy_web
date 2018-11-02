@@ -4,6 +4,14 @@
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
         }
+        .Self-product-list li span{width:14%;}
+        .news_pages ul.pagination {text-align: center;}
+        .Self-product-list li span{width: 12.5%;float: left;text-align: center;}
+        .pro_detail{overflow: hidden;}
+        .pur_volume{float:left;border: 1px solid #DEDEDE; box-sizing:border-box;}
+        .pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
+        .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
+
     </style>
 @endsection
 @section('body')
@@ -36,7 +44,7 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
                                         <option value="">请选择商品</option>
                                         @foreach($goods as $vo)
-                                            <option @if(!empty($promote_info)) @if($promote_info['goods_id']==$vo['id']) selected @endif @endif value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
+                                            <option @if(!empty($promote_info)) @if($promote_info['goods_id']==$vo['id']) selected @endif @endif value="{{$vo['id']}}" data-num="{{$vo['packing_spec']}}">{{$vo['goods_name']}}</option>
                                         @endforeach
                                     </select>
                                     <div class="form_prompt"></div>
@@ -52,6 +60,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" class="layui-input"  name="start_time" id="start_time" @if(!empty($promote_info))value="{{$promote_info['begin_time'][1]}}" @endif>
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
@@ -61,6 +70,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
@@ -74,7 +84,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;促销总数量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{$promote_info['num']}}@endif" maxlength="5" autocomplete="off" id="num">
+                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{$promote_info['num']}}@endif" maxlength="5"  autocomplete="off" id="num">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -82,7 +92,13 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;最小起售量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="min_limit" class="text" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" maxlength="5" autocomplete="off" id="min_limit">
+                                    <div class="pro_detail">
+                                        <div class="pur_volume ml15">
+                                            <span class="pur bbright">-</span>
+                                            <input type="text" name="min_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" id="min_limit"/>
+                                            <span class="pur bbleft">+</span>
+                                        </div>
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -90,7 +106,12 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：（0 不限）</div>
                                 <div class="label_value">
-                                    <input type="number" name="max_limit" class="text" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" maxlength="5" autocomplete="off" id="max_limit">
+                                    <div class="pro_detail">
+                                        <div class="pur_volume ml15"><span class="pur bbright">-</span>
+                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit"/>
+                                            <span class="pur bbleft">+</span>
+                                        </div>
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -130,7 +151,7 @@
                 elem: '#end_time'
                 ,type: 'time'
             });
-        })
+        });
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
@@ -138,7 +159,14 @@
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
+                        if (i==0){
+                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        } else {
+                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        }
+
                     }
                 }else{
                     $(".goods_id").append('<option value="">该分类下没有商品</option>');
@@ -152,8 +180,6 @@
                     $("#promote_form").submit();
                 }
             });
-
-
             $('#promote_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
@@ -166,7 +192,7 @@
                         required : true,
                         number:true
                     },
-                    number :{
+                    num :{
                         required : true,
                         number:true
                     },
@@ -174,13 +200,11 @@
                         required : true,
                         number:true
                     },
-                    min_limit:{
-                        required:true,
-                        number:true
+                    start_date:{
+                        required:true
                     },
-                    max_limit:{
-                        required:true,
-                        number:true
+                    end_date:{
+                        required:true
                     }
                 },
                 messages:{
@@ -194,12 +218,95 @@
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    min_limit :{
+                    start_date :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    end_date :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     }
                 }
             });
+
+            // 限制商品总数
+            $("#num").change(function () {
+                let spec = Number($("select[name=goods_id] option:selected").attr('data-num'));
+                let num = Number($(this).val());
+                let b_num = num % spec;
+                if (isNaN(spec)){
+                    layer.msg('请先选择商品');
+                    $(this).val('');
+                }
+                if (b_num >0){
+                    $(this).val(num-b_num);
+                    layer.msg('商品总量只能是产品规格的倍数');
+                }
+            });
+
+            // 减
+            $(".bbright").click(function(){
+                let spec = Number($("select[name=goods_id] option:selected").attr('data-num'));
+                let num = Number($(this).siblings('.pur_num').val());
+                let b_num = num % spec;
+                if (isNaN(spec)){
+                    layer.msg('请先选择商品');
+                    $(this).val('');
+                }
+                if (isNaN(num) || num<0){
+                    $(this).siblings('.pur_num').val('');
+                } else {
+                    if (num-spec<0){
+                        $(this).siblings('.pur_num').val(0);
+                    } else {
+                        if (num-spec-b_num>0){
+                            $(this).siblings('.pur_num').val(num-spec-b_num);
+                        } else{
+                            $(this).siblings('.pur_num').val(num-spec-b_num);
+                        }
+
+                    }
+                }
+            });
+
+            // 加
+            $(".bbleft").click(function(){
+                var _num;
+                let tota_num = Number($("#num").val());
+                let spec = Number($("select[name=goods_id] option:selected").attr('data-num'));
+                let num = Number($(this).siblings('.pur_num').val());
+                let b_num = num % spec;
+                if (isNaN(spec)){
+                    layer.msg('请先选择商品');
+                    $(this).val('');
+                }
+                if (isNaN(tota_num) || tota_num <=0 ){
+                    layer.msg('请先填写商品总数');
+                    $(this).val('');
+                }
+                _num = num+spec;
+                if (_num>=tota_num){
+                     $(this).siblings('input').val(tota_num);
+                }
+                if (b_num>0){
+                    $(this).siblings('input').val(_num-b_num);
+                } else {
+                    $(this).siblings('input').val(_num);
+                }
+            });
         });
+
+        $(".pur_num").change(function () {
+            let spec = Number($("select[name=goods_id] option:selected").attr('data-num'));
+            let num = Number($(this).val());
+            let b_num = num % spec;
+            if (isNaN(spec)){
+                layer.msg('请先选择商品');
+                $(this).val('');
+            }
+            if (b_num >0){
+                $(this).val(num-b_num);
+            }
+        });
+
     </script>
 
 
