@@ -11,11 +11,9 @@
         $(function(){
 
             $(document).delegate('.supply_list>li','mouseenter',function(){
-
                 $(this).find('.operation').text('收起');
                 $(this).find('.supply_list_inside').show();
                 $(this).addClass('supply_border_curr');
-
                 $('.supply_list>li:first-child').removeClass("supply_border_curr");
             });
             $(document).delegate('.supply_list>li','mouseleave',function(){
@@ -29,7 +27,6 @@
                     $(this).find('.Quotate_text').animate({bottom:"0px"});
                 },function(){$(this).find('.Quotate_text').animate({bottom:"-30px"});})
             })
-
         })
     </script>
 @endsection
