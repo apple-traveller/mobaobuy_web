@@ -20,8 +20,16 @@ class InvoiceController extends Controller
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $currentPage = $request->input('currentPage',1);
+        $member_phone = $request->input('member_phone','');
+        $status = $request->input('status','');
         $condition = [];
         $condition['shop_id'] = $shop_id;
+        if (!empty($member_phone)){
+            $condition['member_phone'] = $member_phone;
+        }
+        if (!empty($status)){
+            $condition['status'] = $status;
+        }
         $pageSize = 10;
         $list = InvoiceService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
         if (!empty($list['list'])){
@@ -33,7 +41,9 @@ class InvoiceController extends Controller
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
-            'currentPage' => $currentPage
+            'currentPage' => $currentPage,
+            'status' => $status,
+            'member_phone' => $member_phone
         ]);
     }
 

@@ -9,6 +9,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
+
 class ShopGoodsQuoteRepo
 {
     use CommonRepo;
@@ -82,5 +84,51 @@ class ShopGoodsQuoteRepo
         }
         return [];
     }
+    //根据条件获取报价列表
+    public static function getQuoteInfoBySearch($pager,$condition)
+    {
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name');
+
+        $query = self::setCondition($query, $condition);
+
+        $page = 1;
+        $page_size = -1;
+
+        if (isset($pager['pageSize']) || isset($pager['page'])) {
+            if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
+                $page_size = 10;
+            } else {
+                $page_size = intval($pager['pageSize']);
+            }
+
+            if (isset($pager['page']) && intval($pager['page']) > 0) {
+                $page = $pager['page'];
+            }
+        }
+        //总条数
+        $rs['total'] = $query->count();
+        //处理排序
+        if (isset($pager['orderType']) && !empty($pager['orderType'])) {
+            foreach ($pager['orderType'] as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+        if ($page_size > 0) {
+            $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
+        } else {
+            $rs['list'] = $query->get()->toArray();
+        }
+        $rs['list'] = \App\Helpers\object_array($rs['list']);
+        $rs['page'] = $page;
+        $rs['pageSize'] = $page_size;
+        $rs['totalPage'] = ceil($rs['total'] / $page_size);
+        return $rs;
+    }
+    
 }
 
