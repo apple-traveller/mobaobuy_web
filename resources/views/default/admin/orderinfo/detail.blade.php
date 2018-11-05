@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/admin/orderinfo/list?currpage={{$currpage}}" class="s-back">返回</a>订单 - 订单信息</div>
+        <div class="title"><a href="/admin/orderinfo/list?currpage={{$currpage}}&order_status={{$order_status}}" class="s-back">返回</a>订单 - 订单信息</div>
         <div class="content">
             <div class="flexilist order_info">
                 <div class="stepflex">
@@ -122,7 +122,7 @@
 
                         <!--收货人信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>收货人信息<a href="/admin/orderinfo/modifyConsignee?id={{$orderInfo['id']}}&currpage={{$currpage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>收货人信息<a href="/admin/orderinfo/modifyConsignee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>收货人：</dt>
@@ -140,8 +140,15 @@
                         </div>
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
+                        <!--用户基本信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>其他信息<a href="/admin/orderinfo/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currpage={{$currpage}}&id={{$orderInfo['id']}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title">
+                                <i class="ui-step"></i><h3>其他信息
+                                   {{-- <a href="/admin/orderinfo/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currpage={{$currpage}}&id={{$orderInfo['id']}}">
+                                        <i class="icon icon-edit"></i>
+                                    </a>--}}
+                                </h3>
+                            </div>
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
@@ -279,6 +286,8 @@
                                             <input @if($orderInfo['order_status']==1) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="1" value="待企业审核" >
                                             <input @if($orderInfo['order_status']==2) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="2" value="待商家确认" >
                                             <input @if($orderInfo['order_status']==3) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="3" value="已确认" >
+                                            <input @if($orderInfo['order_status']==4) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="4" value="已完成" >
+                                            <input @if($orderInfo['order_status']==5) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="5" value="待开票" >
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                         </div>
 

@@ -43,18 +43,19 @@ class OrderInfoController extends Controller
     {
         $data = $request->all();
         $currpage = $data['currpage'];
+        $order_status = $data['order_status'];
         $id = $data['id'];
         unset($data['currpage']);
+        unset($data['order_status']);
         try{
             if(key_exists('id',$data)){
                 $order = OrderInfoService::modify($data);
                 if(!empty($order)){
-                    return $this->success('修改成功',url('/admin/orderinfo/detail')."?id=".$id."&currpage=".$currpage);
+                    return $this->success('修改成功',url('/admin/orderinfo/detail')."?id=".$id."&currpage=".$currpage."&order_status=".$order_status);
                 }else{
                     return $this->error('修改失败');
                 }
             }
-
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -67,6 +68,7 @@ class OrderInfoController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
+        $order_status = $request->input("order_status");
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
         $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
@@ -80,7 +82,8 @@ class OrderInfoController extends Controller
             'region'=>$region,
             'order_goods'=>$order_goods,
             'user_invoices'=>$user_invoices,
-            'orderLogs'=>$orderLogs
+            'orderLogs'=>$orderLogs,
+            'order_status'=>$order_status
         ]);
     }
 
@@ -149,6 +152,7 @@ class OrderInfoController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage');
+        $order_status = $request->input('order_status');
         $consigneeInfo = OrderInfoService::getConsigneeInfo($id);
         $countrys = RegionService::getRegionListByRegionType(0);
         $provinces = RegionService::getRegionListByRegionType(1);
@@ -158,6 +162,7 @@ class OrderInfoController extends Controller
             'consigneeInfo'=>$consigneeInfo,
             'id'=>$id,
             'currpage'=>$currpage,
+            'order_status'=>$order_status,
             'countrys'=>$countrys,
             'provinces'=>$provinces,
             'citys'=>$citys,
@@ -171,12 +176,14 @@ class OrderInfoController extends Controller
         $id = $request->input('id');
         $invoice_id = $request->input('invoice_id');
         $currpage = $request->input('currpage');
+        $order_status = $request->input('order_status');
         $invoiceInfo = OrderInfoService::getInvoiceInfo($invoice_id);
         //dd($invoiceInfo);
         return $this->display('admin.orderinfo.invoice',[
             'invoiceInfo'=>$invoiceInfo,
             'id'=>$id,
             'currpage'=>$currpage,
+            'order_status'=>$order_status
         ]);
     }
 

@@ -2,6 +2,7 @@
 @section('iframe')
     <div class="warpper">
         <div class="title">订单 - 编辑订单</div>
+
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -74,9 +75,9 @@
                                 </div>
                                 <input type="hidden" name="id" value="{{$id}}">
                                  <input type="hidden" name="currpage" value="{{$currpage}}">
-                                 
+                            <input type="hidden" name="order_status" value="{{$order_status}}">
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>收货地址：</div>
+                                    <div class="label"><span class="require-field">*</span>详细地址：</div>
                                     <div class="label_value">
                                         <input type="text" name="address" id="address" value="{{$consigneeInfo['address']}}" class="text" autocomplete="off">
                                         <div class="form_prompt"></div>
@@ -87,6 +88,8 @@
                                     <div class="label">邮政编码：</div>
                                     <div class="label_value"><input type="text" name="zipcode" id="zipcode" value="{{$consigneeInfo['zipcode']}}" class="text" autocomplete="off"></div>
                                 </div>
+
+
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>手机号码：</div>
@@ -100,7 +103,7 @@
                             </div>
 
                         <div style="margin-top:-42px;margin-right:166px;" class="goods_btn">
-                            <input type="button" value="取消" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}'">
+                            <input type="button" value="返回" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}&order_status={{$order_status}}' ">
                             <input  type="submit" class="btn btn35 blue_btn" value=" 确定 " id="submitBtn">
                         </div>
                     </form>
@@ -184,9 +187,7 @@
                     consignee:{
                         required : true,
                     },
-                    country :{
-                        required : true,
-                    },
+
                     province :{
                         required : true,
                     },
@@ -206,9 +207,7 @@
                     consignee :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                     },
-                    country :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'国家为必填项',
-                    },
+
                     province :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'省份为必填项',
                     },
