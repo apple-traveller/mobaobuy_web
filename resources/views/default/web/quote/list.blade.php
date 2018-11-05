@@ -8,9 +8,6 @@
         .sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
         .sort_down_up{background: url(/images/down_up.png)no-repeat 63px 13px;}
-        .sort_time_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
-        .sort_time_up{background: url(/images/common_icon.png)no-repeat 92px -10px}
-        .sort_time_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
         .add_time .sort_down_up{
             background: url(/images/down_up.png)no-repeat 92px 13px;
         }
@@ -24,6 +21,7 @@
 @endsection
 @section('js')
     <script src="{{asset('plugs/layui/layui.all.js')}}"></script>
+    <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script>
         $(function(){
             $(".nav-cate").hover(function(){
