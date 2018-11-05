@@ -1,11 +1,9 @@
 <ul class="layui-nav layui-layout-left">
     <li class="layui-nav-item"><a href="">控制台</a></li>
     <li class="layui-nav-item">
-        <a href="javascript:;">下拉菜单</a>
+        <a href="javascript:;">店铺</a>
         <dl class="layui-nav-child">
-            <dd><a href="">邮件管理</a></dd>
-            <dd><a href="">消息管理</a></dd>
-            <dd><a href="">授权管理</a></dd>
+            <dd><a href="">店铺资料</a></dd>
         </dl>
     </li>
 </ul>
