@@ -28,7 +28,7 @@
 						nsecond.html('<s></s>'+second);
 						intDiff--;
 					},1000)
-					
+
 				}
 				Remaine_time(10800,$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 			})
@@ -52,11 +52,11 @@
                         <a href="#.html" target="_blank">9001台湾台塑</a>
                 	</div>
 				</div>
-				
+
 				<a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="img/cart_icon.png"/></i><span class="pro_cart_num white">1</span></a>
 			</div>
 			<div class="clearfix">
-				
+
 				<div class="nav">
 					<div class="fication_menu">原料分类</div>
 					<ul class="ass_menu" style="display: none;">
@@ -72,18 +72,18 @@
 							</ul>
 						</div>
 						</li>
-						
+
 					</ul>
-					
+
 				</div>
-				
+
 				<div class="menu">
 					<ul><li>首页</li><li>报价列表</li><li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>产品列表</li><li>帮助中心</li></ul>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="limit_bg">
 		<div class="ms_title"></div>
 		<div class="limit_date">2018年10月1日-2018年10月31日</div>

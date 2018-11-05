@@ -226,6 +226,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/ad/delete', 'AdController@delete');//广告图片删除
 
         Route::any('/invoice/list', 'InvoiceController@list');//发票申请列表
+        Route::get('/invoice/goods/list', 'InvoiceController@goodsList');//开票商品
         Route::get('/invoice/detail', 'InvoiceController@detail');//查看发票详情
         Route::post('/invoice/save', 'InvoiceController@save');//保存
 

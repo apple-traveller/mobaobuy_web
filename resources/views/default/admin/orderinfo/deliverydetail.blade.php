@@ -97,7 +97,7 @@
                                         <tr>
                                             <td>{{$vo['goods_name']}}</td>
                                             <td>{{$vo['goods_sn']}}</td>
-                                            <td>{{$vo['shop_name']}}</td>
+                                            <td>{{$delivery['shop_name']}}</td>
                                             <td>{{$vo['goods_price']}}</td>
                                             <td>{{$vo['send_number']}}</td>
                                         </tr>
