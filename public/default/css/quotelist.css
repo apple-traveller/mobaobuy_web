@@ -48,7 +48,11 @@
 .num_bg1{background: url(/images/common_icon.png)no-repeat 64px 17px;}
 .num_bg2{background: url(/images/common_icon.png)no-repeat 64px 17px;}
 .price_bg{background: url(/images/down_up.png)no-repeat 63px 13px;}
-.shelftime_bg1{background: url(/images/common_icon.png)no-repeat 88px 17px;}
+/*.shelftime_bg1{background: url(/images/common_icon.png)no-repeat 88px 17px;}*/
+
+.sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
+.sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
+.sort_down_up{background: url(/images/down_up.png)no-repeat 63px 13px;}
 
 .page_mode{width: 34px;height: 20px;line-height: 20px;border: 1px solid #DEDEDE;cursor: pointer;margin-top: 9px;}
 .page_border_left{border-top-left-radius: 3px;border-bottom-left-radius: 3px;}

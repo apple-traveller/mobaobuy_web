@@ -56,6 +56,43 @@ class ActivityPromoteService
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
         $goodsInfo['activity_num'] = $ActivityInfo['num'];
         $goodsInfo['available_quantity'] = $ActivityInfo['available_quantity'];
+        $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
         return $goodsInfo;
+    }
+
+    //限时抢购 立即下单
+    public static function buyLimitToBalance($goodsId,$activityId,$goodsNum,$userId){
+        $goodsInfo = GoodsRepo::getInfo($goodsId);
+        $activityInfo = ActivityPromoteRepo::getInfo($activityId);
+
+        //规格判断处理
+        if($goodsNum > $activityInfo['available_quantity']){
+            self::throwBizError('超出当前可售数量');
+        }
+        if($goodsNum < $activityInfo['min_limit']){
+            self::throwBizError('不能低于起售数量');
+        }
+
+        if($goodsNum % $goodsInfo['packing_spec'] == 0){
+            $goodsNumber = $goodsNum;
+        }else{
+            if($goodsNum > $goodsInfo['packing_spec']){
+                $yuNumber = $goodsNum % $goodsInfo['packing_spec'];
+                $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
+                $goodsNumber = $goodsNum + $dNumber;
+
+            }else{
+                $goodsNumber = $goodsInfo['packing_spec'];
+            }
+        }
+
+        //商品信息
+        $activityInfo['goods_number'] = $goodsNumber;
+        $activityInfo['account_money'] = $goodsNumber * $activityInfo['price'];
+        $activityInfo['goods_price'] = $activityInfo['price'];
+        $activityArr = [];
+        $activityArr[] = $activityInfo;
+        return $activityArr;
     }
 }

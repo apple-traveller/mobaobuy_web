@@ -19,13 +19,13 @@
 <div class="layui-layout layui-layout-admin">
 
     <!-- 内容主体区域 -->
-    <div class="layui-header">
+    <div class="layui-header layui-bg-cyan">
         <div class="layui-logo">seller-Admin</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
 
         @include(themePath('.')."seller.include.partials._header")
     </div>
-    <div class="layui-side layui-bg-black">
+    <div class="layui-side layui-bg-cyan ">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="left-menu">
@@ -63,7 +63,6 @@
                                 </tr>
                             </table>
                         </div>
-
                     </blockquote>
                 </div>
             </div>

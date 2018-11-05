@@ -118,7 +118,7 @@
                          库存为空
                         @endif
                     </dd>
-                    <div class="fl pro_brand_btn region_btn ml20" id="on-query">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>
+                    {{--<div class="fl pro_brand_btn region_btn ml20" id="on-query">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>--}}
                 </dl>
          </div>
 

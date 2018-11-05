@@ -263,7 +263,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     /********************************报价信息************************************/
     Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
-    Route::post('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
+    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
     /********************************************************************/
 
@@ -363,17 +363,18 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/cart','GoodsController@cart');//加入购物车
         Route::post('/checkListen','GoodsController@checkListen');//购物车多选框
         Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
-        Route::get('/confirmOrder','GoodsController@confirmOrder');//确认订单页面
+        Route::get('/confirmOrder/{id?}','GoodsController@confirmOrder');//确认订单页面
         Route::post('/createOrder','GoodsController@createOrder');//提交订单
         Route::post('/clearCart','GoodsController@clearCart');//清空购物车
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
         Route::post('/delCart','GoodsController@delCart');//删除购物车数量
         Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
-
+        Route::post('/checkListenCartInput','GoodsController@checkListenCartInput');//购物车判断数量
         Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
         Route::get('/orderSubmission.html','GoodsController@orderSubmission');// 订单确认页面
         Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
 
+        Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
@@ -395,6 +396,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
+
+        Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
+        Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
 
     });
@@ -470,7 +474,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 
         Route::get('/invoice/list', 'InvoiceController@list'); // 客户开票申请列表
         Route::get('/invoice/detail', 'InvoiceController@detail'); // 详情页
-        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择地址
+        Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择快递
         Route::post('/invoice/verifyInvoice', 'InvoiceController@verifyInvoice'); // 审核 - 动作
         Route::post('/invoice/cancelInvoice', 'InvoiceController@cancelInvoice'); // 作废 - 动作
     });

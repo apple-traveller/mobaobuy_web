@@ -42,7 +42,7 @@ class IndexController extends Controller
         //成交动态
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
         //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['add_time'=>'desc']],['is_self_run'=>1]);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯

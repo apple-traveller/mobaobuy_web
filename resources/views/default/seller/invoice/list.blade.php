@@ -5,6 +5,11 @@
         <div class="content">
             <div class="flexilist">
                 <div class="common-head">
+                    <div class="order_state_tab">
+                        <a href="/seller/invoice/list" @if($status=='') class="current" @endif>全部订单@if($status=='') <em>({{$total}})</em> @endif</a>
+                        <a href="/seller/invoice/list?status=1" @if($status==1) class="current" @endif>待开票@if($status==1) <em>({{$total}})</em> @endif</a>
+                        <a href="/seller/invoice/list?status=2" @if($status==2) class="current" @endif>已开票@if($status==2) <em>({{$total}})</em> @endif</a>
+                    </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                         <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
@@ -12,7 +17,7 @@
                     <div class="search">
                         <form action="/seller/invoice/list" name="searchForm" >
                             <div class="input">
-
+                                <input type="text" name="member_phone" value="{{ $member_phone }}" class="text nofocus w180" placeholder="买家手机号" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>

@@ -128,7 +128,13 @@
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
+                        if (i==0){
+                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        } else {
+                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        }
                     }
                 }else{
                     $(".goods_id").append('<option value="">该分类下没有商品</option>');

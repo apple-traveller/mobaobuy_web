@@ -31,8 +31,13 @@ class QuoteController extends Controller
         $currpage = $request->input("currpage",1);
         $highest = $request->input("highest");
         $lowest = $request->input("lowest");
-        $price_bg1 = $request->input("price_bg1",1);
-        $orderType = $request->input("orderType","id:asc");
+        $orderType = $request->input("orderType","b.id:asc");
+        $brand_id = $request->input("brand_id","");
+        $cate_id = $request->input('cate_id',"");
+        $cat_name = $request->input('cat_name',"");
+        $place_id = $request->input('place_id',"");
+        $keyword = $request->input('keyword',"");//搜索关键字
+
         $condition = [];
 
         if(!empty($orderType)){
@@ -46,15 +51,39 @@ class QuoteController extends Controller
             $condition['shop_price|<='] = $highest;
         }
         if($highest=="" && $lowest!=""){
-            $condition['shop_price|<='] = $lowest;
+            $condition['shop_price|>='] = $lowest;
         }
         if($lowest!="" && $highest!=""&&$lowest<$highest){
             $condition['shop_price|<='] = $highest;
             $condition['shop_price|>='] = $lowest;
         }
         if($lowest>$highest){
-            $condition['shop_price|<='] = $lowest;
+            $condition['shop_price|>='] = $lowest;
         }
+
+        if(!empty($brand_id)){
+//            $goods_id = BrandService::getGoodsIds($brand_name);
+//            $condition['goods_id'] = implode('|',$goods_id);
+            $condition['g.brand_id'] = $brand_id;
+        }
+        if(!empty($cate_id)){
+//            $goods_id = GoodsCategoryService::getGoodsIds($cate_id);
+//            $condition['goods_id'] = implode('|',$goods_id);
+            $c['opt'] = 'OR';
+            $c['g.cat_id'] = $cate_id;
+            $c['cat.parent_id'] = $cate_id;
+            $condition[] = $c;
+        }
+        if(!empty($place_id)){
+            $condition['place_id'] = $place_id;
+        }
+        if(!empty($keyword)){
+            $con['opt'] = 'OR';
+            $con['b.goods_name'] = '%'.$keyword.'%';
+            $con['cat.cat_name'] = '%'.$keyword.'%';
+            $condition[] = $con;
+        }
+
         $pageSize = 10;
 
         //产品报价列表
@@ -67,35 +96,84 @@ class QuoteController extends Controller
             'orderType'=>$orderType,
             'lowest'=>$lowest,
             'highest'=>$highest,
-            'price_bg1'=>$price_bg1
+            'brand_id'=>$brand_id,
+            'cate_id'=>$cate_id,
+            'cat_name'=>$cat_name,
+            'place_id'=>$place_id,
+            'keyword'=>$keyword,
         ]);
     }
 
     //根据条件范围收索产品(ajax)
     public function goodsListByCondition(Request $request)
     {
+
         $currpage = $request->input("currpage",1);
-        $brand_name = $request->input("brand_name","");
+        $highest = $request->input("highest");
+        $lowest = $request->input("lowest");
+        $sort_goods_number = $request->input("sort_goods_number",'');
+        $sort_add_time = $request->input("sort_add_time",'');
+        $sort_shop_price = $request->input("sort_shop_price",'');
+        $orderType = $request->input("orderType","b.id:asc");
+        $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
         $condition = [];
-        if(!empty($brand_name)){
-            $goods_id = BrandService::getGoodsIds($brand_name);
-            $condition['goods_id'] = implode('|',$goods_id);
+
+        $orderBy = [];
+        if(!empty($sort_goods_number)){
+            $orderBy['b.goods_number'] = $sort_goods_number;
+        }
+        if(!empty($sort_add_time)){
+            $orderBy['b.add_time'] = $sort_add_time;
+        }
+        if(!empty($sort_shop_price)){
+            $orderBy['b.shop_price'] = $sort_shop_price;
+        }
+        if(!empty($orderType)){
+            $t = explode(":",$orderType);
+            $orderBy[$t[0]] = $t[1];
+        }
+        if(empty($lowest)&&empty($highest)){
+            $condition = [];
+        }
+        if($lowest=="" && $highest!=""){
+            $condition['shop_price|<='] = $highest;
+        }
+        if($highest=="" && $lowest!=""){
+            $condition['shop_price|>='] = $lowest;
+        }
+        if($lowest!="" && $highest!=""&&$lowest<$highest){
+            $condition['shop_price|<='] = $highest;
+            $condition['shop_price|>='] = $lowest;
+        }
+        if($lowest>$highest){
+            $condition['shop_price|>='] = $lowest;
+        }
+
+        if(!empty($brand_id)){
+            $condition['g.brand_id'] = $brand_id;
         }
         if(!empty($cate_id)){
-            $goods_id = GoodsCategoryService::getGoodsIds($cate_id);
-            $condition['goods_id'] = implode('|',$goods_id);
+            $c['opt'] = 'OR';
+            $c['g.cat_id'] = $cate_id;
+            $c['cat.parent_id'] = $cate_id;
+            $condition[] = $c;
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
         }
-        $pageSize = 2;
-        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        $pageSize = 10;
+        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         if(empty($goodsList['list'])){
             return $this->result("",400,'error');
         }else{
-            return $this->result(['list'=>$goodsList['list'],'currpage'=>$currpage,'total'=>$goodsList['total'],'pageSize'=>$pageSize],200,'success');
+            return $this->result([
+                'list'=>$goodsList['list'],
+                'currpage'=>$currpage,
+                'total'=>$goodsList['total'],
+                'pageSize'=>$pageSize
+            ],200,'success');
         }
     }
 
