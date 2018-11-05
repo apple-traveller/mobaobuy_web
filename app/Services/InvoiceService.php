@@ -58,6 +58,7 @@ class InvoiceService
      * 审核发票
      * @param $invoice_id
      * @param $data
+     * @return int
      * @throws \Exception
      */
     public static function verifyInvoice($invoice_id,$data)

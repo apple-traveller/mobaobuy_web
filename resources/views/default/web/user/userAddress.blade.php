@@ -99,12 +99,14 @@
 				<div class="address_name mt20"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
 				<div class="address_name mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
-				<div class="address_name mt15 default_addr dno" style="margin-top: 3px">
-					@if($v['is_default'])
-						<span class="fr lcolor cp" ><a href="javascript:void(0);" style="color: #75b335; ">默认地址</a></span>
-					@else
-						<span class="fr lcolor cp checked_btn" data-id = "{{$v['id']}}" style="cursor: pointer">设为默认地址</span>
-					@endif
+				<div class="address_default">
+					<div class="address_default_edit" align="center">
+						@if($v['is_default'] == 1)
+							<span class=" cp " style="color: #74b334">默认</span>
+						@else
+							<span class=" cp " >设置默认</span>
+						@endif
+					</div>
 				</div>
 			</li>
 			@endforeach
