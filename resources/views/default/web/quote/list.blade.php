@@ -8,6 +8,18 @@
         .sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
         .sort_down_up{background: url(/images/down_up.png)no-repeat 63px 13px;}
+        .sort_time_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
+        .sort_time_up{background: url(/images/common_icon.png)no-repeat 92px -10px}
+        .sort_time_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
+        .add_time .sort_down_up{
+            background: url(/images/down_up.png)no-repeat 92px 13px;
+        }
+        .add_time .sort_down{
+            background: url(/images/common_icon.png)no-repeat 92px 17px;
+        }
+        .add_time .sort_up{
+            background: url(/images/common_icon.png)no-repeat 92px -10px;
+        }
 	</style>
 @endsection
 @section('js')
@@ -121,7 +133,7 @@
 						<a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
 					</div>
 					<div class="fl">
-						<ul id="sort" sort_name="">
+						<ul id="sort" sort_name="" class="chooselist">
 							<li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
 							<li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
 							<li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
@@ -214,63 +226,6 @@
     $('#btnSearchPrice').click(function(){
         getInfo(1);
     });
-
-    //根据地区筛选
-//    function choseByRegion(currpage){
-//        var region_ids = [];
-//        var region_names = [];
-//        $(".pro_brand_list").find("input").each(function(){
-//            if($(this).is(':checked')){
-//                region_ids.push($(this).attr('data-id'));
-//                region_names.push($(this).val());
-//            }
-//        });
-//        $(".condition").append('<div style="margin-left:20px;" class="mode_add tac ml10 condition_tag">'+region_names.join(',')+'<i style="cursor: pointer" class="mode_close"></i></div>');
-//        $.ajax({
-//            type: "POST",
-//            url: "/condition/goodsList",
-//            data: {"place_id":region_ids.join("|"),'currpage':currpage},
-//            dataType: "json",
-//            success: function(res){
-//                if(res.code==200){
-//                    var data = res.data;
-//                    console.log(data);
-//                    var currpage = data.currpage;
-//                    var pageSize = data.pageSize;
-//                    var total = data.total;
-//                    var list = data.list;
-//                    $(".table_title").nextAll().remove();//去除已经出现的数据
-//                    $("#page").remove();//删除分页div
-//                    for (var i=0;i<list.length;i++)
-//                    {
-//                        $(".table_title").after('<li><span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span><span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span><span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span><span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span><span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span><span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span></li>');
-//                        $(".news_pages").append('<ul id="page" class="pagination"></ul>');
-//                    }
-//                    //分页
-//                    layui.use(['laypage'], function() {
-//                        var laypage = layui.laypage;
-//                        laypage.render({
-//                            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
-//                            , count: total //数据总数，从服务端得到
-//                            , limit: pageSize   //每页显示的条数
-//                            , curr: currpage  //当前页
-//                            , prev: "上一页"
-//                            , next: "下一页"
-//                            , theme: "#88be51" //样式
-//                            , jump: function (obj, first) {
-//                                if (!first) {
-//                                    choseByRegion(obj.curr);
-//                                }
-//                            }
-//                        });
-//                    });
-//                }else{
-//                    $(".table_title").nextAll().remove();
-//                    $(".table_title").after('<li style="color:red;">没有相关数据</li>');
-//                }
-//            }
-//        });
-//    }
 
     //删除筛选条件
     $(function(){

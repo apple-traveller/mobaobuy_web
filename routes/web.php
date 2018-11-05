@@ -372,6 +372,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
         Route::get('/orderSubmission.html','GoodsController@orderSubmission');// 订单确认页面
         Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
+        Route::post('/editOrderAddress','GoodsController@editOrderAddress');//选择订单地址
 
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
 
@@ -382,6 +383,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/invoice',  'InvoiceController@invoiceList'); // 开票列表
         Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
         Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
+        Route::post('/invoice/editInvoiceAddress',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
+        Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
 
 
         Route::post('/egis','OrderController@egis');//订单审核通过
