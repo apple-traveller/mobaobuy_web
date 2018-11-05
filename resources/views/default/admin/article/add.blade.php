@@ -10,7 +10,13 @@
                     <li class=""><a href="javascript:void(0);">文章内容</a></li>
                 </ul>
             </div>
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>请注意选择文章分类；请严谨描述文章内容。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/article/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -52,7 +58,10 @@
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>文章作者：</div>
-                                <div class="label_value"><input type="text" name="author" class="text" autocomplete="off" value=""><div class="form_prompt"></div></div>
+                                <div class="label_value">
+                                    <input type="text" name="author" class="text" autocomplete="off" value="">
+                                    <div class="form_prompt"></div>
+                                </div>
 
                             </div>
                             <div class="item">
@@ -76,10 +85,10 @@
                                 <div class="label_value"><input type="text" name="file_url" class="text valid" autocomplete="off" id="link_url" value="http://" aria-invalid="false"></div>
                             </div>
                             <div class="item">
-                                <div class="label">上传图片：</div>
+                                <div class="label"><span class="require-field">*</span>上传图片：</div>
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" data-type="" data-path="article" >上传图片</button>
-                                    <input type="text" value="" class="text"  name="image" style="display:none;">
+                                    <input type="hidden" value="" class="text" id="image"  name="image" style="display:none;">
                                     <img  style="width:60px;height:60px;display:none;" class="layui-upload-img"><br/>
                                 </div>
                             </div>
@@ -166,6 +175,9 @@
                     keywords :{
                         required : true,
                     },
+                    image :{
+                        required : true,
+                    }
                 },
                 messages:{
                     title:{
@@ -179,6 +191,9 @@
                     },
                     keywords:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
+                    },
+                    image:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'图片不能为空'
                     },
                 }
             });

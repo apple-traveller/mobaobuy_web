@@ -1,10 +1,14 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">
-            文章 - 文章分类        </div>
+        <div class="title"> 文章 - 文章分类</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>文章分类。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">

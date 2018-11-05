@@ -5,6 +5,13 @@
         <div class="title"><a href="/admin/brand/list" class="s-back">返回</a>品牌 - 添加品牌</div>
         <div class="content">
 
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
+
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/brand/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -39,7 +46,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>品牌描述：</div>
                                 <div class="label_value">
-                                    <textarea id="brand_desc" name="brand_desc" rows="5" cols="40"></textarea>
+                                    <textarea id="brand_desc" name="brand_desc" class="textarea"></textarea>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
@@ -152,9 +159,6 @@
                         required : true,
                         isLetter : "[A-Z]"
                     },
-                    category_links:{
-                        required : true
-                    },
                     brand_logo:{
                         required : true
                     },
@@ -169,12 +173,12 @@
                     brand_first_char :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+                    brand_logo:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'品牌logo不能为空'
+                    },
                     brand_desc :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    brand_logo:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'品牌logo不能为空'
-                    }
 
                 }
             });

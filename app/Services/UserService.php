@@ -5,7 +5,9 @@ use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\GsxxCompanyRepo;
 use App\Repositories\GsxxSupplierRepo;
+use App\Repositories\OrderInfoRepo;
 use App\Repositories\RegionRepo;
+use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Repositories\UserPaypwdRepo;
@@ -426,6 +428,25 @@ class UserService
             $collect_goods[$k]['goods_name']=$goods['goods_name'];
         }
         return $collect_goods;
+    }
+
+    //会员中心首页
+    public static function userMember($userId){
+        //
+        //订单
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId]);
+        //商品推荐
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
+
+        //未付款订单数
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0]);
+        //
+        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+
+//        dump($orderInfo);
+//        dump($orderInfo['total']);
+//        dd($shopGoodsInfo);
+        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0];
     }
 
 }

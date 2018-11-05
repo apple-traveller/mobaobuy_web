@@ -7,7 +7,13 @@
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list" class="s-back">返回</a>商品 - 添加商品</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>添加商品。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/goods/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -104,10 +110,10 @@
                                 <div class="label_value">
                                     <div class="attribute"></div>
                                     <input type="hidden" id="goods_attr" name="goods_attr">
-                                    <div class="form_prompt"></div>
-                                    <div class="layui-btn attr-btn"  style="margin-top:5px;">
+                                    <div class="layui-btn attr-btn"  style="margin-top:5px;float:left;">
                                         <i class="layui-icon">&#xe608;</i> 添加属性
                                     </div>
+                                    <div style="margin-left: 20px;line-height: 50px;" class="form_prompt"></div>
                                 </div>
                             </div>
 

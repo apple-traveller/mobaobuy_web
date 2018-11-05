@@ -3,7 +3,12 @@
     <div class="warpper">
         <div class="title"><a href="/admin/ad/list" class="s-back">返回</a>广告图- 编辑广告图</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>带星号的为必填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/ad/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">

@@ -4,7 +4,14 @@
         <div class="title">
             商品 - 平台商品分类        </div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>展示了平台所有的商品分类。</li>
+                    <li>可在列表直接增加下一级分类。</li>
+                    <li>鼠标移动“设置”位置，可新增下一级分类、查看下一级分类操作。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">

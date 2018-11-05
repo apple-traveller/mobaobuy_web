@@ -36,10 +36,10 @@
 			margin-left: 10px;
 			margin-top: 0px;
 		}
-		.Collect_goods_address li:hover {
-			border: 1px solid #75b335;
-		}
-		.Collect_goods_address li.mrxs-curr{border:1px solid #75b335;background: url("default/img/addr_curr.png")no-repeat -22px -8px;}
+		/*.Collect_goods_address li:hover {*/
+			/*border: 1px solid #75b335;*/
+		/*}*/
+		.Collect_goods_address li.mrxs-curr{border:1px solid #75b335;background: url("/default/img/addr_curr.png")no-repeat -22px -8px;}
 		.Collect_goods_address li {
 			float: left;
 			margin-left: 20px;
@@ -51,8 +51,8 @@
 			position: relative;
 			box-sizing: border-box;
 		}
-		.Collect_goods_address li:hover{border: 1px solid #75b335;}
-		.Collect_goods_address li:last-child:hover{border: 1px solid #D9D9D9;}
+		.Collect_goods_address li.check_address:hover{border: 1px solid #75b335;}
+		.Collect_goods_address li.check_address:last-child:hover{border: 1px solid #D9D9D9;}
 		.Collect_goods_address {
 			margin-left: 10px;
 			margin-top: 0px;
@@ -203,7 +203,7 @@
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
 			@foreach($addressList as $k=>$v)
-			<li class="address_list @if($v['is_default'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
+			<li class="address_list @if($v['is_select'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
 				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
 				<div class="address_default">
@@ -211,7 +211,7 @@
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else
-							<span class="mr20 cp " >设置默认</span>
+							<span class="mr20 cp " ></span>
 						@endif
 					</div>
 				</div>
@@ -232,7 +232,7 @@
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">￥{{ $v['account'] }}</span>
 			</li>
 			@endforeach
 		</ul>
@@ -240,9 +240,9 @@
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
-				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">￥0.00</span></div>
+				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">￥{{$goods_amount}}</span></div>
 				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家审核</span></div>
-				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">￥0.00</span></div>
+				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">￥{{$goods_amount}}</span></div>
 			</div>
 
 		</div>
@@ -258,14 +258,14 @@
 @include(themePath('.','web').'web.include.partials.footer_new')
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>
-	$(function () {
+//	$(function () {
 //		let num = $("span.subtotal").text();
-		var sum = 0;
-        $("span.subtotal").each(function(){
-            sum =sum+parseInt($(this).text());
-		});
-		$(".total_price").text('￥'+sum);
-    });
+//		var sum = 0;
+//        $("span.subtotal").each(function(){
+//            sum =sum+parseInt($(this).text());
+//		});
+//		$(".total_price").text(number_format(sum,2));
+//    });
     var click_num = 1;
 	$('#change_btn').click(function () {
 
@@ -304,10 +304,28 @@
     /**
 	 * 修改默认地址
      */
-    $(".check_address").click(function () {
+//    $(".check_address").click(function () {
+//        let address_id = $(this).attr('data-id');
+//        $.ajax({
+//            url:'/updateDefaultAddress',
+//            data:{'address_id':address_id},
+//            type:"POST",
+//            success:function (res) {
+//                console.log(res);
+//                if (res.code == 1){
+//                    setTimeout(window.location.reload(),1000);
+//                }else{
+//                    setTimeout(window.location.reload(),1000);
+//                }
+//            }
+//        });
+//    });
+
+	//修改收货地址
+	$(".check_address").click(function () {
         let address_id = $(this).attr('data-id');
         $.ajax({
-            url:'/updateDefaultAddress',
+            url:'/editOrderAddress',
             data:{'address_id':address_id},
             type:"POST",
             success:function (res) {
@@ -315,11 +333,11 @@
                 if (res.code == 1){
                     setTimeout(window.location.reload(),1000);
                 }else{
-                    setTimeout(window.location.reload(),1000);
+                    $.msg.error(res.msg);
                 }
             }
         });
-    });
+	});
     $(".address_sumb").click(function () {
     	var activityPromoteId = $('#activityPromoteId').val();
 		let words =  $("input[ name='words' ]").val();

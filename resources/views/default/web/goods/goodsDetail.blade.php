@@ -1,4 +1,5 @@
-@extends(themePath('.','web').'web.include.layouts.goods')
+@extends(themePath('.','web').'web.include.layouts.home')
+
 @section('title', '产品列表')
 @section('css')
 	<style>
@@ -30,9 +31,16 @@
         .History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
         .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
         .History-product-list li:last-child{border-bottom: none;}
+        .orangebg{background-color:#ff6f17;}
+        .Self-product-list li span {margin-top: 30px;}
+    
     </style>
+    
+
 @endsection
 @section('js')
+<script type="text/javascript" src="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"> </script>
+    <link href="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" rel="stylesheet" type="text/css"/>
 	<script>
         $(function(){
             // 更多/收起
@@ -60,6 +68,34 @@
                     $('.more_filter_box').text('更多选项...');
                 }
             });
+
+            //数量输入检测
+            $('#pur_num').blur(function(){  
+                //数量
+                var goodsNumber = $(this).val();
+                //当前购物车数据id
+                var id = $(this).attr('cid');
+                    if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                        $.ajax({
+                            'type':'post',
+                            'data':{'id':id,'goodsNumber':goodsNumber},
+                            'url':'{{url('/checkListenCartInput')}}',
+                            success:function(res){
+                                if(res.code){
+                                }else{
+                                    layer.msg('输入的数量有误');
+                                    window.location.reload();
+                                }
+                            }
+                        })
+                    }else{
+                        layer.msg('输入的数量有误');
+                         window.location.reload();
+                    }
+            });
+
+            //隐藏原料分类
+            $('.ass_menu').hide();
         })
 	</script>
 @endsection
@@ -112,7 +148,7 @@
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" cid="{{$good_info['id']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
 
 			</div>
 

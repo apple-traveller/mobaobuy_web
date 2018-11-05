@@ -53,10 +53,18 @@
                                     <td><div class="tDiv">{{$vo['contactName']}}</div></td>
                                     <td><div class="tDiv">{{$vo['contactPhone']}}</div></td>
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
-                                    <td><div class="tDiv">{{status($vo['is_validated'])}}</div></td>
                                     <td>
                                         <div class="tDiv">
-                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isFreeze')}}','{{$vo['id']}}')">
+                                            @if($vo['is_validated']==0)
+                                                <div  class='review_status layui-btn layui-btn-sm layui-btn-radius '>已审核</div>
+                                            @else
+                                                <div class='review_status layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary  '>待审核</div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/shop/change/isFreeze')}}','{{$vo['id']}}')">
                                                 <div class="circle"></div>
                                             </div>
                                             <input type="hidden" value="0" name="">

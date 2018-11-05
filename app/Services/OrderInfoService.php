@@ -154,14 +154,7 @@ class OrderInfoService
                     $orderList['list'][$k]['auth_desc'][] = '删除';
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
                 }
-                if($item['order_status'] == 1){
-                    $orderList['list'][$k]['auth'][] = 'can_pay';
-                    $orderList['list'][$k]['auth'][] = 'can_cancel';
-                    $orderList['list'][$k]['auth_desc'][] = '去支付';
-                    $orderList['list'][$k]['auth_desc'][] = '取消';
-                    $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-                }
+
                 if($item['order_status'] == 2){
                     $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth'][] = 'wait_Confirm';
@@ -195,8 +188,8 @@ class OrderInfoService
 
             if($item['order_status'] == 5){
                 $orderList['list'][$k]['auth'][] = 'wait_invoice';
-                $orderList['list'][$k]['auth_desc'][] = '待开票';
-                $orderList['list'][$k]['auth_html'][] = '';
+                $orderList['list'][$k]['auth_desc'][] = '申请开票';
+                $orderList['list'][$k]['auth_html'][] = 'href="/invoice"';
             }
 
         }
@@ -216,6 +209,7 @@ class OrderInfoService
             case 2: $status = '待确认';break;
             case 3: $status = '已确认';break;
             case 4: $status = '已完成';break;
+            case 5: $status = '待开票';break;
         }
 
         if($order_status > 0 && $order_status <> 4){
@@ -473,13 +467,9 @@ class OrderInfoService
         foreach($deliveryGoods as $k=>$v){
             //查询所属店铺
             $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-            if (!empty($shop_goods_quote)){
-                //查询所属订单的商品信息
-                $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
-                $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
-            } else {
-                $deliveryGoods[$k]['goods_price'] = '';
-            }
+            //查询所属订单的商品信息
+            $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
+            $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
         }
         return $deliveryGoods;
     }
