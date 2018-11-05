@@ -1,3 +1,4 @@
+
 <div class="top-search-box clearfix">
     <div class="top-search-div">
         <div class="search-div">
@@ -8,7 +9,7 @@
             </div>
             <div class="search-box">
                 <form action="/goodsList" method="get">
-                    <input type="text" name="keyword" value="@if(isset($keyword)) {{$keyword}} @endif" class="search-input" placeholder="请输入关键词、类别进行搜索"/>
+                    <input type="text" name="keyword" @if(isset($keyword)) value="{{$keyword}}" @endif class="search-input" placeholder="请输入关键词、类别进行搜索"/>
                     <input type="submit" class="opt-btn" value="搜 索"/>
                 </form>
 
@@ -17,7 +18,7 @@
                 @if(!empty(getConfig('search_keywords')))
                     <div class="hot_search_m">热门推荐：
                         @foreach(explode(',',getConfig('search_keywords')) as $item)
-                            <a href="#.html" target="_blank">{{$item}}</a>
+                            <a href="/goodsList?keyword={{$item}}" target="_blank">{{$item}}</a>
                         @endforeach
                     </div>
                 @endif
@@ -35,11 +36,11 @@
                                 <ul class="ass_fn_list">
                                     @foreach($level1_item['_child'] as $level2_item)
                                         <li>
-                                            <h1 class="fn_title fl">{{$level2_item['cat_name']}}</h1>
+                                            <h1 class="fn_title fl"><a href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h1>
                                             @if(isset($level2_item['_child']))
                                                 <div class="ass_fn_list_that ml35 ovh fl">
                                                     @foreach($level2_item['_child'] as $level3_item)
-                                                        <span>{{$level3_item['cat_name']}}</span>
+                                                        <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
                                                     @endforeach
                                                 </div>
                                             @endif

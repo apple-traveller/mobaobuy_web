@@ -49,7 +49,9 @@
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-svgorder"></i>订单管理</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
+                        @if(getRealNameBool(session('_web_user_id')))
+                            <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
+                        @endif
                         <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">我的订单</a></li>
                         <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>

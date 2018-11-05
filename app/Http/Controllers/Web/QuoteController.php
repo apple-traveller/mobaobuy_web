@@ -34,6 +34,7 @@ class QuoteController extends Controller
         $orderType = $request->input("orderType","b.id:asc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
+        $cat_name = $request->input('cat_name',"");
         $place_id = $request->input('place_id',"");
         $keyword = $request->input('keyword',"");//搜索关键字
 
@@ -68,7 +69,10 @@ class QuoteController extends Controller
         if(!empty($cate_id)){
 //            $goods_id = GoodsCategoryService::getGoodsIds($cate_id);
 //            $condition['goods_id'] = implode('|',$goods_id);
-            $condition['g.cat_id'] = $cate_id;
+            $c['opt'] = 'OR';
+            $c['g.cat_id'] = $cate_id;
+            $c['cat.parent_id'] = $cate_id;
+            $condition[] = $c;
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
@@ -94,6 +98,7 @@ class QuoteController extends Controller
             'highest'=>$highest,
             'brand_id'=>$brand_id,
             'cate_id'=>$cate_id,
+            'cat_name'=>$cat_name,
             'place_id'=>$place_id,
             'keyword'=>$keyword,
         ]);
@@ -110,7 +115,6 @@ class QuoteController extends Controller
         $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
         $orderType = $request->input("orderType","b.id:asc");
-//        $orderType = 'b.id:asc';
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
@@ -133,7 +137,6 @@ class QuoteController extends Controller
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }
-//        dd($orderBy);
         if($lowest=="" && $highest!=""){
             $condition['shop_price|<='] = $highest;
         }
@@ -152,7 +155,10 @@ class QuoteController extends Controller
             $condition['g.brand_id'] = $brand_id;
         }
         if(!empty($cate_id)){
-            $condition['g.cat_id'] = $cate_id;
+            $c['opt'] = 'OR';
+            $c['g.cat_id'] = $cate_id;
+            $c['cat.parent_id'] = $cate_id;
+            $condition[] = $c;
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;

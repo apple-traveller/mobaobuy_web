@@ -178,11 +178,16 @@
         function addFirmUserSave(){
             var phone = $('#firmUserPhone').val();
             var realName = $('#firmUserName').val();
+            phone = $.trim(phone);
+            realName = $.trim(realName);
+            if(phone == '' || realName == ''){
+                $.msg.alert('名字和手机号码为必填项');
+                return;
+            }
             var arr = Array();
             $.each($('input:checkbox:checked'),function(){
                 arr.push($(this).val());
             });
-           
            //编辑
             if($('#firmUserPhone').attr('disabled') == 'disabled'){
                  Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName,'isEdit':1}, function(result){

@@ -14,7 +14,7 @@
 		.data-table-box .order-item-table tr:first-child{background-color: #f4f4f4;height: 40px;}
 		.data-table-box table.order-item-table tbody td{padding: 8px 10px;}
         .data-table-box .table-body .opt-btn {
-    width: 60px;
+    width: 87px;
     height: 24px;
     line-height: 24px;
     padding: 2px 10px;

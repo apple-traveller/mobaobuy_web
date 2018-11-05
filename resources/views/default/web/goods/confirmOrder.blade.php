@@ -163,6 +163,7 @@
 			top: 84px;
 			right: -164px;
 		}
+		.address_list{cursor:pointer;}
 	</style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -202,7 +203,7 @@
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
 			@foreach($addressList as $k=>$v)
-			<li class="address_list @if($v['is_default'] == 1) mrxs-curr @endif">
+			<li class="address_list @if($v['is_default'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
 				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
 				<div class="address_default">
@@ -210,7 +211,7 @@
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else
-							<span class="mr20 cp check_address " data-id="{{ $v['id'] }}" >设置默认</span>
+							<span class="mr20 cp " >设置默认</span>
 						@endif
 					</div>
 				</div>
@@ -231,7 +232,7 @@
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} else @endif</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
 			</li>
 			@endforeach
 		</ul>
@@ -239,9 +240,9 @@
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
-				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">¥169.00</span></div>
+				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">￥0.00</span></div>
 				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家审核</span></div>
-				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">¥229.00</span></div>
+				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">￥0.00</span></div>
 			</div>
 
 		</div>
@@ -258,8 +259,8 @@
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>
 	$(function () {
-		let num = $("span.subtotal").text();
-		sum = 0;
+//		let num = $("span.subtotal").text();
+		var sum = 0;
         $("span.subtotal").each(function(){
             sum =sum+parseInt($(this).text());
 		});

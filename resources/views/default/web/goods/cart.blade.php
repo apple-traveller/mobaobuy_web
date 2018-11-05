@@ -75,7 +75,7 @@
     		var MaxNum;
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
-				var thisMul = $(this).attr('data-id');
+				var thisMul = $(this).attr('data-id');//规格
 				MaxNum = $(this).parent().parent().siblings('.shop_price').text();
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
@@ -83,10 +83,9 @@
 				var thisDom = $(this);
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
 					// ipts.val(Number(MaxNum));
-					alert('不能大于可售');
+                    layer.msg('不能大于可售', {icon: 5});
 					return;
 				}else{
-					
 					NumNew=Number(ipts.val())+Number(thisMul);
 					ipts.val(Number(NumNew));
 				}
@@ -98,9 +97,9 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data'].toFixed(2));
 	                    }else{
-	                        alert('增加失败请重试');
+                            layer.msg('增加失败请重试', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -115,8 +114,7 @@
 				var id = $(this).attr('id');
 				var thisDom = $(this);
 				if (Number(ipts.val())-Number(thisMul)<1) {
-					// ipts.val(1);
-					alert('已经是最低的购买数量了');
+                    layer.msg('已经是最低的购买数量了', {icon: 5});
 					return;
 				}else{
 					
@@ -130,9 +128,9 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data']);
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data'].toFixed(2));
 	                    }else{
-	                        alert('减少失败请重试');
+                            layer.msg('减少失败请重试', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -156,25 +154,29 @@
 				
 			})
 
-			$('.goods_numberListen').keyup(function(){  
-				alert();return;
-                var goodsNumber = $(this).val();
-                var goodsName = $('#goodName').val();
-                Ajax.call('/searchGoodsName', {goodsName: goodsName}, function(data){
-                    if(data['data'].length>0){
-                        $('#appendGoodsName ul').remove();
-                        var str = '';
-                        for(var i = 0;i<data['data'].length;i++){
-                            str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['goods_name']+'</li>';
-                        }
-                        var strHtml = '<ul id="pointUl"  class="pro_select" >'+str+'</ul>';
-                        $('#appendGoodsName').append(strHtml);
-                    }else{
-                        $('#appendGoodsName ul').remove();
-                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此产品数据信息</li></ul>';
-                        $('#appendGoodsName').append(strHtml);
-                    }
-                },"POST", "JSON");
+			//数量输入检测
+			$(document).find('input:text').blur(function(){  
+				//数量
+				var goodsNumber = $(this).val();
+				//当前购物车数据id
+				var id = $(this).attr('id');
+                	if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+            			$.ajax({
+            				'type':'post',
+			                'data':{'id':id,'goodsNumber':goodsNumber},
+			                'url':'{{url('/checkListenCartInput')}}',
+			                success:function(res){
+			                    if(res.code){
+			                    }else{
+			                        layer.msg('输入的数量有误');
+			                        window.location.reload();
+			                    }
+		               		}
+            			})
+		        	}else{
+		            	layer.msg('输入的数量有误');
+			             window.location.reload();
+		        	}
             });
 		})
 
@@ -209,6 +211,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
+	                        //todo 删除成功不刷新页面
 	                        // alert('删除成功');
 	                        window.location.reload();
 	                    }else{
@@ -233,7 +236,7 @@
 	            type: "POST",
 	            success: function (data) {
 	               if(data.code){
-	               		$.msg.alert('清空购物车成功');
+//	               		$.msg.alert('清空购物车成功');
 	               		window.location.reload();
 	               }else{
 	               		alert('清空购物车失败');
@@ -332,11 +335,10 @@
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
-							<input type="text" class="shop_num_amount Bidders_record_text" class="goods_numberListen" value="{{$v->goods_number}}"/>
+							<input type="text" class="shop_num_amount Bidders_record_text" id="{{$v->id}}" class="goods_numberListen" value="{{$v->goods_number}}"/>
 							<a class="shop_num_plus num_nim" id="{{$v->id}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
 						</div>
 					</div>
-				    
 				    
 				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
 				    <span class="shop_price_d fl tac">￥{{$cartInfo['quoteInfo'][$k]['account']}}</span>
@@ -353,7 +355,7 @@
 	
 		
 	<div class="sumbit_cart whitebg ovh mb30">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp">继续购买</span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
+			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp"><a href="/goodsList">继续购买</a></span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 
