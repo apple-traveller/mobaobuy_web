@@ -56,6 +56,7 @@
             <div class="nav-menu">
                 <ul>
                     <a href="/"><li>首页</li></a>
+
                     @foreach(getPositionNav('middle') as $item)
                         <a href="{{$item['url']}}"><li>{{$item['name']}}</li></a>
                     @endforeach

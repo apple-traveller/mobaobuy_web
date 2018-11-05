@@ -30,7 +30,9 @@ class UserController extends Controller
     protected $redirectTo = '/';
 
     public function  index(){
-        return $this->display('web.user.index');
+        $userId = session('_web_user_id');
+        $memberInfo = UserService::userMember($userId);
+        return $this->display('web.user.index',compact('memberInfo'));
     }
 
     //检查账号用户是否存在
@@ -740,12 +742,15 @@ class UserController extends Controller
        if($is_self == 1){
            if(empty($dataArr['real_name'])){
                $errorMsg[] = "请输入真实姓名";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['front_of_id_card'])){
                $errorMsg[] = "请上传身份证正面";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['reverse_of_id_card'])){
                $errorMsg[] = "请上传身份证反面";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(!empty($errorMsg)){
                return $this->result("",0,implode("|",$errorMsg));
@@ -753,42 +758,52 @@ class UserController extends Controller
        }elseif($is_self == 2){
            if(empty($dataArr['real_name_firm'])){
                $errorMsg[] = "请输入企业全称";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['tax_id'])){
                $errorMsg[] = "税号";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
                $errorMsg[] = "请上传授权电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
                $errorMsg[] = "请上传开票电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
                $errorMsg[] = "请输入营业执照电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['company_name'])){
                $errorMsg[] = "公司抬头";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['bank_of_deposit'])){
                $errorMsg[] = "开户银行";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['bank_account'])){
                $errorMsg[] = "银行账号";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['company_address'])){
                $errorMsg[] = "开票地址";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['company_telephone'])){
                $errorMsg[] = "开票电话";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(!empty($errorMsg)){

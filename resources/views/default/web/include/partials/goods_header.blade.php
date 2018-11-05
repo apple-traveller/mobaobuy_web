@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white">@if(isset($count)) {{$cart_count}} @else 0 @endif</span></a>
+            <a class="shopping_cart mt40 tac"><span class="fl ml25">我的购物车</span><i class="shopping_img fl"><img src="/images/cart_icon.png"/></i><span class="pro_cart_num white" id="shopping-amount">@if(isset($count)) {{$cart_count}} @else 0 @endif</span></a>
         </div>
         <div class="clearfix">
 
@@ -99,7 +99,9 @@
             </div>
 
             <div class="menu">
-                <ul><a href="/"><li>首页</li></a><a href="/goodsList"><li>报价列表</li></a><li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>产品列表</li><li>帮助中心</li></ul>
+                <ul><a href="/"><li>首页</li></a><a href="/goodsList"><li>最新报价</li></a>
+                    <a href="/goodsAttribute"><li>产品列表</li></a></ul>
+                    {{--<li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>产品列表</li><li>帮助中心</li>--}}
             </div>
         </div>
     </div>
@@ -129,4 +131,9 @@
             window.location.href="/cart";
         }
     })
+
+    //购物车数量
+    Ajax.call('/cart/num', '', function (res) {
+        $('#shopping-amount').text(res.data.cart_num);
+    });
 </script>

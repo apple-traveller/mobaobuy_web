@@ -141,7 +141,7 @@
         });
 
 	    function del(obj) {
-	        var flag = confirm("是否删除?");
+	        var flag = confirm("是否确认取消收藏?");
 	        var id = $(obj).attr('id');
 	        if(flag===true){
 	             $.ajax({
