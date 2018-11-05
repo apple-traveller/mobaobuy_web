@@ -18,9 +18,10 @@
             <div class="common-head">
 
                 <div class="order_state_tab">
-                    <a href="/admin/demand/list?action_state=-1" @if($action_state==-1) class="current" @endif>全部@if($action_state==-1) <em>({{$total}})</em> @endif </a>
-                    <a href="/admin/demand/list?action_state=0"  @if($action_state==0) class="current" @endif>待处理@if($action_state==0) <em>({{$total}})</em> @endif </a>
-                    <a href="/admin/demand/list?action_state=1"  @if($action_state==1) class="current" @endif>已处理@if($action_state==1) <em>({{$total}})</em> @endif </a>
+                    <a href="/admin/invoice/list?status=-1" @if($status==-1) class="current" @endif>全部@if($status==-1)  <em>({{$total}})</em> @endif </a>
+                    <a href="/admin/invoice/list?status=1"  @if($status==1)  class="current" @endif>待开票@if($status==1) <em>({{$total}})</em> @endif </a>
+                    <a href="/admin/invoice/list?status=2"  @if($status==2)  class="current" @endif>已开票@if($status==2) <em>({{$total}})</em> @endif </a>
+                    <a href="/admin/invoice/list?status=0"  @if($status==0)  class="current" @endif>已取消@if($status==0) <em>({{$total}})</em> @endif </a>
                 </div>
 
                 <div  class="refresh">
@@ -30,7 +31,7 @@
                 <div class="search">
                     <form action="/admin/demand/list" name="searchForm" method="post" >
                         <div class="input">
-                            <input type="text" id="test" name="add_time" placeholder="根据时间选择" value="{{$add_time}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
+                            <input type="text" id="test" name="add_time" placeholder="根据时间选择" value="{{$add_time}}" class="text nofocus goods_name" autocomplete="off">
                             <input type="submit" class="btn"  ectype="secrch_btn" value="">
                         </div>
                     </form>
@@ -42,40 +43,42 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
-                                <th width="10%"><div class="tDiv">编号</div></th>
-                                <th width="10%"><div class="tDiv">昵称</div></th>
-                                <th width="10%"><div class="tDiv">联系方式</div></th>
+                                <th width="10%"><div class="tDiv">发票编号</div></th>
+                                <th width="10%"><div class="tDiv">店铺名称</div></th>
+                                <th width="10%"><div class="tDiv">买家电话</div></th>
+                                <th width="10%"><div class="tDiv">发票总金额</div></th>
+                                <th width="10%"><div class="tDiv">订单数量</div></th>
                                 <th width="10%"><div class="tDiv">状态</div></th>
-                                <th width="10%"><div class="tDiv">添加时间</div></th>
+                                <th width="10%"><div class="tDiv">创建时间</div></th>
                                 <th width="18%" class="handle">操作</th>
                             </tr>
                             </thead>
-                            <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
+
                             <tbody>
-                            @if(!empty($demand))
-                            @foreach($demand as $vo)
+                            @if(!empty($invoices))
+                            @foreach($invoices as $vo)
                             <tr class="">
-                                <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                <td><div class="tDiv">{{$vo['nick_name']}}</div></td>
-                                <td><div class="tDiv">{{$vo['contact_info']}}</div></td>
+                                <td><div class="tDiv">{{$vo['invoice_numbers']}}</div></td>
+                                <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['member_phone']}}</div></td>
+                                <td><div class="tDiv">{{$vo['invoice_amount']}}</div></td>
+                                <td><div class="tDiv">{{$vo['order_quantity']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        @if($vo['action_state']==1)<div class='layui-btn layui-btn-sm layui-btn-radius'>已处理</div>
-                                        @else<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary'>待处理</div>
+                                        @if($vo['status']==2)<div class='layui-btn layui-btn-sm layui-btn-radius'>已开票</div>
+                                        @elseif($vo['status']==1)<div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary'>待开票</div>
+                                        @else <div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-danger'>已取消</div>
                                         @endif
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['created_at']}}</div></td>
+
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="{{url('/admin/demand/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&action_state={{$action_state}}" class="btn_see">
-                                            <i class="sc_icon sc_icon_see"></i>
-                                            @if($vo['action_state']==1)
-                                                查看
-                                            @else
-                                                去处理
-                                            @endif
+                                        <a href="{{url('/admin/invoice/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see">
+                                            <i class="sc_icon sc_icon_see"></i>查看
                                         </a>
+                                        <a href="{{url('/admin/invoice/goods/list')}}?invoice_id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看发票商品</a>
                                     </div>
                                 </td>
                             </tr>

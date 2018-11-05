@@ -73,7 +73,9 @@
                                                 @if($vo['order_status']==0)已作废
                                                 @elseif($vo['order_status']==1)待企业审核
                                                 @elseif($vo['order_status']==2)待商家确认
-                                                @else已确认
+                                                @elseif($vo['order_status']==3)已确认
+                                                @elseif($vo['order_status']==4)已完成
+                                                @else待开票
                                                 @endif
                                             </div>
                                         </td>
@@ -91,6 +93,7 @@
                                                 @if($vo['shipping_status']==0)待发货
                                                 @elseif($vo['shipping_status']==1)已发货
                                                 @elseif($vo['shipping_status']==2)部分发货
+                                                @else 已确认收货
                                                 @endif
                                             </div>
                                         </td>
@@ -98,7 +101,7 @@
                                         <td><div class="tDiv">{{$vo['goods_amount']+$vo['shipping_fee']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -119,7 +122,6 @@
                                                         width: 30px;
                                                         line-height: 30px;}
                                                 </style>
-
 
                                             </div>
                                         </div>
@@ -153,10 +155,5 @@
                 });
             });
         }
-
-
-
-
-
     </script>
 @stop

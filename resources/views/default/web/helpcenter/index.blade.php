@@ -9,7 +9,7 @@
 
     <div class="today_news whitebg fl">
         <div class="w800p">
-            <h1 class="info-detail-title">
+            <h1 class="info-detail-title" align="center" style="width: 900px;">
                 {{ $detail['title'] }}
             </h1>
             <div class="info-detail-bq gray">

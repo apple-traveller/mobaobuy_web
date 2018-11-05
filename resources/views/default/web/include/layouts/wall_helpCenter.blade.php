@@ -5,7 +5,7 @@
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
     <style>
-        .member_left_list li:last-child {margin-top: 10px}
+        .member_left_list li:last-child {margin-top: 10px;margin-bottom: 20px;}
     </style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -24,7 +24,7 @@
         </div>
 
         <div class="member_right">
-            <div><h1><i class="iconfont icon-align-left" style="margin-right: 5px;"></i>@yield('title')</h1></div>
+            <div><h1><i class="iconfont icon-align-left" style="margin:auto; align-items: center;"></i>@yield('title')</h1></div>
             @yield('content')
         </div>
 

@@ -133,7 +133,7 @@
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
+                        $(".goods_id").append('<option value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
                     $(".goods_id").append('<option value="">该分类下没有商品</option>');

@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\DemandService;
+use App\Services\InvoiceService;
+use App\Services\InvoiceGoodsService;
 class InvoiceController extends Controller
 {
     //列表
@@ -13,11 +14,11 @@ class InvoiceController extends Controller
     {
         $add_time = $request->input("add_time","");
         $currpage = $request->input('currpage',1);
-        $action_state = $request->input('action_state',-1);
+        $status = $request->input('status',-1);
         $pageSize = 10;
         $condition = [];
-        if($action_state!=-1){
-            $condition['action_state'] = $action_state;
+        if($status!=-1){
+            $condition['status'] = $status;
         }
         if(!empty($add_time)){
             $begin_time = trim(substr($add_time , 0 , 10));
@@ -25,15 +26,29 @@ class InvoiceController extends Controller
             $condition['created_at|<'] = $end_time;
             $condition['created_at|>'] = $begin_time;
         }
-        $demand = DemandService::getList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['created_at'=>'desc']],$condition);
-
+        $invoices = InvoiceService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['created_at'=>'desc']],$condition);
         return $this->display('admin.invoice.list',[
-            'demand'=>$demand['list'],
-            'total'=>$demand['total'],
+            'invoices'=>$invoices['list'],
+            'total'=>$invoices['total'],
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
-            'action_state'=>$action_state,
+            'status'=>$status,
             'add_time'=>$add_time
+        ]);
+    }
+
+    //发票商品
+    public function goodsList(Request $request)
+    {
+        $currpage = $request->input('currpage',1);
+        $invoice_id = $request->input('invoice_id');
+        $status = $request->input('status',-1);
+        $invoice_goods = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
+        //dd($invoice_goods);
+        return $this->display('admin.invoice.goodslist',[
+            'invoice_goods' => $invoice_goods,
+            'currpage'=>$currpage,
+            'status'=>$status
         ]);
     }
 
@@ -43,12 +58,12 @@ class InvoiceController extends Controller
     {
         $id = $request->input("id");
         $currpage = $request->input("currpage");
-        $action_state = $request->input("action_state");
-        $demand = DemandService::getInfo($id);
-        return $this->display('admin.demand.detail',[
-            'demand'=>$demand,
+        $status = $request->input("status");
+        $invoice = InvoiceService::getInfoById($id);
+        return $this->display('admin.invoice.detail',[
+            'invoice'=>$invoice,
             'currpage'=>$currpage,
-            'action_state'=>$action_state
+            'status'=>$status
         ]);
     }
 
@@ -58,25 +73,9 @@ class InvoiceController extends Controller
     public function save(Request $request)
     {
         $data = $request->all();
-        $errorMsg=[];
-        if(empty($data['action_log'])){
-            $errorMsg[] = "处理日志不能为空";
-        }
-
-        if(!empty($errorMsg)){
-            return $this->error(implode("|",$errorMsg));
-        }
         try{
-            $operator = session('_admin_user_info')['real_name'];
-            $time = Carbon::now();
-            $data['action_log'] = $operator.";".$time.";".$data['action_log'];
-            $data['action_state'] = 1;
-            $flag = DemandService::update($data['id'],$data);
-            if(empty($flag)){
-                return $this->error("保存失败");
-            }
-            return $this->success("保存成功",url("/admin/demand/list"));
-
+            $flag = InvoiceService::updateInvoice($data['id'],$data);
+            return $this->success("保存成功");
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

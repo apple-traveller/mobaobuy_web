@@ -94,7 +94,7 @@
                             </div>
 
                         <div style="margin-top:-42px;margin-right:166px;" class="goods_btn">
-                            <input type="button" value="取消" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}'">
+                            <input type="button" value="取消" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}&order_status={{$order_status}}'">
                             <input  type="submit" class="btn btn35 blue_btn" value=" 确定 " id="submitBtn">
                         </div>
                     </form>
