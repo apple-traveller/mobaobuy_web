@@ -138,8 +138,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/addForm', 'ShopController@addForm');//添加店铺
         Route::get('/shop/editForm', 'ShopController@editForm');//修改店铺
         Route::post('/shop/save', 'ShopController@save');//保存
-        Route::post('/brand/change/isFreeze', 'ShopController@isFreeze');//修改状态
-        Route::post('/brand/change/isValidated', 'ShopController@isValidated');//修改状态
+        Route::post('/shop/change/isFreeze', 'ShopController@isFreeze');//修改状态
+        Route::post('/shop/change/isValidated', 'ShopController@isValidated');//修改状态
         Route::get('/shop/detail', 'ShopController@detail');//详情
         Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
@@ -171,8 +171,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
         Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
-        Route::get('/orderinfo/modifyInvoice', 'OrderInfoController@modifyInvoice');//编辑发票信息
-        Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
+        //Route::get('/orderinfo/invoiceDetail', 'OrderInfoController@invoiceDetail');//查看开票信息
+        //Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
@@ -395,7 +395,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
-        Route::post('/delCollectGoods','UserController@delCollectGoods');//硬删除收藏商品
+        Route::post('/delCollectGoods','UserController@delCollectGoods');//删除收藏商品
 
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏

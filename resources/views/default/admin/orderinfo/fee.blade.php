@@ -27,6 +27,7 @@
                                 </dl>
                                 <input type="hidden" name="id" value="{{$id}}">
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
+                                <input type="hidden" name="order_status" value="{{$order_status}}">
                                 <dl>
                                     <dt>配送费用：</dt>
                                     <dd>
@@ -59,7 +60,7 @@
                         </div>
                         <div class="goods_btn">
                             <input type="submit"  class="btn btn35 blue_btn" value="完成">
-                            <input type="button" value="取消" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}'">
+                            <input type="button" value="取消" class="btn btn35 btn_blue" onclick="location.href='/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}&order_status={{$order_status}}'">
                         </div>
                     </form>
 

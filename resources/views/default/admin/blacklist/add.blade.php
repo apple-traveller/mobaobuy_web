@@ -4,9 +4,10 @@
     <div class="warpper">
         <div class="title"><a href="/admin/blacklist/list" class="s-back">返回</a>企业黑名单- 添加黑名单</div>
         <div class="content">
-            <div class="tabs_info">
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li class="curr"><a href="javascript:;">添加企业黑名单</a></li>
+                    <li>注意企业名称填全称。</li>
                 </ul>
             </div>
 

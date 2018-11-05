@@ -10,7 +10,7 @@
                 <span id="explanationZoom" title="收起提示"></span>
             </div>
             <ul>
-                <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                <li>该页面展示所有的发票信息。</li>
             </ul>
         </div>
         <div class="flexilist">
@@ -78,7 +78,6 @@
                                         <a href="{{url('/admin/invoice/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see">
                                             <i class="sc_icon sc_icon_see"></i>查看
                                         </a>
-                                        <a href="{{url('/admin/invoice/goods/list')}}?invoice_id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看发票商品</a>
                                     </div>
                                 </td>
                             </tr>

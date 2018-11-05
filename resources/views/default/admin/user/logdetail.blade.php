@@ -3,7 +3,16 @@
     <div class="warpper">
         <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$pcurrpage}}" class="s-back">返回</a>会员 - 操作记录</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i>
+                    <h4>操作提示</h4>
+                    <span id="explanationZoom" title="收起提示"></span>
+                </div>
+                <ul>
+                    <li>该页面展示了会员所有信息操作记录。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <!--商品分类列表-->
                 <div class="common-head">

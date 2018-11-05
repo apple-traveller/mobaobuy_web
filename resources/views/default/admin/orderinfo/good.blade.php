@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}" class="s-back">返回</a>订单 - 编辑商品</div>
+        <div class="title"><a href="/admin/orderinfo/detail?id={{$id}}&currpage={{$currpage}}&order_status={{$order_status}}" class="s-back">返回</a>订单 - 编辑商品</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -21,8 +21,8 @@
                             <div class="list-div" id="listDiv">
                                 <table class="table" border="0" cellpadding="0" cellspacing="0">
                                     <thead>
-                                    <tr>
-                                        <th width="15%" class="first">商品名称 [ 品牌 ]</th>
+                                    <tr >
+                                        <th  width="15%" class="first">商品名称 [ 品牌 ]</th>
                                         <th width="10%">所属店铺</th>
                                         <th width="15%">商品编码</th>
                                         <th width="10%">价格</th>
@@ -35,10 +35,10 @@
                                     @foreach($orderGoods as $vo)
                                         <tr>
                                             <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
-                                            <td>{{$vo['shop_name']}}</td>
+                                            <td>{{$shop_name}}</td>
                                             <td>{{$vo['goods_sn']}}</td>
-                                            <td class="goods_price"><input  class="text"  style="width:50px;" type="text" value="{{$vo['goods_price']}}" ></td>
-                                            <td class="goods_number"><input  class="text"  style="width:50px;" type="text" value="{{$vo['goods_number']}}" ></td>
+                                            <td class="goods_price"><input class="text"  style="width:50px;margin-left: 30px;" type="text" value="{{$vo['goods_price']}}" ></td>
+                                            <td class="goods_number"><input class="text"  style="width:50px;margin-left: 30px;" type="text" value="{{$vo['goods_number']}}" ></td>
                                             <td>{{$vo['send_number']}}</td>
                                             <td><input  type="button" data-id="{{$vo['id']}}" class="btn btn35 blue_btn changGoods" value="确定修改" id="submitBtn"></td>
                                         </tr>

@@ -9,137 +9,148 @@
                     <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
                 </div>
                 <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                    <li>该页面展示发票申请。</li>
+                    <li>审核通过后填写快递信息邮寄给用户。</li>
                 </ul>
             </div>
-            <div class="flexilist">
-                <div class="mian-info">
-                    <div class="switch_info user_basic" style="display:block;">
-                        <form method="post" action="/admin/invoice/save" name="theForm" id="user_update" novalidate="novalidate">
-
-                            <div class="item">
-                                <div class="label">&nbsp;买家店铺名称：</div>
-                                <div class="label_value font14">{{$invoice['shop_name']}}</div>
+            <div class="flexilist order_info">
+                <form method="post" action="order.php?act=operate" name="listForm" onsubmit="return check()">
+                    <div class="common-content">
+                        <!--开票基本信息-->
+                        <div class="step">
+                            <div class="step_title"><i class="ui-step"></i><h3>基本信息</h3></div>
+                            <div class="section">
+                                <dl>
+                                    <dt>发票类型：</dt>
+                                    @if($invoiceInfo['invoice_type'] == 1)
+                                        <dd>普票</dd>
+                                    @elseif($invoiceInfo['invoice_type'] == 2)
+                                        <dd>专票</dd>
+                                    @endif
+                                    <dt></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl>
+                                    <dt>公司抬头：</dt>
+                                    <dd>{{$invoiceInfo['company_name']}}</dd>
+                                    <dt>税号：</dt>
+                                    <dd>{{$invoiceInfo['tax_id']}}</dd>
+                                </dl>
+                                <dl>
+                                    <dt>开户银行：</dt>
+                                    <dd>{{$invoiceInfo['bank_of_deposit']}}</dd>
+                                    <dt>银行账号：</dt>
+                                    <dd>{{$invoiceInfo['bank_account']}}</dd>
+                                </dl>
+                                <dl>
+                                    <dt>开票地址：</dt>
+                                    <dd>
+                                        {{$invoiceInfo['company_address']}}
+                                    </dd>
+                                    <dt>开票电话：</dt>
+                                    <dd>
+                                        {{$invoiceInfo['company_telephone']}}
+                                    </dd>
+                                </dl>
                             </div>
+                        </div>
 
+                        <!--收货人信息-->
+                        <div class="step">
+                            <div class="step_title"><i class="ui-step"></i><h3>收货人信息</h3></div>
+                            <div class="section">
+                                <dl>
+                                    <dt>收货人：</dt>
+                                    <dd>{{$invoiceInfo['consignee']}}</dd>
+                                    <dt>手机号码：</dt>
+                                    <dd>{{$invoiceInfo['mobile_phone']}}</dd>
+                                </dl>
 
-                            <div class="item">
-                                <div class="label">&nbsp;买家联系方式：</div>
-                                <div class="label_value font14">{{$invoice['member_phone']}}</div>
+                                <dl style="width:40%">
+                                    <dt>收货地址：</dt>
+                                    <dd>{{$invoiceInfo['address_str']}} 详细地址：@if(empty($invoiceInfo['address'])) 无 @else {{$invoiceInfo['address']}} @endif</dd>
+                                    <dt>邮政编码：</dt>
+                                    <dd>{{$invoiceInfo['zipcode']}}</dd>
+                                </dl>
                             </div>
+                        </div>
 
+                        <!--商品信息-->
+                        <div class="step">
+                            <div class="step_title"><i class="ui-step"></i><h3>商品信息</h3></div>
 
-                            <div class="item">
-                                <div class="label">&nbsp;发票总金额：</div>
-                                <div class="label_value font14">{{$invoice['invoice_amount']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;发票号：</div>
-                                <div class="label_value font14">{{$invoice['invoice_numbers']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;商品信息：</div>
-                                <div class="label_value font14">
-                                    <div  class="layui-btn viewContent">点击查看</div>
+                            <div class="step_info">
+                                <div class="order_goods_fr">
+                                    <table  class="table" border="0" cellpadding="0" cellspacing="0">
+                                        <thead>
+                                        <tr style="text-align: center;">
+                                            <th>订单流水号</th>
+                                            <th>商品名称</th>
+                                            <th>价格</th>
+                                            <th>开票数量</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(!empty($orderInfo))
+                                            @foreach($orderInfo as $v)
+                                                <tr>
+                                                    <td>{{$v['order_sn']}}</td>
+                                                    <td>{{$v['goods_name']}}</td>
+                                                    <td>{{$v['goods_price']}}</td>
+                                                    <td>{{$v['invoice_num']}}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td style="margin-left: 20px;color:red;" colspan="4">无商品信息</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label">&nbsp;快递名称：</div>
-                                <div class="label_value font14">{{$invoice['shipping_name']}}</div>
-                            </div>
+                        </div>
 
-                            <div class="item">
-                                <div class="label">&nbsp;运单号：</div>
-                                <div class="label_value font14">{{$invoice['shipping_billno']}}</div>
-                            </div>
+                        <!--操作信息-->
+                        <div class="step order_total">
+                            <div class="step_title"><i class="ui-step"></i><h3>发货操作信息</h3></div>
+                            <div class="step_info">
+                                <div class="order_operation order_operation100">
+                                    <div class="item">
+                                        <div class="label">选择快递公司：</div>
+                                        <div class="label_value">
+                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-right:10px;" name="shipping_id" id="shipping_id">
+                                                <option value="">请选择快递公司</option>
+                                                @foreach($shippings as $vo)
+                                                    <option value="{{$vo['id']}}">{{$vo['shipping_name']}}</option>
+                                                @endforeach
+                                            </select>
+                                            <input id="shipping_name" type="hidden" name="shipping_name" value="">
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">运单号：</div>
+                                        <div class="label_value">
+                                            <input style="width: 299px;" type="text" id="shipping_billno" name="shipping_billno" class="text" autocomplete="off" value="">
+                                        </div>
+                                    </div>
 
-                            <div class="item">
-                                <div class="label">&nbsp;收票人：</div>
-                                <div class="label_value font14">{{$invoice['consignee']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;收票地址：</div>
-                                <div class="label_value font14">{{$invoice['address_str']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;邮政编码：</div>
-                                <div class="label_value font14">{{$invoice['zipcode']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;联系电话：</div>
-                                <div class="label_value font14">{{$invoice['mobile_phone']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;发票类型：</div>
-                                <div class="label_value font14">
-                                    @if($invoice['invoice_type']==1)
-                                    @else 普票
-                                    @endif 专票
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;公司抬头：</div>
-                                <div class="label_value font14">{{$invoice['company_name']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;税号：</div>
-                                <div class="label_value font14">{{$invoice['tax_id']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;开户银行：</div>
-                                <div class="label_value font14">{{$invoice['bank_of_deposit']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;银行账号：</div>
-                                <div class="label_value font14">{{$invoice['bank_account']}}</div>
-                            </div>
-
-
-                            <div class="item">
-                                <div class="label">&nbsp;开票地址：</div>
-                                <div class="label_value font14">{{$invoice['company_address']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;开票电话：</div>
-                                <div class="label_value font14">{{$invoice['company_telephone']}}</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;创建时间：</div>
-                                <div class="label_value font14">{{$invoice['created_at']}}</div>
-                            </div>
-
-
-
-                            <div class="item">
-                                <div class="label">&nbsp;申请状态：</div>
-                                <div class="label_value font14">
-                                    <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoice['status']==2) @else layui-btn-primary @endif '>已开票</div>
-                                    <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoice['status']==1) @else layui-btn-primary @endif '>待开票</div>
-                                    <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoice['status']==0) @else layui-btn-primary @endif '>已取消</div>
-                                    <span style="margin-left: 20px;color:red;" class="notice">点击修改申请状态</span>
+                                    <div class="item">
+                                        <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
+                                        <div class="label_value font14">
+                                            <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==0) @else layui-btn-primary @endif '>已取消</div>
+                                            <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==1) @else layui-btn-primary @endif '>待开票</div>
+                                            <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==2) @else layui-btn-primary @endif '>已开票</div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
-
-                        </form>
+                        </div>
 
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -150,9 +161,23 @@
 
             $(".review_status").click(function () {
                 var review_content = $.trim($("#review_content").val());
+                var shipping_id = $("#shipping_id").val();
+                var shipping_name = $("#shipping_name").val();
+                var shipping_billno = $("#shipping_billno").val();
 
+                if(shipping_id==""){
+                    layer.msg("请选择快递公司",{icon: 1,time: 2000});
+                    return ;
+                }
+                if(shipping_billno==""){
+                    layer.msg("运单号不能为空",{icon: 1,time: 2000});
+                    return ;
+                }
                 var postData = {
-                    "id": "{{$invoice['id']}}",
+                    "id": "{{$invoiceInfo['id']}}",
+                    "shipping_id": shipping_id,
+                    "shipping_name": shipping_name,
+                    "shipping_billno": shipping_billno,
                     "status": $(this).attr("data-status"),
                 };
                 $.post('/admin/invoice/save', postData, function (res) {
@@ -161,7 +186,7 @@
                             icon: 1,
                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                         },function(){
-                            window.location.href="/admin/invoice/detail?id={{$invoice['id']}}&currpage={{$currpage}}&status={{$status}}";
+                            window.location.href="/admin/invoice/detail?id={{$invoiceInfo['id']}}&currpage={{$currpage}}&status={{$status}}";
                         });
                     } else {
                         layer.msg(res.msg);
@@ -169,13 +194,16 @@
                 }, "json");
             });
 
-            $(".viewContent").click(function(){
-                index = layer.open({
-                    type: 2,
-                    title: '商品详情',
-                    area: ['900px', '500px'],
-                    content: "{{url('/admin/invoice/goods/list')}}?invoice_id={{$invoice['id']}}&currpage={{$currpage}}&status={{$status}}"
-                });
+
+
+            $(document).ready(function(){
+                var shipping_name = $("#shipping_id").find("option:selected").text();
+                $("#shipping_name").val(shipping_name);
+            });
+
+            $("#shipping_id").on("change",function(){
+                var shipping_name = $(this).find("option:selected").text();
+                $("#shipping_name").val(shipping_name);
             });
 
         });

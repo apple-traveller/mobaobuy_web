@@ -3,7 +3,16 @@
     <div class="warpper">
         <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回{{$currpage}}</a>会员 - 审核实名认证信息</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i>
+                    <h4>操作提示</h4>
+                    <span id="explanationZoom" title="收起提示"></span>
+                </div>
+                <ul>
+                    <li>该页面展示了会员上传的实名信息。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
