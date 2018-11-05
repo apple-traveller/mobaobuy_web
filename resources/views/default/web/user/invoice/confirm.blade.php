@@ -36,9 +36,10 @@
 			margin-left: 10px;
 			margin-top: 0px;
 		}
-		.Collect_goods_address li:hover {
-			border: 1px solid #75b335;
-		}
+		/*.Collect_goods_address li.mrxs-curr:hover {*/
+			/*border: 1px solid #75b335;*/
+		/*}*/
+		.Collect_goods_address li.mrxs-curr{border:1px solid #75b335;background: url("/default/img/addr_curr.png")no-repeat -22px -8px;}
 		.Collect_goods_address li {
 			float: left;
 			margin-left: 20px;
@@ -50,8 +51,8 @@
 			position: relative;
 			box-sizing: border-box;
 		}
-		.Collect_goods_address li:hover{border: 1px solid #75b335;}
-		.Collect_goods_address li:last-child:hover{border: 1px solid #D9D9D9;}
+		.Collect_goods_address li.check_address:hover{border: 1px solid #75b335;}
+		.Collect_goods_address li.check_address:last-child:hover{border: 1px solid #D9D9D9;}
 		.Collect_goods_address {
 			margin-left: 10px;
 			margin-top: 0px;
@@ -162,6 +163,7 @@
 			top: 84px;
 			right: -164px;
 		}
+		.address_list{cursor:pointer;}
 	</style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -198,15 +200,15 @@
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
 			@foreach($addressList as $k=>$v)
-			<li class="address_list @if($v['is_default'] == 1) mrxs-curr @endif">
-				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
+			<li class="address_list @if($v['is_select'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
+				<div class="mt20 ml20 ovh"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
 				<div class="address_default">
 					<div class="address_default_edit">
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else
-							<span class="mr20 cp check_address " data-id="{{ $v['id'] }}" >设置默认</span>
+							<span class="mr20 cp " ></span>
 						@endif
 					</div>
 				</div>
@@ -241,21 +243,21 @@
 			@endforeach
 		</ul>
 		<form action="/invoice/apply" method="post" id="form">
-			<input type="hidden" name="address_id" value="{{ $addressList[0]['id'] }}">
-		<div class="address_line">
-			<div class="ovh mt10">
-				<span>开票类型:</span>
-				<input type="radio" name="invoice_type" value="1" id="1" title="普通发票" checked="" style="margin-left: 27px;"><label for="1" style="cursor: pointer">增值普通发票</label>
-				<input type="radio" name="invoice_type" value="2" id="2" title="增值发票" style="margin-left: 27px;"><label for="2" style="cursor: pointer">增值专用发票</label>
+			{{--<input type="hidden" name="address_id" id="address_id" value="{{ $addressList[0]['id'] }}">--}}
+			<div class="address_line">
+				<div class="ovh mt10">
+					<span>开票类型:</span>
+					<input type="radio" name="invoice_type" value="1" id="1" title="普通发票" @if($invoice_type == 1) checked="checked" @endif style="margin-left: 27px;"><label for="1" style="cursor: pointer">增值普通发票</label>
+					<input type="radio" name="invoice_type" value="2" id="2" title="增值发票" @if($invoice_type == 2) checked="checked" @endif style="margin-left: 27px;"><label for="2" style="cursor: pointer">增值专用发票</label>
+				</div>
+				<div class="ovh mt10">
+					<input type="hidden" name="total_amount" value="{{ $total_amount }}" style="display: none" id="total_amount">
+					<input type="hidden" name="goodsList" value="{{ json_encode( $goodsList['list'])  }}" style="display: none">
+				</div>
+				<div class="fr mr20">开票总金额<span class="orange">￥{{ $total_amount }}</span></div>
 			</div>
-			<div class="ovh mt10">
-				<input type="hidden" name="total_amount" value="{{ $total_amount }}" style="display: none" id="total_amount">
-				<input type="hidden" name="goodsList" value="{{ json_encode( $goodsList['list'])  }}" style="display: none">
-			</div>
-			<div class="fr mr20">开票总金额<span class="orange">￥{{ $total_amount }}</span></div>
-		</div>
-		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交申请</a></div>
+			<div class="address_line cccbg" style="height: 1px;"></div>
+			<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交申请</a></div>
 		</form>
 	</div>
 </div>
@@ -309,24 +311,55 @@
 		});
     });
     /**
-	 * 修改默认地址
+	 * 选择收票地址
      */
     $(".check_address").click(function () {
         let address_id = $(this).attr('data-id');
         $.ajax({
-            url:'/updateDefaultAddress',
+            url:'/invoice/editInvoiceAddress',
             data:{'address_id':address_id},
             type:"POST",
             success:function (res) {
-                console.log(res);
                 if (res.code == 1){
                     setTimeout(window.location.reload(),1000);
                 }else{
-                    setTimeout(window.location.reload(),1000);
+                    $.msg.error(res.msg);
                 }
             }
         });
     });
+    /**
+     * 选择开票类型
+     */
+    $("input[name=invoice_type]").click(function(){
+		let invoice_type = $(this).val();
+        $.ajax({
+            url:'/invoice/editInvoiceType',
+            data:{'invoice_type':invoice_type},
+            type:"POST",
+            success:function (res) {
+                if (res.code == 1){
+                }else{
+                    $.msg.error(res.msg);
+                }
+            }
+        });
+	});
+//    $(".check_address").click(function () {
+//        let invoice_type = $(this).attr('data-id');
+//        $.ajax({
+//            url:'/invoice/editInvoiceType',
+//            data:{'invoice_type':invoice_type},
+//            type:"POST",
+//            success:function (res) {
+//                if (res.code == 1){
+//                    setTimeout(window.location.reload(),1000);
+//                }else{
+//                    $.msg.error(res.msg);
+//                }
+//            }
+//        });
+//    });
     $(".address_sumb").click(function () {
 		$("#form").submit();
 

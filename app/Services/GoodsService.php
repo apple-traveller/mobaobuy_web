@@ -206,6 +206,7 @@ class GoodsService
             if(empty($cartInfo)){
                 self::throwBizError('购物车商品不存在！');
             }
+            
             $cartSession[] = $cartInfo;
         }
         return $cartSession;
@@ -221,11 +222,16 @@ class GoodsService
         try{
             self::beginTransaction();
             //订单表
+            if(!$userId['firm_id']){
+                $order_status = 2;
+            }else{
+                $order_status = 1;
+            }
             $orderInfo = [
                 'order_sn'=>$order_no,
                 'user_id'=>$userId['user_id'],
                 'firm_id'=>$userId['firm_id'],
-                'order_status'=>1,
+                'order_status'=>$order_status,
                 'add_time'=>$addTime,
                 'address'=>$userAddressMes['address'],
                 'shop_id'=>$cartInfo_session[0]['shop_id'],
@@ -291,7 +297,8 @@ class GoodsService
             //更新订单总金额
             OrderInfoRepo::modify(
                 $orderInfoResult['id'],
-                ['goods_amount'=>$goods_amount,
+                [
+                    'goods_amount'=>$goods_amount,
                     'order_amount'=>$goods_amount,
 //                    'shop_name'=>$cartInfo['shop_name']
                 ]
@@ -396,8 +403,17 @@ class GoodsService
     //购物车数量判断
     public static function checkListenCartInput($id,$goodsNumber){
         $cartInfo = CartRepo::getInfo($id);
+        if(empty($cartInfo)){
+            self::throwBizError('购物车数据有误');
+        }
         $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+        if(empty($shopGoodsQuoteInfo)){
+            self::throwBizError('报价数据有误');
+        }
         $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('商品数据有误');
+        }
         if(!is_numeric($goodsNumber)){
             self::throwBizError('数量只能输入正整数');
         }

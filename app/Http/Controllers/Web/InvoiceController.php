@@ -28,6 +28,7 @@ class InvoiceController extends Controller
         $start_time = $request->input('start_time','');
         $end_time = $request->input('end_time','');
 
+        $userInfo = session('_web_user');
         $condition = [
             'order_status' =>  5,
             'is_delete' =>  0
@@ -48,7 +49,16 @@ class InvoiceController extends Controller
         $orderList = OrderInfoService::getOrderInfoList(['orderType' =>  ['confirm_take_time' =>  'desc']],$condition);
 
         $orderList = $orderList['list'];
-        return $this->display('web.user.invoice.list',compact('orderList'));
+
+        //预先存入开票信息到session
+        $invoice_type = 1;
+        $invoiceSession = [
+            'address_id'=>$userInfo['address_id'],
+            'invoice_type'=>$invoice_type,
+        ];
+        session()->put('invoiceSession',$invoiceSession);
+
+        return $this->display('web.user.invoice.list',compact('orderList','invoice_type'));
     }
 
 
@@ -74,10 +84,17 @@ class InvoiceController extends Controller
         if ($invoiceInfo['review_status'] != 1 ){
             return $this->error('您的实名认证还未通过，不能申请发票');
         }
-        // 判断默认地址
+        // 判断默认地址 和当前选择地址
+        $invoiceSession = session('invoiceSession');
+        $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
         foreach ($addressList as $k =>  $v){
             $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            if ($v['id'] == $invoiceSession['address_id']){
+                $addressList[$k]['is_select'] = 1;
+            } else {
+                $addressList[$k]['is_select'] ='';
+            };
             if ($v['id'] == $user_info['address_id']){
                 $addressList[$k]['is_default'] =1;
                 $first_one[$k] = $addressList[$k];
@@ -100,10 +117,57 @@ class InvoiceController extends Controller
             }
         }
         $goodsList = OrderInfoService::getOrderGoodsList($order_id);
+        foreach ($goodsList as $k=>$v){
 
-        return $this->display('web.user.invoice.confirm',compact('invoiceInfo','addressList','goodsList','total_amount'));
+        }
+        //重新封装session 加入商品信息
+        $invoiceSession['goods_list'] = $goodsList['list'];
+        $invoiceSession['total_amount'] = $total_amount;
+        session()->put('invoiceSession',$invoiceSession);
+
+        return $this->display('web.user.invoice.confirm',compact('invoiceInfo','addressList','goodsList','total_amount','invoice_type'));
     }
 
+    /**
+     * 选择收票地址
+     * editOrderAddress
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function editInvoiceAddress(Request $request)
+    {
+        $address_id = $request->input('address_id','');
+        if(!$address_id){
+            return $this->error('缺少地址ID！');
+        }
+        $address_info = UserAddressService::getAddressInfo($address_id);
+        if(!$address_info){
+            return $this->error('地址信息不存在！');
+        }
+        $invoiceSession = session('invoiceSession');
+        $invoiceSession['address_id'] = $address_id;
+
+        session()->put('invoiceSession',$invoiceSession);
+        return $this->success('选择成功');
+    }
+    /**
+     * 选择开票类型地址
+     * editOrderAddress
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function editInvoiceType(Request $request)
+    {
+        $invoice_type = $request->input('invoice_type','');
+        if(!$invoice_type){
+            return $this->error('缺少开票类型参数！');
+        }
+        $invoiceSession = session('invoiceSession');
+        $invoiceSession['invoice_type'] = $invoice_type;
+
+        session()->put('invoiceSession',$invoiceSession);
+        return $this->success('选择成功');
+    }
 
     /**
      * 申请开票
@@ -114,25 +178,22 @@ class InvoiceController extends Controller
     public function applyInvoice(Request $request)
     {
         $user_info = session('_web_user');
-        $address_id = $request->input('address_id','');
-        $invoice_type = $request->input('invoice_type','');
-        $total_amount = $request->input('total_amount','');
-        $goodsList = json_decode($request->input('goodsList',''));
+        $invoiceSession = session('invoiceSession');
+        $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
-
-        if ($invoice_type==2 && $user_real['is_special']==0){
+        if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
             return $this->error('您不符合开增值专用发票的条件');
         }
-
+//dd($goodsList[0]['order_id']);
         // 通过订单商品获取订单详情->店铺信息
-        $orderInfo = OrderInfoService::getOrderInfoById($goodsList[0]->order_id);
-        $address_info = UserAddressService::getAddressInfo($address_id);
+        $orderInfo = OrderInfoService::getOrderInfoById($goodsList[0]['order_id']);
+        $address_info = UserAddressService::getAddressInfo($invoiceSession['address_id']);
         $invoice_data = [
             'shop_id'  =>  $orderInfo['shop_id'],
             'shop_name' =>  $orderInfo['shop_name'],
             'user_id' =>  $user_info['id'],
             'member_phone' =>  $user_info['user_name'],
-            'invoice_amount' =>  $total_amount,
+            'invoice_amount' =>  $invoiceSession['total_amount'],
             'order_quantity' =>  count($goodsList),
             'status' =>  1,
             'consignee' =>  $user_real['real_name'],
@@ -143,7 +204,7 @@ class InvoiceController extends Controller
             'street' => $address_info['street'],
             'zipcode' => $address_info['zipcode'],
             'mobile_phone' => $user_info['user_name'],
-            'invoice_type' => $invoice_type,
+            'invoice_type' => $invoiceSession['invoice_type'],
             'company_name' => $user_real['company_name'],
             'tax_id' => $user_real['tax_id'],
             'bank_of_deposit' => $user_real['bank_of_deposit'],
