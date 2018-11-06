@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ActivityService;
 use App\Services\ShopService;
-use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
 class PromoteController extends Controller
 {
@@ -36,13 +35,8 @@ class PromoteController extends Controller
     public function addForm(Request $request)
     {
         $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
         return $this->display('admin.promote.add',[
             'shops'=>$shops['list'],
-            'goodsCatTree'=>$goodsCatTree,
-            'goods'=>$goods['list'],
         ]);
     }
 
@@ -52,13 +46,10 @@ class PromoteController extends Controller
         $currpage = $request->input("currpage");
         $promote = ActivityService::getInfoById($id);
         $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
+        $goods_info = GoodsService::getGoodInfo($promote['goods_id']);
         return $this->display('admin.promote.edit',[
             'promote'=>$promote,
-            'goodsCatTree'=>$goodsCatTree,
-            'goods'=>$goods['list'],
+            'goods_info'=>$goods_info,
             'currpage'=>$currpage,
             'shops'=>$shops['list']
         ]);
@@ -91,9 +82,7 @@ class PromoteController extends Controller
         if(empty($data['num'])){
             $errorMsg[] = "促销总数量不能为空";
         }
-        if(empty($data['available_quantity'])){
-            $errorMsg[] = "当前可售数量不能为空";
-        }
+
         if(empty($data['min_limit'])){
             $errorMsg[] = "最小起售数量不能为空";
         }
@@ -161,6 +150,39 @@ class PromoteController extends Controller
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    //ajax获取商品分类
+    public function getGoodsCat(Request $request)
+    {
+        $cat_name = $request->input('cat_name');
+        $condition = [];
+        if($cat_name!=""){
+            $condition['cat_name'] = "%".$cat_name."%";
+        }
+        $cates = GoodsCategoryService::getCatesByCondition($condition);
+        return $this->result($cates,200,'获取数据成功');
+    }
+
+    //ajax获取商品值
+    public function getGood(Request $request)
+    {
+        $cat_id = $request->input('cat_id');
+        $goods_name = $request->input('goods_name');
+        $condition = [];
+        if($cat_id!="" || $cat_id!=0){
+            $condition['cat_id'] = $cat_id;
+        }
+        if($goods_name!=""){
+            $condition['goods_name'] = "%".$goods_name."%";
+        }
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec']);
+        if(!empty($goods)){
+            return $this->result($goods,200,'获取数据成功');
+        }else{
+            return $this->result([],400,'没有查询到数据');
+        }
+
     }
 
 
