@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
+use App\Repositories\RegionRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\UserInvoicesRepo;
@@ -509,9 +510,14 @@ class OrderInfoService
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
 
+        $country = RegionRepo::getInfo($orderInfo['country']);
+        $province = RegionRepo::getInfo($orderInfo['province']);
+        $city = RegionRepo::getInfo($orderInfo['city']);
+        $district = RegionRepo::getInfo($orderInfo['district']);
+
         //获取会员发票信息
         $userInvoceInfo = UserInvoicesRepo::getInfo($orderInfo['invoice_id']);
-        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo];
+        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
     }
 
     //企业订单审核通过操作
