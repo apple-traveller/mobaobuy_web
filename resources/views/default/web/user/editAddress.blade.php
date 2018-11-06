@@ -133,8 +133,6 @@
                 if(!Utils.isPhone(_mobile)){
                     $.msg.error('请输入正确的手机号');return;
 				}
-				let input = $("#address_form").serialize();
-
 				$.ajax({
 					url:'/createAddressList',
 					data: {

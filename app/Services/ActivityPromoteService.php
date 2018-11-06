@@ -45,7 +45,6 @@ class ActivityPromoteService
     //限时抢购详情
     public static function buyLimitDetails($id){
         $id = decrypt($id);
-        dump($id);
         $ActivityInfo =  ActivityPromoteRepo::getInfo($id);
         if(empty($ActivityInfo)){
             self::throwBizError('促销商品不存在');

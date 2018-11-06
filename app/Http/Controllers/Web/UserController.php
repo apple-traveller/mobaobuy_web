@@ -272,7 +272,7 @@ class UserController extends Controller
             $address = $request->input('address','');
             $zipcode = $request->input('zipcode','');
             $consignee=$request->input('consignee','');
-            $mobile_phone=$request->input('mobile_phone','');
+            $mobile_phone=$request->input('mobile','');
             if (empty($str_address)){
                 return $this->error('请选择地址');
             }
