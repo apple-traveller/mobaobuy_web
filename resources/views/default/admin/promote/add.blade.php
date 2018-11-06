@@ -50,12 +50,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" id="cat_id" >
-                                            <option value="0">请选择分类</option>
-                                            @foreach($goodsCatTree as $vo)
-                                                <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" name="price" value="" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                     </div>
@@ -141,10 +136,7 @@
             $("#shop_name").val(shop_name);
         });
 
-        $("#goods_id").change(function(){
-            var goods_name = $(this).find("option:selected").text();
-            $("#goods_name").val(goods_name);
-        });
+
 
 
 
