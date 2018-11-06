@@ -422,8 +422,8 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
-        Route::get('/detail', 'indexController@detail');
-        Route::post('/updateCash', 'indexController@updateCash');
+        Route::get('/detail', 'IndexController@detail');
+        Route::post('/updateCash', 'IndexController@updateCash');
 
         Route::get('/shopUser', 'ShopUserController@list');// 商户职员管理
         Route::get('/shopUser/add', 'ShopUserController@add');// 添加
