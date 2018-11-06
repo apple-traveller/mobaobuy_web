@@ -68,7 +68,7 @@
     </style>
     <script type="text/javascript">
     	//购物车选中的数据
-    	var check_arr = new Array();  
+    	var check_arr = new Array();
     	$(function(){
     		//购物车数据总条数
     		var accountTotal = $('#accountTotal').text();
@@ -287,10 +287,11 @@
 					},
 					type: "POST",
 					success: function (data) {
+					    console.log(data);
 						if(data.code){
 							window.location.href='/confirmOrder';
 						}else{
-							layer.msg('出错,请重试')
+							layer.alert(data.msg);
 						}
 					}
 				})

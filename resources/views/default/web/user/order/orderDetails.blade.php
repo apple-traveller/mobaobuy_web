@@ -147,7 +147,7 @@
 	    	<div class="consignee bbright">
 	    		<h1>收货人信息</h1>
 	    		<span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span></span>
-	    		<span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr">{{$orderDetailsInfo['orderInfo']['address']}}</span></span>
+	    		<span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr"> {{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}</span></span>
 	    		<span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span></span>
 	    	</div>
 	    	<!--商家信息-->

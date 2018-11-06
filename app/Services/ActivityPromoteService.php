@@ -58,6 +58,7 @@ class ActivityPromoteService
         $goodsInfo['available_quantity'] = $ActivityInfo['available_quantity'];
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         return $goodsInfo;
     }
 

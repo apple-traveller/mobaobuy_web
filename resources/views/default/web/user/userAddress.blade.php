@@ -16,6 +16,7 @@
 		.Receive_address li:last-child:hover{border: 1px solid #DEDEDE;}
 		.Receive_address li.curr{border: 1px solid #75b335;background: url(/default/img/addr_curr.png)no-repeat;}
 		.address_name{margin-left: 24px;margin-right: 20px;}
+		.address_info{margin-left: 24px;margin-right: 20px; height:40px}
 		.pay_method{display:none;z-index: 2;width:584px;  left:50%; top:50%;margin-top:-275px;position:fixed;margin-left:-250px;}
 
 		.ovh{overflow: hidden;}
@@ -42,50 +43,54 @@
 		.form-inline .form-group .form-control{width: 108px;height: 40px;line-height: 40px;border-radius: 0px;border: 1px solid #dedede;
 			box-shadow: none;padding: 6px 12px;font-size: 14px;    background-color: #fff;background-image: none;}
 
+		.address_default_edit{margin-right: 25px;}
+		.checked_btn{cursor:pointer;}
+
+
+		@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
+		.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
+		.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
+
+		.address_button{width: 300px;margin: 20px auto;}
+		.add_btn{cursor:pointer;float:left;border:none;color:#fff;width: 154px;height: 44px;line-height: 44px;display: block;border-radius: 3px;}
+		.default_address label { /*flex布局让子元素水平垂直居中*/display: flex;align-items: center;width: 200px;margin-left: 154px;}
+
+		.default_address input[type=checkbox],input[type=radio] {
+			margin:initial;-webkit-appearance: none;appearance: none;outline: none;
+			width: 16px; height: 16px;cursor: pointer;vertical-align: center;background: #fff;border: 1px solid #ccc;position: relative;}
+
+		.default_address input[type=checkbox]:checked::after {
+			content: "\2713";display: block;position: absolute;top: -1px;
+			left: -1px;right: 0;bottom: 0;width: 12px;height: 16px;line-height: 17px;padding-left: 4px;
+			color: #fff;background-color: #75b334;font-size: 13px;}
+		.frame_close{width: 15px;height: 15px;line-height:0;
+			display: block;outline: medium none;
+			transition: All 0.6s ease-in-out;
+			-webkit-transition: All 0.6s ease-in-out;
+			-moz-transition: All 0.6s ease-in-out;
+			-o-transition: All 0.6s ease-in-out;}
 		@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
 			.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
 			.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
 
-			.address_button{width: 300px;margin: 20px auto;}
-			.add_btn{cursor:pointer;float:left;border:none;color:#fff;width: 154px;height: 44px;line-height: 44px;display: block;border-radius: 3px;}
-			.default_address label { /*flex布局让子元素水平垂直居中*/display: flex;align-items: center;width: 200px;margin-left: 154px;}
-
-			.default_address input[type=checkbox],input[type=radio] {
-				margin:initial;-webkit-appearance: none;appearance: none;outline: none;
-				width: 16px; height: 16px;cursor: pointer;vertical-align: center;background: #fff;border: 1px solid #ccc;position: relative;}
-
-			.default_address input[type=checkbox]:checked::after {
-				content: "\2713";display: block;position: absolute;top: -1px;
-				left: -1px;right: 0;bottom: 0;width: 12px;height: 16px;line-height: 17px;padding-left: 4px;
-				color: #fff;background-color: #75b334;font-size: 13px;}
-			.frame_close{width: 15px;height: 15px;line-height:0;
-				display: block;outline: medium none;
-				transition: All 0.6s ease-in-out;
-				-webkit-transition: All 0.6s ease-in-out;
-				-moz-transition: All 0.6s ease-in-out;
-				-o-transition: All 0.6s ease-in-out;}
-			@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
-				.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
-				.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
-
-				.ui-area .tit {
-					padding: 0 10px;
-					border: 1px solid #d2d2d2;
-					height: 40px;
-					line-height: 40px;
-					cursor: pointer;
-				}
-				.ui-area .area-warp {
-					position: absolute;
-					border: 1px solid #d2d2d2;
-					width: 300px;
-					padding: 10px 23px 15px 18px;
-					top: 42px;
-					left: 0;
-					z-index: 10;
-					display: none;
-					background: #fff;
-				}
+			.ui-area .tit {
+				padding: 0 10px;
+				border: 1px solid #d2d2d2;
+				height: 40px;
+				line-height: 40px;
+				cursor: pointer;
+			}
+			.ui-area .area-warp {
+				position: absolute;
+				border: 1px solid #d2d2d2;
+				width: 300px;
+				padding: 10px 23px 15px 18px;
+				top: 42px;
+				left: 0;
+				z-index: 10;
+				display: none;
+				background: #fff;
+			}
 
 	</style>
 @endsection
@@ -95,12 +100,12 @@
 	<div class="address_border">
 		<ul class="Receive_address">
 			@foreach($addressList as $k=>$v)
-			<li class="@if($v['is_default']==1) curr @endif">
-				<div class="address_name mt20"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
-				<div class="address_name mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
+			<li class="@if($v['is_default']==1) curr @else checked_btn @endif" data-id="{{$v['id']}}">
+				<div class="address_name mt10"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
+				<div class="address_info mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
 				<div class="address_default">
-					<div class="address_default_edit" align="center">
+					<div class="address_default_edit" align="right">
 						@if($v['is_default'] == 1)
 							<span class=" cp " style="color: #74b334">默认</span>
 						@else
@@ -128,25 +133,45 @@
             $('.del_address').click(function(){
                 let io = $(this);
                 let id = $(this).attr('data_id');
-                layer.confirm('确认删除么？', {
-                    btn: ['确认','取消']
-                }, function(index, layero){
-                    $.ajax({
-                        url:'/deleteAddress',
-                        data:{id:id},
-                        type:'POST',
-                        success:function (res) {
-                            if (res.code == 1){
-                                $.msg.alert(res.msg);
-                               io.parents(".Receive_address li").remove();
-                            } else {
-                                $.msg.alert(res.msg);
-                                return false;
-                            }
-                        }
-                    });
-                }, function(index){
-                });
+                $.msg.confirm("确认删除么？",
+					function(index, layero){
+						$.ajax({
+							url:'/deleteAddress',
+							data:{id:id},
+							type:'POST',
+							success:function (res) {
+								if (res.code == 1){
+									$.msg.alert(res.msg);
+									io.parents(".Receive_address li").remove();
+								} else {
+									$.msg.alert(res.msg);
+									return false;
+								}
+							}
+						});
+                	},
+					function(index){
+                	}
+                );
+//                layer.confirm('确认删除么？', {
+//                    btn: ['确认','取消']
+//                }, function(index, layero){
+//                    $.ajax({
+//                        url:'/deleteAddress',
+//                        data:{id:id},
+//                        type:'POST',
+//                        success:function (res) {
+//                            if (res.code == 1){
+//                                $.msg.alert(res.msg);
+//                               io.parents(".Receive_address li").remove();
+//                            } else {
+//                                $.msg.alert(res.msg);
+//                                return false;
+//                            }
+//                        }
+//                    });
+//                }, function(index){
+//                });
             })
 			//	编辑
 			$(".edit_address").click(function () {
@@ -173,7 +198,7 @@
                         if (res.code == 1){
                             setTimeout(window.location.reload(),1000);
                         }else{
-                            setTimeout(window.location.reload(),1000);
+                            $.msg.error(res.msg);
                         }
                     }
                 });
