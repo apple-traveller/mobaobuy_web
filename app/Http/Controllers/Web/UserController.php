@@ -42,6 +42,27 @@ class UserController extends Controller
 
         return $this->success($rs);
     }
+    //检查账号用户是否已实名 根据手机号码
+    public function checkRealNameBool(Request $request)
+    {
+        $mobile = $request->input('mobile');
+        if(!$mobile){
+            return $this->error('参数错误！');
+        }
+        $userInfo = UserRepo::getInfoByFields(['user_name'=>$mobile]);
+        if(empty($userInfo)){
+            return $this->error('该用户不存在！');
+        }
+        if($userInfo['is_firm'] == 1){
+            return $this->error('企业账号不能被添加！');
+        }
+        $res = getRealNameBool($userInfo['id']);
+        if($res){
+            return $this->success('验证成功！');
+        }else{
+            return $this->error('该用户未实名认证！');
+        }
+    }
 
     //检查公司是否允许注册
     public function checkCompanyNameCanAdd(Request $request){

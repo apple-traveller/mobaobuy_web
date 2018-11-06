@@ -104,9 +104,9 @@
                     type: "post",
                     dataType: "json",
                     data: function (d) {
-                        d.goods_name = $('#goods_name').val(),
-                        d.begin_time = $('#begin_time').val(),
-                        d.end_time = $('#end_time').val()
+                        d.goods_name = $('#goods_name').val();
+                        d.begin_time = $('#begin_time').val();
+                        d.end_time = $('#end_time').val();
                     },
                     dataSrc:
                         function (json) {
@@ -141,25 +141,27 @@
         });
 
 	    function del(obj) {
-	        var flag = confirm("是否确认取消收藏?");
-	        var id = $(obj).attr('id');
-	        if(flag===true){
-	             $.ajax({
-	                'type':'post',
-	                'data':{'id':id},
-	                'url':'{{url('/delCollectGoods')}}',
-	                success:function(res){
-	                    // var result = JSON.parse(res);
-	                    if(res.code){
-	                        // alert('收藏商品删除成功');
-	                        window.location.reload();
-	                    }else{
-	                        alert('收藏商品删除失败');
-	                        window.location.reload();
-	                    }
-	           		}
-	 			})
-	        }   
+            $.msg.alert('取消收藏失败');return;
+            var id = $(obj).attr('id');
+	        $.msg.confirm("是否确认取消收藏?",
+                function(){//点击确认
+                    $.ajax({
+                        'type':'post',
+                        'data':{'id':id},
+                        'url':'{{url('/delCollectGoods')}}',
+                        success:function(res){
+                            if(res.code){
+                                window.location.reload();
+                            }else{
+                                $.msg.alert('取消收藏失败');
+                            }
+                        }
+                    })
+                },
+                function(){//点击取消
+
+                }
+            );
 	    }
 	</script>
 
