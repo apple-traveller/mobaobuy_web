@@ -19,13 +19,19 @@
                         <form method="post" action="#" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;真实姓名(企业名称)：</div>
-                                <div class="label_value font14">
-                                    @if(!empty($info['real_name']))
-                                        {{$info['real_name']}}
+                                <div class="label"><span class="require-field">*</span>&nbsp;
+                                    @if($info['is_firm']==1)
+                                        企业名称：
                                     @else
-                                        无
+                                        真实姓名：
                                     @endif
+                                </div>
+                                <div class="label_value font14">
+                                    <div class="editSpanInput" ectype="editSpanInput">
+                                        <span onclick="listTable.edit(this,'{{url('/admin/userreal/change/realname')}}','{{$info['user_id']}}')">{{$info['real_name']}}</span>
+
+                                        <i class="icon icon-edit"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -211,18 +217,6 @@
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
-                                    <div class="label_value font14">
-                                        @if(!empty($info['company_telephone']))
-                                            {{$info['company_telephone']}}
-                                        @else
-                                            无
-                                        @endif
-                                    </div>
-                                </div>
-
                         @endif
 
                             <div class="item">

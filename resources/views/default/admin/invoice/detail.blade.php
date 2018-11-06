@@ -123,7 +123,7 @@
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-right:10px;" name="shipping_id" id="shipping_id">
                                                 <option value="">请选择快递公司</option>
                                                 @foreach($shippings as $vo)
-                                                    <option value="{{$vo['id']}}">{{$vo['shipping_name']}}</option>
+                                                    <option @if($vo['id']==$invoiceInfo['shipping_id']) selected @endif value="{{$vo['id']}}">{{$vo['shipping_name']}}</option>
                                                 @endforeach
                                             </select>
                                             <input id="shipping_name" type="hidden" name="shipping_name" value="">
@@ -132,7 +132,7 @@
                                     <div class="item">
                                         <div class="label">运单号：</div>
                                         <div class="label_value">
-                                            <input style="width: 299px;" type="text" id="shipping_billno" name="shipping_billno" class="text" autocomplete="off" value="">
+                                            <input style="width: 299px;" type="text" id="shipping_billno" name="shipping_billno" class="text" autocomplete="off" value="{{$invoiceInfo['shipping_billno']}}">
                                         </div>
                                     </div>
 
@@ -160,16 +160,16 @@
             var layer = layui.layer;
 
             $(".review_status").click(function () {
-                var review_content = $.trim($("#review_content").val());
+
                 var shipping_id = $("#shipping_id").val();
                 var shipping_name = $("#shipping_name").val();
                 var shipping_billno = $("#shipping_billno").val();
-
-                if(shipping_id==""){
+                var status = $(this).attr("data-status");
+                if(shipping_id=="" && status==2){
                     layer.msg("请选择快递公司",{icon: 1,time: 2000});
                     return ;
                 }
-                if(shipping_billno==""){
+                if(shipping_billno=="" && status==2){
                     layer.msg("运单号不能为空",{icon: 1,time: 2000});
                     return ;
                 }
@@ -178,7 +178,7 @@
                     "shipping_id": shipping_id,
                     "shipping_name": shipping_name,
                     "shipping_billno": shipping_billno,
-                    "status": $(this).attr("data-status"),
+                    "status": status,
                 };
                 $.post('/admin/invoice/save', postData, function (res) {
                     if (res.code == 1){

@@ -42,6 +42,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
+        Route::post('/userreal/change/realname', 'UserController@modifyRealName');//修改实名表的real_name
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
         Route::get('/user/export', 'UserController@export');//用户导出excel

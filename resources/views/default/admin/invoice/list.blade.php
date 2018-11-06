@@ -58,7 +58,16 @@
                             @if(!empty($invoices))
                             @foreach($invoices as $vo)
                             <tr class="">
-                                <td><div class="tDiv">{{$vo['invoice_numbers']}}</div></td>
+                                <td>
+                                    <div class="tDiv">
+                                        @if(empty($vo['invoice_numbers']))
+                                            无
+                                        @else
+                                            {{$vo['invoice_numbers']}}
+                                        @endif
+
+                                    </div>
+                                </td>
                                 <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['member_phone']}}</div></td>
                                 <td><div class="tDiv">{{$vo['invoice_amount']}}</div></td>
@@ -72,7 +81,6 @@
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['created_at']}}</div></td>
-
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="{{url('/admin/invoice/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see">

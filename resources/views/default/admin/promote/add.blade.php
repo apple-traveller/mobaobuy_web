@@ -7,9 +7,7 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -136,10 +134,8 @@
         $(function(){
             var shop_name = $("#shop_id").find("option:selected").text();
             $("#shop_name").val(shop_name);
-
-            var goods_name = $("#goods_id").find("option:selected").text();
-            $("#goods_name").val(goods_name);
         });
+        //选择店铺
         $("#shop_id").change(function(){
             var shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
@@ -150,20 +146,6 @@
             $("#goods_name").val(goods_name);
         });
 
-        $(".cat_id").change(function(res){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/admin/shopgoods/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-            },"json");
-        });
 
 
         layui.use(['laydate','layer'], function() {
