@@ -10,7 +10,7 @@
                 <span id="explanationZoom" title="收起提示"></span>
             </div>
             <ul>
-                <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                <li>该页面展示所有的发票信息。</li>
             </ul>
         </div>
         <div class="flexilist">
@@ -58,7 +58,16 @@
                             @if(!empty($invoices))
                             @foreach($invoices as $vo)
                             <tr class="">
-                                <td><div class="tDiv">{{$vo['invoice_numbers']}}</div></td>
+                                <td>
+                                    <div class="tDiv">
+                                        @if(empty($vo['invoice_numbers']))
+                                            无
+                                        @else
+                                            {{$vo['invoice_numbers']}}
+                                        @endif
+
+                                    </div>
+                                </td>
                                 <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['member_phone']}}</div></td>
                                 <td><div class="tDiv">{{$vo['invoice_amount']}}</div></td>
@@ -72,13 +81,11 @@
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['created_at']}}</div></td>
-
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="{{url('/admin/invoice/detail')}}?id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see">
                                             <i class="sc_icon sc_icon_see"></i>查看
                                         </a>
-                                        <a href="{{url('/admin/invoice/goods/list')}}?invoice_id={{$vo['id']}}&currpage={{$currpage}}&status={{$status}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看发票商品</a>
                                     </div>
                                 </td>
                             </tr>

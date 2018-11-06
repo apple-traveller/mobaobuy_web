@@ -58,20 +58,20 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>授权委托书电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="" class="text"  name="attorney_letter_fileImg" style="display:none;">
-                                    <img  style="width:30px;height:30px;display:none;margin-right:10px;float: left;" class="layui-upload-img"><br/>
-                                    <div class="form_prompt"></div>
+                                    <img  style="width:50px;height:50px;display:none;margin-right:10px;" class="layui-upload-img"><br/>
+                                    <div  class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="" class="text"  name="license_fileImg" style="display:none;">
-                                    <img  style="width:30px;height:30px;display:none;margin-right:10px;float: left;" class="layui-upload-img"><br/>
-                                    <div class="form_prompt"></div>
+                                    <img  style="width:50px;height:50px;display:none;margin-right:10px;" class="layui-upload-img"><br/>
+                                    <div  class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -88,6 +88,22 @@
                                 <div class="label"><span class="require-field">*</span>纳税人识别号：</div>
                                 <div class="label_value">
                                     <input type="text" name="taxpayer_id" class="text" value="" maxlength="40" autocomplete="off" id="taxpayer_id">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算银行开户名：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_name" class="text" value="" maxlength="40" autocomplete="off" id="settlement_bank_account_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算公司银行账号：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_number" class="text" value="" maxlength="40" autocomplete="off" id="settlement_bank_account_number">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -263,6 +279,13 @@
                     taxpayer_id:{
                         required : true,
                         number:true,
+                    },
+                    settlement_bank_account_name:{
+                        required : true,
+                    },
+                    settlement_bank_account_number:{
+                        required : true,
+                        number:true,
                     }
                 },
                 messages:{
@@ -292,7 +315,14 @@
                     taxpayer_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
-                    }
+                    },
+                    settlement_bank_account_name :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                    },
+                    settlement_bank_account_number :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    },
                 }
             });
         });

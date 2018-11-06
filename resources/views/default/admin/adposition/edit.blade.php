@@ -4,7 +4,13 @@
     <div class="warpper">
         <div class="title"><a href="/admin/ad/position/list" class="s-back">返回</a>广告位置 - 编辑广告位</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>请设置合适的广告位名称和图片尺寸。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/ad/position/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">

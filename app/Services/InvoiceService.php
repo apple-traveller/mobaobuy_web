@@ -49,6 +49,11 @@ class InvoiceService
      */
     public static function updateInvoice($id,$data)
     {
+        if($data['status']==2){
+            $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+            $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+            $data['invoice_numbers'] = $invoice_numbers;
+        }
         $data['updated_at'] = Carbon::now();
         return InvoiceRepo::modify($id,$data);
     }
@@ -58,6 +63,7 @@ class InvoiceService
      * 审核发票
      * @param $invoice_id
      * @param $data
+     * @return int
      * @throws \Exception
      */
     public static function verifyInvoice($invoice_id,$data)

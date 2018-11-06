@@ -53,10 +53,18 @@
                                     <td><div class="tDiv">{{$vo['contactName']}}</div></td>
                                     <td><div class="tDiv">{{$vo['contactPhone']}}</div></td>
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
-                                    <td><div class="tDiv">{{status($vo['is_validated'])}}</div></td>
                                     <td>
                                         <div class="tDiv">
-                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isFreeze')}}','{{$vo['id']}}')">
+                                            @if($vo['is_validated']==0)
+                                                <div  class='review_status layui-btn layui-btn-sm layui-btn-radius '>已审核</div>
+                                            @else
+                                                <div class='review_status layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary  '>待审核</div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <div class="switch @if($vo['is_freeze']) active @endif" title="@if($vo['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/shop/change/isFreeze')}}','{{$vo['id']}}')">
                                                 <div class="circle"></div>
                                             </div>
                                             <input type="hidden" value="0" name="">
@@ -68,7 +76,6 @@
                                             <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>
                                             <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="/admin/shop/logList?shop_id={{$vo['id']}}&currpage={{$currpage}}" title="日志" class="btn_edit"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                            {{--<a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->--}}
                                         </div>
                                     </td>
                                 </tr>

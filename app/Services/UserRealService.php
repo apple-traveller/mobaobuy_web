@@ -24,10 +24,10 @@ class UserRealService
     }
 
     //修改(后台方法)
-//    public static function modify($data)
-//    {
-//        return UserRealRepo::modify($data);
-//    }
+    public static function modify($data)
+    {
+        return UserRealRepo::modify($data['user_id'],$data);
+    }
 
     //实名认证保存
     public static function saveUserReal($data,$is_self,$user_id)
