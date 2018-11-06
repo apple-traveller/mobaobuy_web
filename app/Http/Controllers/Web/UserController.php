@@ -272,9 +272,15 @@ class UserController extends Controller
             $address = $request->input('address','');
             $zipcode = $request->input('zipcode','');
             $consignee=$request->input('consignee','');
-            $mobile_phone=$request->input('mobile_phone','');
+            $mobile_phone=$request->input('mobile','');
             if (empty($str_address)){
                 return $this->error('请选择地址');
+            }
+            if (empty($address)){
+                return $this->error('请输入详细地址');
+            }
+            if (empty($zipcode)){
+                return $this->error('请输入邮政编码');
             }
             if (empty($consignee)){
                 return $this->error('请填写收货人');

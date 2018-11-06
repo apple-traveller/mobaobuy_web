@@ -266,7 +266,7 @@ class GoodsController extends Controller
             return $this->error('您的实名认证还未通过，不能下单');
         }
 
-        if(empty($goodsList) && $buyLimitList){
+        if(empty($goodsList) && empty($buyLimitList)){
             return $this->error('没有对应的商品');
         }
 
