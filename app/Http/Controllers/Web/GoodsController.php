@@ -233,7 +233,8 @@ class GoodsController extends Controller
             //进入订单确认页面前先定义购物车session
             $cartSession = [
                 'goods_list'=>$goods_list,
-                'address_id'=> $userInfo['address_id']
+                'address_id'=> $userInfo['address_id'],
+                'from'=>'cart'
             ];
             session()->put('cartSession',$cartSession);
             return $this->success();
@@ -254,9 +255,8 @@ class GoodsController extends Controller
         $info = session('_curr_deputy_user');
         $userInfo = session('_web_user');
         $cartSession = session('cartSession');
-        $buyLimitList = session('buyLimitSession');
-
         $goodsList = $cartSession['goods_list'];
+
 
         $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
         if (empty($invoiceInfo)){
@@ -266,7 +266,7 @@ class GoodsController extends Controller
             return $this->error('您的实名认证还未通过，不能下单');
         }
 
-        if(empty($goodsList) && empty($buyLimitList)){
+        if(empty($goodsList)){
             return $this->error('没有对应的商品');
         }
 
@@ -304,8 +304,6 @@ class GoodsController extends Controller
                 return $this->error($e->getMessage());
             }
 
-            $goodsList = session('buyLimitSession');
-//            dd($goodsList);
             $goods_amount = $goodsList[0]['account_money'];
             $goods_amount = number_format($goods_amount,2);
            
@@ -365,8 +363,6 @@ class GoodsController extends Controller
             $userIds['firm_id'] = '';
         }
         $words = $request->input('words',' ');
-        $activityPromoteId = $request->input('activityPromoteId','');
-
         // 判断是否有开票信息 地址可用
         $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
         if (empty($invoiceInfo)){
@@ -384,15 +380,14 @@ class GoodsController extends Controller
         if (empty($userInfo['address_id'])){
             $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
         }
-
+        $cartSession = session('cartSession');
+        $carList = $cartSession['goods_list'];
         //限时抢购下单
-        if(!empty($activityPromoteId)){
-            $type = 1;
-            $carList = session('buyLimitSession');
+        if($cartSession['from'] == 'promote'){
             try{
-                $re[] = GoodsService::createOrder($carList,$userIds,$userInfo['address_id'],$words,$type);
+                $re[] = GoodsService::createOrder($carList,$userIds,$userInfo['address_id'],$words,$cartSession['from']);
                 if (!empty($re)){
-                    Session::forget('buyLimitSession');
+                    Session::forget('cartSession');
                     return $this->success('订单提交成功','',$re);
                 } else {
                     return $this->error('订单提交失败');
@@ -401,11 +396,8 @@ class GoodsController extends Controller
                 return $this->error($e->getMessage());
             }
 
-        }else{
+        }elseif($cartSession['from'] == 'cart'){
             //购物车下单
-            $type = 0;
-            $cartSession = session('cartSession');
-            $carList = $cartSession['goods_list'];
             $shop_data = [];
 
             foreach ($carList as $k=>$v){
@@ -425,7 +417,7 @@ class GoodsController extends Controller
             try{
                 $re=[];
                 foreach ($shop_data as $k4=>$v4){
-                    $re[] =  GoodsService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$type);
+                    $re[] =  GoodsService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
                 }
                 if (!empty($re)){
                     Session::forget('cartSession');

@@ -215,28 +215,38 @@ class GoodsService
         return $cartSession;
     }
 
-    //提交订单
+    public static function createOrderSn()
+    {
+        return date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+    }
+
+    //提交订单 type为cart 购物车下单    promote限时抢购
 
     public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type){
         $addTime =  Carbon::now();
         //生成的随机数
-        $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        $order_no = self::createOrderSn();
         $userAddressMes = UserAddressRepo::getInfo($userAddressId);
         try{
             self::beginTransaction();
             //订单表
-            if(!$userId['firm_id']){
-                $order_status = 2;
-            }else{
-                $order_status = 1;
+
+            switch($type){
+                case 'promote'://限时抢购
+                    $order_status = 3;
+                    $promote = 'promote';
+                    $extension_id = $cartInfo_session[0]['id'];
+                    break;
+                default://正常下单
+                    $promote = '';
+                    $extension_id = '';
+                    if(!$userId['firm_id']){
+                        $order_status = 2;
+                    }else{
+                        $order_status = 1;
+                    }
             }
-            if($type){
-                $promote = 'promote';
-                $extension_id = $cartInfo_session[0]['id'];
-            }else{
-                $promote = '';
-                $extension_id = '';
-            }
+
             $orderInfo = [
                 'order_sn'=>$order_no,
                 'user_id'=>$userId['user_id'],
@@ -303,7 +313,7 @@ class GoodsService
                     ];
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['goods_number'] * $v['goods_price'];
-                    ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['$activityPromoteInfo'] - $v['goods_number']]);
+                    ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['available_quantity'] - $v['goods_number']]);
                 }
             }
             //更新订单总金额
