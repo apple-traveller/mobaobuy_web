@@ -44,6 +44,5 @@ class ActivityPromoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
-   
- 
+
 }

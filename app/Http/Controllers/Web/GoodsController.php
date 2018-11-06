@@ -242,10 +242,6 @@ class GoodsController extends Controller
         }
     }
 
-
-
-
-
     /**
      * 订单维护页面
      * confirmOrder
@@ -309,7 +305,11 @@ class GoodsController extends Controller
             }
 
             $goodsList = session('buyLimitSession');
-            return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','id'));
+//            dd($goodsList);
+            $goods_amount = $goodsList[0]['account_money'];
+            $goods_amount = number_format($goods_amount,2);
+           
+            return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount','id'));
         }else{
             //购物车
             $goods_amount = 0;

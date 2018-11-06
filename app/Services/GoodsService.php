@@ -230,6 +230,13 @@ class GoodsService
             }else{
                 $order_status = 1;
             }
+            if($type){
+                $promote = 'promote';
+                $extension_id = $cartInfo_session[0]['id'];
+            }else{
+                $promote = '';
+                $extension_id = '';
+            }
             $orderInfo = [
                 'order_sn'=>$order_no,
                 'user_id'=>$userId['user_id'],
@@ -246,7 +253,9 @@ class GoodsService
                 'city'=>$userAddressMes['city'],
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
-                'postscript'=>$words?$words:''
+                'postscript'=>$words?$words:'',
+                'extension_code'=>$promote,
+                'extension_id'=>$extension_id
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 

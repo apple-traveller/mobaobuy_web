@@ -90,8 +90,6 @@
 						},
 						type:"POST",
 						success:function(data){
-							console.log(data);
-							return;
 							if(data.code){
 								$.msg.alert('收藏成功');
 							}else{
@@ -115,12 +113,10 @@
 					},
 					type: "POST",
 					success: function(data){
-						// console.log(data);return;
 						if(data.code){
-							// console.log(data);
 							 window.location.href='/confirmOrder/'+activityIdEncrypt;
 						}else{
-							$.msg.alert("请重试");
+							$.msg.alert(data.msg);
 						}
 					}
 				})
