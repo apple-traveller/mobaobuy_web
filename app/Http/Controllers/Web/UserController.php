@@ -680,8 +680,15 @@ class UserController extends Controller
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
+        try{
+            $userRealName = UserService::getUserRealbyId($userInfo['id']);
+            $userInfo['real_name'] = $userRealName;
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+//        dd($userInfo);
         return $this->display("web.user.account.accountInfo",[
-            'userInfo'=>$userInfo,
+            'userInfo'=>$userInfo
         ]);
     }
 
@@ -689,19 +696,31 @@ class UserController extends Controller
     public function saveUser(Request $request)
     {
         $params = $request->all();
+//        dd($params);
         try{
             $data = [];
             $data['email'] = $params['email'];
+            $data['nick_name'] = $params['nick_name'];
             $data['id'] = session('_web_user_id');
+            $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
+            if(!preg_match($pattern,$data['email'])){
+                return $this->error('邮箱格式有误!');
+            }
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
             }else{
                 //个人，可以修改昵称
-                $data['nick_name'] = $params['nick_name'];
+                if(isset($data['real_name'])){
+                    $data['real_name'] = $params['real_name'];
+                }
+
             }
             $flag = UserService::modify($data);
+
             if($flag){
+                $firms = session('_web_user')['firms'];
+                $flag['firms'] = $firms;
                 session()->put('_web_user', $flag);
                 return $this->success('保存成功', '', $flag);
             }

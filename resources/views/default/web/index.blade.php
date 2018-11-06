@@ -56,12 +56,12 @@
 
                     <div>
                         <ul class="order-stute">
-                            <li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span>
-                            <li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span>
-                            <li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span>
+                            <li class="tac"><span class="db red"><a href="/order/list">{{$order_status['waitAffirm']}}</a></span><span>待确认</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitPay']}}</a></span><span>待付款</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitConfirm']}}</a></span><span>待收货</span>
                         </ul>
                     </div>
-
+                    <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
                     <textarea class="demand-text" style="height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                     <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
                 </div>

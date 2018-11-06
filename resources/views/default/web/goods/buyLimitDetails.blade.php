@@ -90,10 +90,12 @@
 						},
 						type:"POST",
 						success:function(data){
+							console.log(data);
+							return;
 							if(data.code){
 								$.msg.alert('收藏成功');
 							}else{
-								$.msg.alert('请重试');
+								$.msg.alert(data.msg);
 							}
 						}
 					})
@@ -103,10 +105,6 @@
 			function toBalance(goodsId,activityId){
 				var goodsNum = $('#goodsNum').val();
 				var activityIdEncrypt = $('#activityId').val();
-				// console.log(goodsId);
-				// console.log(activityId);
-				// console.log(goodsNum);
-				// return;
 				$.ajax({
 					url: "/buyLimitToBalance",
 					dataType: "json",
@@ -248,7 +246,7 @@
 			<div class="pro_chart_img">
 				
 			</div>
-			<div><span class="pro_chart_opert follow">关注</span><span class="pro_chart_opert share ml20">分享</span></div>
+			<div><span class="pro_chart_opert follow">收藏</span><span class="pro_chart_opert share ml20"></span></div>
 		</div>
 		<div class="fl ml35 mt5">
 			<h1 class="fwb fs16">{{$goodsInfo['goods_name']}}</h1>
@@ -303,7 +301,7 @@
 			</div>
 			
 			<div class="mt30" style="margin-left: 115px;">
-				<button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button><button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">关注商品</button>
+				<button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button><button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
 			</div>
 			<input type="hidden" name="" value="{{encrypt($goodsInfo['activity_id'])}}" id="activityId" />
 		</div>
