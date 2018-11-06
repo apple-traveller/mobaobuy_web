@@ -18,6 +18,7 @@ class WebAuthenticate
 
         if(empty(session('_web_user_id'))){
             return redirect(route('login'));
+//            return redirect('/login');
         }
 
         return $next($request);

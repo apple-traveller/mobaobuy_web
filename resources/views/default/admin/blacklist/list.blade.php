@@ -3,11 +3,10 @@
 <div class="warpper">
     <div class="title">企业黑名单 - 黑名单列表</div>
     <div class="content">
-        <div class="tabs_info">
+        <div class="explanation" id="explanation">
+            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
             <ul>
-                <li class="curr">
-                    <a href="/admin/blacklist/list">会员列表</a>
-                </li>
+                <li>记录信用差的企业。</li>
             </ul>
         </div>
         <div class="flexilist">

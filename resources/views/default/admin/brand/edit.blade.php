@@ -4,9 +4,11 @@
     <div class="warpper">
         <div class="title"><a href="/admin/brand/list?currpage={{$currpage}}" class="s-back">返回</a>品牌 - 修改品牌</div>
         <div class="content">
-            <div class="tabs_info">
+
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li class="curr"><a href="javascript:void(0);">通用信息</a></li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
                 </ul>
             </div>
 
@@ -44,7 +46,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>品牌描述：</div>
                                     <div class="label_value">
-                                        <textarea id="brand_desc" name="brand_desc" rows="5" cols="40">{{$brand['brand_desc']}}</textarea>
+                                        <textarea class="textarea" id="brand_desc" name="brand_desc" >{{$brand['brand_desc']}}</textarea>
                                     </div>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -52,7 +54,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>排序：</div>
                                     <div class="label_value">
-                                        <input type="text" name="sort_order" class="text text_2 valid" autocomplete="off" id="sort_order" value="{{$brand['sort_order']}}"/>
+                                        <input type="text" name="sort_order" class="text" autocomplete="off" id="sort_order" value="{{$brand['sort_order']}}"/>
                                     </div>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -159,9 +161,6 @@
                         required : true,
                         isLetter : "[A-Z]"
                     },
-                    category_links:{
-                        required : true
-                    },
                     brand_logo:{
                         required : true
                     },
@@ -175,6 +174,9 @@
                     },
                     brand_first_char :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    brand_logo:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'品牌logo不能为空'
                     },
                     brand_desc :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'

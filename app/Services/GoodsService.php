@@ -300,7 +300,8 @@ class GoodsService
             //更新订单总金额
             OrderInfoRepo::modify(
                 $orderInfoResult['id'],
-                ['goods_amount'=>$goods_amount,
+                [
+                    'goods_amount'=>$goods_amount,
                     'order_amount'=>$goods_amount,
 //                    'shop_name'=>$cartInfo['shop_name']
                 ]

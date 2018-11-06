@@ -3,20 +3,35 @@
     <div class="warpper">
         <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$currpage}}" class="s-back">返回{{$currpage}}</a>会员 - 审核实名认证信息</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i>
+                    <h4>操作提示</h4>
+                    <span id="explanationZoom" title="收起提示"></span>
+                </div>
+                <ul>
+                    <li>该页面展示了会员上传的实名信息。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <div class="switch_info user_basic" style="display:block;">
                         <form method="post" action="#" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;真实姓名(企业名称)：</div>
-                                <div class="label_value font14">
-                                    @if(!empty($info['real_name']))
-                                        {{$info['real_name']}}
+                                <div class="label"><span class="require-field">*</span>&nbsp;
+                                    @if($info['is_firm']==1)
+                                        企业名称：
                                     @else
-                                        无
+                                        真实姓名：
                                     @endif
+                                </div>
+                                <div class="label_value font14">
+                                    <div class="editSpanInput" ectype="editSpanInput">
+                                        <span onclick="listTable.edit(this,'{{url('/admin/userreal/change/realname')}}','{{$info['user_id']}}')">{{$info['real_name']}}</span>
+
+                                        <i class="icon icon-edit"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -202,18 +217,6 @@
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
-                                    <div class="label_value font14">
-                                        @if(!empty($info['company_telephone']))
-                                            {{$info['company_telephone']}}
-                                        @else
-                                            无
-                                        @endif
-                                    </div>
-                                </div>
-
                         @endif
 
                             <div class="item">

@@ -3,7 +3,13 @@
     <div class="warpper">
         <div class="title">文章 - 文章列表</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>该页面展示所有分类下的文章。</li>
+                    <li>可通过搜索文章标题进行搜索。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">

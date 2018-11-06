@@ -230,11 +230,10 @@
         }
         $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
             total_amount = total_amount + parseInt($(this).text());
-            console.log(total_amount);
         });
         $('#total_amount').html(total_amount);
 
-    })
+    });
 
     $('#on-search').click(function () {
         let shop_name = $('#shop_name').val();
@@ -290,12 +289,20 @@
                 }
             })
         }else{
-            alert('请选择商品');return;
+            layer.msg('请选择商品');return;
         }
     }
 
     // 提交申请
     function toBalance(){
+        check_arr = [];
+        total_amount = 0;
+        $('.shop_list .check_all span label input:checked').each(function(index,item){
+            check_arr.push($(this).val());
+        });
+        $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
+            total_amount = total_amount + parseInt($(this).text());
+        });
         if(check_arr.length>0){
             let form = $("<form></form>");
             form.attr('action','/invoice/confirm');

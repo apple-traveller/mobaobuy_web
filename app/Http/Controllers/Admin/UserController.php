@@ -53,6 +53,21 @@ class UserController extends Controller
         }
     }
 
+    //修改真实姓名
+    public function modifyRealName(Request $request)
+    {
+        $data = [
+            'user_id'=>$request->input('id'),
+            'real_name'=>$request->input('val'),
+        ];
+        try{
+            $flag = UserRealService::modify($data);
+            return $this->result($flag['real_name'],200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //查看详情信息
     public function detail(Request $request)
     {

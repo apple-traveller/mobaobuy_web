@@ -23,7 +23,7 @@ class ArticleController extends Controller
         if(!empty($title)){
             $condition['title']="%".$title."%";
         }
-        $pageSize =5;//分页
+        $pageSize =10;//分页
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);

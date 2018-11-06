@@ -49,6 +49,11 @@ class InvoiceService
      */
     public static function updateInvoice($id,$data)
     {
+        if($data['status']==2){
+            $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+            $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+            $data['invoice_numbers'] = $invoice_numbers;
+        }
         $data['updated_at'] = Carbon::now();
         return InvoiceRepo::modify($id,$data);
     }
@@ -58,6 +63,7 @@ class InvoiceService
      * 审核发票
      * @param $invoice_id
      * @param $data
+     * @return int
      * @throws \Exception
      */
     public static function verifyInvoice($invoice_id,$data)
@@ -134,16 +140,16 @@ class InvoiceService
                 $order_ids = []; // 用来存取订单id
                 foreach ($goodsList as $k=>$v){
                                 // 遍历获取订单id
-                    if(!isset($order_ids[$v->order_id])){
-                        $order_ids[$v->order_id] = $v->order_id;
+                    if(!isset($order_ids[$v['order_id']])){
+                        $order_ids[$v['order_id']] = $v['order_id'];
                     }
                     $goods_data = [
                         'invoice_id' => $invoice['id'],
-                        'order_goods_id' => $v->id,
-                        'goods_id' => $v->goods_id,
-                        'goods_name' => $v->goods_name,
-                        'goods_price' => $v->goods_price,
-                        'invoice_num' => $v->goods_number,
+                        'order_goods_id' => $v['id'],
+                        'goods_id' => $v['goods_id'],
+                        'goods_name' => $v['goods_name'],
+                        'goods_price' => $v['goods_price'],
+                        'invoice_num' => $v['goods_number'],
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];

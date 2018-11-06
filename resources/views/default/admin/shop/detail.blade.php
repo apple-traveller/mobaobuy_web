@@ -80,17 +80,6 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
-                                <div class="label_value font14">
-                                    @if($shop['is_validated']==1)
-                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-warm  is_validate">已通过</div>
-                                    @else
-                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-warm layui-btn-danger is_validate">待审核</div>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
                                 <div class="label_value font14">{{status($shop['is_self_run'])}}</div>
                             </div>
@@ -98,6 +87,14 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
                                 <div class="label_value font14">{{status($shop['is_freeze'])}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
+                                <div class="label_value font14">
+                                    <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($shop['is_validated']==1) @else layui-btn-primary @endif '>已审核</div>
+                                    <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($shop['is_validated']==0) @else layui-btn-primary @endif '>未审核</div>
+                                </div>
                             </div>
 
                         </form>
@@ -121,29 +118,19 @@
                 });
             });
 
-            $(".is_validate").click(function(res){
-                var is_validated ;
+            $(".review_status").click(function(res){
+                var is_validated = $(this).attr("data-status") ;
                 var id = "{{$shop['id']}}";
-                var input = $(this);
-                if (input.attr('data_value') === '1') {
-                    is_validated = 0;
-                } else {
-                    is_validated = 1;
-                }
                 layui.use(['layer'], function() {
                     layer = layui.layer;
-                    $.post("{{url('/admin/brand/change/isValidated')}}",{"id":id,"is_validated":is_validated},function(res){
+                    $.post("{{url('/admin/shop/change/isValidated')}}",{"id":id,"is_validated":is_validated},function(res){
                         if(res.code==200){
-                            layer.msg(res.msg, {icon: 1});
-                            if(res.data==1){
-                                input.attr('class','layui-btn layui-btn-warm  is_validate');
-                                input.attr('data_value',1);
-                                input.html('已通过');
-                            }else{
-                                input.attr('class','layui-btn layui-btn-warm layui-btn-danger is_validate');
-                                input.attr('data_value',0);
-                                input.html('待审核');
-                            }
+                            layer.msg(res.msg,{
+                                icon: 1,
+                                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            },function(){
+                                window.location.href="/admin/shop/detail?id={{$id}}&currpage={{$currpage}}";
+                            });
                         }else{
                             layer.msg(res.msg, {icon: 5});
                         }

@@ -226,9 +226,15 @@ class GoodsController extends Controller
     //购物车 去结算
     public function toBalance(Request $request){
         $cartIds = $request->input('cartId');
-        $userId = session('_web_user_id');
+//        $userId = session('_web_user_id');
+        $userInfo = session('_web_user');
         try{
-            $cartSession = GoodsService::toBalance($cartIds,$userId);
+            $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
+            //进入订单确认页面前先定义购物车session
+            $cartSession = [
+                'goods_list'=>$goods_list,
+                'address_id'=> $userInfo['address_id']
+            ];
             session()->put('cartSession',$cartSession);
             return $this->success();
         }catch (\Exception $e){
@@ -242,15 +248,19 @@ class GoodsController extends Controller
 
     /**
      * 订单维护页面
+     * confirmOrder
+     * @param Request $request
+     * @param string $id
      * @return GoodsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
+
     public function confirmOrder(Request $request,$id=''){
         $info = session('_curr_deputy_user');
         $userInfo = session('_web_user');
-        $goodsList = session('cartSession');
+        $cartSession = session('cartSession');
         $buyLimitList = session('buyLimitSession');
 
-
+        $goodsList = $cartSession['goods_list'];
 
         $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
         if (empty($invoiceInfo)){
@@ -264,17 +274,24 @@ class GoodsController extends Controller
             return $this->error('没有对应的商品');
         }
 
+
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
         if (!empty($addressList)){
             foreach ($addressList as $k=>$v){
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                if ($v['id'] == $cartSession['address_id']){
+                    $addressList[$k]['is_select'] = 1;
+                } else {
+                    $addressList[$k]['is_select'] ='';
+                };
                 if ($v['id'] == $userInfo['address_id']){
                     $addressList[$k]['is_default'] =1;
                     $first_one[$k] = $addressList[$k];
                 } else {
                     $addressList[$k]['is_default'] ='';
                 };
+
             }
             if(!empty($first_one)){
                 foreach ($first_one as $k1=>$v1){
@@ -283,7 +300,6 @@ class GoodsController extends Controller
                 }
             }
         }
-
         //限时抢购
         if(!empty($id)){
             try{
@@ -296,17 +312,43 @@ class GoodsController extends Controller
             return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','id'));
         }else{
             //购物车
+            $goods_amount = 0;
             try{
                 foreach ($goodsList as $k3=>$v3){
                     $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
+                    $goodsList[$k3]['account'] = number_format($v3['goods_price']*$v3['goods_number'],2);
+                    $goods_amount += $v3['goods_price']*$v3['goods_number'];
                 }
+                $goods_amount = number_format($goods_amount,2);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
         }
-        return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList'));
+        return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount'));
     }
 
+    /**
+     * 选择订单收货地址
+     * editOrderAddress
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function editOrderAddress(Request $request)
+    {
+        $address_id = $request->input('address_id','');
+        if(!$address_id){
+            return $this->error('缺少参数地址ID！');
+        }
+        $address_info = UserAddressService::getAddressInfo($address_id);
+        if(!$address_info){
+            return $this->error('地址信息不存在！');
+        }
+        $cartSession = session('cartSession');
+        $cartSession['address_id'] = $address_id;
+
+        session()->put('cartSession',$cartSession);
+        return $this->success('选择成功');
+    }
 
     //确认提交订单
     public function createOrder(Request $request){
@@ -362,7 +404,8 @@ class GoodsController extends Controller
         }else{
             //购物车下单
             $type = 0;
-            $carList = session('cartSession');
+            $cartSession = session('cartSession');
+            $carList = $cartSession['goods_list'];
             $shop_data = [];
 
             foreach ($carList as $k=>$v){
@@ -382,7 +425,7 @@ class GoodsController extends Controller
             try{
                 $re=[];
                 foreach ($shop_data as $k4=>$v4){
-                    $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$words,$type);
+                    $re[] =  GoodsService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$type);
                 }
                 if (!empty($re)){
                     Session::forget('cartSession');

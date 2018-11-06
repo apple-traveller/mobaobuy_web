@@ -61,7 +61,7 @@
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="{{$shop['attorney_letter_fileImg']}}" class="text"  name="attorney_letter_fileImg" style="display:none;">
-                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
+                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="{{$shop['license_fileImg']}}" class="text"  name="license_fileImg" style="display:none;">
-                                    <img @if(!empty($shop['license_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
+                                    <img @if(!empty($shop['license_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
 
                                     <div class="form_prompt"></div>
                                 </div>
@@ -90,6 +90,23 @@
                                 <div class="label"><span class="require-field">*</span>纳税人识别号：</div>
                                 <div class="label_value">
                                     <input type="text" name="taxpayer_id" class="text" value="{{$shop['taxpayer_id']}}" maxlength="40" autocomplete="off" id="taxpayer_id">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算银行开户名：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_name" class="text" value="{{$shop['settlement_bank_account_name']}}" maxlength="40" autocomplete="off" id="settlement_bank_account_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算公司银行账号：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_number" class="text" value="{{$shop['settlement_bank_account_number']}}" maxlength="40" autocomplete="off" id="settlement_bank_account_number">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -246,6 +263,13 @@
                     taxpayer_id:{
                         required : true,
                         number:true,
+                    },
+                    settlement_bank_account_name:{
+                        required : true,
+                    },
+                    settlement_bank_account_number:{
+                        required : true,
+                        number:true,
                     }
                 },
                 messages:{
@@ -275,7 +299,14 @@
                     taxpayer_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
-                    }
+                    },
+                    settlement_bank_account_name :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                    },
+                    settlement_bank_account_number :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    },
                 }
             });
         });

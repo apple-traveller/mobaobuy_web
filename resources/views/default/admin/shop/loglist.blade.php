@@ -24,9 +24,8 @@
                                 <thead>
                                 <tr>
                                     <th width="10%"><div class="tDiv">店铺职员</div></th>
-                                    <th width="10%"><div class="tDiv">管理员</div></th>
                                     <th width="10%"><div class="tDiv">操作时间</div></th>
-                                    <th width="8%"><div class="tDiv">ip地址</div></th>
+                                    <th width="10%"><div class="tDiv">ip地址</div></th>
                                     <th width="10%"><div class="tDiv">日志信息</div></th>
 
                                 </tr>
@@ -39,24 +38,11 @@
                                             @foreach($shopUsers as $v)
                                                 @if($v['id']==$vo['shop_user_id'])
                                                   {{$v['user_name']}}
-                                                @else
-                                                    无
                                                 @endif
                                             @endforeach
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="tDiv">
-                                            @foreach($admins as $v)
-                                                @if($v['id']==$vo['admin_id'])
-                                                    {{$v['user_name']}}
-                                                @else
-                                                    无
-                                                @endif
-                                            @endforeach
-                                            {{$vo['admin_id']}}
-                                        </div>
-                                    </td>
+
                                     <td><div class="tDiv">{{$vo['log_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['ip_address']}}</div></td>
                                     <td><div class="tDiv">{{$vo['log_info']}}</div></td>

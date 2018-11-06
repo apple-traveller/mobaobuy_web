@@ -97,7 +97,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data'].toFixed(2));
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(number_format(res['data'],2));
 	                    }else{
                             layer.msg('增加失败请重试', {icon: 5});
 	                        window.location.reload();
@@ -128,7 +128,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(res['data'].toFixed(2));
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html(number_format(res['data'],2));
 	                    }else{
                             layer.msg('减少失败请重试', {icon: 5});
 	                        window.location.reload();
@@ -143,7 +143,7 @@
 				check_arr = [];
 				$('.shop_list .check_all span label input:checked').each(function(){
 					check_arr.push($(this).val());
-				})
+				});
 				$('#checkedSel').html(check_arr.length);
 				if(check_arr.length == accountTotal){
 					$('#check_all').prop('checked',true);
@@ -252,7 +252,7 @@
 			var arr = new Array();
 			$('.shop_list .check_all span label input:checkbox').each(function(){
 				arr.push($(this).val());
-			})
+			});
 			
 			if(arr.length>0){
 				$.ajax({
@@ -273,6 +273,11 @@
 
 		//去结算
 		function toBalance(){
+		    //todo  重新获取 check_arr的值
+            check_arr = [];
+            $('.shop_list .check_all span label input:checked').each(function(){
+                check_arr.push($(this).val());
+            });
 			if(check_arr.length>0){
 				$.ajax({
 					url: "/toBalance",
@@ -291,7 +296,7 @@
 					}
 				})
 			}else{
-				alert('请选择商品');return;
+                layer.msg('请选择商品');return;
 			}
 		}
 
@@ -360,6 +365,7 @@
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 
+	<div class="clearfix whitebg ovh mt40" style="font-size: 0;">
      @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')

@@ -20,7 +20,7 @@ class ShopController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name']="%".$shop_name."%";
         }
-        $pageSize =5;
+        $pageSize =10;
         $shops = ShopService::getShopList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
         return $this->display('admin.shop.list',[
             'total'=>$shops['total'],
@@ -41,12 +41,13 @@ class ShopController extends Controller
         $shopUsers = ShopUserService::getShopUserList([],[]);//所有的店铺用户
         $admins = AdminService::getAdminList([],[]);//所有的店铺用户
         $shop_logs = ShopService::getShopLogList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['log_time'=>'asc']],[]);
+        //dd($shopUsers['list']);
         return $this->display('admin.shop.loglist',[
             'shop_logs'=>$shop_logs['list'],
             'total'=>$shop_logs['total'],
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
-            'shopUsers'=>$shopUsers,
+            'shopUsers'=>$shopUsers['list'],
             'admins'=>$admins
         ]);
 
@@ -150,7 +151,8 @@ class ShopController extends Controller
         return $this->display('admin.shop.detail',[
             'currpage'=>$currpage,
             'shop'=>$shop,
-            'nick_name'=>$nick_name
+            'nick_name'=>$nick_name,
+            "id"=>$id
         ]);
     }
 

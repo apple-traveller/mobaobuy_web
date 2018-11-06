@@ -55,4 +55,33 @@ class IndexController extends Controller
         ]);
     }
 
+    /**
+     * 更改店铺收款信息
+     * @param Request $request
+     * @return IndexController|\Illuminate\Http\RedirectResponse
+     */
+    public function updateCash(Request $request)
+    {
+        $shop_id = session('_seller_id')['shop_id'];
+        $cash_name = $request->input('settlement_bank_account_name','');
+        $cash_num = $request->input('settlement_bank_account_number','');
+
+        $data = ['id'=>$shop_id];
+        if (!empty($cash_name)){
+            $data['settlement_bank_account_name']=$cash_name;
+        }
+        if (!empty($cash_num)){
+            $data['settlement_bank_account_number']=$cash_num;
+        }
+        if (!empty($data)){
+            $re = ShopService::modify($data);
+        } else {
+            $re = false;
+        }
+        if ($re){
+            return $this->success('修改成功');
+        } else {
+            return $this->error('修改失败');
+        }
+    }
 }

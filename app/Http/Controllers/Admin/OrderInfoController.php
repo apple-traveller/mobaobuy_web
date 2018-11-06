@@ -9,6 +9,7 @@ use App\Services\OrderInfoService;
 use App\Services\UserService;
 use App\Services\RegionService;
 use App\Services\UserInvoicesService;
+use App\Services\UserRealService;
 class OrderInfoController extends Controller
 {
     //列表
@@ -72,7 +73,8 @@ class OrderInfoController extends Controller
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
         $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
-        $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+        //$user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+        $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
         return $this->display('admin.orderinfo.detail',[
@@ -81,7 +83,7 @@ class OrderInfoController extends Controller
             'user'=>$user,
             'region'=>$region,
             'order_goods'=>$order_goods,
-            'user_invoices'=>$user_invoices,
+            'user_real'=>$user_real,
             'orderLogs'=>$orderLogs,
             'order_status'=>$order_status
         ]);
@@ -170,8 +172,8 @@ class OrderInfoController extends Controller
         ]);
     }
 
-    //编辑开票信息
-    public function modifyInvoice(Request $request)
+    //查看开票申请
+   /* public function invoiceDetail(Request $request)
     {
         $id = $request->input('id');
         $invoice_id = $request->input('invoice_id');
@@ -185,10 +187,10 @@ class OrderInfoController extends Controller
             'currpage'=>$currpage,
             'order_status'=>$order_status
         ]);
-    }
+    }*/
 
     //保存开票信息
-    public function saveInvoice(Request $request)
+   /* public function saveInvoice(Request $request)
     {
         $data = $request->all();
         $currpage = $data['currpage'];
@@ -205,20 +207,24 @@ class OrderInfoController extends Controller
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
-    }
+    }*/
 
     //编辑商品信息
     public function modifyOrderGoods(Request $request)
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage');
+        $shop_name = $request->input("shop_name");
+        $order_status = $request->input('order_status');
         $orderGoods = OrderInfoService::getOrderGoodsByOrderId($id);
         $goods_amount = OrderInfoService::getOrderInfoById($id)['goods_amount'];
         return $this->display('admin.orderinfo.good',[
             'orderGoods'=>$orderGoods,
             'currpage'=>$currpage,
             'id'=>$id,
-            'goods_amount'=>$goods_amount
+            'goods_amount'=>$goods_amount,
+            'shop_name'=>$shop_name,
+            'order_status'=>$order_status,
         ]);
     }
 
@@ -229,8 +235,8 @@ class OrderInfoController extends Controller
         $order_id = $data['order_id'];
         unset($data['order_id']);
         try{
-            $info = OrderInfoService::modifyOrderGoods($data);
-            OrderInfoService::modifyGoodsAmount($order_id);
+            $info = OrderInfoService::modifyOrderGoods($data);//修改单价和数量
+            OrderInfoService::modifyGoodsAmount($order_id);//修改订单总金额和商品总金额
             $goods_amount = OrderInfoService::getOrderInfoById($order_id)['goods_amount'];
             if(!$info){
                 return $this->error('更新失败');
@@ -246,12 +252,14 @@ class OrderInfoController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage');
+        $order_status = $request->input("order_status");
         $feeInfo = OrderInfoService::getFeeInfo($id);
         //dd($feeInfo);
         return $this->display('admin.orderinfo.fee',[
             'feeInfo'=>$feeInfo,
             'currpage'=>$currpage,
-            'id'=>$id
+            'id'=>$id,
+            "order_status"=>$order_status
         ]);
     }
 
@@ -261,14 +269,16 @@ class OrderInfoController extends Controller
         $data = $request->all();
         $id = $data['id'];
         $currpage = $data['currpage'];
+        $order_status = $data['order_status'];
         unset($data['currpage']);
+        unset($data['order_status']);
         try{
             $info = OrderInfoService::modify($data);
             OrderInfoService::modifyGoodsAmount($id);
             if(!$info){
                 return $this->error('更新失败');
             }
-            return $this->success('更新成功',"/admin/orderinfo/detail?id=".$id."&currpage=".$currpage);
+            return $this->success('更新成功',"/admin/orderinfo/detail?id=".$id."&currpage=".$currpage."&order_status=".$order_status);
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }

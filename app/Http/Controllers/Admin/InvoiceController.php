@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\InvoiceService;
 use App\Services\InvoiceGoodsService;
+use App\Services\OrderInfoService;
 class InvoiceController extends Controller
 {
     //列表
@@ -57,11 +58,17 @@ class InvoiceController extends Controller
     public function detail(Request $request)
     {
         $id = $request->input("id");
-        $currpage = $request->input("currpage");
-        $status = $request->input("status");
-        $invoice = InvoiceService::getInfoById($id);
+        $currpage = $request->input("currpage",1);
+        $status = $request->input("status",-1);
+        $invoiceInfo = InvoiceService::getInfoById($id);
+        // 开票商品
+        $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$id]);
+        //查询所有的快递信息
+        $shippings = OrderInfoService::getShippingList();
         return $this->display('admin.invoice.detail',[
-            'invoice'=>$invoice,
+            'invoiceInfo'=>$invoiceInfo,
+            'orderInfo'=>$orderInfo,
+            'shippings'=>$shippings,
             'currpage'=>$currpage,
             'status'=>$status
         ]);
