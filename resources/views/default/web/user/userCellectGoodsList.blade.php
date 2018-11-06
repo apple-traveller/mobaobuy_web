@@ -141,7 +141,6 @@
         });
 
 	    function del(obj) {
-            $.msg.alert('取消收藏失败');return;
             var id = $(obj).attr('id');
 	        $.msg.confirm("是否确认取消收藏?",
                 function(){//点击确认
