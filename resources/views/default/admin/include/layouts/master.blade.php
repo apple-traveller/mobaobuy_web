@@ -4,7 +4,7 @@
     @include(themePath('.','admin').'admin.include.partials.header')
 </head>
 
-<body style="">
+<body  style="">
 
 @yield('iframe')
 

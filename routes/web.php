@@ -208,6 +208,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/promote/save', 'PromoteController@save');//保存促销活动
         Route::post('/promote/verify', 'PromoteController@verify');//审核促销活动
         Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
+        Route::post('/promote/getGoodsCat', 'PromoteController@getGoodsCat');//ajax获取商品分类
+        Route::post('/promote/getGood', 'PromoteController@getGood');//ajax获取商品
 
         Route::any('/demand/list', 'DemandController@list');//需求提交列表
         Route::get('/demand/detail', 'DemandController@detail');//查看审核需求
