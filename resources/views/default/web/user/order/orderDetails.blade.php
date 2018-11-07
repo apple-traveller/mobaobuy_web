@@ -82,26 +82,7 @@
 						<span class="jd_text_con black">提交订单</span>
 						<span class="jd_text_date">2018-08-08 14：40：23</span>
 					</li>
-					<li class="ml30">
-						<span class="jd_text_con black">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
-					</li>
-					<li class="ml35">
-						<span class="jd_text_con">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
-					</li>
-					<li style="margin-left: 42px;">
-						<span class="jd_text_con">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
-					</li>
-					<li style="margin-left: 48px;">
-						<span class="jd_text_con">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
-					</li>
-					<li style="margin-left: 48px;">
-						<span class="jd_text_con">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
-					</li>
+				
 				</ul>
 			</div>
 	    </div>
@@ -118,26 +99,7 @@
 						您提交了订单，请等待系统确认
 						<div class="gray">2018-09-22   12:00:00</div>
 					</li>
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
-					</li>
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
-					</li>
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
-					</li>
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
-					</li>
+				
 				</ul>
 			</div>
 	    </div>
@@ -165,17 +127,17 @@
 	    <!--订单列表-->
 	    <div class="whitebg br1 mt20 ovh">
 	    	<ul class="order-list-brand">
-	    		<li><span>商品名称</span><span>单价</span><span>数量</span><span>状态</span><span>操作</span></li>
+	    		<li><span>商品名称</span><span>单价</span><span>数量</span><span>金额</span><!-- <span>操作</span> --></li>
 	    		<!-- <li><span>维生素C</span><span>￥50.00 </span><span>2kg</span><span>待付款</span><span></span></li>
 	    		<li><span>维生素C</span><span>￥50.00 </span><span>2kg</span><span>待付款</span><span></span></li> -->
 	    		@foreach($orderDetailsInfo['goodsInfo'] as $v)
-	    		<li><span>{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['goods_number']}}kg</span><span></span><span></span></li>
+	    		<li><span>{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['goods_number']}}kg</span><span>{{number_format($v['goods_price'] * $v['goods_number'])}}</span><span></span></li>
 	    		@endforeach
 	    	</ul>
 	    	<div class="Amount_money">
-	    		<div class="db"><span>商品总额：</span><span class="fr ml20">￥100.00</span></div>
-	    		<div class="db mt15"><span class="di">运       费：</span><span class="fr ml20">￥100.00</span></div>
-	    		<div class="db mt20 red"><span class="lh35">应付总额：</span><span class="fr ml20 fs22">￥100.00</span></div>
+	    		<div class="db"><span>商品总额：</span><span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span></div>
+	    		<div class="db mt15"><span class="di">运       费：</span><span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span></div>
+	    		<div class="db mt20 red"><span class="lh35">应付总额：</span><span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span></div>
 	    	</div>
 		</div>
 	</div>

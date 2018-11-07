@@ -329,13 +329,17 @@ class OrderController extends Controller
         // 没有默认地址的情况下
         if (empty($userInfo['address_id'])){
             $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
+
         }
         $cartSession = session('cartSession');
         $carList = $cartSession['goods_list'];
+        if($cartSession['address_id'] == ''){
+            return $this->error('请选择收货地址');
+        }
         //限时抢购下单
         if($cartSession['from'] == 'promote'){
             try{
-                $re[] = OrderInfoService::createOrder($carList,$userIds,$userInfo['address_id'],$words,$cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
                 if (!empty($re)){
                     Session::forget('cartSession');
                     return $this->success('订单提交成功','',$re);
