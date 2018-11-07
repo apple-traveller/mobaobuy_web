@@ -30,7 +30,7 @@ class UserController extends Controller
             $condition['user_name'] = "%".$user_name."%";
         }
         $pageSize = 10;
-        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['reg_time'=>'desc']],$condition);
         return $this->display('admin.user.list',[
             'users'=>$users['list'],
             'user_name'=>$user_name,
@@ -135,7 +135,7 @@ class UserController extends Controller
         $data['review_time'] = Carbon::now();
         try{
             $user = UserRealService::modifyReviewStatus($data);
-            return $this->success("审核成功");
+            return $this->success("审核成功","",$user);
         }catch(\Exception $e){
             return  $this->error($e->getMessage());
         }

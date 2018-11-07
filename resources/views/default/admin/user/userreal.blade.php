@@ -122,99 +122,59 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;负责人姓名：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['contactName']))
-                                            {{$info['contactName']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="contactName" id="contactName" class="text" value="{{$info['contactName']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;负责人电话：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['contactPhone']))
-                                            {{$info['contactPhone']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="contactPhone" id="contactPhone" class="text" value="{{$info['contactPhone']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;是否能开专票：</div>
                                     <div class="label_value font14">
-                                        @if($info['is_special']==0)
-                                            否
-                                        @else
-                                            能
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;公司抬头：</div>
-                                    <div class="label_value font14">
-                                        @if(!empty($info['company_name']))
-                                            {{$info['company_name']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
+                                            <option @if($info['is_special']==0) selected @endif value="0">否</option>
+                                            <option @if($info['is_special']==1) selected @endif value="1">能</option>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;税号：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['tax_id']))
-                                            {{$info['tax_id']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="tax_id" id="tax_id" class="text" value="{{$info['tax_id']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开户银行：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['bank_of_deposit']))
-                                            {{$info['bank_of_deposit']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="bank_of_deposit" id="bank_of_deposit" class="text" value="{{$info['bank_of_deposit']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;银行账号：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['bank_account']))
-                                            {{$info['bank_account']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="bank_account" id="bank_account" class="text" value="{{$info['bank_account']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开票地址：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['company_address']))
-                                            {{$info['company_address']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="company_address" id="company_address" class="text" value="{{$info['company_address']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['company_telephone']))
-                                            {{$info['company_telephone']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="company_telephone" id="company_telephone" class="text" value="{{$info['company_telephone']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
                         @endif
@@ -232,9 +192,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
                                 <div class="label_value font14">
-                                        <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
+                                        <div data-status="0" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
                                         <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==1) @else layui-btn-primary @endif '>已实名</div>
-                                        <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
+                                        <div data-status="2" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
                                 </div>
                             </div>
 
@@ -259,18 +219,121 @@
                 });
             });
 
-            $(".review_status").click(function () {
+            $(".review_status_1").click(function(){
                 var review_content = $.trim($("#review_content").val());
-                if(review_content==''){
-                    layer.msg("请填写审核意见");
-                    return false;
-                }
-                var postData = {
+                var  postData = {
                     "user_id": "{{$info['user_id']}}",
                     "review_content":review_content,
                     "review_status": $(this).attr("data-status"),
                     "is_firm":"{{$info['is_firm']}}",
                 };
+                if(review_content==''){
+                    layer.msg("请填写审核意见");
+                    return false;
+                }
+
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        //console.log(res.data);return false;
+                        layer.msg(res.msg,{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            window.location.href="/admin/user/userRealForm?id={{$userid}}&currpage={{$currpage}}&is_firm={{$is_firm}}";
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
+
+            });
+
+            $(".review_status").click(function () {
+                var review_content = $.trim($("#review_content").val());
+                var contactName;
+                var contactPhone;
+                var tax_id;
+                var bank_of_deposit;
+                var bank_account;
+                var company_address;
+                var company_telephone;
+                var postData;
+                if($("#contactName").length>0){
+                    contactName = $("#contactName").val();
+                    if(contactName.length==0){
+                        layer.msg("负责人姓名不能为空");
+                        return false;
+                    }
+                }
+                if($("#contactPhone").length>0){
+                    contactPhone = $("#contactPhone").val();
+                    if(contactPhone.length==0){
+                        layer.msg("负责人电话不能为空");
+                        return false;
+                    }
+                }
+                if($("#tax_id").length>0){
+                    tax_id = $("#tax_id").val();
+                    if(tax_id.length==0){
+                        layer.msg("税号不能为空");
+                        return false;
+                    }
+                }
+                if($("#bank_of_deposit").length>0){
+                    bank_of_deposit = $("#bank_of_deposit").val();
+                    if(bank_of_deposit.length==0){
+                        layer.msg("开户银行不能为空");
+                        return false;
+                    }
+                }
+                if($("#bank_account").length>0){
+                    bank_account = $("#bank_account").val();
+                    if(bank_account.length==0){
+                        layer.msg("银行账号不能为空");
+                        return false;
+                    }
+                }
+                if($("#company_address").length>0){
+                    company_address = $("#company_address").val();
+                    if(company_address.length==0){
+                        layer.msg("开票地址不能为空");
+                        return false;
+                    }
+                }
+                if($("#company_telephone").length>0){
+                    company_telephone = $("#company_telephone").val();
+                    if(company_telephone.length==0){
+                        layer.msg("开票电话不能为空");
+                        return false;
+                    }
+                }
+                if(review_content==''){
+                    layer.msg("请填写审核意见");
+                    return false;
+                }
+                if($("#company_telephone").length>0){
+                     postData = {
+                        "user_id": "{{$info['user_id']}}",
+                        "review_content":review_content,
+                        "review_status": $(this).attr("data-status"),
+                        "is_firm":"{{$info['is_firm']}}",
+                        "contactName":contactName,
+                        "contactPhone":contactPhone,
+                        "tax_id":tax_id,
+                        "bank_of_deposit":bank_of_deposit,
+                        "bank_account":bank_account,
+                        "company_address":company_address,
+                        "company_telephone":company_telephone
+                    };
+                }else{
+                     postData = {
+                        "user_id": "{{$info['user_id']}}",
+                        "review_content":review_content,
+                        "review_status": $(this).attr("data-status"),
+                        "is_firm":"{{$info['is_firm']}}",
+                    };
+                }
+                //console.log(postData);return false;
                 $.post('/admin/user/userReal', postData, function (res) {
                     if (res.code == 1) {
                         //console.log(res.data);return false;

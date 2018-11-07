@@ -781,7 +781,7 @@ class UserController extends Controller
         $user_id = session('_web_user_id');
         $data = $request->all();
 
-        //is_firm 1是个人提交  2是企业
+        //is_self 1是个人提交  2是企业
         $is_self = $request->input('is_self');
         $errorMsg = [];
         $dataArr = $data['jsonData'];
@@ -807,10 +807,10 @@ class UserController extends Controller
                return $this->result("",0,implode("|",$errorMsg));
            }
 
-           if(empty($dataArr['tax_id'])){
-               $errorMsg[] = "税号";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
+//           if(empty($dataArr['tax_id'])){
+//               $errorMsg[] = "税号";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
                $errorMsg[] = "请上传授权电子版";
@@ -827,30 +827,30 @@ class UserController extends Controller
                return $this->result("",0,implode("|",$errorMsg));
            }
 
-           if(empty($dataArr['company_name'])){
-               $errorMsg[] = "公司抬头";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
-
-           if(empty($dataArr['bank_of_deposit'])){
-               $errorMsg[] = "开户银行";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
-
-           if(empty($dataArr['bank_account'])){
-               $errorMsg[] = "银行账号";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
-
-           if(empty($dataArr['company_address'])){
-               $errorMsg[] = "开票地址";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
-
-           if(empty($dataArr['company_telephone'])){
-               $errorMsg[] = "开票电话";
-               return $this->result("",0,implode("|",$errorMsg));
-           }
+//           if(empty($dataArr['company_name'])){
+//               $errorMsg[] = "公司抬头";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['bank_of_deposit'])){
+//               $errorMsg[] = "开户银行";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['bank_account'])){
+//               $errorMsg[] = "银行账号";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['company_address'])){
+//               $errorMsg[] = "开票地址";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['company_telephone'])){
+//               $errorMsg[] = "开票电话";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
 
            if(!empty($errorMsg)){
                return $this->result("",0,implode("|",$errorMsg));
