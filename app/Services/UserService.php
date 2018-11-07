@@ -481,4 +481,15 @@ class UserService
         }
     }
 
+    //后台首页用户统计
+    public static function getUsersCount()
+    {
+        $users = [];
+        $users['is_firm'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(1))]);
+        $users['is_personal'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(0))]);
+        $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
+        $users['total'] = UserRepo::getTotalCount();
+        return $users;
+    }
+
 }

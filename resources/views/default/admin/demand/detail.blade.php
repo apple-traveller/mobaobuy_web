@@ -20,7 +20,9 @@
 
                             <div class="item">
                                 <div class="label">&nbsp;昵称：</div>
-                                <div class="label_value font14">{{$demand['nick_name']}}</div>
+                                <div class="label_value font14">
+                                    {{$demand['nick_name']}}
+                                </div>
                             </div>
 
 

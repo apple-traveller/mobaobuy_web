@@ -122,6 +122,16 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::delete($id);
     }
 
+    //获取当天报价条数
+    public static function getQuotesCount()
+    {
+        //截止时间大于当天时间即可
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['expiry_time|>'] = date("Y-m-d H:i:s",$today_end);
+        return $quotes = ShopGoodsQuoteRepo::getTotalCount($condition);
+    }
+
     /**
      * 商户报价的商品
      * @param $shop_id

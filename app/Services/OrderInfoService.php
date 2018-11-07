@@ -101,7 +101,6 @@ class OrderInfoService
 
             //企业会员
             if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
-//                dump('企业会员');
                 if($currUserAuth){
                     //已作废订单
                     if($item['order_status'] == 0){
@@ -307,7 +306,7 @@ class OrderInfoService
         return $order_info;
     }
 
-
+    //修改
     public static function modify($data)
     {
         return OrderInfoRepo::modify($data['id'], $data);
@@ -688,6 +687,44 @@ class OrderInfoService
             self::rollBack();
             throw $e;
         }
+    }
+
+    //获取当天订单总数
+    public static function getOrdersCount()
+    {
+        //获取当日开始时间戳和结束时间戳
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        return OrderInfoRepo::getTotalCount($condition);
+    }
+
+    //查询当日销售总额
+    public static function gettotalAccount()
+    {
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
+        $sum = 0;
+        foreach($orders as $k=>$v){
+            $sum+=$v['goods_amount'];
+        }
+        return $sum;
+    }
+
+    //查询各个状态的订单
+    public static function getOrderStatuCount()
+    {
+        $orders = [];
+        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
+        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
+        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
+        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
+        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
+        return $orders;
     }
 
 }
