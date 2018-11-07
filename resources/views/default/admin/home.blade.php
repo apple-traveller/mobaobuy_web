@@ -209,45 +209,34 @@
                             <table cellpadding="0" cellspacing="0" class="system_table">
                                 <tbody><tr>
                                     <td class="gray_bg">服务器操作系统:</td>
-                                    <td>Linux (192.168.40.14)</td>
+                                    <td>{{$config['server_version']}}</td>
                                     <td class="gray_bg">Web 服务器:</td>
-                                    <td>nginx/1.9.1</td>
+                                    <td>{{$config['web_server']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="gray_bg">PHP 版本:</td>
-                                    <td>5.6.33</td>
-                                    <td class="gray_bg">MySQL 版本:</td>
-                                    <td>5.6.24-log</td>
+                                    <td>{{$config['php_version']}}</td>
+                                    <td class="gray_bg">域名:</td>
+                                    <td>{{$config['server_name']}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="gray_bg">安全模式:</td>
-                                    <td>否</td>
-                                    <td class="gray_bg">安全模式GID:</td>
-                                    <td>否</td>
+                                    <td class="gray_bg">ip地址:</td>
+                                    <td>{{$config['server_ip']}}</td>
+                                    <td class="gray_bg">端口:</td>
+                                    <td>{{$config['server_port']}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="gray_bg">Socket 支持:</td>
-                                    <td>是</td>
-                                    <td class="gray_bg">时区设置:</td>
-                                    <td>Asia/Shanghai</td>
+                                    <td class="gray_bg">语言:</td>
+                                    <td>{{$config['server_language']}}</td>
+                                    <td class="gray_bg">服务器时间:</td>
+                                    <td>{{$config['time']}}</td>
                                 </tr>
+
                                 <tr>
-                                    <td class="gray_bg">GD 版本:</td>
-                                    <td>GD2 ( JPEG GIF PNG)</td>
-                                    <td class="gray_bg">Zlib 支持:</td>
-                                    <td>是</td>
-                                </tr>
-                                <tr>
-                                    <td class="gray_bg">IP 库版本:</td>
-                                    <td>20071024</td>
+                                    <td class="gray_bg">mysql版本:</td>
+                                    <td>{{$config['mysql_version']}}</td>
                                     <td class="gray_bg">文件上传的最大大小:</td>
-                                    <td>50M</td>
-                                </tr>
-                                <tr>
-                                    <td class="gray_bg">程序版本:</td>
-                                    <td>v2.7.1 RELEASE 20180712 <a href="upgrade.php?act=index">[在线升级]</a></td>
-                                    <td class="gray_bg">安装日期:</td>
-                                    <td>2018-08-05</td>
+                                    <td>{{$config['upload_max_filesize']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="gray_bg">编码:</td>
