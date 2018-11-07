@@ -208,6 +208,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/promote/save', 'PromoteController@save');//保存促销活动
         Route::post('/promote/verify', 'PromoteController@verify');//审核促销活动
         Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
+        Route::post('/promote/getGoodsCat', 'PromoteController@getGoodsCat');//ajax获取商品分类
+        Route::post('/promote/getGood', 'PromoteController@getGood');//ajax获取商品
 
         Route::any('/demand/list', 'DemandController@list');//需求提交列表
         Route::get('/demand/detail', 'DemandController@detail');//查看审核需求
@@ -364,19 +366,20 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/cart','GoodsController@cart');//加入购物车
         Route::post('/checkListen','GoodsController@checkListen');//购物车多选框
         Route::post('/toBalance','GoodsController@toBalance');//购物车去结算
-        Route::get('/confirmOrder/{id?}','GoodsController@confirmOrder');//确认订单页面
-        Route::post('/createOrder','GoodsController@createOrder');//提交订单
         Route::post('/clearCart','GoodsController@clearCart');//清空购物车
         Route::post('/editCartNum','GoodsController@editCartNum');//修改购物车数量
         Route::post('/delCart','GoodsController@delCart');//删除购物车数量
         Route::post('/addCartGoodsNum','GoodsController@addCartGoodsNum');//增加购物车数量
         Route::post('/checkListenCartInput','GoodsController@checkListenCartInput');//购物车判断数量
         Route::post('/reduceGoodsNum','GoodsController@reduceGoodsNum');//减少购物车数量
-        Route::get('/orderSubmission.html','GoodsController@orderSubmission');// 订单确认页面
         Route::post('/reduceCartGoodsNum','GoodsController@reduceCartGoodsNum');//减少购物车数量
         Route::post('/editOrderAddress','GoodsController@editOrderAddress');//选择订单地址
 
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
+
+        Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
+        Route::post('/createOrder','OrderController@createOrder');//提交订单
+        Route::get('/orderSubmission.html','OrderController@orderSubmission');// 订单提交成功页面
 
         Route::get('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/list','OrderController@orderList');//我的订单
