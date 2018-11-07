@@ -959,7 +959,7 @@ class UserController extends Controller
             'address_id' =>$address_id
         ];
 
-        $re = UserService::modify($data);
+        $re = UserService::updateDefaultAddress($data);
         if ($re){
             session()->forget('_web_user');
             return $this->success('修改成功');

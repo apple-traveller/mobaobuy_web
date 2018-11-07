@@ -339,10 +339,9 @@ class UserService
     }
 
     
-    //修改
+    //修改用户信息
     public static function modify($data)
     {
-//        dd($data);
         $userData['nick_name'] = $data['nick_name'];
         $userData['email'] = $data['email'];
         try{
@@ -369,6 +368,11 @@ class UserService
 
         }
 
+    }
+
+    //修改默认收获地址
+    public static function updateDefaultAddress($data){
+        return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
     public static function getUserInfo($id)

@@ -57,7 +57,7 @@
 	</div>
     <div class=" clearfix mt5">
 		<div class="w1200">
-			<div class="crumbs">当前位置：<a href="/">会员中心</a> &gt; <a href="/subject/list/56/page/1.html">订单详情</a> &gt;<span class="gray">订单详情</span></div>
+			<div class="crumbs">当前位置：<a href="/">会员中心</a> &gt;<span class="gray">订单详情</span></div>
 		<div class="order_pro_progress whitebg mt5">
 			<div class="order_pro_stute">
 				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span> 
