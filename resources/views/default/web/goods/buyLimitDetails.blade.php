@@ -64,7 +64,7 @@
             var NumNew;
             $(document).delegate('.shop_num_plus','click',function(){
                 var ipts=$(this).siblings('input.Bidders_record_text');
-                var iptsVal=ipts.attr('value');
+
                 if(Number(ipts.val())+Number(thisMul)>Number(canSell)){
                     alert('不能大于可售');
                     return;
@@ -188,7 +188,7 @@
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$goodsInfo['activity_num']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
+					<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
@@ -199,7 +199,12 @@
 				<div class="pro_detail bd1"></div>
 				<div class="pro_detail">
 
-					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright shop_num_reduce" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">-</span><input type="text" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" /><span id="min_limit" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">+</span></div>
+					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
+                    <div class="pur_volume ml15">
+                        <span class="pur bbright shop_num_reduce" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">-</span>
+                        <input type="text" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
+                        <span id="min_limit" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['available_quantity']}}">+</span>
+                    </div>
 
 				</div>
 

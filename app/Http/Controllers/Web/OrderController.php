@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Services\ActivityPromoteService;
 use App\Services\GoodsCategoryService;
+use App\Services\GoodsService;
 use App\Services\OrderInfoService;
+use App\Services\ShopGoodsQuoteService;
+use App\Services\UserAddressService;
+use App\Services\UserRealService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
@@ -215,4 +221,182 @@ class OrderController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //确认订单页面
+    public function confirmOrder(Request $request,$id=''){
+        $info = session('_curr_deputy_user');
+        $userInfo = session('_web_user');
+        $cartSession = session('cartSession');
+        $goodsList = $cartSession['goods_list'];
+
+
+        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        if (empty($invoiceInfo)){
+            return $this->error('您还没有实名认证，不能下单');
+        }
+        if ($invoiceInfo['review_status'] != 1 ){
+            return $this->error('您的实名认证还未通过，不能下单');
+        }
+
+        if(empty($goodsList)){
+            return $this->error('没有对应的商品');
+        }
+
+
+        // 收货地址列表
+        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        if (!empty($addressList)){
+            foreach ($addressList as $k=>$v){
+                $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                if ($v['id'] == $cartSession['address_id']){
+                    $addressList[$k]['is_select'] = 1;
+                } else {
+                    $addressList[$k]['is_select'] ='';
+                };
+                if ($v['id'] == $userInfo['address_id']){
+                    $addressList[$k]['is_default'] =1;
+                    $first_one[$k] = $addressList[$k];
+                } else {
+                    $addressList[$k]['is_default'] ='';
+                };
+
+            }
+            if(!empty($first_one)){
+                foreach ($first_one as $k1=>$v1){
+                    unset($addressList[$k1]);
+                    array_unshift($addressList,$first_one[$k1]);
+                }
+            }
+        }
+        //限时抢购
+        if(!empty($id)){
+            try{
+                ActivityPromoteService::getActivityPromoteById($id);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+            $goods_amount = $goodsList[0]['account_money'];
+            $goods_amount = number_format($goods_amount,2);
+
+            return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount','id'));
+        }else{
+            //购物车
+            $goods_amount = 0;
+            try{
+                foreach ($goodsList as $k3=>$v3){
+                    $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
+                    $goodsList[$k3]['account'] = number_format($v3['goods_price']*$v3['goods_number'],2);
+                    $goods_amount += $v3['goods_price']*$v3['goods_number'];
+                }
+                $goods_amount = number_format($goods_amount,2);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+        return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount'));
+    }
+
+
+    //创建订单
+    public function createOrder(Request $request){
+        $info = session('_curr_deputy_user');
+        $userIds = [];
+        // 判断是否为企业用户
+        if($info['is_firm']){
+            $userInfo = session('_web_user');;
+            $userIds['user_id'] = session('_web_user_id');
+            $userIds['firm_id'] = $info['firm_id'];
+        }else{
+            $userInfo = session('_web_user');
+            $userIds['user_id'] = session('_web_user_id');
+            $userIds['firm_id'] = '';
+        }
+        $words = $request->input('words',' ');
+        // 判断是否有开票信息 地址可用
+        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        if (empty($invoiceInfo)){
+            return $this->error('您还没有实名认证，不能下单');
+        }
+        if ($invoiceInfo['review_status'] != 1 ){
+            return $this->error('您的实名认证还未通过，不能下单');
+        }
+        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        if (empty($addressList)){
+            return $this->error('无地址信息请前去维护');
+        }
+
+        // 没有默认地址的情况下
+        if (empty($userInfo['address_id'])){
+            $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
+        }
+        $cartSession = session('cartSession');
+        $carList = $cartSession['goods_list'];
+        //限时抢购下单
+        if($cartSession['from'] == 'promote'){
+            try{
+                $re[] = OrderInfoService::createOrder($carList,$userIds,$userInfo['address_id'],$words,$cartSession['from']);
+                if (!empty($re)){
+                    Session::forget('cartSession');
+                    return $this->success('订单提交成功','',$re);
+                } else {
+                    return $this->error('订单提交失败');
+                }
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+        }elseif($cartSession['from'] == 'cart'){
+            //购物车下单
+            $shop_data = [];
+            foreach ($carList as $k=>$v){
+                if (!isset($shop_data[$v['shop_id']])){
+                    $shop_data[$v['shop_id']] = $v['shop_id'];
+                }
+            }
+            foreach ($shop_data as $k2=>$v2){
+                $shop_data[$v2] = [];
+                foreach ($carList as $k3=>$v3){
+                    if ($k2 == $v3['shop_id']){
+                        $shop_data[$v2][]=$v3;
+                    }
+                }
+            }
+
+            try{
+                $re=[];
+                foreach ($shop_data as $k4=>$v4){
+                    $re[] =  OrderInfoService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
+                }
+                if (!empty($re)){
+                    Session::forget('cartSession');
+                    return $this->success('订单提交成功','',$re);
+                } else {
+                    return $this->error('订单提交失败');
+                }
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+
+
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function orderSubmission(Request $request)
+    {
+        $re = $request->input('re','');
+        if (!empty($re)){
+            $re = json_decode($re);
+        } else {
+            return $this->error('参数错误');
+        }
+        return $this->display('web.user.order.orderSubmission',['re'=>$re]);
+    }
+
+
 }

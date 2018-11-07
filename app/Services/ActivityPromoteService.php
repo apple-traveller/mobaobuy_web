@@ -96,4 +96,14 @@ class ActivityPromoteService
         $activityArr[] = $activityInfo;
         return $activityArr;
     }
+
+
+    //通过id查抢购表数据
+    public static function getActivityPromoteById($id){
+        $id = decrypt($id);
+        $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
 }
