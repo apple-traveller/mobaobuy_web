@@ -59,6 +59,8 @@ class ActivityPromoteService
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        //活动有效期总秒数
+        $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
         return $goodsInfo;
     }
 
@@ -67,6 +69,10 @@ class ActivityPromoteService
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
 
+        //先判断活动有效期
+        if(strtotime($activityInfo['end_time']) < time()){
+            self::throwBizError('该活动已结束！');
+        }
         //规格判断处理
         if($goodsNum > $activityInfo['available_quantity']){
             self::throwBizError('超出当前可售数量');
