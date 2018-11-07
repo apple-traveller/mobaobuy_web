@@ -60,8 +60,8 @@
 					</li>
 					<li>
 						<div class="member_Name_stute">
-						<div class="fl mem_stute Pend_payment cp"><span class="ml50">待付款</span><span class="orange ml10"><a href="/order/list">{{$memberInfo['nPayOrderTotalCount']}}</a></span></div>
-						<div class="fr mem_stute Pend_goods cp"><span class="ml50">已付款</span><span class="orange ml10"><a href="/order/list">{{$memberInfo['yPayOrderTotalCount']}}</a></span></div>
+						<div class="fl mem_stute Pend_payment cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">待付款</a></span><span class="orange ml10"><a href="/order/list?tab_code=waitPay">{{$memberInfo['nPayOrderTotalCount']}}</a></span></div>
+						<div class="fr mem_stute Pend_goods cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">已付款</a></span><span class="orange ml10"><a href="/order/list">{{$memberInfo['yPayOrderTotalCount']}}</a></span></div>
 						</div>
 					</li>
 				</ul>
@@ -81,7 +81,7 @@
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>
-						<td>{{$v['order_sn']}}</td><td>2</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 待付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
+						<td>{{$v['order_sn']}}</td><td>{{$v['shop_name']}}</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 待付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
 					</tr>
 					@endforeach
 				@endif

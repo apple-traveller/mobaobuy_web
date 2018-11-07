@@ -339,10 +339,9 @@ class UserService
     }
 
     
-    //修改
+    //修改用户信息
     public static function modify($data)
     {
-//        dd($data);
         $userData['nick_name'] = $data['nick_name'];
         $userData['email'] = $data['email'];
         try{
@@ -369,6 +368,11 @@ class UserService
 
         }
 
+    }
+
+    //修改默认收获地址
+    public static function updateDefaultAddress($data){
+        return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
     public static function getUserInfo($id)
@@ -461,7 +465,7 @@ class UserService
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
         //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0]);
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
         //
         $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
 

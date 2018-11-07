@@ -238,19 +238,21 @@
 
         //请求验证用户是否存在并且已实名
         function checkRealName(mobile){
+            let _bool = false;
             $.ajax({
                 'type':'post',
                 'data':{'mobile':mobile},
                 'url':'{{url('/checkRealNameBool')}}',
+                async:false,
                 success:function(res){
                     if(res.code == 1){
-                        return true;
+                        _bool = true;
                     }else{
                         $.msg.error(res.msg);
-                        return false;
                     }
                 }
-            })
+            });
+            return _bool;
         }
 	</script>
 @endsection
