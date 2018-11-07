@@ -138,7 +138,7 @@
                                     <div class="label_value font14">
                                         <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
                                             <option @if($info['is_special']==0) selected @endif value="0">否</option>
-                                            <option @if($info['is_special']==1) selected @endif value="1">能</option>
+                                            <option @if($info['is_special']==1) selected @endif value="1">是</option>
                                         </select>
                                     </div>
                                 </div>
@@ -191,11 +191,13 @@
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
-                                <div class="label_value font14">
-                                        <div data-status="0" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
-                                        <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==1) @else layui-btn-primary @endif '>已实名</div>
-                                        <div data-status="2" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
+                                <div class="label_value ">
+                                        <div style="float: left;" data-status="0" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
+                                        <div style="float: left;" data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==1) @else layui-btn-primary @endif '>已实名</div>
+                                        <div style="float: left;" data-status="2" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
+                                        <div style="margin-left: 20px;"  class="notic">点击按钮直接修改状态</div>
                                 </div>
+
                             </div>
 
                         </form>

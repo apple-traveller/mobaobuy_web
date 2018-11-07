@@ -104,6 +104,14 @@
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="expiry_time" class="text" value="" maxlength="40" autocomplete="off" id="expiry_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
@@ -131,6 +139,16 @@
 
     <script type="text/javascript">
 
+        layui.use(['laydate'], function() {
+            var laydate = layui.laydate;
+            var index;
+
+            laydate.render({
+                elem: '#expiry_time' //指定元素
+                , type: 'datetime'
+            });
+
+        });
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\ActivityService;
 use App\Services\ShopService;
 use App\Services\GoodsService;
+use App\Services\GoodsCategoryService;
 class PromoteController extends Controller
 {
     //列表
