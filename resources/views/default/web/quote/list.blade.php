@@ -9,7 +9,7 @@
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
         .sort_down_up{background: url(/images/down_up.png)no-repeat 63px 13px;}
         .add_time .sort_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
-        .add_time .sort_down{background: url(/images/common_icon.png)no-repeat 92px 17px;
+        .add_time .sort_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
 	</style>
 @endsection
