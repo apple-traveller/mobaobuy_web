@@ -129,97 +129,109 @@
 
         //审批通过
         function orderApproval(id){
-            var flag = confirm('是否确认审批通过');
-            if(flag === true){
-                $.ajax({
-                    url: "/egis",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            console.log(data.code);
-                            alert('出错,请重试')
+            $.msg.confirm('是否确认审批通过？',
+                function () {
+                    $.ajax({
+                        url: "/egis",
+                        dataType: "json",
+                        data: {
+                            'id':id
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            if(data.code){
+                                window.location.reload();
+                            }else{
+                                $.msg.error(data.msg);
+                            }
                         }
-                    }
-                })
-            }
-            
+                    })
+                },
+                function(){
+
+                }
+            )
         }
         
         //订单取消
         function orderCancel(id){
-            var flag = confirm('是否确认取消');
-            if(flag === true){
-                 $.ajax({
-                    url: "/orderCancel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
+            $.msg.confirm('是否确认取消？',
+                function () {
+                    $.ajax({
+                        url: "/orderCancel",
+                        dataType: "json",
+                        data: {
+                            'id':id
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            if(data.code){
 //                            $.msg.alert();
-                            $.msg.tips('取消成功');
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
+                                $.msg.tips('取消成功');
+                                window.location.reload();
+                            }else{
+                                $.msg.error(data.msg);
+                            }
                         }
-                    }
-                })
-            }
+                    })
+                },
+                function(){
+
+                }
+            )
         }
 
         //订单删除
         function orderDel(id){
-            var flag = confirm('是否确认删除?');
-            if(flag === true){
-                 $.ajax({
-                    url: "/orderDel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
+            $.msg.confirm('是否确认删除？',
+                function () {
+                    $.ajax({
+                        url: "/orderDel",
+                        dataType: "json",
+                        data: {
+                            'id':id
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            if(data.code){
+                                window.location.reload();
+                            }else{
+                                $.msg.error(data.msg);
+                            }
                         }
-                    }
-                })
-            }
+                    })
+                },
+                function(){
+
+                }
+            )
         }
 
         //确认收货
         function confirmTake(id){
-             var flag = confirm('是否确认删除?');
-            if(flag === true){
-                 $.ajax({
-                    url: "/orderDel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
+            $.msg.confirm('是否确认收货？',
+                function () {
+                    $.ajax({
+                        url: "/orderDel",
+                        dataType: "json",
+                        data: {
+                            'id':id
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            if(data.code){
+                                window.location.reload();
+                            }else{
+                                $.msg.error(data.msg);
+                            }
                         }
-                    }
-                })
-            }
-        }
+                    })
+                },
+                function(){
 
-        //
+                }
+            )
+        }
 	</script>
 
 @endsection

@@ -15,6 +15,8 @@ use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
 use App\Repositories\UserRepo;
 use Carbon\Carbon;
+use League\Flysystem\Exception;
+
 class OrderInfoService
 {
     use CommonService;
@@ -531,7 +533,32 @@ class OrderInfoService
 
     //订单取消
     public static function orderCancel($id){
-        return OrderInfoRepo::modify($id,['order_status'=>0]);
+        try{
+            self::beginTransaction();
+            //获取订单信息
+            $orderInfo = self::getOrderInfoById($id);
+            $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+            if(empty($orderInfo)){
+                self::throwBizError('订单信息不存在');
+            }
+            //根据来源返回库存
+            if($orderInfo['extension_code'] == 'promote'){//限时抢购
+                $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
+                ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+            }else{//购物车下单
+                foreach ($orderGoodsInfo as $k=>$v){
+                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                }
+            }
+
+            OrderInfoRepo::modify($id,['order_status'=>0]);
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            throw $e;
+        }
     }
 
     //订单确认收货
@@ -642,6 +669,7 @@ class OrderInfoService
                     ];
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['goods_number'] * $v['goods_price'];
+                    //减去活动库存
                     ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['available_quantity'] - $v['goods_number']]);
                 }
             }
