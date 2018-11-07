@@ -13,8 +13,7 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -31,7 +30,7 @@
                                         <option  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="form_prompt"></div>
+                                    <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -52,7 +51,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品分类：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
                                         <option value="0">请选择分类</option>
@@ -60,16 +59,22 @@
                                             <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
                                         @endforeach
                                     </select>
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
+                                    <div class="form_prompt"></div>
+                                    <div style="margin-left: 10px" class="notic">分类用于辅助选择商品</div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="goods_id" name="goods_id" id="goods_id">
                                         <option value="">请选择商品</option>
                                         @foreach($goods as $vo)
                                             <option  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="form_prompt"></div>
-                                    <div class="notic">分类用于辅助选择商品</div>
+                                    <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
-
                             </div>
 
                             <div class="item">
@@ -87,7 +92,7 @@
                                     <input type="text" readonly="readonly" id="area2" name="place_id" value="" style="display: none"/>
                                     <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="" style="width: 321px;height:33px;" id="test">
                                     </div>
-                                    <div class="form_prompt"></div>
+                                    <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
                             </div>
 
