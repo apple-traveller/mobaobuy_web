@@ -29,6 +29,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logout', 'LoginController@logout');
         Route::get('/index', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
+        Route::post('/home/getMonthlyOrders', 'IndexController@getMonthlyOrders');
         Route::get('/clear', 'IndexController@clear');
 
         Route::get('/adminuser/list','AdminUserController@list');//管理员列表

@@ -55,8 +55,16 @@ class IndexController extends Controller
             'quoteCount'=>$quoteCount,
             'users'=>$users,
             'orders'=>$orders,
-            'config'=>$config
+            'config'=>$config,
         ]);
+    }
+
+    //ajax获取当月统计数据
+    public function getMonthlyOrders()
+    {
+        //查询当年每月的订单数量
+        $monthly_orders = OrderInfoService::getMonthlyOrders();
+        return $this->result($monthly_orders,200,'');
     }
 
 

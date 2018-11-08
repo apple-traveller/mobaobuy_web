@@ -729,4 +729,13 @@ class OrderInfoService
         return $sum;
     }
 
+    //统计当月的订单量
+    public static function getMonthlyOrders()
+    {
+        $a = date("Y-m-1"); //当月第一天
+        $b = date("Y-m-d"); //当月当天
+        $res = OrderInfoRepo::getEveryMonthOrderCount($a,$b);
+        return $res;
+    }
+
 }
