@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -10,9 +11,10 @@ class ActivityPromoteController extends Controller
 {
     //限时抢购
     public function buyLimit(){
-        $review_status = 3;
+        $condition['review_status'] = 3;
+        $condition['end_time|>'] = Carbon::now();
         try{
-            $promoteInfo = ActivityPromoteService::buyLimit($review_status);
+            $promoteInfo = ActivityPromoteService::buyLimit($condition);
             return $this->display('web.goods.buyLimit',compact('promoteInfo'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
