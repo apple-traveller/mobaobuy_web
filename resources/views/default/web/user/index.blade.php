@@ -54,7 +54,7 @@
 						<div class="fl ml30"><img src="img/per_logo.png"/></div>
 						<div class="fl ml15 ovh">
 							<span class="mt5 db">{{session('_web_user')['nick_name']}}</span>
-							<div class="member_Name member_Name_border tac mt10">@if(session('_web_user')['is_firm']) 企业会员 @else 个人会员 @endif</div>
+							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业会员 @else 个人会员 @endif</div>
 							<span class="mt20 gray db">欢迎来到秣宝的会员中心！</span>
 						</div>
 					</li>
@@ -74,7 +74,7 @@
 			
 			<table class="order_record">
 				<tr>
-					<th>订单号</th><th>数量（kg）</th><th>订单金额</th><th>状态</th>
+					<th>订单号</th><th>店铺名称</th><th>订单金额</th><th>状态</th>
 				</tr>
 				@if(empty($memberInfo['orderInfo']))
 					暂无订单
@@ -96,7 +96,7 @@
 		
 			<table class="order_record">
 				<tr>
-					<th>商品名称</th><th>单价</th><th>数量（kg）</th><th>发货地</th><th>操作</th>
+					<th>商品名称</th><th>单价</th><th>数量（公斤）</th><th>发货地</th><th>操作</th>
 				</tr>
 				@foreach($memberInfo['shopGoodsInfo'] as $v)
 				<tr>

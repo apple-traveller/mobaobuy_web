@@ -27,6 +27,7 @@ class WebClosed
                 if(!$user_info['is_firm']){
                     $user_info['firms'] = UserService::getUserFirms(session('_web_user_id'));
                 }
+//                dd($user_info);
 
                 session()->put('_web_user', $user_info);
             }

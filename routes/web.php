@@ -29,6 +29,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logout', 'LoginController@logout');
         Route::get('/index', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
+        Route::post('/home/getMonthlyOrders', 'IndexController@getMonthlyOrders');
         Route::get('/clear', 'IndexController@clear');
 
         Route::get('/adminuser/list','AdminUserController@list');//管理员列表
@@ -151,19 +152,19 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopuser/save', 'ShopUserController@save');//保存
         Route::get('/shopuser/delete', 'ShopUserController@delete');//删除
 
-        Route::get('/shopgoods/list', 'ShopGoodsController@list');//店铺商品列表
+        /*Route::get('/shopgoods/list', 'ShopGoodsController@list');//店铺商品列表
         Route::get('/shopgoods/addForm', 'ShopGoodsController@addForm');//店铺商品添加
         Route::get('/shopgoods/editForm', 'ShopGoodsController@editForm');//店铺商品编辑
         Route::post('/shopgoods/save', 'ShopGoodsController@save');//保存
         Route::post('/shopgoods/getGoods', 'ShopGoodsController@getGoods');//ajax获取商品
-        Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除
-
+        Route::get('/shopgoods/delete', 'ShopGoodsController@delete');//删除*/
 
         Route::get('/shopgoodsquote/list', 'ShopGoodsQuoteController@list');//店铺商品报价列表
         Route::get('/shopgoodsquote/addForm', 'ShopGoodsQuoteController@addForm');//添加
         Route::get('/shopgoodsquote/editForm', 'ShopGoodsQuoteController@editForm');//编辑
         Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
+        Route::post('/shopgoodsquote/getGoods', 'ShopGoodsQuoteController@getGoods');//ajax获取商品
 
         Route::any('/orderinfo/list', 'OrderInfoController@list');//订单列表
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
@@ -172,8 +173,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
         Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
-        //Route::get('/orderinfo/invoiceDetail', 'OrderInfoController@invoiceDetail');//查看开票信息
-        //Route::post('/orderinfo/saveInvoice', 'OrderInfoController@saveInvoice');//保存发票修改信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
@@ -377,8 +376,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
 
-        Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
-        Route::post('/createOrder','OrderController@createOrder');//提交订单
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
+            Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
+            Route::post('/createOrder','OrderController@createOrder');//提交订单
+
+        });
+
+
         Route::get('/orderSubmission.html','OrderController@orderSubmission');// 订单提交成功页面
 
         Route::get('/order/list','OrderController@orderList');//我的订单
@@ -448,6 +452,8 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
+        Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
+        Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@list');// 商户商品报价
         Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加

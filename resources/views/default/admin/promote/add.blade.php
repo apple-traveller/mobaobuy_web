@@ -33,7 +33,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="begin_time" value="" id="begin_time" size="40"  class="text">
+                                        <input type="text" name="begin_time" autocomplete="off" value="" id="begin_time" size="40"  class="text">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -42,7 +42,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 结束时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="end_time" value="" id="end_time" size="40"  class="text">
+                                        <input type="text" name="end_time" autocomplete="off" value="" id="end_time" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>

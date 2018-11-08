@@ -106,7 +106,6 @@
                 <a href="/">返回首页</a></div>
         </div>
     </div>
-
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;">
 </div>
 @include(themePath('.','web').'web.include.partials.footer_new')

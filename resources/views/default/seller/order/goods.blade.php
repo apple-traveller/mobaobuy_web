@@ -22,23 +22,21 @@
                                 <table class="table" border="0" cellpadding="0" cellspacing="0">
                                     <thead>
                                     <tr>
-                                        <th width="15%" class="first">商品名称 [ 品牌 ]</th>
-                                        <th width="10%">所属店铺</th>
-                                        <th width="15%">商品编码</th>
-                                        <th width="10%">价格</th>
-                                        <th width="10%">购买数量</th>
-                                        <th width="10%">已发货数量</th>
-                                        <th width="10%">操作</th>
+                                        <th class="first">商品名称 [ 品牌 ]</th>
+                                        <th>商品编码</th>
+                                        <th>价格</th>
+                                        <th>购买数量</th>
+                                        <th>已发货数量</th>
+                                        <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($orderGoods as $vo)
                                         <tr>
                                             <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
-                                            <td>{{$vo['shop_name']}}</td>
-                                            <td>{{$vo['goods_sn']}}</td>
-                                            <td class="goods_price"><input  class="text"  style="width:50px;" type="text" value="{{$vo['goods_price']}}" ></td>
-                                            <td class="goods_number"><input  class="text"  style="width:50px;" type="text" value="{{$vo['goods_number']}}" ></td>
+                                            <td>{{$vo['goods_sn']}}123 </td>
+                                            <td class="goods_price" ><input  class="text"  style="min-width:50px;" type="text" value="{{$vo['goods_price']}}" ></td>
+                                            <td class="goods_number" ><input  class="text"  style="min-width:50px;" type="text" value="{{$vo['goods_number']}}" ></td>
                                             <td>{{$vo['send_number']}}</td>
                                             <td><input  type="button" data-id="{{$vo['id']}}" class="btn btn35 blue_btn changGoods" value="确定修改" id="submitBtn"></td>
                                         </tr>

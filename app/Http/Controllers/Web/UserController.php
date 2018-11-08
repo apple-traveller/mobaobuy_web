@@ -31,6 +31,9 @@ class UserController extends Controller
 
     public function  index(){
         $userId = session('_web_user_id');
+        if(!session('_curr_deputy_user')['is_self']){
+            $userId = session('_curr_deputy_user')['firm_id'];
+        }
         $memberInfo = UserService::userMember($userId);
         return $this->display('web.user.index',compact('memberInfo'));
     }
@@ -224,9 +227,14 @@ class UserController extends Controller
     //获取用户购物车产品数
     public function getCartNum()
     {
+
         if(session()->has('_web_user_id')){
             //登录用户
-            $user_id = session('_web_user_id');
+            if(session('_curr_deputy_user')['is_self'] == 0){
+                $user_id = session('_curr_deputy_user')['firm_id'];
+            }else{
+                $user_id = session('_web_user_id');
+            }
             $num = CartService::getUserCartNum($user_id);
         }else{
             $num = 0;
@@ -680,6 +688,7 @@ class UserController extends Controller
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
+
         try{
             $userRealName = UserService::getUserRealbyId($userInfo['id']);
             $userInfo['real_name'] = $userRealName;

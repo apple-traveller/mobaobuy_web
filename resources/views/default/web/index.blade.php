@@ -9,7 +9,6 @@
 
     <script>
         $(function(){
-
             $(document).delegate('.supply_list>li','mouseenter',function(){
                 $(this).find('.operation').text('收起');
                 $(this).find('.supply_list_inside').show();

@@ -148,4 +148,20 @@ class ShopGoodsQuoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //ajax获取商品
+    public function getGoods(Request $request)
+    {
+        $cat_id = $request->input('cat_id');
+        $goods = GoodsService::getGoods(['cat_id'=>$cat_id],['id','goods_name','packing_spec']);
+        if($cat_id==0){
+            $goods = GoodsService::getGoods([],['id','goods_name','packing_spec']);
+        }
+        if(!empty($goods)){
+            return $this->result($goods,200,'获取商品成功');
+        }else{
+            return $this->result('',400,'获取商品失败');
+        }
+    }
+
 }
