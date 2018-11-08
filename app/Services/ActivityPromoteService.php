@@ -38,8 +38,8 @@ class ActivityPromoteService
 
     //web
     //限时抢购
-    public static function buyLimit($review_status){
-        return ActivityPromoteRepo::getList([],['review_status'=>$review_status]);
+    public static function buyLimit($condition){
+        return ActivityPromoteRepo::getList([],$condition);
     }
 
     //限时抢购详情

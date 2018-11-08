@@ -64,7 +64,7 @@ class OrderInfoService
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
             //企业
-            if($condition['firm_id'] == $currUser['firm_id'] && $currUser['is_self']){
+            if(($currUser['is_self'] == 1) && $currUser['is_firm']){
                 if($item['order_status'] == 0){
                     $orderList['list'][$k]['auth'][] = 'can_del';
                     $orderList['list'][$k]['auth_desc'][] = '删除';
@@ -104,7 +104,8 @@ class OrderInfoService
             }
 
             //企业会员
-            if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
+
+            if(($currUser['is_self'] == 0) && $currUser['is_firm'] == 1){
                 if($currUserAuth){
                     //已作废订单
                     if($item['order_status'] == 0){
@@ -114,7 +115,7 @@ class OrderInfoService
                     }
                     //待企业审核订单
                     if($item['order_status'] == 1){
-                        if($currUserAuth['can_can_approval']){
+                        if($currUserAuth[0]['can_approval']){
                             $orderList['list'][$k]['auth'][] = 'can_approval';
                             $orderList['list'][$k]['auth_desc'][] = '审批';
                             $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
@@ -190,6 +191,7 @@ class OrderInfoService
 
 
             }
+
             if($item['order_status'] == 4){
                 $orderList['list'][$k]['auth'][] = 'finish';
                 $orderList['list'][$k]['auth_desc'][] = '已完成';
@@ -727,17 +729,13 @@ class OrderInfoService
         return $sum;
     }
 
-    //查询各个状态的订单
-    public static function getOrderStatuCount()
+    //统计当月的订单量
+    public static function getMonthlyOrders()
     {
-        $orders = [];
-        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
-        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
-        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
-        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
-        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
-        return $orders;
+        $a = date("Y-m-1"); //当月第一天
+        $b = date("Y-m-d"); //当月当天
+        $res = OrderInfoRepo::getEveryMonthOrderCount($a,$b);
+        return $res;
     }
-
 
 }

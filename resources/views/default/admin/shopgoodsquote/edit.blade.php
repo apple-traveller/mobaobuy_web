@@ -51,6 +51,14 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;QQ号：</div>
+                                <div class="label_value">
+                                    <input type="text" name="QQ" class="text" value="{{$goodsQuote['QQ']}}" maxlength="40" autocomplete="off" id="QQ">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品分类：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
@@ -70,10 +78,10 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="goods_id" name="goods_id" id="goods_id">
                                         <option value="">请选择商品</option>
                                         @foreach($goods as $vo)
-                                            <option @if($goodsQuote['goods_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
+                                            <option data-extra="{{$vo['packing_spec']}}" @if($goodsQuote['goods_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="form_prompt"></div>
+                                    <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -152,20 +160,49 @@
             });
         });
 
-
-        $(".cat_id").change(function(res){
+        $(".cat_id").change(function(){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
-            $.post('/admin/shopgoods/getGoods',{'cat_id':cat_id},function(res){
+            $.post('/admin/shopgoodsquote/getGoods',{'cat_id':cat_id},function(res){
                 if(res.code==200){
                     var data = res.data;
+                    $(".goods_id").append('<option value="">请选择商品</option>');
                     for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
+                        $(".goods_id").append('<option data-extra="'+data[i]['packing_spec']+'" value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
                     $(".goods_id").append('<option value="">该分类下没有商品</option>');
                 }
             },"json");
+        });
+
+        $("#goods_id").change(function(){
+            var packing_spec = $(this).find("option:selected").attr("data-extra");
+            $(this).siblings("span").remove();
+            $(this).after('<span id="packing_spec" data="'+packing_spec+'" style="margin-left: 20px;color:red;">产品规格为：'+packing_spec+'</span>');
+            $("#goods_number").after('<span style="margin-left: 10px;color:red;">库存数量只能是产品规格的整数倍</span>');
+        });
+
+        layui.use(['layer'], function(){
+            var layer = layui.layer;
+
+            $("#goods_number").blur(function(){
+                var goods_number = $(this).val();
+                var packing_spec = $("#packing_spec").attr("data");
+                var goods_id = $("#goods_id").val();
+                console.log(goods_id);
+                if(!goods_id){
+                    alert("请先选择商品");
+                    $(this).val("");
+                    return ;
+                }
+                if(!goods_number){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                $(this).val(Math.ceil(goods_number/packing_spec)*packing_spec);
+            });
+
         });
         $(function(){
             //表单验证
@@ -202,6 +239,9 @@
                     },
                     expiry_time:{
                         required:true,
+                    },
+                    QQ:{
+                        required:true,
                     }
                 },
                 messages:{
@@ -224,7 +264,9 @@
                     expiry_time :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-
+                    QQ:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                 }
             });
         });

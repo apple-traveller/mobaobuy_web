@@ -33,7 +33,7 @@ class IndexController extends Controller
         //查询会员信息
         $users = UserService::getUsersCount();
         //查询订单信息
-        $orders = OrderInfoService::getOrderStatuCount();
+        $orders = OrderInfoService::getOrderStatusCount(0,0);
         //当前服务器配置信息
         $config = [
             'server_name'=> $_SERVER["HTTP_HOST"],
@@ -55,9 +55,18 @@ class IndexController extends Controller
             'quoteCount'=>$quoteCount,
             'users'=>$users,
             'orders'=>$orders,
-            'config'=>$config
+            'config'=>$config,
         ]);
     }
+
+    //ajax获取当月统计数据
+    public function getMonthlyOrders()
+    {
+        //查询当年每月的订单数量
+        $monthly_orders = OrderInfoService::getMonthlyOrders();
+        return $this->result($monthly_orders,200,'');
+    }
+
 
     public function clear(){
         Cache::flush();

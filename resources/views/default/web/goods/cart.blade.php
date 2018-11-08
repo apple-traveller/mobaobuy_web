@@ -3,7 +3,6 @@
 <head>
     <title>购物车 - @yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
-    @yield('css')
     <style type="text/css">
     	.fr{float:right;}
     	.fs14{font-size:14px;}
@@ -201,49 +200,57 @@
 
     	//删除购物车某商品
     	function del(obj){
-    		var flag = confirm("是否删除?");
             var id = $(obj).attr('id');
-            if(flag===true){
-                 $.ajax({
-	                'type':'post',
-	                'data':{'id':id},
-	                'url':'{{url('/delCart')}}',
-	                success:function(res){
-	                    // var result = JSON.parse(res);
-	                    if(res.code){
-	                        //todo 删除成功不刷新页面
-	                        // alert('删除成功');
-	                        window.location.reload();
-	                    }else{
-	                        alert('删除失败');
-	                        window.location.reload();
-	                    }
-               		}
-     			})
-            }   
+            $.msg.confirm("是否删除？",
+				function(){
+                    $.ajax({
+                        'type':'post',
+                        'data':{'id':id},
+                        'url':'{{url('/delCart')}}',
+                        success:function(res){
+                            // var result = JSON.parse(res);
+                            if(res.code){
+                                //todo 删除成功最好不刷新页面
+                                // alert('删除成功');
+                                window.location.reload();
+                            }else{
+                                alert('删除失败');
+                                window.location.reload();
+                            }
+                        }
+                    })
+				},
+				function(){
+
+				}
+			)
     	}
 
     	//清空购物车
     	function clearCart(){
-    		var flag = confirm("是否清空购物车?");
-    		if(flag===true){
-    			$.ajax({
-				url: "/clearCart",
-	            dataType: "json",
-	            data: {
-	               
-	            },
-	            type: "POST",
-	            success: function (data) {
-	               if(data.code){
+            $.msg.confirm("是否清空购物车？",
+                function(){
+                    $.ajax({
+                        url: "/clearCart",
+                        dataType: "json",
+                        data: {
+
+                        },
+                        type: "POST",
+                        success: function (data) {
+                            if(data.code){
 //	               		$.msg.alert('清空购物车成功');
-	               		window.location.reload();
-	               }else{
-	               		alert('清空购物车失败');
-	               }
-	            }
-				})
-    		}
+                                window.location.reload();
+                            }else{
+                                alert('清空购物车失败');
+                            }
+                        }
+                    })
+                },
+                function(){
+
+                }
+            )
 		}
 
 		
@@ -267,7 +274,7 @@
 					}
 				})
 			}else{
-				alert('请选择商品');return;
+				$.msg.error('请选择商品');return;
 			}
 		}
 
@@ -291,12 +298,12 @@
 						if(data.code){
 							window.location.href='/confirmOrder';
 						}else{
-							layer.alert(data.msg);
+                            $.msg.error(data.msg);
 						}
 					}
 				})
 			}else{
-                layer.msg('请选择商品');return;
+                $.msg.error('请选择商品');return;
 			}
 		}
 
@@ -320,15 +327,13 @@
 		</div>
 	</div>
 
-
-	<div class="w1200 whitebg" style="margin-top: 20px;">
-		
-		<ul class="shop_title">
-			<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
-			<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
-			<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
-		</ul>
-		@if(count($cartInfo['cartInfo']))
+	@if(count($cartInfo['cartInfo']))
+		<div class="w1200 whitebg" style="margin-top: 20px;">
+			<ul class="shop_title">
+				<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
+				<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
+				<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
+			</ul>
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
 			<ul class="shop_list">
 				<li class="check_all">
@@ -352,24 +357,27 @@
 				</li>
 			</ul>
 			@endforeach
-		@else
-			购物车没有任何商品
-			<!-- <div class="sumbit_cart_btn">去购物</div> -->
-			<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;">去购物</a>
-		@endif
-	</div>
-	
-		
-	<div class="sumbit_cart whitebg ovh mb30">
+		</div>
+		<div class="sumbit_cart whitebg ovh mb30">
 			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp"><a href="/goodsList">继续购买</a></span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
+	@else
+		<div class="w1200 whitebg" style="margin-top: 20px;">
+			<div style="height: 300px;text-align: center;">
+				<div style="padding-top: 130px">
+					<span style="font-size: 16px">购物车没有任何商品</span>
+					<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;padding: 4px;border-radius: 4px;">去购物</a>
+				</div>
+
+			</div>
+		</div>
+	@endif
 
 	<div class="clearfix whitebg ovh mt40" style="font-size: 0;">
      @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')
-    @yield('js')
 </body>
 </html>
 

@@ -61,7 +61,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'web.auth' => \App\Http\Middleware\WebAuthenticate::class,
         'admin.auth' => \App\Http\Middleware\AdminAuthenticate::class,
-        'web.stats' => \App\Http\Middleware\WebStats::class,
+        'web.firmUserAuth' => \App\Http\Middleware\WebFirmUserAuth::class,
         'web.closed' => \App\Http\Middleware\WebClosed::class,
         'seller.auth' => \App\Http\Middleware\SellerAuthenticate::class,
     ];

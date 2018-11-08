@@ -300,14 +300,17 @@ class OrderController extends Controller
 
     //创建订单
     public function createOrder(Request $request){
+
         $info = session('_curr_deputy_user');
         $userIds = [];
         // 判断是否为企业用户
         if($info['is_firm']){
-            $userInfo = session('_web_user');;
+            //企业用户，企业
+            $userInfo = session('_web_user');
             $userIds['user_id'] = session('_web_user_id');
             $userIds['firm_id'] = $info['firm_id'];
         }else{
+            //个人
             $userInfo = session('_web_user');
             $userIds['user_id'] = session('_web_user_id');
             $userIds['firm_id'] = '';
@@ -325,6 +328,10 @@ class OrderController extends Controller
         if (empty($addressList)){
             return $this->error('无地址信息请前去维护');
         }
+
+//        if(){
+//
+//        }
 
         // 没有默认地址的情况下
         if (empty($userInfo['address_id'])){

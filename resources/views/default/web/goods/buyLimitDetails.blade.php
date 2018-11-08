@@ -3,7 +3,7 @@
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />--}}
-	<link rel="stylesheet" href="css/global.css" />
+	<link rel="stylesheet" href="/css/global.css" />
 	<link rel="stylesheet" href="/css/index.css" />
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
@@ -35,7 +35,7 @@
                     if(hour<=9)hour='0'+hour;
                     if(minute<=9)minute='0'+minute;
                     if(second<=9)second='0'+second;
-                    nday.html(day+"天");
+                    nday.html(day);
                     nhour.html('<s></s>'+hour);
                     nminute.html('<s></s>'+minute);
                     nsecond.html('<s></s>'+second);
@@ -168,6 +168,8 @@
 					<span class="xs_ms fl">限时秒杀</span>
 					<div class="Surplus_time" >
 						<span class="white fl" >剩余时间</span>
+                        {{--<span class="time_mode fl ml10 day_show1">00</span>--}}
+                        {{--<span class="fl ml5">天</span>--}}
 						<span class="time_mode fl ml10 hour_show1">00</span>
 						<span class="fl ml5">:</span>
 						<span class="time_mode fl ml5 minute_show1">00</span>
@@ -213,7 +215,13 @@
 				</div>
 
 				<div class="mt30" style="margin-left: 115px;">
-					<button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button><button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                    @if($goodsInfo['seconds']>0)
+                        <button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button>
+                    @else
+                        <button class="pro_detail_btn b1b1b1bg">已结束</button>
+                    @endif
+
+                    <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
 				</div>
 				<input type="hidden" name="" value="{{encrypt($goodsInfo['activity_id'])}}" id="activityId" />
 			</div>

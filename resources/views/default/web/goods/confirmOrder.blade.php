@@ -184,23 +184,35 @@
 </div>
 <div class="w1200">
 	<!--公司信息-->
-	@if(!empty($invoiceInfo))
+	@if(session('_curr_deputy_user')['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 1)
 		<div class="whitebg mt20 ovh">
-			<h1 class="ml30 fs18 mt40">开票信息</h1>
-			<div class="company_information" id="invoiceInfo">
-				<ul class="company_list">
-					<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
-					<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
-					<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
-					<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
-					<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
-					<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
-				</ul>
+				<h1 class="ml30 fs18 mt40">开票信息</h1>
+				<div class="company_information" id="invoiceInfo">
+					<ul class="company_list">
+						<li><span class="company_title">发票抬头 :</span><span class="ml5">个人</span></li>
+					</ul>
+				</div>
 			</div>
-		</div>
 	@else
+		@if(!empty($invoiceInfo))
+			<div class="whitebg mt20 ovh">
+				<h1 class="ml30 fs18 mt40">开票信息</h1>
+				<div class="company_information" id="invoiceInfo">
+					<ul class="company_list">
+						<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
+						<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
+						<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
+						<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
+						<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
+						<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
+					</ul>
+				</div>
+			</div>
+		@else
 
+		@endif
 	@endif
+		
 
 	<div class="address whitebg ovh mt20 ">
 		<h1 class="ml30 fs18 mt30">收货地址</h1>
