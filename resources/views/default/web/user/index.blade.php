@@ -60,8 +60,8 @@
 					</li>
 					<li>
 						<div class="member_Name_stute">
-						<div class="fl mem_stute Pend_payment cp"><span class="ml50">待付款</span><span class="orange ml10">{{$memberInfo['nPayOrderTotalCount']}}</span></div>
-						<div class="fr mem_stute Pend_goods cp"><span class="ml50">已付款</span><span class="orange ml10">{{$memberInfo['yPayOrderTotalCount']}}</span></div>
+						<div class="fl mem_stute Pend_payment cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">待付款</a></span><span class="orange ml10"><a href="/order/list?tab_code=waitPay">{{$memberInfo['nPayOrderTotalCount']}}</a></span></div>
+						<div class="fr mem_stute Pend_goods cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">已付款</a></span><span class="orange ml10"><a href="/order/list">{{$memberInfo['yPayOrderTotalCount']}}</a></span></div>
 						</div>
 					</li>
 				</ul>
@@ -70,7 +70,7 @@
 			<!--我的订单-->
 			<div class="member_index_right whitebg fl ml15 br1 pr mt15" style="margin-left: -31px;">
 				<!--标题-->
-				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;"><span>入库管理</span><span class="fr colr_blu mr35"><a href="/order/list">查看全部订单>></a></span></h1>
+				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;"><span>我的订单</span><span class="fr colr_blu mr35"><a href="/order/list">查看全部订单>></a></span></h1>
 			
 			<table class="order_record">
 				<tr>
@@ -81,7 +81,7 @@
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>
-						<td>{{$v['order_sn']}}</td><td>2</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 待付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
+						<td>{{$v['order_sn']}}</td><td>{{$v['shop_name']}}</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 待付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
 					</tr>
 					@endforeach
 				@endif

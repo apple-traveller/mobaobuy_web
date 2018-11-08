@@ -30,7 +30,7 @@ class UserController extends Controller
             $condition['user_name'] = "%".$user_name."%";
         }
         $pageSize = 10;
-        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['reg_time'=>'desc']],$condition);
         return $this->display('admin.user.list',[
             'users'=>$users['list'],
             'user_name'=>$user_name,
@@ -50,6 +50,21 @@ class UserController extends Controller
             return $this->success("修改成功");
         }catch(\Exception $e){
             return  $this->error($e->getMessage());
+        }
+    }
+
+    //修改真实姓名
+    public function modifyRealName(Request $request)
+    {
+        $data = [
+            'user_id'=>$request->input('id'),
+            'real_name'=>$request->input('val'),
+        ];
+        try{
+            $flag = UserRealService::modify($data);
+            return $this->result($flag['real_name'],200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
         }
     }
 
@@ -120,7 +135,7 @@ class UserController extends Controller
         $data['review_time'] = Carbon::now();
         try{
             $user = UserRealService::modifyReviewStatus($data);
-            return $this->success("审核成功");
+            return $this->success("审核成功","",$user);
         }catch(\Exception $e){
             return  $this->error($e->getMessage());
         }

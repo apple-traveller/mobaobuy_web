@@ -138,6 +138,17 @@
                     }
                 })
             });
+            //验证手机号对应用户是否存在并已实名
+            $(document).delegate('#firmUserPhone','blur',function(){
+                let _mobile = $(this).val();
+                if(!_mobile){
+                    $.msg.error('请输入手机号');return;
+                }
+                if(!Utils.isPhone(_mobile)){
+                    $.msg.error('请输入正确的手机号');return;
+                }
+                checkRealName(_mobile);
+            });
             //隐藏关闭框
             $('.cancel,.frame_close').click(function(){
 
@@ -154,24 +165,27 @@
 
         function del(obj) {
                 var id = $(obj).attr('id');
-                var flag = confirm("是否确认删除?");
-                if(flag===true){
-                      $.ajax({
-                        'type':'post',
-                        'data':{'id':id},
-                        'url':'{{url('/delFirmUser')}}',
-                        success:function(res){
-                            // var result = JSON.parse(res);
-                            if(res.code){
-                                $.msg.alert('删除成功');
-                                window.location.reload();
-                            }else{
-                                alert('删除失败');
-                                window.location.reload();
+                $.msg.confirm("是否确认删除?",
+                    function(){
+                        $.ajax({
+                            'type':'post',
+                            'data':{'id':id},
+                            'url':'{{url('/delFirmUser')}}',
+                            success:function(res){
+                                // var result = JSON.parse(res);
+                                if(res.code){
+                                    $.msg.alert('删除成功');
+                                    window.location.reload();
+                                }else{
+                                    alert('删除失败');
+                                    window.location.reload();
+                                }
                             }
-                        }
-                    })
-                }   
+                        })
+                    },function(){
+
+                    }
+                );
             }
 
         //保存
@@ -181,7 +195,14 @@
             phone = $.trim(phone);
             realName = $.trim(realName);
             if(phone == '' || realName == ''){
-                $.msg.alert('名字和手机号码为必填项');
+                $.msg.error('名字和手机号码为必填项');
+                return;
+            }
+            if(!Utils.isPhone(phone)){
+                $.msg.error('请输入正确的手机号');return;
+            }
+            //验证手机号是否已实名
+            if(!checkRealName(phone)){
                 return;
             }
             var arr = Array();
@@ -214,6 +235,25 @@
             }
            
         }
+
+        //请求验证用户是否存在并且已实名
+        function checkRealName(mobile){
+            let _bool = false;
+            $.ajax({
+                'type':'post',
+                'data':{'mobile':mobile},
+                'url':'{{url('/checkRealNameBool')}}',
+                async:false,
+                success:function(res){
+                    if(res.code == 1){
+                        _bool = true;
+                    }else{
+                        $.msg.error(res.msg);
+                    }
+                }
+            });
+            return _bool;
+        }
 	</script>
 @endsection
 
@@ -242,7 +282,7 @@
         <ul class="power_list ml30 mt25">
             <li>
                 <div class="ovh mt10"><span>手机号码:</span><input type="text" class="pay_text fl" id="firmUserPhone" placeholder="请输入员工手机号码"/></div>
-                <div class="ml">注：职员必须先用手机号在平台注册个人账号</div>
+                <div class="ml">注：职员必须先用手机号在平台注册个人账号并实名认证</div>
             </li>
             <li><div class="ovh mt10"><span>职员姓名:</span><input type="text" class="pay_text fl" id="firmUserName" placeholder="请输入员工姓名"/></div></li>
             <li>

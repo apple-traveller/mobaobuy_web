@@ -4,7 +4,12 @@
     <div class="warpper">
         <div class="title"><a href="/admin/shop/list" class="s-back">返回</a>店铺 - 添加入驻店铺</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/shop/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -15,7 +20,7 @@
                                 <div class="label_value">
                                     <input type="text" name="nick_name" class="text" value="" maxlength="40" autocomplete="off" id="nick_name">
                                     <input type="hidden" name="user_id" class="text" value="" maxlength="40" autocomplete="off" id="user_id">
-                                    <ul class="query" style="position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query" style="overflow:auto;display:none;height:200px;position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -176,7 +181,11 @@
     </div>
 
     <script type="text/javascript">
-        var tag_token = $("#_token").val();
+        $(function(){
+            document.onclick=function(event){
+                $(".query").hide();
+            }
+        });
 
         layui.use(['upload','layer'], function(){
             var upload = layui.upload;
@@ -205,9 +214,10 @@
 
 
         $("#nick_name").focus(function(){
-            $.post('/admin/shop/getUsers',{'_token':tag_token},function(res){
+            $.post('/admin/shop/getUsers',{},function(res){
                 if(res.code==200){
                     var data = res.data;
+                    $(".query").show();
                     for(var i=0;i<data.length;i++){
                         $(".query").append('<li class="searchAttr" data-id="'+data[i].id+'" style="cursor: pointer;padding-left: 10px;box-sizing: border-box;">'+data[i].nick_name+'</li>');
                     }
@@ -219,7 +229,7 @@
         $("#nick_name").bind("input propertychange",function(res){
             var nick_name = $(this).val();
             $(".query").children().filter("li").remove();
-            $.post('/admin/shop/getUsers',{'nick_name':nick_name,'_token':tag_token},function(res){
+            $.post('/admin/shop/getUsers',{'nick_name':nick_name},function(res){
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){

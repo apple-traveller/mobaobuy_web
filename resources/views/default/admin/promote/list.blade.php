@@ -71,7 +71,13 @@
                                     </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看/审核</a>
+                                            <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>
+                                                @if($vo['review_status']==1)
+                                                    审核
+                                                @else
+                                                   查看
+                                                @endif
+                                            </a>
                                             <a href="/admin/promote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                         </div>

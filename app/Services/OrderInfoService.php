@@ -1,15 +1,22 @@
 <?php
 namespace App\Services;
+use App\Repositories\ActivityPromoteRepo;
+use App\Repositories\CartRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
+use App\Repositories\RegionRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\GoodsRepo;
+use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use App\Repositories\OrderActionLogRepo;
 use App\Repositories\ShippingRepo;
 use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
 use App\Repositories\UserRepo;
+use Carbon\Carbon;
+use League\Flysystem\Exception;
+
 class OrderInfoService
 {
     use CommonService;
@@ -98,7 +105,6 @@ class OrderInfoService
 
             //企业会员
             if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
-//                dump('企业会员');
                 if($currUserAuth){
                     //已作废订单
                     if($item['order_status'] == 0){
@@ -311,7 +317,7 @@ class OrderInfoService
         return $order_info;
     }
 
-
+    //修改
     public static function modify($data)
     {
         return OrderInfoRepo::modify($data['id'], $data);
@@ -520,9 +526,14 @@ class OrderInfoService
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
 
+        $country = RegionRepo::getInfo($orderInfo['country']);
+        $province = RegionRepo::getInfo($orderInfo['province']);
+        $city = RegionRepo::getInfo($orderInfo['city']);
+        $district = RegionRepo::getInfo($orderInfo['district']);
+
         //获取会员发票信息
         $userInvoceInfo = UserInvoicesRepo::getInfo($orderInfo['invoice_id']);
-        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo];
+        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
     }
 
     //企业订单审核通过操作
@@ -532,7 +543,32 @@ class OrderInfoService
 
     //订单取消
     public static function orderCancel($id){
-        return OrderInfoRepo::modify($id,['order_status'=>0]);
+        try{
+            self::beginTransaction();
+            //获取订单信息
+            $orderInfo = self::getOrderInfoById($id);
+            $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+            if(empty($orderInfo)){
+                self::throwBizError('订单信息不存在');
+            }
+            //根据来源返回库存
+            if($orderInfo['extension_code'] == 'promote'){//限时抢购
+                $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
+                ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+            }else{//购物车下单
+                foreach ($orderGoodsInfo as $k=>$v){
+                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                }
+            }
+
+            OrderInfoRepo::modify($id,['order_status'=>0]);
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            throw $e;
+        }
     }
 
     //订单确认收货
@@ -547,6 +583,161 @@ class OrderInfoService
         self::throwBizError('订单状态有误!');
     }
 
+
+    public static function createOrderSn()
+    {
+        return date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+    }
+
+
+    //创建订单 type为cart 购物车下单    promote限时抢购
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type){
+        $addTime =  Carbon::now();
+        //生成的随机数
+        $order_no = self::createOrderSn();
+        $userAddressMes = UserAddressRepo::getInfo($userAddressId);
+        try{
+            self::beginTransaction();
+            //订单表
+            switch($type){
+                case 'promote'://限时抢购
+                    $order_status = 3;
+                    $promote = 'promote';
+                    $extension_id = $cartInfo_session[0]['id'];
+                    break;
+                default://正常下单
+                    $promote = '';
+                    $extension_id = '';
+                    if(!$userId['firm_id']){
+                        $order_status = 2;
+                    }else{
+                        $order_status = 1;
+                    }
+            }
+            $orderInfo = [
+                'order_sn'=>$order_no,
+                'user_id'=>$userId['user_id'],
+                'firm_id'=>$userId['firm_id'],
+                'order_status'=>$order_status,
+                'add_time'=>$addTime,
+                'address'=>$userAddressMes['address'],
+                'shop_id'=>$cartInfo_session[0]['shop_id'],
+                'shop_name'=>$cartInfo_session[0]['shop_name'],
+                'country'=>1,
+                'zipcode'=>$userAddressMes['zipcode'],
+                'mobile_phone'=>$userAddressMes['mobile_phone'],
+                'province'=>$userAddressMes['province'],
+                'city'=>$userAddressMes['city'],
+                'district'=>$userAddressMes['district'],
+                'consignee'=>$userAddressMes['consignee'],
+                'postscript'=>$words?$words:'',
+                'extension_code'=>$promote,
+                'extension_id'=>$extension_id
+            ];
+            $orderInfoResult = OrderInfoRepo::create($orderInfo);
+
+            //订单总金额
+            $goods_amount = 0;
+            foreach($cartInfo_session as $v){
+                $id = $v['id'];
+                //购物车生成订单
+                if($type == 'cart'){
+                    $cartInfo = CartRepo::getInfo($id);
+                    if(empty($cartInfo)){
+                        self::throwBizError('购物车商品不存在！');
+                    }
+
+                    $orderGoods = [
+                        'order_id'=>$orderInfoResult['id'],
+                        'shop_goods_id'=>$cartInfo['shop_goods_id'],
+                        'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],
+                        'goods_id'=>$cartInfo['goods_id'],
+                        'goods_name'=>$cartInfo['goods_name'],
+                        'goods_sn'=>$cartInfo['goods_sn'],
+                        'goods_number'=>$cartInfo['goods_number'],
+                        'goods_price'=>$cartInfo['goods_price'],
+                        'add_time' => Carbon::now()
+                    ];
+                    OrderGoodsRepo::create($orderGoods);
+                    $goods_amount += $cartInfo['goods_number'] * $cartInfo['goods_price'];
+
+                    //删除购物车的此纪录
+                    CartRepo::delete($id);
+                }elseif($type == 'promote'){
+                    //限时抢购生产订单
+                    $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+                    if(empty($activityPromoteInfo)){
+                        self::throwBizError('商品不存在！');
+                    }
+                    $orderGoods = [
+                        'order_id'=>$orderInfoResult['id'],
+                        'goods_id'=>$v['goods_id'],
+                        'goods_name'=>$v['goods_name'],
+//                        'goods_sn'=>$cartInfo['goods_sn'],
+                        'goods_number'=>$v['goods_number'],
+                        'goods_price'=>$v['goods_price'],
+                        'add_time' => Carbon::now()
+                    ];
+                    OrderGoodsRepo::create($orderGoods);
+                    $goods_amount += $v['goods_number'] * $v['goods_price'];
+                    //减去活动库存
+                    ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['available_quantity'] - $v['goods_number']]);
+                }
+            }
+            //更新订单总金额
+            OrderInfoRepo::modify(
+                $orderInfoResult['id'],
+                [
+                    'goods_amount'=>$goods_amount,
+                    'order_amount'=>$goods_amount,
+//                    'shop_name'=>$cartInfo['shop_name']
+                ]
+            );
+            self::commit();
+            return $order_no;
+        }catch (\Exception $e){
+            self::rollBack();
+            throw $e;
+        }
+    }
+
+    //获取当天订单总数
+    public static function getOrdersCount()
+    {
+        //获取当日开始时间戳和结束时间戳
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        return OrderInfoRepo::getTotalCount($condition);
+    }
+
+    //查询当日销售总额
+    public static function gettotalAccount()
+    {
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
+        $sum = 0;
+        foreach($orders as $k=>$v){
+            $sum+=$v['goods_amount'];
+        }
+        return $sum;
+    }
+
+    //查询各个状态的订单
+    public static function getOrderStatuCount()
+    {
+        $orders = [];
+        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
+        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
+        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
+        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
+        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
+        return $orders;
+    }
 
 
 }

@@ -339,14 +339,40 @@ class UserService
     }
 
     
-    //修改
+    //修改用户信息
     public static function modify($data)
     {
-        $info = UserRepo::modify($data['id'],$data);
-        if($info){
-            unset($info['password']);
+        $userData['nick_name'] = $data['nick_name'];
+        $userData['email'] = $data['email'];
+        try{
+            self::beginTransaction();
+            //修改用户表
+            $info = UserRepo::modify($data['id'],$userData);
+            //修改user_real表
+            $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$data['id']]);
+            if(empty($userRealInfo)){
+                $info['real_name'] = '';
+            }else{
+                $userRealResult = UserRealRepo::modify($userRealInfo['id'],['real_name'=>$data['real_name']]);
+                $info['real_name'] = $userRealResult['real_name'];
+            }
+
+            if($info){
+                unset($info['password']);
+            }
+            self::commit();
+            return $info;
+        }catch (\Exception $e){
+            self::rollBack();
+            throw $e;
+
         }
-        return $info;
+
+    }
+
+    //修改默认收获地址
+    public static function updateDefaultAddress($data){
+        return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
     public static function getUserInfo($id)
@@ -439,14 +465,31 @@ class UserService
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
         //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0]);
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
         //
         $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
 
-//        dump($orderInfo);
-//        dump($orderInfo['total']);
-//        dd($shopGoodsInfo);
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0];
+    }
+
+    public static function getUserRealbyId($id){
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$id]);
+        if(empty($userRealInfo)){
+            return '';
+        }else{
+            return $userRealInfo['real_name'];
+        }
+    }
+
+    //后台首页用户统计
+    public static function getUsersCount()
+    {
+        $users = [];
+        $users['is_firm'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(1))]);
+        $users['is_personal'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(0))]);
+        $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
+        $users['total'] = UserRepo::getTotalCount();
+        return $users;
     }
 
 }

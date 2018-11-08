@@ -24,16 +24,19 @@ class UserRealService
     }
 
     //修改(后台方法)
-//    public static function modify($data)
-//    {
-//        return UserRealRepo::modify($data);
-//    }
+    public static function modify($data)
+    {
+        return UserRealRepo::modify($data['user_id'],$data);
+    }
 
     //实名认证保存
     public static function saveUserReal($data,$is_self,$user_id)
     {
         //is_self 1 个人  2企业
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$user_id]);
+        if($is_self == 2){
+            $GxInfo = GsxxService::GsSearch($data['real_name_firm']);
+        }
 
         $userRealArr = [];
         //修改
@@ -41,23 +44,23 @@ class UserRealService
             if($is_self == 1){
                 $userRealArr['user_id'] = $user_id;
                 $userRealArr['real_name'] = $data['real_name'];
-                $userRealArr['sex'] = $data['sex'];
-                $userRealArr['birthday'] = $data['birthday'];
+//                $userRealArr['sex'] = $data['sex'];
+//                $userRealArr['birthday'] = $data['birthday'];
                 $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
                 $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
                 $userRealArr['add_time'] = Carbon::now();
             }else{
                 $userRealArr['user_id'] = $user_id;
                 $userRealArr['real_name'] = $data['real_name_firm'];
-                $userRealArr['tax_id'] = $data['tax_id'];
+                $userRealArr['tax_id'] = $GxInfo['No'];
                 $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
                 $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
                 $userRealArr['license_fileImg'] = $data['license_fileImg'];
-                $userRealArr['company_name'] = $data['company_name'];
-                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
-                $userRealArr['bank_account'] = $data['bank_account'];
-                $userRealArr['company_address'] = $data['company_address'];
-                $userRealArr['company_telephone'] = $data['company_telephone'];
+                $userRealArr['company_name'] = $data['real_name_firm'];
+//                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
+//                $userRealArr['bank_account'] = $data['bank_account'];
+//                $userRealArr['company_address'] = $data['company_address'];
+//                $userRealArr['company_telephone'] = $data['company_telephone'];
                 $userRealArr['add_time'] = Carbon::now();
             }
             return UserRealRepo::modify($userRealInfo['user_id'],$userRealArr);
@@ -66,8 +69,8 @@ class UserRealService
             if($is_self == 1){
                 $userRealArr['user_id'] = $user_id;
                 $userRealArr['real_name'] = $data['real_name'];
-                $userRealArr['sex'] = $data['sex'];
-                $userRealArr['birthday'] = $data['birthday'];
+//                $userRealArr['sex'] = $data['sex'];
+//                $userRealArr['birthday'] = $data['birthday'];
                 $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
                 $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
                 $userRealArr['add_time'] = Carbon::now();
@@ -75,15 +78,15 @@ class UserRealService
                 $userRealArr['is_firm'] = 1;
                 $userRealArr['user_id'] = $user_id;
                 $userRealArr['real_name'] = $data['real_name_firm'];
-                $userRealArr['tax_id'] = $data['tax_id'];
+                $userRealArr['tax_id'] = $GxInfo['No'];
                 $userRealArr['attorney_letter_fileImg'] = $data['attorney_letter_fileImg'];
                 $userRealArr['invoice_fileImg'] = $data['invoice_fileImg'];
                 $userRealArr['license_fileImg'] = $data['license_fileImg'];
-                $userRealArr['company_name'] = $data['company_name'];
-                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
-                $userRealArr['bank_account'] = $data['bank_account'];
-                $userRealArr['company_address'] = $data['company_address'];
-                $userRealArr['company_telephone'] = $data['company_telephone'];
+                $userRealArr['company_name'] = $data['real_name_firm'];
+//                $userRealArr['bank_of_deposit'] = $data['bank_of_deposit'];
+//                $userRealArr['bank_account'] = $data['bank_account'];
+//                $userRealArr['company_address'] = $data['company_address'];
+//                $userRealArr['company_telephone'] = $data['company_telephone'];
                 $userRealArr['add_time'] = Carbon::now();
             }
             return UserRealRepo::create($userRealArr);

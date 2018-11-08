@@ -42,7 +42,6 @@ class LoginController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
-        
         try{
             $user_id = AdminService::loginValidate($username, $password, [ 'ip'  => $request->getClientIp()]);
             session()->put('_admin_user_id', $user_id);

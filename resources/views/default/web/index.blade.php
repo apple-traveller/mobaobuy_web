@@ -56,13 +56,13 @@
 
                     <div>
                         <ul class="order-stute">
-                            <li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span>
-                            <li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span>
-                            <li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span>
+                            <li class="tac"><span class="db red"><a href="/order/list">{{$order_status['waitAffirm']}}</a></span><span>待确认</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitPay']}}</a></span><span>待付款</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitConfirm']}}</a></span><span>待收货</span>
                         </ul>
                     </div>
-
-                    <textarea class="demand-text" style="height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                    <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
+                    <textarea class="demand-text" style="resize: none; width:220px;height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                     <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
                 </div>
                 <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
-                <textarea class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                 <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
@@ -239,7 +239,23 @@
                 <div class="supply_list_inside" style="display: none;">
                     <ul>
                         @foreach($shop['quotes'] as $quote)
-                        <li><span>{{$quote['brand_name']}}</span><span>{{$quote['cat_name']}}</span><span class="ovh">{{$quote['goods_name']}}</span><span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span><span>{{$quote['goods_number']}}</span><span>{{$quote['delivery_place']}}</span><span><a class="Self-support-place ml-20">下单</a></span></li>
+                            <li>
+                                <span>{{$quote['brand_name']}}</span>
+                                <span>{{$quote['cat_name']}}</span>
+                                <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_name']}}</a></span>
+                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
+                                <span>{{$quote['goods_number']}}</span>
+                                <span>{{$quote['delivery_place']}}</span>
+                                {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
+                                <span>
+                                    @if($quote['goods_number'])
+                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
+                                    @else
+                                        <button class="trade-close-btn" style="margin-top:-10px;">已售完</button>
+                                    @endif
+                                </span>
+
+                            </li>
                         @endforeach
                     </ul>
                 </div>

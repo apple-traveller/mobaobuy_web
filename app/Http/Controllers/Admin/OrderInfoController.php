@@ -21,7 +21,14 @@ class OrderInfoController extends Controller
         $condition = [];
         $pageSize = 10;
         if($order_status!=-1){
-            $condition['order_status'] = $order_status;
+            if($order_status==-3){
+                $condition['shipping_status'] = 3;
+            }elseif($order_status==11){
+                $condition['pay_status'] = 1;
+            }else{
+                $condition['order_status'] = $order_status;
+            }
+
         }
         if($order_sn!=""){
             $condition['order_sn'] = "%".$order_sn."%";
