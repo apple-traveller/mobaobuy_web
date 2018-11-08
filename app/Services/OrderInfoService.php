@@ -715,16 +715,4 @@ class OrderInfoService
         return $sum;
     }
 
-    //查询各个状态的订单
-    public static function getOrderStatuCount()
-    {
-        $orders = [];
-        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
-        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
-        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
-        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
-        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
-        return $orders;
-    }
-
 }

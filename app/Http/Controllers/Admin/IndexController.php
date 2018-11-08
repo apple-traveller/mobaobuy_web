@@ -33,7 +33,7 @@ class IndexController extends Controller
         //查询会员信息
         $users = UserService::getUsersCount();
         //查询订单信息
-        $orders = OrderInfoService::getOrderStatuCount();
+        $orders = OrderInfoService::getOrderStatusCount(0,0);
         //当前服务器配置信息
         $config = [
             'server_name'=> $_SERVER["HTTP_HOST"],
@@ -58,6 +58,7 @@ class IndexController extends Controller
             'config'=>$config
         ]);
     }
+
 
     public function clear(){
         Cache::flush();
