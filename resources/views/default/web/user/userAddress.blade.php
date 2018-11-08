@@ -43,6 +43,94 @@
 		.form-inline .form-group .form-control{width: 108px;height: 40px;line-height: 40px;border-radius: 0px;border: 1px solid #dedede;
 			box-shadow: none;padding: 6px 12px;font-size: 14px;    background-color: #fff;background-image: none;}
 
+
+		@media (min-width: 768px) {
+			.form-inline .form-group {
+				display: inline-block;
+				margin-bottom: 0;
+				vertical-align: middle;
+			}
+
+			.sr-only {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				border: 0;
+			}
+
+			.form-group label {
+				display: inline-block;
+				max-width: 100%;
+				margin-bottom: 5px;
+				font-weight: bold;
+			}
+		}
+			.address_button{width: 300px;margin: 20px auto;}
+			.add_btn{cursor:pointer;float:left;border:none;color:#fff;width: 154px;height: 44px;line-height: 44px;display: block;border-radius: 3px;}
+			.default_address label { /*flex布局让子元素水平垂直居中*/display: flex;align-items: center;width: 200px;margin-left: 154px;}
+
+			.default_address input[type=checkbox],input[type=radio] {
+				margin:initial;-webkit-appearance: none;appearance: none;outline: none;
+				width: 16px; height: 16px;cursor: pointer;vertical-align: center;background: #fff;border: 1px solid #ccc;position: relative;}
+
+			.default_address input[type=checkbox]:checked::after {
+				content: "\2713";display: block;position: absolute;top: -1px;
+				left: -1px;right: 0;bottom: 0;width: 12px;height: 16px;line-height: 17px;padding-left: 4px;
+				color: #fff;background-color: #75b334;font-size: 13px;}
+			.frame_close{width: 15px;height: 15px;line-height:0;
+				display: block;outline: medium none;
+				transition: All 0.6s ease-in-out;
+				-webkit-transition: All 0.6s ease-in-out;
+				-moz-transition: All 0.6s ease-in-out;
+				-o-transition: All 0.6s ease-in-out;}
+			@media (min-width: 768px) {
+				form-inline .form-group {
+					display: inline-block;
+					margin-bottom: 0;
+					vertical-align: middle;
+				}
+
+				.sr-only {
+					position: absolute;
+					width: 1px;
+					height: 1px;
+					padding: 0;
+					margin: -1px;
+					overflow: hidden;
+					clip: rect(0, 0, 0, 0);
+					border: 0;
+				}
+
+				.form-group label {
+					display: inline-block;
+					max-width: 100%;
+					margin-bottom: 5px;
+					font-weight: bold;
+				}
+			}
+				.ui-area .tit {
+					padding: 0 10px;
+					border: 1px solid #d2d2d2;
+					height: 40px;
+					line-height: 40px;
+					cursor: pointer;
+				}
+				.ui-area .area-warp {
+					position: absolute;
+					border: 1px solid #d2d2d2;
+					width: 300px;
+					padding: 10px 23px 15px 18px;
+					top: 42px;
+					left: 0;
+					z-index: 10;
+					display: none;
+					background: #fff;
+				}
+
 		.address_default_edit{margin-right: 25px;}
 		.checked_btn{cursor:pointer;}
 
@@ -91,6 +179,8 @@
 				display: none;
 				background: #fff;
 			}
+
+
 
 	</style>
 @endsection

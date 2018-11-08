@@ -56,6 +56,7 @@ class IndexController extends Controller
 
     //选择公司
     public function changeDeputy(Request $request){
+        //$user_id 0 个人
         $user_id = $request->input('user_id', 0);
         if(empty($user_id)){
             //代表自己

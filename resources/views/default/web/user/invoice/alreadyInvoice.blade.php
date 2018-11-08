@@ -10,7 +10,7 @@
             height: 55px;
             margin-top: 20px;
             float: left;
-            background: url(default/img/mobao_logo.png)no-repeat;
+            background: url(../img/mobao_logo.png)no-repeat;
             background-size: 100% 100%;
         }
         .company_list li {
@@ -54,12 +54,12 @@
         .fs14{font-size:14px;}
         .order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
         .cart_progress{width: 303px;margin:0 auto;height: 33px;}
-        .cart_progress_02{background: url(default/img/cart_icon03.png)no-repeat;}
+        .cart_progress_02{background: url(../img/cart_icon03.png)no-repeat;}
         .progress_text{color: #999;margin-top: 5px;}
         .progress_text_curr{color: #75b335;}
         .my_cart{float: left;margin-left: 5px;}
-        .order_information{float: left;margin-left: 58px;}
-        .order_submit{float: left;margin-left: 50px;}
+        .order_information{float: left;margin-left: 91px;}
+        .order_submit{float: left;margin-left: 70px;}
         .w1200{width: 1200px;margin: 0 auto;}
         .whitebg{background: #FFFFFF;}
         .shop_title li{float: left; text-align: center;}
@@ -87,25 +87,28 @@
         <div class="fr fs14 order_progress" >
             <div class="cart_progress cart_progress_02"></div>
             <div class="progress_text">
-                <div class="my_cart progress_text_curr">我的购物车</div>
-                <div class="order_information">订单信息完善</div>
-                <div class="order_submit">成功提交订单</div>
+                <div class="my_cart progress_text_curr">选择订单</div>
+                <div class="order_information">确认信息</div>
+                <div class="order_submit">成功提交</div>
             </div>
         </div>
     </div>
 </div>
-    <div class="w1200 whitebg ovh" style="margin-top: 20px;">
-        <div class="til_bg tac fs26" style="margin-top: 75px;">订单等待确认</div>
-        <div class=" til_text fs16" >订单号： @foreach($re as $k=>$v)@if($k>0) , @endif  {{ $v }}  @endforeach <a href="/order/list" class="blue">【查询订单】</a><br/>由于行情波动、库存变化等原因、订单需要客服人员确认。</div>
+
+<div class="w1200 whitebg ovh" style="margin-top: 20px;">
+    <div class="til_bg tac fs26" style="margin-top: 75px;">发票等待审核</div>
+
+    <div class=" til_text fs16" >发票流水号： {{ $re }}  <a href="/invoice/myInvoice" class="blue">【查询发票】</a><br/>由于行情波动、库存变化等原因、发票需要客服人员确认。</div>
+
+</div>
+<div class="w1200 graybg ovh" style="color: #666;">
+    <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
+    <div class="mt15 tac fs16">客服 : 王经理   <span class="ml15">电话 : <font class="orange">021-02136452</font></span><span class="ml15">QQ :<font class="orange">321456129</font></span></div>
+    <div class="comfirm ovh">
+        <div class="comfirm_btn code_greenbg"><a href="/member">会员中心</a></div><div class="comfirm_btn comfirm_btn_blue ml20">
+            <a href="/">返回首页</a></div>
     </div>
-    <div class="w1200 graybg ovh" style="color: #666;">
-        <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
-        <div class="mt15 tac fs16">客服 : 王经理   <span class="ml15">电话 : <font class="orange">021-02136452</font></span><span class="ml15">QQ :<font class="orange">321456129</font></span></div>
-        <div class="comfirm ovh">
-            <div class="comfirm_btn code_greenbg"><a href="/member">会员中心</a></div><div class="comfirm_btn comfirm_btn_blue ml20">
-                <a href="/">返回首页</a></div>
-        </div>
-    </div>
+</div>
 
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;">
 </div>

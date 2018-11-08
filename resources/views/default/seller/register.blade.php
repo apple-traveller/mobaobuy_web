@@ -425,4 +425,13 @@
             }, "POST", "JSON");
         }
     }
+    // 上传图片预览
+    $(document).tooltip({
+        items: ".img-tooltip",
+        content: function() {
+            var element = $( this );
+            var url = element.data('img');
+            return "<img class='map' src='"+url+"'>";
+        }
+    });
 </script>

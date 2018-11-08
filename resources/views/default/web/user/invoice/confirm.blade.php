@@ -126,8 +126,8 @@
 		.progress_text{color: #999;margin-top: 5px;}
 		.progress_text_curr{color: #75b335;}
 		.my_cart{float: left;margin-left: 5px;}
-		.order_information{float: left;margin-left: 58px;}
-		.order_submit{float: left;margin-left: 50px;}
+		.order_information{float: left;margin-left: 91px;}
+		.order_submit{float: left;margin-left: 70px;}
 		.w1200{width: 1200px;margin: 0 auto;}
 		.whitebg{background: #FFFFFF;}
 		.shop_title li{float: left; text-align: center;}
@@ -173,8 +173,11 @@
 	<div class="w1200">
 		<a href="/" class="logo" style="margin-top: 45px;"></a>
 		<div class="fr fs14 order_progress" >
+			<div class="cart_progress cart_progress_02"></div>
 			<div class="progress_text">
-				<div class="my_cart progress_text_curr">申请开票</div>
+				<div class="my_cart progress_text_curr">选择订单</div>
+				<div class="order_information">确认信息</div>
+				<div class="order_submit">成功提交</div>
 			</div>
 		</div>
 	</div>
@@ -242,7 +245,7 @@
 			</li>
 			@endforeach
 		</ul>
-		<form action="/invoice/apply" method="post" id="form">
+		<form id="form">
 			{{--<input type="hidden" name="address_id" id="address_id" value="{{ $addressList[0]['id'] }}">--}}
 			<div class="address_line">
 				<div class="ovh mt10">
@@ -361,8 +364,19 @@
 //        });
 //    });
     $(".address_sumb").click(function () {
-		$("#form").submit();
-
+		let _form = $("#form").serializeArray();
+		$.ajax({
+			url: '/invoice/apply',
+			data:_form,
+			type:'POST',
+			success:function (res) {
+				if (res.code == 1){
+				    window.location.href="/invoice/waitFor.html?re="+res.data;
+				} else {
+				    $.msg.alert(res.msg);
+				}
+            }
+		});
     });
 </script>
 </body>

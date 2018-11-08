@@ -24,6 +24,10 @@ class OrderInfoService
     //列表（分页）
     public static function getOrderInfoList($pager, $condition)
     {
+        if (isset($condition['tab_code'])){
+            $condition = array_merge($condition,self::setStatueCondition($condition['tab_code']));
+            unset($condition['tab_code']);
+        }
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
@@ -60,7 +64,7 @@ class OrderInfoService
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
             //企业
-            if($condition['firm_id'] == $currUser['firm_id'] && $currUser['is_self']){
+            if(($currUser['is_self'] == 1) && $currUser['is_firm']){
                 if($item['order_status'] == 0){
                     $orderList['list'][$k]['auth'][] = 'can_del';
                     $orderList['list'][$k]['auth_desc'][] = '删除';
@@ -100,7 +104,8 @@ class OrderInfoService
             }
 
             //企业会员
-            if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
+
+            if(($currUser['is_self'] == 0) && $currUser['is_firm'] == 1){
                 if($currUserAuth){
                     //已作废订单
                     if($item['order_status'] == 0){
@@ -110,7 +115,7 @@ class OrderInfoService
                     }
                     //待企业审核订单
                     if($item['order_status'] == 1){
-                        if($currUserAuth['can_can_approval']){
+                        if($currUserAuth[0]['can_approval']){
                             $orderList['list'][$k]['auth'][] = 'can_approval';
                             $orderList['list'][$k]['auth_desc'][] = '审批';
                             $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
@@ -186,6 +191,7 @@ class OrderInfoService
 
 
             }
+
             if($item['order_status'] == 4){
                 $orderList['list'][$k]['auth'][] = 'finish';
                 $orderList['list'][$k]['auth_desc'][] = '已完成';
@@ -259,13 +265,19 @@ class OrderInfoService
         return $condition;
     }
 
-    public static function getOrderStatusCount($user_id, $firm_id){
+    // web
+    public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
         $condition['is_delete'] = 0;
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
         if($firm_id > 0){
             $condition['firm_id'] = $firm_id;
+        }
+
+        // 商户后台
+        if ($seller_id>0){
+            $condition['shop_id'] = $seller_id;
         }
 
         $status = [
@@ -297,6 +309,7 @@ class OrderInfoService
 
         return $status;
     }
+
 
     //查询一条数据
     public static function getOrderInfoById($id)
@@ -572,10 +585,12 @@ class OrderInfoService
         self::throwBizError('订单状态有误!');
     }
 
+
     public static function createOrderSn()
     {
         return date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     }
+
 
     //创建订单 type为cart 购物车下单    promote限时抢购
     public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type){
@@ -601,7 +616,6 @@ class OrderInfoService
                         $order_status = 1;
                     }
             }
-
             $orderInfo = [
                 'order_sn'=>$order_no,
                 'user_id'=>$userId['user_id'],

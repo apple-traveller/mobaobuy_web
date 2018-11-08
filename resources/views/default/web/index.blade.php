@@ -9,7 +9,6 @@
 
     <script>
         $(function(){
-
             $(document).delegate('.supply_list>li','mouseenter',function(){
                 $(this).find('.operation').text('收起');
                 $(this).find('.supply_list_inside').show();
@@ -243,8 +242,8 @@
                                 <span>{{$quote['brand_name']}}</span>
                                 <span>{{$quote['cat_name']}}</span>
                                 <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_name']}}</a></span>
-                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
                                 <span>{{$quote['goods_number']}}</span>
+                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
                                 <span>{{$quote['delivery_place']}}</span>
                                 {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                 <span>
