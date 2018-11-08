@@ -233,7 +233,7 @@
 		<h1 class="ml30 fs18 mt30">商品信息</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
 			<li class="graybg">
-				<span>商品</span><span>单价（元）</span><span>数量（公斤）</span><span>发货地</span><span></span><span>小计</span>
+				<span>商品</span><span>单价（元）</span><span>数量（kg）</span><span>发货地</span><span></span><span>小计</span>
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">

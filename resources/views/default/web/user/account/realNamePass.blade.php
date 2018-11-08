@@ -10,11 +10,11 @@
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
         .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
-        .account {
+        .account_tab {
         width: 376px;
         margin: 0 auto;
         }
-        .account li {
+        .account_tab li {
             width: 188px;
             height: 45px;
             line-height: 45px;
@@ -87,16 +87,16 @@
 
                 @if(!empty($user_real))
                     @if($user_real['is_firm'] == '0')
-                        <ul class="account"><li class="account_curr">个人账户</li></ul> 
+                        <ul class="account_tab"><li class="account_curr">个人账户</li></ul>
                     @elseif($user_real['is_firm'] == '1')
-                         <ul class="account"><li id="firm">企业账户</li></ul>
+                         <ul class="account_tab"><li id="firm">企业账户</li></ul>
                      @else
-                        <ul class="account"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                        <ul class="account_tab"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
                     @endif
 
 
                 @else
-                 <ul class="account"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul> 
+                 <ul class="account_tab"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
                 @endif
              </div>
             

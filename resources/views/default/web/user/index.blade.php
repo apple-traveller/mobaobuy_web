@@ -74,7 +74,7 @@
 			
 			<table class="order_record">
 				<tr>
-					<th>订单号</th><th>数量（公斤）</th><th>订单金额</th><th>状态</th>
+					<th>订单号</th><th>数量（kg）</th><th>订单金额</th><th>状态</th>
 				</tr>
 				@if(empty($memberInfo['orderInfo']))
 					暂无订单
@@ -96,7 +96,7 @@
 		
 			<table class="order_record">
 				<tr>
-					<th>商品名称</th><th>单价</th><th>数量（公斤）</th><th>发货地</th><th>操作</th>
+					<th>商品名称</th><th>单价</th><th>数量（kg）</th><th>发货地</th><th>操作</th>
 				</tr>
 				@foreach($memberInfo['shopGoodsInfo'] as $v)
 				<tr>

@@ -164,7 +164,7 @@
 		</div>
 		<ul class="Self-product-list">
 
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>联系人</span></li>
+			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>
 			@foreach($goodsList as $vo)
 				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
 			@endforeach

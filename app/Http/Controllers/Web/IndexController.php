@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use App\Services\IndexService;
 use App\Http\Controllers\Controller;
 use App\Services\ShopGoodsQuoteService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 
 class IndexController extends Controller
@@ -38,9 +40,20 @@ class IndexController extends Controller
         }
 
         //获取活动
-        $promote_list = ActivityPromoteService::getList(['status'=>2], 1, 2);
-        //成交动态
-        $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
+        $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 2);
+        //成交动态 暂时定为$trans_type=1 时为开启创建并显示假数据
+        $trans_type = 1;
+        $trans_list = [];
+        if($trans_type == 1){
+            if(Cache::has('TRANS')){
+                $trans_list['list'] = Cache::get('TRANS');
+            }else{//没有缓存 先随机取5条报价
+                $trans_list['list'] = $this->test();
+            }
+        }else{
+            $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
+        }
+
         //自营报价
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
         //获取供应商
@@ -52,6 +65,44 @@ class IndexController extends Controller
 
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list]);
+    }
+
+    public function test()
+    {
+        //先随机获取几条报价
+        $quote = DB::table('shop_goods_quote')
+            ->orderBy(DB::raw('RAND()'))
+            ->take(5)
+            ->get()->toArray();
+        $data = [];
+        foreach (\App\Helpers\object_array($quote) as $k=>$v){
+            //先组装报价信息
+            $data[$k] = [
+                'goods_id'=>$v['goods_id'],
+                'shop_goods_quote_id'=>$v['id'],
+                'goods_name'=>$v['goods_name'],
+                'goods_sn'=>$v['goods_sn'],
+//                'goods_number'=>$v['goods_number'],
+//                'goods_price'=>$v['goods_price'],
+            ];
+            //生成随机数量
+            $data[$k]['goods_number'] = (int)mt_rand(1, 10)*$v['goods_number'];
+            //再生成随机时间
+            $h = (int)mt_rand(0,date('H'));
+            $i = (int)mt_rand(0,date('i'));
+            $s = (int)mt_rand(0,date('s'));
+            $data[$k]['add_time'] = date('Y-m-d').' '.$this->test2($h).':'.$this->test2($i).':'.$this->test2($s);
+        }
+        return $data;
+
+    }
+
+    public function test2($res)
+    {
+        if($res <= 9){
+            return '0'.$res;
+        }
+        return $res;
     }
 
     //选择公司

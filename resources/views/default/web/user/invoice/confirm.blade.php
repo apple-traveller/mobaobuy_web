@@ -231,7 +231,7 @@
 				<span>商品</span>
 				<span>商品编码</span>
 				<span>单价（元）</span>
-				<span>已发货数量（公斤）</span>
+				<span>已发货数量（kg）</span>
 				<span></span>
 				<span>小计</span>
 			</li>

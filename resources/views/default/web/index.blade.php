@@ -107,28 +107,30 @@
                             <div class="Time_limit_action_top mt10">
                                 <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="orange">{{$item['click_count']}}</font>次浏览</span></div>
                             <div class="mt40">
-                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}公斤</span></div>
+                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}kg</span></div>
                                 <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/kg</span></div>
                             </div>
                             @if($item['is_over'])
-                            <div class="Time_limit_action_bottom graybg">
-                                <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg">
+                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
+                                </div>
                             @elseif($item['is_soon'])
-                            <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['begin_time']}}">
-                                <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp">敬请期待</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['begin_time']}}">
+                                    <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp">敬请期待</div>
+                                </div>
                             @else
-                            <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
-                                <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
+                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
+                                        <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
+                                    </a>
+                                </div>
                             @endif
                         </div>
                     @endif
                 @endfor
-                @foreach($promote_list as $item)
-
-                @endforeach
 
                 <div class="Time_limit_left leftPosition"><img src="/images/ass-lt-left.png"/></div>
                 <div class="Time_limit_left rightPosition"><img src="/images/ass-lt-right.png"/></div>
@@ -141,7 +143,7 @@
                     @foreach($trans_list as $item)
                         <li>
                             <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
-                            <div class="ml5 gray"><span>{{$item['goods_number']}}公斤</span><span class="ml10">{{$item['add_time']}}</span></div>
+                            <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
                         </li>
                     @endforeach
                     </ul>
@@ -152,7 +154,7 @@
         <div class="Self-support mt30">
             <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
             <ul class="Self-product-list">
-                <li><span>品牌</span><span>种类</span><span>商品名称</span><span>剩余数量（公斤）</span><span>单价（元/公斤）</span><span>发货地</span><span>更新时间</span><span>操作</span></li>
+                <li><span>品牌</span><span>种类</span><span>商品名称</span><span>剩余数量（kg）</span><span>单价（元/kg）</span><span>发货地</span><span>更新时间</span><span>操作</span></li>
                 @foreach($goodsList['list'] as $vo)
                     <li>
                         <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span>
