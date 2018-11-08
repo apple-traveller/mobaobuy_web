@@ -97,14 +97,12 @@ class ActivityController extends Controller
             'num' => $num,
             'min_limit' => $min_limit,
             'max_limit' => $max_limit,
+            $data['review_status'] = 1
         ];
-
-
         if(empty($id)){
             $data['shop_id'] = $shop_info['id'];
             $data['shop_name'] = $shop_info['company_name'];
             $data['click_count'] = 0;
-            $data['review_status'] = 1;
             $data['available_quantity'] = $num;
             $re = ActivityService::create($data);
         } else {

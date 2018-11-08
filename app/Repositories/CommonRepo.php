@@ -177,6 +177,7 @@ trait CommonRepo
 
     public static function modify($id, $data)
     {
+
         $model = self::getBaseModel();
         $info = $model::find($id); //模型实例
         if ($info) {

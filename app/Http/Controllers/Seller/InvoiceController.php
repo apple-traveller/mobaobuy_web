@@ -48,20 +48,20 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 详情页
+     * 开票详情页
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
      */
     public function detail(Request $request)
     {
         $currentPage = $request->input('currentPage','');
         $invoice_id = $request->input('invoice_id','');
-        $invoiceInfo = InvoiceService::getInfoById($invoice_id);
-        // 开票商品
-        $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
-        return $this->display('seller/invoice/detail', [
-            'invoiceInfo' => $invoiceInfo,
-            'orderInfo' =>$orderInfo,
+        $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
+
+        return $this->display('seller.invoice.detail', [
+            'invoiceInfo' => $invoiceDetail['invoiceInfo'],
+            'orderInfo' => $invoiceDetail['invoiceGoods'],
             'currentPage' => $currentPage
         ]);
     }
