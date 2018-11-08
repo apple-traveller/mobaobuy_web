@@ -43,7 +43,7 @@
                 },1000)
 
             }
-            Remaine_time(10800,$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
+            Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 
             $('.nav').hover(function(){
                 $('.ass_menu').toggle();
@@ -115,30 +115,34 @@
         function toBalance(goodsId,activityId){
             var goodsNum = $('#goodsNum').val();
             var activityIdEncrypt = $('#activityId').val();
-            $.ajax({
-                url: "/buyLimitToBalance",
-                dataType: "json",
-                data: {
-                    'goodsId' : goodsId,
-                    'activityId' : activityId,
-                    'goodsNum' : goodsNum
-                },
-                type: "POST",
-                success: function(data){
-                    // console.log(data);return;
-                    if(data.code){
-                        // console.log(data);
-                        window.location.href='/confirmOrder/'+activityIdEncrypt;
-                    }else{
-                        $.msg.alert(data.msg);
+            if('{{session('_web_user_id')}}'){
+                $.ajax({
+                    url: "/buyLimitToBalance",
+                    dataType: "json",
+                    data: {
+                        'goodsId' : goodsId,
+                        'activityId' : activityId,
+                        'goodsNum' : goodsNum
+                    },
+                    type: "POST",
+                    success: function(data){
+                        // console.log(data);return;
+                        if(data.code){
+                            // console.log(data);
+                            window.location.href='/confirmOrder/'+activityIdEncrypt;
+                        }else{
+                            $.msg.alert(data.msg);
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                window.location.href='/login';
+            }
+
         }
 	</script>
 @endsection
 @section('content')
-
 	<div class="clearfix">
 		<div class="w1200 pr ovh">
 			<div class="crumbs mt5">当前位置：<a href="/">产品列表</a> &gt; <a href="/subject/list/56/page/1.html">产品详情</a> &gt;<span class="gray"></span></div>
