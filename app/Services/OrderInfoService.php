@@ -60,7 +60,7 @@ class OrderInfoService
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
             //企业
-            if($condition['firm_id'] == $currUser['firm_id'] && $currUser['is_self']){
+            if(($currUser['is_self'] == 1) && $currUser['is_firm']){
                 if($item['order_status'] == 0){
                     $orderList['list'][$k]['auth'][] = 'can_del';
                     $orderList['list'][$k]['auth_desc'][] = '删除';
@@ -100,8 +100,7 @@ class OrderInfoService
             }
 
             //企业会员
-            if($condition['firm_id'] != $currUser['firm_id'] && $currUser['is_firm'] == 1){
-//                dump('企业会员');
+            if(($currUser['is_self'] == 0) && $currUser['is_firm'] == 1){
                 if($currUserAuth){
                     //已作废订单
                     if($item['order_status'] == 0){
@@ -111,7 +110,7 @@ class OrderInfoService
                     }
                     //待企业审核订单
                     if($item['order_status'] == 1){
-                        if($currUserAuth['can_can_approval']){
+                        if($currUserAuth[0]['can_approval']){
                             $orderList['list'][$k]['auth'][] = 'can_approval';
                             $orderList['list'][$k]['auth_desc'][] = '审批';
                             $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
@@ -187,6 +186,7 @@ class OrderInfoService
 
 
             }
+
             if($item['order_status'] == 4){
                 $orderList['list'][$k]['auth'][] = 'finish';
                 $orderList['list'][$k]['auth_desc'][] = '已完成';

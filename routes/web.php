@@ -377,8 +377,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
 
-        Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
-        Route::post('/createOrder','OrderController@createOrder');//提交订单
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
+            Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
+            Route::post('/createOrder','OrderController@createOrder');//提交订单
+
+        });
+
+
         Route::get('/orderSubmission.html','OrderController@orderSubmission');// 订单提交成功页面
 
         Route::get('/order/list','OrderController@orderList');//我的订单
