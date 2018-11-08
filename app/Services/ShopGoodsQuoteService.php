@@ -103,7 +103,6 @@ class ShopGoodsQuoteService
     public static function getShopGoodsQuoteById($id)
     {
         $info = ShopGoodsQuoteRepo::getInfo($id);
-        //dd($info);
         $goods_detail = GoodsRepo::getInfo($info['goods_id']);
         $info['goods_desc'] = $goods_detail['goods_desc'];//商品详情
         $info['brand_name'] = $goods_detail['brand_name'];//品牌
@@ -116,10 +115,25 @@ class ShopGoodsQuoteService
         return $info;
     }
 
+    public static function ShopGoodsQuoteById($id)
+    {
+        return ShopGoodsQuoteRepo::getInfo($id);
+
+    }
     //删除
     public static function delete($id)
     {
         return ShopGoodsQuoteRepo::delete($id);
+    }
+
+    //获取当天报价条数
+    public static function getQuotesCount()
+    {
+        //截止时间大于当天时间即可
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['expiry_time|>'] = date("Y-m-d H:i:s",$today_end);
+        return $quotes = ShopGoodsQuoteRepo::getTotalCount($condition);
     }
 
     /**
@@ -130,6 +144,36 @@ class ShopGoodsQuoteService
     public static function getQuoteGoods($shop_id)
     {
         return ShopGoodsQuoteRepo::getQuoteGoods($shop_id);
+    }
+
+
+    /**
+     * 确认订单时更新库存
+     * @param $order_id
+     * @return bool
+     * @throws \Exception
+     */
+    public static function updateStock($order_id)
+    {
+        $goodsList = OrderInfoService::getOrderGoodsByOrderId($order_id);
+            $check = [];
+            self::beginTransaction();
+            foreach ( $goodsList as $k=>$v){
+                $goodInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                $new_num = $goodInfo['goods_number'] - $v['goods_number'];
+                if ($new_num<0){
+                    return false;
+                }
+                $data = [
+                    'goods_number' => $new_num
+                ];
+                $check[] = ShopGoodsQuoteRepo::modify($goodInfo['id'],$data);
+            }
+            if (count($goodsList) == count($check)){
+                self::commit();
+                return true;
+            }
+            self::rollBack();
     }
 }
 

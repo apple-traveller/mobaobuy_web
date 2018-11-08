@@ -162,9 +162,11 @@
                         if (i==0){
                             $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
                             $("#min_limit").val(data[i]['packing_spec']);
+                            $("#max_limit").val(0);
                         } else {
                             $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
                             $("#min_limit").val(data[i]['packing_spec']);
+                            $("#max_limit").val(0);
                         }
 
                     }
@@ -234,11 +236,16 @@
                 let b_num = num % spec;
                 if (isNaN(spec)){
                     layer.msg('请先选择商品');
-                    $(this).val('');
+                    $(this).val(spec);
                 }
-                if (b_num >0){
-                    $(this).val(num-b_num);
-                    layer.msg('商品总量只能是产品规格的倍数');
+                if (num<spec){
+                    $(this).val(spec);
+                } else {
+                    if (b_num >0){
+                        $(this).val(num-b_num);
+                    } else {
+                        $(this).val(num);
+                    }
                 }
             });
 
@@ -249,20 +256,19 @@
                 let b_num = num % spec;
                 if (isNaN(spec)){
                     layer.msg('请先选择商品');
-                    $(this).val('');
+                    $(this).siblings('.pur_num').val(spec);
                 }
                 if (isNaN(num) || num<0){
-                    $(this).siblings('.pur_num').val('');
+                    $(this).siblings('.pur_num').val(spec);
                 } else {
                     if (num-spec<0){
-                        $(this).siblings('.pur_num').val(0);
+                        $(this).siblings('.pur_num').val(spec);
                     } else {
                         if (num-spec-b_num>0){
                             $(this).siblings('.pur_num').val(num-spec-b_num);
                         } else{
                             $(this).siblings('.pur_num').val(num-spec-b_num);
                         }
-
                     }
                 }
             });
@@ -276,11 +282,11 @@
                 let b_num = num % spec;
                 if (isNaN(spec)){
                     layer.msg('请先选择商品');
-                    $(this).val('');
+                    $(this).siblings('.pur_num').val(0);
                 }
                 if (isNaN(tota_num) || tota_num <=0 ){
                     layer.msg('请先填写商品总数');
-                    $(this).val('');
+                    $(this).siblings('.pur_num').val(0);
                 }
                 _num = num+spec;
                 if (_num>=tota_num){
@@ -307,7 +313,13 @@
             }
         });
 
+        // 最大小于最小
+        $("#max_limit").change(function () {
+           let max_val =  $(this).val();
+           let min_val = $("#min_limit").val();
+           if (max_val!=0 && max_val<min_val){
+               $(this).val(min_val);
+           }
+        });
     </script>
-
-
 @stop

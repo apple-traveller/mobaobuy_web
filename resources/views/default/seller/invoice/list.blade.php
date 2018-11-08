@@ -11,8 +11,9 @@
                         <a href="/seller/invoice/list?status=2" @if($status==2) class="current" @endif>已开票@if($status==2) <em>({{$total}})</em> @endif</a>
                     </div>
                     <div class="refresh">
-                        <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
-                        <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
+                        <div class="refresh_tit" title="刷新数据">
+                            <i class="icon icon-refresh" style="display: block;margin-top: 1px;"></i></div>
+                        <div class="refresh_span" >刷新 - 共{{$total}}条记录</div>
                     </div>
                     <div class="search">
                         <form action="/seller/invoice/list" name="searchForm" >

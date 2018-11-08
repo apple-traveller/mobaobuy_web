@@ -177,17 +177,6 @@
                                     <dd>@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</dd>
                                 </dl>
 
-                                {{--<dl style="width:30.6%">
-                                    <dt>查看开票申请:</dt>
-                                    <dd>
-                                        <div data-url="/admin/orderinfo/invoiceDetail?invoice_id={{$orderInfo['invoice_id']}}" class="layui-btn viewInvoiceInfo" >
-                                            开票申请
-                                        </div>
-                                    </dd>
-                                    <dt></dt>
-                                    <dd></dd>
-                                </dl>--}}
-
 
                             </div>
                         </div>
@@ -417,6 +406,14 @@
 
             //修改支付状态
             $(".pay_status").click(function(){
+                var content = $("#action_note").val();
+                if(content==""){
+                    layer.msg("备注不能为空", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 var pay_status = $(this).attr("data-id");
                 var action_note = $(".action_note").val();
                 $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'pay_status':pay_status},function(res){

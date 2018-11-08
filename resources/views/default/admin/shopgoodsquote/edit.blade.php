@@ -96,6 +96,22 @@
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
+                                <div class="label_value">
+                                    <input type="text" name="production_date" class="text" value="{{$goodsQuote['production_date']}}" maxlength="40" autocomplete="off" id="production_date">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
 
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">

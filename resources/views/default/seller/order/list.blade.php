@@ -13,15 +13,17 @@
             <div class="flexilist mt30" id="listDiv">
                 <div class="common-head order-coomon-head">
                     <div class="order_state_tab">
-                        <a href="/seller/order/list?order_status=-1" @if($order_status==-1) class="current" @endif>全部订单@if($order_status==-1) <em>({{$total}})</em> @endif</a>
-                        <a href="/seller/order/list?order_status=3" @if($order_status==3) class="current" @endif>已确认@if($order_status==3) <em>({{$total}})</em> @endif</a>
-                        <a href="/seller/order/list?order_status=2" @if($order_status==2) class="current" @endif>待确认@if($order_status==2) <em>({{$total}})</em> @endif</a>
-                        <a href="/seller/order/list?order_status=1" @if($order_status==1) class="current" @endif>待审核@if($order_status==1) <em>({{$total}})</em> @endif</a>
-                        <a href="/seller/order/list?order_status=0" @if($order_status==0) class="current" @endif>已作废@if($order_status==0) <em>({{$total}})</em> @endif</a>
+                        <a href="/seller/order/list" @if(empty($tab_code)) class="current" @endif>全部订单@if(empty($tab_code)) <em>({{$total}})</em> @endif</a>
+                        <a href="/seller/order/list?tab_code=waitAffirm" @if($tab_code=='waitAffirm') class="current" @endif>待确认 <em id="waitAffirm"></em> </a>
+                        <a href="/seller/order/list?tab_code=waitPay" @if($tab_code=='waitPay') class="current" @endif>待付款 <em id="waitPay"></em> </a>
+                        <a href="/seller/order/list?tab_code=waitSend" @if($tab_code=='waitSend') class="current" @endif>待发货<em id="waitSend"></em> </a>
+                        <a href="/seller/order/list?tab_code=finish" @if($tab_code=='finish') class="current" @endif>已完成<em id="finish"></em> </a>
+                        <a href="/seller/order/list?tab_code=cancel" @if($tab_code=='cancel') class="current" @endif>已作废 <em id="waitAffirm"></em> </a>
                     </div>
                     <div class="refresh">
-                        <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)"><i class="icon icon-refresh"></i></div>
-                        <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
+                        <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)">
+                            <i class="icon icon-refresh" style="display: block;margin-top: 1px;"></i></div>
+                        <div class="refresh_span" >刷新 - 共{{$total}}条记录</div>
                     </div>
 
                     <div class="search">
@@ -32,8 +34,6 @@
                             </div>
                         </form>
                     </div>
-
-
                 </div>
                 <div class="common-content">
                     <form method="POST" action="" name="listForm">
@@ -97,6 +97,13 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/seller/order/detail?id={{$vo['id']}}&currentPage={{$currentPage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                @if($tab_code=='waitAffirm')
+                                                <a href="javascript:void(0);" onclick="conf({{ $vo['id'] }})"  title="确认" class="btn_see"><i class="sc_icon sc_icon_see"></i>确认</a>
+                                                @elseif($tab_code=='waitPay')
+                                                    <a href="javascript:void(0);"  title="确认收款" onclick="receiveM({{ $vo['id'] }})" class="btn_see"><i class="sc_icon sc_icon_see"></i>确认收款</a>
+                                                @elseif($tab_code=='waitSend')
+                                                    <a href="/seller/order/delivery?order_id={{$vo['id']}}&currentPage={{$currentPage}}"  title="发货" class="btn_see"><i class="sc_icon sc_icon_see"></i>发货</a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -146,9 +153,83 @@
                     , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/seller/order/list?currentPage="+obj.curr+"&order_status={{$order_status}}";
+                            window.location.href="/seller/order/list?currentPage="+obj.curr+"&tab_code={{$tab_code}}";
                         }
                     }
+                });
+            });
+        }
+        $.ajax({
+            url:'/seller/order/getStatusCount',
+            data:'',
+            type:'POST',
+            success:function (result) {
+                if (result.code == 1) {
+                    var status = result.data;
+                    if(status.waitAffirm > 0){
+                        $('#waitAffirm').html(status.waitAffirm);
+                    }
+                    if(status.waitPay > 0){
+                        $('#waitPay').html(status.waitPay);
+                    }
+                    if(status.waitSend > 0){
+                        $('#waitSend').html(status.waitSend);
+                    }
+                }
+            }
+        })
+        // 确认订单
+        function conf(id)
+        {
+            layui.use('layer', function(){
+                let layer = layui.layer;
+                layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
+                    let action_note = $("#action_note").val();
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'action_note':action_note,
+                            'order_status': 3
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:2000});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+                        }
+                    });
+
+                    layer.close(index);
+                });
+            });
+        }
+        // 确认收款
+        function receiveM(id) {
+            layui.use('layer', function(){
+                let layer = layui.layer;
+                layer.confirm('确认收到付款?', {icon: 3, title:'提示'}, function(index){
+                    let action_note = $("#action_note").val();
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'action_note':action_note,
+                            'pay_status': 1
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:600});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
+                    layer.close(index);
                 });
             });
         }

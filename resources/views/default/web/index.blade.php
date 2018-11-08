@@ -61,7 +61,7 @@
                         </ul>
                     </div>
                     <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
-                    <textarea class="demand-text" style="height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                    <textarea class="demand-text" style="resize: none; width:220px;height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                     <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
                 </div>
                 <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
-                <textarea style="resize: none; width:220px;" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                 <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
@@ -242,8 +242,8 @@
                                 <span>{{$quote['brand_name']}}</span>
                                 <span>{{$quote['cat_name']}}</span>
                                 <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_name']}}</a></span>
-                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
                                 <span>{{$quote['goods_number']}}</span>
+                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
                                 <span>{{$quote['delivery_place']}}</span>
                                 {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                 <span>

@@ -390,11 +390,16 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/status','OrderController@orderStatusCount');//我的订单
         Route::post('/orderDel','OrderController@orderDel');//订单删除
-        Route::get('/invoice',  'InvoiceController@invoiceList'); // 开票列表
+        Route::get('/invoice/myInvoice',  'InvoiceController@myInvoice'); // 我的开票
+        Route::post('/invoice/myInvoice',  'InvoiceController@myInvoice'); // 我的开票列表接口
+        Route::post('/invoice/getStatusCount',  'InvoiceController@getStatusCount'); // 各状态数量
+        Route::get('/invoice',  'InvoiceController@invoiceList'); // 待开票列表
         Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
         Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
         Route::post('/invoice/editInvoiceAddress',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
+        Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
+        Route::get('/invoiceDetail/{invoice_id}',  'InvoiceController@invoiceDetail'); // 选择开票类型
 
 
         Route::post('/egis','OrderController@egis');//订单审核通过
@@ -458,6 +463,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/order/list', 'ShopOrderController@list');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
+        Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
         Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
@@ -473,7 +479,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');  // 更改订单状态
         Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno'); // 修改订单号
 
-        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀 //
+        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
         Route::get('/seckill/add', 'SeckillController@addForm'); // 添加
         Route::post('/seckill/save', 'SeckillController@save'); //  保存
         Route::post('/seckill/delete', 'SeckillController@delete'); // 删除

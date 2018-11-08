@@ -24,6 +24,10 @@ class OrderInfoService
     //列表（分页）
     public static function getOrderInfoList($pager, $condition)
     {
+        if (isset($condition['tab_code'])){
+            $condition = array_merge($condition,self::setStatueCondition($condition['tab_code']));
+            unset($condition['tab_code']);
+        }
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
@@ -100,6 +104,7 @@ class OrderInfoService
             }
 
             //企业会员
+
             if(($currUser['is_self'] == 0) && $currUser['is_firm'] == 1){
                 if($currUserAuth){
                     //已作废订单
@@ -260,13 +265,19 @@ class OrderInfoService
         return $condition;
     }
 
-    public static function getOrderStatusCount($user_id, $firm_id){
+    // web
+    public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
         $condition['is_delete'] = 0;
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
         if($firm_id > 0){
             $condition['firm_id'] = $firm_id;
+        }
+
+        // 商户后台
+        if ($seller_id>0){
+            $condition['shop_id'] = $seller_id;
         }
 
         $status = [
@@ -299,6 +310,7 @@ class OrderInfoService
         return $status;
     }
 
+
     //查询一条数据
     public static function getOrderInfoById($id)
     {
@@ -307,7 +319,7 @@ class OrderInfoService
         return $order_info;
     }
 
-
+    //修改
     public static function modify($data)
     {
         return OrderInfoRepo::modify($data['id'], $data);
@@ -573,10 +585,12 @@ class OrderInfoService
         self::throwBizError('订单状态有误!');
     }
 
+
     public static function createOrderSn()
     {
         return date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     }
+
 
     //创建订单 type为cart 购物车下单    promote限时抢购
     public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type){
@@ -602,7 +616,6 @@ class OrderInfoService
                         $order_status = 1;
                     }
             }
-
             $orderInfo = [
                 'order_sn'=>$order_no,
                 'user_id'=>$userId['user_id'],
@@ -689,5 +702,44 @@ class OrderInfoService
             throw $e;
         }
     }
+
+    //获取当天订单总数
+    public static function getOrdersCount()
+    {
+        //获取当日开始时间戳和结束时间戳
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        return OrderInfoRepo::getTotalCount($condition);
+    }
+
+    //查询当日销售总额
+    public static function gettotalAccount()
+    {
+        $today_start=mktime(0,0,0,date('m'),date('d'),date('Y'));
+        $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+        $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
+        $sum = 0;
+        foreach($orders as $k=>$v){
+            $sum+=$v['goods_amount'];
+        }
+        return $sum;
+    }
+
+    //查询各个状态的订单
+    public static function getOrderStatuCount()
+    {
+        $orders = [];
+        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
+        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
+        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
+        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
+        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
+        return $orders;
+    }
+
 
 }

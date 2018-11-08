@@ -73,5 +73,11 @@ class ShopService
         return $info;
     }
 
+    //后台首页统计店铺总数量
+    public static function getShopsCount()
+    {
+        return ShopRepo::getTotalCount(['is_freeze'=>0,'is_validated'=>1]);
+    }
+
 
 }

@@ -16,6 +16,102 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+
+    /**
+     * 我的开票
+     * @param Request $request
+     * @return InvoiceController|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function myInvoice(Request $request)
+    {
+        $tab_code = $request->input('tab_code', '');
+        if ($request->isMethod('get')){
+            return $this->display('web.user.invoice.myInvoice',compact('tab_code'));
+        } else {
+            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
+            $begin_time = $request->input('begin_time','');
+            $end_time = $request->input('end_time','');
+            $page_size = $request->input('length', 10);
+            $currUser  = session('_web_user_id');
+            $invoice_numbers = $request->input('invoice_numbers','');
+            $condition['user_id'] = $currUser;
+
+            if ($tab_code == 'waitInvoice'){
+                $condition['status'] = 1;
+            } elseif($tab_code == 'Completed'){
+                $condition['status'] = 2;
+            }
+
+            if (!empty($begin_time)){
+                $condition['created_at|>'] = $begin_time . ' 00:00:00';
+            }
+            if (!empty($end_time)){
+                $condition['created_at|<'] = $end_time . ' 23:59:59';
+            }
+
+            if(!empty($invoice_numbers)){
+                $condition['invoice_numbers'] = '%'.$invoice_numbers.'%';
+            }
+
+            $pager = [
+                'page'=>$page,
+                'page_size'=>$page_size
+            ];
+
+            $rs_list = InvoiceService::getListBySearch($pager,$condition);
+
+            $data = [
+                'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                'recordsTotal' => $rs_list['total'], //数据总行数
+                'recordsFiltered' => $rs_list['total'], //数据总行数
+                'data' => $rs_list['list']
+            ];
+
+            return $this->success('', '', $data);
+        }
+    }
+
+    /** 获取各状态数量
+     * @return InvoiceController|\Illuminate\Http\RedirectResponse
+     */
+    public function getStatusCount()
+    {
+        $deputy_user = session('_curr_deputy_user');
+
+        // 待开票数量
+        $status = InvoiceService::getStatusCount($deputy_user);
+        if (!empty($status)){
+            return $this->success('success','',$status);
+        } else {
+            return $this->error('error','',$status);
+        }
+    }
+
+    /**
+     * 开票信息详情
+     * @param Request $request
+     * @return InvoiceController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
+     */
+    public function invoiceDetail($invoice_id)
+    {
+
+        if (empty($invoice_id)){
+            return $this->error('该开票信息不存在');
+        }
+        $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
+        if (!empty($invoiceDetail)){
+            if ($invoiceDetail['invoiceInfo']['id'] != $invoice_id){
+                return $this->error('网络错误');
+            }
+        }
+
+        return $this->display('web.user.invoice.detail', [
+            'invoiceInfo' => $invoiceDetail['invoiceInfo'],
+            'invoiceGoods' => $invoiceDetail['invoiceGoods']
+        ]);
+    }
+
     /**
      * 开票列表
      * @param Request $request
@@ -212,11 +308,29 @@ class InvoiceController extends Controller
             'company_address' => $user_real['company_address'],
             'company_telephone' => $user_real['company_telephone']
         ];
+        // 生成唯一开票号
+        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+        $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+        $invoice_data['invoice_numbers'] = $invoice_numbers;
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
         if ($re){
-            return $this->redirect('/invoice');
+            return $this->success('提交成功','',$re['invoice_numbers']);
         } else{
             return $this->error('申请失败');
         }
+    }
+
+    /**
+     * 提交后的等待页面
+     * @param Request $request
+     * @return InvoiceController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function waitFor(Request $request)
+    {
+        $re = $request->input('re','');
+        if (empty($re)){
+            return $this->error('缺少参数');
+        }
+        return $this->display('web.user.invoice.alreadyInvoice',compact('re'));
     }
 }

@@ -1562,7 +1562,7 @@ i.sc_icon_dsz{ position:absolute; width:48px; height:56px; background-position:-
 .order_info .step_title{ padding-bottom:6px; border-bottom:2px solid #dbdbdb;;}
 .order_info .step_title a{ margin-left:10px;}
 .step .section{ width:100%; position:relative; z-index:9; overflow:hidden;}
-.step .section dl{ float:left; width:16.667%;}
+.step .section dl{ float:left; width:19.667%;}
 .step .section1 dl{ width:100%;}
 .step .section2 dl{ width:50%;}
 .step .section3 dl{ width:33.3%;}

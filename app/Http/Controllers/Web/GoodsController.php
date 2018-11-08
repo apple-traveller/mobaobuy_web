@@ -336,21 +336,19 @@ class GoodsController extends Controller
 
         if($request->isMethod('get')){
             $page = $request->input('page', 0);
-            $page_size = $request->input('length', 1);
+            $page_size = $request->input('length', 6);
 
             $goods_name= $request->input('goods_name', '');
-//            dump($goods_name);
+
             $condition = [];
             if(!empty($goods_name)){
                 $condition['goods_name'] = '%' . $goods_name . '%';
             }
-
-
-            $url = '/goodsAttribute?page=%d';
+            $url = '/goodsAttribute?page=%d&goods_name='.$goods_name;
             try{
                 $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
                 if(!empty($goodsInfo['list'])){
-                    $linker = createPage($url, $page,$goodsInfo['total']);
+                    $linker = createPage($url, $page,$goodsInfo['totalPage']);
                 }else{
                     $linker = createPage($url, 1, 1);
                 }
@@ -368,12 +366,12 @@ class GoodsController extends Controller
     //物性表详情
     public function goodsAttributeDetails(Request $request,$id){
        $page = $request->input('page',0);
-       $page_size = $request->input('length',1);
+       $page_size = $request->input('length',6);
         $url = '/goodsAttributeDetails/'.$id .'?page=%d';
        try{
            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
            if(!empty($shopGoodsInfo['list'])){
-               $linker = createPage($url, $page,$shopGoodsInfo['total']);
+               $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
            }else{
                $linker = createPage($url, 1, 1);
            }
