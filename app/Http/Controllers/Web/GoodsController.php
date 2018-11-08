@@ -261,20 +261,23 @@ class GoodsController extends Controller
         $buyLimitList = session('buyLimitSession');
 
         $goodsList = $cartSession['goods_list'];
+        if ($info['is_firm']){
+            // 企业用户
+                $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+            if (empty($invoiceInfo)){
+                return $this->error('您还没有实名认证，不能下单');
+            }
+            if ($invoiceInfo['review_status'] != 1 ){
+                return $this->error('您的实名认证还未通过，不能下单');
+            }
 
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
-        if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
+            if(empty($goodsList) && $buyLimitList){
+                return $this->error('没有对应的商品');
+            }
+        } else {
+            // 个人用户
+            $invoiceInfo = [];
         }
-        if ($invoiceInfo['review_status'] != 1 ){
-            return $this->error('您的实名认证还未通过，不能下单');
-        }
-
-        if(empty($goodsList) && $buyLimitList){
-            return $this->error('没有对应的商品');
-        }
-
-
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
         if (!empty($addressList)){
@@ -291,7 +294,6 @@ class GoodsController extends Controller
                 } else {
                     $addressList[$k]['is_default'] ='';
                 };
-
             }
             if(!empty($first_one)){
                 foreach ($first_one as $k1=>$v1){
@@ -437,8 +439,6 @@ class GoodsController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-
-
     }
 
     /**

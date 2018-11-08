@@ -17,6 +17,10 @@ class OrderInfoService
     //列表（分页）
     public static function getOrderInfoList($pager, $condition)
     {
+        if (isset($condition['tab_code'])){
+            $condition = array_merge($condition,self::setStatueCondition($condition['tab_code']));
+            unset($condition['tab_code']);
+        }
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
@@ -253,13 +257,19 @@ class OrderInfoService
         return $condition;
     }
 
-    public static function getOrderStatusCount($user_id, $firm_id){
+    // web
+    public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
         $condition['is_delete'] = 0;
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
         if($firm_id > 0){
             $condition['firm_id'] = $firm_id;
+        }
+
+        // 商户后台
+        if ($seller_id>0){
+            $condition['shop_id'] = $seller_id;
         }
 
         $status = [
@@ -291,6 +301,7 @@ class OrderInfoService
 
         return $status;
     }
+
 
     //查询一条数据
     public static function getOrderInfoById($id)
@@ -534,8 +545,8 @@ class OrderInfoService
             return OrderInfoRepo::modify($id,['shipping_status'=>3]);
         }
         self::throwBizError('订单状态有误!');
-
-
     }
+
+
 
 }

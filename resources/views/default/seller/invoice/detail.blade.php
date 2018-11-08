@@ -189,7 +189,7 @@
                     },
                     type: 'post',
                     success: function (res) {
-                        if (res.code == 1){
+                        if (res.code == 1) {
                             layer.msg(res.msg, {icon: 1,time:600});
                             window.location.reload();
                         } else {

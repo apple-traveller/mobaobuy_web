@@ -60,7 +60,7 @@
 			<div class="crumbs">当前位置：<a href="/">会员中心</a> &gt; <a href="/subject/list/56/page/1.html">订单详情</a> &gt;<span class="gray">订单详情</span></div>
 		<div class="order_pro_progress whitebg mt5">
 			<div class="order_pro_stute">
-				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span> 
+				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
 				@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
 					<span class="tac db fs24 fwb red mt30">已作废</span>
 					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
@@ -73,7 +73,7 @@
 					<span class="tac db fs24 fwb red mt30">等待付款</span>
 					<a class="order_pay_btn red">付款</a>
 				@endif
-				
+
 			</div>
 			<div class="order_pro_jd fl">
 				<div class="order_jd_bg order_jd_bg1"></div>
@@ -108,8 +108,8 @@
 	   <!--物流信息-->
 	    <div class="whitebg br1 mt20 ovh">
 	    	<div class="order_pro_stute">
-				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span> 
-				<span class="ml30 db mt20">物流单号：暂无</span> 
+				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+				<span class="ml30 db mt20">物流单号：暂无</span>
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
@@ -182,8 +182,8 @@
 
 
 
-	
-		
+
+
 
 
      @include(themePath('.','web').'web.include.partials.footer_service')

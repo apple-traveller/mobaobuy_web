@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
+use App\Services\ShopGoodsQuoteService;
 use App\Services\UserInvoicesService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -18,22 +19,25 @@ use Illuminate\Http\Request;
 class ShopOrderController extends Controller
 {
     /**
-     * 商户电梯列表
+     * 商户订单列表
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function list(Request $request)
     {
         $currentPage = $request->input("currentPage", 1);
+        $order_sn = $request->input('order_sn','');
+        $tab_code = $request->input('tab_code','');
         $shop_id = session('_seller_id')['shop_id'];
-        $order_status = $request->input('order_status', -1);
-        $order_sn = $request->input('order_sn');
+
         $condition = [];
+        $condition['is_delete'] = 0;
         $condition['shop_id'] = $shop_id;
-        $pageSize = 10;
-        if ($order_status != -1) {
-            $condition['order_status'] = $order_status;
+        $condition[]['order_status']='!1';
+        if (!empty($tab_code)){
+            $condition['tab_code'] = $tab_code;
         }
+        $pageSize = 10;
         if ($order_sn != "") {
             $condition['order_sn'] = "%" . $order_sn . "%";
         }
@@ -46,8 +50,23 @@ class ShopOrderController extends Controller
             'order_sn' => $order_sn,
             'pageSize' => $pageSize,
             'currentPage' => $currentPage,
-            'order_status' => $order_status
+            'tab_code' => $tab_code
         ]);
+    }
+
+    /**
+     * 获取各状态的数量
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
+    public function getStatusCount()
+    {
+        $seller_id = session('_seller_id')['shop_id'];
+        $status = OrderInfoService::getOrderStatusCount(0,0,$seller_id);
+        if (!empty($status)){
+            return $this->success('success','',$status);
+        } else {
+            return $this->error('error');
+        }
     }
 
     /**
@@ -65,6 +84,7 @@ class ShopOrderController extends Controller
             'shop_id' => $shop_id
         ];
         $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
+
         $region = RegionService::getRegion($orderInfo['country'], $orderInfo['province'], $orderInfo['city'], $orderInfo['district']);
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
@@ -107,6 +127,12 @@ class ShopOrderController extends Controller
         // 判断订单是否存在
         try {
             $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
+            if ($orderInfo['extension_code'] == '' && $data['order_status'] =3){
+                $re_rock =  ShopGoodsQuoteService::updateStock($id);
+            }
+            if (!$re_rock){
+                return $this->error('库存不足，无法确认');
+            }
             if (!empty($orderInfo)) {
                 $data = [
                     'id' => $id,
@@ -117,7 +143,7 @@ class ShopOrderController extends Controller
                 }
                 if (!empty($pay_status)){
                     $data['pay_status'] = $pay_status;
-                    // 已收款&&已收货 => 待开票
+                    // 已收款&&已收货 变更订单 待开票
                     if ($pay_status==1 || $orderInfo['shipping_status']==3){
                         $data['order_status'] = 5;
                     }
@@ -125,11 +151,10 @@ class ShopOrderController extends Controller
                 $re = OrderInfoService::modify($data);
 
                 if (!empty($re)) {
-                    // order_log
                     if(empty($action_note)){
                         $action_note = "修改订单状态";
                     }
-               //存储日志信息
+                    //存储日志信息
                     $logData = [
                         'action_note' => $action_note,
                         'action_user' => session('_seller')['user_name'],
@@ -151,6 +176,7 @@ class ShopOrderController extends Controller
                 return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
         }catch (\Exception $e){
+            dd($e->getMessage());
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }

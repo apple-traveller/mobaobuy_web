@@ -63,10 +63,6 @@ class InvoiceService
      */
     public static function verifyInvoice($invoice_id,$data)
     {
-        // 生成唯一开票号
-        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
-        $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
-        $data['invoice_numbers'] = $invoice_numbers;
         $data['updated_at'] = Carbon::now();
         $data['status'] = 2;
         try{
@@ -157,13 +153,45 @@ class InvoiceService
                         OrderInfoService::modify(['id'=>$v2,'order_status'=>4]);
                     }
                     self::commit();
-                    return true;
+                    return $invoice;
                 }
             }
         }catch (\Exception $e){
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
+    }
 
+    /**
+     * 开票详情
+     * @param $invoice_id
+     * @return array
+     * @throws \Exception
+     */
+    public static function getInvoiceDetail($invoice_id)
+    {
+        try{
+            $invoiceInfo = self::getInfoById($invoice_id);
+            // 开票商品
+            $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
+            return ['invoiceInfo'=>$invoiceInfo,'invoiceGoods'=>$orderInfo];
+        }catch (\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    /**
+     * 发票各状态数量
+     * @param $info
+     * @return mixed
+     */
+    public static function getStatusCount($info)
+    {
+     // 待开票数量
+        $status['waitInvoice'] = InvoiceRepo::getTotalCount(['user_id'=>$info['firm_id'],'status'=>1]);
+     // 已开票数量
+        $status['Completed'] = InvoiceRepo::getTotalCount(['user_id'=>$info['firm_id'],'status'=>2]);
+
+        return $status;
     }
 }

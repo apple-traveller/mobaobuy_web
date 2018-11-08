@@ -42,10 +42,31 @@
 		.form-inline .form-group .form-control{width: 108px;height: 40px;line-height: 40px;border-radius: 0px;border: 1px solid #dedede;
 			box-shadow: none;padding: 6px 12px;font-size: 14px;    background-color: #fff;background-image: none;}
 
-		@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
-			.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
-			.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
+		@media (min-width: 768px) {
+			.form-inline .form-group {
+				display: inline-block;
+				margin-bottom: 0;
+				vertical-align: middle;
+			}
 
+			.sr-only {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				border: 0;
+			}
+
+			.form-group label {
+				display: inline-block;
+				max-width: 100%;
+				margin-bottom: 5px;
+				font-weight: bold;
+			}
+		}
 			.address_button{width: 300px;margin: 20px auto;}
 			.add_btn{cursor:pointer;float:left;border:none;color:#fff;width: 154px;height: 44px;line-height: 44px;display: block;border-radius: 3px;}
 			.default_address label { /*flex布局让子元素水平垂直居中*/display: flex;align-items: center;width: 200px;margin-left: 154px;}
@@ -64,10 +85,31 @@
 				-webkit-transition: All 0.6s ease-in-out;
 				-moz-transition: All 0.6s ease-in-out;
 				-o-transition: All 0.6s ease-in-out;}
-			@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
-				.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
-				.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
+			@media (min-width: 768px) {
+				form-inline .form-group {
+					display: inline-block;
+					margin-bottom: 0;
+					vertical-align: middle;
+				}
 
+				.sr-only {
+					position: absolute;
+					width: 1px;
+					height: 1px;
+					padding: 0;
+					margin: -1px;
+					overflow: hidden;
+					clip: rect(0, 0, 0, 0);
+					border: 0;
+				}
+
+				.form-group label {
+					display: inline-block;
+					max-width: 100%;
+					margin-bottom: 5px;
+					font-weight: bold;
+				}
+			}
 				.ui-area .tit {
 					padding: 0 10px;
 					border: 1px solid #d2d2d2;
@@ -86,6 +128,7 @@
 					display: none;
 					background: #fff;
 				}
+
 
 	</style>
 @endsection

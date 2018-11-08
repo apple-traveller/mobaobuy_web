@@ -53,7 +53,7 @@
                             <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
                         @endif
                         <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">我的订单</a></li>
-                        <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+                        <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">我的开票</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>

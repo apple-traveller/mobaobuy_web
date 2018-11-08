@@ -184,19 +184,24 @@
 </div>
 <div class="w1200">
 	<!--公司信息-->
-	<div class="whitebg mt20 ovh">
-		<h1 class="ml30 fs18 mt40">开票信息</h1>
-		<div class="company_information" id="invoiceInfo">
-			<ul class="company_list">
-				<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
-				<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
-				<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
-				<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
-				<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
-				<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
-			</ul>
+	@if(!empty($invoiceInfo))
+		<div class="whitebg mt20 ovh">
+			<h1 class="ml30 fs18 mt40">开票信息</h1>
+			<div class="company_information" id="invoiceInfo">
+				<ul class="company_list">
+					<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
+					<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
+					<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
+					<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
+					<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
+					<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
+				</ul>
+			</div>
 		</div>
-	</div>
+	@else
+
+	@endif
+
 	<div class="address whitebg ovh mt20 ">
 		<h1 class="ml30 fs18 mt30">收货地址</h1>
 
@@ -240,9 +245,9 @@
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
-				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">￥{{$goods_amount}}</span></div>
+				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">¥{{$goods_amount}}</span></div>
 				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家审核</span></div>
-				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">￥{{$goods_amount}}</span></div>
+				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">¥{{$goods_amount}}</span></div>
 			</div>
 
 		</div>
