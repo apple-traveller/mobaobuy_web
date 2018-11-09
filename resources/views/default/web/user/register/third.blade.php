@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{{getConfig('shop_name')}}_个人注册</title>
+    <title>{{getConfig('shop_name')}}_绑定账号</title>
     @include(themePath('.','web').'web.include.partials.base')
 </head>
 <body style="background-color: #f4f4f4;">
@@ -26,12 +26,16 @@
                         <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"></div>
                         <div class="input-tip"><label id="phone_error" class="error" for="phone"></label></div>
                     </div>
-                    <div class="item">
+                    <div class="item b_msg" style="display: none">
+                        手机号未注册！是否
+                        <a class="next_banding" style='color:#ff6600'>继续绑定</a>，或者<a href='/' style='color:#ff6600'>返回首页</a>
+                    </div>
+                    <div class="item b_password" style="display: none">
                         <div class="item-libel">设置密码</div>
                         <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
                         <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                     </div>
-                    <div class="item">
+                    <div class="item b_img_code" style="display: none">
                         <div class="item-libel">图形验证码</div>
                         <div class="item-info" style="width: 178px;">
                             <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
@@ -39,7 +43,7 @@
                         <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
                         <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
                     </div>
-                    <div class="item">
+                    <div class="item b_mobile_code" style="display: none">
                         <div class="item-libel">手机验证码</div>
                         <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
                             <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly onblur="msgCodeValidate();">
@@ -52,7 +56,7 @@
             <div class="register-checkbox">
                 <label class="check_box"><input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />我已阅读并同意<a class="orange">《秣宝平台用户注册协议》</a></label>
             </div>
-            <button class="register-button" id="sub-btn">同意并注册</button>
+            <button class="register-button" id="sub-btn">绑定该账号</button>
         </div>
     </div>
     <div class="clearfix" style="height: 35px;"></div>
@@ -91,19 +95,46 @@
 
             return false;
         }
-        checkNameExists();
+        //验证手机
+        if(checkNameExists()){//手机号已经注册  直接输入密码绑定第三方账号
+            $('.b_password').show();
+            $('.b_img_code').hide();
+            $('.b_mobile_code').hide();
+            $('.b_msg').hide();
+            $('#sub-btn').attr('class','register-button sub-btn')
+        }else{//手机号未注册 注册新账号并绑定第三方账号
+            $('.b_msg').show();
+            $('.b_password').hide();
+            $('#sub-btn').attr('class','register-button')
+        }
     }
+    $('.next_banding').click(function(){
+        $('.b_msg').hide();
+        $('.b_password').show();
+        $('.b_img_code').show();
+        $('.b_mobile_code').show();
+        $('#sub-btn').attr('class','register-button sub-btn-register')
+    });
 
     // 验证手机是否注册
     function checkNameExists() {
-        Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
-            if (result.msg) {
-                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
-                checkAccount = false;
-            } else {
-                checkAccount = true;
+        $.ajax({
+            url: "{{url('user/checkNameExists')}}",
+            dataType: "json",
+            data: {
+                'accountName':$("#phone").val()
+            },
+            type: "POST",
+            async:false,
+            success: function (data) {
+                if(data.code == 1){
+                    checkAccount = true;
+                }else{
+                    checkAccount = false;
+                }
             }
-        }, "POST", "JSON");
+        })
+        return checkAccount;
     }
 
     // 密码格式检查
@@ -219,13 +250,40 @@
             $("#sub-btn").attr("class", "register-button-gray");
         }
     }
-    $('#sub-btn').click(function ()  {
+
+    //无账号注册并绑定
+    $(document).delegate('.sub-btn-register','click',function(){
+        alert('无账号注册并绑定');return;
         if (!$("#action").is(':checked')) {
             return false;
         }
         phoneValidate();
         verifyValidate ();
-
+        if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
+            return false;
+        }
+        params = {
+            accountName: $("#phone").val(),
+            password: window.btoa($("#password").val()),
+            messCode: $("#messCode").val()
+        };
+        Ajax.call("{{url('/userRegister')}}", params, function (result){
+            if (result.code == 1) {
+                window.location.href = result.url;
+            }else{
+                $.msg.error(result.msg);
+            }
+        }, "POST", "JSON");
+        gv()
+    });
+    //有账号直接绑定
+    $(document).delegate('.sub-btn','click',function(){
+        alert('有账号直接绑定');return;
+        if (!$("#action").is(':checked')) {
+            return false;
+        }
+        phoneValidate();
+        verifyValidate ();
         if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
             return false;
         }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\AppUsersRepo;
 use App\Repositories\FirmUserRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
@@ -239,9 +240,6 @@ class UserService
         }
     }
 
-
-
-
     //显示用户收获地
     public static function shopAddressList($condi){
         $userAddressInfo = UserAddressRepo::getList($order=[],$condi);
@@ -312,8 +310,6 @@ class UserService
         return UserCollectGoodsRepo::delete($id);
     }
 
-
-
     //后台
     //获取用户列表(导出excel表)
     public static function getUsers($fields)
@@ -338,7 +334,6 @@ class UserService
         return $info;
     }
 
-    
     //修改用户信息
     public static function modify($data)
     {
@@ -380,14 +375,12 @@ class UserService
         return UserRepo::getInfo($id);
     }
 
-
     public static function getInfo($id)
   {
         $info = UserRepo::getInfo($id);
         unset($info['password']);
         return $info;
    }
-
 
     //获取指定字段的所有数据
     public static function getUsersByColumn($condition,$column)
@@ -490,6 +483,11 @@ class UserService
         $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
         $users['total'] = UserRepo::getTotalCount();
         return $users;
+    }
+
+    public static function getAppUserInfo($condition)
+    {
+        return AppUsersRepo::getInfoByFields($condition);
     }
 
 }

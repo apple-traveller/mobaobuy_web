@@ -42,8 +42,12 @@ class UserController extends Controller
     public function checkNameExists(Request $request){
         $accountName = $request->input('accountName');
         $rs = UserService::checkNameExists($accountName);
+        if($rs){
+            return $this->success($rs);
+        }else{
+            return $this->error($rs);
+        }
 
-        return $this->success($rs);
     }
     //检查账号用户是否已实名 根据手机号码
     public function checkRealNameBool(Request $request)
@@ -175,45 +179,10 @@ class UserController extends Controller
 
     }
 
-    //用户登录页面
-    public function showLoginForm()
-    {
-        if (!empty(session('_web_user_id'))) {
-            return redirect('/');
-        }
-        return $this->display('web.login');
-    }
-
-    //用户登录提交
-    public function login(Request $request)
-    {
-        $username = $request->input('user_name');
-        $password = base64_decode($request->input('password'));
-
-        if(empty($username)){
-            return $this->error('用户名不能为空');
-        }
-        if(empty($password)){
-            return $this->error('密码不能为空');
-        }
-
-        $other_params = [
-            'ip'  => $request->getClientIp()
-        ];
-        try{
-            $user_id = UserService::loginValidate($username, $password, $other_params);
-            session()->put('_web_user_id', $user_id);
-            return $this->success('登录成功，正在进入系统...');
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
     //注册审核页面
     public function verifyReg(){
         return $this->display('web.user.register.verifyReg');
     }
-
 
     //登出
     public function logout()
@@ -976,4 +945,5 @@ class UserController extends Controller
             return $this->error('修改失败');
         }
     }
+
 }
