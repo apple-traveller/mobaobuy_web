@@ -43,6 +43,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::any('/user/list', 'UserController@list');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
+        Route::post('/user/change/modifyNeedApproval', 'UserController@modifyNeedApproval');//修改企业用户是否需要审批订单字段
         Route::post('/userreal/change/realname', 'UserController@modifyRealName');//修改实名表的real_name
         Route::get('/user/log', 'UserController@log');//查看用户日志信息
         Route::get('/user/detail', 'UserController@detail');//查看用户详情信息
@@ -52,6 +53,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/user/points', 'UserController@points');//查看积分
         Route::get('/user/firmStock', 'UserController@firmStock');//查看企业库存
         Route::post('/user/firmStockFlow', 'UserController@firmStockFlow');//查看企业库存流水
+        Route::get('/user/addForm', 'UserController@addForm');//添加用户
+        Route::post('/user/save', 'UserController@save');//保存
+        Route::get('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
 
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -145,6 +149,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/detail', 'ShopController@detail');//详情
         Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
+        Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
 
         Route::get('/shopuser/list', 'ShopUserController@list');//店铺职员列表
         Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员

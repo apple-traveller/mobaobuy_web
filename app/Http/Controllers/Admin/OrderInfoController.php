@@ -179,42 +179,6 @@ class OrderInfoController extends Controller
         ]);
     }
 
-    //查看开票申请
-   /* public function invoiceDetail(Request $request)
-    {
-        $id = $request->input('id');
-        $invoice_id = $request->input('invoice_id');
-        $currpage = $request->input('currpage');
-        $order_status = $request->input('order_status');
-        $invoiceInfo = OrderInfoService::getInvoiceInfo($invoice_id);
-        //dd($invoiceInfo);
-        return $this->display('admin.orderinfo.invoice',[
-            'invoiceInfo'=>$invoiceInfo,
-            'id'=>$id,
-            'currpage'=>$currpage,
-            'order_status'=>$order_status
-        ]);
-    }*/
-
-    //保存开票信息
-   /* public function saveInvoice(Request $request)
-    {
-        $data = $request->all();
-        $currpage = $data['currpage'];
-        $order_id = $data['order_id'];
-        unset($data['currpage']);
-        unset($data['order_id']);
-        try{
-            $order = UserInvoicesService::editInvoices($data['id'],$data);
-            if(!empty($order)){
-                return $this->success('修改成功',url('/admin/orderinfo/detail')."?id=".$order_id."&currpage=".$currpage);
-            }else{
-                return $this->error('修改失败');
-            }
-        }catch(\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }*/
 
     //编辑商品信息
     public function modifyOrderGoods(Request $request)

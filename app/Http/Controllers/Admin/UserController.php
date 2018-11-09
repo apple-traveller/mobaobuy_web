@@ -68,6 +68,21 @@ class UserController extends Controller
         }
     }
 
+    //修改订单是否需审批字段
+    public function modifyNeedApproval(Request $request)
+    {
+        $data = [
+            'id'=>$request->input('id'),
+            'need_approval'=>$request->input('need_approval'),
+        ];
+        try{
+            $flag = UserService::modifyNeedApproval($data);
+            return $this->result('',200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //查看详情信息
     public function detail(Request $request)
     {
@@ -214,6 +229,45 @@ class UserController extends Controller
         }else{
             return $this->result(['list'=>$firm_stock_flows['list'],'currpage'=>$currpage,'total'=>$firm_stock_flows['total'],'pageSize'=>$pageSize],200,'success');
         }
+    }
+
+
+    //添加用户
+    public function addForm(Request $request)
+    {
+        return $this->display('admin.user.add');
+    }
+
+    //保存用户
+    public function save(Request $request)
+    {
+        $data = $request->all();
+        $errorMsg = [];
+        if(empty($data['user_name'])){
+            $errorMsg[] = '登录名不能为空';
+        }
+        if(empty($data['password'])){
+            $errorMsg[] = '密码不能为空';
+        }
+        $data['is_firm'] = 0;
+        $data['email'] = $this->requestGetNotNull('email'," ");
+        if(!empty($errorMsg)){
+            return $this->error(implode("|",$errorMsg));
+        }
+        try{
+            $flag = UserService::userRegister($data);
+            if(!empty($flag)){
+                return $this->success('添加成功',url('/admin/user/list'));
+            }
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //添加实名认证信息
+    public function addUserRealForm(Request $request)
+    {
+        return $this->display('admin.user.adduserreal');
     }
 
 

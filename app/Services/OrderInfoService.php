@@ -347,9 +347,11 @@ class OrderInfoService
     public static function getOrderGoodsList($orderid)
     {
         $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $orderid]);
+        $order_info = OrderInfoRepo::getInfo($orderid);
         foreach ($order_goods['list'] as $k => $vo){
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
+            $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
         }
         return $order_goods;
     }
@@ -509,8 +511,18 @@ class OrderInfoService
     //修改发货状态
     public static function modifyDeliveryStatus($data)
     {
-        $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
-        return $order_delivery;
+        try{
+            self::beginTransaction();
+                $data['update_time'] = Carbon::now();
+                $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
+                //修改发货时间
+                OrderInfoRepo::modify($order_delivery['order_id'],['shipping_time'=>Carbon::now()]);
+            self::commit();
+
+            return $order_delivery;
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
 
     }
 
