@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class ShopUserController extends Controller
 {
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
         $user_id = session()->get('_seller_id')['user_id'];

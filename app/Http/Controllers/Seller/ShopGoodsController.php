@@ -22,7 +22,7 @@ class ShopGoodsController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input('currentPage',1);
         $goods_name = $request->input('goods_name','');

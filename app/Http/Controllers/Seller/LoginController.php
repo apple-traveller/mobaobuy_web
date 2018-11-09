@@ -10,12 +10,9 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\GsxxService;
 use App\Services\ShopLoginService;
-use App\Services\ShopLogService;
-use App\Services\ShopUserService;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -98,8 +95,6 @@ class LoginController extends Controller
             return $this->display('seller.register');
         } else {
             $user_id = $request->input('user_id','0');
-            $shop_name = $request->input('shop_name','');
-            $user_name = $request->input('contactName','');
             $company_name = $request->input('companyName','');
             $attorney_letter_fileImg = $request->input('attorney_letter_fileImg','');
             $business_license_id = $request->input('business_license_id','');
@@ -118,10 +113,6 @@ class LoginController extends Controller
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.$mobile) != $mobile_code){
                 return $this->error('手机验证码不正确');
-            }
-
-            if (empty($shop_name)){
-                return $this->error('店铺名称不能为空');
             }
 
             if (empty($company_name)){
@@ -152,7 +143,7 @@ class LoginController extends Controller
             }
             $data = [
                 'user_id' =>$user_id,
-                'shop_name' =>$shop_name,
+                'shop_name' =>$company_name,
                 'company_name' => $company_name,
                 'attorney_letter_fileImg' => $attorney_letter_fileImg,
                 'business_license_id' => $business_license_id,

@@ -35,12 +35,6 @@
     <div class="register-box">
         <div class="register-form">
             <div class="form">
-
-                <div class="item">
-                    <div class="item-libel">店铺名称</div>
-                    <div class="item-info"><input type="text" class="text" id="shop_name" name="shop_name" placeholder="店铺名称" onblur="shopNameValidate()"></div>
-                    <div class="input-tip"><label id="shop_error" class="error"></label></div>
-                </div>
                 <div class="item">
                     <div class="item-libel">企业全称</div>
                     <div class="item-info"><input type="text" class="text" maxlength="20" id="company_name" name="company_name" placeholder="请输入企业全称" onblur="companyNameValidate()"/></div>

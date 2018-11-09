@@ -103,10 +103,11 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：（0 不限）</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：（0 不限,可以直接输入0）</div>
                                 <div class="label_value">
                                     <div class="pro_detail">
-                                        <div class="pur_volume ml15"><span class="pur bbright">-</span>
+                                        <div class="pur_volume ml15">
+                                            <span class="pur bbright">-</span>
                                             <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit"/>
                                             <span class="pur bbleft">+</span>
                                         </div>
@@ -231,14 +232,23 @@
             $(".bbright").click(function(){
                 let spec = Number($("#goods_name").attr("data-packing-spac"));
                 let num = Number($(this).siblings('.pur_num').val());
+                let id = $(this).siblings('.pur_num').attr('id');
+                let min_num = $("#min_limit").val();
+                let max_num = $("#max_limit").val();
                 let b_num = num % spec;
                 if (spec==0|| spec==''){
                     layer.msg('请先选择商品');
                     $(this).siblings('.pur_num').val(0);
                     return false;
                 }
-                if (num <= spec){
-                    $(this).siblings('.pur_num').val(0);
+                if(id == 'min_limit' && min_num-spec>max_num){
+                    $(this).siblings('.pur_num').val(max_num);
+                    $.msg.alert('不能大于最大限购量');
+                }else if(id == 'max_limit' && min_num>max_num-spec){
+                    $(this).siblings('.pur_num').val(min_num);
+                    $.msg.alert('不能小于最小起售量');
+                }else if(num <= spec){
+                    $(this).siblings('.pur_num').val(spec);
                 } else {
                     if (b_num>0){
                         $(this).siblings('.pur_num').val(num-spec-b_num);
@@ -254,19 +264,35 @@
                 let tota_num = Number($("#num").val());
                 let spec = Number($("#goods_name").attr("data-packing-spac"));
                 let num = Number($(this).siblings('.pur_num').val());
+                let id = $(this).siblings('.pur_num').attr('id');
+                let min_num = Number($("#min_limit").val());
+                let max_num = Number($("#max_limit").val());
+
                 let b_num = num % spec;
                 if (spec==0|| spec==''){
                     layer.msg('请先选择商品');
                     $(this).siblings('.pur_num').val(0);
                     return false;
                 }
-                if (num>tota_num){
+                //60 60 60 20
+                if(id == 'max_limit' && min_num>max_num-b_num+spec){
+                    $(this).siblings('.pur_num').val(min_num);
+                    $.msg.alert('不能小于最小起售量');
+                }else if (num>tota_num){
                     $(this).siblings('.pur_num').val(tota_num);
                 } else {
                     if (num+spec>tota_num){
                         $(this).siblings('.pur_num').val(tota_num);
                     } else{
                         $(this).siblings('.pur_num').val(num+spec);
+                    }
+                    if(id == 'min_limit' && min_num+spec>max_num){
+                        // $(this).siblings('.pur_num').val(max_num);
+                        if (min_num+spec>tota_num){
+                            $("#max_limit").val(tota_num);
+                        } else {
+                            $("#max_limit").val(num+spec);
+                        }
                     }
                 }
             });
@@ -280,17 +306,28 @@
                 $(this).val(spac);
             } else {
                 if (min_num>tota_num){
-                    $(this).val(spac);
+                    $(this).val(tota_num);
+                }else{
+                    let _count = min_num%spac;
+                    if(_count > 0){
+                        $(this).val(min_num - _count);
+                    }else{
+                        $(this).val(min_num);
+                    }
                 }
             }
         });
 
 
-        // 最大小于最小
+        // 控制最大值直接输入
         $("#max_limit").change(function () {
            let max_val =  $(this).val();
            let min_val = $("#min_limit").val();
            let tota_num = Number($("#num").val());
+           if (max_val==0){
+               $(this).val(0);
+               return false;
+           }
            if (max_val<min_val){
                $(this).val(min_val);
            } else {
