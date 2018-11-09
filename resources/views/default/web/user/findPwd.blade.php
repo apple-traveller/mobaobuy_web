@@ -91,7 +91,7 @@
         function gv() {
             t = new Date().getTime();
             $('#imVcode').attr('src', "{{url('verifyCode')}}" + "?t=" + t + "&width=80&height=20");
-            
+
         }
         // 图形验证码格式检查
         function verifyValidate() {
@@ -119,8 +119,8 @@
                     gv();
                     $("#verify_error").text("验证码不正确");
                 }
-            }, "POST", "JSON");
-            
+            }, "POST", "JSON",false);
+
         }
         //  手机验证码格式检查
         function msgCodeValidate() {
@@ -152,9 +152,9 @@
                 accountName:accountName
 
             };
-            
+
             Ajax.call("{{url('/findPwd/sendSms')}}", params, function (result){
-                
+
                 if (result.code == 1) {
                     Settime (type);
                     $('.msgCode-swap').removeClass('blackgraybg');

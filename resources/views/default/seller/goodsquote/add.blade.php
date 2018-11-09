@@ -34,7 +34,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off"  name="goods_id" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -115,27 +115,6 @@
     </div>
 
     <script type="text/javascript">
-        $(".cat_id").change(function(res){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        if (i==0){
-                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        } else {
-                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        }
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-
-            },"json");
-        });
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -206,7 +185,6 @@
                     QQ :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-
                 }
             });
         });

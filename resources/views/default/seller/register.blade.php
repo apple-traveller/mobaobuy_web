@@ -151,9 +151,10 @@
             return false;
         } else {
             $.ajax({
-                'type':'get',
-                'data':{'company_name':company_name},
-                'url':"{{url('/seller/checkCompany')}}",
+                type:'get',
+                data:{'company_name':company_name},
+                url:"{{url('/seller/checkCompany')}}",
+                async:false,
                 success(res){
                     if (res.code == 200){
                         $('#company_error').html("");
