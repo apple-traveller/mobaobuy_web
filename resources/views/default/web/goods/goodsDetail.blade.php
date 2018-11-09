@@ -32,8 +32,6 @@
         .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
         .History-product-list li:last-child{border-bottom: none;}
         .orangebg{background-color:#ff6f17;}
-        .Self-product-list li span {margin-top: 30px;}
-    
     </style>
     
 
@@ -114,14 +112,14 @@
 
 		</div>
 		<div class="fl ml35 mt5">
-			<h1 class="fwb fs16">{{$good_info['goods_name']}}</h1>
+			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
 				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
 
 			</div>
 			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
+				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
                 <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
 			</div>
 
@@ -164,9 +162,9 @@
 		</div>
 		<ul class="Self-product-list">
 
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>联系人</span></li>
+			<li style="margin-bottom: 22px;height: 20px;"><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>联系人</span></li>
 			@foreach($goodsList as $vo)
-				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
+				<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
 			@endforeach
 		</ul>
 		<!--页码-->

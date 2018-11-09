@@ -88,7 +88,6 @@ class ActivityPromoteService
                 $yuNumber = $goodsNum % $goodsInfo['packing_spec'];
                 $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
                 $goodsNumber = $goodsNum + $dNumber;
-
             }else{
                 $goodsNumber = $goodsInfo['packing_spec'];
             }
