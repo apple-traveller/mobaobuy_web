@@ -18,6 +18,8 @@ class ShopGoodsQuoteService
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
         foreach($result['list'] as $k=>$vo){
             $result['list'][$k]['brand_name'] = $vo['brand_name']?$vo['brand_name']:"无品牌";
+            $goodsInfo = GoodsRepo::getInfo($vo['goods_id']);
+            $result['list'][$k]['goods_content'] = $goodsInfo['goods_content'];
         }
 
         //获取筛选过滤信息
@@ -55,6 +57,8 @@ class ShopGoodsQuoteService
 
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
         foreach($result['list'] as $k=>$vo){
+            $goodsInfo = GoodsRepo::getInfo($vo['goods_id']);
+            $result['list'][$k]['goods_full_name'] = $goodsInfo['brand_name'] . $goodsInfo['goods_name'] . $goodsInfo['goods_content'];
             $result['list'][$k]['brand_name'] = $vo['brand_name']?$vo['brand_name']:"无品牌";
         }
         return $result;
@@ -112,6 +116,7 @@ class ShopGoodsQuoteService
         $info['packing_unit'] = $goods_detail['packing_unit'];//包装单位
         $arr = explode(";",$goods_detail['goods_attr']);
         $info['goods_attr'] = $arr;
+        $info['goods_full_name'] = $goods_detail['brand_name'] . $goods_detail['goods_name'] . $goods_detail['goods_content'];
         return $info;
     }
 

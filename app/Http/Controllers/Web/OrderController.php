@@ -38,7 +38,6 @@ class OrderController extends Controller
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $currUser  = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
-//            dump($currUser);
 
             $condition['status'] = $tab_code;
             $condition['begin_time'] = $request->input('begin_time');

@@ -412,7 +412,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//删除收藏商品
-
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
@@ -452,6 +451,8 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
         Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
+        Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
+        Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@list');// 商户商品报价
         Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加

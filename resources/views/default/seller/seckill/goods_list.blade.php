@@ -43,7 +43,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">输入关键字</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input" id="searchInput" >
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入商品名称" autocomplete="off" class="layui-input" id="searchInput" >
                 </div>
                 <div class="layui-input-block">
                     <button class="layui-btn" id="form" lay-submit lay-filter="formDemo">搜索</button>

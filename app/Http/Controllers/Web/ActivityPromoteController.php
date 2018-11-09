@@ -12,7 +12,7 @@ class ActivityPromoteController extends Controller
     //限时抢购
     public function buyLimit(){
         $condition['review_status'] = 3;
-        $condition['end_time|>'] = Carbon::now();
+//        $condition['end_time|>'] = Carbon::now();
         try{
             $promoteInfo = ActivityPromoteService::buyLimit($condition);
             return $this->display('web.goods.buyLimit',compact('promoteInfo'));
@@ -23,7 +23,9 @@ class ActivityPromoteController extends Controller
 
     //限时抢购详情
     public function buyLimitDetails($id){
+        //进入详情页 增加点击量
         try{
+            $res = ActivityPromoteService::addClickCount($id);
             $goodsInfo = ActivityPromoteService::buyLimitDetails($id);
             return $this->display('web.goods.buyLimitDetails',compact('goodsInfo'));
         }catch (\Exception $e){
