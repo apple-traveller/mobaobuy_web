@@ -178,19 +178,27 @@
                 }
             }
         })
+
         // 确认订单
         function conf(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
+                    layer.prompt({
+                        title: '确认订单,并输入交货日期',
+                    }, function(value, index, elem){
+
+
                     let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
                             'action_note':action_note,
-                            'order_status': 3
+                            'order_status': 3,
+                            'delivery_period':value
                         },
                         type: 'post',
                         success: function (res) {

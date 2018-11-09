@@ -1779,8 +1779,8 @@ a.pl_btn{ padding:0 10px;}
 .ecsc-default-table td .goods-tag span.sck{ float:left; line-height:16px; margin-right:10px;}
 
 .ecsc-default-table td .goods-tag .free{ background-position:0 0;}
-.ecsc-default-table td .goods-tag .byStage{ background-position:-46px; 0;}
-.ecsc-default-table td .goods-tag .parts{ background-position:-93 0;}
+.ecsc-default-table td .goods-tag .byStage{ background-position:-46px 0;}
+.ecsc-default-table td .goods-tag .parts{ background-position:-93px 0;}
 .ecsc-default-table td .goods-tag .saleEnd{ background-position:-235px 0; width:61px;}
 .ecsc-default-table td .goods-tag .sale{ background-position:-139px 0;}
 .ecsc-default-table td .goods-tag .purchaseEnd{ background-position:-309px 0; width:61px;}
