@@ -60,7 +60,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品分类：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;"  class="cat_id" >
                                         <option value="0">请选择分类</option>
                                         @foreach($goodsCatTree as $vo)
                                             <option  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>

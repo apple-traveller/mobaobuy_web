@@ -688,14 +688,12 @@ class UserController extends Controller
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
-
         try{
             $userRealName = UserService::getUserRealbyId($userInfo['id']);
             $userInfo['real_name'] = $userRealName;
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
-//        dd($userInfo);
         return $this->display("web.user.account.accountInfo",[
             'userInfo'=>$userInfo
         ]);

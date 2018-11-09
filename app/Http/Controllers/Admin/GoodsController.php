@@ -127,6 +127,8 @@ class GoodsController extends Controller
             return $this->error(implode('<br/>',$errorMsg));
         }
 
+        $data['goods_full_name'] = $data['goods_name']." ".$data['brand_name']." ".$data['goods_content'];
+
         try{
             if(!key_exists('id',$data)){
                 GoodsService::uniqueValidate($data['goods_name']);
@@ -183,7 +185,6 @@ class GoodsController extends Controller
         $good = GoodsService::getGoodInfo($id);
         $goods_attr = $good['goods_attr'];
         $attrArr = explode(";",$goods_attr);
-        //echo $good['goods_desc'];die;
         //print_r($attrArr);
         //查询所有品牌
         $brands = BrandService::getBrandList([],[]);
@@ -201,8 +202,6 @@ class GoodsController extends Controller
             'attrArr'=>$attrArr,
         ]);
     }
-
-
 
     //获取属性名
     public function getAttrs(Request $request)

@@ -412,7 +412,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//删除收藏商品
-
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 

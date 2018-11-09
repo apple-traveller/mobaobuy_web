@@ -32,6 +32,7 @@
                         minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
                         second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                     }
+                    hour += day*24;
                     if(hour<=9)hour='0'+hour;
                     if(minute<=9)minute='0'+minute;
                     if(second<=9)second='0'+second;
@@ -41,7 +42,6 @@
                     nsecond.html('<s></s>'+second);
                     intDiff--;
                 },1000)
-
             }
             Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 
@@ -153,10 +153,15 @@
 				<div class="pro_chart_img">
 
 				</div>
-				<div><span class="pro_chart_opert follow">收藏</span><span class="pro_chart_opert share ml20"></span></div>
+				<div>
+                    {{--<span class="pro_chart_opert follow">收藏</span>--}}
+                    {{--<span class="pro_chart_opert share ml20"></span>--}}
+                    <span class="pro_chart_opert"></span>
+                    <span class="pro_chart_opert ml20"></span>
+                </div>
 			</div>
 			<div class="fl ml35 mt5">
-				<h1 class="fwb fs16">{{$goodsInfo['goods_name']}}</h1>
+				<h1 class="fwb fs16">{{$goodsInfo['brand_name']}}{{$goodsInfo['goods_name']}}{{$goodsInfo['goods_content']}}</h1>
 				<span class="red mt5 db"></span>
 				<style type="text/css">
 					.Time_limit{height:46px;background: url(/img/limit_time.png)no-repeat;}
@@ -194,7 +199,7 @@
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
+					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
