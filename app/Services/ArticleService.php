@@ -110,7 +110,7 @@ class ArticleService
             $cat_id .= $v['id'].'|';
         }
         $condition['cat_id'] = $cat_id;
-        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>['click'=>'desc','add_time'=>'desc']],$condition);
     }
 
     /**
@@ -192,5 +192,14 @@ class ArticleService
         return $data;
     }
 
+    /**
+     * 列表不带分页
+     * @param $condition
+     * @return mixed
+     */
+    public static function getList($condition)
+    {
+        return ArticleRepo::getList([],$condition);
+    }
 
 }

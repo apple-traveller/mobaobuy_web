@@ -788,7 +788,7 @@ i.ice_b{ background-position:-336px -214px;}
 .list-div.listMin{ width:100%;}
 .list-div.listMin .flexigrid{ width:100%; overflow:auto; position:relative; height:auto; z-index:2; padding-bottom:7px;}
 .list-div.listMin table{ min-width:1639px;}
-.list-div th{ height:38px; line-height:38px; background:#f2f2f2; font-weight:bold; border-top:2px solid #dbdbdb;border-bottom:1px solid #eaeaea; color:#333;}
+.list-div th{text-align: center; height:38px; line-height:38px; background:#f2f2f2; font-weight:bold; border-top:2px solid #dbdbdb;border-bottom:1px solid #eaeaea; color:#333;}
 .list-div th a{ color:#333;}
 .list-div td{ text-align:center;ine-height:20px; height:38px; border-bottom:1px solid #eaeaea;word-break: keep-all; background:#fff;}
 .list-div .tr_bg_org td{ background:#fffccb;}
@@ -1562,7 +1562,7 @@ i.sc_icon_dsz{ position:absolute; width:48px; height:56px; background-position:-
 .order_info .step_title{ padding-bottom:6px; border-bottom:2px solid #dbdbdb;;}
 .order_info .step_title a{ margin-left:10px;}
 .step .section{ width:100%; position:relative; z-index:9; overflow:hidden;}
-.step .section dl{ float:left; width:16.667%;}
+.step .section dl{ float:left; width:19.667%;}
 .step .section1 dl{ width:100%;}
 .step .section2 dl{ width:50%;}
 .step .section3 dl{ width:33.3%;}

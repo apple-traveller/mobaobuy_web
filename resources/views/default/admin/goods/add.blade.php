@@ -7,7 +7,13 @@
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list" class="s-back">返回</a>商品 - 添加商品</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>添加商品。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/goods/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -91,6 +97,15 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content" class="text" value="" maxlength="40" autocomplete="off" id="goods_content">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装单位：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_unit" class="text" value="" maxlength="40" autocomplete="off" id="packing_unit">
@@ -104,10 +119,10 @@
                                 <div class="label_value">
                                     <div class="attribute"></div>
                                     <input type="hidden" id="goods_attr" name="goods_attr">
-                                    <div class="form_prompt"></div>
-                                    <div class="layui-btn attr-btn"  style="margin-top:5px;">
+                                    <div class="layui-btn attr-btn"  style="margin-top:5px;float:left;">
                                         <i class="layui-icon">&#xe608;</i> 添加属性
                                     </div>
+                                    <div style="margin-left: 20px;line-height: 50px;" class="form_prompt"></div>
                                 </div>
                             </div>
 
@@ -365,6 +380,9 @@
                     cat_id:{
                         required:true
                     },
+                    goods_content:{
+                        required :true,
+                    }
 
                 },
                 messages:{
@@ -402,6 +420,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },
                     cat_id:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                 }

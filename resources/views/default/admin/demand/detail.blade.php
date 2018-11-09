@@ -9,9 +9,8 @@
                     <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
                 </div>
                 <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                    <li>该页面展示用户的求购或者咨询信息。</li>
+                    <li>客服处理后添加备注信息提交保存。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -21,7 +20,9 @@
 
                             <div class="item">
                                 <div class="label">&nbsp;昵称：</div>
-                                <div class="label_value font14">{{$demand['nick_name']}}</div>
+                                <div class="label_value font14">
+                                    {{$demand['nick_name']}}
+                                </div>
                             </div>
 
 

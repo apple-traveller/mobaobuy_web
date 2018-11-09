@@ -9,13 +9,10 @@
 
     <script>
         $(function(){
-
             $(document).delegate('.supply_list>li','mouseenter',function(){
-
                 $(this).find('.operation').text('收起');
                 $(this).find('.supply_list_inside').show();
                 $(this).addClass('supply_border_curr');
-
                 $('.supply_list>li:first-child').removeClass("supply_border_curr");
             });
             $(document).delegate('.supply_list>li','mouseleave',function(){
@@ -29,7 +26,6 @@
                     $(this).find('.Quotate_text').animate({bottom:"0px"});
                 },function(){$(this).find('.Quotate_text').animate({bottom:"-30px"});})
             })
-
         })
     </script>
 @endsection
@@ -59,13 +55,13 @@
 
                     <div>
                         <ul class="order-stute">
-                            <li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span>
-                            <li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span>
-                            <li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span>
+                            <li class="tac"><span class="db red"><a href="/order/list">{{$order_status['waitAffirm']}}</a></span><span>待确认</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitPay']}}</a></span><span>待付款</span>
+                            <li><span class="db red"><a href="/order/list">{{$order_status['waitConfirm']}}</a></span><span>待收货</span>
                         </ul>
                     </div>
-
-                    <textarea class="demand-text" style="height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                    <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
+                    <textarea class="demand-text" style="resize: none; width:220px;height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                     <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
                 </div>
             </div>
@@ -78,7 +74,7 @@
                     <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
                 </div>
                 <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
-                <textarea class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
+                <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
                 <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
             </div>
         </div>
@@ -110,28 +106,30 @@
                             <div class="Time_limit_action_top mt10">
                                 <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="orange">{{$item['click_count']}}</font>次浏览</span></div>
                             <div class="mt40">
-                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}公斤</span></div>
+                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}kg</span></div>
                                 <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/kg</span></div>
                             </div>
                             @if($item['is_over'])
-                            <div class="Time_limit_action_bottom graybg">
-                                <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg">
+                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
+                                </div>
                             @elseif($item['is_soon'])
-                            <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['begin_time']}}">
-                                <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp">敬请期待</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['begin_time']}}">
+                                    <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp">敬请期待</div>
+                                </div>
                             @else
-                            <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
-                                <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
-                            </div>
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
+                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
+                                        <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
+                                    </a>
+                                </div>
                             @endif
                         </div>
                     @endif
                 @endfor
-                @foreach($promote_list as $item)
-
-                @endforeach
 
                 <div class="Time_limit_left leftPosition"><img src="/images/ass-lt-left.png"/></div>
                 <div class="Time_limit_left rightPosition"><img src="/images/ass-lt-right.png"/></div>
@@ -144,7 +142,7 @@
                     @foreach($trans_list as $item)
                         <li>
                             <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
-                            <div class="ml5 gray"><span>{{$item['goods_number']}}公斤</span><span class="ml10">{{$item['add_time']}}</span></div>
+                            <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
                         </li>
                     @endforeach
                     </ul>
@@ -152,15 +150,30 @@
             </div>
         </div>
         <!--自营报价-->
-
         <div class="Self-support mt30">
             <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
             <ul class="Self-product-list">
-                <li><span>品牌</span><span>种类</span><span>商品名称</span><span>剩余数量（公斤）</span><span>单价（元/公斤）</span><span>发货地</span><span>更新时间</span><span>操作</span></li>
+                <li>
+                    <!-- <span>品牌</span> -->
+                    <span style="width:13%;">种类</span><span style="width:18%;">商品名称</span><span style="width:13%;">剩余数量（kg）</span><span style="width:13%;">单价（元/kg）</span><span style="width:13%;">发货地</span><span style="width:13%;">更新时间</span><span style="width:13%;">操作</span></li>
+
                 @foreach($goodsList['list'] as $vo)
-                    <li><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span>{{$vo['goods_number']}}</span><span>{{'￥'.number_format($vo['shop_price'], 2)}}</span><span>{{$vo['delivery_place']}}</span><span>{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
-                        <span>@if($vo['goods_number'])<button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>@else
-                                <button class="trade-close-btn">已售完</button> @endif</span></li>
+                    <li>
+                       <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
+                        <span class="ovh" style="width:13%;">{{$vo['cat_name']}}</span>
+                        <span style="width:18%;"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span style="width:13%;">{{$vo['goods_number']}}</span>
+                        <span style="width:13%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                        <span style="width:13%;">{{$vo['delivery_place']}}</span>
+                        <span style="width:13%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
+                        <span style="width:13%;">
+                            @if($vo['goods_number'])
+                                <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                            @else
+                                <button class="trade-close-btn">已售完</button>
+                            @endif
+                        </span>
+                    </li>
                 @endforeach
             </ul>
         </div>
@@ -230,7 +243,23 @@
                 <div class="supply_list_inside" style="display: none;">
                     <ul>
                         @foreach($shop['quotes'] as $quote)
-                        <li><span>{{$quote['brand_name']}}</span><span>{{$quote['cat_name']}}</span><span class="ovh">{{$quote['goods_name']}}</span><span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span><span>{{$quote['goods_number']}}</span><span>{{$quote['delivery_place']}}</span><span><a class="Self-support-place ml-20">下单</a></span></li>
+                            <li>
+                                <span>{{$quote['brand_name']}}</span>
+                                <span>{{$quote['cat_name']}}</span>
+                                <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_name']}}</a></span>
+                                <span>{{$quote['goods_number']}}</span>
+                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
+                                <span>{{$quote['delivery_place']}}</span>
+                                {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
+                                <span>
+                                    @if($quote['goods_number'])
+                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
+                                    @else
+                                        <button class="trade-close-btn" style="margin-top:-10px;">已售完</button>
+                                    @endif
+                                </span>
+
+                            </li>
                         @endforeach
                     </ul>
                 </div>

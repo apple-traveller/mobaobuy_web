@@ -1,4 +1,5 @@
-@extends(themePath('.','web').'web.include.layouts.goods')
+@extends(themePath('.','web').'web.include.layouts.home')
+
 @section('title', '产品列表')
 @section('css')
 	<style>
@@ -30,9 +31,14 @@
         .History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
         .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
         .History-product-list li:last-child{border-bottom: none;}
+        .orangebg{background-color:#ff6f17;}
     </style>
+    
+
 @endsection
 @section('js')
+<script type="text/javascript" src="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"> </script>
+    <link href="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" rel="stylesheet" type="text/css"/>
 	<script>
         $(function(){
             // 更多/收起
@@ -60,6 +66,34 @@
                     $('.more_filter_box').text('更多选项...');
                 }
             });
+
+            //数量输入检测
+            $('#pur_num').blur(function(){  
+                //数量
+                var goodsNumber = $(this).val();
+                //当前购物车数据id
+                var id = $(this).attr('cid');
+                    if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                        $.ajax({
+                            'type':'post',
+                            'data':{'id':id,'goodsNumber':goodsNumber},
+                            'url':'{{url('/checkListenCartInput')}}',
+                            success:function(res){
+                                if(res.code){
+                                }else{
+                                    layer.msg('输入的数量有误');
+                                    window.location.reload();
+                                }
+                            }
+                        })
+                    }else{
+                        layer.msg('输入的数量有误');
+                         window.location.reload();
+                    }
+            });
+
+            //隐藏原料分类
+            $('.ass_menu').hide();
         })
 	</script>
 @endsection
@@ -78,14 +112,14 @@
 
 		</div>
 		<div class="fl ml35 mt5">
-			<h1 class="fwb fs16">{{$good_info['goods_name']}}</h1>
+			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
 				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
 
 			</div>
 			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
+				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
                 <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
 			</div>
 
@@ -112,12 +146,12 @@
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" cid="{{$good_info['id']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
 
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
-				<button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">关注商品</button>
+				<button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
 			</div>
 		</div>
 
@@ -127,10 +161,9 @@
 			<h1>历史报价</h1>
 		</div>
 		<ul class="Self-product-list">
-
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span>联系人</span></li>
+			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>
 			@foreach($goodsList as $vo)
-				<li><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
+				<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
 			@endforeach
 		</ul>
 		<!--页码-->

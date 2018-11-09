@@ -16,9 +16,13 @@
             </div>
             <div class="flexilist mt30" id="listDiv">
                 <div class="common-head order-coomon-head">
-
+                    <div class="order_state_tab">
+                        <a href="/seller/delivery/list?status=0" @if($status==0) class="current" @endif>待发货@if($status==0) <em>({{$total}})</em> @endif</a>
+                        <a href="/seller/delivery/list?status=1" @if($status==1) class="current" @endif>已发货@if($status==1) <em>({{$total}})</em> @endif</a>
+                    </div>
                     <div class="refresh">
-                        <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)"><i class="icon icon-refresh"></i></div>
+                        <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)">
+                            <i class="icon icon-refresh"  style="display: block;margin-top: 1px;"></i></div>
                         <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                     </div>
 
@@ -77,6 +81,7 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/seller/delivery/detail?id={{$vo['id']}}&currentPage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                <a href="javascript:void(0);" id="sendHock" data-id="{{$vo['id']}}" title="发货" class="btn_see"><i class="sc_icon sc_icon_see"></i>发货</a>
                                                 {{--<a title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>--}}
                                             </div>
                                         </td>
@@ -134,7 +139,25 @@
             });
         }
 
+        $("#sendHock").click(function () {
+            var id = $(this).data("id");
+            $.post('/seller/delivery/updateStatus', {
+                'id': id,
+                'status': 1,
+            }, function (res) {
+                if (res.code == 200) {
+                    layer.msg(res.msg, {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function () {
+                        window.location.href="/seller/delivery/list";
+                    });
 
+                } else {
+                    alert(res.msg);
+                }
+            }, "json");
+        });
 
 
 

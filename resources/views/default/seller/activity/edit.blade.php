@@ -4,6 +4,14 @@
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
         }
+        .Self-product-list li span{width:14%;}
+        .news_pages ul.pagination {text-align: center;}
+        .Self-product-list li span{width: 12.5%;float: left;text-align: center;}
+        .pro_detail{overflow: hidden;}
+        .pur_volume{float:left;border: 1px solid #DEDEDE; box-sizing:border-box;}
+        .pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
+        .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
+
     </style>
 @endsection
 @section('body')
@@ -24,25 +32,24 @@
                         <input type="text" value="@if(!empty($promote_info)){{$promote_info['id']}}@endif" name="id" style="display: none">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label_value">
+                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
-                                        <option value="0">请选择分类</option>
-                                        @foreach($goodsCatTree as $vo)
-                                            <option @if(!empty($good) && $good['cat_id']==$vo['id'])  selected @endif  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
-                                        @endforeach
-                                    </select>
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
-                                        <option value="">请选择商品</option>
-                                        @foreach($goods as $vo)
-                                            <option @if(!empty($promote_info)) @if($promote_info['goods_id']==$vo['id']) selected @endif @endif value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input type="hidden" value="" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <div class="notic">分类用于辅助选择商品</div>
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    </ul>
                                 </div>
-
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
@@ -52,6 +59,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" class="layui-input"  name="start_time" id="start_time" @if(!empty($promote_info))value="{{$promote_info['begin_time'][1]}}" @endif>
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
@@ -61,6 +69,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
@@ -74,7 +83,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;促销总数量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{$promote_info['num']}}@endif" maxlength="5" autocomplete="off" id="num">
+                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{$promote_info['num']}} @endif " maxlength="5"  autocomplete="off" id="num">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -82,7 +91,13 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;最小起售量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="min_limit" class="text" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" maxlength="5" autocomplete="off" id="min_limit">
+                                    <div class="pro_detail">
+                                        <div class="pur_volume ml15">
+                                            <span class="pur bbright">-</span>
+                                            <input type="text" name="min_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" id="min_limit"/>
+                                            <span class="pur bbleft">+</span>
+                                        </div>
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -90,7 +105,12 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：（0 不限）</div>
                                 <div class="label_value">
-                                    <input type="number" name="max_limit" class="text" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" maxlength="5" autocomplete="off" id="max_limit">
+                                    <div class="pro_detail">
+                                        <div class="pur_volume ml15"><span class="pur bbright">-</span>
+                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit"/>
+                                            <span class="pur bbleft">+</span>
+                                        </div>
+                                    </div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -130,21 +150,8 @@
                 elem: '#end_time'
                 ,type: 'time'
             });
-        })
-        $(".cat_id").change(function(res){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option value="'+data[i]['id']+'">'+data[i]['goods_name']+'</option>');
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-            },"json");
         });
+
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -152,8 +159,6 @@
                     $("#promote_form").submit();
                 }
             });
-
-
             $('#promote_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
@@ -166,21 +171,18 @@
                         required : true,
                         number:true
                     },
-                    number :{
+                    num :{
                         required : true,
                         number:true
                     },
                     goods_id:{
                         required : true,
-                        number:true
                     },
-                    min_limit:{
-                        required:true,
-                        number:true
+                    start_date:{
+                        required:true
                     },
-                    max_limit:{
-                        required:true,
-                        number:true
+                    end_date:{
+                        required:true
                     }
                 },
                 messages:{
@@ -194,13 +196,195 @@
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    min_limit :{
+                    start_date :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    end_date :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     }
                 }
             });
+
+            // 限制商品总数
+            $("#num").change(function () {
+                let spec = Number($("#goods_name").attr("data-packing-spac"));
+                let num = Number($(this).val());
+                let b_num = num % spec;
+                console.log(spec)
+                if (spec==0|| spec==''){
+                    layer.msg('请先选择商品');
+                    $("#num").val(0);
+                    return false;
+                }
+                if (num<spec){
+                    $(this).val(spec);
+                } else {
+                    if (b_num >0){
+                        $(this).val(num-b_num);
+                    } else {
+                        $(this).val(num);
+                    }
+                }
+            });
+
+            // 减
+            $(".bbright").click(function(){
+                let spec = Number($("#goods_name").attr("data-packing-spac"));
+                let num = Number($(this).siblings('.pur_num').val());
+                let b_num = num % spec;
+                if (spec==0|| spec==''){
+                    layer.msg('请先选择商品');
+                    $(this).siblings('.pur_num').val(0);
+                    return false;
+                }
+                if (num <= spec){
+                    $(this).siblings('.pur_num').val(0);
+                } else {
+                    if (b_num>0){
+                        $(this).siblings('.pur_num').val(num-spec-b_num);
+                    } else {
+                        $(this).siblings('.pur_num').val(num-spec);
+                    }
+                }
+            });
+
+            // 加
+            $(".bbleft").click(function(){
+                var _num;
+                let tota_num = Number($("#num").val());
+                let spec = Number($("#goods_name").attr("data-packing-spac"));
+                let num = Number($(this).siblings('.pur_num').val());
+                let b_num = num % spec;
+                if (spec==0|| spec==''){
+                    layer.msg('请先选择商品');
+                    $(this).siblings('.pur_num').val(0);
+                    return false;
+                }
+                if (num>tota_num){
+                    $(this).siblings('.pur_num').val(tota_num);
+                } else {
+                    if (num+spec>tota_num){
+                        $(this).siblings('.pur_num').val(tota_num);
+                    } else{
+                        $(this).siblings('.pur_num').val(num+spec);
+                    }
+                }
+            });
+        });
+
+        $("#min_limit").change(function () {
+            let min_num = $(this).val();
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
+            let tota_num = Number($("#num").val());
+            if (min_num<spac){
+                $(this).val(spac);
+            } else {
+                if (min_num>tota_num){
+                    $(this).val(spac);
+                }
+            }
+        });
+
+
+        // 最大小于最小
+        $("#max_limit").change(function () {
+           let max_val =  $(this).val();
+           let min_val = $("#min_limit").val();
+           let tota_num = Number($("#num").val());
+           if (max_val<min_val){
+               $(this).val(min_val);
+           } else {
+               if (max_val>tota_num){
+                   $(this).val(tota_num);
+               }
+           }
+        });
+
+        document.onclick=function(event){
+            $(".query_cat_name").hide();
+            $(".query_goods_name").hide();
+        }
+
+        // 种类 获取焦点请求所有的分类数据
+        $("#cat_name").focus(function(){
+            $(".query_cat_name").children().filter("li").remove();
+            $.ajax({
+                url: "/seller/goods/getGoodsCat",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $(".query_cat_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
+        // 种类 点击将选中的值填入input框内
+        $(document).delegate(".created_cat_name","click",function(){
+            var cat_name = $(this).text();
+            var cat_id = $(this).attr("data-cat-id");
+            $("#cat_name").val(cat_name);
+            $("#cat_name").attr("cat-id",cat_id);
+        });
+
+        // 商品 获取焦点请求所有的商品数据
+        $("#goods_name").focus(function(){
+            $(".query_goods_name").children().filter("li").remove();
+            var cat_id = $("#cat_name").attr("cat-id");
+            $.ajax({
+                url: "/seller/goods/getGood",
+                dataType: "json",
+                data:{"cat_id":cat_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $(".query_goods_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                        }
+                    }else{
+                        $(".query_goods_name").show();
+                        $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                    }
+                }
+            })
+        });
+
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_goods_name","click",function(){
+            $("#goods_name").siblings("div").filter(".notic").remove();
+            var goods_name = $(this).text();
+            var goods_id = $(this).attr("data-goods-id");
+            var packing_spac = $(this).attr("data-packing-spac");
+            let packing_unit = $(this).data('packing_unit');
+            $("#goods_name").val(goods_name);
+            $("#goods_id").val(goods_id);
+            $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#min_limit").val(packing_spac);
+            $("#num").val(packing_spac);
+            $("#num").attr("disabled",false);
+            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        $("#goods_number").change(function () {
+            let spac = $("#goods_name").attr("data-packing-spac");
+            let goods_number = $(this).val();
+            if (spac >goods_number){
+                $(this).val(spac);
+            } else {
+                if (goods_number%spac>0){
+                    $(this).val(goods_number-goods_number%spac);
+                } else {
+                    $(this).val(goods_number);
+                }
+            }
         });
     </script>
-
-
 @stop

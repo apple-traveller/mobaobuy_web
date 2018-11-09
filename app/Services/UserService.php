@@ -5,7 +5,9 @@ use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
 use App\Repositories\GsxxCompanyRepo;
 use App\Repositories\GsxxSupplierRepo;
+use App\Repositories\OrderInfoRepo;
 use App\Repositories\RegionRepo;
+use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Repositories\UserPaypwdRepo;
@@ -337,14 +339,40 @@ class UserService
     }
 
     
-    //修改
+    //修改用户信息
     public static function modify($data)
     {
-        $info = UserRepo::modify($data['id'],$data);
-        if($info){
-            unset($info['password']);
+        $userData['nick_name'] = $data['nick_name'];
+        $userData['email'] = $data['email'];
+        try{
+            self::beginTransaction();
+            //修改用户表
+            $info = UserRepo::modify($data['id'],$userData);
+            //修改user_real表
+            $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$data['id']]);
+            if(empty($userRealInfo)){
+                $info['real_name'] = '';
+            }else{
+                $userRealResult = UserRealRepo::modify($userRealInfo['id'],['real_name'=>$data['real_name']]);
+                $info['real_name'] = $userRealResult['real_name'];
+            }
+
+            if($info){
+                unset($info['password']);
+            }
+            self::commit();
+            return $info;
+        }catch (\Exception $e){
+            self::rollBack();
+            throw $e;
+
         }
-        return $info;
+
+    }
+
+    //修改默认收获地址
+    public static function updateDefaultAddress($data){
+        return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
     public static function getUserInfo($id)
@@ -383,22 +411,32 @@ class UserService
     }
 
     //返回各实名状态的用户id
-    public static function getUserIds($review_status)
+    public static function getUserIds($is_firm)
     {
         $arr = [];
-        if($review_status==-1){
-            //未提交实名信息的用户
+        if($is_firm==-1){
+            //未提交实名信息的用户或者实名审核没通过的用户
             $users = UserRepo::getList([],[],['id']);
+            //没提交实名信息
             foreach($users as $vo){
-                $user = UserRealRepo::getList([],['user_id'=>$vo['id']],['id']);
+                $user = UserRealRepo::getInfoByFields(['user_id'=>$vo['id']]);
                 if(empty($user)){
                     $arr[] = $vo['id'];
                 }
             }
-        }else{
-            $user_reals = UserRealRepo::getList([],['review_status'=>$review_status],['id','user_id']);
+            //实名信息没通过
+            $user_reals = UserRealRepo::getList([],['review_status'=>"0|2"],['id','user_id']);
             foreach($user_reals as $vo){
-                $user = UserRepo::getList([],['id'=>$vo['user_id']],['id'])[0];
+                $user = UserRepo::getInfoByFields(["id"=>$vo['user_id']]);
+                if(!empty($user)){
+                    $arr[] = $vo['user_id'];
+                }
+            }
+        }else{
+            //实名通过
+            $user_reals = UserRealRepo::getList([],['is_firm'=>$is_firm,'review_status'=>1],['id','user_id']);
+            foreach($user_reals as $vo){
+                $user = UserRepo::getInfoByFields(["id"=>$vo['user_id'],"is_firm"=>$is_firm]);
                 if(!empty($user)){
                     $arr[] = $user['id'];
                 }
@@ -416,6 +454,42 @@ class UserService
             $collect_goods[$k]['goods_name']=$goods['goods_name'];
         }
         return $collect_goods;
+    }
+
+    //会员中心首页
+    public static function userMember($userId){
+        //
+        //订单
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId]);
+        //商品推荐
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
+
+        //未付款订单数
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
+        //
+        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+
+        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0];
+    }
+
+    public static function getUserRealbyId($id){
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$id]);
+        if(empty($userRealInfo)){
+            return '';
+        }else{
+            return $userRealInfo['real_name'];
+        }
+    }
+
+    //后台首页用户统计
+    public static function getUsersCount()
+    {
+        $users = [];
+        $users['is_firm'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(1))]);
+        $users['is_personal'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(0))]);
+        $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
+        $users['total'] = UserRepo::getTotalCount();
+        return $users;
     }
 
 }

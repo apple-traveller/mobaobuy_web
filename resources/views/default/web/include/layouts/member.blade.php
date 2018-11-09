@@ -49,9 +49,11 @@
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-svgorder"></i>订单管理</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
+                        @if(getRealNameBool(session('_web_user_id')))
+                            <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
+                        @endif
                         <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">我的订单</a></li>
-                        <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+                        <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">我的开票</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
@@ -67,7 +69,8 @@
                         <li @if(request()->path() == 'account/editPayPassword') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>
                         <li @if(request()->path() == 'collectGoodsList') class="curr" @endif><a href="/collectGoodsList">我的收藏</a></li>
                         <li @if(request()->path() == 'addressList') class="curr" @endif><a href="/addressList">收货地址</a></li>
-                        {{--<li @if(request()->path() == 'invoices') class="curr" @endif><a href="/invoices">发票维护</a></li>--}}
+                        <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+                        <li @if(request()->path() == '') class="curr" @endif><a href="">我要卖货</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>

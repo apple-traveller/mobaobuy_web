@@ -34,7 +34,7 @@
             table.render({
                 elem: '#test_goods'
                 ,cols: [[
-                    {field:'id',  title: 'ID', sort: true}
+                     {field:'id',  title: 'ID', sort: true}
                     ,{field:'goods_name',  title: '商品名称'}
                     ,{field:'sec_num',  title: '秒杀数量'}
                     ,{field:'sec_price',  title: '秒杀价格'}

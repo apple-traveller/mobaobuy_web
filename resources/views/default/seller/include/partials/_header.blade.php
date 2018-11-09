@@ -1,13 +1,12 @@
-<ul class="layui-nav layui-layout-left">
+<ul class="layui-nav layui-layout-left" lay-filter="layui-header">
     <li class="layui-nav-item"><a href="">控制台</a></li>
-    <li class="layui-nav-item">
-        <a href="javascript:;">下拉菜单</a>
-        <dl class="layui-nav-child">
-            <dd><a href="">邮件管理</a></dd>
-            <dd><a href="">消息管理</a></dd>
-            <dd><a href="">授权管理</a></dd>
-        </dl>
-    </li>
+    {{--<li class="layui-nav-item">--}}
+        {{--<a href="javascript:;" data-url="/seller/shopUser" s_id="S040">店铺</a>--}}
+        {{--<dl class="layui-nav-child">--}}
+            {{--<dd><a href="/seller/shopUser" data-url="/seller/shopUser" s_id="S040">店铺资料</a></dd>--}}
+            {{--<dd><a href="javascript:void(0);" data-url="/seller/shopUser" s_id="S041">职员列表</a></dd>--}}
+        {{--</dl>--}}
+    {{--</li>--}}
 </ul>
 <ul class="layui-nav layui-layout-right">
     <li class="layui-nav-item">

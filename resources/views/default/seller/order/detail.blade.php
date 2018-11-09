@@ -70,7 +70,7 @@
                                 </dl>
                                 <dl>
                                     <dt>购货人： <div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
-                                    <dd>{{$user['nick_name']}}</dd>
+                                    {{--<dd>{{$user['nick_name']}}</dd>--}}
                                     <dt>订单状态：</dt>
                                     <dd>
                                         <!--审核状态-->
@@ -144,7 +144,7 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>
+                                    {{--<dd>@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>--}}
                                     <dt>税号:：</dt>
                                     <dd>@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
                                 </dl>
@@ -387,13 +387,14 @@
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
+                                layer.msg(res.msg, {icon: 1,time:2000});
                             } else {
                                 layer.msg(res.msg, {icon: 5,time:2000});
                             }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
-                    window.location.href="/seller/order/list?id="+id;
+
                     layer.close(index);
                 });
             });

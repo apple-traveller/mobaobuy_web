@@ -6,8 +6,8 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
-                    <li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>
+                    <li>该页面展示了所有店铺报价。</li>
+                    <li>可根据店铺名称进行搜索。</li>
                 </ul>
             </div>
             <div class="flexilist">

@@ -130,7 +130,7 @@ class GoodsController extends Controller
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
-        //dd($goodList);
+
         return $this->display("web.goods.goodsDetail", [
             'good_info' => $good_info,
             'goodsList' => $goodList['list'],
@@ -226,9 +226,15 @@ class GoodsController extends Controller
     //购物车 去结算
     public function toBalance(Request $request){
         $cartIds = $request->input('cartId');
-        $userId = session('_web_user_id');
+        $userInfo = session('_web_user');
         try{
-            $cartSession = GoodsService::toBalance($cartIds,$userId);
+            $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
+            //进入订单确认页面前先定义购物车session
+            $cartSession = [
+                'goods_list'=>$goods_list,
+                'address_id'=> $userInfo['address_id'],
+                'from'=>'cart'
+            ];
             session()->put('cartSession',$cartSession);
             return $this->success();
         }catch (\Exception $e){
@@ -237,135 +243,30 @@ class GoodsController extends Controller
     }
 
 
-    /**
-     * 订单维护页面
-     * @return GoodsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function confirmOrder(){
-        $info = session('_curr_deputy_user');
-        $userInfo = session('_web_user');
-        try{
-
-            // 判断开票信息 地址可用
-            $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
-            if (empty($invoiceInfo)){
-                return $this->error('您还没有实名认证，不能下单');
-            }
-            if ($invoiceInfo['review_status'] != 1 ){
-                return $this->error('您的实名认证还未通过，不能下单');
-            }
-
-            // 收货地址列表
-            $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-            if (!empty($addressList)){
-                foreach ($addressList as $k=>$v){
-                    $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
-                    if ($v['id'] == $userInfo['address_id']){
-                        $addressList[$k]['is_default'] =1;
-                        $first_one[$k] = $addressList[$k];
-                    } else {
-                        $addressList[$k]['is_default'] ='';
-                    };
-                }
-                if(!empty($first_one)){
-                    foreach ($first_one as $k1=>$v1){
-                        unset($addressList[$k1]);
-                        array_unshift($addressList,$first_one[$k1]);
-                    }
-                }
-            }
-            $goodsList = session('cartSession');
-            foreach ($goodsList as $k3=>$v3){
-                $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
-            }
-            return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList'));
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
-
-    //确认提交订单
-    public function createOrder(Request $request){
-
-        $info = session('_curr_deputy_user');
-        $userIds = [];
-        // 判断是否为企业用户
-        if($info['is_firm']){
-            $userInfo = session('_web_user');;
-            $userIds['user_id'] = session('_web_user_id');
-            $userIds['firm_id'] = $info['firm_id'];
-        }else{
-            $userInfo = session('_web_user');
-            $userIds['user_id'] = session('_web_user_id');
-            $userIds['firm_id'] = '';
-        }
-        $words = $request->input('words',' ');
-
-        // 判断是否有开票信息 地址可用
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
-        if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
-        }
-        if ($invoiceInfo['review_status'] != 1 ){
-            return $this->error('您的实名认证还未通过，不能下单');
-        }
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-        if (empty($addressList)){
-            return $this->error('无地址信息请前去维护');
-        }
-
-        $carList = session('cartSession');
-        $shop_data = [];
-
-        foreach ($carList as $k=>$v){
-            if (!isset($shop_data[$v['shop_id']])){
-                $shop_data[$v['shop_id']] = $v['shop_id'];
-            }
-        }
-        foreach ($shop_data as $k2=>$v2){
-            $shop_data[$v2] = [];
-            foreach ($carList as $k3=>$v3){
-                if ($k2 == $v3['shop_id']){
-                    $shop_data[$v2][]=$v3;
-                }
-            }
-        }
-        // 没有默认地址的情况下
-        if (empty($userInfo['address_id'])){
-            $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
-        }
-        try{
-            $re=[];
-            foreach ($shop_data as $k4=>$v4){
-                $re[] =  GoodsService::createOrder($v4,$userIds,$userInfo['address_id'],$words);
-            }
-           if (!empty($re)){
-               Session::forget('cartSession');
-               return $this->success('订单提交成功','',$re);
-           } else {
-                return $this->error('订单提交失败');
-           }
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
 
     /**
-     *
+     * 选择订单收货地址
+     * editOrderAddress
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function orderSubmission(Request $request)
+    public function editOrderAddress(Request $request)
     {
-        $re = $request->input('re','');
-        if (!empty($re)){
-            $re = json_decode($re);
-        } else {
-            return $this->error('参数错误');
+        $address_id = $request->input('address_id','');
+        if(!$address_id){
+            return $this->error('缺少参数地址ID！');
         }
-        return $this->display('web.goods.orderSubmission',['re'=>$re]);
+        $address_info = UserAddressService::getAddressInfo($address_id);
+        if(!$address_info){
+            return $this->error('地址信息不存在！');
+        }
+        $cartSession = session('cartSession');
+        $cartSession['address_id'] = $address_id;
+
+        session()->put('cartSession',$cartSession);
+        return $this->success('选择成功');
     }
+
 
 
     //购物车多选
@@ -375,6 +276,20 @@ class GoodsController extends Controller
         try{
             GoodsService::checkListen($cartIds);
             return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //购物车input判断
+    public function checkListenCartInput(Request $request){
+        $id = $request->input('id');
+        $goodsNumber = $request->input('goodsNumber');
+
+
+        try{
+            $goods_number = GoodsService::checkListenCartInput($id,$goodsNumber);
+            return $this->success('','',$goods_number);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -421,21 +336,19 @@ class GoodsController extends Controller
 
         if($request->isMethod('get')){
             $page = $request->input('page', 0);
-            $page_size = $request->input('length', 1);
+            $page_size = $request->input('length', 6);
 
             $goods_name= $request->input('goods_name', '');
-//            dump($goods_name);
+
             $condition = [];
             if(!empty($goods_name)){
                 $condition['goods_name'] = '%' . $goods_name . '%';
             }
-
-
-            $url = '/goodsAttribute?page=%d';
+            $url = '/goodsAttribute?page=%d&goods_name='.$goods_name;
             try{
                 $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
                 if(!empty($goodsInfo['list'])){
-                    $linker = createPage($url, $page,$goodsInfo['total']);
+                    $linker = createPage($url, $page,$goodsInfo['totalPage']);
                 }else{
                     $linker = createPage($url, 1, 1);
                 }
@@ -453,12 +366,12 @@ class GoodsController extends Controller
     //物性表详情
     public function goodsAttributeDetails(Request $request,$id){
        $page = $request->input('page',0);
-       $page_size = $request->input('length',1);
+       $page_size = $request->input('length',6);
         $url = '/goodsAttributeDetails/'.$id .'?page=%d';
        try{
            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
            if(!empty($shopGoodsInfo['list'])){
-               $linker = createPage($url, $page,$shopGoodsInfo['total']);
+               $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
            }else{
                $linker = createPage($url, 1, 1);
            }

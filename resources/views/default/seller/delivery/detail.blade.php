@@ -4,7 +4,7 @@
         <div class="title"><a href="/seller/delivery/list?currentPage={{$currentPage}}" class="s-back">返回</a>订单 - 发货单详情</div>
         <div class="content">
             <div class="flexilist order_info">
-                <form method="post" action="order.php?act=operate" name="listForm" onsubmit="return check()">
+                <form name="listForm" onsubmit="return check()">
                     <div class="common-content">
                         <!--订单基本信息-->
                         <div class="step">

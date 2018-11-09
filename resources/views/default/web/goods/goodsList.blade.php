@@ -119,7 +119,7 @@
 		</div>
 		<ul class="Self-product-list">
 
-			<li class="table_title"><span class="num_bg1">店铺</span><span  style="width:8%;">品牌</span><span style="width:8%;">种类</span><span>商品名称</span><span style="width:8%;">数量（公斤）</span><span>单价（元/公斤）</span><span>发货地址</span><span style="width:15%;">联系人</span><span>操作</span></li>
+			<li class="table_title"><span class="num_bg1">店铺</span><span  style="width:8%;">品牌</span><span style="width:8%;">种类</span><span>商品名称</span><span style="width:8%;">数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span style="width:15%;">联系人</span><span>操作</span></li>
 			@foreach($goodsList as $vo)
 				<li><span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['shop_name']}}</span><span style="width:8%;">{{$vo['brand_name']}}</span><span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span><span ><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span><span style="width:8%;">{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span style="width:15%;">{{$vo['salesman']}}/{{$vo['contact_info']}}</span><span><button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button></span></li>
 			@endforeach

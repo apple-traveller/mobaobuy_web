@@ -2,7 +2,7 @@
 @section('iframe')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'css/checkbox.min.css')}}" />
 <div class="warpper">
-    <div class="title"><a href="/admin/user/list?review_status={{$review_status}}&currpage={{$pcurrpage}}" class="s-back">返回</a>会员 - 积分日志列表</div>
+    <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$pcurrpage}}" class="s-back">返回</a>会员 - 积分日志列表</div>
     <div class="content">
 
         <div class="flexilist">
@@ -94,7 +94,7 @@
                     , jump: function (obj, first) {
                         if (!first) {
                             var user_name = $(".user_name").val();
-                            window.location.href="/admin/user/points?currpage="+obj.curr+"&review_status={{$review_status}}"+"&id={{$id}}"+"&pcurrpage={{$pcurrpage}}";
+                            window.location.href="/admin/user/points?currpage="+obj.curr+"&is_firm={{$is_firm}}"+"&id={{$id}}"+"&pcurrpage={{$pcurrpage}}";
                         }
                     }
                 });

@@ -1,8 +1,18 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/admin/user/list?review_status={{$review_status}}&currpage={{$pcurrpage}}" class="s-back">返回</a>企业 - 库存列表</div>
+        <div class="title"><a href="/admin/user/list?is_firm={{$is_firm}}&currpage={{$pcurrpage}}" class="s-back">返回</a>企业 - 库存列表</div>
         <div class="content">
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i>
+                    <h4>操作提示</h4>
+                    <span id="explanationZoom" title="收起提示"></span>
+                </div>
+                <ul>
+                    <li>该页面展示了企业会员的各商品的库存信息。</li>
+                </ul>
+            </div>
 
             <div class="flexilist">
                 <!--商品分类列表-->
@@ -78,7 +88,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/firmStock?currpage="+obj.curr+"&firm_id={{$firm_id}}"+"&review_status={{$review_status}}"+"&pcurrpage={{$pcurrpage}}";
+                            window.location.href="/admin/user/firmStock?currpage="+obj.curr+"&firm_id={{$firm_id}}"+"&pcurrpage={{$pcurrpage}}"+"&firm_id={{$firm_id}}";
                         }
                     }
                 });

@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title"><a href="/admin/orderinfo/list?currpage={{$currpage}}" class="s-back">返回</a>订单 - 订单信息</div>
+        <div class="title"><a href="/admin/orderinfo/list?currpage={{$currpage}}&order_status={{$order_status}}" class="s-back">返回</a>订单 - 订单信息</div>
         <div class="content">
             <div class="flexilist order_info">
                 <div class="stepflex">
@@ -122,7 +122,7 @@
 
                         <!--收货人信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>收货人信息<a href="/admin/orderinfo/modifyConsignee?id={{$orderInfo['id']}}&currpage={{$currpage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>收货人信息<a href="/admin/orderinfo/modifyConsignee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>收货人：</dt>
@@ -141,48 +141,49 @@
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>其他信息<a href="/admin/orderinfo/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currpage={{$currpage}}&id={{$orderInfo['id']}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title">
+                                <i class="ui-step"></i><h3>其他信息
+                                   {{-- <a href="/admin/orderinfo/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currpage={{$currpage}}&id={{$orderInfo['id']}}">
+                                        <i class="icon icon-edit"></i>
+                                    </a>--}}
+                                </h3>
+                            </div>
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    <dd>@if(!empty($user_invoices['company_name'])) {{$user_invoices['company_name']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_real['company_name'])) {{$user_real['company_name']}} @else 无 @endif</dd>
                                     <dt>税号:：</dt>
-                                    <dd>@if(!empty($user_invoices['tax_id'])) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_real['tax_id'])) {{$user_real['tax_id']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
                                     <dt>开票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['company_address'])) {{$user_invoices['company_address']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_real['company_address'])) {{$user_real['company_address']}} @else 无 @endif</dd>
                                     <dt>开票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['company_telephone'])) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
+                                    <dd>@if(!empty($user_real['company_telephone'])) {{$user_real['company_telephone']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
-                                    <dt>收票地址:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_address'])) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
-                                    <dt>收票电话：</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_mobile_phone'])) {{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
+                                    <dt>开户银行:</dt>
+                                    <dd>@if(!empty($user_real['bank_of_deposit'])) {{$user_real['bank_of_deposit']}} @else 无 @endif</dd>
+                                    <dt>银行账号：</dt>
+                                    <dd>@if(!empty($user_real['bank_account'])) {{$user_real['bank_account']}} @else 无 @endif</dd>
                                 </dl>
 
                                 <dl>
-                                    <dt>收票人:</dt>
-                                    <dd>@if(!empty($user_invoices['consignee_name'])) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
-                                    <dt></dt>
-                                    <dd></dd>
-                                </dl>
-
-                                <dl style="width:30.6%">
                                     <dt>卖家留言：</dt>
                                     <dd>@if(empty($orderInfo['to_buyer'])) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
                                     <dt>买家留言：</dt>
                                     <dd>@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</dd>
                                 </dl>
+
+
                             </div>
                         </div>
 
                         <!--商品信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>商品信息<a href="/admin/orderinfo/modifyOrderGoods?id={{$orderInfo['id']}}&currpage={{$currpage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>商品信息<a href="/admin/orderinfo/modifyOrderGoods?id={{$orderInfo['id']}}&currpage={{$currpage}}&shop_name={{$orderInfo['shop_name']}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="step_info">
                                 <div class="order_goods_fr">
                                     <table class="table" border="0" cellpadding="0" cellspacing="0">
@@ -228,7 +229,7 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>商品总金额：</dt>
@@ -269,7 +270,7 @@
                                     <div class="item">
                                         <div class="label">操作备注：</div>
                                         <div class="value">
-                                            <div class="bf100 fl"><textarea placeholder="请详细填写操作日志" name="action_note" class="textarea action_note"></textarea></div>
+                                            <div class="bf100 fl"><textarea placeholder="请详细填写操作日志" id="action_note" name="action_note" class="textarea action_note"></textarea></div>
                                         </div>
                                     </div>
                                     <div class="item">
@@ -279,9 +280,10 @@
                                             <input @if($orderInfo['order_status']==1) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="1" value="待企业审核" >
                                             <input @if($orderInfo['order_status']==2) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="2" value="待商家确认" >
                                             <input @if($orderInfo['order_status']==3) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="3" value="已确认" >
+                                            <input @if($orderInfo['order_status']==4) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="4" value="已完成" >
+                                            <input @if($orderInfo['order_status']==5) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="5" value="待开票" >
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                         </div>
-
                                     </div>
 
                                     <div class="item">
@@ -376,6 +378,14 @@
             });
             //修改订单状态
             $(".order_status").click(function(){
+                var content = $("#action_note").val();
+                if(content==""){
+                    layer.msg("备注不能为空", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 var order_status = $(this).attr("data-id");
                 var action_note = $(".action_note").val();
                 $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
@@ -396,6 +406,14 @@
 
             //修改支付状态
             $(".pay_status").click(function(){
+                var content = $("#action_note").val();
+                if(content==""){
+                    layer.msg("备注不能为空", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 var pay_status = $(this).attr("data-id");
                 var action_note = $(".action_note").val();
                 $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'pay_status':pay_status},function(res){
@@ -424,6 +442,12 @@
                    $(this).children("a").attr('href',"#");
                 }
             })
+
+            //查看开票详情信息，跳转
+            /*$(".viewInvoiceInfo").click(function(){
+                var url = $(this).attr("data-url");
+                window.location.href=url;
+            });*/
         });
     </script>
 @stop

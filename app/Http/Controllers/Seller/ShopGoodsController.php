@@ -163,9 +163,9 @@ class ShopGoodsController extends Controller
     public function getGoods(Request $request)
     {
         $cat_id = $request->input('cat_id');
-        $goods = GoodsService::getGoods(['cat_id'=>$cat_id],['id','goods_name']);
+        $goods = GoodsService::getGoods(['cat_id'=>$cat_id],['id','goods_name','packing_spec']);
         if($cat_id==0){
-            $goods = GoodsService::getGoods([],['id','goods_name']);
+            $goods = GoodsService::getGoods([],['id','goods_name','packing_spec']);
         }
         if(!empty($goods)){
             return $this->result($goods,200,'获取商品成功');
@@ -199,5 +199,37 @@ class ShopGoodsController extends Controller
             'data'=>$goods['list']
         ];
         return response()->json($result);
+    }
+    //ajax获取商品分类
+    public function getGoodsCat(Request $request)
+    {
+        $cat_name = $request->input('cat_name');
+        $condition = [];
+        if($cat_name!=""){
+            $condition['cat_name'] = "%".$cat_name."%";
+        }
+        $cates = GoodsCategoryService::getCatesByCondition($condition);
+        return $this->result($cates,200,'获取数据成功');
+    }
+
+    //ajax获取商品值
+    public function getGood(Request $request)
+    {
+        $cat_id = $request->input('cat_id');
+        $goods_name = $request->input('goods_name');
+        $condition = [];
+        if($cat_id!="" || $cat_id!=0){
+            $condition['cat_id'] = $cat_id;
+        }
+        if($goods_name!=""){
+            $condition['goods_name'] = "%".$goods_name."%";
+        }
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','packing_unit']);
+        if(!empty($goods)){
+            return $this->result($goods,200,'获取数据成功');
+        }else{
+            return $this->result([],400,'没有查询到数据');
+        }
+
     }
 }

@@ -65,7 +65,7 @@ class SeckillController extends Controller
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
         }
-        $goods = GoodsService::getGoods($condition,['id','goods_name','market_price']);
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec']);
         return $this->result($goods,200,'获取数据成功');
 
     }

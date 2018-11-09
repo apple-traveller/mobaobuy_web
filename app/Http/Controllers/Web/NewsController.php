@@ -18,7 +18,7 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $page = $request->input('page',1);
-        $page_size = $request->input('length', 6);
+        $page_size = $request->input('length', 2);
         if ($request->isMethod('get')){
             $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');
@@ -94,7 +94,7 @@ class NewsController extends Controller
     public function side_bar()
     {
         // 分类列
-        $cat = ArticleCatService::getList(2);
+        $cat = ArticleCatService::getList(3);
         // 热门
         $hot_news = ArticleService::getTopClick(1,6);
         $data =[

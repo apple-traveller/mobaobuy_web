@@ -4,7 +4,12 @@
     <div class="warpper">
         <div class="title"><a href="/admin/shop/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 编辑入驻店铺</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/shop/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -15,7 +20,7 @@
                                 <div class="label_value">
                                     <input type="text" name="nick_name" class="text" value="{{$nick_name}}" maxlength="40" autocomplete="off" id="nick_name">
                                     <input type="hidden" name="user_id" class="text" value="{{$shop['user_id']}}" maxlength="40" autocomplete="off" id="user_id">
-                                    <ul class="query" style="position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query" style="overflow:auto;display:none;height:200px;position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                     </ul>
                                     <div class="form_prompt"></div>
@@ -61,7 +66,7 @@
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="{{$shop['attorney_letter_fileImg']}}" class="text"  name="attorney_letter_fileImg" style="display:none;">
-                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
+                                    <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -71,7 +76,7 @@
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
                                     <input type="text" value="{{$shop['license_fileImg']}}" class="text"  name="license_fileImg" style="display:none;">
-                                    <img @if(!empty($shop['license_fileImg'])) style="width:30px;height:30px;float:left;margin-right:10px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
+                                    <img @if(!empty($shop['license_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
 
                                     <div class="form_prompt"></div>
                                 </div>
@@ -90,6 +95,23 @@
                                 <div class="label"><span class="require-field">*</span>纳税人识别号：</div>
                                 <div class="label_value">
                                     <input type="text" name="taxpayer_id" class="text" value="{{$shop['taxpayer_id']}}" maxlength="40" autocomplete="off" id="taxpayer_id">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算银行开户名：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_name" class="text" value="{{$shop['settlement_bank_account_name']}}" maxlength="40" autocomplete="off" id="settlement_bank_account_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>结算公司银行账号：</div>
+                                <div class="label_value">
+                                    <input type="text" name="settlement_bank_account_number" class="text" value="{{$shop['settlement_bank_account_number']}}" maxlength="40" autocomplete="off" id="settlement_bank_account_number">
                                     <div class="form_prompt"></div>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -144,7 +166,11 @@
     </div>
 
     <script type="text/javascript">
-        var tag_token = $("#_token").val();
+        $(function(){
+            document.onclick=function(event){
+                $(".query").hide();
+            }
+        });
 
         layui.use(['upload','layer'], function(){
             var upload = layui.upload;
@@ -172,8 +198,9 @@
         });
 
         $("#nick_name").focus(function(){
-            $.post('/admin/shop/getUsers',{'_token':tag_token},function(res){
+            $.post('/admin/shop/getUsers',{},function(res){
                 if(res.code==200){
+                    $(".query").show();
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
                         $(".query").append('<li class="searchAttr" data-id="'+data[i].id+'" style="cursor: pointer;padding-left: 10px;box-sizing: border-box;">'+data[i].nick_name+'</li>');
@@ -186,7 +213,7 @@
         $("#nick_name").bind("input propertychange",function(res){
             var nick_name = $(this).val();
             $(".query").children().filter("li").remove();
-            $.post('/admin/shop/getUsers',{'nick_name':nick_name,'_token':tag_token},function(res){
+            $.post('/admin/shop/getUsers',{'nick_name':nick_name},function(res){
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
@@ -246,6 +273,13 @@
                     taxpayer_id:{
                         required : true,
                         number:true,
+                    },
+                    settlement_bank_account_name:{
+                        required : true,
+                    },
+                    settlement_bank_account_number:{
+                        required : true,
+                        number:true,
                     }
                 },
                 messages:{
@@ -275,7 +309,14 @@
                     taxpayer_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
-                    }
+                    },
+                    settlement_bank_account_name :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                    },
+                    settlement_bank_account_number :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    },
                 }
             });
         });

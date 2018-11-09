@@ -151,9 +151,10 @@
             return false;
         } else {
             $.ajax({
-                'type':'get',
-                'data':{'company_name':company_name},
-                'url':"{{url('/seller/checkCompany')}}",
+                type:'get',
+                data:{'company_name':company_name},
+                url:"{{url('/seller/checkCompany')}}",
+                async:false,
                 success(res){
                     if (res.code == 200){
                         $('#company_error').html("");
@@ -425,4 +426,13 @@
             }, "POST", "JSON");
         }
     }
+    // 上传图片预览
+    $(document).tooltip({
+        items: ".img-tooltip",
+        content: function() {
+            var element = $( this );
+            var url = element.data('img');
+            return "<img class='map' src='"+url+"'>";
+        }
+    });
 </script>

@@ -137,6 +137,9 @@ class GoodsService
         if(empty($shopGoodsQuoteInfo)){
             self::throwBizError('报价信息不存在！');
         }
+        if($shopGoodsQuoteInfo['goods_number'] <= 0){
+            self::throwBizError('商品数量为零,无法加入购物车');
+        }
         $goodsInfo = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         if(empty($goodsInfo)){
             self::throwBizError('产品信息不存在！');
@@ -185,7 +188,7 @@ class GoodsService
         try{
             self::beginTransaction();
             foreach($cartInfo as $v){
-                CartRepo::modify($v['id'],['is_invalid'=>1]);
+                CartRepo::delete($v['id']);
             }
             self::commit();
         }catch (\Exception $e){
@@ -199,87 +202,22 @@ class GoodsService
     public static function toBalance($cartIds,$userId){
         $cartSession = [];
         foreach($cartIds as $v){
-//                $id = decrypt($v);
             $cartInfo = CartRepo::getInfo($v);
             if(empty($cartInfo)){
                 self::throwBizError('购物车商品不存在！');
+            }
+            $shopGoodsInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+            if($cartInfo['goods_number'] > $shopGoodsInfo['goods_number']){
+                self::throwBizError('购买数量不能大于库存数量！');
             }
             $cartSession[] = $cartInfo;
         }
         return $cartSession;
     }
 
-    //提交订单
 
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words){
-        $addTime =  Carbon::now();
-        //生成的随机数
-        $order_no = date('Ymd') . str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-        $userAddressMes = UserAddressRepo::getInfo($userAddressId);
-        try{
-            self::beginTransaction();
-            //订单表
-            $orderInfo = [
-                'order_sn'=>$order_no,
-                'user_id'=>$userId['user_id'],
-                'firm_id'=>$userId['firm_id'],
-                'order_status'=>1,
-                'add_time'=>$addTime,
-                'address'=>$userAddressMes['address'],
-                'shop_id'=>$cartInfo_session[0]['shop_id'],
-                'zipcode'=>$userAddressMes['zipcode'],
-                'mobile_phone'=>$userAddressMes['mobile_phone'],
-                'province'=>$userAddressMes['province'],
-                'city'=>$userAddressMes['city'],
-                'district'=>$userAddressMes['district'],
-                'consignee'=>$userAddressMes['consignee'],
-                'postscript'=>$words?$words:''
-            ];
-            $orderInfoResult = OrderInfoRepo::create($orderInfo);
-//            'shop_name'=>$cartInfo['shop_name'],
 
-            //订单总金额
-            $goods_amount = 0;
-            foreach($cartInfo_session as $v){
-                $id = $v['id'];
-                $cartInfo = CartRepo::getInfo($id);
-                if(empty($cartInfo)){
-                    self::throwBizError('购物车商品不存在！');
-                }
 
-                $orderGoods = [
-                    'order_id'=>$orderInfoResult['id'],
-                    'shop_goods_id'=>$cartInfo['shop_goods_id'],
-                    'shop_goods_quote_id'=>$cartInfo['shop_goods_quote_id'],
-                    'goods_id'=>$cartInfo['goods_id'],
-                    'goods_name'=>$cartInfo['goods_name'],
-                    'goods_sn'=>$cartInfo['goods_sn'],
-                    'goods_number'=>$cartInfo['goods_number'],
-                    'goods_price'=>$cartInfo['goods_price'],
-                    'add_time' => Carbon::now()
-                ];
-                OrderGoodsRepo::create($orderGoods);
-                $goods_amount += $cartInfo['goods_number'] * $cartInfo['goods_price'];
-
-                //删除购物车的此纪录
-                CartRepo::delete($id);
-            }
-            //更新订单总金额
-            OrderInfoRepo::modify(
-                $orderInfoResult['id'],
-                ['goods_amount'=>$goods_amount,
-                    'order_amount'=>$goods_amount,
-                    'shop_name'=>$cartInfo['shop_name']
-                ]
-            );
-
-            self::commit();
-            return $order_no;
-        }catch (\Exception $e){
-            self::rollBack();
-            throw $e;
-        }
-    }
 
     //删除购物车某条商品
     public static function delCart($id){
@@ -360,6 +298,49 @@ class GoodsService
         $shopGoodsInfo['goodsInfo'] = $goodsInfo;
         return $shopGoodsInfo;
     }
+
+
+
+    //购物车数量判断
+    public static function checkListenCartInput($id,$goodsNumber){
+        $cartInfo = CartRepo::getInfo($id);
+        if(empty($cartInfo)){
+            self::throwBizError('购物车数据有误');
+        }
+        $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+        if(empty($shopGoodsQuoteInfo)){
+            self::throwBizError('报价数据有误');
+        }
+        $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('商品数据有误');
+        }
+        if(!is_numeric($goodsNumber)){
+            self::throwBizError('数量只能输入正整数');
+        }
+
+        if($goodsNumber > $shopGoodsQuoteInfo['goods_number']){
+            self::throwBizError('数量超过库存数');
+        }
+        if($goodsNumber < $goodsInfo['packing_spec']){
+            self::throwBizError('数量不能小于商品规格');
+        }
+
+        //规格判断处理
+        if($goodsNumber % $goodsInfo['packing_spec'] == 0){
+            $goods_number = $goodsNumber;
+        }else{
+            self::throwBizError('数量有误，请重新输入');
+        }
+        $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
+        if($cartResult){
+            return $goods_number;
+        }
+        self::throwBizError('修改数量失败');
+
+    }
+
+
 
 }
 

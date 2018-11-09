@@ -7,13 +7,27 @@
     <div class="warpper">
         <div class="title"><a href="/admin/goods/list?currpage={{$currpage}}" class="s-back">返回</a>商品 - 编辑商品</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>编辑商品。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/goods/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <input type="hidden" name="id" value="{{$good['id']}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品全称：</div>
+                                <div class="label_value">
+                                    <input type="text" disabled class="text" value="{{$good['goods_full_name']}}" maxlength="40" autocomplete="off" id="goods_full_name">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">品牌+品名+含量,不可编辑</div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
@@ -93,6 +107,15 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装规格：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_spec" class="text" value="{{$good['packing_spec']}}" maxlength="40" autocomplete="off" id="packing_spec">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content" class="text" value="{{$good['goods_content']}}" maxlength="40" autocomplete="off" id="goods_content">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -381,6 +404,9 @@
                     },
                     goods_attr:{
                         required:true
+                    },
+                    goods_content:{
+                        required :true,
                     }
                 },
                 messages:{
@@ -416,6 +442,9 @@
                     },
                     goods_attr :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
+                    },
+                    goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 
                 }

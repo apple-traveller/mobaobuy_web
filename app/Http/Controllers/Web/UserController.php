@@ -30,7 +30,12 @@ class UserController extends Controller
     protected $redirectTo = '/';
 
     public function  index(){
-        return $this->display('web.user.index');
+        $userId = session('_web_user_id');
+        if(!session('_curr_deputy_user')['is_self']){
+            $userId = session('_curr_deputy_user')['firm_id'];
+        }
+        $memberInfo = UserService::userMember($userId);
+        return $this->display('web.user.index',compact('memberInfo'));
     }
 
     //检查账号用户是否存在
@@ -39,6 +44,27 @@ class UserController extends Controller
         $rs = UserService::checkNameExists($accountName);
 
         return $this->success($rs);
+    }
+    //检查账号用户是否已实名 根据手机号码
+    public function checkRealNameBool(Request $request)
+    {
+        $mobile = $request->input('mobile');
+        if(!$mobile){
+            return $this->error('参数错误！');
+        }
+        $userInfo = UserRepo::getInfoByFields(['user_name'=>$mobile]);
+        if(empty($userInfo)){
+            return $this->error('该用户不存在！');
+        }
+        if($userInfo['is_firm'] == 1){
+            return $this->error('企业账号不能被添加！');
+        }
+        $res = getRealNameBool($userInfo['id']);
+        if($res){
+            return $this->success('验证成功！');
+        }else{
+            return $this->error('该用户未实名认证！');
+        }
     }
 
     //检查公司是否允许注册
@@ -201,9 +227,14 @@ class UserController extends Controller
     //获取用户购物车产品数
     public function getCartNum()
     {
+
         if(session()->has('_web_user_id')){
             //登录用户
-            $user_id = session('_web_user_id');
+            if(session('_curr_deputy_user')['is_self'] == 0){
+                $user_id = session('_curr_deputy_user')['firm_id'];
+            }else{
+                $user_id = session('_web_user_id');
+            }
             $num = CartService::getUserCartNum($user_id);
         }else{
             $num = 0;
@@ -249,9 +280,15 @@ class UserController extends Controller
             $address = $request->input('address','');
             $zipcode = $request->input('zipcode','');
             $consignee=$request->input('consignee','');
-            $mobile_phone=$request->input('mobile_phone','');
+            $mobile_phone=$request->input('mobile','');
             if (empty($str_address)){
                 return $this->error('请选择地址');
+            }
+            if (empty($address)){
+                return $this->error('请输入详细地址');
+            }
+            if (empty($zipcode)){
+                return $this->error('请输入邮政编码');
             }
             if (empty($consignee)){
                 return $this->error('请填写收货人');
@@ -651,8 +688,14 @@ class UserController extends Controller
     public function userInfo(Request $request)
     {
         $userInfo = session()->get("_web_user");
+        try{
+            $userRealName = UserService::getUserRealbyId($userInfo['id']);
+            $userInfo['real_name'] = $userRealName;
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
         return $this->display("web.user.account.accountInfo",[
-            'userInfo'=>$userInfo,
+            'userInfo'=>$userInfo
         ]);
     }
 
@@ -660,19 +703,31 @@ class UserController extends Controller
     public function saveUser(Request $request)
     {
         $params = $request->all();
+//        dd($params);
         try{
             $data = [];
             $data['email'] = $params['email'];
+            $data['nick_name'] = $params['nick_name'];
             $data['id'] = session('_web_user_id');
+            $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
+            if(!preg_match($pattern,$data['email'])){
+                return $this->error('邮箱格式有误!');
+            }
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
             }else{
                 //个人，可以修改昵称
-                $data['nick_name'] = $params['nick_name'];
+                if(isset($data['real_name'])){
+                    $data['real_name'] = $params['real_name'];
+                }
+
             }
             $flag = UserService::modify($data);
+
             if($flag){
+                $firms = session('_web_user')['firms'];
+                $flag['firms'] = $firms;
                 session()->put('_web_user', $flag);
                 return $this->success('保存成功', '', $flag);
             }
@@ -733,19 +788,22 @@ class UserController extends Controller
         $user_id = session('_web_user_id');
         $data = $request->all();
 
-        //is_firm 1是个人提交  2是企业
+        //is_self 1是个人提交  2是企业
         $is_self = $request->input('is_self');
         $errorMsg = [];
         $dataArr = $data['jsonData'];
        if($is_self == 1){
            if(empty($dataArr['real_name'])){
                $errorMsg[] = "请输入真实姓名";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['front_of_id_card'])){
                $errorMsg[] = "请上传身份证正面";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['reverse_of_id_card'])){
                $errorMsg[] = "请上传身份证反面";
+               return $this->result("",0,implode("|",$errorMsg));
            }
            if(!empty($errorMsg)){
                return $this->result("",0,implode("|",$errorMsg));
@@ -753,43 +811,53 @@ class UserController extends Controller
        }elseif($is_self == 2){
            if(empty($dataArr['real_name_firm'])){
                $errorMsg[] = "请输入企业全称";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
-           if(empty($dataArr['tax_id'])){
-               $errorMsg[] = "税号";
-           }
+//           if(empty($dataArr['tax_id'])){
+//               $errorMsg[] = "税号";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
                $errorMsg[] = "请上传授权电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
                $errorMsg[] = "请上传开票电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
                $errorMsg[] = "请输入营业执照电子版";
+               return $this->result("",0,implode("|",$errorMsg));
            }
 
-           if(empty($dataArr['company_name'])){
-               $errorMsg[] = "公司抬头";
-           }
-
-           if(empty($dataArr['bank_of_deposit'])){
-               $errorMsg[] = "开户银行";
-           }
-
-           if(empty($dataArr['bank_account'])){
-               $errorMsg[] = "银行账号";
-           }
-
-           if(empty($dataArr['company_address'])){
-               $errorMsg[] = "开票地址";
-           }
-
-           if(empty($dataArr['company_telephone'])){
-               $errorMsg[] = "开票电话";
-           }
+//           if(empty($dataArr['company_name'])){
+//               $errorMsg[] = "公司抬头";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['bank_of_deposit'])){
+//               $errorMsg[] = "开户银行";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['bank_account'])){
+//               $errorMsg[] = "银行账号";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['company_address'])){
+//               $errorMsg[] = "开票地址";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+//
+//           if(empty($dataArr['company_telephone'])){
+//               $errorMsg[] = "开票电话";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
 
            if(!empty($errorMsg)){
                return $this->result("",0,implode("|",$errorMsg));
@@ -898,7 +966,7 @@ class UserController extends Controller
             'address_id' =>$address_id
         ];
 
-        $re = UserService::modify($data);
+        $re = UserService::updateDefaultAddress($data);
         if ($re){
             session()->forget('_web_user');
             return $this->success('修改成功');

@@ -36,7 +36,7 @@ class ShopGoodsQuoteController extends Controller
         }
         $pageSize =5;
         $goods_list = ShopGoodsQuoteService::getQuoteGoods($shop_id);
-        $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['add_time'=>'desc']],$condition);
+        $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
@@ -54,13 +54,7 @@ class ShopGoodsQuoteController extends Controller
      */
     public function add(Request $request)
     {
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
-        return $this->display('seller.goodsquote.add',[
-            'goodsCatTree'=>$goodsCatTree,
-            'goods'=>$goods['list']
-        ]);
+        return $this->display('seller.goodsquote.add');
     }
 
     /**
@@ -73,14 +67,11 @@ class ShopGoodsQuoteController extends Controller
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
         return $this->display('seller.goodsquote.edit',[
             'goodsQuote'=>$goodsQuote,
             'currentPage'=>$currentPage,
-            'goodsCatTree'=>$goodsCatTree,
             'goods'=>$goods['list'],
             'good'=>$good
         ]);
@@ -103,6 +94,7 @@ class ShopGoodsQuoteController extends Controller
         $shop_price = $request->input('shop_price','');
         $salesman = $request->input('salesman','');
         $contact_info = $request->input('contact_info','');
+        $qq = $request->input('QQ','');
 
         $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
         $place_id = substr($place_id,strripos($place_id,'|')+1);
@@ -128,6 +120,9 @@ class ShopGoodsQuoteController extends Controller
         if(!$contact_info){
             return $this->error('联系方式不能为空');
         }
+        if (!$qq){
+            return $this->error('qq不能为空');
+        }
 
         $shop_name = ShopService::getShopById($shop_id)['shop_name'];
 
@@ -148,7 +143,8 @@ class ShopGoodsQuoteController extends Controller
             'goods_sn' => $goods['goods_sn'],
             'goods_name' => $goods['goods_name'],
             'salesman' => $salesman,
-            'contact_info' => $contact_info
+            'contact_info' => $contact_info,
+            'QQ' => $qq
         ];
         try{
             if($id){
@@ -189,4 +185,5 @@ class ShopGoodsQuoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
 }

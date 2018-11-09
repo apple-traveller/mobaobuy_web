@@ -117,7 +117,7 @@
                             <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                         </span>
                     </li>
-                    <li class="mt25">
+                   <!--  <li class="mt25">
                         <span class="infor_title">性别：</span>
                         <span class="ml10 fl">
                             <input type="radio" @if(!empty($user_real)&&$user_real['sex']==0) checked @endif name="sex" value="0"> 保密
@@ -130,7 +130,7 @@
                         <span class=" fl">
                             <input name="birthday" class="infor_input" type="text" @if(!empty($user_real['birthday'])) value="{{$user_real['birthday']}}" @else value="" @endif  >
                         </span>
-                    </li>
+                    </li> -->
                     <li class="mt25">
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">
@@ -190,14 +190,14 @@
                         </span>
                     </li>
 
-                    <li class="mt25">
+                  <!--   <li class="mt25">
                        <span class="infor_title">纳税人识别号：</span>
                         <span class=" fl">
                             <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['tax_id'])) value="{{$user_real['tax_id']}}" @else value="" @endif />
                         </span>
-                    </li>
+                    </li> -->
 
-                     <li class="mt25">
+                    <!--  <li class="mt25">
                        <span class="infor_title">公司抬头：</span>
                         <span class=" fl">
                             <input type="text" name="company_name" class="infor_input" @if(!empty($user_real['company_name'])) value="{{$user_real['company_name']}}" @else value="" @endif />
@@ -230,7 +230,7 @@
                         <span class=" fl">
                             <input type="text" name="company_telephone" class="infor_input" @if(!empty($user_real['company_telephone'])) value="{{$user_real['company_telephone']}}" @else value="" @endif />
                         </span>
-                    </li>
+                    </li> -->
 
                       <li class="mt25">
                          <span class="infor_title">授权委托书电子版：</span>

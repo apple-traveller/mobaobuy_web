@@ -34,8 +34,6 @@
         .sumbit_cart{width:1200px;margin:0 auto;margin-top:20px;line-height: 50px;color: #999;}
         .sumbit_cart_btn{width: 200px;float: right;line-height: 50px;background-color: #75b335;color: #fff;font-size: 16px;text-align: center;cursor:pointer;}
         .ovh{overflow: hidden;}
-        .ml30{margin-left:30px;}
-        .cp{cursor:pointer;}
         .ml40{margin-left: 60px;}
         .w130{width: 130px}
         .w200{width: 200px}
@@ -49,35 +47,12 @@
         }
 
         /*黑色*/
-        .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .pay_method{display:none;z-index: 2;width:584px;  left:50%; top:50%;margin-top:-275px;position:fixed;margin-left:-250px;}
         .whitebg{background: #FFFFFF;}
-        .pay_title{height: 50px;line-height: 50px;}
-        .f4bg{background-color: #f4f4f4;}
-        .pl30{padding-left:30px;}
-        .gray,a.gray,a.gray:hover{color:#aaa;}
-        .fs16{font-size:16px;}
         .fl{float:left;}
-        .pr20{padding-right:20px;}
-        .close{width: 20px;height: 20px;line-height:0;padding-top: 17px;
-            display: block;outline: medium none;
-            transition: All 0.6s ease-in-out;
-            -webkit-transition: All 0.6s ease-in-out;
-            -moz-transition: All 0.6s ease-in-out;
-            -o-transition: All 0.6s ease-in-out;}
         .pay_content span{display:inline-block;width: 100px;text-align: right;margin-left: 20px;color: #666;}
-        .pay_content{width: 521px;margin: 0 auto;margin-bottom: 25px;}
         .ovh{overflow: hidden;}
         .mt10{margin-top:10px;}
-        .pay_text{width: 330px;height:40px;line-height: 40px;margin-left: 20px;border: 1px solid #e6e6e6;padding: 5px;box-sizing: border-box;}
-        .red,a.red,a.red:hover{color:#f70503;}
-        .ml5{margin-left:5px;}
-        .pay_textarea{width: 331px;height: 100px;margin-left: 20px;border: 1px solid #e6e6e6;padding: 7px;box-sizing: border-box;}
-        .til_btn{width: 120px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius:3px;margin-left: 139px;cursor: pointer;}
         .mt10{margin-top:10px;}
-        .code_greenbg{background-color: #75b335;}
-        .til_btn{width: 120px;height: 40px;line-height: 40px;font-size: 16px;color: #fff;border-radius:3px;margin-left: 139px;cursor: pointer;}
-        .blackgraybg{background-color: #a0a0a0;}
         .xcConfirm .popBox .sgBtn.cancel{background-color: #546a79; color: #FFFFFF;}
 
         .pro_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
@@ -85,6 +60,15 @@
 
         .partner_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
         .partner_select li:hover{background-color: #f1f1f1;}
+
+        .order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
+        .cart_progress{width: 303px;margin:0 auto;height: 33px;}
+        .cart_progress_02{background: url(../img/cart_icon01.png)no-repeat;}
+        .progress_text{color: #999;margin-top: 5px;}
+        .progress_text_curr{color: #75b335;}
+        .my_cart{float: left;margin-left: 5px;}
+        .order_information{float: left;margin-left: 91px;}
+        .order_submit{float: left;margin-left: 70px;}
     </style>
     <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
 </head>
@@ -94,14 +78,18 @@
     <div class="w1200">
         <a class="logo" style="margin-top: 45px;" href="/"></a>
         <div class="fr fs14 order_progress" >
+            <div class="cart_progress cart_progress_02"></div>
             <div class="progress_text">
-                <div class="my_cart progress_text_curr">开票申请</div>
+                <div class="my_cart progress_text_curr">申请发票</div>
+                <div class="order_information">选择订单</div>
+                <div class="order_submit">成功提交</div>
             </div>
         </div>
     </div>
 </div>
-<div class="data-table-box">
-    <div class="table-condition" style="margin-left: 631px">
+
+<div class="data-table-box w1200">
+    <div class="table-condition" >
         <div class="item">
             <input type="text" class="text" id="shop_name" placeholder="店铺名称">
         </div>
@@ -117,7 +105,6 @@
         <button id="on-search" class="search-btn">查询</button>
     </div>
 </div>
-
 <div class="w1200 whitebg" style="margin-top: 20px;max-height:500px;overflow-y: auto">
 
     <ul class="shop_title">
@@ -141,10 +128,10 @@
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" data-id="{{ $v['shop_id'] }}" name="" type="checkbox" @if($v['order_status']==4) disabled @endif value="{{$v['id']}}"/> </label>
 					</span>
                     <a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v['order_sn']}}</a>
-                    <span class="w200 fl tac" style="line-height: 20px;margin-top: 45px;">{{$v['shop_name']}}</span>
-                    <span class="w130 orange fl tac goods_amount">{{$v['goods_amount']}}</span>
-                    <a href="/orderDetails/{{ $v['order_sn'] }}" class="w130 orange fl">订单详情</a>
-                    <span class="w130 fl tac">@if($v['order_status']==5) 待开票 @elseif($v['order_status']==4) 已完成  @endif </span>
+                    <span class="fl tac" style="line-height: 20px;margin-top: 45px;width: 170px">{{$v['shop_name']}}</span>
+                    <span class="orange fl tac goods_amount" style="width: 160px">{{$v['goods_amount']}}</span>
+                    <a href="/orderDetails/{{ $v['order_sn'] }}" class="orange fl tac " style="width: 105px">订单详情</a>
+                    <span class="w130 fl tac" style="width: 150px">@if($v['order_status']==5) 待开票 @elseif($v['order_status']==4) 已完成  @endif </span>
                     <span class="w130 orange fl tac">
                         <a href="javascript:void(0);" style="cursor: pointer" data-id="{{$v['id']}}" data-status="{{$v['order_status']}}" onclick="_apply(this)">申请开票</a>
                     </span>
@@ -224,17 +211,16 @@
         $('#checkedSel').html(check_arr.length);
         if(check_arr.length == accountTotal){
             $('#check_all').prop('checked',true);
-            check_all();
+            // check_all();
         }else{
             $('#check_all').prop('checked',false);
         }
         $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
             total_amount = total_amount + parseInt($(this).text());
-            console.log(total_amount);
         });
         $('#total_amount').html(total_amount);
 
-    })
+    });
 
     $('#on-search').click(function () {
         let shop_name = $('#shop_name').val();
@@ -290,12 +276,20 @@
                 }
             })
         }else{
-            alert('请选择商品');return;
+            layer.msg('请选择商品');return;
         }
     }
 
     // 提交申请
     function toBalance(){
+        check_arr = [];
+        total_amount = 0;
+        $('.shop_list .check_all span label input:checked').each(function(index,item){
+            check_arr.push($(this).val());
+        });
+        $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
+            total_amount = total_amount + parseInt($(this).text());
+        });
         if(check_arr.length>0){
             let form = $("<form></form>");
             form.attr('action','/invoice/confirm');

@@ -4,7 +4,12 @@
     <div class="warpper">
         <div class="title"><a href="/admin/articlecat/list" class="s-back">返回</a>文章 - 添加分类</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>带星号的为必填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-content">
                     <div class="mian-info">
@@ -25,7 +30,7 @@
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:320px;" name="parent_id" id="parent_id">
                                                 <option value="0">顶级分类</option>
                                                 @foreach($catesTree as $cates)
-                                                <option @if($cates['id']==$parent_id) selected @endif value="{{$cates['id']}}"><?php echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;',$cates['level']).$cates['cat_name'];?></option>
+                                                <option @if($cates['id']==$parent_id) selected @endif value="{{$cates['id']}}">|<?php echo str_repeat('-->',$cates['level']).$cates['cat_name'];?></option>
                                                 @endforeach
                                             </select>
 

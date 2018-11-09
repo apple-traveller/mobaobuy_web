@@ -20,7 +20,7 @@ $(function(){
         var phone = $("#demand-phone").val();
         var text = $("#demand-text").val();
         if(Utils.isEmpty(phone)){
-            $.msg.alert('联系方法不能为空！');
+            $.msg.alert('联系方式不能为空！');
             return ;
         }
         if(Utils.isEmpty(text)){

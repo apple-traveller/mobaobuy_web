@@ -134,10 +134,10 @@
 .End_time{font-size: 18px;text-align: center;margin-top: 10px;margin-bottom: 20px;}
 
 .ms_list{width: 1200px;margin: 0 auto;margin-left: -10px;margin-bottom: 20px;overflow: hidden;}
-.ms_list li{float:left;margin-left:10px;margin-top:15px;width: 290px;background-color: #fff;overflow: hidden;}
+.ms_list li{float:left;margin-left:10px;margin-top:15px;width: 290px;background-color: #fff;overflow: hidden;padding-bottom: 10px;}
 .ms_list_center{width: 250px;margin: 0 auto;margin-top: 35px;}
 .ms_list_center .mx_addr{height: 32px;line-height:30px;border: 1px solid #c9e1b1;color:#75b335;background-color:#f6fbf1;box-sizing: border-box;text-align: center;}
-.mx_progress{width: 172px;height:10px;background-color: #eeeeee;float: left;margin-top: 8px;}
+.mx_progress{width: 172px;height:10px;background-color: #eeeeee;float: left;margin-top: 8px;margin-right: 50px;}
 .mx_progress_com{width: 62px;height:10px;background-color: #75b335;}
 .addr_dw{background: url(/images/dwzb.png)no-repeat 0px 2px;padding-left: 20px;color: #666;}
 .mx_price{width: 250px; height: 65px;line-height: 65px;margin-top:15px;margin-bottom:10px;text-align: center;background-color: #f6fbf1;font-size: 16px;}
@@ -171,7 +171,7 @@
 .Physical_table tr td:nth-child(2){width: 560px;}
 
 .phy_top_curr{border: 2px solid #75b335;}
-.supply_list_phy li{margin-top:15px;height: 95px;color: #999;border:1px solid #DEDEDE;position:relative;z-index: 0; box-sizing: border-box;}
+.supply_list_phy li{margin-top:15px;height: 95px;color: #999;border:2px solid #DEDEDE;position:relative;z-index: 0; box-sizing: border-box;}
 .supply_list_phy li:hover{border:2px solid #75b335;box-sizing: border-box;}
 .supply_list_phy li:first-child{border-top:2px solid #75b335;}
 .supply_list_frist{width: 187px;height:;float: left;margin-left: 30px;margin-top:15px;margin-bottom:15px;overflow: hidden;}
@@ -198,7 +198,7 @@
 .phy_serach .hot_search_m {overflow: hidden;width: 457px; height: 30px;  float: left; line-height: 30px;}
 
 .phy_serach_list{width: 1200px;margin: 40px auto 30px;}
-.phy_serach_list li{border: 1px solid #DEDEDE;overflow: hidden;margin-top: 15px;box-sizing: border-box;}
+.phy_serach_list li{border: 2px solid #DEDEDE;overflow: hidden;margin-top: 15px;box-sizing: border-box;}
 .phy_serach_list li:hover{border: 2px solid #75b335;box-sizing: border-box;}
 .phy_serach_Name{float:left;font-size: 16px;margin-top: 30px;margin-left: 25px;margin-bottom: 30px;width: 990px;}
 .phy_serach_line{float:left;width: 1px;height: 104px;margin-top: 17px;background-color: #DEDEDE;}
@@ -465,7 +465,7 @@ input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-a
 .reward_table_title{width: 70%;padding: 0 10px;box-sizing: border-box;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 .reward_table_num{width: 30%;}
 .reward_table_list li:nth-child(odd){background-color: #f4f4f4;}
-.reward_table_list li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDEA;background-color: #eeeeee;}
+.reward_table_list li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDE;background-color: #eeeeee;}
 .reward_table_list li:last-child{font-size:14px;height:81px;line-height:81px;background-color: #f8f8f8;}
 .reward_table_list .reward_totle_num{float: right;margin-right: 100px;}
 
@@ -485,7 +485,7 @@ input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-a
 .add_stock{width: 104px; height: 35px;line-height: 35px;background-color: #fe853b;border-radius: 3px;cursor: pointer;}
 
 .product_table,.Real_time{width: 905px;margin: 0 auto;margin-top: 20px;}
-.product_table li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDEA;background-color: #eeeeee;}
+.product_table li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDE;background-color: #eeeeee;}
 .product_table li:nth-child(odd){background-color: #f4f4f4;}
 .product_table li{height: 45px;line-height: 45px;}
 .product_table li span{text-align: center;display: inline-block;float: left;}
@@ -504,7 +504,7 @@ input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-a
 .product_table .wh226{width: 226px;}
 
 /*实时库存-页面*/
-.Real_time li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDEA;background-color: #eeeeee;}
+.Real_time li:first-child{font-size:14px;height:40px;line-height:40px;border: 1px solid #DEDEDE;background-color: #eeeeee;}
 .Real_time li{height: 45px;line-height: 45px;}
 .Real_time li:nth-child(odd){background-color: #f4f4f4;}
 .Real_time li span{text-align: center;display: inline-block;float: left;width: 33.3%;}
@@ -682,7 +682,7 @@ input[type='checkbox']{width: 20px;height: 20px;background-color: #fff;-webkit-a
     .crumbs a {padding: 0 5px;}
     .crumbs span {padding-left: 5px;}
     .today_news{width: 912px;height: auto;}
-    .today_news_top{height: 50;line-height: 50px;border-bottom:2px solid #75b335;}
+    .today_news_top{height: 50px;line-height: 50px;border-bottom:2px solid #75b335;}
     .today_news_list li{border-bottom: 1px solid #DEDEDE;margin-top:10px;overflow: hidden;}
     .news_content{width: 600px;margin-top: 10px;color: #666;}
 

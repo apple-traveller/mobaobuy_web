@@ -20,8 +20,16 @@ class InvoiceController extends Controller
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $currentPage = $request->input('currentPage',1);
+        $member_phone = $request->input('member_phone','');
+        $status = $request->input('status','');
         $condition = [];
         $condition['shop_id'] = $shop_id;
+        if (!empty($member_phone)){
+            $condition['member_phone'] = $member_phone;
+        }
+        if (!empty($status)){
+            $condition['status'] = $status;
+        }
         $pageSize = 10;
         $list = InvoiceService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
         if (!empty($list['list'])){
@@ -33,25 +41,27 @@ class InvoiceController extends Controller
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
-            'currentPage' => $currentPage
+            'currentPage' => $currentPage,
+            'status' => $status,
+            'member_phone' => $member_phone
         ]);
     }
 
     /**
-     * 详情页
+     * 开票详情页
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Exception
      */
     public function detail(Request $request)
     {
         $currentPage = $request->input('currentPage','');
         $invoice_id = $request->input('invoice_id','');
-        $invoiceInfo = InvoiceService::getInfoById($invoice_id);
-        // 开票商品
-        $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
-        return $this->display('seller/invoice/detail', [
-            'invoiceInfo' => $invoiceInfo,
-            'orderInfo' =>$orderInfo,
+        $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
+
+        return $this->display('seller.invoice.detail', [
+            'invoiceInfo' => $invoiceDetail['invoiceInfo'],
+            'orderInfo' => $invoiceDetail['invoiceGoods'],
             'currentPage' => $currentPage
         ]);
     }

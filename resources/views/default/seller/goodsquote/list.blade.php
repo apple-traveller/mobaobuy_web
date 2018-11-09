@@ -9,8 +9,9 @@
                         <a href="/seller/quote/add"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
                     </div>
                     <div class="refresh">
-                        <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
-                        <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
+                        <div class="refresh_tit" title="刷新数据">
+                            <i class="icon icon-refresh" style="display: block;margin-top: 1px;"></i></div>
+                        <div class="refresh_span" >刷新 - 共{{$total}}条记录</div>
                     </div>
                     <div class="search">
                         <form action="/seller/quote/list" name="searchForm" >

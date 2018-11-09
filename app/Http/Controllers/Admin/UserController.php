@@ -20,24 +20,24 @@ class UserController extends Controller
     {
         $user_name = $request->input('user_name','');
         $currpage = $request->input("currpage",1);
-        $review_status = $request->input('review_status',""); //实名状态
+        $is_firm = $request->input('is_firm',2);
         $condition = [];
-        if($review_status!=""){
-            $user_ids = UserService::getUserIds($review_status);
+        if($is_firm!=2){
+            $user_ids = UserService::getUserIds($is_firm);
             $condition['id'] = implode('|',$user_ids);
         }
         if(!empty($user_name)){
             $condition['user_name'] = "%".$user_name."%";
         }
         $pageSize = 10;
-        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+        $users = UserService::getUserList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['reg_time'=>'desc']],$condition);
         return $this->display('admin.user.list',[
             'users'=>$users['list'],
             'user_name'=>$user_name,
             'userCount'=>$users['total'],
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
-            'review_status'=>$review_status
+            'is_firm'=>$is_firm
         ]);
     }
 
@@ -53,11 +53,26 @@ class UserController extends Controller
         }
     }
 
+    //修改真实姓名
+    public function modifyRealName(Request $request)
+    {
+        $data = [
+            'user_id'=>$request->input('id'),
+            'real_name'=>$request->input('val'),
+        ];
+        try{
+            $flag = UserRealService::modify($data);
+            return $this->result($flag['real_name'],200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //查看详情信息
     public function detail(Request $request)
     {
         $id = $request->input('id');
-        $review_status = $request->input('review_status',""); //实名状态
+        $is_firm = $request->input('is_firm',2); //实名状态
         $currpage = $request->input('currpage',1);
         $info = UserService::getUserInfo($id);//基本信息
         $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
@@ -68,7 +83,7 @@ class UserController extends Controller
               'user_address'=>$user_address,
               'region'=>$region,
               'currpage'=>$currpage,
-              'review_status'=>$review_status,
+              'is_firm'=>$is_firm,
               'user_collect_goods'=>$user_collect_goods
             ]);
     }
@@ -78,7 +93,7 @@ class UserController extends Controller
     {
         $pageSize = 10;
         $pcurrpage = $request->input("pcurrpage");//用户列表当前页
-        $review_status = $request->input('review_status',""); //实名状态
+        $is_firm = $request->input('is_firm');
         $id = $request->input('id');
         $currpage = $request->input("currpage",1);
         $condition=['user_id'=>$id];
@@ -91,7 +106,7 @@ class UserController extends Controller
             'pcurrpage'=>$pcurrpage,
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
-            'review_status'=>$review_status
+            'is_firm'=>$is_firm
         ]);
     }
 
@@ -99,7 +114,7 @@ class UserController extends Controller
     public function userRealForm(Request $request)
     {
         $userid = $request->input('id');
-        $review_status = $request->input('review_status',""); //实名状态
+        $is_firm = $request->input('is_firm',""); //实名状态
         $currpage = $request->input("currpage");
         $info = UserRealService::getInfoByUserId($userid);
         if(empty($info)){
@@ -107,8 +122,9 @@ class UserController extends Controller
         }
         return $this->display("admin.user.userreal",[
             'info'=>$info,
-            'review_status'=>$review_status,
+            'is_firm'=>$is_firm,
             'currpage'=>$currpage,
+            'userid'=>$userid,
         ]);
     }
 
@@ -116,19 +132,12 @@ class UserController extends Controller
     public function userReal(Request $request)
     {
         $data = $request->all();
-        $preview_status = $data['preview_status'];
         $data['review_time'] = Carbon::now();
-        unset($data['preview_status']);
         try{
             $user = UserRealService::modifyReviewStatus($data);
-            if($user){
-                //return $this->result($user['user_name'],1,"审核成功");
-                return $this->result(url('/admin/user/list')."?review_status=".$preview_status."&user_name=".$user['user_name'],1,"审核成功");
-            }else{
-                return  $this->error("审核失败");
-            }
+            return $this->success("审核成功","",$user);
         }catch(\Exception $e){
-            return  $this->error('',$e->getMessage());
+            return  $this->error($e->getMessage());
         }
     }
 
@@ -151,7 +160,7 @@ class UserController extends Controller
     public function points(Request $request)
     {
         $id = $request->input("id");
-        $review_status = $request->input('review_status',""); //实名状态
+        $is_firm = $request->input('is_firm',2); //实名状态
         $currpage = $request->input('currpage',1);
         $pcurrpage = $request->input('pcurrpage');//用户列表当前页
         $pageSize = 10;
@@ -163,7 +172,7 @@ class UserController extends Controller
             'pageSize'=>$pageSize,
             'totalcount'=>$info['total'],
             'currpage'=>$currpage,
-            'review_status'=>$review_status,
+            'is_firm'=>$is_firm,
             'id'=>$id
         ]);
     }
@@ -173,7 +182,7 @@ class UserController extends Controller
     {
         $firm_id = $request->input('firm_id');
         $pcurrpage = $request->input('pcurrpage');
-        $review_status = $request->input('review_status');
+        $is_firm = $request->input('is_firm',2);
         $currpage = $request->input('currpage',1);
         $pageSize = 10;
         $condition = ['firm_id'=>$firm_id];
@@ -184,7 +193,7 @@ class UserController extends Controller
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
             'pcurrpage'=>$pcurrpage,
-            'review_status'=>$review_status,
+            'is_firm'=>$is_firm,
             'firm_id'=>$firm_id
         ]);
     }
