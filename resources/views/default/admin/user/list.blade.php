@@ -25,6 +25,8 @@
                     <a href="/admin/orderinfo/list?order_status=0">个人 <em>(20)</em></a>--}}
                 </div>
                 <div style="margin-left:10px;margin-top:4px;" class="fl">
+                    <a href="/admin/user/addForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加新用户</span></div></div></a>
+                    <a href="/admin/user/addUserRealForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加实名认证</span></div></div></a>
                     <a href="javascript:download_userlist();"><div class="fbutton"><div class="csv" title="导出会员列表"><span><i class="icon icon-download-alt"></i>导出会员列表</span></div></div></a>
                 </div>
 

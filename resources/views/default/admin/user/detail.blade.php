@@ -104,6 +104,19 @@
                                 </div>
                             </div>
 
+                            @if($info['is_firm']==1)
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;订单是否需审批：</div>
+                                    <div class="label_value font14">
+                                        <div style="float: left;" data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['need_approval']==0) @else layui-btn-primary @endif '>不需要</div>
+                                        <div style="float: left;" data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['need_approval']==1) @else layui-btn-primary @endif '>需要</div>
+                                        <div style="margin-left: 20px;"  class="notic">点击按钮直接修改状态</div>
+                                    </div>
+                                </div>
+                            @endif
+
+
+
 <hr/>
 <div>收货地址信息</div>
                             @if(!empty($user_address))
@@ -204,6 +217,29 @@
                     content: '<img src="' + content + '">'
                 });
             });
+
+            $(".review_status").click(function(){
+                var need_approval = $(this).attr("data-status");
+                var  postData = {
+                    "id": "{{$info['id']}}",
+                    "need_approval":need_approval,
+                };
+
+                $.post('/admin/user/change/modifyNeedApproval', postData, function (res) {
+                    if (res.code == 200) {
+                        layer.msg(res.msg,{
+                            icon: 6,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            window.location.href="/admin/user/detail?is_firm={{$is_firm}}&currpage={{$currpage}}&id={{$info['id']}}";
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
+
+            });
+
         });
     </script>
 @stop

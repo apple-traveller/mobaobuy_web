@@ -210,6 +210,24 @@
                     }
                 }
             });
+
+            $("#company_name").blur(function(){
+                var company_name = $(this).val();
+                $.ajax({
+                    url: "/admin/shop/GsSearch",
+                    data: {"company_name":company_name},
+                    dataType: "json",
+                    type:"POST",
+                    success: function(res){
+                        console.log(res);
+                        if(res.code==400){
+                            layer.msg("该企业不存在，请重新填写", {icon: 5,time:1000});
+                            $("#company_name").val("");
+                            return ;
+                        }
+                    }
+                });
+            });
         });
 
 

@@ -34,7 +34,6 @@ class OrderInfoService
     //获取分页订单列表
     public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=10){
         $condition['is_delete'] = 0;
-
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
         unset($condition['status']);
 
@@ -51,10 +50,9 @@ class OrderInfoService
 
         //企业会员权限
         if($currUser['is_firm']){
-
             if($condition['firm_id'] && $currUser['is_self'] == 0){
-
                 $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$currUser['user_id']);
+                $currUserAuth[0]['need_approval'] = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
             }
         }
 
@@ -113,22 +111,31 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_desc'][] = '删除';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
                     }
+
+
+
                     //待企业审核订单
                     if($item['order_status'] == 1){
-                        if($currUserAuth[0]['can_approval']){
-                            $orderList['list'][$k]['auth'][] = 'can_approval';
-                            $orderList['list'][$k]['auth_desc'][] = '审批';
-                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
-                        }else{
-                            $orderList['list'][$k]['auth'][] = 'wait_approval';
-                            $orderList['list'][$k]['auth_desc'][] = '待审批';
-                            $orderList['list'][$k]['auth_html'][] = '';
-                        }
+                        if($currUserAuth[0]['need_approval']){
+                            if($currUserAuth[0]['can_approval']){
+                                $orderList['list'][$k]['auth'][] = 'can_approval';
+                                $orderList['list'][$k]['auth_desc'][] = '审批';
+                                $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
+                            }else{
+                                $orderList['list'][$k]['auth'][] = 'wait_approval';
+                                $orderList['list'][$k]['auth_desc'][] = '待审批';
+                                $orderList['list'][$k]['auth_html'][] = '';
+                            }
 
+                        }
                         $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                     }
+
+
+
+
                     //待商家确认
                     if($item['order_status'] == 2){
                         $orderList['list'][$k]['auth'][] = 'can_cancel';
@@ -340,9 +347,11 @@ class OrderInfoService
     public static function getOrderGoodsList($orderid)
     {
         $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $orderid]);
+        $order_info = OrderInfoRepo::getInfo($orderid);
         foreach ($order_goods['list'] as $k => $vo){
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
+            $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
         }
         return $order_goods;
     }
@@ -502,8 +511,18 @@ class OrderInfoService
     //修改发货状态
     public static function modifyDeliveryStatus($data)
     {
-        $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
-        return $order_delivery;
+        try{
+            self::beginTransaction();
+                $data['update_time'] = Carbon::now();
+                $order_delivery = OrderDeliveryRepo::modify($data['id'],$data);
+                //修改发货时间
+                OrderInfoRepo::modify($order_delivery['order_id'],['shipping_time'=>Carbon::now()]);
+            self::commit();
+
+            return $order_delivery;
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
 
     }
 

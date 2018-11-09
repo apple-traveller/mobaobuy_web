@@ -33,9 +33,7 @@ class GsxxService
                 } else {
                     self::throwBizError('配置文件不存在');
                 }
-
                 $config = json_decode($supplierInfo['supplier_config'],true);
-
                 $Gsxx->setConfig($config);
                 $re = $Gsxx->getBaseInfo($key_words);
                 if ($re){

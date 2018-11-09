@@ -42,7 +42,6 @@
                     nsecond.html('<s></s>'+second);
                     intDiff--;
                 },1000)
-
             }
             Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 
@@ -162,7 +161,7 @@
                 </div>
 			</div>
 			<div class="fl ml35 mt5">
-				<h1 class="fwb fs16">{{$goodsInfo['goods_name']}}</h1>
+				<h1 class="fwb fs16">{{$goodsInfo['brand_name']}}{{$goodsInfo['goods_name']}}{{$goodsInfo['goods_content']}}</h1>
 				<span class="red mt5 db"></span>
 				<style type="text/css">
 					.Time_limit{height:46px;background: url(/img/limit_time.png)no-repeat;}
@@ -200,7 +199,7 @@
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl">库存</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
+					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec']}}kg</span>
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>

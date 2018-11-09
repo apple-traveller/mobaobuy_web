@@ -55,7 +55,7 @@ var Transport =
   * @param   {boolean}   async            是否异步请求的方式
   * @param   {boolean}   quiet           是否安静模式请求
   */
-  run : function (url, params, callback, transferMode, responseType,async = true)
+  run : function (url, params, callback, transferMode, responseType,async)
   {
       transferMode = typeof(transferMode) === "string"
       && transferMode.toUpperCase() === "POST"
@@ -63,6 +63,7 @@ var Transport =
           : "GET";
 
       responseType = "JSON";
+      async = typeof async !== 'undefined' ?  async : true;
 
       $.ajax({
           url:url,
@@ -90,6 +91,5 @@ var Transport =
 
 /* 定义两个别名 */
 var Ajax = Transport;
-
 Ajax.call = Transport.run;
 Ajax.file = Transport.file;

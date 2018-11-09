@@ -5,22 +5,21 @@
     @include(themePath('.','web').'web.include.partials.base')
 </head>
 <body style="background-color: #f4f4f4;">
-<div class="clearfix whitebg">
-    <div class="register-title">
-        <div class="logo">
-            <a href="/">
-                <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
-            </a>
-        </div>
+    <div class="clearfix whitebg">
+        <div class="register-title">
+            <div class="logo">
+                <a href="/">
+                    <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+                </a>
+            </div>
 
-        <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+            <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+        </div>
     </div>
-</div>
 
     <div class="clearfix mt25">
         <div class="register-box">
-            <div class="register-form">
-            <div class="form">
+            <div class="register-form form">
                 <div class="item">
                     <div class="item-libel">手机号</div>
                     <div class="item-info"><input type="text" class="text" autocomplete="false" id="accountName" value=""></div>
@@ -48,16 +47,15 @@
                     <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                 </div>
             </div>
+            <button class="register-button" id="sub-btn">确 定</button>
         </div>
-        <button class="register-button" id="sub-btn">确 定</button>
+
     </div>
 
     <div class="clearfix" style="height: 35px;"></div>
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
 
-</body>
-</html>
     <script>
         var countdown = 60; //间隔函数，1秒执行
         var isNull = /^[\s]{0,}$/;
@@ -91,7 +89,7 @@
         function gv() {
             t = new Date().getTime();
             $('#imVcode').attr('src', "{{url('verifyCode')}}" + "?t=" + t + "&width=80&height=20");
-            
+
         }
         // 图形验证码格式检查
         function verifyValidate() {
@@ -119,8 +117,8 @@
                     gv();
                     $("#verify_error").text("验证码不正确");
                 }
-            }, "POST", "JSON");
-            
+            }, "POST", "JSON",false);
+
         }
         //  手机验证码格式检查
         function msgCodeValidate() {
@@ -152,9 +150,9 @@
                 accountName:accountName
 
             };
-            
+
             Ajax.call("{{url('/findPwd/sendSms')}}", params, function (result){
-                
+
                 if (result.code == 1) {
                     Settime (type);
                     $('.msgCode-swap').removeClass('blackgraybg');
@@ -205,3 +203,7 @@
             gv()
         });
     </script>
+
+</body>
+</html>
+

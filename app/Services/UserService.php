@@ -334,6 +334,12 @@ class UserService
         return $info;
     }
 
+    //修改
+    public static function modifyNeedApproval($data)
+    {
+        return UserRepo::modify($data['id'],$data);
+    }
+
     //修改用户信息
     public static function modify($data)
     {
@@ -489,5 +495,4 @@ class UserService
     {
         return AppUsersRepo::getInfoByFields($condition);
     }
-
 }
