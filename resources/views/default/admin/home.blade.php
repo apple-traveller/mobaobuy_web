@@ -78,39 +78,40 @@
                     <div class="section_order_select">
                         <ul>
                             <li>
-                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;seller_list=0&amp;serch_type=0" data-param="menushopping|02_order_list" ectype="iframeHref">
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" ectype="iframeHref">
                                     <i class="ice ice_w"></i>
-                                    <div class="t">未确认订单</div>
-                                    <span class="number">{{$orders['weiqueren']}}</span>
+                                    <div class="t">待审批</div>
+                                    <span class="number">{{$orders['waitApproval']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;seller_list=0&amp;serch_type=1" data-param="menushopping|02_order_list" ectype="iframeHref">
-                                    <i class="ice ice_d"></i>
-                                    <div class="t">待支付订单</div>
-                                    <span class="number">{{$orders['daizhifu']}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;seller_list=0&amp;serch_type=8" data-param="menushopping|02_order_list" ectype="iframeHref">
-                                    <i class="ice ice_n"></i>
-                                    <div class="t">待发货订单</div>
-                                    <span class="number">{{$orders['daifahuo']}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;seller_list=0&amp;serch_type=3" data-param="menushopping|02_order_list" ectype="iframeHref">
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" ectype="iframeHref">
                                     <i class="ice ice_f"></i>
-                                    <div class="t">已成交订单数</div>
-                                    <span class="number">{{$orders['yichengjiao']}}</span>
+                                    <div class="t">待确认</div>
+                                    <span class="number">{{$orders['waitAffirm']}}</span>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;composite_status=6&amp;source=start" data-param="menushopping|02_order_list" ectype="iframeHref">
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" ectype="iframeHref">
+                                    <i class="ice ice_d"></i>
+                                    <div class="t">待支付订单</div>
+                                    <span class="number">{{$orders['waitPay']}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" ectype="iframeHref">
+                                    <i class="ice ice_n"></i>
+                                    <div class="t">待发货订单</div>
+                                    <span class="number">{{$orders['waitSend']}}</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" ectype="iframeHref">
                                     <i class="ice ice_q"></i>
-                                    <div class="t">部分发货订单</div>
-                                    <span class="number">{{$orders['bufenfahuo']}}</span>
+                                    <div class="t">待收货</div>
+                                    <span class="number">{{$orders['waitConfirm']}}</span>
                                 </a>
                             </li>
 
@@ -120,29 +121,10 @@
                     <div class="section section_order_count">
                         <div class="sc_title">
                             <i class="sc_icon"></i>
-                            <h3>订单统计</h3>
+                            <h3>当月订单统计</h3>
                             <div class="filter_date">
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'order', 'week')" class="active">七天</a>
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'order', 'month')">一月</a>
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'order', 'year')">半年</a>
+                                <canvas id="myChart" width="1100" height="400"></canvas>
                             </div>
-                        </div>
-                        <div class="sc_warp">
-                            <div id="order_main" style="height: 274px; -webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0);" _echarts_instance_="1541561098082"><div style="position: relative; overflow: hidden; width: 1212px; height: 274px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none;"></div><canvas width="1212" height="274" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1212" height="274" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1212" height="274" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
-                        </div>
-                    </div>
-                    <div class="section section_total_count">
-                        <div class="sc_title">
-                            <i class="sc_icon"></i>
-                            <h3>销售统计</h3>
-                            <div class="filter_date">
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'sale', 'week')" class="active">七天</a>
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'sale', 'month')">一月</a>
-                                <a href="javascript:;" onclick="set_statistical_chart(this, 'sale', 'year')">半年</a>
-                            </div>
-                        </div>
-                        <div class="sc_warp">
-                            <div id="total_main" style="height: 274px; -webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0);" _echarts_instance_="1541561098083"><div style="position: relative; overflow: hidden; width: 1212px; height: 274px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none;"></div><canvas width="1212" height="274" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1212" height="274" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1212" height="274" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1212px; height: 274px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
                         </div>
                     </div>
                 </div>
@@ -159,24 +141,17 @@
                             <div class="section_body">
                                 <dl>
                                     <dt>商城首页：</dt>
-                                    <dd><a href="http://192.168.40.14:3731/" target="_blank">http://192.168.40.14:3731/</a></dd>
+                                    <dd><a href="http://{{$config['server_name']}}" target="_blank">http://{{$config['server_name']}}</a></dd>
                                 </dl>
                                 <dl>
                                     <dt>平台后台：</dt>
-                                    <dd><a href="http://192.168.40.14:3731/admin" target="_blank">http://192.168.40.14:3731/admin</a></dd>
+                                    <dd><a href="http://{{$config['server_name']}}/admin" target="_blank">http://{{$config['server_name']}}/admin</a></dd>
                                 </dl>
                                 <dl>
                                     <dt>商家后台：</dt>
-                                    <dd><a href="http://192.168.40.14:3731/seller" target="_blank">http://192.168.40.14:3731/seller</a></dd>
+                                    <dd><a href="http://{{$config['server_name']}}/seller" target="_blank">http://{{$config['server_name']}}/seller</a></dd>
                                 </dl>
-                                <dl>
-                                    <dt>门店后台：</dt>
-                                    <dd><a href="http://192.168.40.14:3731/stores" target="_blank">http://192.168.40.14:3731/stores</a></dd>
-                                </dl>
-                                <dl>
-                                    <dt>WAP首页：</dt>
-                                    <dd><a href="http://192.168.40.14:3731/mobile" target="_blank">http://192.168.40.14:3731/mobile</a></dd>
-                                </dl>
+
                             </div>
                         </div>
                         <div class="item_section">
@@ -192,7 +167,7 @@
                                 </dl>
                                 <dl>
                                     <dt>问答社区：</dt>
-                                    <dd><a href="http://wenda.ecmoban.com" target="_blank">http://wenda.ecmoban.com</a></dd>
+                                    <dd><a href="http://wenda.ecmoban.com" target="_blank">http://{{$config['server_name']}}</a></dd>
                                 </dl>
                             </div>
                         </div>
@@ -251,4 +226,70 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script>
+        window.onload=function(){
+            $.ajax({
+                url: "/admin/home/getMonthlyOrders",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                       var data = res.data;
+                       var day_array = new Array();
+                       var order_count = new Array();
+                       for(var i=0;i<data.length;i++){
+                           day_array.push(data[i].d);
+                           order_count.push(data[i].order_count);
+                       }
+                        var ctx = document.getElementById("myChart").getContext("2d");
+                        // 设置数据内容
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: day_array,
+                                datasets: [{
+                                    label: '订单统计',
+                                    data: order_count,
+                                    /* backgroundColor: [
+                                         'rgba(255, 99, 132, 0.2)',
+                                         'rgba(54, 162, 235, 0.2)',
+                                         'rgba(255, 206, 86, 0.2)',
+                                         'rgba(75, 192, 192, 0.2)',
+                                         'rgba(153, 102, 255, 0.2)',
+                                         'rgba(255, 159, 64, 0.2)'
+                                     ],*/
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    /*borderColor: [
+                                        'rgba(255,99,132,1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],*/
+                                    borderColor: 'rgba(255,99,132,1)',
+                                    borderWidth: 1 }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{ ticks: { beginAtZero:true }
+                                    }]
+                                }
+                            }
+                        });
+                    }else{
+
+                    }
+                }
+            })
+        }
+
+
+    </script>
 @stop

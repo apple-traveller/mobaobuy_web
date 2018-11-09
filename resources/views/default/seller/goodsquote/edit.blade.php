@@ -23,25 +23,26 @@
                     <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label_value">
+                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
-                                        <option value="0">请选择分类</option>
-                                        @foreach($goodsCatTree as $vo)
-                                            <option @if($good['cat_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
-                                        @endforeach
-                                    </select>
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-left: 20px;" class="goods_id" name="goods_id" id="goods_id">
-                                        <option value="">请选择商品</option>
-                                        @foreach($goods as $vo)
-                                            <option @if($goodsQuote['goods_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off"  name="goods_id" id="goods_name" size="40"  class="text">
+                                    <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <div class="notic">分类用于辅助选择商品</div>
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    </ul>
                                 </div>
-
                             </div>
+
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
@@ -84,14 +85,20 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;联系方式：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
                                 <div class="label_value">
                                     <input type="text" name="contact_info" id="contact_info"  value="{{ $goodsQuote['contact_info'] }}" class=" text" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
+                                <div class="label_value">
+                                    <input type="text" name="QQ" id="qq" class=" text" value="{{ $goodsQuote['QQ'] }}" maxlength="40" autocomplete="off" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -171,14 +178,21 @@
                     delivery_place:{
                         required:true,
                     },
-                    expiry_time:{
+                    production_date:{
                         required:true,
-                    }
+                    },
+                    salesman:{
+                        required:true,
+                    },
+                    contact_info:{
+                        required:true,
+                    },
+                    qq:{
+                        required:true,
+                    },
+
                 },
                 messages:{
-                    shop_id :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -192,12 +206,107 @@
                     delivery_place :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    expiry_time :{
+                    production_date :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    salesman :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    contact_info :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    qq :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 
+
                 }
             });
+        });
+
+        document.onclick=function(event){
+            $(".query_cat_name").hide();
+            $(".query_goods_name").hide();
+        }
+
+        // 种类 获取焦点请求所有的分类数据
+        $("#cat_name").focus(function(){
+            $(".query_cat_name").children().filter("li").remove();
+            $.ajax({
+                url: "/seller/goods/getGoodsCat",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $(".query_cat_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
+        // 种类 点击将选中的值填入input框内
+        $(document).delegate(".created_cat_name","click",function(){
+            var cat_name = $(this).text();
+            var cat_id = $(this).attr("data-cat-id");
+            $("#cat_name").val(cat_name);
+            $("#cat_name").attr("cat-id",cat_id);
+        });
+
+        // 商品 获取焦点请求所有的商品数据
+        $("#goods_name").focus(function(){
+            $(".query_goods_name").children().filter("li").remove();
+            var cat_id = $("#cat_name").attr("cat-id");
+            $.ajax({
+                url: "/seller/goods/getGood",
+                dataType: "json",
+                data:{"cat_id":cat_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $(".query_goods_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                        }
+                    }else{
+                        $(".query_goods_name").show();
+                        $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                    }
+                }
+            })
+        });
+
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_goods_name","click",function(){
+            $("#goods_name").siblings("div").filter(".notic").remove();
+            var goods_name = $(this).text();
+            var goods_id = $(this).attr("data-goods-id");
+            var packing_spac = $(this).attr("data-packing-spac");
+            let packing_unit = $(this).data('packing_unit');
+            $("#goods_name").val(goods_name);
+            $("#goods_id").val(goods_id);
+            $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#num").attr("disabled",false);
+            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        $("#goods_number").change(function () {
+            let spac = $("#goods_name").attr("data-packing-spac");
+            let goods_number = $(this).val();
+            if (spac >goods_number){
+                $(this).val(spac);
+            } else {
+                if (goods_number%spac>0){
+                    $(this).val(goods_number-goods_number%spac);
+                } else {
+                    $(this).val(goods_number);
+                }
+            }
         });
     </script>
 

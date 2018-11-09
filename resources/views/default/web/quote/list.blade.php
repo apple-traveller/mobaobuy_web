@@ -145,7 +145,9 @@
 			</div>
 		</div>
 		<ul class="Self-product-list">
-			<li class="table_title"><span class="num_bg1" style="width:9%">店铺</span><!-- <span  style="width:8%;">品牌</span> --><span style="width:8%;">种类</span><span style="width:18%">商品名称</span><span style="width:9%;">数量（公斤）</span><span>单价（元/公斤）</span><span style="widows:8%;">发货地址</span><span style="width:18%;">联系人</span><span style="width: 9%;">操作</span></li>
+			<li class="table_title"><span class="num_bg1" style="width:9%">店铺</span><!-- <span  style="width:8%;">品牌</span> --><span style="width:8%;">种类</span><span style="width:18%">商品名称</span><span style="width:9%;">数量（kg）</span><span>单价（元/kg）</span><span style="widows:8%;">发货地址</span><span style="width:18%;">联系人</span><span style="width: 9%;">操作</span></li>
+
+
 			@foreach($search_data['list'] as $vo)
 				<li>
                     <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">{{$vo['shop_name']}}</span>

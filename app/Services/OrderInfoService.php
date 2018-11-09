@@ -322,7 +322,7 @@ class OrderInfoService
     public static function getOrderInfoById($id)
     {
         $order_info = OrderInfoRepo::getInfo($id);
-        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street']);
+        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street'],$order_info['district']);
         return $order_info;
     }
 
@@ -736,17 +736,13 @@ class OrderInfoService
         return $sum;
     }
 
-    //查询各个状态的订单
-    public static function getOrderStatuCount()
+    //统计当月的订单量
+    public static function getMonthlyOrders()
     {
-        $orders = [];
-        $orders['weiqueren'] = OrderInfoRepo::getTotalCount(['order_status'=>2]);
-        $orders['daizhifu'] = OrderInfoRepo::getTotalCount(['pay_status'=>0]);
-        $orders['daifahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>0]);
-        $orders['yichengjiao'] = OrderInfoRepo::getTotalCount(['order_status'=>4]);
-        $orders['bufenfahuo'] = OrderInfoRepo::getTotalCount(['shipping_status'=>2]);
-        return $orders;
+        $a = date("Y-m-1"); //当月第一天
+        $b = date("Y-m-d"); //当月当天
+        $res = OrderInfoRepo::getEveryMonthOrderCount($a,$b);
+        return $res;
     }
-
 
 }

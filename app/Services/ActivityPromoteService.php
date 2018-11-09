@@ -14,6 +14,9 @@ class ActivityPromoteService
         if(isset($params['status'])){
             $condition['review_status'] = $params['status'];
         }
+        if(isset($params['end_time'])){
+            $condition['end_time|>'] = Carbon::now();
+        }
         if(!empty($params['goods_name'])){
             $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
@@ -32,6 +35,7 @@ class ActivityPromoteService
                 $item['is_soon'] = false;
             }
         }
+        unset($item);
         return $info_list;
     }
 
@@ -39,7 +43,23 @@ class ActivityPromoteService
     //web
     //限时抢购
     public static function buyLimit($condition){
-        return ActivityPromoteRepo::getList([],$condition);
+        $info_list = ActivityPromoteRepo::getList([],$condition);
+        foreach ($info_list as &$item){
+            if(Carbon::now()->gt($item['end_time'])){
+                $item['is_over'] = true;
+            }else{
+                $item['is_over'] = false;
+            }
+
+            if(Carbon::now()->lt($item['begin_time'])){
+                $item['is_soon'] = true;
+            }else{
+                $item['is_soon'] = false;
+            }
+        }
+        unset($item);
+
+        return $info_list;
     }
 
     //限时抢购详情
@@ -102,7 +122,6 @@ class ActivityPromoteService
         return $activityArr;
     }
 
-
     //通过id查抢购表数据
     public static function getActivityPromoteById($id){
         $id = decrypt($id);
@@ -110,5 +129,12 @@ class ActivityPromoteService
         if(empty($activityPromoteInfo)){
             self::throwBizError('不存在的商品信息');
         }
+    }
+
+    //增加限时抢购的点击量
+    public static function addClickCount($id)
+    {
+        $id = decrypt($id);
+        return ActivityPromoteRepo::addClickCount($id);
     }
 }

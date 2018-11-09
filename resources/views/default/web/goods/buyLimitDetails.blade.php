@@ -32,6 +32,7 @@
                         minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
                         second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                     }
+                    hour += day*24;
                     if(hour<=9)hour='0'+hour;
                     if(minute<=9)minute='0'+minute;
                     if(second<=9)second='0'+second;
@@ -152,7 +153,12 @@
 				<div class="pro_chart_img">
 
 				</div>
-				<div><span class="pro_chart_opert follow">收藏</span><span class="pro_chart_opert share ml20"></span></div>
+				<div>
+                    {{--<span class="pro_chart_opert follow">收藏</span>--}}
+                    {{--<span class="pro_chart_opert share ml20"></span>--}}
+                    <span class="pro_chart_opert"></span>
+                    <span class="pro_chart_opert ml20"></span>
+                </div>
 			</div>
 			<div class="fl ml35 mt5">
 				<h1 class="fwb fs16">{{$goodsInfo['brand_name']}}{{$goodsInfo['goods_name']}}{{$goodsInfo['goods_content']}}</h1>
