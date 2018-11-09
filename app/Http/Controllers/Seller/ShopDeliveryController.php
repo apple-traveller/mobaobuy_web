@@ -20,7 +20,7 @@ class ShopDeliveryController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $order_sn = $request->input('order_sn');

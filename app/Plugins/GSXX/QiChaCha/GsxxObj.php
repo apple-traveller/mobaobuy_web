@@ -43,9 +43,7 @@ class GsxxObj implements GSXXInterface {
             "dtype" => $this->data_type,
         );
         $url = $this->url . '?' . http_build_query($params);
-
         $rs = file_get_contents($url);
-
         if ($rs){
             return $rs;
         }

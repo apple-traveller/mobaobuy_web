@@ -8,7 +8,6 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Services\InvoiceGoodsService;
 use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use App\Services\UserService;
@@ -16,7 +15,7 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $currentPage = $request->input('currentPage',1);

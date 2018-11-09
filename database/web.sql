@@ -561,6 +561,8 @@ CREATE TABLE `goods` (
   `cat_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
   `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_full_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品全称',
+  `goods_content` varchar(120) NOT NULL DEFAULT '' COMMENT '含量',
   `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词，多个用|分隔',
   `brand_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '品牌ID',
   `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
@@ -607,6 +609,8 @@ CREATE TABLE `shop` (
   `license_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '营业执照副本电子版',
   `taxpayer_id` varchar(255) NOT NULL DEFAULT '' COMMENT '纳税人识别号',
   `major_business` varchar(255) NOT NULL DEFAULT '' COMMENT '主营业务',
+  `settlement_bank_account_name` varchar(50) DEFAULT NULL COMMENT '结算银行开户名',
+  `settlement_bank_account_number` varchar(50) DEFAULT NULL COMMENT '结算公司银行账号',
   `reg_time` datetime NOT NULL COMMENT '注册时间',
   `last_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `last_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '上次登录IP',
@@ -684,6 +688,7 @@ CREATE TABLE `shop_goods_quote` (
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
   `salesman` varchar(10) NOT NULL DEFAULT '' COMMENT '业务员名称',
   `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
+  `QQ` varchar(15) NOT NULL DEFAULT '' COMMENT '联系QQ',
   `production_date` varchar(50) NOT NULL COMMENT '生产日期',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
@@ -737,6 +742,8 @@ CREATE TABLE `order_info` (
   `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮政编码',
   `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
   `postscript` varchar(255) NOT NULL DEFAULT '' COMMENT '买家留言',
+  `delivery_period` varchar(10) NOT NULL DEFAULT '' COMMENT '交货期',
+  `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '付款方式 1-先款后货 2-先货后款',
   `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态 0-待付款 1-已付款 2-部分付款',
   `goods_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品总金额',
   `tax` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '发票税额',
@@ -1188,4 +1195,14 @@ CREATE TABLE `order_pay_log` (
   KEY `is_paid` (`is_paid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单付款日志表';
 
+DROP TABLE IF EXISTS `user_sale`;
+CREATE TABLE `user_sale` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `bill_file` varchar(200) NOT NULL DEFAULT '' COMMENT '清单文件',
 
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卖货需求';
