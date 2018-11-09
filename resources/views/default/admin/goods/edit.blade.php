@@ -21,6 +21,14 @@
                             <input type="hidden" name="id" value="{{$good['id']}}">
                             <input type="hidden" name="currpage" value="{{$currpage}}">
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品全称：</div>
+                                <div class="label_value">
+                                    <input type="text" disabled class="text" value="{{$good['goods_full_name']}}" maxlength="40" autocomplete="off" id="goods_full_name">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">品牌+品名+含量,不可编辑</div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_name" class="text" value="{{$good['goods_name']}}" maxlength="40" autocomplete="off" id="goods_name">
@@ -99,6 +107,15 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装规格：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_spec" class="text" value="{{$good['packing_spec']}}" maxlength="40" autocomplete="off" id="packing_spec">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content" class="text" value="{{$good['goods_content']}}" maxlength="40" autocomplete="off" id="goods_content">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -387,6 +404,9 @@
                     },
                     goods_attr:{
                         required:true
+                    },
+                    goods_content:{
+                        required :true,
                     }
                 },
                 messages:{
@@ -422,6 +442,9 @@
                     },
                     goods_attr :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
+                    },
+                    goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 
                 }
