@@ -34,7 +34,8 @@
         },
         "files": [
             "app/functions.php",
-            "app/Helpers/helper.php"
+            "app/Helpers/helper.php",
+            "app/WeiXin.php"
         ]
     },
     "autoload-dev": {

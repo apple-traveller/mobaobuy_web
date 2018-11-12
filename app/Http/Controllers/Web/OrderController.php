@@ -299,8 +299,8 @@ class OrderController extends Controller
 
     //创建订单
     public function createOrder(Request $request){
-
         $info = session('_curr_deputy_user');
+        $payType = $request->input('payType','');
         $userIds = [];
         // 判断是否为企业用户
         if($info['is_firm']){
@@ -328,10 +328,6 @@ class OrderController extends Controller
             return $this->error('无地址信息请前去维护');
         }
 
-//        if(){
-//
-//        }
-
         // 没有默认地址的情况下
         if (empty($userInfo['address_id'])){
             $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
@@ -345,7 +341,7 @@ class OrderController extends Controller
         //限时抢购下单
         if($cartSession['from'] == 'promote'){
             try{
-                $re[] = OrderInfoService::createOrder($carList,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList,$userIds,$cartSession['address_id'],$words,$cartSession['from'],$payType);
                 if (!empty($re)){
                     Session::forget('cartSession');
                     return $this->success('订单提交成功','',$re);
@@ -376,7 +372,7 @@ class OrderController extends Controller
             try{
                 $re=[];
                 foreach ($shop_data as $k4=>$v4){
-                    $re[] =  OrderInfoService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
+                    $re[] =  OrderInfoService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from'],$payType);
                 }
                 if (!empty($re)){
                     Session::forget('cartSession');

@@ -139,12 +139,24 @@
                 <h1 class="ml20 mt15 fs16 fwb">成交动态</h1>
                 <div class="trans_marquee">
                     <ul class="Tran_dynamics_list">
-                    @foreach($trans_list as $item)
-                        <li>
-                            <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
-                            <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
-                        </li>
-                    @endforeach
+                        @if(!empty($trans_list))
+                            @foreach($trans_list as $item)
+                                <li>
+                                    <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
+                                    <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
+                                </li>
+                            @endforeach
+                        @endif
+                        @if(!empty($trans_false_list))
+                            @foreach($trans_false_list as $item)
+                                @if($item['add_time'] <= \Carbon\Carbon::now())
+                                    <li>
+                                        <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
+                                        <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -160,7 +172,7 @@
                 @foreach($goodsList['list'] as $vo)
                     <li>
                        <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
-                        <span class="ovh" style="width:13%;">{{$vo['cat_name']}}</span>
+                        <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:13%;">{{$vo['cat_name']}}</span>
                         <span style="width:18%;"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                         <span style="width:13%;">{{$vo['goods_number']}}</span>
                         <span style="width:13%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>

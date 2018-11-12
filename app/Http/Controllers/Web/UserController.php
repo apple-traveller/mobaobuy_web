@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 
+use App\Repositories\RegionRepo;
 use App\Services\CartService;
 use App\Services\UserAddressService;
 
@@ -42,8 +43,12 @@ class UserController extends Controller
     public function checkNameExists(Request $request){
         $accountName = $request->input('accountName');
         $rs = UserService::checkNameExists($accountName);
+        if($rs){
+            return $this->success($rs);
+        }else{
+            return $this->error($rs);
+        }
 
-        return $this->success($rs);
     }
     //检查账号用户是否已实名 根据手机号码
     public function checkRealNameBool(Request $request)
@@ -175,45 +180,10 @@ class UserController extends Controller
 
     }
 
-    //用户登录页面
-    public function showLoginForm()
-    {
-        if (!empty(session('_web_user_id'))) {
-            return redirect('/');
-        }
-        return $this->display('web.login');
-    }
-
-    //用户登录提交
-    public function login(Request $request)
-    {
-        $username = $request->input('user_name');
-        $password = base64_decode($request->input('password'));
-
-        if(empty($username)){
-            return $this->error('用户名不能为空');
-        }
-        if(empty($password)){
-            return $this->error('密码不能为空');
-        }
-
-        $other_params = [
-            'ip'  => $request->getClientIp()
-        ];
-        try{
-            $user_id = UserService::loginValidate($username, $password, $other_params);
-            session()->put('_web_user_id', $user_id);
-            return $this->success('登录成功，正在进入系统...');
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
-
     //注册审核页面
     public function verifyReg(){
         return $this->display('web.user.register.verifyReg');
     }
-
 
     //登出
     public function logout()
@@ -603,8 +573,7 @@ class UserController extends Controller
         $type = 'sms_find_signin';
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+        Cache::put(session()->getId().$type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
 
         return $this->success();
@@ -973,5 +942,24 @@ class UserController extends Controller
         } else {
             return $this->error('修改失败');
         }
+    }
+
+
+    //会员卖货
+    public function sale(Request $request){
+        $userId = session('_web_user_id');
+        $saleData = $request->all();
+        $saleData['user_id'] = $userId;
+        if($request->isMethod('get')){
+            return $this->display('web.user.account.userSale');
+        }else{
+            try{
+                UserService::sale($saleData);
+                return $this->success();
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+
     }
 }

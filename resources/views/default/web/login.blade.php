@@ -3,6 +3,17 @@
 <head>
     <title>{{getConfig('shop_name')}}_登录</title>
     @include(themePath('.','web').'web.include.partials.base')
+    <style>
+        .login-sd {
+            line-height: 30px;
+            text-align: center;
+            border-bottom: 1px dotted #ccc;
+        }
+        .login-sdn {
+            padding-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="clearfix">
@@ -12,7 +23,6 @@
                     <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
                 </a>
             </div>
-
             <div class="service-tel">全国免费服务热线 : {{getConfig('service_phone')}}</div>
         </div>
     </div>
@@ -27,6 +37,12 @@
                     <div class="login-item"><button class="login_btn fs16" onclick="userLogin()">登录</button></div>
                     <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
                     <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
+                    <div>
+                        <h3 class="login-sd"><i>第三方账号登录</i></h3>
+                        <p class="login-sdn"><a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>
+                            <a href="/login/wxLogin" target="_blank" class="ml5p" title="微信登录"><img src="/img/wx.jpg"/></a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
