@@ -50,12 +50,7 @@
 				content: "\2713";display: block;position: absolute;top: -1px;
 				left: -1px;right: 0;bottom: 0;width: 12px;height: 16px;line-height: 17px;padding-left: 4px;
 				color: #fff;background-color: #75b334;font-size: 13px;}
-			.frame_close{width: 15px;height: 15px;line-height:0;
-				display: block;outline: medium none;
-				transition: All 0.6s ease-in-out;
-				-webkit-transition: All 0.6s ease-in-out;
-				-moz-transition: All 0.6s ease-in-out;
-				-o-transition: All 0.6s ease-in-out;}
+
 			@media (min-width: 768px).form-inline .form-group {display: inline-block;margin-bottom: 0;vertical-align: middle;}
 				.sr-only {position: absolute;width: 1px;height: 1px;padding: 0;margin: -1px;overflow: hidden;clip: rect(0, 0, 0, 0); border: 0;}
 				.form-group label {display: inline-block;max-width: 100%;margin-bottom: 5px;font-weight: bold;}
@@ -106,58 +101,58 @@
 	</div>
 
 	<script type="text/javascript">
-        $(function(){
-			//	增加
-            $('.add_address').click(function(){
-                let _str_address = $("input[name='str_address']").val();
-                let _id = $("input[name='id']").val();
-                let _address = $("input[name='address']").val();
-                let _zipcode = $("input[name='zipcode']").val();
-                let _consignee = $("input[name='consignee']").val();
-                let _mobile = $("input[name='mobile_phone']").val();
-                if(!_str_address){
-                    $.msg.error('请选择地址');return;
-				}
-                if(!_address){
-                    $.msg.error('请输入详细地址');return;
-                }
-                if(!_zipcode){
-                    $.msg.error('请输入邮政编码');return;
-                }
-                if(!_consignee){
-                    $.msg.error('请输入收货人姓名');return;
-                }
-                if(!_mobile){
-                    $.msg.error('请输入手机号码');return;
-                }
-                if(!Utils.isPhone(_mobile)){
-                    $.msg.error('请输入正确的手机号');return;
-				}
-				$.ajax({
-					url:'/createAddressList',
-					data: {
-					    id:_id,
-                        str_address:_str_address,
-                        address:_address,
-                        zipcode:_zipcode,
-                        consignee:_consignee,
-                        mobile:_mobile,
-					},
-					type: 'POST',
-					success:function (res) {
-						if (res.code == 1){
-                            $.msg.alert(res.msg);
-                            setTimeout( parent.location.reload(),2000);
-						} else {
-                            $.msg.error(res.msg);
-						}
-                    }
-				});
-
-			});
-            $('.frame_close,.cancel').click(function(){
-                parent.location.reload(); //刷新父亲对象（用于框架）
-            })
-        })
+        // $(function(){
+		// 	//	增加
+        //     $('.add_address').click(function(){
+        //         let _str_address = $("input[name='str_address']").val();
+        //         let _id = $("input[name='id']").val();
+        //         let _address = $("input[name='address']").val();
+        //         let _zipcode = $("input[name='zipcode']").val();
+        //         let _consignee = $("input[name='consignee']").val();
+        //         let _mobile = $("input[name='mobile_phone']").val();
+        //         if(!_str_address){
+        //             $.msg.error('请选择地址');return;
+		// 		}
+        //         if(!_address){
+        //             $.msg.error('请输入详细地址');return;
+        //         }
+        //         if(!_zipcode){
+        //             $.msg.error('请输入邮政编码');return;
+        //         }
+        //         if(!_consignee){
+        //             $.msg.error('请输入收货人姓名');return;
+        //         }
+        //         if(!_mobile){
+        //             $.msg.error('请输入手机号码');return;
+        //         }
+        //         if(!Utils.isPhone(_mobile)){
+        //             $.msg.error('请输入正确的手机号');return;
+		// 		}
+		// 		$.ajax({
+		// 			url:'/createAddressList',
+		// 			data: {
+		// 			    id:_id,
+        //                 str_address:_str_address,
+        //                 address:_address,
+        //                 zipcode:_zipcode,
+        //                 consignee:_consignee,
+        //                 mobile:_mobile,
+		// 			},
+		// 			type: 'POST',
+		// 			success:function (res) {
+		// 				if (res.code == 1){
+        //                     $.msg.alert(res.msg);
+        //                     setTimeout( parent.location.reload(),2000);
+		// 				} else {
+        //                     $.msg.error(res.msg);
+		// 				}
+        //             }
+		// 		});
+		//
+		// 	});
+            // $('.frame_close,.cancel').click(function(){
+            //     parent.location.reload(); //刷新父亲对象（用于框架）
+            // })
+        // })
 	</script>
 

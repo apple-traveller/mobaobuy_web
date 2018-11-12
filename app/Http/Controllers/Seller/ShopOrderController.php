@@ -386,6 +386,11 @@ class ShopOrderController extends Controller
     {
         $data = $request->all();
         $order_id = $request->input('order_id');
+        $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+
+        if ($orderInfo['pay_type'] == 1 && $orderInfo['pay_status'] != 1){
+            return $this->error('未付全款无法生成发货单');
+        }
         unset($data['layTableCheckbox']);
         $orderDeliveryGoodsData = json_decode($data['send_number_delivery'],true);
         $order_delivery_goods_data = []; //发货单商品信息
@@ -431,7 +436,7 @@ class ShopOrderController extends Controller
         try{
             $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
             if(!empty($orderDelivery)){
-                return $this->success('生成发货单成功',url('/seller/delivery/list'));
+                return $this->success('生成发货单成功',url('/seller/order/list?tab_code=waitSend'));
             }
             return $this->error('生成发货单失败');
         }catch(\Exception $e){

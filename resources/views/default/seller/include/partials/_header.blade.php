@@ -14,15 +14,14 @@
             <img src="{{asset(themePath('/').'layui/images/login/avtar.png')}}" class="layui-nav-img">
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="javascript:void(0);">seller</a></dd>
-            <dd><a href="javascript:void(0);">shop_name</a></dd>
+            <dd><a href="javascript:void(0);">店铺：{{ $data['shop_name'] }}</a></dd>
+            <dd><a href="javascript:void(0);">用户：{{ $data['user_name'] }}</a></dd>
             {{--{{ session('_seller')['real_name'] }}--}}
             {{--{{ session('_seller')['shop_info'] }}--}}
         </dl>
     </li>
     <li class="layui-nav-item">
-        <a href="/seller/logout"
-           >
+        <a href="/seller/logout">
             login out
         </a>
 
