@@ -10,7 +10,7 @@
 			height: 55px;
 			margin-top: 20px;
 			float: left;
-			background: url(default/img/mobao_logo.png)no-repeat;
+			background: url(/default/img/mobao_logo.png)no-repeat;
 			background-size: 100% 100%;
 		}
 		.company_list {
@@ -241,6 +241,21 @@
 			</div>
 			@endif
 	</div>
+	
+	@if(session('cartSession')['from'] != 'promote')
+		<div class="address whitebg ovh mt20 ">
+		<h1 class="ml30 fs18 mt30">付款方式</h1>
+		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
+			<li class="payTypeList" data-id="" style="height: 80px;border:none;">
+				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>
+				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> 
+			</li>
+		</ul>
+			
+	</div>
+	@endif
+
+
 	<div class="address whitebg ovh mt20">
 		<h1 class="ml30 fs18 mt30">商品信息</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
@@ -356,14 +371,15 @@
         });
 	});
     $(".address_sumb").click(function () {
+    	var payType = $('.payTypeList input[name=payType]:checked').val();
     	var activityPromoteId = $('#activityPromoteId').val();
 		let words =  $("input[ name='words' ]").val();
-		console.log(words);
 		$.ajax({
 			url:'/createOrder',
 			data:{
 			    'words':words,
-			    'activityPromoteId':activityPromoteId
+			    'activityPromoteId':activityPromoteId,
+			    'payType':payType
 			},
 			type:'post',
 			success:function (res) {
@@ -374,7 +390,6 @@
                 }
             }
 		});
-		// $("#form").submit();
     });
 </script>
 </body>

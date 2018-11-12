@@ -251,8 +251,12 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/firmRegister', 'UserController@firmRegister')->name('firmRegister');//企业注册
     Route::post('/firmRegister', 'UserController@firmRegister');
 
-    Route::get('/login', 'UserController@showLoginForm')->name('login');//登陆
-    Route::post('/login', 'UserController@login');
+    Route::get('/login', 'LoginController@index')->name('login');//登陆
+    Route::post('/login', 'LoginController@login');
+
+    Route::get('/login/qqLogin', 'LoginController@qqLogin');//点击qq登录
+    Route::get('/login/qqCallBack', 'LoginController@qqCallBack');//点击微信登录
+    Route::get('/login/wxLogin', 'LoginController@qqLogin');//点击微信登录
 
     Route::get('/findPwd','UserController@userFindPwd');//忘记密码
     Route::post('/findPwd','UserController@userFindPwd');
@@ -420,7 +424,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
-
+        Route::get('/sale','UserController@sale');// 我要卖货
+        Route::post('/sale','UserController@sale');// 我要卖货
     });
 });
 
