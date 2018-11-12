@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller

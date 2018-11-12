@@ -36,12 +36,17 @@
         </div>
     </form>
     <div class="signin">
-        <input type="submit" value="Login" onsubmit="submitForm()" onclick="submitForm()">
+        <input type="submit" value="Login" onclick="submitForm()" >
     </div>
 </div>
 
 </body>
 <script>
+    $('body').keyup(function (event) {
+        if (event.keyCode==13){
+            submitForm();
+        }
+    });
     function submitForm() {
         layui.use(['layer'],function () {
             let layer = layui.layer;

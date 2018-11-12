@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\FirmUserService;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
@@ -97,6 +98,9 @@ class ShopOrderController extends Controller
             $user_invoices = [];
         }
         $user = UserService::getInfo($orderInfo['user_id']);
+        if(empty($user)){
+            $user = FirmUserService::getFirmInfo($orderInfo['firm_id']);
+        }
         return $this->display('seller.order.detail', [
             'currentPage' => $currentPage,
             'orderInfo' => $orderInfo,

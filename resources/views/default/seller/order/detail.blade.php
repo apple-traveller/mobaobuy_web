@@ -10,12 +10,11 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==3) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 2 || $orderInfo['order_status'] == 0) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
                                 @if($orderInfo['order_status']==0)已作废
-                                @elseif($orderInfo['order_status']==1)待企业审核
                                 @elseif($orderInfo['order_status']==2)待商家确认
                                 @else已确认
                                 @endif
@@ -68,9 +67,10 @@
                                     <dt>订单来源：</dt>
                                     <dd>{{$orderInfo['froms']}}</dd>
                                 </dl>
+
                                 <dl>
                                     <dt>购货人： <div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
-                                    {{--<dd>{{$user['nick_name']}}</dd>--}}
+                                    <dd>@if(isset($user['nick_name'])) {{ $user['nick_name'] }} @elseif(isset($user['real_name'])) {{ $user['real_name'] }} @endif</dd>
                                     <dt>订单状态：</dt>
                                     <dd>
                                         <!--审核状态-->
