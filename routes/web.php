@@ -511,16 +511,21 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 });
 //小程序接口
 Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
-    Route::post('/register', 'LoginController@register');
-    Route::post('/sendRegisterSms', 'LoginController@sendRegisterSms');//手机验证码
-    Route::post('/login', 'LoginController@login');
-    Route::group(['middleware' => 'api.auth'], function () {
+    Route::post('/register', 'LoginController@register');//注册
+    Route::post('/sendRegisterSms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
+    Route::post('/login', 'LoginController@login');//登录
+    Route::post('/updatePass', 'LoginController@updatePass');//忘记密码
+    Route::post('/sendFindPwdSms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
+    Route::get('/index', 'IndexController@index');
+    Route::post('/user/detail', 'UserController@detail');
+    Route::post('/goods/list', 'GoodsController@list');//产品报价列表
+    /*Route::group(['middleware' => 'api.auth'], function () {
         Route::get('/', 'IndexController@index');
         Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');
-    });
+    });*/
 });
 
 

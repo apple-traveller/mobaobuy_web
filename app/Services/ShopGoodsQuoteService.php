@@ -62,17 +62,6 @@ class ShopGoodsQuoteService
             $result['list'][$k]['brand_name'] = $vo['brand_name']?$vo['brand_name']:"无品牌";
         }
         return $result;
-
-//        $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager,$condition);
-//        foreach($result['list'] as $k=>$vo){
-//            $good = GoodsRepo::getInfo($vo['goods_id']);
-//            $result['list'][$k]['brand_name'] = $good['brand_name']?$good['brand_name']:"无品牌";
-//            $category = GoodsCategoryRepo::getInfo($good['cat_id']);
-//            $result['list'][$k]['cat_name'] = $category['cat_name'];
-//            //$result['list'][$k]['cat_id'] = $category['id'];
-//            $result['list'][$k]['packing_spec'] = $good['packing_spec'];
-//        }
-//        return $result;
     }
 
     public static function getShopOrderByQuote($top){

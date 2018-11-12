@@ -379,7 +379,8 @@ class UserService
     }
 
     //修改默认收获地址
-    public static function updateDefaultAddress($data){
+    public static function updateDefaultAddress($data)
+    {
         return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
@@ -389,7 +390,7 @@ class UserService
     }
 
     public static function getInfo($id)
-  {
+   {
         $info = UserRepo::getInfo($id);
         unset($info['password']);
         return $info;
@@ -501,5 +502,19 @@ class UserService
     public static function getAppUserInfo($condition)
     {
         return AppUsersRepo::getInfoByFields($condition);
+    }
+
+    //获取用户详细信息（小程序接口）
+    public static function getApiUserInfo($id)
+    {
+        $user = UserService::getInfo($id);
+        $user_real = UserRealRepo::getInfoByFields(['user_id'=>$id]);
+        if(empty($user_real)){
+            $user['user_real'] = "";
+            return $user;
+        }else{
+            $user['user_real'] = $user_real;
+            return $user;
+        }
     }
 }

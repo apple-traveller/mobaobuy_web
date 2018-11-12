@@ -127,7 +127,7 @@ class GoodsController extends Controller
             return $this->error(implode('<br/>',$errorMsg));
         }
 
-        $data['goods_full_name'] = $data['goods_name']." ".$data['brand_name']." ".$data['goods_content'];
+        $data['goods_full_name'] = $data['brand_name']." ".$data['goods_name']." ".$data['goods_content'];
 
         try{
             if(!key_exists('id',$data)){
