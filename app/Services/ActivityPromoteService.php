@@ -81,6 +81,9 @@ class ActivityPromoteService
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
+        //产品历史价格
+        $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
+        $goodsInfo['goodsList'] = $goodsList;
         return $goodsInfo;
     }
 

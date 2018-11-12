@@ -504,15 +504,20 @@ class UserService
         return AppUsersRepo::getInfoByFields($condition);
     }
 
+    public static function createAppUserInfo($data)
+    {
+        return AppUsersRepo::create($data);
+    }
+
     //获取用户详细信息（小程序接口）
     public static function getApiUserInfo($id)
     {
         $user = UserService::getInfo($id);
-        $user_real = UserRealRepo::getInfoByFields(['user_id'=>$id]);
-        if(empty($user_real)){
+        $user_real = UserRealRepo::getInfoByFields(['user_id' => $id]);
+        if (empty($user_real)) {
             $user['user_real'] = "";
             return $user;
-        }else{
+        } else {
             $user['user_real'] = $user_real;
             return $user;
         }

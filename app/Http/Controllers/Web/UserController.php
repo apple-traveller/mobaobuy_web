@@ -249,8 +249,10 @@ class UserController extends Controller
             $str_address = $request->input('str_address','');
             $address = $request->input('address','');
             $zipcode = $request->input('zipcode','');
-            $consignee=$request->input('consignee','');
-            $mobile_phone=$request->input('mobile','');
+            $consignee = $request->input('consignee','');
+            $mobile_phone = $request->input('mobile','');
+            $default = $request->input('default_address','');
+
             if (empty($str_address)){
                 return $this->error('请选择地址');
             }
@@ -279,13 +281,28 @@ class UserController extends Controller
                 'mobile_phone' => $mobile_phone
             ];
             try{
+
                 if ($id){
                     $res = UserService::updateShopAdderss($id,$data);
-                    if ($res){
-                        return $this->success('修改成功');
+                    if(!empty($default) && $default == 'Y'){//设为默认地址
+                        $data = [
+                            'id'=>$user_id,
+                            'address_id' =>$id
+                        ];
+                        session()->forget('_web_user');
+                        UserService::updateDefaultAddress($data);
                     }
+                    return $this->success('修改成功');
                 } else{
-                   $re =  UserService::addShopAddress($data);
+                    $re =  UserService::addShopAddress($data);
+                    if(!empty($default) && $default == 'Y'){//设为默认地址
+                        $data = [
+                            'id'=>$user_id,
+                            'address_id' =>$re['id']
+                        ];
+                        session()->forget('_web_user');
+                        UserService::updateDefaultAddress($data);
+                    }
                     return $this->success('添加收获地址成功');
                 }
             }catch (\Exception $e){
@@ -326,12 +343,13 @@ class UserController extends Controller
      */
     public function updateShopAddress(Request $request){
         $id = $request->input('id','');
+        $default_id = $request->input('default_id','');
         if ($id){
             $address_info = UserAddressService::getAddressInfo($id);
         } else {
             $address_info = [];
         }
-        return $this->display('web.user.editAddress',['data'=>$address_info]);
+        return $this->display('web.user.editAddress',['data'=>$address_info,'default_id'=>$default_id]);
 
     }
 

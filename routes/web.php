@@ -285,6 +285,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
+
+    //price/ajaxcharts?id={{$price_id}}  Product trend
+    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
+
     Route::group(['middleware' => 'web.auth'], function () {
 
 

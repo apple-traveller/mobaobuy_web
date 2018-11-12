@@ -15,6 +15,7 @@ use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Repositories\ShopGoodsRepo;
+use Illuminate\Http\Request;
 
 class GoodsService
 {
@@ -340,7 +341,26 @@ class GoodsService
 
     }
 
+    public static function productTrend($goodsId){
+        $goodsInfo = GoodsRepo::getInfo($goodsId);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息有误');
+        }
 
+        $goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
+        if(empty($goodsList)){
+            return [];
+        }
+        $time = [];
+        $price = [];
+        foreach($goodsList as $k=>$v){
+            $time[] = substr($v['add_time'],0,10);
+            $price[] = $v['shop_price'];
+        }
+        $data['time'] = $time;
+        $data['price'] = $price;
+        return $data;
+    }
 
 }
 
