@@ -67,6 +67,8 @@
 </html>
 
 <script>
+    $("#phone").val('');
+    $("#password").val('');
     var InterValObj; //timer变量，控制时间
     var countdown = 60; //间隔函数，1秒执行
     //        var curCount; //当前剩余秒数
@@ -253,7 +255,6 @@
 
     //无账号注册并绑定
     $(document).delegate('.sub-btn-register','click',function(){
-        alert('无账号注册并绑定');return;
         if (!$("#action").is(':checked')) {
             return false;
         }
@@ -267,7 +268,7 @@
             password: window.btoa($("#password").val()),
             messCode: $("#messCode").val()
         };
-        Ajax.call("{{url('/userRegister')}}", params, function (result){
+        Ajax.call("{{url('/login/createNewUser')}}", params, function (result){
             if (result.code == 1) {
                 window.location.href = result.url;
             }else{
@@ -278,21 +279,19 @@
     });
     //有账号直接绑定
     $(document).delegate('.sub-btn','click',function(){
-        alert('有账号直接绑定');return;
         if (!$("#action").is(':checked')) {
             return false;
         }
         phoneValidate();
-        verifyValidate ();
-        if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
+//        verifyValidate ();
+        if (!checkAccount || !pwdValidate()) {
             return false;
         }
         params = {
-            accountName: $("#phone").val(),
+            username: $("#phone").val(),
             password: window.btoa($("#password").val()),
-            messCode: $("#messCode").val()
         };
-        Ajax.call("{{url('/userRegister')}}", params, function (result){
+        Ajax.call("{{url('/login/createThird')}}", params, function (result){
             if (result.code == 1) {
                 window.location.href = result.url;
             }else{

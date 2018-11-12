@@ -118,6 +118,7 @@ class ShopGoodsQuoteRepo
                 $query = $query->orderBy($c, $d);
             }
         }
+//        dd($query->toSql());
         if ($page_size > 0) {
             $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
         } else {

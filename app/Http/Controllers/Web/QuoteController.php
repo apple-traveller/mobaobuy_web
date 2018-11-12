@@ -31,7 +31,7 @@ class QuoteController extends Controller
         $currpage = $request->input("currpage",1);
         $highest = $request->input("highest");
         $lowest = $request->input("lowest");
-        $orderType = $request->input("orderType","b.id:asc");
+        $orderType = $request->input("orderType","b.add_time:desc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $cat_name = $request->input('cat_name',"");
@@ -62,13 +62,9 @@ class QuoteController extends Controller
         }
 
         if(!empty($brand_id)){
-//            $goods_id = BrandService::getGoodsIds($brand_name);
-//            $condition['goods_id'] = implode('|',$goods_id);
             $condition['g.brand_id'] = $brand_id;
         }
         if(!empty($cate_id)){
-//            $goods_id = GoodsCategoryService::getGoodsIds($cate_id);
-//            $condition['goods_id'] = implode('|',$goods_id);
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
@@ -83,11 +79,14 @@ class QuoteController extends Controller
             $con['cat.cat_name'] = '%'.$keyword.'%';
             $condition[] = $con;
         }
-
+        $orderBy = [];
+        if(!empty($orderType)){
+            $t = explode(":",$orderType);
+            $orderBy[$t[0]] = $t[1];
+        }
         $pageSize = 10;
-
         //产品报价列表
-        $goodsList= ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
+        $goodsList= ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
 
         return $this->display("web.quote.list",[
             'search_data'=>$goodsList,
@@ -114,7 +113,7 @@ class QuoteController extends Controller
         $sort_goods_number = $request->input("sort_goods_number",'');
         $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
-        $orderType = $request->input("orderType","b.id:asc");
+        $orderType = $request->input("orderType","b.add_time:desc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
@@ -130,7 +129,7 @@ class QuoteController extends Controller
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-        if(!empty($orderType)){
+        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
             $t = explode(":",$orderType);
             $orderBy[$t[0]] = $t[1];
         }

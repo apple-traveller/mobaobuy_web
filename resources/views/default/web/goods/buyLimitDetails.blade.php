@@ -16,6 +16,7 @@
 @section('js')
 	{{--<script src="{{asset('plugs/layui/layui.all.js')}}"></script>--}}
 	{{--<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>--}}
+	<script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.js"></script>
 	<script type="text/javascript">
         $(function(){
             $(".nav-cate").hover(function(){
@@ -87,9 +88,72 @@
 
 
             })
+
+
+
+            //折线图
+            var myChart = echarts.init(document.getElementById('price_zst'));
+		    // 指定图表的配置项和数据
+		    var option = {
+		        title: {
+		            text: ''
+		        },
+		        tooltip: {
+		            trigger: 'axis'
+		        },
+		        legend: {
+		            data:["{{$goodsInfo['goods_name']}}"]
+		        },
+		        grid: {
+		            left: '3%',
+		            right: '4%',
+		            bottom: '3%',
+		            containLabel: true
+		        },
+		        xAxis: {
+		            type: 'category',
+		            boundaryGap: false,
+		            data:[]
+		        },
+		        yAxis: {
+		            type: 'value'
+		        },
+		        series: [
+		            {
+		                name:"{{$goodsInfo['goods_name']}}",
+		                type:'line',
+		                stack: '价格',
+		                data:[]
+		            }
+		        ]
+		    };
+
+		    // 使用刚指定的配置项和数据显示图表。
+		    myChart.setOption(option);
+
+		    $.get('/price/ajaxcharts?id={{$goodsInfo['id']}}').done(function (data) {
+		    	console.log(data);
+		    	
+		    	myChart.setOption({
+		            xAxis: {
+		                data: data.data.time
+		            },
+		            series: [{
+		                // 根据名字对应到相应的系列
+		                data: data.data.price
+		            }]
+		        });
+		    	
+		        
+		    })
         })
 
         function collectGoods(obj){
+            var userId = "{{session('_web_user_id')}}";
+            if(userId==""){
+                $.msg.error("未登录",1);
+                return false;
+            }
             var id = $(obj).attr('id');
             if(id>0){
                 $.ajax({
@@ -150,7 +214,7 @@
 				<h1 class="pro_chart_title">
 					商品价格走势
 				</h1>
-				<div class="pro_chart_img">
+				<div class="pro_chart_img" id="price_zst">
 
 				</div>
 				<div>
