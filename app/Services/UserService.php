@@ -348,34 +348,18 @@ class UserService
     }
 
     //修改用户信息
-    public static function modify($data)
+    public static function modify($userId,$data)
     {
-        $userData['nick_name'] = $data['nick_name'];
-        $userData['email'] = $data['email'];
         try{
-            self::beginTransaction();
             //修改用户表
-            $info = UserRepo::modify($data['id'],$userData);
-            //修改user_real表
-            $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$data['id']]);
-            if(empty($userRealInfo)){
-                $info['real_name'] = '';
-            }else{
-                $userRealResult = UserRealRepo::modify($userRealInfo['id'],['real_name'=>$data['real_name']]);
-                $info['real_name'] = $userRealResult['real_name'];
-            }
-
+            $info = UserRepo::modify($userId,$data);
             if($info){
                 unset($info['password']);
             }
-            self::commit();
             return $info;
         }catch (\Exception $e){
-            self::rollBack();
             throw $e;
-
         }
-
     }
 
     //修改默认收获地址

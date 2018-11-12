@@ -264,7 +264,7 @@
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ $v['account_money'] }} @endif</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="orange">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ number_format($v['account_money'],2) }} @endif</span>
 			</li>
 			@endforeach
 		</ul>
