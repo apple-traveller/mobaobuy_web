@@ -192,7 +192,8 @@
             }
             params = {
                 password: window.btoa($("#password").val()),
-                messCode: $("#messCode").val()
+                messCode: $("#messCode").val(),
+                accountName: $('#accountName').val()
             };
             Ajax.call("{{url('/findPwd')}}", params, function (result){
                 if (result.code == 1) {

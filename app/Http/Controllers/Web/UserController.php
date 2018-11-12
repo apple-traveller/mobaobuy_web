@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 
+use App\Repositories\RegionRepo;
 use App\Services\CartService;
 use App\Services\UserAddressService;
 
@@ -603,8 +604,7 @@ class UserController extends Controller
         $type = 'sms_find_signin';
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-
-        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+        Cache::put(session()->getId().$type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
 
         return $this->success();
@@ -973,5 +973,23 @@ class UserController extends Controller
         } else {
             return $this->error('修改失败');
         }
+    }
+
+    //会员卖货
+    public function sale(Request $request){
+        $userId = session('_web_user_id');
+        $saleData = $request->all();
+        $saleData['user_id'] = $userId;
+        if($request->isMethod('get')){
+            return $this->display('web.user.account.userSale');
+        }else{
+            try{
+                UserService::sale($saleData);
+                return $this->success();
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+
     }
 }

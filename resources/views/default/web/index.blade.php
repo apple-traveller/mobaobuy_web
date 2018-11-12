@@ -160,7 +160,7 @@
                 @foreach($goodsList['list'] as $vo)
                     <li>
                        <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
-                        <span class="ovh" style="width:13%;">{{$vo['cat_name']}}</span>
+                        <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:13%;">{{$vo['cat_name']}}</span>
                         <span style="width:18%;"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                         <span style="width:13%;">{{$vo['goods_number']}}</span>
                         <span style="width:13%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>

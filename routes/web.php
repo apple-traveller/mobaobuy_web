@@ -415,7 +415,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
-
+        Route::get('/sale','UserController@sale');// 我要卖货
+        Route::post('/sale','UserController@sale');// 我要卖货
     });
 });
 
