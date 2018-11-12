@@ -49,6 +49,7 @@
                                     <th width="5%"><div class="tDiv">发货状态</div></th>
                                     <th width="5%"><div class="tDiv">运费</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
+                                    <th width="5%"><div class="tDiv">付款方式</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
@@ -94,6 +95,7 @@
                                         </td>
                                         <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
+                                        <td><div class="tDiv">@if($vo['pay_type']==1) 先款后货 @elseif($vo['pay_type']==2) 先货后款 @endif </div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/seller/order/detail?id={{$vo['id']}}&currentPage={{$currentPage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>

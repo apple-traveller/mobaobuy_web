@@ -56,6 +56,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/user/addForm', 'UserController@addForm');//添加用户
         Route::post('/user/save', 'UserController@save');//保存
         Route::get('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
+        Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
 
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -284,6 +285,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
+
+    //price/ajaxcharts?id={{$price_id}}  Product trend
+    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
+
     Route::group(['middleware' => 'web.auth'], function () {
 
 
@@ -424,7 +429,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
         Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
-
+        Route::get('/sale','UserController@sale');// 我要卖货
+        Route::post('/sale','UserController@sale');// 我要卖货
     });
 });
 
@@ -507,9 +513,24 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/invoice/cancelInvoice', 'InvoiceController@cancelInvoice'); // 作废 - 动作
     });
 });
+//小程序接口
+Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
+    Route::post('/register', 'LoginController@register');
+    Route::post('/sendRegisterSms', 'LoginController@sendRegisterSms');//手机验证码
+    Route::post('/login', 'LoginController@login');
+    Route::group(['middleware' => 'api.auth'], function () {
+        Route::get('/', 'IndexController@index');
+        Route::get('/home', 'IndexController@home');
+        Route::get('/logout', 'LoginController@logout');
+        Route::get('/detail', 'IndexController@detail');
+        Route::post('/updateCash', 'IndexController@updateCash');
+    });
+});
+
 
 Route::pattern('path','.+');
 Route::any('{path}', 'CommonController@route');
+
 
 
 

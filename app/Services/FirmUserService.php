@@ -189,5 +189,14 @@ class FirmUserService
         return UserRepo::modify($userId,['need_approval'=>$approvalId]);
     }
 
+    /**
+     * 详情
+     * @param $Firm_id
+     * @return array
+     */
+    public static function getFirmInfo($Firm_id)
+    {
+        return FirmUserRepo::getInfo($Firm_id);
+    }
 
 }

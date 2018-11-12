@@ -380,4 +380,15 @@ class GoodsController extends Controller
            return $this->error($e->getMessage());
        }
     }
+
+    //商品走势图
+    public function productTrend(Request $request){
+        $goodsId = $request->input('id');
+        try{
+            $goodsList = GoodsService::productTrend($goodsId);
+            return $this->success('','',$goodsList);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 }

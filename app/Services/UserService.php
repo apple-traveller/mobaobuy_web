@@ -12,6 +12,7 @@ use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Repositories\UserPaypwdRepo;
+use App\Repositories\UserSaleRepo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -308,6 +309,12 @@ class UserService
     //删除搜藏商品
     public static function delCollectGoods($id){
         return UserCollectGoodsRepo::delete($id);
+    }
+
+    //我要卖货提交
+    public static function sale($data){
+        $data['add_time'] = Carbon::now();
+        return UserSaleRepo::create($data);
     }
 
     //后台

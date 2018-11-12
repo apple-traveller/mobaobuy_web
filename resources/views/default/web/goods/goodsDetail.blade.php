@@ -37,6 +37,7 @@
 
 @endsection
 @section('js')
+<script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.js"></script>
 <script type="text/javascript" src="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"> </script>
     <link href="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" rel="stylesheet" type="text/css"/>
 	<script>
@@ -94,6 +95,62 @@
 
             //隐藏原料分类
             $('.ass_menu').hide();
+
+            //折线图
+            var myChart = echarts.init(document.getElementById('price_zst'));
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:["{{$good_info['goods_name']}}"]
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data:[]
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:"{{$good_info['goods_name']}}",
+                        type:'line',
+                        stack: '价格',
+                        data:[]
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+
+            $.get('/price/ajaxcharts?id={{$good_info['goods_id']}}').done(function (data) {
+                console.log(data);
+                
+                myChart.setOption({
+                    xAxis: {
+                        data: data.data.time
+                    },
+                    series: [{
+                        // 根据名字对应到相应的系列
+                        data: data.data.price
+                    }]
+                });
+                
+                
+            })
         })
 	</script>
 @endsection
@@ -106,7 +163,7 @@
 			<h1 class="pro_chart_title">
 				商品价格走势
 			</h1>
-			<div class="pro_chart_img">
+			<div class="pro_chart_img" id="price_zst">
 
 			</div>
 
