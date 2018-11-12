@@ -9,6 +9,7 @@ use App\Services\ShopService;
 use App\Services\UserService;
 use App\Services\ShopUserService;
 use App\Services\AdminService;
+use App\Services\GsxxService;
 class ShopController extends Controller
 {
     //列表
@@ -199,4 +200,17 @@ class ShopController extends Controller
             return $this->result('',400,'没有用户可以选择');
         }
     }
+
+    //调用企查查
+    public function GsSearch(Request $request)
+    {
+        $company_name = $request->input("company_name");
+        $flag = GsxxService::GsSearch($company_name);
+        if($flag){
+            return $this->result($flag,200,'该企业存在');
+        }else{
+            return $this->result('',400,'该企业不存在');
+        }
+    }
+
 }

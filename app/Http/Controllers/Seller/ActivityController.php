@@ -51,13 +51,7 @@ class ActivityController extends Controller
             $promote_info = [];
             $good = [];
         }
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
-
-        return $this->display('seller.activity.edit',[
-            'goodsCatTree'=>$goodsCatTree,
-            'goods'=>$goods['list'],
+         return $this->display('seller.activity.edit',[
             'currentPage' => $currentPage,
             'promote_info' => $promote_info,
             'good' => $good

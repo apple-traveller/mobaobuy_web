@@ -27,7 +27,6 @@
                                 </div>
                             </div>
 
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
                                 <div class="label_value">
@@ -91,6 +90,15 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装规格：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_spec" class="text" value="" maxlength="40" autocomplete="off" id="packing_spec">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content" class="text" value="" maxlength="40" autocomplete="off" id="goods_content">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -371,6 +379,9 @@
                     cat_id:{
                         required:true
                     },
+                    goods_content:{
+                        required :true,
+                    }
 
                 },
                 messages:{
@@ -408,6 +419,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },
                     cat_id:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                 }

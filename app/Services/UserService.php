@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\AppUsersRepo;
 use App\Repositories\FirmUserRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\FirmBlacklistRepo;
@@ -240,9 +241,6 @@ class UserService
         }
     }
 
-
-
-
     //显示用户收获地
     public static function shopAddressList($condi){
         $userAddressInfo = UserAddressRepo::getList($order=[],$condi);
@@ -316,11 +314,8 @@ class UserService
     //我要卖货提交
     public static function sale($data){
         $data['add_time'] = Carbon::now();
-//        dd($data);
         return UserSaleRepo::create($data);
     }
-
-
 
     //后台
     //获取用户列表(导出excel表)
@@ -346,7 +341,12 @@ class UserService
         return $info;
     }
 
-    
+    //修改
+    public static function modifyNeedApproval($data)
+    {
+        return UserRepo::modify($data['id'],$data);
+    }
+
     //修改用户信息
     public static function modify($data)
     {
@@ -388,14 +388,12 @@ class UserService
         return UserRepo::getInfo($id);
     }
 
-
     public static function getInfo($id)
   {
         $info = UserRepo::getInfo($id);
         unset($info['password']);
         return $info;
    }
-
 
     //获取指定字段的所有数据
     public static function getUsersByColumn($condition,$column)
@@ -500,4 +498,8 @@ class UserService
         return $users;
     }
 
+    public static function getAppUserInfo($condition)
+    {
+        return AppUsersRepo::getInfoByFields($condition);
+    }
 }

@@ -139,12 +139,24 @@
                 <h1 class="ml20 mt15 fs16 fwb">成交动态</h1>
                 <div class="trans_marquee">
                     <ul class="Tran_dynamics_list">
-                    @foreach($trans_list as $item)
-                        <li>
-                            <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
-                            <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
-                        </li>
-                    @endforeach
+                        @if(!empty($trans_list))
+                            @foreach($trans_list as $item)
+                                <li>
+                                    <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
+                                    <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
+                                </li>
+                            @endforeach
+                        @endif
+                        @if(!empty($trans_false_list))
+                            @foreach($trans_false_list as $item)
+                                @if($item['add_time'] <= \Carbon\Carbon::now())
+                                    <li>
+                                        <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
+                                        <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @endif
                     </ul>
                 </div>
             </div>

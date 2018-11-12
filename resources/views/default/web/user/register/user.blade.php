@@ -103,7 +103,7 @@
             } else {
                 checkAccount = true;
             }
-        }, "POST", "JSON");
+        }, "POST", "JSON",false);
     }
 
     // 密码格式检查
@@ -152,7 +152,7 @@
                 gv();
                 $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
             }
-        }, "POST", "JSON");
+        }, "POST", "JSON",false);
     }
     //  手机验证码格式检查
     function msgCodeValidate() {
@@ -225,6 +225,7 @@
         }
         phoneValidate();
         verifyValidate ();
+
         if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
             return false;
         }

@@ -152,5 +152,14 @@ if(!function_exists('getRealNameBool')){
         return false;
     }
 }
+if(!function_exists('timeFormat')){
+    function timeFormat($res)
+    {
+        if($res <= 9){
+            return '0'.$res;
+        }
+        return $res;
+    }
+}
 
 

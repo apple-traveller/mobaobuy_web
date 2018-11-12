@@ -190,7 +190,8 @@
                                         <thead>
                                         <tr>
                                             <th width="15%" class="first">商品名称 [ 品牌 ]</th>
-                                            <th width="15%">商品编码</th>
+                                            <th width="10%">商品编码</th>
+                                            <th width="15%">店铺</th>
                                             <th width="10%">价格</th>
                                             <th width="10%">购买数量</th>
                                             <th width="10%">已发货数量</th>
@@ -201,6 +202,7 @@
                                         <tr>
                                             <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
                                             <td>{{$vo['goods_sn']}}</td>
+                                            <td>{{$orderInfo['shop_name']}}</td>
                                             <td>{{$vo['goods_price']}}</td>
                                             <td>{{$vo['goods_number']}}</td>
                                             <td>{{$vo['send_number']}}</td>

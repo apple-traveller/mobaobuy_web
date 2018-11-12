@@ -22,7 +22,7 @@ class ShopGoodsQuoteController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
         $shop_id = session('_seller_id')['shop_id'];

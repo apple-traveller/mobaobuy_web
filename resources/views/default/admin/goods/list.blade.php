@@ -36,7 +36,7 @@
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
                                     <th width="5%"><div class="tDiv">商品编码</div></th>
-                                    <th><div class="tDiv">商品名称</div></th>
+                                    <th width="15%"><div class="tDiv">商品全称</div></th>
                                     <th width="10%"><div class="tDiv">所属品牌</div></th>
                                     <th width="1%"><div class="tDiv">单位</div></th>
                                     <th width="8%"><div class="tDiv">商品型号</div></th>
@@ -49,7 +49,7 @@
                                 <tr class="">
                                     <td><div class="tDiv">{{$vo['id']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_model']}}</div></td>

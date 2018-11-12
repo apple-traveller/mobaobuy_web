@@ -23,7 +23,7 @@ class ShopOrderController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currentPage = $request->input("currentPage", 1);
         $order_sn = $request->input('order_sn','');
@@ -120,6 +120,7 @@ class ShopOrderController extends Controller
         $order_status = $request->input('order_status', '');
         $pay_status = $request->input('pay_status','');
         $action_note = $request->input('action_note', '');
+        $delivery_period = $request->input('delivery_period','');
         $where = [
             'id' => $id,
             'shop_id' => $shop_id
@@ -127,17 +128,26 @@ class ShopOrderController extends Controller
         // 判断订单是否存在
         try {
             $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
-            if ($orderInfo['extension_code'] == '' && $data['order_status'] =3){
-                $re_rock =  ShopGoodsQuoteService::updateStock($id);
-            }
-            if (!$re_rock){
-                return $this->error('库存不足，无法确认');
+            if ($order_status ==3){
+                if ($orderInfo['extension_code'] == ''){
+                    $re_rock =  ShopGoodsQuoteService::updateStock($id);
+                    if (!$re_rock){
+                        return $this->error('库存不足，无法确认');
+                    }
+                }
+                if ($orderInfo['order_status'] !=2){
+                    return $this->error('订单状态不符合执行该操作的条件');
+                }
             }
             if (!empty($orderInfo)) {
                 $data = [
                     'id' => $id,
                     'confirm_time' => Carbon::now()
                 ];
+                // 交货时间
+                if (!empty($delivery_period)){
+                    $data['delivery_period'] = $delivery_period;
+                }
                 if (!empty($order_status)){
                     $data['order_status'] = $order_status;
                 }
@@ -176,7 +186,6 @@ class ShopOrderController extends Controller
                 return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
         }catch (\Exception $e){
-            dd($e->getMessage());
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }

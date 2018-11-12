@@ -129,6 +129,22 @@ class ShopGoodsQuoteRepo
         $rs['totalPage'] = ceil($rs['total'] / $page_size);
         return $rs;
     }
-    
+
+    //获取随机报价
+    public static function getRandList($take = 5)
+    {
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $res = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->select('b.*','g.packing_spec')
+            ->take($take)
+            ->get();
+        if($res){
+            return $res->toArray();
+        }
+        return [];
+    }
+
 }
 

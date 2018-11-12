@@ -19,6 +19,11 @@
                         <form method="post" action="" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品全称：</div>
+                                <div class="label_value font14">{{$good['goods_full_name']}}</div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value font14">{{$good['goods_name']}}</div>
                             </div>
@@ -57,6 +62,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
                                 <div class="label_value font14">{{$good['goods_model']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label_value font14">{{$good['goods_content']}}</div>
                             </div>
 
                             <div class="item">
