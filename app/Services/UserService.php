@@ -348,38 +348,23 @@ class UserService
     }
 
     //修改用户信息
-    public static function modify($data)
+    public static function modify($userId,$data)
     {
-        $userData['nick_name'] = $data['nick_name'];
-        $userData['email'] = $data['email'];
         try{
-            self::beginTransaction();
             //修改用户表
-            $info = UserRepo::modify($data['id'],$userData);
-            //修改user_real表
-            $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$data['id']]);
-            if(empty($userRealInfo)){
-                $info['real_name'] = '';
-            }else{
-                $userRealResult = UserRealRepo::modify($userRealInfo['id'],['real_name'=>$data['real_name']]);
-                $info['real_name'] = $userRealResult['real_name'];
-            }
-
+            $info = UserRepo::modify($userId,$data);
             if($info){
                 unset($info['password']);
             }
-            self::commit();
             return $info;
         }catch (\Exception $e){
-            self::rollBack();
             throw $e;
-
         }
-
     }
 
     //修改默认收获地址
-    public static function updateDefaultAddress($data){
+    public static function updateDefaultAddress($data)
+    {
         return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
@@ -389,7 +374,7 @@ class UserService
     }
 
     public static function getInfo($id)
-  {
+   {
         $info = UserRepo::getInfo($id);
         unset($info['password']);
         return $info;
@@ -511,12 +496,25 @@ class UserService
     public static function getUserSaleList($pager, $condition)
     {
         $list = UserSaleRepo::getListBySearch($pager, $condition);
-        foreach ($list['list'] as $k=>$v){
-             $userInfo = self::getUserInfo($v['user_id']);
-             $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
-             $list['list'][$k]['user_name'] = $userInfo['user_name'];
+        foreach ($list['list'] as $k => $v) {
+            $userInfo = self::getUserInfo($v['user_id']);
+            $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+            $list['list'][$k]['user_name'] = $userInfo['user_name'];
         }
         unset($userInfo);
         return $list;
+    }
+    //获取用户详细信息（小程序接口）
+    public static function getApiUserInfo($id)
+    {
+        $user = UserService::getInfo($id);
+        $user_real = UserRealRepo::getInfoByFields(['user_id' => $id]);
+        if (empty($user_real)) {
+            $user['user_real'] = "";
+            return $user;
+        } else {
+            $user['user_real'] = $user_real;
+            return $user;
+        }
     }
 }

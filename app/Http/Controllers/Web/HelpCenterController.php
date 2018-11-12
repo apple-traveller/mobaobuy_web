@@ -37,9 +37,8 @@ class HelpCenterController extends Controller
            $cat_id .= '|'.$v1['id'];
        }
         $list = ArticleService::getList(['cat_id'=>$cat_id]);
-
         if (!empty($cat_list)){
-            return $this->success('success','',$cat_list);
+            return $this->success('success','',$list);
         } else {
             return $this->error('数据为空');
         }

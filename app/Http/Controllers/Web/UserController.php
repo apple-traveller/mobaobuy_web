@@ -689,13 +689,14 @@ class UserController extends Controller
     //保存
     public function saveUser(Request $request)
     {
+//        dump(session('_web_user'));
+//        dump(session('_web_user_id'));
         $params = $request->all();
-//        dd($params);
         try{
             $data = [];
             $data['email'] = $params['email'];
             $data['nick_name'] = $params['nick_name'];
-            $data['id'] = session('_web_user_id');
+            $userId = session('_web_user_id');
             $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
             if(!preg_match($pattern,$data['email'])){
                 return $this->error('邮箱格式有误!');
@@ -703,24 +704,26 @@ class UserController extends Controller
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
-            }else{
-                //个人，可以修改昵称
-                if(isset($data['real_name'])){
-                    $data['real_name'] = $params['real_name'];
-                }
-
             }
-            $flag = UserService::modify($data);
+            $flag = UserService::modify($userId,$data);
+//            dump($flag);
 
-            if($flag){
-                $firms = session('_web_user')['firms'];
-                $flag['firms'] = $firms;
+            if(!$flag['is_firm']){
+                if(isset(session('_web_user')['firms'])){
+                    $firms = session('_web_user')['firms'];
+                    $flag['firms'] = $firms;
+                    session()->put('_web_user', $flag);
+                }else{
+                    session()->put('_web_user', $flag);
+                }
+                return $this->success('保存成功', '', $flag);
+            }else{
+//                dd(123);
                 session()->put('_web_user', $flag);
+//                dd(session('_web_user'));
                 return $this->success('保存成功', '', $flag);
             }
-            return $this->success('保存失败', '', $flag);
         }catch(\Exception $e){
-            //return $this->result('',0,$e->getLine().$e->getMessage());
             return $this->success('保存失败', '', $flag);
         }
 

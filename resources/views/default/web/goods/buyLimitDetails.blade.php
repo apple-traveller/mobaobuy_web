@@ -164,8 +164,6 @@
                     },
                     type:"POST",
                     success:function(data){
-                        console.log(data);
-                        return;
                         if(data.code){
                             $.msg.alert('收藏成功');
                         }else{

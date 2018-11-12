@@ -137,7 +137,7 @@
             myChart.setOption(option);
 
             $.get('/price/ajaxcharts?id={{$good_info['goods_id']}}').done(function (data) {
-                console.log(data);
+                // console.log(data);
                 
                 myChart.setOption({
                     xAxis: {
@@ -158,7 +158,7 @@
 @section('content')
     <div class="clearfix">
 	<div class="w1200 pr ovh">
-		<div class="crumbs mt5">当前位置：<a href="/">产品详情</a> &gt; <a href="/subject/list/56/page/1.html">产品详情</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
+		<div class="crumbs mt5">当前位置：<a href="/goodsList">产品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
 			<h1 class="pro_chart_title">
 				商品价格走势

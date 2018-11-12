@@ -81,7 +81,9 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/seller/delivery/detail?id={{$vo['id']}}&currentPage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                                <a href="javascript:void(0);" id="sendHock" data-id="{{$vo['id']}}" title="发货" class="btn_see"><i class="sc_icon sc_icon_see"></i>发货</a>
+                                                @if($vo['status']==0)
+                                                    <a href="javascript:void(0);" id="sendHock" data-id="{{$vo['id']}}" title="发货" class="btn_see"><i class="sc_icon sc_icon_see"></i>发货</a>
+                                                @endif
                                                 {{--<a title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>--}}
                                             </div>
                                         </td>

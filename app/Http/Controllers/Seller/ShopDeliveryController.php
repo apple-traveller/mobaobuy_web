@@ -24,7 +24,7 @@ class ShopDeliveryController extends Controller
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $order_sn = $request->input('order_sn');
-        $status = $request->input('status','');
+        $status = $request->input('status',0);
         $currentPage = $request->input('currentPage', 1);
         $pageSize = 10;
         $condition = [];
@@ -32,9 +32,9 @@ class ShopDeliveryController extends Controller
         if ($order_sn != "") {
             $condition['order_sn'] = "%" . $order_sn . "%";
         }
-        if (!empty($status)){
-            $condition['status'] = $status;
-        }
+
+        $condition['status'] = $status;
+
         $deliverys = OrderInfoService::getDeliveryList(['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']], $condition);
         return $this->display('seller.delivery.list', [
             'deliverys' => $deliverys['list'],

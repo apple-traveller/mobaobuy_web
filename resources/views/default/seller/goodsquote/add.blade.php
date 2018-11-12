@@ -24,9 +24,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text" lay-search="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -263,7 +263,8 @@
         $("#goods_number").change(function () {
             let spac = $("#goods_name").attr("data-packing-spac");
             let goods_number = $(this).val();
-            if (spac >goods_number){
+            if (Number(spac) > Number(goods_number)){
+                alert(spac);
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){

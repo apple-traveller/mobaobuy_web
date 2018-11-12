@@ -6,10 +6,9 @@
             text-align: center;
             background-color: #fff;
             border-radius: 20px;
-            width: 600px;
+            width: 100%;
             height: 350px;
             margin: auto;
-            position: absolute;
             top: 200px;
             left: 100px;
         }
@@ -38,7 +37,7 @@
     </div>
     <div class="clearfix"></div>
     <!-- 内容主体区域 -->
-    <div class="layui-body">
+    <div class="layui-body ">
         <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch" >
             <ul class="layui-tab-title">
                 <li class="layui-this" >后台首页</li>
@@ -47,7 +46,7 @@
                 <div class="layui-tab-item layui-show">
 
                     <blockquote class="layui-elem-quote layui-text">
-                        <div class="main">
+                        <div class="main" >
                             <table>
                                 <tr>
                                     <td>店铺名</td>
