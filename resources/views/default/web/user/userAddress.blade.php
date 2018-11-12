@@ -191,7 +191,13 @@
 		<ul class="Receive_address">
 			@foreach($addressList as $k=>$v)
 			<li class="@if($v['is_default']==1) curr @else checked_btn @endif" data-id="{{$v['id']}}">
-				<div class="address_name mt10"><span>{{ $v['consignee'] }}</span><div class="fr red"><a class="edit_address" data_id ={{ $v['id'] }}>修改</a><a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a></div></div>
+				<div class="address_name mt10">
+					<span>{{ $v['consignee'] }}</span>
+					<div class="fr red">
+						<a class="edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}">修改</a>
+						<a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a>
+					</div>
+				</div>
 				<div class="address_info mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
 				<div class="address_default">
@@ -221,6 +227,7 @@
         $(function(){
 			//	删除
             $('.del_address').click(function(){
+                event.stopPropagation();
                 let io = $(this);
                 let id = $(this).attr('data_id');
                 $.msg.confirm("确认删除么？",
@@ -265,13 +272,15 @@
             })
 			//	编辑
 			$(".edit_address").click(function () {
+                event.stopPropagation();
                 let address_id = $(this).attr('data_id');
+                let default_id = $(this).attr('data_default_id');
                 layer.open({
 					title:'用户地址',
                     type: 2,
                     area: ['600px', '500px'],
                     maxmin: true,
-                    content: '/editAddressList?id='+address_id,
+                    content: '/editAddressList?id='+address_id+'&default_id='+default_id,
                     zIndex: layer.zIndex
                 });
             });

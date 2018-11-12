@@ -495,4 +495,9 @@ class UserService
     {
         return AppUsersRepo::getInfoByFields($condition);
     }
+
+    public static function createAppUserInfo($data)
+    {
+        return AppUsersRepo::create($data);
+    }
 }
