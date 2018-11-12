@@ -2,6 +2,62 @@
 @section('title', '首页')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/index.css')}}" />
+    <style>
+        .custom_service {
+            width: 80px;
+            margin-top: 20px;
+            line-height: 22px;
+            height: 22px;
+            position: relative;
+            z-index: 9999999;
+        }
+        .custom_service .custom_service_p {
+            cursor: pointer;
+        }
+        .custom_service .custom_service_popup {
+            position: absolute;
+            top: -95px;
+            left: -60px;
+            width: 200px;
+            height: 88px;
+            border: 1px solid #cde1f6;
+            background: #f9fdff;
+            display: none;
+        }
+        .custom_service .custom_service_popup .custom_service_popup_p {
+            /*float: left;*/
+            /*margin-left: 10px;*/
+            margin-top: 10px;
+            /*background: #e2e1df;*/
+            /*border-radius: 50%;*/
+            /*color: #afafaf;*/
+            /*overflow: hidden;*/
+            /*width: 60px;*/
+            /*height: 60px;*/
+            /*line-height: 55px;*/
+            /*font-size: 38px;*/
+        }
+        .custom_service .custom_service_popup .custom_service_popup_text {
+            text-align: left;
+            float: left;
+            width: 100%;
+            padding-left: 10px;
+            padding-top: 5px;
+        }
+        .custom_service .custom_service_popup i {
+            background: url('/default/img/custom_service2.png') no-repeat;
+            width: 24px;
+            height: 13px;
+            position: absolute;
+            bottom: -13px;
+            left: 50%;
+            margin-left: -12px;
+        }
+        .custom_service .custom_service_popup .custom_service_popup_text .sc_img {
+            float: right;
+            margin-right: 4px;
+        }
+    </style>
 @endsection
 @section('js')
     <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
@@ -26,6 +82,12 @@
                     $(this).find('.Quotate_text').animate({bottom:"0px"});
                 },function(){$(this).find('.Quotate_text').animate({bottom:"-30px"});})
             })
+
+            $('.quote_list li').hover(function(){
+                $(this).find('.custom_service_popup').show();
+            },function(){
+                $('.custom_service_popup').hide();
+            });
         })
     </script>
 @endsection
@@ -164,21 +226,47 @@
         <!--自营报价-->
         <div class="Self-support mt30">
             <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
-            <ul class="Self-product-list">
+            <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
-                    <span style="width:13%;">种类</span><span style="width:18%;">商品名称</span><span style="width:13%;">剩余数量（kg）</span><span style="width:13%;">单价（元/kg）</span><span style="width:13%;">发货地</span><span style="width:13%;">更新时间</span><span style="width:13%;">操作</span></li>
-
+                    <span style="width:12%;">种类</span>
+                    <span style="width:18%;">商品名称</span>
+                    <span style="width:12%;">剩余数量（kg）</span>
+                    <span style="width:12%;">单价（元/kg）</span>
+                    <span style="width:12%;">发货地</span>
+                    <span style="width:12%;">更新时间</span>
+                    <span style="width:6%;">联系方式</span>
+                    <span style="width:12%;">操作</span>
+                </li>
                 @foreach($goodsList['list'] as $vo)
                     <li>
                        <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
-                        <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:13%;">{{$vo['cat_name']}}</span>
+                        <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;">{{$vo['cat_name']}}</span>
                         <span style="width:18%;"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                        <span style="width:13%;">{{$vo['goods_number']}}</span>
-                        <span style="width:13%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
-                        <span style="width:13%;">{{$vo['delivery_place']}}</span>
-                        <span style="width:13%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
-                        <span style="width:13%;">
+                        <span style="width:12%;">{{$vo['goods_number']}}</span>
+                        <span style="width:12%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                        <span style="width:12%;">{{$vo['delivery_place']}}</span>
+                        <span style="width:12%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
+                        <span style="width:6%;">
+                            <div class="custom_service">
+                                <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
+                                <div class="custom_service_popup" style="display: none;">
+                                    <p class="custom_service_popup_p">联系方式</p>
+                                    <div class="custom_service_popup_text">
+                                        <p>
+                                            <span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>
+                                        <p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">
+                                            <span style="width:60px;text-align: right">
+                                                <img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
+                                            </span>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}
+                                        </p>
+                                    </div>
+                                    <i></i>
+                                </div>
+                            </div>
+                        </span>
+                        <span style="width:12%;">
                             @if($vo['goods_number'])
                                 <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                             @else
@@ -253,16 +341,36 @@
             <li>
                 <div class="clearfix"><span>{{$shop['shop_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span class="lcolor operation">展开</span></div>
                 <div class="supply_list_inside" style="display: none;">
-                    <ul>
+                    <ul class="quote_list">
                         @foreach($shop['quotes'] as $quote)
                             <li>
-                                <span>{{$quote['brand_name']}}</span>
                                 <span>{{$quote['cat_name']}}</span>
-                                <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_name']}}</a></span>
+                                {{--<span>{{$quote['goods_full_name']}}</span>--}}
+                                <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
                                 <span>{{$quote['goods_number']}}</span>
-                                <span class="lcolor fwb">{{amount_format($quote['shop_price'])}}</span>
+                                <span class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
                                 <span>{{$quote['delivery_place']}}</span>
                                 {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
+                                <span>
+                                    <div class="custom_service">
+                                        <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
+                                        <div class="custom_service_popup" style="">
+                                            <p class="custom_service_popup_p">联系方式</p>
+                                            <div class="custom_service_popup_text">
+                                                <p>
+                                                    <span style="width:60px;text-align: right">{{$quote['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$quote['contact_info']}}
+                                                </p>
+                                                <p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$quote['QQ']}}&site=qq&menu=yes');">
+                                                    <span style="width:60px;text-align: right">
+                                                        <img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
+                                                    </span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;{{$quote['QQ']}}
+                                                </p>
+                                            </div>
+                                            <i></i>
+                                        </div>
+                                    </div>
+                                </span>
                                 <span>
                                     @if($quote['goods_number'])
                                         <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>

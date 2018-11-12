@@ -58,6 +58,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
 
+        Route::get('/user/userSale', 'UserController@userSale');//会员卖货需求
+
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
         Route::post('/blacklist/save', 'FirmBlacklistController@save');//黑名单添加

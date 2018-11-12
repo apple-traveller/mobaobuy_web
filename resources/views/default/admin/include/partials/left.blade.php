@@ -49,6 +49,7 @@
                         <li class="curr"><s></s><a href="javascript:void(0);" data-url="/admin/user/list" data-param="menuplatform|03_users_list" target="workspace">会员列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/blacklist/list" data-param="menuplatform|08_unreply_msg" target="workspace">企业黑名单</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/region/list" data-param="menuplatform|12_user_address_list" target="workspace">区域维护</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/user/userSale" data-param="menuplatform|01_user_demand_list" target="workspace">会员卖货需求</a></li>
                     </ul>
                 </div>
             </div>

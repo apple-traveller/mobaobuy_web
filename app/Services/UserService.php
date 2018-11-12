@@ -497,14 +497,26 @@ class UserService
         $users['total'] = UserRepo::getTotalCount();
         return $users;
     }
-
+    //获取第三方登录信息
     public static function getAppUserInfo($condition)
     {
         return AppUsersRepo::getInfoByFields($condition);
     }
-
+    //创建第三方登录信息
     public static function createAppUserInfo($data)
     {
         return AppUsersRepo::create($data);
+    }
+
+    public static function getUserSaleList($pager, $condition)
+    {
+        $list = UserSaleRepo::getListBySearch($pager, $condition);
+        foreach ($list['list'] as $k=>$v){
+             $userInfo = self::getUserInfo($v['user_id']);
+             $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+             $list['list'][$k]['user_name'] = $userInfo['user_name'];
+        }
+        unset($userInfo);
+        return $list;
     }
 }
