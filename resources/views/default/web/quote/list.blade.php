@@ -55,7 +55,9 @@
 	<div class="w1200 pr">
 		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
             <div class="condition">
-                <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id=""><i style="cursor: pointer" class="mode_close close_brand"></i></div>
+                <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
+                    <i style="cursor: pointer" class="mode_close close_brand"></i>
+                </div>
                 @if(isset($cate_id) && isset($cat_name) && !empty($cate_id) && !empty($cat_name))
                     <div style="margin-left:20px;" class="mode_add tac ml10 condition_tag" id="cate_tag" cate_id="{{$cate_id}}">
                         {{$cat_name}}<i style="cursor: pointer" class="mode_close close_cate"></i>
@@ -65,7 +67,6 @@
                         <i style="cursor: pointer" class="mode_close close_cate"></i>
                     </div>
                 @endif
-
             </div>
 			<div class="pro_Open pro_Open_up"></div>
 			<div class="fr">共<font class="orange" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
@@ -256,7 +257,6 @@
                 , jump: function (obj, first) {
                     if (!first) {
                         getInfo(obj.curr);
-                        {{--window.location.href="/goodsList?currpage="+obj.curr+"&orderType={{$orderType}}"+"&lowest={{$lowest}}"+"&highest={{$highest}}";--}}
                     }
                 }
             });
@@ -343,12 +343,29 @@
                     var list = data.list;
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
+                    let _html = '';
                     for (var i=0;i<list.length;i++)
                     {
-                        $(".table_title").after('<li><span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span><span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span><span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span><span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span><span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span><span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span></li>');
-                        $(".news_pages").append('<ul id="page" class="pagination"></ul>');
-
+                        _html += '<li>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span>' +
+                            '<span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
+                            '<span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span>' +
+                            '<span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span>' +
+                            '<span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
+                            '<span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
+                            '</li>';
+//                        $(".table_title").after('' +
+//                            '<li>' +
+//                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span>' +
+//                            '<span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
+//                            '<span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span>' +
+//                            '<span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span>' +
+//                            '<span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
+//                            '<span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车【'+list[i].add_time+'】</button></span>' +
+//                            '</li>');
                     }
+                    $(".table_title").after(_html);
+                    $(".news_pages").append('<ul id="page" class="pagination"></ul>');
                     $('#relevant_total').text(total);
                     //分页
                     layui.use(['laypage'], function() {
@@ -377,8 +394,8 @@
     }
     //排序
     function setSort(_name){
-        var _this = $('.'+_name);
-        var _obj = $('.'+_name+' span');
+        var _this = $('.'+_name); //.goods_name
+        var _obj = $('.'+_name+' span'); //.goods_name span
         var _down_up = _obj.hasClass("sort_down_up");
         var _down = _obj.hasClass("sort_down");
         var _up = _obj.hasClass("sort_up");
