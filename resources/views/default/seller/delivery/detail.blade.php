@@ -109,21 +109,18 @@
                         </div>
 
                         <!--操作信息-->
-                        <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>发货操作信息</h3></div>
-                            <div class="step_info">
-                                <div class="order_operation order_operation100">
+                        <div class="step_info">
+                            <div class="order_operation order_operation100">
+                                @if($delivery['status'] == 0)
                                     <div class="item">
                                         <div class="label">当前可执行操作：</div>
                                         <div class="value">
                                             <input  data-content="1" type="button" value="发货" class="btn btn25 red_btn delivery_status">
                                         </div>
                                     </div>
-                                </div>
-
+                                @endif
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>

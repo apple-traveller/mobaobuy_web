@@ -298,7 +298,7 @@
         $("#goods_number").change(function () {
             let spac = $("#goods_name").attr("data-packing-spac");
             let goods_number = $(this).val();
-            if (spac >goods_number){
+            if (Number(spac) > Number(goods_number)){
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){

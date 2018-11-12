@@ -48,7 +48,7 @@
                     let cat = '';
                     res.data.map(function (item,index) {
                         if (Object.keys(item).length>0){
-                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.cat_name+'</a></li>';
+                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
                         }
                     });
                     $('.member_left_list').append(cat);

@@ -447,7 +447,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');
-        Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');

@@ -20,11 +20,11 @@
 		</select>
 
 		<select id="cityId" onchange="cityChange()" name="city">
-			
+
 		</select>
 
-		<select id="countyId"" name="district">
-			
+		<select id="countyId" name="district">
+
 		</select><br>
 		详细地址:<textarea rows="2" cols="40" placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元等信息" name="address"></textarea><br><br>
 		邮编:<input type="text" name="zipcode"><br>

@@ -6,7 +6,7 @@
 </head>
 <body class="layui-layout-body">
     @yield('body')
-    @yield('script')
+
     @yield('content')
     <script>
         layui.use('element', function(){
@@ -14,6 +14,6 @@
         });
     </script>
 </body>
-
+@yield('script')
 </html>
 

@@ -16,12 +16,7 @@
                     <div class="search">
                         <form action="/seller/quote/list" name="searchForm" >
                             <div class="input">
-                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="goods_name" id="cat_id">
-                                    <option value="0">全部商品</option>
-                                    @foreach($goods as $vo)
-                                        <option @if($vo['goods_name']==$goods_name) selected @endif  value="{{$vo['goods_name']}}">{{$vo['goods_name']}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus w180" placeholder="商品名称" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>

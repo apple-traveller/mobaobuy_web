@@ -69,7 +69,7 @@
                                 </dl>
 
                                 <dl>
-                                    <dt>购货人： <div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
+                                    <dt>购货人： </dt>
                                     <dd>@if(isset($user['nick_name'])) {{ $user['nick_name'] }} @elseif(isset($user['real_name'])) {{ $user['real_name'] }} @endif</dd>
                                     <dt>订单状态：</dt>
                                     <dd>
@@ -101,10 +101,12 @@
                                 <dl>
                                     <dt>发货时间：</dt>
                                     <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
-                                    <dt></dt>
-                                    <dd></dd>
+                                    <dt>付款方式</dt>
+                                    <dd>@if($orderInfo['pay_type']==1) 先款后货 @elseif($orderInfo['pay_type']==2) 先货后款 @endif</dd>
                                 </dl>
                                 <dl>
+                                    <dt>交货时间</dt>
+                                    <dd>{{ $orderInfo['delivery_period'] }}</dd>
                                     <dt>自动确认收货时间：</dt>
                                     <dd>
                                         <div class="editSpanInput" ectype="editSpanInput">
@@ -113,8 +115,6 @@
                                             <i class="icon icon-edit"></i>
                                         </div>
                                     </dd>
-                                    <dt>&nbsp;</dt>
-                                    <dd>&nbsp;</dd>
                                 </dl>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                                 </dl>
                                 <dl style="width:50%">
                                     <dt>收货地址：</dt>
-                                    <dd>[{{$region}}] 街道：{{$orderInfo['street']}};地址：{{$orderInfo['address']}}</dd>
+                                    <dd>[{{$region}}] 详细地址：{{$orderInfo['address']}}</dd>
                                     <dt>邮政编码：</dt>
                                     <dd>{{$orderInfo['zipcode']}}</dd>
                                 </dl>
@@ -144,7 +144,9 @@
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头:</dt>
-                                    {{--<dd>@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif </dd>--}}
+                                    <dd>
+                                        {{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}
+                                    </dd>
                                     <dt>税号:：</dt>
                                     <dd>@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
                                 </dl>
@@ -171,10 +173,10 @@
                                 </dl>
 
                                 <dl style="width:30.6%">
-                                    <dt>卖家留言：</dt>
-                                    <dd>@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
-                                    <dt>买家留言：</dt>
-                                    <dd>@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dd>
+                                    <dt style="width: 240%">卖家留言：<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
+                                    <dd style="width: 240%">@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
+                                    <dt style="width: 240%">买家留言：</dt>
+                                    <dd style="width: 240%">@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dd>
                                 </dl>
                             </div>
                         </div>
@@ -258,9 +260,9 @@
                                 </dl>
                                 <dl>
                                     <dt>订单总金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']}}</dd>
+                                    <dd class="red"><em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'],2)}}</dd>
                                     <dt>应付款金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid']}}</dd>
+                                    <dd class="red"><em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'],2)}}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -349,7 +351,7 @@
                     type: 1,
                     title: '卖家留言',
                     area: ['350px', '220px'],
-                    offset: ['300px', '450px'],
+
                     content: '<div class="label_value">' +
                     '<textarea style="margin: 10px;" name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+'{{ $orderInfo['to_buyer'] }}'+'</textarea>' +
                     '<button style="margin-left:150px;" class="button messageButton">确定</button></div>'
