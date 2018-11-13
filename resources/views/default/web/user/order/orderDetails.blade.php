@@ -57,7 +57,7 @@
 	</div>
     <div class=" clearfix mt5">
 		<div class="w1200">
-			<div class="crumbs">当前位置：<a href="/">会员中心</a> &gt;<span class="gray">订单详情</span></div>
+			<div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
 		<div class="order_pro_progress whitebg mt5">
 			<div class="order_pro_stute">
 				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
@@ -111,17 +111,22 @@
 	    		<span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span></span>
 	    		<span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr"> {{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}</span></span>
 	    		<span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span></span>
+	    		<span class="ml20 db mt20"><span class="fl">买家留言: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span></span>
 	    	</div>
 	    	<!--商家信息-->
 	    	<div class="consignee bbright">
 	    		<h1>商家信息</h1>
 	    		<span class="ml20 db mt20" style="margin-right: 266px;"><span class="fl">公司名称 :</span> <span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span></span>
-	    		<span class="ml20 db "><span class="fl">联系方式 :</span> <span class="ml10"></span></span>
+	    		<span class="ml20 db "><span class="fl">卖家留言 :</span> <span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span></span>
 	    	</div>
 	    	<!--发票信息-->
 	    	<div class="consignee ">
 	    		<h1>发票信息</h1>
-	    		<span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10"></span></span>
+	    		<span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10">@if($orderDetailsInfo['userInvoceInfo']['is_firm']) 企业 @else个人 @endif</span></span>
+	    		@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
+	    		<span class="ml20 db "><span class="fl">公司名称 :</span> <span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['company_name']}}</span></span>
+	    		<span class="ml20 db "><span class="fl">税号 :</span> <span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['tax_id']}}</span></span>
+	    		@endif
 	    	</div>
 	    </div>
 	    <!--订单列表-->

@@ -13,6 +13,7 @@ use App\Repositories\OrderActionLogRepo;
 use App\Repositories\ShippingRepo;
 use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
+use App\Repositories\UserRealRepo;
 use App\Repositories\UserRepo;
 use Carbon\Carbon;
 use League\Flysystem\Exception;
@@ -551,7 +552,7 @@ class OrderInfoService
         $district = RegionRepo::getInfo($orderInfo['district']);
 
         //获取会员发票信息
-        $userInvoceInfo = UserInvoicesRepo::getInfo($orderInfo['invoice_id']);
+        $userInvoceInfo = UserRealRepo::getInfoByFields(['user_id'=>$orderInfo['user_id']]);
         return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
     }
 
@@ -695,6 +696,7 @@ class OrderInfoService
                         'order_id'=>$orderInfoResult['id'],
                         'goods_id'=>$v['goods_id'],
                         'goods_name'=>$v['goods_name'],
+                        'shop_goods_quote_id'=>$activityPromoteInfo['id'],
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number'=>$v['goods_number'],
                         'goods_price'=>$v['goods_price'],

@@ -26,24 +26,22 @@ class ShopGoodsQuoteController extends Controller
     {
         $currentPage = $request->input('currentPage',1);
         $shop_id = session('_seller_id')['shop_id'];
-        $goos_name = $request->input('goods_name','');
+        $goods_name = $request->input('goods_name','');
         $condition = [];
         if(!empty($shop_id)){
             $condition['shop_id']= $shop_id;
         }
-        if ($goos_name){
-            $condition['goods_name'] = "%".$goos_name."%";
+        if ($goods_name){
+            $condition['b.goods_name'] = "%".$goods_name."%";
         }
         $pageSize =5;
-        $goods_list = ShopGoodsQuoteService::getQuoteGoods($shop_id);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
             'currentPage'=>$currentPage,
-            'goods_name'=>$goos_name,
-            'pageSize'=>$pageSize,
-            'goods'=>$goods_list
+            'goods_name'=>$goods_name,
+            'pageSize'=>$pageSize
         ]);
     }
 

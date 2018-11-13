@@ -58,6 +58,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
 
+        Route::get('/user/userSale', 'UserController@userSale');//会员卖货需求
+
         Route::any('/blacklist/list', 'FirmBlacklistController@list');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
         Route::post('/blacklist/save', 'FirmBlacklistController@save');//黑名单添加
@@ -389,6 +391,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/editOrderAddress','GoodsController@editOrderAddress');//选择订单地址
 
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
+        Route::post('/buyLimitMaxLimit','ActivityPromoteController@buyLimitMaxLimit'); //抢购最大限购数量
 
         Route::group(['middleware'=>'web.firmUserAuth'],function(){
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
@@ -447,7 +450,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');
-        Route::get('/home', 'IndexController@home');
         Route::get('/logout', 'LoginController@logout');
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');

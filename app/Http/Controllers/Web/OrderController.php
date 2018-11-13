@@ -276,8 +276,6 @@ class OrderController extends Controller
             }
 
             $goods_amount = $goodsList[0]['account_money'];
-            $goods_amount = number_format($goods_amount,2);
-
             return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount','id'));
         }else{
             //购物车
