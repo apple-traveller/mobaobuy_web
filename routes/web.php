@@ -515,21 +515,32 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 });
 //小程序接口
 Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
+
     Route::post('/register', 'LoginController@register');//注册
     Route::post('/sendRegisterSms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
     Route::post('/login', 'LoginController@login');//登录
     Route::post('/updatePass', 'LoginController@updatePass');//忘记密码
     Route::post('/sendFindPwdSms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
-    Route::get('/index', 'IndexController@index');
-    Route::post('/user/detail', 'UserController@detail');
-    Route::post('/goods/list', 'GoodsController@list');//产品报价列表
-    /*Route::group(['middleware' => 'api.auth'], function () {
-        Route::get('/', 'IndexController@index');
-        Route::get('/home', 'IndexController@home');
-        Route::get('/logout', 'LoginController@logout');
-        Route::get('/detail', 'IndexController@detail');
-        Route::post('/updateCash', 'IndexController@updateCash');
-    });*/
+
+    Route::get('/index/banner', 'IndexController@getBannerAd');//首页轮播
+    Route::get('/index/trans_list', 'IndexController@getTransList');//首页成交动态
+    Route::get('/index/promote_list', 'IndexController@getPromoteList');//首页优惠活动
+    Route::get('/index/goods_quote_list', 'IndexController@getGoodsQuoteList');//首页自营报价
+    Route::get('/index/goods_list', 'IndexController@getGoodsList');//首页商品列表
+    Route::get('/index/article_list', 'IndexController@getArticleList');//首页商品列表
+
+    Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
+    Route::post('/goods/list', 'GoodsController@getList');//商品报价列表
+    Route::post('/goods/detail', 'GoodsController@detail');//商品详情
+    Route::post('/goods/ajaxcharts','GoodsController@productTrend');//价格走势图
+
+    Route::group(['middleware' => 'api.auth'], function () {
+        Route::post('/user/detail', 'UserController@detail');//用户个人信息
+
+
+        Route::post('/cart/add', 'GoodsController@addCart');//加入购物车
+        Route::post('/cart/list', 'GoodsController@getCartList');//加入购物车
+    });
 });
 
 
