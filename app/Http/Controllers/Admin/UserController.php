@@ -270,5 +270,23 @@ class UserController extends Controller
         return $this->display('admin.user.adduserreal');
     }
 
-
+    //会员卖货需求
+    public function userSale(Request $request)
+    {
+        $user_name = $request->input('user_name','');
+        $currpage = $request->input("currpage",1);
+        $condition = [];
+        if(!empty($user_name)){
+            $condition['user_name'] = "%".$user_name."%";
+        }
+        $pageSize = 10;
+        $list = UserService::getUserSaleList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->display('admin.user.sale',[
+            'saleList'=>$list['list'],
+            'user_name'=>$user_name,
+            'saleCount'=>$list['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+        ]);
+    }
 }
