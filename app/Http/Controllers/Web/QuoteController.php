@@ -37,9 +37,7 @@ class QuoteController extends Controller
         $cat_name = $request->input('cat_name',"");
         $place_id = $request->input('place_id',"");
         $keyword = $request->input('keyword',"");//搜索关键字
-
         $condition = [];
-
         if(!empty($orderType)){
             $order = explode(":",$orderType);
         }
@@ -188,7 +186,6 @@ class QuoteController extends Controller
             'goods_id' => $goods_id
         ];
         $pageSize = 10;
-        $currpage = $request->input("currpage");
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);

@@ -696,6 +696,7 @@ class OrderInfoService
                         'order_id'=>$orderInfoResult['id'],
                         'goods_id'=>$v['goods_id'],
                         'goods_name'=>$v['goods_name'],
+                        'shop_goods_quote_id'=>$activityPromoteInfo['id'],
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number'=>$v['goods_number'],
                         'goods_price'=>$v['goods_price'],

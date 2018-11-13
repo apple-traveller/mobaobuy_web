@@ -30,18 +30,43 @@
             color: #75b335;
         }
 
+      
 
 
     </style>
 @endsection
 @section('js')
     <script type="text/javascript">
+        var flag = true,//状态true为正常的状态,false为放大的状态
+           imgH,//图片的高度
+           imgW,//图片的宽度
+            img = document.getElementById('img');//图片元
+  img.onclick =  function(){
+      //图片点击事件
+       imgH = img.height; //获取图片的高度
+       imgW = img.width; //获取图片的宽度
+       if(flag){
+           //图片为正常状态,设置图片宽高为现在宽高的2倍
+           flag = false;//把状态设为放大状态
+           img.height = imgH*2;
+           img.width = imgW*2;
+       }else{
+           //图片为放大状态,设置图片宽高为现在宽高的二分之一
+           flag = true;//把状态设为正常状态
+           img.height = imgH/2;
+           img.width = imgW/2;
+       }
+ 
+   }
+
         $(function(){
-        $(".account li").click(function(){
-            $(this).addClass('account_curr').siblings().removeClass('account_curr');
-            $('.tab_list>li').eq($(this).index()).show().siblings().hide();
-        });
-    })
+            $(".account li").click(function(){
+                $(this).addClass('account_curr').siblings().removeClass('account_curr');
+                $('.tab_list>li').eq($(this).index()).show().siblings().hide();
+            });
+
+            
+         })
         $(document).tooltip({
             items: ".img-tooltip",
             content: function() {
@@ -137,7 +162,7 @@
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['front_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过
+                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
                                 @elseif($user_real['review_status']==0) 已经上传，审核中
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                 @endif
@@ -150,7 +175,7 @@
                         <span class="infor_title">身份证反面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['reverse_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过
+                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
                                 @elseif($user_real['review_status']==0) 已经上传，审核中
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                 @endif
@@ -204,7 +229,7 @@
                          <span class="infor_title">授权委托书电子版：</span>
                         <span class=" fl">
                             @if(!empty($user_real['attorney_letter_fileImg']))               
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过<img src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
+                                @if($user_real['review_status']==1) 已经上传，审核已经通过<img class="userImg" id="img" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
                                 @elseif($user_real['review_status']==0) 已经上传，审核中
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif

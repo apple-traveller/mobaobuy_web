@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\GoodsRepo;
+use App\Repositories\OrderGoodsRepo;
+use App\Repositories\OrderInfoRepo;
 use Carbon\Carbon;
 
 class ActivityPromoteService
@@ -139,5 +141,30 @@ class ActivityPromoteService
     {
         $id = decrypt($id);
         return ActivityPromoteRepo::addClickCount($id);
+    }
+
+    public static function buyLimitMaxLimit($userId,$id,$goodsNumber){
+        $id = decrypt($id);
+        $activityInfo = ActivityPromoteRepo::getInfo($id);
+        if(empty($activityInfo)){
+            self::throwBizError('商品信息有误');
+        }
+        if($activityInfo['max_limit'] != 0){
+            $orderList = OrderInfoRepo::getList([],['firm_id'=>$userId,'extension_id'=>$id]);
+            $goodsCount = 0;
+            foreach($orderList as $v){
+                $goodsCount += OrderGoodsRepo::getInfoByFields(['order_id'=>$v['id']])['goods_number'];
+            }
+            $goodsCount += $goodsNumber;
+            if($goodsCount > $activityInfo['max_limit']){
+                self::throwBizError('超出最大限量');
+            }
+            $data['max_limit'] = $activityInfo['max_limit'];
+            $data['can_buy_num'] = $activityInfo['max_limit'] - $goodsCount;
+            return $data;
+        }
+
+
+
     }
 }

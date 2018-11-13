@@ -23,7 +23,7 @@
                     </div>
                 @endif
             </div>
-            <a class="shopping_cart mt40 tac"><span class="fl ml25"><i class="iconfont icon-gouwuche"></i>我的购物车</span><span id="shopping-amount" class="pro_cart_num">0</span></a>
+            <a class="shopping_cart mt40 tac" href="/cart"><span class="fl ml25"><i class="iconfont icon-gouwuche"></i>我的购物车</span><span id="shopping-amount" class="pro_cart_num">0</span></a>
         </div>
         <div class="clearfix nav-div">
             <div class="nav-cate">

@@ -57,6 +57,7 @@
 
             //规格
             var thisMul = $('.shop_num_plus').attr('pid');
+            //最大可购数
 
             //最小可购数
             var min_limit = $('#min_limit').attr('min-limit');
@@ -70,8 +71,26 @@
                     alert('不能大于可售');
                     return;
                 }else{
+
                     NumNew=Number(ipts.val())+Number(thisMul);
-                    ipts.val(Number(NumNew));
+                    var id = $('input[type=hidden]').val();
+                	$.ajax({
+		                    url: "/buyLimitMaxLimit",
+		                    dataType: "json",
+		                    data: {
+		                      'goods_number': NumNew,
+		                      'id' : id
+		                    },
+		                    type: "POST",
+		                    success: function(data){
+		                    	// console.log(data);
+		                        if(data.code == 1){
+		                        	ipts.val(Number(NumNew));
+		                        }else{
+		                        	 $.msg.alert(data.msg);
+		                        }
+		                    }
+               		})
                 }
             });
 
@@ -82,8 +101,8 @@
                     alert('已经是最低的购买数量了');
                     return;
                 }else{
-                    NumNew=Number(ipts.val())-Number(thisMul);
-                    ipts.val(Number(NumNew));
+                	NumNew=Number(ipts.val())-Number(thisMul);
+                     ipts.val(Number(NumNew));
                 }
 
 
