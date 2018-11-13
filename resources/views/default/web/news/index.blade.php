@@ -37,54 +37,6 @@
     </style>
 @endsection
 @section('js')
-    {{--<script type="text/javascript">--}}
-        {{--var tbl;--}}
-        {{--$(function () {--}}
-            {{--tbl = $('#data-table').dataTable({--}}
-                {{--"ajax": {--}}
-                    {{--url: "{{url('news.html')}}",--}}
-                    {{--type: "post",--}}
-                    {{--dataType: "json",--}}
-                    {{--data: function (d) {--}}
-                        {{--d.goods_name = $('#goods_name').val();--}}
-                    {{--},--}}
-                    {{--dataSrc:--}}
-                        {{--function (json) {--}}
-                            {{--json.draw = json.data.draw;--}}
-                            {{--if (json.data.recordsTotal == null) {--}}
-                                {{--json.recordsTotal = 0;--}}
-                            {{--}else{--}}
-                                {{--json.recordsTotal = json.data.recordsTotal;--}}
-                            {{--}--}}
-                            {{--json.recordsFiltered = json.data.recordsFiltered;--}}
-
-                            {{--return json.data.data;--}}
-                        {{--},--}}
-                {{--},--}}
-                {{--"columns": [--}}
-                    {{--{"data": {image,add_time,click,author,description}, "bSortable": false,--}}
-                        {{--"render": function (data, type, row, meta) {--}}
-                        {{--console.log(row);--}}
-                            {{--// return '<li>' +--}}
-                            {{--//     '        <div class="fl mb15"><img src="getFileUrl('+row.image+')"/></div>' +--}}
-                            {{--//     '        <div class="fl ml20">' +--}}
-                            {{--//     '            <h1 class="fs18 mt10">'+row.title+'</h1>' +--}}
-                            {{--//     '            <div class="mt30 gray"><span class="ovh">时间：'+row.title+'</span><span class="ml25">浏览量：'+row.click+'</span><span class="ml25">来源：'+row.author+'</span></div>' +--}}
-                            {{--//     '            <p class="news_content ovhwp">'+row.description+'</p>' +--}}
-                            {{--//     '        </div>' +--}}
-                            {{--//     '    </li>';--}}
-                        {{--}}--}}
-                {{--]--}}
-            {{--});--}}
-
-            {{--$("#on-search").click(function () {--}}
-                {{--var oSettings = tbl.fnSettings();--}}
-                {{--tbl.fnClearTable(0);--}}
-                {{--tbl.fnDraw();--}}
-
-            {{--});--}}
-        {{--});--}}
-    {{--</script>--}}
 @endsection
 @section('content')
     <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name']}}</a></div>
