@@ -10,7 +10,7 @@ use App\Http\Controllers\ExcelController;
 class RegionController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $parent_id = $request->input('parent_id',0);//作为parent_id查询当前页面的数据
         $last_parent_id = 0;

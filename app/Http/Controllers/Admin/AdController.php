@@ -10,7 +10,7 @@ use App\Services\AdPositionService;
 class AdController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
         $position_id = $request->input('position_id',0);

@@ -9,7 +9,7 @@ use App\Services\GoodsCategoryService;
 class GoodsCategoryController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $parent_id = $request->input('parent_id',0);
         $goodsCategory = GoodsCategoryService::getInfo($parent_id);//根据id获取信息
@@ -95,8 +95,7 @@ class GoodsCategoryController extends Controller
             'is_show'=>$request->input('is_show'),
             'is_nav_show'=>$request->input('is_nav_show'),
             'is_top_show'=>$request->input('is_top_show'),
-            'cat_icon'=>$request->input('cat_icon'),
-            'category_links'=>$request->input('category_links')
+            'cat_icon'=>$request->input('cat_icon')
         ];
 
         if(empty($data['cat_name'])){
@@ -110,9 +109,6 @@ class GoodsCategoryController extends Controller
         }
         if(empty($data['cat_icon'])){
             $errorMsg[] = '分类图标不能为空';
-        }
-        if(empty($data['category_links'])){
-            $errorMsg[] = '分类链接不能为空';
         }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));

@@ -87,7 +87,6 @@ class QuoteController extends Controller
         $pageSize = 10;
         //产品报价列表
         $goodsList= ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
-
         return $this->display("web.quote.list",[
             'search_data'=>$goodsList,
             'currpage'=>$currpage,

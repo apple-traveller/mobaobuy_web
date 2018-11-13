@@ -11,7 +11,7 @@ use App\Services\GoodsCategoryService;
 class GoodsController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $goods_name = $request->input('goods_name','');
         $currpage = $request->input('currpage',1);

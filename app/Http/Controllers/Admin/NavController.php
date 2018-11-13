@@ -8,7 +8,7 @@ use App\Services\NavService;
 class NavController extends Controller
 {
     //
-    public function list(Request $request)
+    public function getList(Request $request)
     {
 
         $currpage = $request->input('currpage',1);

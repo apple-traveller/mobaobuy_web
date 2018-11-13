@@ -11,7 +11,7 @@ use App\Services\OrderInfoService;
 class InvoiceController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $add_time = $request->input("add_time","");
         $currpage = $request->input('currpage',1);

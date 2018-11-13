@@ -8,6 +8,7 @@
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
         .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
+        .account_layout_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 35px;margin-top: 30px;background-color: red;}
     </style>
 @endsection
 @section('js')
@@ -30,7 +31,6 @@
                 content: '<img src="'+img+'">'
             });
         });
-
 
         function formToJson(data){
             data= decodeURIComponent(data,true);//防止中文乱码
@@ -55,6 +55,25 @@
 
                 }
             },'POST','JSON');
+        });
+        //注销账号
+        $('.account_layout_btn').click(function(){
+            $.msg.confirm('注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
+                function(){
+                    Ajax.call('/account/accountLogout',{},function(res){
+                        console.log(res.data);
+                        if (res.code == 1) {
+                            $.msg.success('注销成功');
+                            window.location.href = '/';
+                        } else {
+                            $.msg.alert(res.msg);
+                        }
+                    },'GET','JSON');
+                },
+                function(){
+
+                }
+            )
         });
     </script>
 @endsection
@@ -81,6 +100,7 @@
                     @endif
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
+            <button class="account_layout_btn redbg fs18 white">注销账号</button>
         </div>
         </form>
     </div>

@@ -46,13 +46,13 @@
             }
             Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 
-            $('.nav').hover(function(){
-                $('.ass_menu').toggle();
-            })
-//导航
-            $('.ass_menu li').hover(function(){
-                $(this).find('.ass_fn').toggle();
-            })
+//            $('.nav').hover(function(){
+//                $('.ass_menu').toggle();
+//            })
+////导航
+//            $('.ass_menu li').hover(function(){
+//                $(this).find('.ass_fn').toggle();
+//            })
 
 
             //规格
@@ -294,8 +294,5 @@
 			</div>
 		</div>
 	</div>
-@endsection
-@section('bottom_js')
-
 @endsection
 
