@@ -73,8 +73,7 @@ class LoginController extends ApiController
         }
     }
 
-
-    //有账号用户登录
+    //有账号 直接绑定
     public function bindThird(Request $request)
     {
         $username = $request->input('user_name');
