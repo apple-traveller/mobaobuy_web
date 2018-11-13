@@ -3,6 +3,16 @@
 <div class="warpper">
     <div class="title">会员 - 卖货需求</div>
     <div class="content">
+        <div class="explanation" id="explanation">
+            <div class="ex_tit">
+                <i class="sc_icon"></i>
+                <h4>操作提示</h4>
+                <span id="explanationZoom" title="收起提示"></span>
+            </div>
+            <ul>
+                <li>点击下载查看，可以下载用户上传的卖货需求，帮助用户完成卖货</li>
+            </ul>
+        </div>
         <div class="flexilist">
             <div class="common-head">
                 <div  class="refresh">
@@ -45,7 +55,7 @@
                                 <td><div class="tDiv">{{$v['nick_name']}}</div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/storage/{{$v['bill_file']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                        <a href="/storage/{{$v['bill_file']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>下载查看</a>
                                     </div>
                                 </td>
                             </tr>
