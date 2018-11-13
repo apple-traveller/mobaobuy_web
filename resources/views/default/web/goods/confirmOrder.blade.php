@@ -242,18 +242,18 @@
 			@endif
 	</div>
 	
-	@if(session('cartSession')['from'] != 'promote')
-		<div class="address whitebg ovh mt20 ">
-		<h1 class="ml30 fs18 mt30">付款方式</h1>
-		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
-			<li class="payTypeList" data-id="" style="height: 80px;border:none;">
-				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>
-				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> 
-			</li>
-		</ul>
-			
-	</div>
-	@endif
+	{{--@if(session('cartSession')['from'] != 'promote')--}}
+		{{--<div class="address whitebg ovh mt20 ">--}}
+		{{--<h1 class="ml30 fs18 mt30">付款方式</h1>--}}
+		{{--<ul class="Collect_goods_address ml30 mt10 ovh mb20">--}}
+			{{--<li class="payTypeList" data-id="" style="height: 80px;border:none;">--}}
+				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>--}}
+				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> --}}
+			{{--</li>--}}
+		{{--</ul>--}}
+			{{----}}
+	{{--</div>--}}
+	{{--@endif--}}
 
 
 	<div class="address whitebg ovh mt20">
@@ -273,13 +273,13 @@
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
 				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">¥{{$goods_amount}}</span></div>
-				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家审核</span></div>
+				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家确认</span></div>
 				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">¥{{$goods_amount}}</span></div>
 			</div>
 
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>
+		<div class="address_sumb fr mr30 cp">提交订单</div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>
 		</form>
 		<input type="hidden" name="" id="activityPromoteId" @if(isset($id))  value="{{encrypt($id)}}" @else value="" @endif >
 	</div>
@@ -371,7 +371,7 @@
         });
 	});
     $(".address_sumb").click(function () {
-    	var payType = $('.payTypeList input[name=payType]:checked').val();
+//    	var payType = $('.payTypeList input[name=payType]:checked').val();
     	var activityPromoteId = $('#activityPromoteId').val();
 		let words =  $("input[ name='words' ]").val();
 		$.ajax({
@@ -379,7 +379,7 @@
 			data:{
 			    'words':words,
 			    'activityPromoteId':activityPromoteId,
-			    'payType':payType
+//			    'payType':payType
 			},
 			type:'post',
 			success:function (res) {
