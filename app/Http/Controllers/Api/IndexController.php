@@ -3,51 +3,57 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Services\ActivityPromoteService;
 use App\Services\AdService;
 use App\Services\GoodsService;
 use App\Services\OrderInfoService;
-use App\Services\IndexService;
+use App\Services\ArticleService;
 use App\Services\ShopGoodsQuoteService;
-use Illuminate\Support\Facades\Cache;
-class IndexController extends Controller
+class IndexController extends ApiController
 {
-    public function index(Request $request)
+    //获取首页大图轮播
+    public function getBannerAd(Request $request)
     {
-        //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
-
-        //获取活动
-        $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 2);
-
-        //成交动态 假数据 暂时定为$trans_type=1 时为开启创建并显示假数据 暂时创建的是8点到18点之间的数据 缓存有效期一天
-        $trans_type = 1;
-        $trans_false_list = [];
-        if($trans_type == 1){
-            $day = date('Ymd');
-            $cache_name = $day.'TRANS';
-            if(Cache::has($cache_name)){
-                $trans_false_list = Cache::get($cache_name);
-            }else{//没有缓存 创建假数据
-                $trans_false_list = IndexService::createFalseData();
-                Cache::add($cache_name,$trans_false_list,1440);
-            }
+        foreach($banner_ad as $k=>$v){
+            $banner_ad[$k]['ad_img'] = getFileUrl($banner_ad[$k]['ad_img']);
         }
-        //成交动态 真实数据
-        $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
-        //自营报价
-        $goodsQuoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
-        //获取产品列表
-        $goodsList = GoodsService::getGoodsList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],['is_delete'=>0]);
-
-        return $this->result([
-            'banner_ad' => $banner_ad,
-            'goodsQuoteList'=>$goodsQuoteList['list'],
-            'promote_list'=>$promote_list['list'],
-            'trans_list'=>$trans_list['list'],
-            'trans_false_list'=>$trans_false_list,
-            'goodsList'=>$goodsList['list']
-        ],200,'success');
+        return $this->success(['banner_ad' => $banner_ad]);
     }
+
+    //获取首页成交动态
+    public function getTransList(Request $request)
+    {
+        $trans_list = OrderInfoService::getOrderGoods([], 1, 4);
+        return $this->success(['trans_list' => $trans_list['list']]);
+    }
+
+    //获取首页优惠活动
+    public function getPromoteList(Request $request)
+    {
+        $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 3);
+        return $this->success(['promote_list' => $promote_list['list']]);
+    }
+
+    //自营报价
+    public function getGoodsQuoteList(Request $request)
+    {
+        $goodsQuoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
+        return $this->success(['goodsQuoteList' => $goodsQuoteList['list']]);
+    }
+
+    //产品列表
+    public function getGoodsList(Request $request)
+    {
+        $goodsList = GoodsService::getGoodsList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],['is_delete'=>0]);
+        return $this->success(['goods_list' => $goodsList['list']]);
+    }
+
+    //咨询列表
+    public function getArticleList(Request $request)
+    {
+        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
+        return $this->success(['article_list' => $article_list['list']]);
+    }
+
 }

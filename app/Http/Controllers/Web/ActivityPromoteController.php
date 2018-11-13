@@ -40,6 +40,16 @@ class ActivityPromoteController extends Controller
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
         $userInfo = session('_web_user');
+
+
+        if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
+            return $this->error('抢购只能是企业用户下单');
+        }
+        if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
+            if(!$userInfo['firms']['can_po']){
+                return $this->error('您没有权限为该企业下单');
+            }
+        }
         try{
             $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             $session_data = [
@@ -52,6 +62,24 @@ class ActivityPromoteController extends Controller
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    //抢购详情  最大数量控制
+    public function buyLimitMaxLimit(Request $request){
+       $goods_number =  $request->input('goods_number');
+       $id = $request->input('id');
+       if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1){
+           $userId = session('_curr_deputy_user')['firm_id'];
+       }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
+           $userId = session('_web_user_id');
+       }
+
+       try{
+            $maxBuyNumInfo = ActivityPromoteService::buyLimitMaxLimit($userId,$id,$goods_number);
+            return $this->success('','',$maxBuyNumInfo);
+       }catch (\Exception $e){
+           return $this->error($e->getMessage());
+       }
     }
 
 }

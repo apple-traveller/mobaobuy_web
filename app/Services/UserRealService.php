@@ -38,6 +38,10 @@ class UserRealService
             $GxInfo = GsxxService::GsSearch($data['real_name_firm']);
         }
 
+        if(empty($GxInfo)){
+            self::throwBizError('公司信息不存在，请检查');
+        }
+
         $userRealArr = [];
         //修改
         if($userRealInfo){
