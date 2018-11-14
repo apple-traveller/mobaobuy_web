@@ -1,8 +1,7 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('body')
-
-    <div class="warpper">
-        <div class="content">
+    @section('content')
+    <div style="width: 580px;height: 230px">
+        <div style="width: 580px;height: 230px">
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/seller/invoice/verifyInvoice" method="post" enctype="multipart/form-data" name="theForm" id="address_form" novalidate="novalidate">
@@ -47,6 +46,8 @@
             </div>
         </div>
     </div>
+    @endsection
+@section('script')
     <script>
         layui.use(['layer','table'], function() {
             var layer = layui.layer;
@@ -88,11 +89,11 @@
                            if (res.msg == 1) {
                                layer.msg(res.msg);
                                let index = parent.layer.getFrameIndex(window.name);
-                               setTimeout(parent.layer.close(index),2000);
+                               // setTimeout(parent.layer.close(index),2000);
                            } else {
                                layer.msg(res.msg);
                                let index = parent.layer.getFrameIndex(window.name);
-                               setTimeout(parent.layer.close(index),2000);
+                               // setTimeout(parent.layer.close(index),2000);
                            }
                        }
                    });
@@ -121,9 +122,9 @@
                     },
                     shipping_billno :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+                    }
                 }
             });
         });
     </script>
-@stop
+    @endsection

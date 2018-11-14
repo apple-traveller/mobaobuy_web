@@ -485,6 +485,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/order/list', 'ShopOrderController@getList');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
+        Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面

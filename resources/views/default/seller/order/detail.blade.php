@@ -10,7 +10,7 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 2 || $orderInfo['order_status'] == 0) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==5 ||$orderInfo['order_status']==3 || $orderInfo['order_status'] == 2 || $orderInfo['order_status'] == 0) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
@@ -58,121 +58,117 @@
                 <form action="" method="post" name="theForm">
                     <div class="common-content">
                         <!--订单基本信息-->
-                        <div class="step">
+                        <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><i class="ui-step"></i><h3>基本信息</h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>订单号</dt>
-                                    <dd>{{$orderInfo['order_sn']}}</dd>
-                                    <dt>订单来源</dt>
-                                    <dd>{{$orderInfo['froms']}}</dd>
+                                    <dt>订单号：{{$orderInfo['order_sn']}}</dt>
+
+                                    <dt>订单来源：{{$orderInfo['froms']}}</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>购货人</dt>
-                                    <dd>@if(isset($user['nick_name'])) {{ $user['nick_name'] }} @elseif(isset($user['real_name'])) {{ $user['real_name'] }} @endif</dd>
-                                    <dt>订单状态</dt>
-                                    <dd>
-                                        <!--审核状态-->
+                                    <dt>购货人：@if(isset($user['nick_name'])) {{ $user['nick_name'] }} @elseif(isset($user['real_name'])) {{ $user['real_name'] }} @endif</dt>
+
+                                    <dt>订单状态： <!--审核状态-->
                                         @if($orderInfo['order_status']==0)已作废
                                         @elseif($orderInfo['order_status']==1)待企业审核
                                         @elseif($orderInfo['order_status']==2)待商家确认
                                         @else已确认
-                                        @endif
-                                    </dd>
+                                        @endif</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>下单时间</dt>
-                                    <dd>{{$orderInfo['add_time']}}</dd>
-                                    <dt>付款时间</dt>
-                                    <dd>@if(empty($orderInfo['pay_time']))未付款@else {{$orderInfo['pay_time']}} @endif</dd>
+                                    <dt>下单时间：{{$orderInfo['add_time']}}</dt>
+
+                                    <dt>付款时间：@if(empty($orderInfo['pay_time']))未付款@else {{$orderInfo['pay_time']}} @endif</dt>
+
                                 </dl>
                                 <dl>
-                                    <dt>发货时间</dt>
-                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
-                                    <dt>付款方式</dt>
-                                    <dd>@if($orderInfo['pay_type']==1) 先款后货 @elseif($orderInfo['pay_type']==2) 货到付款 @endif</dd>
+                                    <dt>发货时间：@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dt>
+
+                                    {{--<dt>付款方式：@if($orderInfo['pay_type']==1) 先款后货 @elseif($orderInfo['pay_type']==2) 货到付款 @endif</dt>--}}
+                                    <dt>付款方式：
+                                                <select name="modules" lay-verify="required" style="width: 200px;padding: 2px 0" @if($orderInfo['order_status']>=3) disabled @endif>
+                                                    <option value="1" @if($orderInfo['pay_type']==1) selected @endif>先款后货</option>
+                                                    <option value="2" @if($orderInfo['pay_type']==2) selected @endif>货到付款</option>
+                                                </select>
+
+                                        </dt>
+
                                 </dl>
                                 <dl>
-                                    <dt>交货时间</dt>
-                                    <dd>{{ $orderInfo['delivery_period'] }}</dd>
-                                    <dt>自动确认收货时间</dt>
-                                    <dd>
-                                        <div class="editSpanInput" ectype="editSpanInput">
-                                            <span onclick="listTable.edit(this,'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
+                                    <dt>交货时间：{{ $orderInfo['delivery_period'] }}</dt>
+
+                                    <dt>自动确认收货时间：
+                                        <div class="" ectype="editSpanInput" style="float: right;margin-right: 95px">
+                                            <span id="receive_num">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
-                                            <i class="icon icon-edit"></i>
+                                            <i class="icon icon-edit" onclick="listTable.edit($('#receive_num')[0],'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')"></i>
                                         </div>
-                                    </dd>
+                                    </dt>
                                 </dl>
                             </div>
                         </div>
 
                         <!--收货人信息-->
-                        <div class="step">
+                        <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><h3>收货人信息</h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>收货人：</dt>
-                                    <dd>{{$orderInfo['consignee']}}</dd>
-                                    <dt>手机号码：</dt>
-                                    <dd>{{$orderInfo['mobile_phone']}}</dd>
+                                    <dt>收货人：{{$orderInfo['consignee']}}</dt>
+
+                                    <dt>手机号码：{{$orderInfo['mobile_phone']}}</dt>
+
                                 </dl>
                                 <dl style="width:50%">
-                                    <dt>收货地址：</dt>
-                                    <dd>[{{$region}}] 详细地址：{{$orderInfo['address']}}</dd>
-                                    <dt>邮政编码：</dt>
-                                    <dd>{{$orderInfo['zipcode']}}</dd>
+                                    <dt>收货地址：[{{$region}}] 详细地址：{{$orderInfo['address']}}</dt>
+
+                                    <dt>邮政编码：{{$orderInfo['zipcode']}}</dt>
+
                                 </dl>
                             </div>
                         </div>
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
-                        <div class="step">
+                        <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><i class="ui-step"></i><h3>其他信息<a href="/seller/order/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currentPage={{$currentPage}}&id={{$orderInfo['id']}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>发票抬头</dt>
-                                    <dd>
-                                        {{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}
-                                    </dd>
-                                    <dt>税号</dt>
-                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dd>
+                                    <dt>发票抬头：{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}</dt>
+                                    <dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>开票地址</dt>
-                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dd>
-                                    <dt>开票电话</dt>
-                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dd>
+                                    <dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>
+
+                                    <dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>收票地址</dt>
-                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dd>
-                                    <dt>收票电话</dt>
-                                    <dd>@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dd>
+                                    <dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>
+
+                                    <dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>收票人</dt>
-                                    <dd>@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dd>
+                                    <dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>
                                     <dt></dt>
-                                    <dd></dd>
                                 </dl>
 
                                 <dl style="width:30.6%">
-                                    <dt style="width: 240%">卖家留言：<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
-                                    <dd style="width: 240%">@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
-                                    <dt style="width: 240%">买家留言：</dt>
-                                    <dd style="width: 240%">@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dd>
+                                    <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
+                                    <dt style="width: 252%">买家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dt>
                                 </dl>
                             </div>
                         </div>
 
                         <!--商品信息-->
-                        <div class="step">
+                        <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><i class="ui-step"></i><h3>商品信息<a href="/seller/order/modifyGoodsInfo?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="step_info">
                                 <div class="order_goods_fr">
@@ -188,31 +184,14 @@
                                         </thead>
                                         <tbody>
                                         @foreach($order_goods as $vo)
-                                            <tr>
-                                                <td style="padding-left: 9px">{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
-                                                <td>{{$vo['goods_sn']}}</td>
-                                                <td>{{$vo['goods_price']}}</td>
-                                                <td>{{$vo['goods_number']}}</td>
-                                                <td>{{$vo['send_number']}}</td>
+                                            <tr style="height: 45px">
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_sn']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_price']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['send_number']}}</td>
                                             </tr>
                                         @endforeach
-                                        <tr>
-                                            <td colspan="12">
-                                                <div class="order_total_fr">
-                                                    <strong>合计：</strong>
-                                                    <span class="red"><em>¥</em>{{$orderInfo['goods_amount']}}</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @if($orderInfo['order_status']>=3)
-                                        <tr>
-                                            <td colspan="6">
-                                                <div class="order_total_fr">
-                                                    <div class="layui-btn layui-btn-sm order_delivery" data-status="{{$orderInfo['shipping_status']}}" style="margin-right: 30px;"><a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}">生成发货单</a></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -224,37 +203,32 @@
                             <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>商品总金额</dt>
-                                    <dd><em>¥</em>{{$orderInfo['goods_amount']}}</dd>
-                                    <dt>使用余额</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
+                                    <dt>商品总金额：<em>¥</em>{{$orderInfo['goods_amount']}}</dt>
+                                    <dt>使用余额：- <em>¥</em>0.00</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>配送费用</dt>
-                                    <dd>+ <em>¥</em>{{$orderInfo['shipping_fee']}}</dd>
-                                    <dt>使用红包</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
+                                    <dt>配送费用：+ <em>¥</em>{{$orderInfo['shipping_fee']}}</dt>
+                                    <dt>使用红包：- <em>¥</em>0.00</dt>
+
                                 </dl>
 
                                 <dl>
-                                    <dt>折扣</dt>
-                                    <dd>- <em>¥</em>{{$orderInfo['discount']}}</dd>
-                                    <dt>使用储值卡</dt>
-                                    <dd>- <em>¥</em>0.00</dd>
+                                    <dt>折扣：- <em>¥</em>{{$orderInfo['discount']}}</dt>
+
+                                    <dt>使用储值卡：- <em>¥</em>0.00</dt>
+
                                 </dl>
                                 <dl>
                                     <dt></dt>
-                                    <dd></dd>
 
-                                    <dt>已付款金额</dt>
-                                    <dd>- <em>¥</em>{{$orderInfo['money_paid']}}</dd>
+
+                                    <dt>已付款金额：- <em>¥</em>{{$orderInfo['money_paid']}}</dt>
                                 </dl>
                                 <dl>
-                                    <dt>订单总金额</dt>
-                                    <dd class="red"><em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'],2)}}</dd>
-                                    <dt>应付款金额</dt>
-                                    <dd class="red"><em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'],2)}}</dd>
+                                    <dt class="red">订单总金额: {{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'],2)}}</dt>
+                                    <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'],2)}}</dt>
                                 </dl>
                             </div>
                         </div>
@@ -287,6 +261,10 @@
                                                 <input name="order_id" type="hidden" value="4">
                                                 @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
                                                 @endif
+                                                    @if($orderInfo['order_status']>=3)
+                                                    <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+
+                                                    @endif
                                             </div>
                                         </div>
                                     </div>
@@ -482,5 +460,26 @@
                 });
             });
         }
+
+        //修改支付方式
+        $("select[name='modules']").change(function () {
+            let order_id = "{{ $orderInfo['id'] }}";
+            let type = this.value;
+            $.ajax({
+                url:'/seller/order/updatePayType',
+                data:{
+                    'order_id':order_id,
+                    'type':type
+                },
+                type:'POST',
+                success:function (res) {
+                    if (res.code==1){
+                        layer.msg(res.msg);
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+        });
     </script>
 @stop

@@ -224,10 +224,10 @@
 
     $('#on-search').click(function () {
         let shop_name = $('#shop_name').val();
-        let order_no = $('#order_no').val();
+        let order_sn = $('#order_no').val();
         let begin_time = $('#begin_time').val();
         let end_time = $('#end_time').val();
-        window.location.href = '/invoice?shop_name='+shop_name+'&order_no='+order_no+'&begin_time='+begin_time+'&end_time='+end_time;
+        window.location.href = '/invoice?shop_name='+shop_name+'&order_sn='+order_sn+'&begin_time='+begin_time+'&end_time='+end_time;
     });
 
 
