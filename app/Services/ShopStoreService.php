@@ -20,7 +20,7 @@ class ShopStoreService
     }
 
     //查找一条数据
-    public static function getShopUserById($id)
+    public static function getShopStoreById($id)
     {
         return ShopStoreRepo::getInfo($id);
     }

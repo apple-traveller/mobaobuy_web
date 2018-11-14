@@ -59,22 +59,37 @@ class ShopStoreController extends Controller
 
             $res = ShopStoreService::create($data);
             if($res){
-               return $this->success('添加成功！','/seller/store');
+               return $this->success('保存成功！','/seller/store');
             }else{
-                return $this->error('添加失败！',url('/seller/store/add'));
+                return $this->error('保存失败！');
             }
 
-        }catch (Exception $e){
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
-    public function edit()
+    public function edit(Request $request)
     {
-        
+        $id = $request->get('id',0);
+        $currentPage = $request->input('currentPage');
+
+        $storeInfo = ShopStoreService::getShopStoreById($id);
+
+        return $this->display('seller.shopStore.edit',compact('storeInfo','currentPage'));
     }
 
-    public function delete()
+    public function delete(Request $request)
     {
-        
+        $id = $request->get('id',0);
+        if(!$id){
+            return $this->error('无法获取店铺ID');
+        }
+
+        $res = ShopStoreService::delete($id);
+        if($res){
+            return $this->success('删除成功！');
+        }else{
+            return $this->success('删除失败！');
+        }
     }
 }
