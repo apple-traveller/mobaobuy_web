@@ -100,7 +100,7 @@
     <div class="w1200 pr" style="z-index: 1;">
         <div class="mt10 ovh">
             <!--限时秒杀-查看更多-->
-            <div class="index_xs_ms"><a class="See_more tac ovh">查看更多></a></div>
+            <div class="index_xs_ms"><a href="/buyLimit" class="See_more tac ovh"><span style="color:#fff">查看更多></span></a></div>
             <!--秒杀进度-->
             <div class="fl pr" style="margin-bottom: 4px;">
                 @for ($i = 0; $i < 2; $i++)

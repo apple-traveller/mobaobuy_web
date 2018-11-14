@@ -154,8 +154,10 @@
                     <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">{{$vo['shop_name']}}</span>
                     <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
                     <span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                    <span style="width: 18%"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['brand_name']}}{{$vo['goods_name']}}{{$vo['goods_content']}}</a></span>
-                    <span style="width:9%">{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span>
+                    <span style="width: 18%"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                    <span style="width:9%">{{$vo['goods_number']}}</span>
+                    <span>{{$vo['shop_price']}}</span>
+                    <span>{{$vo['delivery_place']}}</span>
                     <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                     <span style="width:9%">@if($vo['goods_number'])<button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>@else已售完 @endif</span>
                 </li>
@@ -347,22 +349,15 @@
                     for (var i=0;i<list.length;i++)
                     {
                         _html += '<li>' +
-                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span>' +
-                            '<span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span>' +
-                            '<span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span>' +
-                            '<span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
-                            '<span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:9%;">'+list[i].shop_name+'</span>' +
+                            '<span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
+                            '<span  style="width:18%;"><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span style="width:9%;">'+list[i].goods_number+'</span>' +
+                            '<span>'+list[i].shop_price+'</span>' +
+                            '<span>'+list[i].delivery_place+'</span>' +
+                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
+                            '<span style="width:9%;"><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
                             '</li>';
-//                        $(".table_title").after('' +
-//                            '<li>' +
-//                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec">'+list[i].shop_name+'</span>' +
-//                            '<span style="width:8%;">'+list[i].brand_name+'</span><span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-//                            '<span ><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_name+'</a></span>' +
-//                            '<span style="width:8%;">'+list[i].goods_number+'</span><span>'+list[i].shop_price+'</span>' +
-//                            '<span>'+list[i].delivery_place+'</span><span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
-//                            '<span><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车【'+list[i].add_time+'】</button></span>' +
-//                            '</li>');
                     }
                     $(".table_title").after(_html);
                     $(".news_pages").append('<ul id="page" class="pagination"></ul>');

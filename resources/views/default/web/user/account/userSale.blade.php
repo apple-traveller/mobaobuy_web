@@ -7,7 +7,7 @@
         .account_infor_list li .infor_title{width: 150px;float: left; text-align: right;}
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
-        .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
+        .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 42px;margin-top: 30px;background-color: #75b335;}
     </style>
 @endsection
 @section('js')
@@ -73,10 +73,9 @@
                         1.直接拨打电话联系客服：<span class="ml10">{{getConfig('service_phone')}}</span>
                     </li>
                     <li class="mt25">
-                        2.填写货物详细：
-                        {{--<span class="infor_title">货物内容：</span>--}}
+                        2.填写货物详细信息：
                         <p>
-                            <textarea name="content" style="width:400px;height:200px;margin: 10px 0 0 12px;"></textarea>
+                            <textarea name="content" style="max-width:800px;width:400px;min-height:200px;margin: 10px 0 0 12px;"></textarea>
                         </p>
                     </li>
                     <li class="mt25">
