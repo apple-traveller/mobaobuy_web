@@ -494,17 +494,21 @@ class UserService
     {
         return AppUsersRepo::create($data);
     }
-
+    //获取用户需求列表
     public static function getUserSaleList($pager, $condition)
     {
         $list = UserSaleRepo::getListBySearch($pager, $condition);
         foreach ($list['list'] as $k => $v) {
             $userInfo = self::getUserInfo($v['user_id']);
             $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
-            $list['list'][$k]['user_name'] = $userInfo['user_name'];
         }
         unset($userInfo);
         return $list;
+    }
+    //修改用户需求为已读
+    public static function userSaleModify($id,$data)
+    {
+        return UserSaleRepo::modify($id,$data);
     }
     //获取用户详细信息（小程序接口）
     public static function getApiUserInfo($id)

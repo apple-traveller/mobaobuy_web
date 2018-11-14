@@ -46,15 +46,6 @@
             }
             Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
 
-//            $('.nav').hover(function(){
-//                $('.ass_menu').toggle();
-//            })
-////导航
-//            $('.ass_menu li').hover(function(){
-//                $(this).find('.ass_fn').toggle();
-//            })
-
-
             //规格
             var thisMul = $('.shop_num_plus').attr('pid');
             //最大可购数
@@ -68,7 +59,7 @@
                 var ipts=$(this).siblings('input.Bidders_record_text');
 
                 if(Number(ipts.val())+Number(thisMul)>Number(canSell)){
-                    alert('不能大于可售');
+                    $.msg.error('不能大于可售');
                     return;
                 }else{
 
@@ -98,7 +89,7 @@
                 var ipts=$(this).siblings('input.Bidders_record_text');
                 var iptsVal=ipts.attr('value');
                 if (Number(ipts.val())-Number(thisMul)<Number(min_limit)) {
-                    alert('已经是最低的购买数量了');
+                    $.msg.error('已经是最低的购买数量了');
                     return;
                 }else{
                 	NumNew=Number(ipts.val())-Number(thisMul);
@@ -107,8 +98,6 @@
 
 
             })
-
-
 
             //折线图
             var myChart = echarts.init(document.getElementById('price_zst'));
@@ -164,7 +153,34 @@
 		        });
 		    	
 		        
-		    })
+		    });
+
+            //数量输入检测
+            $('#goodsNum').blur(function(){
+                var _self = $(this);
+                //数量
+                var goodsNumber = _self.val();
+                var packing_spec = _self.attr('packing_spec');
+                //当前购物车数据id
+                var id = _self.attr('cid');
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                    $.ajax({
+                        'type':'post',
+                        'data':{'id':id,'goodsNumber':goodsNumber},
+                        'url':'{{url('/checkListenCartInput')}}',
+                        success:function(res){
+                            if(res.code){
+                            }else{
+                                layer.msg('输入的数量有误');
+                                _self.val(packing_spec);
+                            }
+                        }
+                    })
+                }else{
+                    layer.msg('输入的数量有误');
+                    _self.val(packing_spec);
+                }
+            });
         })
 
         function collectGoods(obj){
@@ -226,7 +242,7 @@
 @section('content')
 	<div class="clearfix">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="/">产品列表</a> &gt; <a href="/subject/list/56/page/1.html">产品详情</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodslist">产品列表</a> &gt; <a href="javascript:">产品详情</a> &gt;<span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势
@@ -294,7 +310,7 @@
 					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                     <div class="pur_volume ml15">
                         <span class="pur bbright shop_num_reduce" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}}">-</span>
-                        <input type="text" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
+                        <input type="text" cid="{{$goodsInfo['id']}}" packing_spec="{{$goodsInfo['packing_spec']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
                         <span id="min_limit" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" pid="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['available_quantity']}}">+</span>
                     </div>
 

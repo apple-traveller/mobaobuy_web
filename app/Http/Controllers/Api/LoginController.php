@@ -99,7 +99,7 @@ class LoginController extends ApiController
             UserService::bindThird($user_id,$openid,$nick_name,$avatar);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
-            return $this->success($uuid);
+            return $this->success(['token'=>$uuid]);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -127,7 +127,7 @@ class LoginController extends ApiController
             $user_id = UserService::createThird($openid,$data);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
-            return $this->success($uuid);
+            return $this->success(['token'=>$uuid]);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -175,7 +175,7 @@ class LoginController extends ApiController
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::add($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->success();
+        return $this->success('','success');
     }
 
     //忘记密码获取手机验证码
@@ -190,7 +190,7 @@ class LoginController extends ApiController
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::put($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->success();
+        return $this->success('','success');
     }
 
 

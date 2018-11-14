@@ -98,6 +98,15 @@ class UserRealService
 
     }
 
+    //通过用户id获取信息
+    public static function getUserRealInfoByUserId($userId){
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
+        if(empty($userRealInfo)){
+            self::throwBizError('商家信息有误');
+        }
+        return $userRealInfo;
+    }
+
     //修改审核状态
     public static function modifyReviewStatus($data)
     {
