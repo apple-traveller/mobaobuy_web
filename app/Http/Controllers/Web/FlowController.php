@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Repositories\OrderInfoRepo;
 use App\Services\GoodsCategoryService;
 use App\Services\OrderInfoService;
+use App\Services\UserRealService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,9 +13,23 @@ class FlowController extends Controller
 {
 
     public function toPay(Request $request){
+        $userId = session('_web_user_id');
         $order_id = $request->input('order_id');
         $order_info = OrderInfoService::getOrderInfoById($order_id);
-        return $this->display('web.flow.payment', compact('order_info'));
+        $sellerInfo  = UserRealService::getUserRealInfoByUserId($userId);
+        return $this->display('web.flow.payment', compact('order_info','sellerInfo'));
+    }
+
+    //上传凭证
+    public function payVoucherSave(Request $request){
+        $orderSn = $request->input('orderSn');
+        $payVoucher = $request->input('payVoucher');
+        try{
+            OrderInfoService::payVoucherSave($orderSn,$payVoucher);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     //我的订单

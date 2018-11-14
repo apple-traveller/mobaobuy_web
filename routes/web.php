@@ -403,6 +403,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         });
 
         Route::get('/toPay','FlowController@toPay');//去付款
+        Route::post('/payVoucherSave','FlowController@payVoucherSave');//付款凭证提交
         Route::get('/orderSubmission.html','OrderController@orderSubmission');// 订单提交成功页面
 
         Route::get('/order/list','OrderController@orderList');//我的订单
