@@ -89,7 +89,7 @@ class InvoiceController extends Controller
      */
     public function verifyInvoice(Request $request)
     {
-       $shipping_id = $request->input('shopping_id','');
+       $shipping_id = $request->input('shipping_id','');
        $shipping_name = $request->input('shipping_name','');
        $shipping_billno = $request->input('shipping_billno','');
        $invoice_id = $request->input('invoice_id','');

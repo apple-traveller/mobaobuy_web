@@ -54,7 +54,7 @@
                                         <div class="tDiv a3">
                                             <a href="/seller/invoice/detail?invoice_id={{$v['id']}}&currentPage={{$currentPage}}" title="详情" class="btn_see"><i class="sc_icon sc_icon_see"></i>详情</a>
                                             @if($v['status']==1)
-                                            <a href="javascript:void(0);" title="审核" onclick="conf({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                            <a href="javascript:void(0);" title="审核" id="{{$v['id']}}" onclick="conf({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
                                             <a href="javascript:void(0);" title="取消" onclick="cancelOne({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>取消</a>
                                             @endif
                                         </div>
@@ -115,17 +115,18 @@
 
         function conf(id)
         {
+            console.log(3423);
             layui.use(['layer'], function(){
                 let layer = layui.layer;
                 let index =
                     layer.open({
                         type: 2,
                         title: "审核",
-                        id: "link",
+                        id: "link1",
                         shade: 0,
-                        offset: 'b',
                         resize: false,
                         area: ['600px', '300px'],
+                        offset: 't',
                         maxmin: true,
                         content: '/seller/invoice/choseExpress?invoice_id='+id,
                         success: function(layero){
