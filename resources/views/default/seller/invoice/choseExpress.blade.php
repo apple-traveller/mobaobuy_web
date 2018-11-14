@@ -50,7 +50,7 @@
 @section('script')
     <script>
         layui.use(['layer','table'], function() {
-            var layer = layui.layer;
+            let layer = layui.layer;
             var table = layui.table;
 
             $(document).ready(function(){
@@ -75,12 +75,10 @@
 
 
         });
-
-
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
-                   let data =   $('form').serializeArray();
+                   let data = $('form').serializeArray();
                    $.ajax({
                        url: '/seller/invoice/verifyInvoice',
                        data: data,
@@ -89,11 +87,11 @@
                            if (res.msg == 1) {
                                layer.msg(res.msg);
                                let index = parent.layer.getFrameIndex(window.name);
-                               // setTimeout(parent.layer.close(index),2000);
+                               setTimeout(parent.layer.close(index),3000);
                            } else {
                                layer.msg(res.msg);
                                let index = parent.layer.getFrameIndex(window.name);
-                               // setTimeout(parent.layer.close(index),2000);
+                               setTimeout(parent.layer.close(index),3000);
                            }
                        }
                    });
