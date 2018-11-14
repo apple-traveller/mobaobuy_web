@@ -19,10 +19,31 @@
                     $('.block_bg').show();
                 })
         })
+
+        //提交
+        function payVoucherSave(){
+            //付款凭证
+             var orderSn = $('input[type=hidden]').val();
+             var payVoucher = $('input[name=pay_voucher]').val();
+             $.ajax({
+                url:'/payVoucherSave',
+                data:{'orderSn':orderSn,'payVoucher':payVoucher},
+                type:'POST',
+                dataType:'json',
+                success:function(res){
+                    if(res.code){
+                        $.msg.alert('上传成功');
+                        window.location.reload();
+                    }else{
+                        $.msg.alert(res.msg);
+                    }
+                }
+             })
+        }
     </script>
     <style type="text/css">
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-275px;position:fixed;margin-left:-250px;}
+        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 30%;}
         .whitebg{background: #FFFFFF;}
         .pay_title{height: 50px;line-height: 50px;}
         .f4bg{background-color: #f4f4f4;}
@@ -52,6 +73,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" name="" value="{{encrypt($order_info['order_sn'])}}">
 
 <div class="clearfix mt25 mb20">
     <div class="w1200 whitebg">
@@ -76,22 +98,18 @@
 
  <div class="block_bg"></div>
     <!--编辑框-->
-    <div class="power_edit whitebg" id="power_edit_frame">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增/编辑</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+    <div class="power_edit whitebg" id="power_edit_frame" style="">
+        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span>手机号码:</span><input type="text" class="pay_text fl" id="firmUserPhone" placeholder="请输入员工手机号码"/></div>
-                <div class="ml">注：职员必须先用手机号在平台注册个人账号并实名认证</div>
+                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['real_name']}}</div>
+                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['bank_of_deposit']}}</div>
+                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['bank_account']}}</div>
+                <div class="ovh mt10"><span>上传付款凭证:</span></div>
+                
             </li>
-            <li><div class="ovh mt10"><span>职员姓名:</span><input type="text" class="pay_text fl" id="firmUserName" placeholder="请输入员工姓名"/></div></li>
-            <li>
-                <div class="power_cate mt10 br1 ovh">
-                <ul class="power_cate_check_box ovh">
-              
-                </ul>
-                </div>
-            </li>
-            <li><div class="til_btn fl tac  code_greenbg" style="margin-left: 80px;" onclick="addFirmUserSave()">保 存</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
+            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
+            <li style="clear:both;margin-top:30px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>
         </ul>
     </div>
 

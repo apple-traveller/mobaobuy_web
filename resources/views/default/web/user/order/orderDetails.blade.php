@@ -21,7 +21,7 @@
 			/*订单状态*/
 			.order_pro_progress{border: 1px solid #DEDEDE;overflow: hidden;border-top: 2px solid #75b335;}
 			.order_pro_stute{float:left;margin-top:30px;margin-bottom:20px;border-right: 1px solid #DEDEDE;width:285px;height: 188px;overflow: hidden;}
-			.Order_number{display:block;margin-left: 65px;margin-right: 55px; margin-top: 15px;}
+			.Order_number{display:block;margin-left: 20px;margin-right: 55px; margin-top: 15px;}
 			.order_pay_btn{padding:0 48px;margin-left:75px;margin-right: 75px;margin-top:20px;display:inline-block;font-size:18px;height: 40px;line-height: 40px;border: 1px solid #ED1E2D;border-radius: 2px;}
 			.order_jd_bg{width: 771px;height: 30px;margin-left: 70px;margin-top: 80px;}
 			.order_jd_bg1{background: url(/default/img/order_icon01.png)no-repeat 0px 0px;}
@@ -80,7 +80,7 @@
 				<ul  class="order_jd_text">
 					<li>
 						<span class="jd_text_con black">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
 					</li>
 				
 				</ul>
@@ -97,7 +97,7 @@
 					<li>
 						<i class="external-cir"></i>
 						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
+						<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>
 					</li>
 				
 				</ul>
@@ -107,7 +107,7 @@
 	    <div class="whitebg br1 mt20 ovh">
 	    	<!--收货人信息-->
 	    	<div class="consignee bbright">
-	    		<h1>收货人信息</h1>
+	    		<h1 style="font-size:16px;">收货人信息</h1>
 	    		<span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span></span>
 	    		<span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr"> {{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}</span></span>
 	    		<span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span></span>
@@ -115,14 +115,14 @@
 	    	</div>
 	    	<!--商家信息-->
 	    	<div class="consignee bbright">
-	    		<h1>商家信息</h1>
+	    		<h1 style="font-size:16px;">商家信息</h1>
 	    		<span class="ml20 db mt20" style="margin-right: 266px;"><span class="fl">公司名称 :</span> <span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span></span>
 	    		<span class="ml20 db "><span class="fl">卖家留言 :</span> <span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span></span>
 	    	</div>
 	    	<!--发票信息-->
 	    	<div class="consignee ">
-	    		<h1>发票信息</h1>
-	    		<span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10">@if($orderDetailsInfo['userInvoceInfo']['is_firm']) 企业 @else个人 @endif</span></span>
+	    		<h1 style="font-size:16px;">发票信息</h1>
+	    		<span class="ml20 db mt20" ><span class="fl">发票抬头：</span> <span class="ml10">@if($orderDetailsInfo['userInvoceInfo']['is_firm']) 企业 @else个人 @endif</span></span>
 	    		@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
 	    		<span class="ml20 db "><span class="fl">公司名称 :</span> <span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['company_name']}}</span></span>
 	    		<span class="ml20 db "><span class="fl">税号 :</span> <span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['tax_id']}}</span></span>
