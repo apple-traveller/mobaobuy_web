@@ -280,13 +280,12 @@ class OrderInfoService
 
     // web
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
+
         $condition['is_delete'] = 0;
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
-        if($firm_id > 0){
-            $condition['firm_id'] = $firm_id;
-        }
+        $condition['firm_id'] = $firm_id;
 
         // 商户后台
         if ($seller_id>0){
@@ -302,8 +301,8 @@ class OrderInfoService
         ];
         //待审批数量
         $condition = array_merge($condition, self::setStatueCondition('waitApproval'));
-        $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
 
+        $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
         //待确认数量
         $condition = array_merge($condition, self::setStatueCondition('waitAffirm'));
         $status['waitAffirm'] = OrderInfoRepo::getTotalCount($condition);
@@ -768,7 +767,7 @@ class OrderInfoService
     }
 
 
-    //
+    //付款凭证提交
     public static function payVoucherSave($orderSn,$payVoucher){
         $orderSn = decrypt($orderSn);
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);

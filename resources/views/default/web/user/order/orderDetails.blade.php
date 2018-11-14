@@ -80,7 +80,7 @@
 				<ul  class="order_jd_text">
 					<li>
 						<span class="jd_text_con black">提交订单</span>
-						<span class="jd_text_date">2018-08-08 14：40：23</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
 					</li>
 				
 				</ul>
@@ -97,7 +97,7 @@
 					<li>
 						<i class="external-cir"></i>
 						您提交了订单，请等待系统确认
-						<div class="gray">2018-09-22   12:00:00</div>
+						<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>
 					</li>
 				
 				</ul>
