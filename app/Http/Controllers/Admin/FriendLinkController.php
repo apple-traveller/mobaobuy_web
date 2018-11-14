@@ -9,7 +9,7 @@ use App\Services\FriendLinkService;
 class FriendLinkController extends Controller
 {
     //列表页
-    public  function list(Request $request)
+    public  function getList(Request $request)
     {
         //查询所有的数据(分页)
         $currpage = $request->input('currpage',1);

@@ -67,7 +67,7 @@
                 <ul class="account_infor_list">
                     <li><span class="infor_title">手机号码：</span><span class="ml10">{{getConfig('service_phone')}}</span></li>
                     <li class="mt25"><span class="infor_title">上传文件：</span><span class="ml10">@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span></li>
-                    <li><textarea></textarea></li>
+                    <li class="mt25"><span class="infor_title">需求文本：</span><span class="ml10"><textarea name="content"></textarea></span></li>
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">提 交</button>
         </div>

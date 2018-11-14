@@ -136,7 +136,7 @@
 	    		<!-- <li><span>维生素C</span><span>￥50.00 </span><span>2kg</span><span>待付款</span><span></span></li>
 	    		<li><span>维生素C</span><span>￥50.00 </span><span>2kg</span><span>待付款</span><span></span></li> -->
 	    		@foreach($orderDetailsInfo['goodsInfo'] as $v)
-	    		<li><span>{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['goods_number']}}kg</span><span>{{number_format($v['goods_price'] * $v['goods_number'])}}</span><span></span></li>
+	    		<li><span>{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['goods_number']}}kg</span><span>{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span><span></span></li>
 	    		@endforeach
 	    	</ul>
 	    	<div class="Amount_money">

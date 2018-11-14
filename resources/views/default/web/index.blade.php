@@ -3,60 +3,14 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/index.css')}}" />
     <style>
-        .custom_service {
-            width: 80px;
-            margin-top: 20px;
-            line-height: 22px;
-            height: 22px;
-            position: relative;
-            z-index: 9999999;
-        }
-        .custom_service .custom_service_p {
-            cursor: pointer;
-        }
-        .custom_service .custom_service_popup {
-            position: absolute;
-            top: -95px;
-            left: -60px;
-            width: 200px;
-            height: 88px;
-            border: 1px solid #cde1f6;
-            background: #f9fdff;
-            display: none;
-        }
-        .custom_service .custom_service_popup .custom_service_popup_p {
-            /*float: left;*/
-            /*margin-left: 10px;*/
-            margin-top: 10px;
-            /*background: #e2e1df;*/
-            /*border-radius: 50%;*/
-            /*color: #afafaf;*/
-            /*overflow: hidden;*/
-            /*width: 60px;*/
-            /*height: 60px;*/
-            /*line-height: 55px;*/
-            /*font-size: 38px;*/
-        }
-        .custom_service .custom_service_popup .custom_service_popup_text {
-            text-align: left;
-            float: left;
-            width: 100%;
-            padding-left: 10px;
-            padding-top: 5px;
-        }
-        .custom_service .custom_service_popup i {
-            background: url('/default/img/custom_service2.png') no-repeat;
-            width: 24px;
-            height: 13px;
-            position: absolute;
-            bottom: -13px;
-            left: 50%;
-            margin-left: -12px;
-        }
-        .custom_service .custom_service_popup .custom_service_popup_text .sc_img {
-            float: right;
-            margin-right: 4px;
-        }
+        .supply_quote_list li{height: 89px;overflow: initial;}
+        .custom_service {width: 80px;margin-top: 20px;line-height: 22px; height: 22px;position: relative;z-index: 9999999;}
+        .custom_service .custom_service_p {cursor: pointer;}
+        .custom_service .custom_service_popup {position: absolute;top: -95px;left: -60px;width: 200px;height: 88px;border: 1px solid #cde1f6;background: #f9fdff;display: none;}
+        .custom_service .custom_service_popup .custom_service_popup_p {margin-top: 10px;}
+        .custom_service .custom_service_popup .custom_service_popup_text {text-align: left;float: left;width: 100%;padding-left: 10px;padding-top: 5px;}
+        .custom_service .custom_service_popup i {background: url('/default/img/custom_service2.png') no-repeat;width: 24px;height: 13px;position: absolute;bottom: -13px;left: 50%;margin-left: -12px;}
+        .custom_service .custom_service_popup .custom_service_popup_text .sc_img {float: right;margin-right: 4px;}
     </style>
 @endsection
 @section('js')
@@ -148,11 +102,11 @@
             <!--限时秒杀-查看更多-->
             <div class="index_xs_ms"><a class="See_more tac ovh">查看更多></a></div>
             <!--秒杀进度-->
-            <div class="fl pr">
+            <div class="fl pr" style="margin-bottom: 4px;">
                 @for ($i = 0; $i < 2; $i++)
                     @php $item=$promote_list[$i]??[]; @endphp
                     @if(empty($item))
-                        <div class="Time_limit_action whitebg pr ovh fl @if($i) ml2 @endif">
+                        <div class="Time_limit_action whitebg pr  fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
                                 <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div><span class="fr mr15"><font class="orange">0</font>次浏览</span></div>
                             <div class="mt40">
@@ -341,27 +295,27 @@
             <li>
                 <div class="clearfix"><span>{{$shop['shop_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span class="lcolor operation">展开</span></div>
                 <div class="supply_list_inside" style="display: none;">
-                    <ul class="quote_list">
+                    <ul class="quote_list supply_quote_list">
                         @foreach($shop['quotes'] as $quote)
                             <li>
-                                <span>{{$quote['cat_name']}}</span>
+                                <span style="width:14%;">{{$quote['cat_name']}}</span>
                                 {{--<span>{{$quote['goods_full_name']}}</span>--}}
-                                <span class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
-                                <span>{{$quote['goods_number']}}</span>
-                                <span class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
-                                <span>{{$quote['delivery_place']}}</span>
+                                <span style="width:20%;" class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
+                                <span style="width:14%;">{{$quote['goods_number']}}</span>
+                                <span style="width:14%;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
+                                <span style="width:14%;">{{$quote['delivery_place']}}</span>
                                 {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
-                                <span>
-                                    <div class="custom_service">
+                                <span style="width:10%;">
+                                    <div class="custom_service" style="margin-top: 0px">
                                         <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
                                         <div class="custom_service_popup" style="">
                                             <p class="custom_service_popup_p">联系方式</p>
                                             <div class="custom_service_popup_text">
                                                 <p>
-                                                    <span style="width:60px;text-align: right">{{$quote['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$quote['contact_info']}}
+                                                    <span style="width:60px;text-align: right;width: 60px;text-align: right;margin-top: 0;margin-bottom: 0;">{{$quote['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$quote['contact_info']}}
                                                 </p>
                                                 <p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$quote['QQ']}}&site=qq&menu=yes');">
-                                                    <span style="width:60px;text-align: right">
+                                                    <span style="width:60px;text-align: right;margin-top: 0;margin-bottom: 0;">
                                                         <img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
                                                     </span>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;{{$quote['QQ']}}
@@ -371,7 +325,7 @@
                                         </div>
                                     </div>
                                 </span>
-                                <span>
+                                <span style="width:14%;">
                                     @if($quote['goods_number'])
                                         <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
                                     @else
