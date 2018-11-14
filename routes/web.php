@@ -460,6 +460,10 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/updateCash', 'IndexController@updateCash');
 
         Route::get('/store', 'ShopStoreController@getList');//店铺列表
+        Route::get('/store/add', 'ShopStoreController@add');// 添加
+        Route::get('/store/edit', 'ShopStoreController@edit');// 修改
+        Route::post('/store/save', 'ShopStoreController@save');// 保存
+        Route::post('/store/delete', 'ShopStoreController@delete');// 删除
 
         Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
         Route::get('/shopUser/add', 'ShopUserController@add');// 添加
