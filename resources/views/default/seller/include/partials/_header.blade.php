@@ -1,4 +1,4 @@
-<ul class="layui-nav layui-layout-left" lay-filter="layui-header">
+<ul class="layui-nav layui-layout-left" lay-filter="layui-header" style="position: relative;z-index: 2">
     <li class="layui-nav-item"><a href="">控制台</a></li>
     {{--<li class="layui-nav-item">--}}
         {{--<a href="javascript:;" data-url="/seller/shopUser" s_id="S040">店铺</a>--}}

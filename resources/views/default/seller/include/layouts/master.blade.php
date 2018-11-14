@@ -4,7 +4,7 @@
     @include(themePath('.').'seller.include.partials.css_js')
     @yield('styles')
 </head>
-<body class="layui-layout-body">
+<body class="">
     @yield('body')
 
     @yield('content')

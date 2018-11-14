@@ -105,18 +105,22 @@
                         layer.msg('未选中商品');
 
                     }
+                    let error = [];
                     $.each(data.data,function (index,value) {
-                        console.log(value.send_number_delivery)
-                        // let _send_number_delivery = value.send_number_delivery;
                         if (!Number(value.send_number_delivery) || value.send_number_delivery === 'undefined') {
                             layer.msg('请填写发货数量');
+                            error.push(index);
                             return false;
                         }
                         if (Number(value.send_number_delivery)> value.goods_number - value.send_number){
                             layer.msg('发货数不能大于购买商品数');
+                            error.push(index);
                             return false;
                         }
                     });
+                    if (error.length>0){
+                        return false;
+                    }
                     $(".send_number_delivery").val(JSON.stringify(data.data));
                 });
 

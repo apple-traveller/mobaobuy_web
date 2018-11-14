@@ -158,7 +158,7 @@ class ShopOrderController extends Controller
                 if (!empty($pay_status)){
                     $data['pay_status'] = $pay_status;
                     // 已收款&&已收货 变更订单 待开票
-                    if ($pay_status==1 || $orderInfo['shipping_status']==3){
+                    if ($pay_status==1 && $orderInfo['shipping_status']==3){
                         $data['order_status'] = 5;
                     }
                 }
@@ -443,6 +443,41 @@ class ShopOrderController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    /**
+     * 修改订单支付方式
+     * @param Request $request
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
+    public function updatePayType(Request $request){
+        $order_id = $request->input('order_id','');
+        $type = $request->input('type','');
+        if (empty($order_id) || empty($type)){
+            return $this->error('参数错误');
+        }
+
+        // 查询该订单是否存在
+        $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+        if (empty($orderInfo)){
+            return $this->error('出现了意想不到的错误');
+        }
+        if ($orderInfo['order_status']>=3){
+            return $this->error('订单已确认，无法更改收款方式');
+        }
+        $data = [
+            'id'=>$order_id,
+            'pay_type' =>$type
+        ];
+
+        $re = OrderInfoService::modify($data);
+
+        if ($re){
+            return $this->success('修改成功');
+        } else {
+            return $this->error('修改失败');
+        }
+    }
+
     public function microtime_float()
     { /* 微秒 */
         list($usec, $sec) = explode(' ', microtime()); /* 非科学计数法 */
