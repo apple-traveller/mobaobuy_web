@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-class LoginController extends Controller
+
+class LoginController extends ApiController
 {
     //用户注册
     public function register(Request $request){
@@ -16,20 +16,20 @@ class LoginController extends Controller
         $type = 'sms_signup';
 
         if(empty($accountName)){
-            return $this->result('',400,'用户账号不能为空');
+            return $this->error('用户账号不能为空');
         }
 
         if(empty($password)){
-            return $this->result('',400,'密码不能为空');
+            return $this->error('密码不能为空');
         }
 
         if(empty($messCode)){
-            return $this->result('',400,'验证码不能为空');
+            return $this->error('验证码不能为空');
         }
 
         //手机验证码是否正确
         if(Cache::get($type.$accountName) != $messCode){
-            return $this->result('',400,'手机验证码不正确');
+            return $this->error('手机验证码不正确');
         }
 
         $data=[
@@ -41,36 +41,95 @@ class LoginController extends Controller
         try{
             UserService::userRegister($data);
             if(getConfig('individual_reg_check')) {
-                return $this->result('',200,'提交成功，请等待审核！');
+                return $this->success(['need_check'=>1]);
             }else{
-                return $this->result('',200,'注册成功！');
+                return $this->success(['need_check'=>0]);
             }
         } catch (\Exception $e){
-            return $this->result('',400,$e->getMessage());
+            return $this->error($e->getMessage());
         }
     }
 
-    //用户登录
     public function login(Request $request)
+    {
+        $openid = $request->input('openid');
+        #判断是否是新qq用户
+        $res = UserService::getAppUserInfo(['open_id'=>$openid]);
+        #获取用户信息
+        $userInfo = UserService::getUserInfo($res['user_id']);
+
+        if($res){
+            $rs = [
+                'is_login'=>1,
+                'userInfo'=>$userInfo
+            ];
+            #登录更新 返回userInfo
+            return $this->success($rs);
+        }else{//没有绑定过账户
+            $rs = [
+                'is_login'=>0
+            ];
+            return $this->success($rs);
+        }
+    }
+
+    //有账号 直接绑定
+    public function bindThird(Request $request)
     {
         $username = $request->input('user_name');
         $password = base64_decode($request->input('password'));
+        $openid = $request->input('openid');
+        $nick_name = $request->input('nick_name');
+        $avatar = $request->input('avatar');
 
         if(empty($username)){
-            return $this->result('',400,'用户名不能为空');
+            return $this->error('用户名不能为空');
         }
         if(empty($password)){
-            return $this->result('',400,'密码不能为空');
+            return $this->error('密码不能为空');
         }
 
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
         try{
+            #先验证会员账号信息
             $user_id = UserService::loginValidate($username, $password, $other_params);
-            return $this->result('',200,'登录成功');
+            #绑定账号
+            UserService::bindThird($user_id,$openid,$nick_name,$avatar);
+            $uuid = \Illuminate\Support\Str::uuid();
+            Cache::put($uuid, $user_id, 60*24*7);
+            return $this->success($uuid);
         }catch (\Exception $e){
-            return $this->result('',400,$e->getMessage());
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //没有账号 注册并绑定
+    public function createThird(Request $request)
+    {
+        $username = $request->input('user_name');
+        $password = base64_decode($request->input('password'));
+
+        $openid = $request->input('openid');
+        $nick_name = $request->input('nick_name');
+        $avatar = $request->input('avatar');
+
+        $data=[
+            'user_name' => $username,
+            'password' => $password,
+            'is_firm' => 0,
+            'nick_name'=>$nick_name,
+            'avatar'=>$avatar
+        ];
+        try{
+            #注册并绑定
+            $user_id = UserService::createThird($openid,$data);
+            $uuid = \Illuminate\Support\Str::uuid();
+            Cache::put($uuid, $user_id, 60*24*7);
+            return $this->success($uuid);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
         }
     }
 
@@ -84,21 +143,21 @@ class LoginController extends Controller
         $id = $request->input('id');
         $type = 'sms_find_signin';
         if(empty($messCode)){
-            return $this->result('',400,'验证码不能为空');
+            return $this->error('验证码不能为空');
         }
         if(empty($password)){
-            return $this->result('',400,'密码不能为空');
+            return $this->error('密码不能为空');
         }
         //手机验证码是否正确
         if(Cache::get($type.$accountName) != $messCode){
-            return $this->result('',400,'验证码有误');
+            return $this->error('验证码有误');
         }
 
         try{
             UserService::userUpdatePwd($id, ['newPassword' => $password]);
-            return $this->result('',200,'修改密码成功');
+            return $this->success('','修改密码成功');
         }catch(\Exception $e){
-            return $this->result('',400,$e->getMessage());
+            return $this->error($e->getMessage());
         }
 
     }
@@ -109,14 +168,14 @@ class LoginController extends Controller
         $accountName = $request->input('accountName');
         $t = $request->input('t');
         if(UserService::checkNameExists($accountName)){
-            return $this->result('',400,'手机号已经注册');
+            return $this->error('手机号已经注册');
         }
         $type = 'sms_signup';
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::add($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->result('',200,'获取验证码成功');
+        return $this->success();
     }
 
     //忘记密码获取手机验证码
@@ -131,7 +190,7 @@ class LoginController extends Controller
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::put($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->result('',200,'获取验证码成功');
+        return $this->success();
     }
 
 

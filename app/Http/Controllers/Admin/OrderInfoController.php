@@ -13,7 +13,7 @@ use App\Services\UserRealService;
 class OrderInfoController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
         $order_status = $request->input('order_status',-1);

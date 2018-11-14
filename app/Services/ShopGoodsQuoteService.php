@@ -5,7 +5,7 @@ use App\Repositories\ShopGoodsRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\ShopRepo;
-
+use Illuminate\Support\Facades\DB;
 class ShopGoodsQuoteService
 {
     use CommonService;
@@ -168,6 +168,19 @@ class ShopGoodsQuoteService
                 return true;
             }
             self::rollBack();
+    }
+
+    //查询所有的报价商品所属的分类信息(微信小程序接口)
+    public static function getShopGoodsQuoteCates()
+    {
+        $result =  DB::select('select `cat_id` from goods as G left join shop_goods_quote as Q  on G.id=Q.goods_id group by `cat_id`');
+        //将sql查询出来的对象转数组
+        $cates_id = [];
+        foreach($result as $vo){
+            $cates_id[] = $vo->cat_id;
+        }
+        $cates = GoodsCategoryService::getCatesByCondition(['id'=>implode('|', $cates_id)]);
+        return $cates;
     }
 }
 

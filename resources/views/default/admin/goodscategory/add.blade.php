@@ -149,13 +149,13 @@
                                     </div>
                                 </div>
 
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;栏目链接：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="category_links" class="text" id="category_links" maxlength="20" value="" size="27">
-                                        <div class="form_prompt"></div>
-                                    </div>
-                                </div>
+                                {{--<div class="item">--}}
+                                    {{--<div class="label"><span class="require-field">*</span>&nbsp;栏目链接：</div>--}}
+                                    {{--<div class="label_value">--}}
+                                        {{--<input type="text" name="category_links" class="text" id="category_links" maxlength="20" value="" size="27">--}}
+                                        {{--<div class="form_prompt"></div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
 
 
 
@@ -240,9 +240,9 @@
                     cat_alias_name :{
                         required : true
                     },
-                    category_links:{
-                        required : true
-                    },
+//                    category_links:{
+//                        required : true
+//                    },
                 },
                 messages:{
                     cat_name:{
@@ -251,9 +251,9 @@
                     cat_alias_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'分类别名不能为空'
                     },
-                    category_links:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'分类链接不能为空'
-                    }
+//                    category_links:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'分类链接不能为空'
+//                    }
                 }
             });
         });

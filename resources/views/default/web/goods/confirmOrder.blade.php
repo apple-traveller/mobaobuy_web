@@ -242,18 +242,18 @@
 			@endif
 	</div>
 	
-	@if(session('cartSession')['from'] != 'promote')
-		<div class="address whitebg ovh mt20 ">
-		<h1 class="ml30 fs18 mt30">付款方式</h1>
-		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
-			<li class="payTypeList" data-id="" style="height: 80px;border:none;">
-				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>
-				<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> 
-			</li>
-		</ul>
-			
-	</div>
-	@endif
+	{{--@if(session('cartSession')['from'] != 'promote')--}}
+		{{--<div class="address whitebg ovh mt20 ">--}}
+		{{--<h1 class="ml30 fs18 mt30">付款方式</h1>--}}
+		{{--<ul class="Collect_goods_address ml30 mt10 ovh mb20">--}}
+			{{--<li class="payTypeList" data-id="" style="height: 80px;border:none;">--}}
+				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>--}}
+				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> --}}
+			{{--</li>--}}
+		{{--</ul>--}}
+			{{----}}
+	{{--</div>--}}
+	{{--@endif--}}
 
 
 	<div class="address whitebg ovh mt20">
@@ -279,7 +279,7 @@
 
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
-		<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交订单</a></div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>
+		<div class="address_sumb fr mr30 cp">提交订单</div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>
 		</form>
 		<input type="hidden" name="" id="activityPromoteId" @if(isset($id))  value="{{encrypt($id)}}" @else value="" @endif >
 	</div>
@@ -371,7 +371,7 @@
         });
 	});
     $(".address_sumb").click(function () {
-    	var payType = $('.payTypeList input[name=payType]:checked').val();
+//    	var payType = $('.payTypeList input[name=payType]:checked').val();
     	var activityPromoteId = $('#activityPromoteId').val();
 		let words =  $("input[ name='words' ]").val();
 		$.ajax({
@@ -379,7 +379,7 @@
 			data:{
 			    'words':words,
 			    'activityPromoteId':activityPromoteId,
-			    'payType':payType
+//			    'payType':payType
 			},
 			type:'post',
 			success:function (res) {

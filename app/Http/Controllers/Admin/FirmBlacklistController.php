@@ -10,7 +10,7 @@ use App\Http\Controllers\ExcelController;
 class FirmBlacklistController extends Controller
 {
     //企业黑名单列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $firm_name = $request->input('firm_name','');
         $currpage = $request->input("currpage",1);

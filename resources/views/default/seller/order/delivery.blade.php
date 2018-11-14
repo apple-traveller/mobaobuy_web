@@ -126,7 +126,6 @@
                 });
             });
 
-
             $(function(){
                 //表单验证
                 $("#submitBtn").click(function(){

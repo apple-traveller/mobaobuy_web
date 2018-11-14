@@ -983,4 +983,29 @@ class UserController extends Controller
         }
 
     }
+
+    //注销账号
+    public function accountLogout()
+    {
+        $userInfo = session('_web_user');
+        //检测用户是否已经企业认证
+        $realInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        //已经实名认证的企业用户不能注销账号
+        if($realInfo && $realInfo['review_status'] == 1 && $realInfo['is_firm'] == 1){
+            return $this->error('已经实名认证的企业用户不能注销账号');
+        }
+        $user_data = [
+            'user_name'=>$userInfo['user_name'].'_logout',
+            'is_freeze'=>1
+        ];
+        $res = UserService::modify($userInfo['id'],$user_data);
+        if($res){
+            session()->forget('_web_user_id');
+            session()->forget('_web_user');
+            session()->forget('_curr_deputy_user');
+            return $this->success('注销成功！');
+        }else{
+            return $this->error('注销失败！请联系管理员。');
+        }
+    }
 }
