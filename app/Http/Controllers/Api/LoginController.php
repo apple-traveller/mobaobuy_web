@@ -118,7 +118,7 @@ class LoginController extends ApiController
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::add($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->success();
+        return $this->success('','success');
     }
 
     //忘记密码获取手机验证码
@@ -133,7 +133,7 @@ class LoginController extends ApiController
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         Cache::put($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
-        return $this->success();
+        return $this->success('','success');
     }
 
 

@@ -131,7 +131,8 @@ class GoodsController extends Controller
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
 
-        return $this->display("web.goods.goodsDetail", [
+        return $this->display("web.goods.goodsDetail",
+        [
             'good_info' => $good_info,
             'goodsList' => $goodList['list'],
             'total' => $goodList['total'],
@@ -185,7 +186,7 @@ class GoodsController extends Controller
         try{
             GoodsService::delCart($id);
             return $this->success();
-        }catch(\Exection $e){
+        }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
     }

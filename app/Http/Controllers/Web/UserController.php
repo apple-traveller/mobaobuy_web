@@ -666,7 +666,7 @@ class UserController extends Controller
         try{
              UserService::delCollectGoods($id);
              return $this->success();
-        }catch(\Exection $e){
+        }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
     }
