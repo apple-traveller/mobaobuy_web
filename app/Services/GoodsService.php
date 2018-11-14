@@ -133,7 +133,7 @@ class GoodsService
     //报价表添加到购物车
     public static function searchGoodsQuote($userId,$shopGoodsQuoteId,$number){
         $addTime = Carbon::now();
-//        $id = decrypt($id);
+        //$id = decrypt($id);
         $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($shopGoodsQuoteId);
         if(empty($shopGoodsQuoteInfo)){
             self::throwBizError('报价信息不存在！');
@@ -274,7 +274,6 @@ class GoodsService
 
     //修改购物车数量
     public static function editCartNum($id,$cartNum){
-        $id = decrypt($id);
         return CartRepo::modify($id,['goods_number'=>$cartNum]);
     }
 

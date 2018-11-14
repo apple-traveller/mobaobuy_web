@@ -13,10 +13,10 @@
                             <dt>公司名称：</dt>
                             <dd><p style="line-height: 33px">{{$shop['company_name']}}</p></dd>
                         </dl>
-                        <dl>
-                            <dt>入驻店铺名称：</dt>
-                            <dd><input type="text" name="shop_name" value="{{$shop['shop_name']}}" disabled="disabled" size="40" class="text text_disabled"></dd>
-                        </dl>
+                        {{--<dl>--}}
+                            {{--<dt>入驻店铺名称：</dt>--}}
+                            {{--<dd><input type="text" name="shop_name" value="{{$shop['shop_name']}}" disabled="disabled" size="40" class="text text_disabled"></dd>--}}
+                        {{--</dl>--}}
                         <dl>
                             <dt>负责人姓名：</dt>
                             <dd><input type="text" name="contactName" readonly value="{{$shop['contactName']}}" class="text"></dd>

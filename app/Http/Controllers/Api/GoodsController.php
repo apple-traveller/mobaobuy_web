@@ -12,30 +12,65 @@ class GoodsController extends ApiController
     public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
+        $pageSize = $request->input("pageSize",10);
+        $highest = $request->input("highest");
+        $lowest = $request->input("lowest");
+        $sort_goods_number = $request->input("sort_goods_number",'');
+        $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
         $orderType = $request->input("orderType","b.add_time:desc");
+        $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
+        $place_id = $request->input('place_id',"");
         $condition = [];
+
         $orderBy = [];
+        if(!empty($sort_goods_number)){
+            $orderBy['b.goods_number'] = $sort_goods_number;
+        }
+        if(!empty($sort_add_time)){
+            $orderBy['b.add_time'] = $sort_add_time;
+        }
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-        if(empty($sort_shop_price) && !empty($orderType)){
+        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
             $t = explode(":",$orderType);
             $orderBy[$t[0]] = $t[1];
         }
+        if(empty($lowest)&&empty($highest)){
+            $condition = [];
+        }
+        if($lowest=="" && $highest!=""){
+            $condition['shop_price|<='] = $highest;
+        }
+        if($highest=="" && $lowest!=""){
+            $condition['shop_price|>='] = $lowest;
+        }
+        if($lowest!="" && $highest!=""&&$lowest<$highest){
+            $condition['shop_price|<='] = $highest;
+            $condition['shop_price|>='] = $lowest;
+        }
+        if($lowest>$highest){
+            $condition['shop_price|>='] = $lowest;
+        }
 
+        if(!empty($brand_id)){
+            $condition['g.brand_id'] = $brand_id;
+        }
         if(!empty($cate_id)){
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
             $condition[] = $c;
         }
+        if(!empty($place_id)){
+            $condition['place_id'] = $place_id;
+        }
 
-        $pageSize = 10;
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         if(empty($goodsList['list'])){
-            return $this->error('error');
+            return $this->error('无数据');
         }else{
             return $this->success([
                 'list'=>$goodsList['list'],
@@ -113,8 +148,89 @@ class GoodsController extends ApiController
     //购物车列表
     public function getCartList(Request $request)
     {
+        $userId = $request->input('userid');
+        if (empty($userId)){
+            return $this->error('缺少参数，userid');
+        }
+        try{
+            $cartInfo = GoodsService::cart($userId);
+            return $this->success(compact('cartInfo'));
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
 
     }
+
+    //删除购物车商品
+    public function delCart(Request $request){
+        $id = $request->input('id');
+        try{
+            $flag = GoodsService::delCart($id);
+            if($flag){
+                return $this->success('','删除成功');
+            }else{
+                return $this->error('','购物车无此商品',402);
+            }
+
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //清空购物车
+    public function clearCart(Request $request){
+        $userId = $request->input('id');
+        try{
+            GoodsService::clearCart($userId);
+            return $this->success('','清空成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递加产品数量
+    public function addCartGoodsNum(Request $request){
+        $id = $request->input('id');//购物车id
+        try{
+            $account = GoodsService::addCartGoodsNum($id);
+            return $this->success($account,'递加成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //递减产品数量
+    public function reduceCartGoodsNum(Request $request){
+        $id = $request->input('id');//购物车id
+        try{
+            $account = GoodsService::reduceCartGoodsNum($id);
+            return $this->success($account,'递减成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //修改购物车数量
+    public function editCartNum(Request $request){
+        $cartNum = $request->input('cartNum');
+        $id = $request->input('id');
+        if(!is_numeric($cartNum)){
+            return $this->error('传入的数量必须为数字');
+        }
+        try{
+            GoodsService::editCartNum($id,$cartNum);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //获取购物车数量
+    public function getCartNum(Request $request){
+
+    }
+
+
 
 
 }

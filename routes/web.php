@@ -458,6 +458,8 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');
 
+        Route::get('/store', 'ShopStoreController@StoreList');
+
         Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
         Route::get('/shopUser/add', 'ShopUserController@add');// 添加
         Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
@@ -523,10 +525,10 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
 
     Route::post('/register', 'LoginController@register');//注册
-    Route::post('/sendRegisterSms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
+    Route::post('/send_register_sms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
     Route::post('/login', 'LoginController@login');//登录
     Route::post('/updatePass', 'LoginController@updatePass');//忘记密码
-    Route::post('/sendFindPwdSms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
+    Route::post('/send_findpass_sms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
 
     Route::get('/index/banner', 'IndexController@getBannerAd');//首页轮播
     Route::get('/index/trans_list', 'IndexController@getTransList');//首页成交动态
@@ -546,6 +548,12 @@ Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
 
         Route::post('/cart/add', 'GoodsController@addCart');//加入购物车
         Route::post('/cart/list', 'GoodsController@getCartList');//加入购物车
+        Route::post('/cart/delete', 'GoodsController@delCart');//删除购物车
+        Route::post('/cart/clear_cart','GoodsController@clearCart');//清空购物车
+        Route::post('/cart/add_goods_num','GoodsController@addCartGoodsNum');//购物车商品数量递增
+        Route::post('/cart/reduce_goods_num','GoodsController@reduceCartGoodsNum');//购物车商品数量递减
+        Route::post('/cart/edit_cart_num','GoodsController@editCartNum');//修改购物车数量
+        Route::get('/cart/get_num','GoodsController@getCartNum');//获取用户购物车数量
     });
 });
 

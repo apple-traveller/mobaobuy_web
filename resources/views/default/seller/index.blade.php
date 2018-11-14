@@ -59,7 +59,6 @@
 @endsection
 @section('script')
     <script src="{{asset(themePath('/').'e-chars/echarts-all.js')}}" ></script>
-    <!-- 引入 vintage 主题 -->
     <script src="{{asset(themePath('/').'e-chars/require.js')}}" ></script>
     <script type="text/javascript">
         require.config({
@@ -79,7 +78,7 @@
                 trigger: 'axis'
             },
             legend: {
-                data:['意向','预购','成交']
+                data:['待付款','待发货','已成交']
             },
             toolbox: {
                 show : true,
@@ -106,21 +105,21 @@
             ],
             series : [
                 {
-                    name:'成交',
+                    name:'待付款',
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
                     data:[10, 12, 21, 54, 260, 830, 710]
                 },
                 {
-                    name:'预购',
+                    name:'待发货',
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
                     data:[30, 182, 434, 791, 390, 30, 10]
                 },
                 {
-                    name:'意向',
+                    name:'已成交',
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},

@@ -25,8 +25,9 @@
 <li class="layui-nav-item">
     <a href="javascript:;" data-url="/seller/detail" s_id="S040">店铺</a>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:void(0);" data-url="/seller/detail" s_id="S040">店铺资料</a></dd>
-        <dd><a href="javascript:void(0);" data-url="/seller/shopUser" s_id="S041">职员列表</a></dd>
+        <dd><a href="javascript:void(0);" data-url="/seller/detail" s_id="S040">商户资料</a></dd>
+        <dd><a href="javascript:void(0);" data-url="/seller/store" s_id="S041">店铺列表</a></dd>
+        <dd><a href="javascript:void(0);" data-url="/seller/shopUser" s_id="S042">职员列表</a></dd>
     </dl>
 </li>
 <li class="layui-nav-item">
