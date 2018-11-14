@@ -81,7 +81,7 @@
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>
-						<td>{{$v['order_sn']}}</td><td>{{$v['shop_name']}}</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 待付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
+						<td>{{$v['order_sn']}}</td><td>{{$v['shop_name']}}</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 未付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
 					</tr>
 					@endforeach
 				@endif

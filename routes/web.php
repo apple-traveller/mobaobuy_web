@@ -242,6 +242,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
     });
 });
+Route::get('/payment/orderPay','PayController@orderPay');//去付款
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/', 'IndexController@index'); //首页
@@ -295,7 +296,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
 
         Route::get('/logout', 'UserController@logout');//登出
-        Route::get('/payment/orderPay','PayController@orderPay');//去付款
+
         Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
@@ -399,7 +400,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         });
 
-
+        Route::get('/toPay','FlowController@toPay');//去付款
         Route::get('/orderSubmission.html','OrderController@orderSubmission');// 订单提交成功页面
 
         Route::get('/order/list','OrderController@orderList');//我的订单

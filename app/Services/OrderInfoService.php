@@ -243,6 +243,10 @@ class OrderInfoService
                 case 2: $status .= ', 部分发货';break;
                 case 3: $status .= ', 已收货';break;
             }
+
+            if($order_status == 2){
+                $status = '待确认';
+            }
         }
         return $status;
     }
