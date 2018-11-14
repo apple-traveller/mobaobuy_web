@@ -454,6 +454,8 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');
 
+        Route::get('/store', 'ShopStoreController@StoreList');
+
         Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
         Route::get('/shopUser/add', 'ShopUserController@add');// 添加
         Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
