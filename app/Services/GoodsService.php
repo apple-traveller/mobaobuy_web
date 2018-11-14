@@ -153,7 +153,6 @@ class GoodsService
                 $yuNumber = $number % $goodsInfo['packing_spec'];
                 $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
                 $goodsNumber = $number + $dNumber;
-
             }else{
                 $goodsNumber = $goodsInfo['packing_spec'];
             }

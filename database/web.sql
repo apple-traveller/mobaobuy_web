@@ -675,8 +675,10 @@ CREATE TABLE `shop_goods` (
 DROP TABLE IF EXISTS `shop_goods_quote`;
 CREATE TABLE `shop_goods_quote` (
 	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-	`shop_id` int(10) NOT NULL COMMENT '店铺ID',
-	`shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+	`shop_id` int(10) NOT NULL COMMENT '商家ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '商家名称',
+  `shop_store_id` int(10) NOT NULL COMMENT '店铺ID',
+  `store_name` varchar(255) DEFAULT NULL COMMENT '店铺名称',
   `goods_id` int(10) NOT NULL COMMENT '商品ID',
   `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
@@ -696,7 +698,9 @@ CREATE TABLE `shop_goods_quote` (
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
-  KEY `goods_id` (`goods_id`)
+  KEY `goods_id` (`goods_id`),
+
+  KEY `shop_store_id` (`shop_store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
 
 DROP TABLE IF EXISTS `cart`;
@@ -744,6 +748,7 @@ CREATE TABLE `order_info` (
   `postscript` varchar(255) NOT NULL DEFAULT '' COMMENT '买家留言',
   `delivery_period` varchar(10) NOT NULL DEFAULT '' COMMENT '交货期',
   `pay_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '付款方式 1-先款后货 2-先货后款',
+  `pay_voucher` varchar(255) DEFAULT NULL COMMENT '付款凭证',
   `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '付款状态 0-待付款 1-已付款 2-部分付款',
   `goods_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品总金额',
   `tax` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '发票税额',
@@ -1199,10 +1204,19 @@ DROP TABLE IF EXISTS `user_sale`;
 CREATE TABLE `user_sale` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `content` varchar(255) DEFAULT NULL COMMENT '需求内容',
   `bill_file` varchar(200) NOT NULL DEFAULT '' COMMENT '清单文件',
-
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卖货需求';
+
+DROP TABLE IF EXISTS `shop_store`;
+CREATE TABLE `shop_store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shop_id` int(11) DEFAULT NULL COMMENT '商家ID',
+  `store_name` varchar(255) NOT NULL COMMENT '店铺名称',
+  `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家店铺表';

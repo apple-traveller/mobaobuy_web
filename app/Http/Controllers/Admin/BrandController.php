@@ -9,7 +9,7 @@ use App\Services\BrandService;
 class BrandController extends Controller
 {
     //用户列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $brand_name = $request->input('brand_name','');
         $condition = [

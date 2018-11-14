@@ -11,7 +11,7 @@ use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
 class SeckillController extends Controller
 {
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input('currpage',1);
         $shop_name = $request->input('shop_name');

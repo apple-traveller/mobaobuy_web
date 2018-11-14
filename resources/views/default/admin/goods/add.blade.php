@@ -173,14 +173,14 @@
         </div>
     </div>
     <script type="text/javascript">
-        var ue = UE.getEditor('goods_desc',{initialFrameHeight:400});
-        ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        var ue1 = UE.getEditor('goods_desc',{initialFrameHeight:400});
+        ue1.ready(function() {
+            ue1.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
 
-        var ue = UE.getEditor('desc_mobile',{initialFrameHeight:400});
-        ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        var ue2 = UE.getEditor('desc_mobile',{initialFrameHeight:400});
+        ue2.ready(function() {
+            ue2.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
     <script type="text/javascript">
@@ -239,7 +239,6 @@
                 }
             },"json");
         });
-
 
         //属性值输入框模糊查询
         $(document).delegate(".attr_value","input oninput",function(){
@@ -333,6 +332,12 @@
                 if($("#article_form").valid()){
                     $("#article_form").submit();
                 }
+            });
+
+            //清空表单editorBox.setContent('')
+            $('.button_reset').click(function(){
+                ue1.setContent('');
+                ue2.setContent('');
             });
 
             $('#article_form').validate({

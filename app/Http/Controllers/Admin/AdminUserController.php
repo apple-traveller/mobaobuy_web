@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class AdminUserController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
         $pageSize = 10;

@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 class ArticleController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $cat_id = $request->input('cat_id',0);
         $title = $request->input('title',"");

@@ -12,7 +12,7 @@ use App\Services\ShopGoodsQuoteService;
 class ShopGoodsController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $currpage = $request->input('currpage',1);
         $shop_name = $request->input('shop_name',"");

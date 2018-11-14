@@ -9,7 +9,7 @@ use App\Services\UnitService;
 class UnitController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $units = UnitService::getUnitsList();
         return $this->display('admin.unit.list',['units'=>$units['list'],'total'=>$units['total']]);

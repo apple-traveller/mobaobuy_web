@@ -50,11 +50,37 @@ class LoginController extends ApiController
         }
     }
 
-    //用户登录
     public function login(Request $request)
+    {
+        $openid = $request->input('openid');
+        #判断是否是新qq用户
+        $res = UserService::getAppUserInfo(['open_id'=>$openid]);
+        #获取用户信息
+        $userInfo = UserService::getUserInfo($res['user_id']);
+
+        if($res){
+            $rs = [
+                'is_login'=>1,
+                'userInfo'=>$userInfo
+            ];
+            #登录更新 返回userInfo
+            return $this->success($rs);
+        }else{//没有绑定过账户
+            $rs = [
+                'is_login'=>0
+            ];
+            return $this->success($rs);
+        }
+    }
+
+    //有账号 直接绑定
+    public function bindThird(Request $request)
     {
         $username = $request->input('user_name');
         $password = base64_decode($request->input('password'));
+        $openid = $request->input('openid');
+        $nick_name = $request->input('nick_name');
+        $avatar = $request->input('avatar');
 
         if(empty($username)){
             return $this->error('用户名不能为空');
@@ -67,10 +93,41 @@ class LoginController extends ApiController
             'ip'  => $request->getClientIp()
         ];
         try{
+            #先验证会员账号信息
             $user_id = UserService::loginValidate($username, $password, $other_params);
+            #绑定账号
+            UserService::bindThird($user_id,$openid,$nick_name,$avatar);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
-            return $this->success($uuid);
+            return $this->success(['token'=>$uuid]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //没有账号 注册并绑定
+    public function createThird(Request $request)
+    {
+        $username = $request->input('user_name');
+        $password = base64_decode($request->input('password'));
+
+        $openid = $request->input('openid');
+        $nick_name = $request->input('nick_name');
+        $avatar = $request->input('avatar');
+
+        $data=[
+            'user_name' => $username,
+            'password' => $password,
+            'is_firm' => 0,
+            'nick_name'=>$nick_name,
+            'avatar'=>$avatar
+        ];
+        try{
+            #注册并绑定
+            $user_id = UserService::createThird($openid,$data);
+            $uuid = \Illuminate\Support\Str::uuid();
+            Cache::put($uuid, $user_id, 60*24*7);
+            return $this->success(['token'=>$uuid]);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\UserRepo;
 use App\Repositories\UserRealRepo;
+use League\Flysystem\Exception;
+
 class UserService
 {
     use CommonService;
@@ -451,7 +453,7 @@ class UserService
     public static function userMember($userId){
         //
         //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId]);
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
@@ -515,6 +517,59 @@ class UserService
         } else {
             $user['user_real'] = $user_real;
             return $user;
+        }
+    }
+
+    public static function bindThird($user_id,$openid,$nick_name,$avatar)
+    {
+        #认证成功 绑定qq或微信
+
+        $app_data = [
+            'app_id' => $openid,
+            'identity_type' => 'W',//微信登录
+            'user_id' => $user_id,
+            'create_time'=>date('Y-m-d H:i:s')
+        ];
+        try{
+            self::beginTransaction();
+            $app_res = self::createAppUserInfo($app_data);
+            if(!$app_res){
+                self::throwBizError('绑定失败！');
+            }
+            #更新用户信息
+            $user_res = self::modify($user_id,['nick_name'=>$nick_name,'avatar'=>$avatar]);
+            if(!$user_res){
+                self::throwBizError('用户信息更新失败！');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e);
+        }
+    }
+
+    public static function createThird($openid,$data)
+    {
+        try{
+            self::beginTransaction();
+            $user_id = self::userRegister($data);
+
+            $app_data = [
+                'app_id' => $openid,
+                'identity_type' => 'W',
+                'user_id' => $user_id,
+                'create_time'=>date('Y-m-d H:i:s')
+            ];
+            $app_res = self::createAppUserInfo($app_data);
+            if(!$app_res){
+                self::throwBizError('绑定失败！');
+            }
+            self::commit();
+            return $user_id;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e);
         }
     }
 }

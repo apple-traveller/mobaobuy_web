@@ -243,6 +243,10 @@ class OrderInfoService
                 case 2: $status .= ', 部分发货';break;
                 case 3: $status .= ', 已收货';break;
             }
+
+            if($order_status == 2){
+                $status = '待确认';
+            }
         }
         return $status;
     }
@@ -611,7 +615,7 @@ class OrderInfoService
 
 
     //创建订单 type为cart 购物车下单    promote限时抢购
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$payType){
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type){
         $addTime =  Carbon::now();
         //生成的随机数
         $order_no = self::createOrderSn();
@@ -624,12 +628,12 @@ class OrderInfoService
                     $order_status = 3;
                     $promote = 'promote';
                     $extension_id = $cartInfo_session[0]['id'];
-                    $pay_type =  1;
+//                    $pay_type =  1;
                     break;
                 default://正常下单
                     $promote = '';
                     $extension_id = '';
-                    $pay_type = $payType;
+//                    $pay_type = $payType;
                     if(!$userId['firm_id']){
                         $order_status = 2;
                     }else{
@@ -655,7 +659,7 @@ class OrderInfoService
                 'postscript'=>$words?$words:'',
                 'extension_code'=>$promote,
                 'extension_id'=>$extension_id,
-                'pay_type'=>$payType
+//                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 

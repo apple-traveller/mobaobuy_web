@@ -16,7 +16,7 @@ use App\Services\FirmStockService;
 class UserController extends Controller
 {
     //用户列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $user_name = $request->input('user_name','');
         $currpage = $request->input("currpage",1);

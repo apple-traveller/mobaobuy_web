@@ -65,9 +65,27 @@
         <form method="post" action="javascript:void(0);" id="user_real_form">
         <div class="w1200">
                 <ul class="account_infor_list">
-                    <li><span class="infor_title">手机号码：</span><span class="ml10">{{getConfig('service_phone')}}</span></li>
-                    <li class="mt25"><span class="infor_title">上传文件：</span><span class="ml10">@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span></li>
-                    <li><textarea></textarea></li>
+                    <li>
+                        用户可以把自己的产品信息提供给客服人员，由客服人员发布信息来帮助用户完成卖货。<br/>
+                        提供信息的方式有三种,选择一种即可：
+                    </li>
+                    <li class="mt25">
+                        1.直接拨打电话联系客服：<span class="ml10">{{getConfig('service_phone')}}</span>
+                    </li>
+                    <li class="mt25">
+                        2.填写货物详细：
+                        {{--<span class="infor_title">货物内容：</span>--}}
+                        <p>
+                            <textarea name="content" style="width:400px;height:200px;margin: 10px 0 0 12px;"></textarea>
+                        </p>
+                    </li>
+                    <li class="mt25">
+                        3.上传货物内容文档：
+                        <div style="margin: 10px 0 0 12px;">
+                            <span class="ml10">@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span>
+                        </div>
+                    </li>
+
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">提 交</button>
         </div>

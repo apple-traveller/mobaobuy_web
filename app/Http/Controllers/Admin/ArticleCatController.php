@@ -8,7 +8,7 @@ use App\Services\ArticleCatService;
 class ArticleCatController extends Controller
 {
     //列表
-    public function list(Request $request)
+    public function getList(Request $request)
     {
         $parent_id = $request->input('parent_id',0);
         $cats = ArticleCatService::getList($parent_id);
