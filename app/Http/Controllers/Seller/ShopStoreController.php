@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class ShopStoreController extends Controller
 {
-    public function StoreList(Request $request)
+    public function getList(Request $request)
     {
         return $this->display('seller.shop.store');
     }
