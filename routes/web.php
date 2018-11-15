@@ -536,6 +536,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
     Route::post('/login', 'LoginController@login');//登录
     Route::post('/updatePass', 'LoginController@updatePass');//忘记密码
     Route::post('/send_findpass_sms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
+    Route::post('/bind_third', 'LoginController@bindThird');//有账号直接和微信绑定
+    Route::post('/create_third', 'LoginController@createThird');//没有账号和微信先绑定再注册
 
     Route::get('/index/banner', 'IndexController@getBannerAd');//首页轮播
     Route::get('/index/trans_list', 'IndexController@getTransList');//首页成交动态
@@ -549,9 +551,12 @@ Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
     Route::post('/goods/detail', 'GoodsController@detail');//商品详情
     Route::post('/goods/ajaxcharts','GoodsController@productTrend');//价格走势图
 
+    Route::post('/article/list', 'ArticleController@getList');//获取咨询列表
+    Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
+
     Route::group(['middleware' => 'api.auth'], function () {
         Route::post('/user/detail', 'UserController@detail');//用户个人信息
-
+        Route::post('/user/add_address','UserController@addAddress');//添加收货地址
 
         Route::post('/cart/add', 'GoodsController@addCart');//加入购物车
         Route::post('/cart/list', 'GoodsController@getCartList');//加入购物车
@@ -560,7 +565,10 @@ Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
         Route::post('/cart/add_goods_num','GoodsController@addCartGoodsNum');//购物车商品数量递增
         Route::post('/cart/reduce_goods_num','GoodsController@reduceCartGoodsNum');//购物车商品数量递减
         Route::post('/cart/edit_cart_num','GoodsController@editCartNum');//修改购物车数量
-        Route::get('/cart/get_num','GoodsController@getCartNum');//获取用户购物车数量
+        Route::post('/cart/get_num','GoodsController@getCartNum');//获取用户购物车数量
+        Route::post('/cart/check_listen_cart_input','GoodsController@checkListenCartInput');//购物车判断数量
+        Route::post('/cart/to_balance','GoodsController@toBalance');//购物车去结算
+
     });
 });
 

@@ -274,7 +274,7 @@ class UserController extends Controller
                 'consignee' => $consignee,
                 'country' => $address_ids[0],
                 'province' => $address_ids[1],
-                'city' => $address_ids[2],
+                'city' => $address_ids[2]??0,
                 'district' => $address_ids[3],
                 'address' => $address,
                 'zipcode' => $zipcode,

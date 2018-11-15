@@ -529,7 +529,7 @@ class UserService
         #认证成功 绑定qq或微信
 
         $app_data = [
-            'app_id' => $openid,
+            'open_id' => $openid,
             'identity_type' => 'W',//微信登录
             'user_id' => $user_id,
             'create_time'=>date('Y-m-d H:i:s')
