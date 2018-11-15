@@ -289,4 +289,20 @@ class UserController extends Controller
             'pageSize'=>$pageSize,
         ]);
     }
+    //设为已读
+    public function setRead(Request $request)
+    {
+        $id = $request->get('id');
+        if(empty($id)){
+            return $this->error('无法获取参数ID');
+        }
+        #修改数据库
+        $data = ['is_read' => 1];
+        $res = UserService::userSaleModify($id,$data);
+        if($res){
+            return $this->success('设置成功');
+        }else{
+            return $this->error('设置失败！请联系管理员。');
+        }
+    }
 }

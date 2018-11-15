@@ -31,4 +31,6 @@
 <script src="{{asset(themePath('/').'js/listtable_pb.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
+<script src="{{asset('/plugs/layer/layer.js')}}" ></script>
 <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
+

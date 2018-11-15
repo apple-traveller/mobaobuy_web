@@ -59,6 +59,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
 
         Route::get('/user/userSale', 'UserController@userSale');//会员卖货需求
+        Route::get('/user/setRead', 'UserController@setRead');//会员卖货需求 设为已读
 
         Route::any('/blacklist/list', 'FirmBlacklistController@getList');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
@@ -458,7 +459,11 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');
 
-        Route::get('/store', 'ShopStoreController@StoreList');
+        Route::get('/store', 'ShopStoreController@getList');//店铺列表
+        Route::get('/store/add', 'ShopStoreController@add');// 添加
+        Route::get('/store/edit', 'ShopStoreController@edit');// 修改
+        Route::post('/store/save', 'ShopStoreController@save');// 保存
+        Route::post('/store/delete', 'ShopStoreController@delete');// 删除
 
         Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
         Route::get('/shopUser/add', 'ShopUserController@add');// 添加
@@ -486,6 +491,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/order/list', 'ShopOrderController@getList');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
+        Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面

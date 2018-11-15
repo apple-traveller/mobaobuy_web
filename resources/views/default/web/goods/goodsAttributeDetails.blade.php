@@ -27,7 +27,7 @@
 @section('content')
 	<div class="clearfix">
 		<div class="w1200">
-			<div class="crumbs mt5">当前位置：<a href="/">产品物性</a> &gt; <a href="/subject/list/56/page/1.html">{{$goodsInfo['goods_name']}}</a><span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodsAttribute">产品物性</a> &gt; <a href="javascript:">{{$goodsInfo['goods_name']}}</a><span class="gray"></span></div>
 			
 			<h1 class="fs20 tac fwb bb1 lh40 ">{{$goodsInfo['goods_name']}}</h1>
 			<div class="Physical_table_title Physical_table_Name">{{$goodsInfo['goods_name']}}</div>

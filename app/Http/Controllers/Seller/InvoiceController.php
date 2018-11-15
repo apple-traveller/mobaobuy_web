@@ -30,7 +30,7 @@ class InvoiceController extends Controller
             $condition['status'] = $status;
         }
         $pageSize = 10;
-        $list = InvoiceService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
+        $list = InvoiceService::getListBySearch(['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['updated_at' => 'DESC']],$condition);
         if (!empty($list['list'])){
             foreach ($list['list'] as $k=>$v){
                 $list['list'][$k]['user_name'] = UserService::getInfo($v['user_id'])['nick_name'];
@@ -89,14 +89,14 @@ class InvoiceController extends Controller
      */
     public function verifyInvoice(Request $request)
     {
-       $shipping_id = $request->input('shopping_id','');
+       $shipping_id = $request->input('shipping_id','');
        $shipping_name = $request->input('shipping_name','');
        $shipping_billno = $request->input('shipping_billno','');
        $invoice_id = $request->input('invoice_id','');
        if (empty($invoice_id)){
            return $this->error('参数错误');
-       }
-        if (empty($shipping_name)){
+        }
+        if (empty($shipping_name) || empty($shipping_id)){
             return $this->error('缺少物流信息');
         }
         if (empty($shipping_billno)){

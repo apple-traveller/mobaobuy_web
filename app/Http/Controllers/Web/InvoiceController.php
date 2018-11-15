@@ -121,7 +121,7 @@ class InvoiceController extends Controller
     {
         $shop_name = $request->input('shop_name','');
         $order_sn = $request->input('order_sn','');
-        $start_time = $request->input('start_time','');
+        $start_time = $request->input('begin_time','');
         $end_time = $request->input('end_time','');
 
         $userInfo = session('_web_user');

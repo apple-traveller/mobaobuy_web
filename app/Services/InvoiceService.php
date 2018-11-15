@@ -103,7 +103,7 @@ class InvoiceService
             if ($re){
                 $changed = [];
                 foreach ($order_list as $k2=>$v2){
-                   $changed[] =  OrderInfoRepo::modify($v2['id'],['status'=>4]);
+                   $changed[] =  OrderInfoRepo::modify($v2['id'],['order_status'=>4]);
                 }
                 self::commit();
                 if (count($changed) == count($order_goods_list)){

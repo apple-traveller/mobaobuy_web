@@ -197,15 +197,15 @@
             type:'POST',
             success:function (result) {
                 if (result.code == 1) {
-                    var status = result.data;
-                    if(status.waitAffirm > 0){
-                        $('#waitAffirm').html(status.waitAffirm);
+                    let res = result.data;
+                    if(res.waitAffirm > 0){
+                        $('#waitAffirm').html(res.waitAffirm);
                     }
-                    if(status.waitPay > 0){
-                        $('#waitPay').html(status.waitPay);
+                    if(res.waitPay > 0){
+                        $('#waitPay').html(res.waitPay);
                     }
-                    if(status.waitSend > 0){
-                        $('#waitSend').html(status.waitSend);
+                    if(res.waitSend > 0){
+                        $('#waitSend').html(res.waitSend);
                     }
                 }
             }
@@ -267,6 +267,7 @@
                             } else {
                                 layer.msg(res.msg, {icon: 5,time:2000});
                             }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
                     layer.close(index);
