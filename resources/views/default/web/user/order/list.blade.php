@@ -7,7 +7,6 @@
 		.order_list_state li{height: 37px;line-height: 35px;width: 85px;text-align: center;float: left;color: #666;cursor: pointer;}
 		.order_list_state li a em{margin-left: 3px;color: red;}
 		.order_list_state .curr{border-bottom: 2px solid #75b335;color: #75b335;box-sizing: border-box;}
-
 		.data-table-box table.order-table tbody td{padding: 0px;}
 		.data-table-box .table-body table.order-table tbody tr:nth-child(even){background-color: #FFFFFF;}
 		.order-item-table td{border: 1px solid #DEDEDE;}
@@ -240,7 +239,10 @@
 	<div class="mt20">
 		<ul class="order_list_state">
 			<li @if(empty($tab_code)) class="curr" @endif><a href="/order/list">所有</a></li>
-			<li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
+            @if(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 0)
+            @else
+            <li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
+            @endif
 			<li @if($tab_code == 'waitAffirm') class="curr" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em id="waitAffirm"></em></a></li>
 			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>

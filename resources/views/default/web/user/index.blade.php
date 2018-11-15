@@ -54,7 +54,7 @@
 						<div class="fl ml30"><img src="img/per_logo.png"/></div>
 						<div class="fl ml15 ovh">
 							<span class="mt5 db">{{session('_web_user')['nick_name']}}</span>
-							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业会员 @else 个人会员 @endif</div>
+							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业会员 @elseif($memberInfo['userRealInfo']) 个人会员 @endif</div>
 							<span class="mt20 gray db">欢迎来到秣宝的会员中心！</span>
 						</div>
 					</li>

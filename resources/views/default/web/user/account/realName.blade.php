@@ -10,11 +10,11 @@
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
         .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
-        .account {
+        .accounts {
         width: 376px;
         margin: 0 auto;
         }
-        .account li {
+        .accounts li {
             width: 188px;
             height: 45px;
             line-height: 45px;
@@ -37,7 +37,7 @@
 @section('js')
     <script type="text/javascript">
         $(function(){
-        $(".account li").click(function(){
+        $(".accounts li").click(function(){
             $(this).addClass('account_curr').siblings().removeClass('account_curr');
             $('.tab_list>li').eq($(this).index()).show().siblings().hide();
         });
@@ -96,7 +96,7 @@
 
 
                 @else
-                 <ul class="account"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul> 
+                 <ul class="accounts"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul> 
                 @endif
              </div>
 
@@ -114,7 +114,7 @@
                     <li class="mt25">
                         <span class="infor_title">真实姓名：</span>
                         <span class=" fl">
-                            <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
+                            <input type="text" style="width:102px;" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                         </span>
                     </li>
                    <!--  <li class="mt25">
@@ -175,7 +175,7 @@
                  <!-- 企业账户 -->
                        <li style="display: none;">
                      <ul class="account_infor_list">
-                    <li><span class="infor_title">账号：</span>
+                    <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
                         <span class="ml10">
                             {{$user_name}}
                         </span>
@@ -185,7 +185,7 @@
                
                     <li class="mt25">
                          <span class="infor_title">企业全称：</span>
-                        <span class=" fl">
+                        <span class=" fl" style="margin-left:-8px;">
                             <input type="text" name="real_name_firm" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif />
                         </span>
                     </li>
@@ -238,6 +238,12 @@
                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                         </span>
                     </li>
+                     <li class="mt25">
+                         <span class="infor_title">授权委托书模板下载：</span>
+                        <span class=" fl" style="width:60px;height: 40px;">
+                            <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("storage/user/letterFile/授权委托书电子档.docx")}}')" value="点击下载">
+                        </span>
+                    </li>
 
                     <li class="mt25">
                          <span class="infor_title">开票资料电子版：</span>
@@ -251,7 +257,7 @@
                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                         </span>
                     </li>
-                    <li class="mt25">
+                   <!--  <li class="mt25">
                         <span class="infor_title">审核状态：</span>
                         <span class=" fl">
                             @if(!empty($user_real))  
@@ -267,7 +273,7 @@
                             @endif
                            
                         </span>
-                    </li>
+                    </li> -->
               
                <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button> 
                 </ul>

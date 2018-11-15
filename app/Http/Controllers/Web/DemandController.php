@@ -29,6 +29,6 @@ class DemandController extends Controller
         }
 
         DemandService::create($data);
-        return $this->success('需求信息提交成功，请待客户反馈联系！');
+        return $this->success('需求信息提交成功，请待客服反馈联系！');
     }
 }

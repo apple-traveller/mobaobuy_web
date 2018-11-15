@@ -384,8 +384,9 @@
         $(".P_cart_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
-                return false;
+                $.msg.alert("请您先去登录");
+                window.location.href='/login';
+                
             }
             var id = $(this).attr("data-id");
             var number = $("#packing_spec").attr('data-id');

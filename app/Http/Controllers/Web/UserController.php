@@ -811,17 +811,17 @@ class UserController extends Controller
 //           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
-               $errorMsg[] = "请上传授权电子版";
+               $errorMsg[] = "请上传授权委托书电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
-               $errorMsg[] = "请上传开票电子版";
+               $errorMsg[] = "请上传开票资料电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
-               $errorMsg[] = "请输入营业执照电子版";
+               $errorMsg[] = "请上传营业执照电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 

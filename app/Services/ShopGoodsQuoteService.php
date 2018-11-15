@@ -101,7 +101,8 @@ class ShopGoodsQuoteService
         $info['packing_unit'] = $goods_detail['packing_unit'];//包装单位
         $arr = explode(";",$goods_detail['goods_attr']);
         $info['goods_attr'] = $arr;
-        $info['goods_full_name'] = $goods_detail['brand_name'] . $goods_detail['goods_name'] . $goods_detail['goods_content'];
+        $info['goods_full_name'] = $goods_detail['goods_full_name'];
+        $info['goods_content'] = $goods_detail['goods_content'];
         return $info;
     }
 

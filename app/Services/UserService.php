@@ -452,6 +452,7 @@ class UserService
     //会员中心首页
     public static function userMember($userId){
         //
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
         //订单
          $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
         //商品推荐
@@ -462,7 +463,7 @@ class UserService
         //
         $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
 
-        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0];
+        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
 
     public static function getUserRealbyId($id){
