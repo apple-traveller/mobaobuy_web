@@ -130,7 +130,7 @@ CREATE TABLE `user_address` (
   `district` int(10) NOT NULL DEFAULT '0' COMMENT '县',
   `street` int(10) NOT NULL DEFAULT '0' COMMENT '街道',
   `address` varchar(120) NOT NULL DEFAULT '' COMMENT '详细地址',
-  `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮编',
+  `zipcode` varchar(60) DEFAULT '' COMMENT '邮编',
   `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '电话或手机',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)

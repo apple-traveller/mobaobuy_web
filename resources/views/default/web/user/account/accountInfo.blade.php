@@ -4,7 +4,7 @@
     <style>
         .account_infor_list{margin-top: 30px;margin-left: 40px;}
         .account_infor_list li{overflow: hidden;}
-        .account_infor_list li .infor_title{width: 150px;float: left; text-align: right;}
+        .account_infor_list li .infor_title{width: 150px;float: left; text-align: right;height:40px;line-height: 40px;}
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
         .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
@@ -84,16 +84,16 @@
         <div class="w1200">
                 <ul class="account_infor_list">
                     <input type="hidden" name="id" value="{{$userInfo['id']}}">
-                    <li><span class="infor_title">昵称</span><span class="ml10"><input name="nick_name" type="text" class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
+                    <li><span class="infor_title">昵称：</span><span class="ml10"><input name="nick_name" type="text" class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
                   <!--   @if($userInfo['real_name'] == '') @else<li style="margin-top:20px;"><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else真实姓名：@endif</span><span class="ml10"><input name="real_name" type="text" @if($userInfo['is_firm']==1) disabled="disabled" @endif class="infor_input nick_name" value="{{$userInfo['real_name']}}"></span></li>@endif -->
-                    <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="email" value="{{$userInfo['email']}}" class="infor_input"></span></li>
+                    <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="text" value="{{$userInfo['email']}}" class="infor_input"></span></li>
                     @if($userInfo['is_firm']==1)
                         <li class="mt25">
                             <span class="infor_title">订单是否需审批：</span>
-                            <span class="ml20 fl">
-                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0" id="no"> <label for="no">否</label>
-                            <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1" id="yes"> <label for="yes">是</label>
-                        </span>
+                            <span class="ml20 fl" style="margin-top: 10px;">
+                                <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0" id="no"> <label for="no">否</label>
+                                <input class="ml10" type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1" id="yes"> <label for="yes">是</label>
+                            </span>
                         </li>
                     @else
 

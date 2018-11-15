@@ -19,7 +19,7 @@
                 <div class="item-info" style="width: 178px;">
                     <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
                 </div>
-                <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 45px; width: 140px;margin-top: -4px;" alt="点击换一个校验码" id="imVcode">
                 <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
             </div>
             <div class="item">
@@ -27,7 +27,7 @@
                 <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
                     <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
                 </div>
-                <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 45px; width: 140px;" id="messCode_but" value="获取手机验证码">
                 <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
             </div>
             <div class="item">
