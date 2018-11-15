@@ -214,7 +214,7 @@ class UserController extends Controller
     }
 
 
-    //显示用户收获地
+    //显示用户收获地列表
     public function shopAddressList(){
         $user_info = session('_web_user');
         $condition = [];
@@ -230,7 +230,7 @@ class UserController extends Controller
             };
         }
         if(!empty($first_one)) {
-            foreach ($first_one as $k1 => $v1) {
+            foreach ($first_one as $k1 => $v1){
                 unset($addressList[$k1]);
                 array_unshift($addressList, $first_one[$k1]);
             }

@@ -101,7 +101,7 @@
 						<span class="add_left fl">是否默认:</span>
 						<div>
 							<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="Y" @if(!empty($default_id) && $default_id == 1) checked @endif/>是
-							<input name="default_address" class="" type="radio" value="N" @if(empty($default_id) || $default_id == $data['id']) checked @endif/>否
+							<input name="default_address" class="" type="radio" value="N" @if(empty($default_id)) checked @endif/>否
 						</div>
 
 					</div>

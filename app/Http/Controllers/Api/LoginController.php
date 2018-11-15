@@ -58,7 +58,6 @@ class LoginController extends ApiController
         }
         #判断是否是新qq用户
         $res = UserService::getAppUserInfo(['open_id'=>$openid]);
-
         if($res){
             #获取用户信息
             $userInfo = UserService::getUserInfo($res['user_id']);
@@ -143,7 +142,7 @@ class LoginController extends ApiController
     public function updatePass(Request $request)
     {
 
-        $password = base64_decode($request->input('password', ''));
+        $password = $request->input('password', '');
         $accountName = $request->input('accountName', '');
         $messCode = $request->input('messCode', '');
         $id = $request->input('id');
@@ -158,7 +157,6 @@ class LoginController extends ApiController
         if(Cache::get($type.$accountName) != $messCode){
             return $this->error('验证码有误');
         }
-
         try{
             UserService::userUpdatePwd($id, ['newPassword' => $password]);
             return $this->success('','修改密码成功');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use App\Services\UserAddressService;
 class UserController extends ApiController
 {
     //账号信息
@@ -19,17 +20,54 @@ class UserController extends ApiController
         return $this->success($user,'success');
     }
 
+    //收货地址详情
+    public function editAddress(Request $request){
+        $id = $request->input('address_id','');
+        $is_default = $request->input('is_default','');
+        if ($id){
+            $address_info = UserAddressService::getAddressInfo($id);
+        } else {
+            $address_info = [];
+        }
+        return $this->success(['data'=>$address_info,'is_default'=>$is_default],'success');
+    }
+
+    //收货地址列表
+    public function addressList(Request $request)
+    {
+        $user_info = $this->getUserInfo($request);
+        $condition = [];
+        $condition['user_id'] = $user_info['id'];
+        $addressList = UserService::shopAddressList($condition);
+        foreach ($addressList as $k=>$v){
+            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            if ($v['id'] == $user_info['address_id']){
+                $addressList[$k]['is_default'] =1;
+                $first_one[$k] = $addressList[$k];
+            } else {
+                $addressList[$k]['is_default'] ='';
+            };
+        }
+        if(!empty($first_one)) {
+            foreach ($first_one as $k1 => $v1){
+                unset($addressList[$k1]);
+                array_unshift($addressList, $first_one[$k1]);
+            }
+        }
+        return $this->success(compact('addressList'),'success');
+    }
+
     //添加收货地址
     public function addAddress(Request $request)
     {
-        $id =$request->input('id','');//编辑传入
+        $id =$request->input('address_id','');//编辑传入
         $user_id = $this->getUserID($request);
         $str_address = $request->input('str_address','');
         $address = $request->input('address','');//详细地址
         $zipcode = $request->input('zipcode','');//邮编
         $consignee = $request->input('consignee','');//收货人
         $mobile_phone = $request->input('mobile','');//手机地址
-        $default = $request->input('default_address','');
+        $default = $request->input('default_address','');//是否默认
 
         if (empty($str_address)){
             return $this->error('请选择地址');
@@ -53,7 +91,7 @@ class UserController extends ApiController
             'country' => $address_ids[0],
             'province' => $address_ids[1],
             'city' => $address_ids[2],
-            'district' => $address_ids[3],
+            'district' => empty($address_ids[3])?0:$address_ids[3],
             'address' => $address,
             'zipcode' => $zipcode,
             'mobile_phone' => $mobile_phone
@@ -66,7 +104,8 @@ class UserController extends ApiController
                         'id'=>$user_id,
                         'address_id' =>$id
                     ];
-                    session()->forget('_web_user');
+                    //session()->forget('_web_user');
+                    Cache::forget('_api_user_'.$user_id);
                     UserService::updateDefaultAddress($data);
                 }
                 return $this->success('修改成功');
@@ -86,4 +125,70 @@ class UserController extends ApiController
             return $this->error($e->getMessage());
         }
     }
+
+    //修改昵称
+    public function editNickname(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        $nick_name = $request->input('nick_name');
+        if(empty($nick_name)){
+            return $this->error('昵称不能为空');
+        }
+        try{
+            UserService::modify($user_id,['nick_name'=>$nick_name]);
+            //清楚缓存
+            Cache::forget('_api_user_'.$user_id);
+            return $this->success('','success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //查看个人关注信息(收藏)
+    public function myCollection(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        $currpage = $request->input('currpage',1);
+        $pagesize = $request->input('pageSize', 10);
+        $rs_list =UserService::userCollectGoodsList($user_id,$currpage,$pagesize);
+        $data = [
+            'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+            'currpage'=>$currpage,
+            'pageSize' => $pagesize, //每页显示的条数
+            'total' => $rs_list['total'], //数据总行数
+            'data' => $rs_list['list'],
+        ];
+        return $this->success($data,'success');
+    }
+
+    //添加收藏
+    public function addCollection(Request $request)
+    {
+        $goods_id = $request->input('goods_id');
+        $userId = $this->getUserID($request);
+        if(empty($goods_id)){
+            return $this->error('商品id不能为空');
+        }
+        try{
+            UserService::addCollectGoods($goods_id,$userId);
+            return $this->success('','success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //删除收藏
+    public function delCollection(Request $request)
+    {
+        $id = $request->input('id');
+        try{
+            UserService::delCollectGoods($id);
+            return $this->success('','success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //实名认证
+
 }

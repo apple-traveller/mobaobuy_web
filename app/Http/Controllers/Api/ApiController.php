@@ -29,7 +29,7 @@ class ApiController
     }
 
     public function getUserID(Request $request){
-        $uuid = $request->input('Authenticate');
+        $uuid = $request->input('token');
         if(!empty($uuid)){
             $user_id = Cache::get($uuid, 0);
             if($user_id){
@@ -44,7 +44,7 @@ class ApiController
     }
 
     public function getUserInfo(Request $request){
-        $uuid = $request->input('Authenticate');
+        $uuid = $request->input('token');
         if(!empty($uuid)){
             $user_id = Cache::get($uuid, 0);
             if($user_id){
@@ -65,7 +65,7 @@ class ApiController
     }
 
     public function getDeputyUserInfo(Request $request){
-        $uuid = $request->input('Authenticate');
+        $uuid = $request->input('token');
         if(!empty($uuid)){
             $user_id = Cache::get($uuid, 0);
             if($user_id){

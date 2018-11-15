@@ -556,6 +556,12 @@ Route::group(['namespace' => 'Api','prefix' => 'api'], function () {
     Route::group(['middleware' => 'api.auth'], function () {
         Route::post('/user/detail', 'UserController@detail');//用户个人信息
         Route::post('/user/add_address','UserController@addAddress');//添加收货地址
+        Route::post('/user/list_address','UserController@addressList');//收货地址列表
+        Route::post('/user/detail_address','UserController@editAddress');//编辑地址列表
+        Route::post('/user/edit_nickname','UserController@editNickname');//修改昵称
+        Route::post('/user/collection','UserController@myCollection');//个人收藏列表
+        Route::post('/user/add_collection','UserController@addCollection');//修改昵称
+        Route::post('/user/del_collection','UserController@delCollection');//
 
         Route::post('/cart/add', 'GoodsController@addCart');//加入购物车
         Route::post('/cart/list', 'GoodsController@getCartList');//加入购物车
