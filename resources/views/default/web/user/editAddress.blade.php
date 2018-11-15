@@ -14,9 +14,9 @@
 		.mt40{margin-top:40px;}
 		.pay_title{height: 50px;line-height: 50px;}
 		.news_addr{width: 65px;margin: 30px auto;}
-		.addr_list li{height: 40px;line-height: 40px;}
-		.addr_list li .pay_text{width: 343px;}
-		.addr_list li .add_left{width: 75px;text-align: right;color: #666;}
+		.addr_list>li{height: 40px;line-height: 40px;}
+		.addr_list>li .pay_text{width: 343px;}
+		.addr_list>li .add_left{width: 75px;text-align: right;color: #666;}
 		.pay_text {
 			width: 330px;
 			height: 40px;

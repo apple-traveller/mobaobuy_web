@@ -16,11 +16,14 @@ class RegionService
 
     public static function getLevelRegion($level, $parent_id)
     {
-        $value = Cache::rememberForever('_region_' . $level . '_' . $parent_id, function () use ($level, $parent_id) {
-            return RegionRepo::getList([], ['parent_id' => $parent_id, 'region_type' => $level]);
-        });
-        return $value;
+        $cache_region = Cache::get('_region_',[]);
+        if(isset($cache_region['_region_' . $level . '_' . $parent_id])){
+            return $cache_region['_region_' . $level . '_' . $parent_id];
+        }
 
+        $cache_region['_region_' . $level . '_' . $parent_id] = RegionRepo::getList([], ['parent_id' => $parent_id, 'region_type' => $level]);
+        Cache::forever('_region_', $cache_region);
+        return $cache_region['_region_' . $level . '_' . $parent_id];
     }
 
     //根据region_type获取地区
@@ -69,6 +72,7 @@ class RegionService
     //添加
     public static function create($data)
     {
+        Cache::forget('_region_');
         return RegionRepo::create($data);
     }
 
@@ -91,6 +95,7 @@ class RegionService
     //删除
     public static function delete($region_id)
     {
+        Cache::forget('_region_');
         $sdata = self::getids($region_id);
         $sdata[]=$region_id;
         //return $sdata;
@@ -100,6 +105,7 @@ class RegionService
     //修改
     public static function modify($region_id,$region_name)
     {
+        Cache::forget('_region_');
         return RegionRepo::modify($region_id,['region_name'=>$region_name]);
     }
 
