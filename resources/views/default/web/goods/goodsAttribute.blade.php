@@ -38,14 +38,14 @@
 				@foreach($list as $v)
 				<li>
 					<div  class="phy_serach_Name gray">
-						<h1 class="fs16 black fwb">{{$v['goods_name']}}</h1>
+						<h1 class="fs16 black fwb">{{$v['goods_full_name']}}</h1>
 						<div class="db mt5">
 							<span> 品       牌 : {{$v['brand_name']}}</span>
-							<span class="ml20"> 产品型号：{{$v['goods_model']}}</span>
+							<span class="ml20"> 含量：{{$v['goods_content']}}</span>
 							<span class="ml20">包装单位 :<font class="blue">{{$v['packing_unit']}}</font></span>
-							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}kg</font></span>
+							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}</font></span>
 						</div>
-						<span class="db mt5">作       用 : 维生素E粉是一种保健品，用于干性食品、婴幼儿奶粉、乳制品和液态食品的营养强化</span>
+						<!-- <span class="db mt5">属       性 : </span> -->
 					</div>
 					<div class="phy_serach_line"></div>
 					<a href="/goodsAttributeDetails/{{encrypt($v['id'])}}"><div class="phy_search_list_btn">查看供应商</div></a>

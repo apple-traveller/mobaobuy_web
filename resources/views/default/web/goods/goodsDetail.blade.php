@@ -174,7 +174,7 @@
 			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
-				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
+				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/kg</span></div>
 
 			</div>
 			<div class="pro_detail">
@@ -188,20 +188,21 @@
 			</div>
 
             <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
+                <span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
                 <span class="fl">联系方式</span><span  class="ml35 fl">{{$good_info['contact_info']}}</span>
             </div>
 
             <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value fl">{{$good_info['production_date']}}</span>
+                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value">{{$good_info['production_date']}}</span>
+                 <span class="fl letter-space">含量</span><span  class="ml5 fl">{{$good_info['goods_content']}}</span>
             </div>
 
-			<div class="pro_detail">
+			<!-- <div class="pro_detail">
 				<span class="ml15 pro_detail_title fl">产品属性</span>
 				@foreach($good_info['goods_attr'] as $vo)
 					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
 				@endforeach
-			</div>
+			</div> -->
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
@@ -284,7 +285,8 @@
         $(".orangebg").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                $.msg.alert("您还没有登陆",1);
+                // window.location.href='/login';
                 return false;
             }
             var id = "{{$good_info['id']}}";
@@ -303,7 +305,7 @@
         $(".follow_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                $.msg.alert("您还没有登陆",1);
                 return false;
             }
             var goods_id = "{{$good_info['goods_id']}}";

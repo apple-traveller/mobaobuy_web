@@ -32,11 +32,11 @@
 			<h1 class="fs20 tac fwb bb1 lh40 ">{{$goodsInfo['goods_name']}}</h1>
 			<div class="Physical_table_title Physical_table_Name">{{$goodsInfo['goods_name']}}</div>
 			<table class="Physical_table">
-				<tr><td class="letW">品       牌</td><td>{{$goodsInfo['brand_name']}}</td><td>产品编码</td><td>{{$goodsInfo['goods_sn']}}</td></tr>
-				<tr><td>包装规格</td><td>{{$goodsInfo['packing_spec']}}</td><td>单位    名称</td><td>{{$goodsInfo['unit_name']}}</td></tr>
+				<tr><td class="letW">品 牌</td><td>{{$goodsInfo['brand_name']}}</td><td>产品编码</td><td>{{$goodsInfo['goods_sn']}}</td></tr>
+				<tr><td>包装规格</td><td>{{$goodsInfo['packing_spec']}}</td><td>单位名称</td><td>{{$goodsInfo['unit_name']}}</td></tr>
 				<tr><td>包装单位</td><td>{{$goodsInfo['packing_unit']}}</td><td>产品型号</td><td>{{$goodsInfo['goods_model']}}</td></tr>
-				<tr><td>作       用</td><td class="ovhwp">维生素E粉是一种保健品，用于干性食品、婴幼儿奶粉、乳制品和液态食品的营养强化</td><td>保质期</td><td>50%</td></tr>
-				<tr ><td>用       途</td><td colspan="4">可做纯天然保健品食用，广泛用于营养品、食品添加剂和药品 </td></tr>
+				<tr><td class="letW">属  性</td><td class="ovhwp">{{$goodsInfo['goods_attr']}}</td><td class="letW">含 量</td><td>{{$goodsInfo['goods_content']}}</td></tr>
+				<!-- <tr ><td>用       途</td><td colspan="4">可做纯天然保健品食用，广泛用于营养品、食品添加剂和药品 </td></tr> -->
 			</table>
 			<div class="Physical_table_title Physical_table_supply">{{$goodsInfo['goods_name']}}</div>
 			<ul class="supply_list_phy">

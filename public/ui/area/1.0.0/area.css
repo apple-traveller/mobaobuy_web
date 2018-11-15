@@ -24,6 +24,7 @@
     width: 290px;
     padding: 10px 23px 15px 18px;
     top: 24px;
+    min-height: 200px;
     left: 0;
     z-index: 10;
     display: none;
