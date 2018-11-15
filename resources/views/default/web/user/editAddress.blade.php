@@ -104,7 +104,6 @@
 							<input name="default_address" class="" style="margin-left: 20px; margin-top: 10px;" type="checkbox" value="Y" @if(!empty($is_default) && $is_default == 1) checked disabled @endif/>
 							{{--<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="N" @if(empty($is_default)) checked @endif/>否--}}
 						</div>
-
 					</div>
 				</li>
 			</ul>

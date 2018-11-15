@@ -214,7 +214,7 @@ class UserController extends Controller
     }
 
 
-    //显示用户收获地
+    //显示用户收货地
     public function shopAddressList(){
         $user_info = session('_web_user');
         $condition = [];

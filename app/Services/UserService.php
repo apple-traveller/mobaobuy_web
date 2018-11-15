@@ -255,6 +255,15 @@ class UserService
         return $userAddressInfo;
     }
 
+    public static function getOneAddressId($user_id)
+    {
+        $userAddressInfo = UserAddressRepo::getList($order=['id'=>'desc'],['user_id'=>$user_id]);
+        if($userAddressInfo){
+            return $userAddressInfo[0]['id'];
+        }
+        return false;
+    }
+
     //更新收获地
     public static function updateShopAdderss($id,$data){
         return UserAddressRepo::modify($id,$data);
