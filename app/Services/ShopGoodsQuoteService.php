@@ -102,6 +102,9 @@ class ShopGoodsQuoteService
         $arr = explode(";",$goods_detail['goods_attr']);
         $info['goods_attr'] = $arr;
         $info['goods_full_name'] = $goods_detail['brand_name'] . $goods_detail['goods_name'] . $goods_detail['goods_content'];
+        $cat_detail = GoodsCategoryRepo::getInfo($goods_detail['cat_id']);
+        $info['cat_id'] = $goods_detail['cat_id'];//商品类型id
+        $info['cat_name'] = $cat_detail['cat_name'];//商品类型
         return $info;
     }
 

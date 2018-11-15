@@ -17,8 +17,10 @@
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-46"></i>帮助中心</h1>
                     <ul class="member_left_list">
-
-                        <li><div class="bottom"></div><div class="line"></div></li>
+                        @foreach(getSidebar() as $k=>$v)
+                            <li><a @if($id == $v['id']) class="green" @endif href="/helpCenter.html?id={{$v['id']}}">{{$v['title']}}</a></li>
+                        @endforeach
+                            <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
         </div>
@@ -40,22 +42,22 @@
 @yield('js')
 <script>
     $(function () {
-        $.ajax({
-            'url': '/helpCenter/sidebar',
-            'type':'post',
-            success:function (res) {
-                if (res.code==1){
-                    let cat = '';
-                    res.data.map(function (item,index) {
-                        if (Object.keys(item).length>0){
-                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
-                        }
-                    });
-                    $('.member_left_list').append(cat);
-                }
-
-            }
-        });
+//        $.ajax({
+//            'url': '/helpCenter/sidebar',
+//            'type':'post',
+//            success:function (res) {
+//                if (res.code==1){
+//                    let cat = '';
+//                    res.data.map(function (item,index) {
+//                        if (Object.keys(item).length>0){
+//                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
+//                        }
+//                    });
+//                    $('.member_left_list').append(cat);
+//                }
+//
+//            }
+//        });
     });
 </script>
 </body>

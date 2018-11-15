@@ -278,7 +278,7 @@
                         if (res.code == 1){
                             setTimeout(window.location.reload(),1000);
                         }else{
-                            $.msg.error(res.msg);
+                            $.msg.alert(res.msg);
                         }
                     }
                 });

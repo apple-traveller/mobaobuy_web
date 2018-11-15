@@ -223,12 +223,36 @@
 		<div class="History_offo">
 			<h1>历史报价</h1>
 		</div>
-		<ul class="Self-product-list">
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>
-			@foreach($goodsList as $vo)
-				<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
-			@endforeach
-		</ul>
+
+        <ul class="History-product-list br1">
+            <li>
+                <span style="width:15%">报价日期</span>
+                <span style="width:10%">种类</span>
+                <span style="width:25%">商品名称</span>
+                <span style="width:10%">单价（元/kg）</span>
+                <span style="width:10%">数量（kg）</span>
+                <span style="width:10%">发货地址</span>
+                <span style="width:20%">联系人</span>
+            </li>
+            @foreach($goodsList as $vo)
+                <li>
+                    <span style="width:15%">{{$vo['add_time']}}</span>
+                    <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
+                    <span style="width:25%" class="green">{{$vo['goods_full_name']}}</span>
+                    <span style="width:10%">{{$vo['goods_number']}}</span>
+                    <span style="width:10%">{{$vo['shop_price']}}</span>
+                    <span style="width:10%">{{$vo['delivery_place']}}</span>
+                    <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                </li>
+            @endforeach
+        </ul>
+
+		{{--<ul class="Self-product-list">--}}
+			{{--<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>--}}
+			{{--@foreach($goodsList as $vo)--}}
+				{{--<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>--}}
+			{{--@endforeach--}}
+		{{--</ul>--}}
 		<!--页码-->
 		<div class="news_pages">
 			<ul id="page" class="pagination">
