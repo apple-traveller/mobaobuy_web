@@ -10,7 +10,7 @@ class ApiAuthenticate
 {
     public function handle(Request $request, Closure $next, $guard = null)
     {
-        $uuid = $request->input('Authenticate');
+        $uuid = $request->input('token');
         if(!empty($uuid)){
             $user_id = Cache::get($uuid, 0);
             if($user_id){

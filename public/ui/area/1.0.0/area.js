@@ -2,7 +2,7 @@
 
 var region = new Object();
 
-region.view_country = true;
+region.view_country = false;
 
 region.init = function(target_div)
 {
@@ -104,7 +104,13 @@ region.close = function(target_div)
     var name = area_div.data('value-name');
     $("#"+name).val(titles.join(' / '));
     var id = area_div.data('value-id');
-    $("#"+id).val(ids.join('|'));
+    //$("#"+id).val(ids.join('|'));
+    if(region.view_country){
+        $("#"+id).val(ids.join('|'));
+    }else{
+        $("#"+id).val('1|'+ids.join('|'));
+    }
+    console.log($("#"+id).val());
 };
 
 $(function() {

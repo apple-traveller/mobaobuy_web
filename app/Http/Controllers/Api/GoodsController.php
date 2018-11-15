@@ -6,6 +6,8 @@ use App\Services\ShopGoodsQuoteService;
 use Illuminate\Http\Request;
 use App\Services\GoodsService;
 use App\Services\UserRealService;
+use App\Services\CartService;
+use Illuminate\Support\Facades\Cache;
 class GoodsController extends ApiController
 {
     //报价列表
@@ -219,16 +221,69 @@ class GoodsController extends ApiController
         }
         try{
             GoodsService::editCartNum($id,$cartNum);
-            return $this->success();
+            return $this->success('','success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
-    //获取购物车数量
-    public function getCartNum(Request $request){
-
+    //购物车input判断，修改
+    public function checkListenCartInput(Request $request){
+        $id = $request->input('id');
+        $goodsNumber = $request->input('goodsNumber');
+        try{
+            $goods_number = GoodsService::checkListenCartInput($id,$goodsNumber);
+            return $this->success($goods_number,'success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
+
+    //获取购物车产品数量
+    public function getCartNum(Request $request)
+    {   $user_id = $this->getUserID($request);
+        $num = 0;
+        if(!empty($user_id)){
+            //登录用户
+            $curr_deputy_user = $this->getDeputyUserInfo($request);
+            if($curr_deputy_user['is_self'] == 0){
+                $user_id = $curr_deputy_user['firm_id'];
+            }else{
+                $user_id = $this->getUserID($request);
+            }
+            $num = CartService::getUserCartNum($user_id);
+        }else{
+            $num = 0;
+
+        }
+        return $this->success(['cart_num'=>$num],'success');
+    }
+
+    //购物车去结算
+    public function toBalance(Request $request)
+    {
+        $cartIds = $request->input('cartId');
+        $cartIds = explode(',',$cartIds);
+        $userInfo = $this->getUserInfo($request);
+        try{
+            $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
+            //进入订单确认页面前先定义购物车session
+            $cartCache = [
+                'goods_list'=>$goods_list,
+                'address_id'=> $userInfo['address_id'],
+                'from'=>'cart'
+            ];
+            Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);
+            return $this->success($cartCache,'success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
+
+
+
 
 
 

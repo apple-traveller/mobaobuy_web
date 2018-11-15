@@ -66,7 +66,7 @@
                         <li @if(request()->path() == 'account/userInfo') class="curr" @endif><a href="/account/userInfo">用户信息</a></li>
                         <li @if(request()->path() == 'account/userRealInfo') class="curr" @endif><a href="/account/userRealInfo">实名认证</a></li>
                         <li @if(request()->path() == 'updatePwd') class="curr" @endif><a href="/updatePwd">修改密码</a></li>
-                        <li @if(request()->path() == 'account/editPayPassword') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>
+                        {{--<li @if(request()->path() == 'account/editPayPassword') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>--}}
                         <li @if(request()->path() == 'collectGoodsList') class="curr" @endif><a href="/collectGoodsList">我的收藏</a></li>
                         <li @if(request()->path() == 'addressList') class="curr" @endif><a href="/addressList">收货地址</a></li>
                         <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>

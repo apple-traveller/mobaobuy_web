@@ -203,9 +203,9 @@
 				<div class="address_default">
 					<div class="address_default_edit" align="right">
 						@if($v['is_default'] == 1)
-							<span class=" cp " style="color: #74b334">默认</span>
+							<span class=" cp green">默认</span>
 						@else
-							<span class=" cp " >设置默认</span>
+							<span class=" cp green" >设置默认</span>
 						@endif
 					</div>
 				</div>
@@ -250,37 +250,18 @@
 					function(index){
                 	}
                 );
-//                layer.confirm('确认删除么？', {
-//                    btn: ['确认','取消']
-//                }, function(index, layero){
-//                    $.ajax({
-//                        url:'/deleteAddress',
-//                        data:{id:id},
-//                        type:'POST',
-//                        success:function (res) {
-//                            if (res.code == 1){
-//                                $.msg.alert(res.msg);
-//                               io.parents(".Receive_address li").remove();
-//                            } else {
-//                                $.msg.alert(res.msg);
-//                                return false;
-//                            }
-//                        }
-//                    });
-//                }, function(index){
-//                });
             })
 			//	编辑
 			$(".edit_address").click(function () {
                 event.stopPropagation();
                 let address_id = $(this).attr('data_id');
-                let default_id = $(this).attr('data_default_id');
+                let is_default = $(this).attr('data_default_id');
                 layer.open({
 					title:'用户地址',
                     type: 2,
                     area: ['600px', '500px'],
                     maxmin: true,
-                    content: '/editAddressList?id='+address_id+'&default_id='+default_id,
+                    content: '/editAddressList?id='+address_id+'&is_default='+is_default,
                     zIndex: layer.zIndex
                 });
             });
