@@ -28,7 +28,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <input type="text" autocomplete="off" size="40" id="store_name"  class="text" />
+                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />
                                     <input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />
                                     <input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />
                                     <div class="form_prompt"></div>
@@ -317,7 +317,6 @@
             let spac = $("#goods_name").attr("data-packing-spac");
             let goods_number = $(this).val();
             if (Number(spac) > Number(goods_number)){
-                alert(spac);
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){
