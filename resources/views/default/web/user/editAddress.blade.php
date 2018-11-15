@@ -83,25 +83,28 @@
 	<div class="pay_method whitebg " id="addr_frame">
 		<form  method="post" id="address_form">
 			<ul class="addr_list ml30 mt25">
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">收货人姓名:</span><input type="text" class="pay_text" value="@if(!empty($data)){{ $data['consignee'] }}@endif" name="consignee"/></div></li>
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">手机号码:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['mobile_phone'] }}@endif" name="mobile_phone"/></div></li>
 				<li>
 					<div class=" mt10 ml30">
 						<span class="add_left fl">收货地址:</span>
-						<input type="text" readonly="readonly" name="str_address" id="area2" value="@if(!empty($data)) {{ $data['str_address'] }} @endif" style="display: none">
-						<input type="text" readonly="readonly" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif " style="display: none"/>
+						<input type="hidden" name="str_address" id="area2" value="@if(!empty($data)) {{ $data['str_address'] }} @endif">
+						<input type="hidden" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif "/>
 						<div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data)) {{ $data['address_names'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
 						</div>
 					</div>
 				</li>
 				<li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['address'] }}@endif" name="address"/></div></li>
 				<li><div class="ovh mt10 ml30"><span class="add_left fl">邮政编码:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['zipcode'] }}@endif" name="zipcode"/></div></li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">收货人姓名:</span><input type="text" class="pay_text" value="@if(!empty($data)){{ $data['consignee'] }}@endif" name="consignee"/></div></li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">手机号码:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['mobile_phone'] }}@endif" name="mobile_phone"/></div></li>
+
 				<li>
 					<div class="ovh mt10 ml30">
 						<span class="add_left fl">是否默认:</span>
 						<div>
+
 							<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="Y" @if(!empty($default_id) && $default_id == 1) checked @endif/>是
 							<input name="default_address" class="" type="radio" value="N" @if(empty($default_id)) checked @endif/>否
+
 						</div>
 
 					</div>
@@ -124,25 +127,25 @@
                 let _zipcode = $("input[name='zipcode']").val();
                 let _consignee = $("input[name='consignee']").val();
                 let _mobile = $("input[name='mobile_phone']").val();
-                let _default = $("input[name='default_address']").val();
+                let _default = $("input[name='default_address']:checked").val();
                 if(!_str_address){
                     $.msg.error('请选择地址');return;
 				}
                 if(!_address){
                     $.msg.error('请输入详细地址');return;
                 }
-                if(!_zipcode){
-                    $.msg.error('请输入邮政编码');return;
-                }
+//                if(!_zipcode){
+//                    $.msg.error('请输入邮政编码');return;
+//                }
                 if(!_consignee){
                     $.msg.error('请输入收货人姓名');return;
                 }
                 if(!_mobile){
                     $.msg.error('请输入手机号码');return;
                 }
-                if(!Utils.isPhone(_mobile)){
-                    $.msg.error('请输入正确的手机号');return;
-				}
+//                if(!Utils.isPhone(_mobile)){
+//                    $.msg.error('请输入正确的手机号');return;
+//				}
 				$.ajax({
 					url:'/createAddressList',
 					data: {

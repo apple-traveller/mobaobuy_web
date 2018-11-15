@@ -252,16 +252,15 @@ class UserController extends Controller
             $consignee = $request->input('consignee','');
             $mobile_phone = $request->input('mobile','');
             $default = $request->input('default_address','');
-
             if (empty($str_address)){
                 return $this->error('请选择地址');
             }
             if (empty($address)){
                 return $this->error('请输入详细地址');
             }
-            if (empty($zipcode)){
-                return $this->error('请输入邮政编码');
-            }
+//            if (empty($zipcode)){
+//                return $this->error('请输入邮政编码');
+//            }
             if (empty($consignee)){
                 return $this->error('请填写收货人');
             }
@@ -343,13 +342,13 @@ class UserController extends Controller
      */
     public function updateShopAddress(Request $request){
         $id = $request->input('id','');
-        $default_id = $request->input('default_id','');
+        $is_default = $request->input('is_default','');
         if ($id){
             $address_info = UserAddressService::getAddressInfo($id);
         } else {
             $address_info = [];
         }
-        return $this->display('web.user.editAddress',['data'=>$address_info,'default_id'=>$default_id]);
+        return $this->display('web.user.editAddress',['data'=>$address_info,'is_default'=>$is_default]);
 
     }
 
@@ -756,7 +755,6 @@ class UserController extends Controller
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
 
-        //
         if($user_real){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,
@@ -997,7 +995,7 @@ class UserController extends Controller
             return $this->error('已经实名认证的企业用户不能注销账号');
         }
         $user_data = [
-            'user_name'=>$userInfo['user_name'].'_logout',
+            'user_name'=>$userInfo['user_name'].'_'.time().'_logout',
             'is_freeze'=>1
         ];
         $res = UserService::modify($userInfo['id'],$user_data);

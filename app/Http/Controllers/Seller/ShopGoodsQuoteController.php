@@ -82,8 +82,11 @@ class ShopGoodsQuoteController extends Controller
      */
     public function save(Request $request)
     {
+        $request->flash();
         $shop_id = session('_seller_id')['shop_id'];
         $id = $request->input('id','');
+        $store_id = $request->input('store_id','');
+        $store_name = $request->input('store_name','');
         $goods_id = $request->input('goods_id','');
         $delivery_place = $request->input('delivery_place');
         $place_id = $request->input('place_id','');
@@ -99,6 +102,9 @@ class ShopGoodsQuoteController extends Controller
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
+        }
+        if(!$store_id || !$store_name){
+            return $this->error('店铺不能为空');
         }
         if(!$delivery_place){
             return $this->error('交货地不能为空');
@@ -129,6 +135,8 @@ class ShopGoodsQuoteController extends Controller
         $data['goods_name'] = $goods['goods_name'];
         $currentPage = $request->input('currentPage');
         $data = [
+            'shop_store_id' => $store_id,
+            'store_name' => $store_name,
             'shop_name' => $shop_name,
             'shop_id' => $shop_id,
             'goods_id' => $goods_id,

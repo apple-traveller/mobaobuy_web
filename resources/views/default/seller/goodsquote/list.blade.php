@@ -28,21 +28,23 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="5%"><div class="tDiv">商品编码</div></th>
+                                    <th width="10%"><div class="tDiv">店铺名称</div></th>
+                                    <th width="6%"><div class="tDiv">商品编码</div></th>
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
-                                    <th width="5%"><div class="tDiv">库存数量</div></th>
-                                    <th width="5%"><div class="tDiv">店铺售价</div></th>
-                                    <th width="5%"><div class="tDiv">业务员</div></th>
-                                    <th width="5%"><div class="tDiv">联系方式</div></th>
+                                    <th width="6%"><div class="tDiv">库存数量</div></th>
+                                    <th width="6%"><div class="tDiv">店铺售价</div></th>
+                                    <th width="6%"><div class="tDiv">业务员</div></th>
+                                    <th width="6%"><div class="tDiv">联系方式</div></th>
                                     <th width="10%"><div class="tDiv">交货地</div></th>
-                                    <th width="15%"><div class="tDiv">添加时间</div></th>
-                                    <th width="15%"><div class="tDiv">生产日期</div></th>
-                                    <th width="15%"><div class="tDiv">操作</div></th>
+                                    <th width="10%"><div class="tDiv">添加时间</div></th>
+                                    <th width="10%"><div class="tDiv">生产日期</div></th>
+                                    <th width="10%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($shopGoodsQuote as $vo)
                                 <tr class="">
+                                    <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_number']}}</div></td>

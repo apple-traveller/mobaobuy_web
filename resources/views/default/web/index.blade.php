@@ -108,7 +108,7 @@
                     @if(empty($item))
                         <div class="Time_limit_action whitebg pr  fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div><span class="fr mr15"><font class="orange">0</font>次浏览</span></div>
+                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div><span class="fr mr15"><font class="green">0</font>次浏览</span></div>
                             <div class="mt40">
                                 <div class="fs20 tac"><span>暂无活动 敬请期待</span></div>
                                 <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">￥???</font>/kg</span></div>
@@ -120,7 +120,7 @@
                     @else
                         <div class="Time_limit_action whitebg pr ovh fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="orange">{{$item['click_count']}}</font>次浏览</span></div>
+                                <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="green">{{$item['click_count']}}</font>次浏览</span></div>
                             <div class="mt40">
                                 <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}kg</span></div>
                                 <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/kg</span></div>
@@ -179,7 +179,7 @@
         </div>
         <!--自营报价-->
         <div class="Self-support mt30">
-            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="lcolor">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
+            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
@@ -196,7 +196,7 @@
                     <li>
                        <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
                         <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;">{{$vo['cat_name']}}</span>
-                        <span style="width:18%;"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span style="width:18%;"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                         <span style="width:12%;">{{$vo['goods_number']}}</span>
                         <span style="width:12%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
                         <span style="width:12%;">{{$vo['delivery_place']}}</span>
@@ -300,7 +300,7 @@
                             <li>
                                 <span style="width:14%;">{{$quote['cat_name']}}</span>
                                 {{--<span>{{$quote['goods_full_name']}}</span>--}}
-                                <span style="width:20%;" class="ovh"><a class="orange" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
+                                <span style="width:20%;" class="ovh"><a class="green" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
                                 <span style="width:14%;">{{$quote['goods_number']}}</span>
                                 <span style="width:14%;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
                                 <span style="width:14%;">{{$quote['delivery_place']}}</span>
@@ -384,7 +384,13 @@
         $(".P_cart_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var id = $(this).attr("data-id");

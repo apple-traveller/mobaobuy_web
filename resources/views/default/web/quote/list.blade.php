@@ -11,6 +11,9 @@
         .add_time .sort_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
         .add_time .sort_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
+        .Self-product-list li span{
+            display: block;
+        }
 	</style>
 @endsection
 @section('js')
@@ -69,7 +72,7 @@
                 @endif
             </div>
 			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="orange" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
+			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
         </div>
 
 
@@ -83,8 +86,8 @@
 							<a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{$vo['brand_name']}}</a>
 						@endforeach
 					</dd>
-					<div class="fl pro_brand_btn ml20 pro_more">更多</div>
-					<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>
+					{{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+					{{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
 				</dl>
 			</div>
             @endif
@@ -97,8 +100,8 @@
 						    <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{$vo['cat_name']}}</a>
 						@endforeach
 					</dd>
-					<div class="fl pro_brand_btn ml20 pro_more">更多</div>
-					<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>
+					{{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+					{{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
 				</dl>
 			</div>
             @endif
@@ -110,12 +113,13 @@
 						    <label class=" check_box region"><input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/><span  class="fl">{{$vo['region_name']}}</span></label>
 						@endforeach
 					</dd>
-					<div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div><div class="fl pro_brand_btn region_btn ml20 cancel_region">取消</div>
+					<div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
+                    <div class="fl pro_brand_btn region_btn ml20 cancel_region">取消</div>
 				</dl>
 			</div>
             @endif
 		</div>
-		<div class="more_filter_box">更多选项...</div>
+		{{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
 	<div class="w1200 mt20 " style="margin-top: 20px;">
 		<h1 class="product_title">产品列表</h1>
@@ -151,10 +155,10 @@
 
 			@foreach($search_data['list'] as $vo)
 				<li>
-                    <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">{{$vo['shop_name']}}</span>
+                    <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                     <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
                     <span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                    <span style="width: 18%"><a class="orange" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                    <span style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                     <span style="width:9%">{{$vo['goods_number']}}</span>
                     <span>{{$vo['shop_price']}}</span>
                     <span>{{$vo['delivery_place']}}</span>
@@ -346,12 +350,17 @@
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
                     let _html = '';
-                    for (var i=0;i<list.length;i++)
+                    for (let i=0;i<list.length;i++)
                     {
+                        let _store_name = '无';
+                        if(list[i].store_name){
+                            _store_name = list[i].store_name;
+                        }
+
                         _html += '<li>' +
-                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:9%;">'+list[i].shop_name+'</span>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:9%;">'+_store_name+'</span>' +
                             '<span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:18%;"><a class="orange" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span  style="width:18%;"><a class="green" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
                             '<span style="width:9%;">'+list[i].goods_number+'</span>' +
                             '<span>'+list[i].shop_price+'</span>' +
                             '<span>'+list[i].delivery_place+'</span>' +
