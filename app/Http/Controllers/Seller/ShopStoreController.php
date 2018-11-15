@@ -33,6 +33,19 @@ class ShopStoreController extends Controller
         ]);
     }
 
+    public function storeList()
+    {
+        $shop_id = session('_seller_id')['shop_id'];
+        $condition['is_delete']= 0;
+        $condition['shop_id']= $shop_id;
+        $storeList = ShopStoreService::getShopStoreList([],$condition);
+        if($storeList){
+            return $this->success('获取成功','',$storeList['list']);
+        }else{
+            return $this->error('无信息');
+        }
+    }
+
     public function add()
     {
         return $this->display('seller.shopStore.add');
