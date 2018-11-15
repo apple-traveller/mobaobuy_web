@@ -213,8 +213,7 @@ class UserController extends Controller
         return $this->success('','',['cart_num'=>$num]);
     }
 
-
-    //显示用户收货地
+    //显示用户收货地列表
     public function shopAddressList(){
         $user_info = session('_web_user');
         $condition = [];
@@ -230,7 +229,7 @@ class UserController extends Controller
             };
         }
         if(!empty($first_one)) {
-            foreach ($first_one as $k1 => $v1) {
+            foreach ($first_one as $k1 => $v1){
                 unset($addressList[$k1]);
                 array_unshift($addressList, $first_one[$k1]);
             }
@@ -755,7 +754,6 @@ class UserController extends Controller
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
 
-        //
         if($user_real){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,

@@ -101,8 +101,10 @@
 					<div class="ovh mt10 ml30">
 						<span class="add_left fl">是否默认:</span>
 						<div>
-							<input name="default_address" class="" style="margin-left: 20px; margin-top: 10px;" type="checkbox" value="Y" @if(!empty($is_default) && $is_default == 1) checked disabled @endif/>
-							{{--<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="N" @if(empty($is_default)) checked @endif/>否--}}
+
+							<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="Y" @if(!empty($default_id) && $default_id == 1) checked @endif/>是
+							<input name="default_address" class="" type="radio" value="N" @if(empty($default_id)) checked @endif/>否
+
 						</div>
 					</div>
 				</li>

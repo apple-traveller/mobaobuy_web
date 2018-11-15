@@ -250,7 +250,7 @@ class UserService
             $userAddressInfo[$k]['country'] = RegionRepo::getInfo($v['country'])['region_name'];
             $userAddressInfo[$k]['province'] = RegionRepo::getInfo($v['province'])['region_name'];
             $userAddressInfo[$k]['city'] = RegionRepo::getInfo($v['city'])['region_name'];
-            $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])['region_name'];
+            $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])?RegionRepo::getInfo($v['district'])['region_name']:"";
         }
         return $userAddressInfo;
     }
@@ -369,7 +369,8 @@ class UserService
             }
             return $info;
         }catch (\Exception $e){
-            throw $e;
+            self::throwBizError($e->getMessage());
+            //throw $e;
         }
     }
 
