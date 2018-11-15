@@ -75,7 +75,6 @@ listTable.edit = function(obj, act, id)
         {
             res = Ajax.call(act, "val=" + encodeURIComponent(Utils.trim(txt.value)) + "&id=" +id, null, "POST", "JSON", false);
             //var res = Ajax.call(url, "val=" + val + "&id=" +id, null, "POST", "JSON", false);
-            console.log(res);
             obj.innerHTML = res.data;
             /*if (res.msg)
             {

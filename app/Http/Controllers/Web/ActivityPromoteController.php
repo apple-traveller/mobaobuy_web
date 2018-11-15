@@ -41,12 +41,11 @@ class ActivityPromoteController extends Controller
         $goodsNum = $request->input('goodsNum');
         $userInfo = session('_web_user');
 
-
         if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
             return $this->error('抢购只能是企业用户下单');
         }
         if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
-            if(!$userInfo['firms']['can_po']){
+            if(!session('_curr_deputy_user')['can_po']){
                 return $this->error('您没有权限为该企业下单');
             }
         }

@@ -53,6 +53,10 @@
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/seller/invoice/detail?invoice_id={{$v['id']}}&currentPage={{$currentPage}}" title="详情" class="btn_see"><i class="sc_icon sc_icon_see"></i>详情</a>
+                                            @if($v['status']==1)
+                                            <a href="javascript:void(0);" title="审核" id="{{$v['id']}}" onclick="conf({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
+                                            <a href="javascript:void(0);" title="取消" onclick="cancelOne({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>取消</a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -109,29 +113,53 @@
         }
 
 
-        function remove(id)
+        function conf(id)
+        {
+            console.log(3423);
+            layui.use(['layer'], function(){
+                let layer = layui.layer;
+                let index =
+                    layer.open({
+                        type: 2,
+                        title: "审核",
+                        id: "link1",
+                        shade: 0,
+                        resize: false,
+                        area: ['600px', '300px'],
+                        offset: 't',
+                        maxmin: true,
+                        content: '/seller/invoice/choseExpress?invoice_id='+id,
+                        success: function(layero){
+                            layer.setTop(layero); //重点2
+                        },
+                        end:function () {
+                            window.location.reload();
+                        }
+                    });
+            });
+        }
+        //作废订单
+        function cancelOne(id)
         {
             layui.use('layer', function(){
-                var layer = layui.layer;
-                layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+                let layer = layui.layer;
+                layer.confirm('是否取消?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
-                        'url':'/seller/quote/delete',
-                        'data':{
-                            'id':id
+                        url:'/seller/invoice/cancelInvoice',
+                        data: {
+                            'invoice_id':id,
                         },
-                        'type':'post',
+                        type: 'post',
                         success: function (res) {
-                            console.log(res.code);
-                            if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:1000});
-                                layer.close(index);
+                            if (res.code == 1) {
+                                layer.msg(res.msg, {icon: 1,time:600});
                                 window.location.reload();
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.msg(res.msg, {icon: 5,time:3000});
+                                window.location.reload();
                             }
                         }
                     });
-                    // window.location.href="/seller/quote/delete?id="+id;
 
                 });
             });

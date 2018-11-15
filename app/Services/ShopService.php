@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\ShopRepo;
+use App\Repositories\ShopStoreRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\ShopUserRepo;
 use App\Repositories\ShopLogRepo;

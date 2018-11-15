@@ -15,7 +15,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/seller/shopStore/add"><div class="fbutton"><div class="add" title="添加店铺"><span><i class="icon icon-plus"></i>添加店铺</span></div></div></a>
+                        <a href="/seller/store/add"><div class="fbutton"><div class="add" title="添加店铺"><span><i class="icon icon-plus"></i>添加店铺</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据">
@@ -44,7 +44,7 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                                <a href="/seller/shopUser/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="/seller/store/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -104,7 +104,7 @@
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
-                        'url':'/seller/shopStore/delete',
+                        'url':'/seller/store/delete',
                         'data':{
                             'id':id
                         },

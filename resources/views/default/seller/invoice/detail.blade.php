@@ -108,7 +108,7 @@
                                     <div class="order_operation_btn">
                                         @if($invoiceInfo['status'] == 1)
                                             <input name="pay" type="button" value="审核并填写快递信息" class="btn btn25 red_btn" onclick="conf({{ $invoiceInfo['id'] }})">
-                                            <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $invoiceInfo['id'] }})">
+                                            <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $invoiceInfo['id'] }})">
                                         @elseif($invoiceInfo['status'] == 2)
                                             <input name="cancel" type="button" value="已开票，无法进行其他操作" class="btn btn25 red_btn">
                                         @elseif($invoiceInfo['status'] == 0)
@@ -159,7 +159,7 @@
             let index =
                 layer.open({
                     type: 2,
-                    title: "添加商品",
+                    title: "审核",
                     id: "link",
                     shade: 0,
                     offset: 'b',

@@ -35,35 +35,67 @@
                     <div class="list-div" id="listDiv" data-id="">
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
-                            <tr>
-                                <th width="8%"><div class="tDiv">编号</div></th>
-                                <th width="23%"><div class="tDiv">请求时间</div></th>
-                                <th width="23%"><div class="tDiv">会员名</div></th>
-                                <th width="23%"><div class="tDiv">昵称</div></th>
-                                <th width="23%" class="handle">操作</th>
-                            </tr>
+                                <tr>
+                                    <th width="4%"><div class="tDiv">编号</div></th>
+                                    <th width="20%"><div class="tDiv">请求时间</div></th>
+                                    <th width="18%"><div class="tDiv">会员名</div></th>
+                                    <th width="18%"><div class="tDiv">昵称</div></th>
+                                    <th width="18%"><div class="tDiv">卖货详情</div></th>
+                                    <th width="18%" class="handle">卖货文档</th>
+                                    <th width="4%" class="handle">状态</th>
+                                </tr>
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <tbody>
-                            @if(!empty($saleList))
-                            @foreach($saleList as $k=>$v)
-                            <tr class="">
+                                @if(!empty($saleList))
+                                    @foreach($saleList as $k=>$v)
+                                        <tr class="table_info">
 
-                                <td><div class="tDiv">{{$v['id']}}</div></td>
-                                <td><div class="tDiv">{{$v['add_time']}}</div></td>
-                                <td><div class="tDiv">{{$v['user_name']}}</div></td>
-                                <td><div class="tDiv">{{$v['nick_name']}}</div></td>
-                                <td class="handle">
-                                    <div class="tDiv a2">
-                                        <a href="/storage/{{$v['bill_file']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>下载查看</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
+                                            <td><div class="tDiv">{{$v['id']}}</div></td>
+                                            <td><div class="tDiv">{{$v['add_time']}}</div></td>
+                                            <td><div class="tDiv">{{$v['user_name']}}</div></td>
+                                            <td><div class="tDiv">{{$v['nick_name']}}</div></td>
+                                            @if(!empty($v['content']))
+                                                <td class="handle">
+                                                    <div class="tDiv a2">
+                                                        <a class="btn_see btn_see_content" onclick="see_content()" id="{{$v['id']}}" is_read="{{$v['is_read']}}" content="{{$v['content']}}"><i class="sc_icon sc_icon_see"></i>点击查看</a>
+                                                    </div>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <div class="tDiv a2">
+                                                        无
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            @if(!empty($v['bill_file']))
+                                                <td class="handle">
+                                                    <div class="tDiv a2">
+                                                        <a href="/storage/{{$v['bill_file']}}" class="btn_see" id="{{$v['id']}}" is_read="{{$v['is_read']}}"><i class="sc_icon sc_icon_see"></i>下载查看</a>
+                                                    </div>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <div class="tDiv a2">
+                                                        无
+                                                    </div>
+                                                </td>
+                                            @endif
 
-                            @else
-                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
-                            @endif
+                                            <td>
+                                                <div class="read_info">
+                                                    @if(!empty($v['is_read']) && $v['is_read'] == 1)
+                                                        已读
+                                                    @else
+                                                        未读
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                                @endif
                             </tbody>
                             <tfoot>
                             <tr>
@@ -90,7 +122,29 @@
     </div>
 </div>
 
-    <script>
+<script>
+        $(function(){
+            $('.btn_see').click(function(){
+                let _self = $(this);
+                let _id = _self.attr('id');
+                let _is_read = _self.attr('is_read');
+                if(_is_read == 0){
+                    $.ajax({
+                        type: "GET",
+                        url: "/admin/user/setRead",
+                        data: {'id':_id},
+                        dataType: "json",
+                        success: function(res){
+                            if (res.code == 1){//设置成功
+                                _self.parents(".table_info").find(".read_info").text('已读');
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }
+            });
+        });
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
@@ -102,12 +156,15 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/list?currpage="+obj.curr+"&user_name={{$user_name}}";
+                            window.location.href="/admin/user/userSale?currpage="+obj.curr+"&user_name={{$user_name}}";
                         }
                     }
                 });
             });
         }
-
+        function see_content(){
+            let _content = $('.btn_see_content').attr('content');
+            layer.alert(_content);
+        }
     </script>
 @stop

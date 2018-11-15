@@ -82,7 +82,7 @@ class OrderInfoService
                     $orderList['list'][$k]['auth'][] = 'wait_Confirm';
                     $orderList['list'][$k]['auth_desc'][] = '取消';
                     $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;" onclick="orderCancel('.$item['id'].')"';
                     $orderList['list'][$k]['auth_html'][] = '';
                 }
 
@@ -91,12 +91,12 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'][] = 'can_pay';
                         $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '去支付';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                     }elseif($item['pay_status'] == 1){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '待确认收货';
+                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
@@ -107,11 +107,11 @@ class OrderInfoService
             if(($currUser['is_self'] == 0) && $currUser['is_firm'] == 1){
                 if($currUserAuth){
                     //已作废订单
-                    if($item['order_status'] == 0){
-                        $orderList['list'][$k]['auth'][] = 'can_del';
-                        $orderList['list'][$k]['auth_desc'][] = '删除';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
-                    }
+//                    if($item['order_status'] == 0){
+//                        $orderList['list'][$k]['auth'][] = 'can_del';
+//                        $orderList['list'][$k]['auth_desc'][] = '删除';
+//                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
+//                    }
 
 
 
@@ -125,13 +125,13 @@ class OrderInfoService
                             }else{
                                 $orderList['list'][$k]['auth'][] = 'wait_approval';
                                 $orderList['list'][$k]['auth_desc'][] = '待审批';
-                                $orderList['list'][$k]['auth_html'][] = '';
+                                $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
                             }
 
                         }
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+//                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+//                        $orderList['list'][$k]['auth_desc'][] = '取消';
+//                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                     }
 
 
@@ -139,22 +139,25 @@ class OrderInfoService
 
                     //待商家确认
                     if($item['order_status'] == 2){
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+//                        $orderList['list'][$k]['auth'][] = 'can_cancel';
+//                        $orderList['list'][$k]['auth_desc'][] = '取消';
+//                        $orderList['list'][$k]['auth_html'][] = '';
                         $orderList['list'][$k]['auth'][] = 'wait_Confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-                        $orderList['list'][$k]['auth_html'][] = '';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;" onclick="orderCancel('.$item['id'].')"';
+
                     }
                     //已确认
                     if($item['order_status'] == 3){
                         if($item['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
+//                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+//                            $orderList['list'][$k]['auth_desc'][] = '取消';
+//                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+
                             $orderList['list'][$k]['auth'][] = 'can_pay';
-                            $orderList['list'][$k]['auth'][] = 'can_cancel';
                             $orderList['list'][$k]['auth_desc'][] = '去支付';
-                            $orderList['list'][$k]['auth_desc'][] = '取消';
-                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
-                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+
                         }
                         if($item['pay_status'] == 1 && $currUserAuth[0]['can_confirm']){
                             $orderList['list'][$k]['auth'][] = 'can_confirm';
@@ -180,7 +183,7 @@ class OrderInfoService
                     $orderList['list'][$k]['auth_desc'][] = '取消';
                     $orderList['list'][$k]['auth_desc'][] = '待商家确认';
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-                    $orderList['list'][$k]['auth_html'][] = '';
+                    $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
                 }
 
                 if($item['order_status'] == 3){
@@ -189,7 +192,7 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '去支付';
                         $orderList['list'][$k]['auth_desc'][] = '取消';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/payment?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
                     }elseif($item['pay_status'] == 1){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
@@ -202,7 +205,7 @@ class OrderInfoService
             if($item['order_status'] == 4){
                 $orderList['list'][$k]['auth'][] = 'finish';
                 $orderList['list'][$k]['auth_desc'][] = '已完成';
-                $orderList['list'][$k]['auth_html'][] = '';
+                $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
             }
 
             if($item['order_status'] == 5){
@@ -263,9 +266,11 @@ class OrderInfoService
                 $condition['pay_status'] = '0|2';break;
             case 'waitSend':
                 $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
                 $condition['shipping_status'] = '0|2';break;
             case 'waitConfirm':
                 $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
                 $condition['shipping_status'] = 1;break;
             case 'finish':
                 $condition['order_status'] = 4;break;
@@ -277,13 +282,12 @@ class OrderInfoService
 
     // web
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
+
         $condition['is_delete'] = 0;
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
-        if($firm_id > 0){
-            $condition['firm_id'] = $firm_id;
-        }
+        $condition['firm_id'] = $firm_id;
 
         // 商户后台
         if ($seller_id>0){
@@ -297,6 +301,7 @@ class OrderInfoService
             'waitSend' => 0,
             'waitConfirm' => 0
         ];
+
         //待审批数量
         $condition = array_merge($condition, self::setStatueCondition('waitApproval'));
         $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
@@ -762,6 +767,17 @@ class OrderInfoService
         $b = date("Y-m-d"); //当月当天
         $res = OrderInfoRepo::getEveryMonthOrderCount($a,$b);
         return $res;
+    }
+
+
+    //付款凭证提交
+    public static function payVoucherSave($orderSn,$payVoucher){
+        $orderSn = decrypt($orderSn);
+        $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
+        if(empty($orderInfo)){
+            self::throwBizError('订单信息不存在');
+        }
+        return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
     }
 
 }

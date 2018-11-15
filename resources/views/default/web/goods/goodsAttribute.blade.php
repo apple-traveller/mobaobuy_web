@@ -48,7 +48,7 @@
 						<span class="db mt5">作       用 : 维生素E粉是一种保健品，用于干性食品、婴幼儿奶粉、乳制品和液态食品的营养强化</span>
 					</div>
 					<div class="phy_serach_line"></div>
-					<div class="phy_search_list_btn"><a href="/goodsAttributeDetails/{{encrypt($v['id'])}}">查看供应商</a></div>
+					<a href="/goodsAttributeDetails/{{encrypt($v['id'])}}"><div class="phy_search_list_btn">查看供应商</div></a>
 				</li>
 				@endforeach
 			@else

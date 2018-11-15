@@ -698,15 +698,17 @@ class UserController extends Controller
             $data['nick_name'] = $params['nick_name'];
             $userId = session('_web_user_id');
             $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
-            if(!preg_match($pattern,$data['email'])){
-                return $this->error('邮箱格式有误!');
+            if(!empty($data['email'])){
+                if(!preg_match($pattern,$data['email'])){
+                    return $this->error('邮箱格式有误!');
+                }
             }
+
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
             }
             $flag = UserService::modify($userId,$data);
-//            dump($flag);
 
             if(!$flag['is_firm']){
                 if(isset(session('_web_user')['firms'])){
@@ -718,7 +720,6 @@ class UserController extends Controller
                 }
                 return $this->success('保存成功', '', $flag);
             }else{
-//                dd(123);
                 session()->put('_web_user', $flag);
 //                dd(session('_web_user'));
                 return $this->success('保存成功', '', $flag);
@@ -968,9 +969,10 @@ class UserController extends Controller
 
     //会员卖货
     public function sale(Request $request){
-        $userId = session('_web_user_id');
+        $userInfo = session('_web_user');
         $saleData = $request->all();
-        $saleData['user_id'] = $userId;
+        $saleData['user_id'] = $userInfo['id'];
+        $saleData['user_name'] = $userInfo['user_name'];
         if($request->isMethod('get')){
             return $this->display('web.user.account.userSale');
         }else{

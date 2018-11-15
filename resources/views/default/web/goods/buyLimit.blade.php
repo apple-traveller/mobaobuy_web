@@ -82,7 +82,7 @@
 							<div class="mx_progress"><div class="mx_progress_com"></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}kg</span>
 						</div>
 						<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
-						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>\kg</div>
+						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>/kg</div>
 
 						@if($v['is_over'])
 							<div class="graybg">
@@ -97,7 +97,7 @@
 						@else
 							<div class="graybg count-down" data-endtime="{{$v['end_time']}}">
 								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<div class="bottom_btn redbg fs16 white cp"><a href="/buyLimitDetails/{{encrypt($v['id'])}}">参与秒杀</a></div>
+								<a href="/buyLimitDetails/{{encrypt($v['id'])}}"><div class="bottom_btn redbg fs16 white cp">参与秒杀</div></a>
 							</div>
 						@endif
 						{{--<div class="mx_btn"><a href="/buyLimitDetails/{{encrypt($v['id'])}}">立即抢购</a></div>--}}

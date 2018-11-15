@@ -69,28 +69,30 @@
             });
 
             //数量输入检测
-            $('#pur_num').blur(function(){  
+            $('#pur_num').blur(function(){
+                var _self = $(this);
                 //数量
-                var goodsNumber = $(this).val();
+                var goodsNumber = _self.val();
+                var packing_spec = _self.attr('packing_spec');
                 //当前购物车数据id
-                var id = $(this).attr('cid');
-                    if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
-                        $.ajax({
-                            'type':'post',
-                            'data':{'id':id,'goodsNumber':goodsNumber},
-                            'url':'{{url('/checkListenCartInput')}}',
-                            success:function(res){
-                                if(res.code){
-                                }else{
-                                    layer.msg('输入的数量有误');
-                                    window.location.reload();
-                                }
+                var id = _self.attr('cid');
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                    $.ajax({
+                        'type':'post',
+                        'data':{'id':id,'goodsNumber':goodsNumber},
+                        'url':'{{url('/checkListenCartInput')}}',
+                        success:function(res){
+                            if(res.code){
+                            }else{
+                                $.msg.error('输入的数量有误');
+                                _self.val(packing_spec);
                             }
-                        })
-                    }else{
-                        layer.msg('输入的数量有误');
-                         window.location.reload();
-                    }
+                        }
+                    })
+                }else{
+                    $.msg.error('输入的数量有误');
+                    _self.val(packing_spec);
+                }
             });
 
             //隐藏原料分类
@@ -203,7 +205,11 @@
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span><div class="pur_volume ml15"><span class="pur bbright">-</span><input type="text" cid="{{$good_info['id']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" /><span class="pur bbleft">+</span></div>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
+                <div class="pur_volume ml15">
+                    <span class="pur bbright">-</span>
+                        <input type="text" cid="{{$good_info['id']}}" packing_spec="{{$good_info['packing_spec']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" />
+                    <span class="pur bbleft">+</span></div>
 
 			</div>
 

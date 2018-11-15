@@ -121,7 +121,7 @@ class InvoiceController extends Controller
     {
         $shop_name = $request->input('shop_name','');
         $order_sn = $request->input('order_sn','');
-        $start_time = $request->input('start_time','');
+        $start_time = $request->input('begin_time','');
         $end_time = $request->input('end_time','');
 
         $userInfo = session('_web_user');
@@ -308,6 +308,13 @@ class InvoiceController extends Controller
             'company_address' => $user_real['company_address'],
             'company_telephone' => $user_real['company_telephone']
         ];
+        if(!$user_real['is_firm']){
+            unset($invoice_data['tax_id']);
+            unset($invoice_data['bank_of_deposit']);
+            unset($invoice_data['bank_account']);
+            unset($invoice_data['company_address']);
+            unset($invoice_data['company_telephone']);
+        }
         // 生成唯一开票号
         $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
         $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
