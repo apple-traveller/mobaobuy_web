@@ -266,9 +266,11 @@ class OrderInfoService
                 $condition['pay_status'] = '0|2';break;
             case 'waitSend':
                 $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
                 $condition['shipping_status'] = '0|2';break;
             case 'waitConfirm':
                 $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
                 $condition['shipping_status'] = 1;break;
             case 'finish':
                 $condition['order_status'] = 4;break;
@@ -299,10 +301,11 @@ class OrderInfoService
             'waitSend' => 0,
             'waitConfirm' => 0
         ];
+
         //待审批数量
         $condition = array_merge($condition, self::setStatueCondition('waitApproval'));
-
         $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
+
         //待确认数量
         $condition = array_merge($condition, self::setStatueCondition('waitAffirm'));
         $status['waitAffirm'] = OrderInfoRepo::getTotalCount($condition);
