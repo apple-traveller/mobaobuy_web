@@ -187,4 +187,17 @@ if(!function_exists('getSidebar')){
     }
 }
 
+if (!function_exists('getNewsSidebar')){
+    function getNewsSidebar(){
+        $cat = \App\Services\ArticleCatService::getList(3);
+        // 热门
+        $hot_news = \App\Services\ArticleService::getTopClick(1,6);
+        $data =[
+            'cat'=>$cat,
+            'hot_news'=>$hot_news['list']
+        ];
+        return $data;
+    }
+}
+
 
