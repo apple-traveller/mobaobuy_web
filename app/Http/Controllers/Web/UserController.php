@@ -774,12 +774,12 @@ class UserController extends Controller
     public function saveUserReal(Request $request)
     {
         $user_id = session('_web_user_id');
-        $data = $request->all();
+        $dataArr = $request->all();
 
         //is_self 1是个人提交  2是企业
         $is_self = $request->input('is_self');
         $errorMsg = [];
-        $dataArr = $data['jsonData'];
+
        if($is_self == 1){
            if(empty($dataArr['real_name'])){
                $errorMsg[] = "请输入真实姓名";

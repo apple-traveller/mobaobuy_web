@@ -269,17 +269,19 @@
 		<div class="table-body">
 			<table class="table table-border table-bordered table-bg table-hover dataTable" style="border: 1px solid #DEDEDE;">
 				<thead>
-				<tr>
-					<th width="40%">商品信息</th>
-					<th width="20%">订单金额</th>
-					<th width="20%">物流跟踪</th>
-					<th>状态</th>
-				</tr>
+                    <tr>
+                        <th width="40%">商品信息</th>
+                        <th width="20%">订单金额</th>
+                        <th width="20%">物流跟踪</th>
+                        <th>状态</th>
+                    </tr>
 				</thead>
 			</table>
 
 			<table id="data-table" class="table table-border table-bordered table-bg table-hover dataTable order-table" >
-				<thead><tr><th style="padding: 0px;"></th></tr></thead>
+				<thead>
+                    <tr><th style="padding: 0px;"></th></tr>
+                </thead>
 			</table>
 		</div>
 	</div>
