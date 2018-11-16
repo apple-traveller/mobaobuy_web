@@ -89,7 +89,7 @@ class ArticleService
             $con['title'] = '%'.$title.'%';
             $con['keywords'] = '%'.$title.'%';
             $con['author'] = '%'.$title.'%';
-            $con['content'] = '%'.$title.'%';
+//            $con['content'] = '%'.$title.'%';
             $condition[] = $con;
         }
         $condition['is_show'] = 1;
