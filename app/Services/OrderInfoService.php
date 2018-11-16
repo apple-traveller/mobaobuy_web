@@ -178,12 +178,13 @@ class OrderInfoService
                 }
 
                 if($item['order_status'] == 2){
-                    $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth'][] = 'wait_Confirm';
-                    $orderList['list'][$k]['auth_desc'][] = '取消';
+                    $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    $orderList['list'][$k]['auth_desc'][] = '取消';
                     $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+
                 }
 
                 if($item['order_status'] == 3){
@@ -272,6 +273,11 @@ class OrderInfoService
                 $condition['order_status'] = 3;
                 $condition['pay_status'] = 1;
                 $condition['shipping_status'] = 1;break;
+            case 'waitInvoice':
+                $condition['order_status'] = 5;
+                $condition['pay_status'] = 1;
+//                $condition['shipping_status'] = 3;
+                break;
             case 'finish':
                 $condition['order_status'] = 4;break;
             case 'cancel':
@@ -299,7 +305,8 @@ class OrderInfoService
             'waitAffirm' => 0,
             'waitPay' => 0,
             'waitSend' => 0,
-            'waitConfirm' => 0
+            'waitConfirm' => 0,
+            'waitInvoice'=> 0
         ];
 
         //待审批数量
@@ -322,6 +329,10 @@ class OrderInfoService
         $condition = array_merge($condition, self::setStatueCondition('waitConfirm'));
         $status['waitConfirm'] = OrderInfoRepo::getTotalCount($condition);
 
+        //待开票
+        $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
+        unset($condition['pay_status']);
+        $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
         return $status;
     }
 

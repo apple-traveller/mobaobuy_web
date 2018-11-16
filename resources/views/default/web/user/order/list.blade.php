@@ -115,6 +115,9 @@
                     if(status.waitConfirm > 0){
                         $('#waitConfirm').html(status.waitConfirm);
                     }
+                    if(status.waitInvoice > 0){
+                        $('#waitInvoice').html(status.waitInvoice);
+                    }
                 }
             }, "POST", "JSON");
 
@@ -247,6 +250,7 @@
 			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>
 			<li @if($tab_code == 'waitConfirm') class="curr" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em id="waitConfirm"></em></a></li>
+            <li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/order/list?tab_code=waitInvoice">待开票<em id="waitInvoice"></em></a></li>
 			<li @if($tab_code == 'finish') class="curr" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
 			<li @if($tab_code == 'cancel') class="curr" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
 		</ul>

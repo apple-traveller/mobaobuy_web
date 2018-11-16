@@ -57,7 +57,7 @@ class UserController extends Controller
         if(!$mobile){
             return $this->error('参数错误！');
         }
-        $userInfo = UserRepo::getInfoByFields(['user_name'=>$mobile]);
+        $userInfo = UserService::getUserInfoByUserName($mobile);
         if(empty($userInfo)){
             return $this->error('该用户不存在！');
         }
