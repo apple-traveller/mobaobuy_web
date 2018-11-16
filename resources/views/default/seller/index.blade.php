@@ -66,13 +66,39 @@
                 echarts: 'theme/macarons'
             }
         });
+        let month = [];
+        var waitAffirm = [];
+        var waitPay = [];
+        var waitSend = [];
+        var finished = [];
         // 第二个参数可以指定前面引入的主题
         var chart = echarts.init(document.getElementById('main'), 'macarons');
-
+        $.ajax({
+            url:'/seller/chars',
+            data:'',
+            type:'POST',
+            async:false,
+            success:function (res) {
+                if (res.code==1){
+                    for (let i1 in res.data.waitAffirm) {
+                        waitAffirm.push(res.data.waitAffirm[i1]);
+                    }
+                    for (let i2 in res.data.waitPay) {
+                        waitPay.push(res.data.waitPay[i2]);
+                    }
+                    for (let i3 in res.data.waitSend) {
+                        waitSend.push(res.data.waitSend[i3]);
+                    }
+                    for (let i3 in res.data.finished) {
+                        finished.push(res.data.finished[i3]);
+                    }
+                }
+            }
+        });
         chart.setOption({
             title : {
                 text: '订单情况',
-                subtext: '纯属虚构'
+                subtext: ''
             },
             tooltip : {
                 trigger: 'axis'
@@ -95,7 +121,7 @@
                 {
                     type : 'category',
                     boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                    data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
                 }
             ],
             yAxis : [
@@ -109,21 +135,21 @@
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                    data:[10, 12, 21, 54, 260, 830, 710]
+                    data: waitPay
                 },
                 {
                     name:'待发货',
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                    data:[30, 182, 434, 791, 390, 30, 10]
+                    data: waitSend
                 },
                 {
                     name:'已成交',
                     type:'line',
                     smooth:true,
                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                    data:[1320, 1132, 601, 234, 120, 90, 20]
+                    data:finished
                 }
             ]
         });

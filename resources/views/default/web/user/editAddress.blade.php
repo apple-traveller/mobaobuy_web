@@ -127,12 +127,7 @@
                 let _consignee = $("input[name='consignee']").val();
                 let _mobile = $("input[name='mobile_phone']").val();
                 let _default = $("input[name='default_address']:checked").val();
-                if(!_str_address){
-                    $.msg.error('请选择地址');return;
-				}
-                if(!_address){
-                    $.msg.error('请输入详细地址');return;
-                }
+
 //                if(!_zipcode){
 //                    $.msg.error('请输入邮政编码');return;
 //                }
@@ -141,6 +136,12 @@
                 }
                 if(!_mobile){
                     $.msg.error('请输入手机号码');return;
+                }
+                if(!_str_address){
+                    $.msg.error('请选择地址');return;
+                }
+                if(!_address){
+                    $.msg.error('请输入详细地址');return;
                 }
 //                if(!Utils.isPhone(_mobile)){
 //                    $.msg.error('请输入正确的手机号');return;

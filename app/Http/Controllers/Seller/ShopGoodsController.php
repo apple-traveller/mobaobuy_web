@@ -224,7 +224,7 @@ class ShopGoodsController extends Controller
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
         }
-        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','packing_unit']);
+        $goods = GoodsService::getGoods($condition,['id','goods_full_name','packing_spec','packing_unit']);
         if(!empty($goods)){
             return $this->result($goods,200,'获取数据成功');
         }else{

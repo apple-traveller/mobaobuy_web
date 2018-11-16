@@ -147,7 +147,7 @@ class ShopGoodsQuoteController extends Controller
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],
-            'goods_name' => $goods['goods_name'],
+            'goods_name' => $goods['goods_full_name'],
             'salesman' => $salesman,
             'contact_info' => $contact_info,
             'QQ' => $qq

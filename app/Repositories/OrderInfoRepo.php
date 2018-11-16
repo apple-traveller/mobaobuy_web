@@ -33,4 +33,28 @@ class OrderInfoRepo
         }
         return [];
     }
+
+    /**
+     * 当年每月的订单量
+     * @param $start_time
+     * @param $end_time
+     * @param string $condition
+     * @return array
+     */
+    public static function getCurrYearEveryMonth($start_time,$end_time,$condition='1=1')
+    {
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $res = $query->select(
+            DB::raw('month(add_time) as m'),DB::raw('count(1) as order_count')
+            )->where('add_time','>',$start_time)
+            ->where('add_time','<',$end_time)
+            ->where($condition)
+            ->groupBy('m')
+            ->get();
+        if($res){
+            return $res->toArray();
+        }
+        return [];
+    }
 }

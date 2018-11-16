@@ -18,7 +18,7 @@ class HelpCenterController extends Controller
     {
         $id = $request->input('id',4);
         $detail = ArticleService::getInfo($id);
-        return $this->display('web.helpcenter.index',['detail'=>$detail]);
+        return $this->display('web.helpcenter.index',['detail'=>$detail,'id'=>$id]);
     }
 
     public function getSidebar(Request $request)

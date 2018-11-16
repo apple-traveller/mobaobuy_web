@@ -68,6 +68,19 @@
 </div>
 <script>
 $(function() {
+
+    let _path_name = window.location.pathname;
+    //设置高亮
+    $('.nav-menu ul a').each(function(){
+        let _this_path_name = $(this).attr('href');
+        if(_path_name == _this_path_name){
+            $(this).addClass('green');
+        }else{
+            $(this).removeClass('green');
+        }
+    });
+
+
     Ajax.call('/cart/num', '', function (res) {
         $('#shopping-amount').text(res.data.cart_num);
     });
