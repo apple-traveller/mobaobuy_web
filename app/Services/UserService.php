@@ -250,9 +250,18 @@ class UserService
             $userAddressInfo[$k]['country'] = RegionRepo::getInfo($v['country'])['region_name'];
             $userAddressInfo[$k]['province'] = RegionRepo::getInfo($v['province'])['region_name'];
             $userAddressInfo[$k]['city'] = RegionRepo::getInfo($v['city'])['region_name'];
-            $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])['region_name'];
+            $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])?RegionRepo::getInfo($v['district'])['region_name']:"";
         }
         return $userAddressInfo;
+    }
+
+    public static function getOneAddressId($user_id)
+    {
+        $userAddressInfo = UserAddressRepo::getList($order=['id'=>'desc'],['user_id'=>$user_id]);
+        if($userAddressInfo){
+            return $userAddressInfo[0]['id'];
+        }
+        return false;
     }
 
     //更新收获地
@@ -360,7 +369,8 @@ class UserService
             }
             return $info;
         }catch (\Exception $e){
-            throw $e;
+            self::throwBizError($e->getMessage());
+            //throw $e;
         }
     }
 
@@ -452,6 +462,7 @@ class UserService
     //会员中心首页
     public static function userMember($userId){
         //
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
         //订单
          $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
         //商品推荐
@@ -462,7 +473,7 @@ class UserService
         //
         $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
 
-        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0];
+        return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
 
     public static function getUserRealbyId($id){
@@ -529,7 +540,7 @@ class UserService
         #认证成功 绑定qq或微信
 
         $app_data = [
-            'app_id' => $openid,
+            'open_id' => $openid,
             'identity_type' => 'W',//微信登录
             'user_id' => $user_id,
             'create_time'=>date('Y-m-d H:i:s')

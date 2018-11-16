@@ -22,12 +22,25 @@
                 <div class="mian-info">
                     <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
+                                <div class="label_value">
+                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{$goodsQuote['store_name']}}" class="text" />
+                                    <input type="hidden" value="{{$goodsQuote['store_name']}}" name="store_name"  id="store_name_val"  />
+                                    <input type="hidden" value="{{$goodsQuote['shop_store_id']}}" name="store_id"  id="store_id" />
+                                    <div class="form_prompt"></div>
+                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    </ul>
+                                </div>
+                            </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                    <input type="text" cat-id="{{$goodsQuote['cat_id']}}"  autocomplete="off" value="{{$goodsQuote['cat_name']}}" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -38,7 +51,7 @@
                                     <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -64,10 +77,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="production_date" id="production_date" value="{{ $goodsQuote['production_date'] }}" class="layui-input text" maxlength="40" >
+                                    <input type="text" name="production_date" class="text" value="{{ $goodsQuote['production_date'] }}" maxlength="40" autocomplete="off" id="production_date">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                                 <input type="hidden" name="currentPage" value="{{$currentPage}}">
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
                             <div class="item">
@@ -190,7 +204,9 @@
                     qq:{
                         required:true,
                     },
-
+                    store_name:{
+                        required:true,
+                    },
                 },
                 messages:{
                     shop_price:{
@@ -218,7 +234,9 @@
                     qq :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-
+                    store_name :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
 
                 }
             });
@@ -227,6 +245,7 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
+            $(".query_store_name").hide();
         }
 
         // 种类 获取焦点请求所有的分类数据
@@ -281,6 +300,28 @@
             })
         });
 
+        $("#store_name").focus(function(){
+            $(".query_store_name").children().filter("li").remove();
+            $.ajax({
+                url: "/seller/store/list",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){console.log(res);
+                    if(res.code==1){
+                        $(".query_store_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_store_name").append('<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>');
+                        }
+                    }else{
+                        $(".query_store_name").show();
+                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                    }
+                }
+            })
+        });
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -293,6 +334,16 @@
             $("#goods_name").attr("data-packing-spac",packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_store_name","click",function(){
+            $("#store_name").siblings("div").filter(".notic").remove();
+            var store_name = $(this).attr("data-store-name");
+            var store_id = $(this).attr("data-store-id");
+            $("#store_name").val(store_name);
+            $("#store_name_val").val(store_name);
+            $("#store_id").val(store_id);
         });
 
         $("#goods_number").change(function () {

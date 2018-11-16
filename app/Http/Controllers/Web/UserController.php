@@ -213,8 +213,7 @@ class UserController extends Controller
         return $this->success('','',['cart_num'=>$num]);
     }
 
-
-    //显示用户收获地
+    //显示用户收货地列表
     public function shopAddressList(){
         $user_info = session('_web_user');
         $condition = [];
@@ -230,7 +229,7 @@ class UserController extends Controller
             };
         }
         if(!empty($first_one)) {
-            foreach ($first_one as $k1 => $v1) {
+            foreach ($first_one as $k1 => $v1){
                 unset($addressList[$k1]);
                 array_unshift($addressList, $first_one[$k1]);
             }
@@ -252,16 +251,15 @@ class UserController extends Controller
             $consignee = $request->input('consignee','');
             $mobile_phone = $request->input('mobile','');
             $default = $request->input('default_address','');
-
             if (empty($str_address)){
                 return $this->error('请选择地址');
             }
             if (empty($address)){
                 return $this->error('请输入详细地址');
             }
-            if (empty($zipcode)){
-                return $this->error('请输入邮政编码');
-            }
+//            if (empty($zipcode)){
+//                return $this->error('请输入邮政编码');
+//            }
             if (empty($consignee)){
                 return $this->error('请填写收货人');
             }
@@ -274,7 +272,7 @@ class UserController extends Controller
                 'consignee' => $consignee,
                 'country' => $address_ids[0],
                 'province' => $address_ids[1],
-                'city' => $address_ids[2],
+                'city' => $address_ids[2]??0,
                 'district' => $address_ids[3],
                 'address' => $address,
                 'zipcode' => $zipcode,
@@ -343,13 +341,13 @@ class UserController extends Controller
      */
     public function updateShopAddress(Request $request){
         $id = $request->input('id','');
-        $default_id = $request->input('default_id','');
+        $is_default = $request->input('is_default','');
         if ($id){
             $address_info = UserAddressService::getAddressInfo($id);
         } else {
             $address_info = [];
         }
-        return $this->display('web.user.editAddress',['data'=>$address_info,'default_id'=>$default_id]);
+        return $this->display('web.user.editAddress',['data'=>$address_info,'is_default'=>$is_default]);
 
     }
 
@@ -756,7 +754,6 @@ class UserController extends Controller
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
 
-        //
         if($user_real){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,
@@ -811,17 +808,17 @@ class UserController extends Controller
 //           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
-               $errorMsg[] = "请上传授权电子版";
+               $errorMsg[] = "请上传授权委托书电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
-               $errorMsg[] = "请上传开票电子版";
+               $errorMsg[] = "请上传开票资料电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
-               $errorMsg[] = "请输入营业执照电子版";
+               $errorMsg[] = "请上传营业执照电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
@@ -997,7 +994,7 @@ class UserController extends Controller
             return $this->error('已经实名认证的企业用户不能注销账号');
         }
         $user_data = [
-            'user_name'=>$userInfo['user_name'].'_logout',
+            'user_name'=>$userInfo['user_name'].'_'.time().'_logout',
             'is_freeze'=>1
         ];
         $res = UserService::modify($userInfo['id'],$user_data);

@@ -60,8 +60,22 @@ class ActivityPromoteService
             }
         }
         unset($item);
-
-        return $info_list;
+        //未结束
+        $buyLimitArr = [];
+        //已结束
+        $buyLimitArrOver = [];
+        foreach($info_list as $k=>$v){
+            if($v['is_over'] == false){
+                $buyLimitArr[] = $v;
+            }else{
+                $buyLimitArrOver[] = $v;
+            }
+        }
+        foreach ($buyLimitArrOver as $kk=>$vv){
+            $keyLen = count($buyLimitArr) + 1;
+            $buyLimitArr[$keyLen] = $vv;
+        }
+        return $buyLimitArr;
     }
 
     //限时抢购详情

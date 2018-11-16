@@ -53,15 +53,20 @@ class LoginController extends ApiController
     public function login(Request $request)
     {
         $openid = $request->input('openid');
+        if(empty($openid)){
+            return $this->error('缺少openid');
+        }
         #判断是否是新qq用户
         $res = UserService::getAppUserInfo(['open_id'=>$openid]);
-        #获取用户信息
-        $userInfo = UserService::getUserInfo($res['user_id']);
-
         if($res){
+            #获取用户信息
+            $userInfo = UserService::getUserInfo($res['user_id']);
+            $uuid = \Illuminate\Support\Str::uuid();
+            Cache::put($uuid, $userInfo['id'], 60*24*7);
             $rs = [
                 'is_login'=>1,
-                'userInfo'=>$userInfo
+                'userInfo'=>$userInfo,
+                'token'=>$uuid
             ];
             #登录更新 返回userInfo
             return $this->success($rs);
@@ -73,7 +78,7 @@ class LoginController extends ApiController
         }
     }
 
-    //有账号 直接绑定
+    //有账号直接绑定
     public function bindThird(Request $request)
     {
         $username = $request->input('user_name');
@@ -137,7 +142,7 @@ class LoginController extends ApiController
     public function updatePass(Request $request)
     {
 
-        $password = base64_decode($request->input('password', ''));
+        $password = $request->input('password', '');
         $accountName = $request->input('accountName', '');
         $messCode = $request->input('messCode', '');
         $id = $request->input('id');
@@ -152,7 +157,6 @@ class LoginController extends ApiController
         if(Cache::get($type.$accountName) != $messCode){
             return $this->error('验证码有误');
         }
-
         try{
             UserService::userUpdatePwd($id, ['newPassword' => $password]);
             return $this->success('','修改密码成功');

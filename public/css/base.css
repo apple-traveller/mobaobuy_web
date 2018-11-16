@@ -25,7 +25,7 @@ a{ text-decoration:none; color: inherit; cursor:pointer;}
 a:hover{ color: #f42424;}
 a:focus{ outline:none;}
 .black,a.black,a.black:hover{color:#000;}
-.green,a.green,a.green:hover{color:#009900;}
+.green,a.green,a.green:hover{color:#75b335;}
 .red,a.red,a.red:hover{color:#f70503;}
 .orange,a.orange,a.orange:hover{color:#ff6600;}
 .gray,a.gray,a.gray:hover{color:#aaa;}
