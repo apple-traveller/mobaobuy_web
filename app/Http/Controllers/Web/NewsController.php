@@ -15,12 +15,13 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request,$cat_id='')
     {
+
         $page = $request->input('page',1);
         $page_size = $request->input('length', 2);
         if ($request->isMethod('get')){
-            $cat_id = $request->input('cat_id','');
+//            $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');
 
             // 路径
@@ -62,21 +63,23 @@ class NewsController extends Controller
 
     /**
      * 详情页
-     * @param Request $request
-     * @return NewsController
+     * @param string $id
+     * @return NewsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function detail(Request $request)
+    public function detail($id)
     {
-        $id = $request->input('id','');
 //        $check_id = ArticleService::check_cat($id,$cat_id);
         if (empty($id)){
             return $this->error('没有这个页面');
         }
-        #更新点击量
-        ArticleService::updateClick($id);
 
         $article = ArticleService::getInfo($id);
 
+        if (!empty($article)){
+            #更新点击量
+            ArticleService::updateClick($id);
+
+        }
         $cat_info = ArticleCatService::getInfo($article['cat_id']);
 
         // 获取上下页

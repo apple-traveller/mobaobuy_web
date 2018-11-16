@@ -274,8 +274,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心
-    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::get('/{cat_id}/news.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail/{id}.html', 'NewsController@detail'); // 详情
     Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+    Route::get('/{id}/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
     Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
