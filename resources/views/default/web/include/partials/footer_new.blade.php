@@ -5,7 +5,7 @@
                 <li>
                     <h4>{{$cat['cat_name']}}</h4>
                     @foreach($cat['articles'] as $item)
-                        <a href="{{$item['file_url']}}" rel="nofollow">{{$item['title']}}</a>
+                        <a href="{{env('APP_URL').$item['file_url']}}" rel="nofollow">{{$item['title']}}</a>
                     @endforeach
                 </li>
             @endforeach

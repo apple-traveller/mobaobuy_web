@@ -25,7 +25,7 @@
                 <h1 class="today_news_top ovh"><span class="ml10">资讯中心</span></h1>
                 <ul class="news_center cat_list">
                     @foreach(getNewsSidebar()['cat'] as $v1)
-                        <li><a href="/news.html?cat_id={{ $v1['id'] }}" data_id = {{ $v1['id'] }}>{{ $v1['cat_name'] }}</a></li>
+                        <li><a href="/{{ $v1['id'] }}/news.html" data_id = {{ $v1['id'] }}>{{ $v1['cat_name'] }}</a></li>
                     @endforeach
                 </ul>
             </div>
@@ -58,7 +58,7 @@
     });
     $('.news_Hot').on('click','.article_id',function () {
         let article = $(this).attr('data_id');
-        window.location.href = "/detail.html?id="+article;
+        window.location.href = "/detail/"+article+".html";
     });
 </script>
 </body>

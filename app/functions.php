@@ -189,7 +189,7 @@ if(!function_exists('getSidebar')){
 
 if (!function_exists('getNewsSidebar')){
     function getNewsSidebar(){
-        $cat = \App\Services\ArticleCatService::getList(3);
+        $cat = \App\Services\ArticleCatService::getList(2); // 新闻中心的cat_id 为2 数据库修改之后要修改这里
         // 热门
         $hot_news = \App\Services\ArticleService::getTopClick(1,6);
         $data =[
