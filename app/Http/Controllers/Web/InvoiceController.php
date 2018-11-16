@@ -12,6 +12,7 @@ use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use App\Services\UserAddressService;
 use App\Services\UserRealService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -124,7 +125,8 @@ class InvoiceController extends Controller
         $start_time = $request->input('begin_time','');
         $end_time = $request->input('end_time','');
 
-        $userInfo = session('_web_user');
+        $userInfo = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
+
         $condition = [
             'order_status' =>  5,
             'is_delete' =>  0
