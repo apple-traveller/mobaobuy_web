@@ -281,7 +281,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
-    /********************************报价信息************************************/
+    /********************************报价信息*****************************/
     Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
