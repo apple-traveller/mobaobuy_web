@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>会员中心 - @yield('title')</title>
+    <title>@yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
     <style>
@@ -10,7 +10,7 @@
 </head>
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
-@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '会员中心'])@endcomponent
+@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '帮助中心'])@endcomponent
 <div class="clearfix mt25 mb25">
     <div class="w1200">
         <div class="member_left">
@@ -18,9 +18,8 @@
                     <h1 class=""><i class="iconfont icon-46"></i>帮助中心</h1>
                     <ul class="member_left_list">
                         @foreach(getSidebar() as $k=>$v)
-                            <li><a @if($id == $v['id']) class="green" @endif href="/helpCenter.html?id={{$v['id']}}">{{$v['title']}}</a></li>
+                            <li><a @if($id == $v['id']) class="green" @endif href="/{{$v['id']}}/helpCenter.html">{{$v['title']}}</a></li>
                         @endforeach
-                            <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
         </div>

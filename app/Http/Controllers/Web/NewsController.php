@@ -15,12 +15,14 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request,$cat_id='',$page=1)
     {
-        $page = $request->input('page',1);
-        $page_size = $request->input('length', 2);
+
+//        $page = $request->input('page',1);
+//        $page_size = $request->input('length', 2);
+        $page_size = 2;
         if ($request->isMethod('get')){
-            $cat_id = $request->input('cat_id','');
+//            $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');
 
             // 路径
@@ -33,9 +35,10 @@ class NewsController extends Controller
             // 新闻列表
             $list = ArticleService::getNewsList($cat_id,$title,$page,$page_size);
 
-            // 分页
+            // 分页/news/list/{cat_id}/page/{page}.html
 
-            $url = '/news.html?page=%d';
+            $url = '/news/list/'.$cat_id.'/page/%d.html';
+//            $url = '/news.html?page=%d';
 
             if(!empty($list['list'])){
                 $linker = createPage($url, $page,$list['totalPage']);
@@ -62,45 +65,28 @@ class NewsController extends Controller
 
     /**
      * 详情页
-     * @param Request $request
-     * @return NewsController
+     * @param string $id
+     * @return NewsController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function detail(Request $request)
+    public function detail($id)
     {
-        $id = $request->input('id','');
-        $cat_id = 2;
-        $check_id = ArticleService::check_cat($id,$cat_id);
-        if (empty($id) || !$check_id){
+//        $check_id = ArticleService::check_cat($id,$cat_id);
+        if (empty($id)){
             return $this->error('没有这个页面');
         }
-        #更新点击量
-        ArticleService::updateClick($id);
 
         $article = ArticleService::getInfo($id);
 
+        if (!empty($article)){
+            #更新点击量
+            ArticleService::updateClick($id);
+
+        }
         $cat_info = ArticleCatService::getInfo($article['cat_id']);
 
         // 获取上下页
         $page_data = ArticleService::getUpDown($id);
 
-
         return $this->display('web.news.detail',['cat'=>$cat_info,'page_data'=>$page_data,'article'=>$article]);
-    }
-
-    /**
-     * 新闻侧边栏
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function side_bar()
-    {
-        // 分类列
-        $cat = ArticleCatService::getList(3);
-        // 热门
-        $hot_news = ArticleService::getTopClick(1,6);
-        $data =[
-            'cat'=>$cat,
-            'hot_news'=>$hot_news['list']
-        ];
-        return response()->json($data);
     }
 }

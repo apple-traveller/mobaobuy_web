@@ -67,7 +67,7 @@
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;"><p>'+ full.goods[index].goods_name + '</p><p><span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span><span class="pl10">数量：'+ full.goods[index].goods_number+' </span></p></div></td>';
                                 if(index == 0){
-                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款:￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
+                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
                                         console.log(full.deliveries);
@@ -214,7 +214,7 @@
             $.msg.confirm('是否确认收货？',
                 function () {
                     $.ajax({
-                        url: "/orderDel",
+                        url: "/orderConfirmTake",
                         dataType: "json",
                         data: {
                             'id':id
@@ -224,7 +224,7 @@
                             if(data.code){
                                 window.location.reload();
                             }else{
-                                $.msg.error(data.msg);
+                                $.msg.alert(data.msg);
                             }
                         }
                     })
@@ -273,17 +273,19 @@
 		<div class="table-body">
 			<table class="table table-border table-bordered table-bg table-hover dataTable" style="border: 1px solid #DEDEDE;">
 				<thead>
-				<tr>
-					<th width="40%">商品信息</th>
-					<th width="20%">订单金额</th>
-					<th width="20%">物流跟踪</th>
-					<th>状态</th>
-				</tr>
+                    <tr>
+                        <th width="40%">商品信息</th>
+                        <th width="20%">订单金额</th>
+                        <th width="20%">物流跟踪</th>
+                        <th>状态</th>
+                    </tr>
 				</thead>
 			</table>
 
 			<table id="data-table" class="table table-border table-bordered table-bg table-hover dataTable order-table" >
-				<thead><tr><th style="padding: 0px;"></th></tr></thead>
+				<thead>
+                    <tr><th style="padding: 0px;"></th></tr>
+                </thead>
 			</table>
 		</div>
 	</div>

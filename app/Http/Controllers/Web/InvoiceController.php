@@ -33,9 +33,9 @@ class InvoiceController extends Controller
             $begin_time = $request->input('begin_time','');
             $end_time = $request->input('end_time','');
             $page_size = $request->input('length', 10);
-            $currUser  = session('_web_user_id');
+            $firm_id = session('_curr_deputy_user')['firm_id'];
             $invoice_numbers = $request->input('invoice_numbers','');
-            $condition['user_id'] = $currUser;
+            $condition['user_id'] = $firm_id;
 
             if ($tab_code == 'waitInvoice'){
                 $condition['status'] = 1;
@@ -124,13 +124,27 @@ class InvoiceController extends Controller
         $order_sn = $request->input('order_sn','');
         $start_time = $request->input('begin_time','');
         $end_time = $request->input('end_time','');
+        $firm_id = session('_curr_deputy_user')['firm_id'];
 
-        $userInfo = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
-
+        $userInfo = UserService::getInfo($firm_id);
         $condition = [
             'order_status' =>  5,
             'is_delete' =>  0
         ];
+
+        if(session('_curr_deputy_user')['is_firm']){
+            if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] ){
+                $condition['user_id'] = session('_curr_deputy_user')['user_id'];
+                $condition['firm_id'] = $firm_id;
+            }else{
+                $condition['user_id'] = $firm_id;
+                $condition['firm_id'] = $firm_id;
+            }
+        }else{
+            $condition['user_id'] = $firm_id;
+            $condition['firm_id'] = 0;
+        }
+
         if (!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -167,7 +181,8 @@ class InvoiceController extends Controller
      */
     public function confirm(Request $request)
     {
-        $user_info = session('_web_user');
+        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
+
         $order_ids = $request->input('order_id','');
         $total_amount = $request->input('total_amount','');
         if (empty($order_ids)){
@@ -275,7 +290,7 @@ class InvoiceController extends Controller
      */
     public function applyInvoice(Request $request)
     {
-        $user_info = session('_web_user');
+        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
         $invoiceSession = session('invoiceSession');
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);

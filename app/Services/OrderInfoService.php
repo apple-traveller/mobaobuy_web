@@ -614,11 +614,11 @@ class OrderInfoService
     //订单确认收货
     public static function orderConfirmTake($id){
         $orderInfo = OrderInfoRepo::getInfo($id);
-        if(empty($orderInfo)){
+        if (empty($orderInfo)){
             self::throwBizError('订单信息不存在');
         }
-        if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
-            return OrderInfoRepo::modify($id,['shipping_status'=>3]);
+        if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status'] == 1){
+            return OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
         }
         self::throwBizError('订单状态有误!');
     }

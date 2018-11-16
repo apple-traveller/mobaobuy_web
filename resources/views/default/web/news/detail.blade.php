@@ -40,7 +40,7 @@
 
 @endsection
 @section('content')
-    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>
 
     <div class="today_news whitebg fl">
         <style type="text/css">
@@ -88,14 +88,14 @@
         <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
             <p class="fl new_other">上一篇：
                 @if(!empty($page_data['up_news_id']))
-                <a href="detail.html?id={{ $page_data['up_news_id'] }}">{{ $page_data['up_news_title'] }}</a>
+                <a href="/detail/{{$page_data['up_news_id']}}.html">{{ $page_data['up_news_title'] }}</a>
                     @else
                     <a href="javascript:void(0);">{{ $page_data['up_news_title'] }}</a>
                     @endif
             </p>
             <p class="fr new_other">下一篇：
                 @if(!empty($page_data['down_news_id']))
-                <a href="detail.html?id={{ $page_data['down_news_id'] }}">{{ $page_data['down_news_title'] }}</a>
+                <a href="/detail/{{$page_data['down_news_id']}}.html">{{ $page_data['down_news_title'] }}</a>
                     @else
                     <a href="javascript:void(0);">{{ $page_data['down_news_title'] }}</a>
                     @endif

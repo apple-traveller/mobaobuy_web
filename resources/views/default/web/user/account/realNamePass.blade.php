@@ -42,9 +42,13 @@
                 $(this).addClass('account_curr').siblings().removeClass('account_curr');
                 $('.tab_list>li').eq($(this).index()).show().siblings().hide();
             });
+            //调用示例
+            layer.photos({
+                photos: '.layer-photos-demo'
+                ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
 
-            
-         })
+        })
         $(document).tooltip({
             items: ".img-tooltip",
             content: function() {
@@ -140,9 +144,19 @@
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['front_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中  <img src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />  
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div id="layer-photos-demo" class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div id="layer-photos-demo" class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
@@ -153,9 +167,19 @@
                         <span class="infor_title">身份证反面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['reverse_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中  <img src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent

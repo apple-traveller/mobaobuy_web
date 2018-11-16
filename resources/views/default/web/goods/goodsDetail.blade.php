@@ -11,7 +11,7 @@
 		.pro_chart_img{height: 355px;border: 1px solid #DEDEDE;}
 		.pro_price{width: 635px;height: 56px;line-height: 56px;overflow: hidden;}
 		.pro_detail{overflow: hidden;margin-top: 20px;}
-		.pro_price_dj{width: 493px;border-right: 1px solid #DEDEDE;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
+		.pro_price_dj{width: 493px;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
 		.start_amount{float: left;width: 141px;line-height:20px;text-align: center;margin-top: 7px;}
 		.pro_value{width: 270px;margin-left: 15px;float: left;}
 		.letter-space{letter-spacing: 30px;}
@@ -32,6 +32,7 @@
         .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
         .History-product-list li:last-child{border-bottom: none;}
         .orangebg{background-color:#ff6f17;}
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
     
 
@@ -95,8 +96,9 @@
                 }
             });
 
-            //隐藏原料分类
-            $('.ass_menu').hide();
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
 
             //折线图
             var myChart = echarts.init(document.getElementById('price_zst'));
@@ -239,7 +241,7 @@
                 <li>
                     <span style="width:15%">{{$vo['add_time']}}</span>
                     <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
-                    <span style="width:25%" class="green">{{$vo['goods_full_name']}}</span>
+                    <span style="width:25%">{{$vo['goods_full_name']}}</span>
                     <span style="width:10%">{{$vo['goods_number']}}</span>
                     <span style="width:10%">{{$vo['shop_price']}}</span>
                     <span style="width:10%">{{$vo['delivery_place']}}</span>
@@ -262,6 +264,7 @@
 		</div>
 	</div>
     </div>
+    <div class="clearfix whitebg ovh mt10" style="font-size: 0;">
 @endsection
 
 @section('bottom_js')

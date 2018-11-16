@@ -14,9 +14,8 @@ use Illuminate\Http\Request;
 
 class HelpCenterController extends Controller
 {
-    public function helpController(Request $request)
+    public function helpController($id=4)
     {
-        $id = $request->input('id',4);
         $detail = ArticleService::getInfo($id);
         return $this->display('web.helpcenter.index',['detail'=>$detail,'id'=>$id]);
     }

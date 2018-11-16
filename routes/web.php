@@ -274,12 +274,14 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心
-    Route::get('/detail.html', 'NewsController@detail'); // 详情
+    Route::get('/news/list/{cat_id}/page/{page}.html', 'NewsController@index'); // 新闻中心
+    Route::get('/detail/{id}.html', 'NewsController@detail'); // 详情
     Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
+    Route::get('/{id}/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
     Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
-    /********************************报价信息************************************/
+    /********************************报价信息*****************************/
     Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
