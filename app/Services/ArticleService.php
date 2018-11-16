@@ -74,7 +74,7 @@ class ArticleService
     public static function getNewsList($cat_id,$title,$page=1,$page_size=10)
     {
         $condition = [];
-        if($cat_id > 0){
+        if($cat_id > 0 && $cat_id != 2){
             $condition['cat_id'] = $cat_id;
         } else {
             $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id']);

@@ -18,7 +18,7 @@
             <!--相关搜索-->
             <div class="today_news_search whitebg">
                 <h1 class="today_news_top ovh"><span class="ml10">相关搜索</span></h1>
-                <div class="ovh mt20 ml15 mb20"><input type="text" class="search_input br1 fl" id="search_info"/><div class="fl search_btn tac code_greenbg white" id="search_submit">搜索</div></div>
+                <div class="ovh mt20 ml15 mb20"><input type="text" class="search_input br1 fl" value="@if(!empty($title)){{$title}}@endif" id="search_info"/><div class="fl search_btn tac code_greenbg white" id="search_submit">搜索</div></div>
             </div>
             <!--资讯中心-->
             <div class="today_news_search whitebg mt20">

@@ -39,11 +39,17 @@
 @section('js')
 @endsection
 @section('content')
-    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name']}}</a></div>
+    <div class="crumbs">
+        当前位置：<a href="/">首页</a> &gt; <a href="/news.html">资讯中心</a>
+        @if($cat['id'] > 0 && $cat['id'] != 2)
+            &gt;<a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name']}}</a>
+        @endif
+
+    </div>
 
     <div class="today_news whitebg fl">
         <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="orange">{{ $list['total'] }}</span>条数据</span></h1>
-        <ul class="ovh ml15 today_news_list mt15">
+        <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
                 <div class="fl mb15" style="width: 200px;height: 128px"><a href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 128px"/></a></div>
@@ -61,7 +67,12 @@
 @endsection
 @section('js')
     <script>
-
+       $(document).ready(function () {
+           console.log($(".today_right_news"));
+       })
+        $(function () {
+            console.log($(".today_right_news"));
+        });
     </script>
 @endsection
 
