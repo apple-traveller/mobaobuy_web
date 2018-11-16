@@ -60,12 +60,11 @@
             return obj;
         }
         $('.account_infor_btn').click(function (){
-            var is_self = $(this).attr('id');
+           var is_self = $(this).attr('id');
             var data = $("#user_real_form").serialize();
-            // console.log(is_firm);
-            // console.log(data);return;
-            var jsonData = formToJson(data);
-            $.post('/account/saveUserReal',{jsonData,'is_self':is_self},function(res){
+            // console.log(data);
+            data  += '&is_self='+is_self;
+            $.post('/account/saveUserReal',data,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
                     $.msg.success('保存成功');
@@ -162,6 +161,7 @@
                         
                     @else
                     <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
+
                     @endif
                 @else
                     <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
@@ -274,7 +274,6 @@
                            
                         </span>
                     </li> -->
-              
                <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button> 
                 </ul>
                 </li>
