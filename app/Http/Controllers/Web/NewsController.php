@@ -68,9 +68,8 @@ class NewsController extends Controller
     public function detail(Request $request)
     {
         $id = $request->input('id','');
-        $cat_id = 2;
-        $check_id = ArticleService::check_cat($id,$cat_id);
-        if (empty($id) || !$check_id){
+//        $check_id = ArticleService::check_cat($id,$cat_id);
+        if (empty($id)){
             return $this->error('没有这个页面');
         }
         #更新点击量
@@ -83,24 +82,6 @@ class NewsController extends Controller
         // 获取上下页
         $page_data = ArticleService::getUpDown($id);
 
-
         return $this->display('web.news.detail',['cat'=>$cat_info,'page_data'=>$page_data,'article'=>$article]);
-    }
-
-    /**
-     * 新闻侧边栏
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function side_bar()
-    {
-        // 分类列
-        $cat = ArticleCatService::getList(3);
-        // 热门
-        $hot_news = ArticleService::getTopClick(1,6);
-        $data =[
-            'cat'=>$cat,
-            'hot_news'=>$hot_news['list']
-        ];
-        return response()->json($data);
     }
 }

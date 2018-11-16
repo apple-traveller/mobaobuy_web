@@ -9,7 +9,7 @@
     <style type="text/css">
         .fr{float:right;}
         .fs14{font-size:14px;}
-        .order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
+        .order_progress{width: 351px;margin-top: 28px;margin-bottom: 28px;}
         .progress_text{color: #999;margin-top: 5px;}
         .progress_text_curr{color: #75b335;}
         .my_cart{float: left;margin-left: 5px;}
@@ -37,14 +37,14 @@
         .ml40{margin-left: 60px;}
         .w130{width: 130px}
         .w200{width: 200px}
-        .logo {
-            width: 170px;
-            height: 55px;
-            margin-top: 20px;
-            float: left;
-            background: url(../img/mobao_logo.png)no-repeat;
-            background-size: 100% 100%;
-        }
+        /*.logo {*/
+            /*width: 170px;*/
+            /*height: 55px;*/
+            /*margin-top: 20px;*/
+            /*float: left;*/
+            /*background: url(../img/mobao_logo.png)no-repeat;*/
+            /*background-size: 100% 100%;*/
+        /*}*/
 
         /*黑色*/
         .whitebg{background: #FFFFFF;}
@@ -61,7 +61,6 @@
         .partner_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
         .partner_select li:hover{background-color: #f1f1f1;}
 
-        .order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
         .cart_progress{width: 303px;margin:0 auto;height: 33px;}
         .cart_progress_02{background: url(../img/cart_icon01.png)no-repeat;}
         .progress_text{color: #999;margin-top: 5px;}
@@ -74,9 +73,16 @@
 </head>
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
-<div class="clearfix whitebg mb30">
-    <div class="w1200">
-        <a class="logo" style="margin-top: 45px;" href="/"></a>
+{{--@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '开票申请'])@endcomponent--}}
+<div class="clearfix whitebg" style="margin-bottom: 25px">
+    <div class="top-title">
+        <div class="logo">
+            <a href="/">
+                <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+            </a>
+        </div>
+
+        <div class="title-name">开票申请</div>
         <div class="fr fs14 order_progress" >
             <div class="cart_progress cart_progress_02"></div>
             <div class="progress_text">
@@ -87,7 +93,6 @@
         </div>
     </div>
 </div>
-
 <div class="data-table-box w1200">
     <div class="table-condition" >
         <div class="item">
