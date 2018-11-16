@@ -67,7 +67,7 @@
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;"><p>'+ full.goods[index].goods_name + '</p><p><span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span><span class="pl10">数量：'+ full.goods[index].goods_number+' </span></p></div></td>';
                                 if(index == 0){
-                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款:￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
+                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
                                         console.log(full.deliveries);
@@ -211,7 +211,7 @@
             $.msg.confirm('是否确认收货？',
                 function () {
                     $.ajax({
-                        url: "/orderDel",
+                        url: "/orderConfirmTake",
                         dataType: "json",
                         data: {
                             'id':id
@@ -221,7 +221,7 @@
                             if(data.code){
                                 window.location.reload();
                             }else{
-                                $.msg.error(data.msg);
+                                $.msg.alert(data.msg);
                             }
                         }
                     })
@@ -247,6 +247,7 @@
 			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>
 			<li @if($tab_code == 'waitConfirm') class="curr" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em id="waitConfirm"></em></a></li>
+			<li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/order/list?tab_code=waitInvoice">待开票</a></li>
 			<li @if($tab_code == 'finish') class="curr" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
 			<li @if($tab_code == 'cancel') class="curr" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
 		</ul>
