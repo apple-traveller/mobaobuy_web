@@ -20,7 +20,7 @@
                         @foreach(getSidebar() as $k=>$v)
                             <li><a @if($id == $v['id']) class="green" @endif href="/helpCenter.html?id={{$v['id']}}">{{$v['title']}}</a></li>
                         @endforeach
-                            <li><div class="bottom"></div><div class="line"></div></li>
+                            {{--<li><div class="bottom"></div><div class="line"></div></li>--}}
                     </ul>
                 </div>
         </div>

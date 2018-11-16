@@ -13,8 +13,8 @@
 .ovh{overflow: hidden;}
 .mt5{margin-top:5px;}
 .db{display:block;}
-.member_Name{width: 75px;height: 20px;line-height: 20px;border-radius: 25px;color: #ff6f17;}
-.member_Name_border{border: 1px solid #ff6f17;}
+.member_Name{width: 75px;height: 20px;line-height: 20px;border-radius: 25px;color: #75b335;}
+.member_Name_border{border: 1px solid #75b335;}
 .member_Name_stute{width: 290px;margin: 47px auto;}
 .tac{text-align:center !important;}
 .mt10{margin-top:10px;}
@@ -40,7 +40,7 @@
 .order_record{width: 905px;margin: 20px auto 35px;border: 1px solid #DEDEDE;}
 .order_record tr td{text-align: center;border: 1px solid #DEDEDE;height: 45px;line-height: 45px;}
 .order_record tr:first-child{background-color: #F4F4F4;height: 50px;line-height: 50px;border: none;}
-.or_re_btn{width:75px;margin:0 auto;height:25px;line-height:25px;color:#fff;display:block;border-radius:3px;background-color: #ff6f17;}
+.or_re_btn{width:90px;margin:0 auto;height:30px;line-height:30px;color:#fff;display:block;border-radius:3px;background-color: #75b335;}
 </style>
 @section('content')
 <!--会员-->
@@ -60,8 +60,8 @@
 					</li>
 					<li>
 						<div class="member_Name_stute">
-						<div class="fl mem_stute Pend_payment cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">待付款</a></span><span class="orange ml10"><a href="/order/list?tab_code=waitPay">{{$memberInfo['nPayOrderTotalCount']}}</a></span></div>
-						<div class="fr mem_stute Pend_goods cp"><span class="ml50"><a href="/order/list?tab_code=waitPay">已付款</a></span><span class="orange ml10"><a href="/order/list">{{$memberInfo['yPayOrderTotalCount']}}</a></span></div>
+							<a href="/order/list?tab_code=waitPay"><div class="fl mem_stute Pend_payment cp"><span class="ml50">待付款</span><span class="green ml10">{{$memberInfo['nPayOrderTotalCount']}}</span></div></a>
+							<a href="/order/list?tab_code=waitPay"><div class="fr mem_stute Pend_goods cp"><span class="ml50">已付款</span><span class="green ml10">{{$memberInfo['yPayOrderTotalCount']}}</span></div></a>
 						</div>
 					</li>
 				</ul>
@@ -81,7 +81,10 @@
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>
-						<td>{{$v['order_sn']}}</td><td>{{$v['shop_name']}}</td><td>￥{{$v['order_amount']}}</td><td class="orange">@if($v['pay_status'] == 0) 未付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
+						<td>{{$v['order_sn']}}</td>
+						<td>{{$v['shop_name']}}</td>
+						<td>￥{{$v['order_amount']}}</td>
+						<td class="green">@if($v['pay_status'] == 0) 未付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
 					</tr>
 					@endforeach
 				@endif
@@ -92,15 +95,28 @@
 			<!--商品推荐-->
 			<div class="member_index_right whitebg fl ml15 br1 pr mt15" style="margin-left: -31px;">
 				<!--标题-->
-				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;"><span>商品推荐</span><span class="fr colr_blu mr35"><a href="/goodsList">查看全部报价>></a></span></h1>
+				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;">
+					<span>商品推荐</span>
+					<span class="fr colr_blu mr35">
+						<a href="/goodsList">查看全部报价>></a>
+					</span>
+				</h1>
 		
 			<table class="order_record">
 				<tr>
-					<th>商品名称</th><th>单价</th><th>数量（公斤）</th><th>发货地</th><th>操作</th>
+					<th>商品名称</th>
+					<th>单价</th>
+					<th>数量（公斤）</th>
+					<th>发货地</th>
+					<th>操作</th>
 				</tr>
 				@foreach($memberInfo['shopGoodsInfo'] as $v)
 				<tr>
-					<td>{{$v['goods_name']}}</td><td class="orange">￥{{$v['shop_price']}}</td><td>{{$v['goods_number']}}</td><td>{{$v['delivery_place']}}</td><td><a class="or_re_btn" href="/goodsDetail?id={{$v['id']}}">查看详情</a></td>
+					<td>{{$v['goods_name']}}</td>
+					<td class="green">￥{{$v['shop_price']}}</td>
+					<td>{{$v['goods_number']}}</td>
+					<td>{{$v['delivery_place']}}</td>
+					<td><a class="or_re_btn" href="/goodsDetail?id={{$v['id']}}"><span style="color: #fff;">查看详情</span></a></td>
 				</tr>
 				@endforeach
 				
