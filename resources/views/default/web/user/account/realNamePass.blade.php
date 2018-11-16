@@ -187,7 +187,7 @@
                         </span>
                     </li>
                 @if(!empty($user_real))
-                    @if($user_real['review_status'] == '0')
+                    @if($user_real['review_status'] == 0 || $user_real['review_status'] == 1)
                         
                     @else
                     <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 

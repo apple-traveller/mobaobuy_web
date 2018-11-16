@@ -76,8 +76,9 @@
 				<tr>
 					<th>订单号</th><th>店铺名称</th><th>订单金额</th><th>状态</th>
 				</tr>
+
 				@if(empty($memberInfo['orderInfo']))
-					暂无订单
+					<tr><td colspan="5">暂无订单</td></tr>
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>

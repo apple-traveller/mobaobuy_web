@@ -485,6 +485,10 @@ class UserService
         }
     }
 
+    //添加企业会员，验证手机号是否存在
+    public static function getUserInfoByUserName($mobile){
+        return UserRepo::getInfoByFields(['user_name'=>$mobile]);
+    }
     //后台首页用户统计
     public static function getUsersCount()
     {

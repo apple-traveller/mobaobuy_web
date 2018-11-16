@@ -48,16 +48,16 @@
 							<div class="supply_list_frist">
 								<span class="supply_list_frist_com">店铺 : {{$v['shop_name']}}</span> 
 								<span></span> <span class="ml15"></span>
-								<!-- <span class="db">交易员 : 王萌萌15422654908</span> -->
+								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
 							</div>
 							<div class="fl mb10 mt15 ml20">
 								<span class="db"></span>
 								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}</span><span class="ml20"></span>
-								<span class="">联系方式</span><span class="phy_qq">{{$v['QQ']}}</span>
+								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
 							<div class="phy_chart"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
 							<div class="phy_line fl"></div>
-							<div class="phy_btn">立即询价</div>
+							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');">立即询价</a></div>
 						</li>
 					@endforeach
 				@else
