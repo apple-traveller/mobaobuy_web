@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index(Request $request,$cat_id='',$page=1)
+    public function index(Request $request,$cat_id=0,$page=1)
     {
 
 //        $page = $request->input('page',1);
