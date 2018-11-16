@@ -40,7 +40,7 @@
 
 @endsection
 @section('content')
-    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>
+    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>
 
     <div class="today_news whitebg fl">
         <style type="text/css">

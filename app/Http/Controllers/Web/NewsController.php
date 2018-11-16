@@ -15,11 +15,12 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
-    public function index(Request $request,$cat_id='')
+    public function index(Request $request,$cat_id='',$page=1)
     {
 
-        $page = $request->input('page',1);
-        $page_size = $request->input('length', 2);
+//        $page = $request->input('page',1);
+//        $page_size = $request->input('length', 2);
+        $page_size = 2;
         if ($request->isMethod('get')){
 //            $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');
@@ -34,9 +35,10 @@ class NewsController extends Controller
             // 新闻列表
             $list = ArticleService::getNewsList($cat_id,$title,$page,$page_size);
 
-            // 分页
+            // 分页/news/list/{cat_id}/page/{page}.html
 
-            $url = '/news.html?page=%d';
+            $url = '/news/list/'.$cat_id.'/page/%d.html';
+//            $url = '/news.html?page=%d';
 
             if(!empty($list['list'])){
                 $linker = createPage($url, $page,$list['totalPage']);
