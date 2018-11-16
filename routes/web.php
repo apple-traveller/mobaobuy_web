@@ -290,6 +290,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
 
+    Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
+    Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
+
     //price/ajaxcharts?id={{$price_id}}  Product trend
     Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
 
@@ -434,8 +437,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//删除收藏商品
-        Route::get('/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
-        Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
         Route::get('/sale','UserController@sale');// 我要卖货
         Route::post('/sale','UserController@sale');// 我要卖货
@@ -452,6 +453,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::post('/getSmsCode', 'LoginController@getSmsCode');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
+    Route::post('/chars','IndexController@chars');// 圖表
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');
