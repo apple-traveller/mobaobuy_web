@@ -22,7 +22,7 @@ class NewsController extends Controller
 //        $page_size = $request->input('length', 2);
         $page_size = 2;
         if ($request->isMethod('get')){
-//            $cat_id = $request->input('cat_id','');
+
             $title = $request->input('title','');
 
             // 路径
@@ -35,17 +35,14 @@ class NewsController extends Controller
             // 新闻列表
             $list = ArticleService::getNewsList($cat_id,$title,$page,$page_size);
 
-            // 分页/news/list/{cat_id}/page/{page}.html
-
             $url = '/news/list/'.$cat_id.'/page/%d.html';
-//            $url = '/news.html?page=%d';
 
             if(!empty($list['list'])){
                 $linker = createPage($url, $page,$list['totalPage']);
             }else{
                 $linker = createPage($url, 1, 1);
             }
-            return $this->display('web.news.index',['cat'=>$cat_info,'list'=>$list,'linker'=>$linker]);
+            return $this->display('web.news.index',['cat'=>$cat_info,'list'=>$list,'linker'=>$linker,'title'=>$title]);
         } else {
             $cat_id = $request->input('cat_id','');
             $title = $request->input('title','');

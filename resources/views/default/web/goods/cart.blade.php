@@ -341,7 +341,7 @@
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
 					</span>
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v['goods_name']}}</a>
-					<span class="shop_price_t orange fl tac">￥{{$v['goods_price']}}元</span>
+					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元</span>
 					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
