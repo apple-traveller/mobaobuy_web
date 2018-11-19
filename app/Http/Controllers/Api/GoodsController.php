@@ -117,6 +117,23 @@ class GoodsController extends ApiController
 
     }
 
+    //保存关键词
+    public function saveHotKeyWords(Request $request)
+    {
+        $keyword = $request->input('keywords');
+        $user_id = $request->input('user_id');
+        if(empty($user_id)){
+            $user_id = 'a'.str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT);
+        }
+        $data = [
+            'keywords' => $keyword,
+            'user_id' =>$user_id,
+            'ip' =>$request->getClientIp()
+        ];
+        GoodsService::saveHotKeyWords($data);
+        return $this->success('','success');
+    }
+
     //加入购物车
     public function addCart(Request $request)
     {
@@ -265,9 +282,10 @@ class GoodsController extends ApiController
         $cartIds = $request->input('cartId');
         $cartIds = explode(',',$cartIds);
         $userInfo = $this->getUserInfo($request);
+        //return $this->success(Cache::get('cartSession46'),'success');
         try{
             $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
-            //进入订单确认页面前先定义购物车session
+            //进入订单确认页面前先定义购物车缓存
             $cartCache = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $userInfo['address_id'],

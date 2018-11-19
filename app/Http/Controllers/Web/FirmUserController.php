@@ -68,25 +68,7 @@ class FirmUserController extends Controller
         }
     }
 
-    //更新权限信息
-    public function updateFirmUser(Request $request){
-        $rule = [
-            'firm_id'=>'required|numeric',
-            'user_id'=>'required|numeric',
-            'real_name'=>'required|max:30',
-            'can_po'=>'required|numeric',
-            'can_pay'=>'required|numeric ',
-            'can_confirm'=>'required|numeric',
-            'can_stock_in'=>'required|numeric',
-            'can_stock_out'=>'required|numeric'
-        ];
-        $data = $this->validate($request,$rule);
-        try{
-            FirmUserService::update($data);
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
+
 
     public function destroy($id){
 
