@@ -524,6 +524,16 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/activity/savePromoter', 'ActivityController@savePromoter'); // 添加 编辑 保存
         Route::post('/activity/deletePromoter', 'ActivityController@delete'); // 删除
 
+        Route::get('/activity/wholesale', 'ActivityWholesaleController@index'); // 集采拼团
+        Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add'); //集采拼团 添加 编辑 页面
+        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save'); //集采拼团 添加 编辑 保存
+        Route::post('/activity/wholesale/delete', 'ActivityWholesaleController@delete'); //集采拼团 删除
+
+        Route::get('/activity/consign', 'ActivityConsignController@index'); // 委托寄售
+        Route::get('/activity/consign/add', 'ActivityConsignController@add'); //委托寄售 添加 编辑 页面
+        Route::get('/activity/consign/edit', 'ActivityConsignController@edit'); //委托寄售 添加 编辑 保存
+        Route::post('/activity/consign/delete', 'ActivityConsignController@delete'); //委托寄售 删除
+
         Route::get('/invoice/list', 'InvoiceController@getList'); // 客户开票申请列表
         Route::get('/invoice/detail', 'InvoiceController@detail'); // 详情页
         Route::get('/invoice/choseExpress', 'InvoiceController@choseExpress'); // 审核选择快递

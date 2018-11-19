@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加商品报价</div>
+        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加寄售</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">
@@ -27,24 +27,26 @@
 
 
                         <div class="switch_info" style="display: block;">
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
-                                <div class="label_value">
-                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />
-                                    <input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />
-                                    <input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />
-                                    <div class="form_prompt"></div>
-                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
-                                    </ul>
-                                </div>
-                            </div>
-
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />--}}
+                                    {{--<input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />--}}
+                                    {{--<input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            <input type="hidden" value="自营" name="store_name"  id="store_name_val"  />
+                            <input type="hidden" value="0" name="store_id"  id="store_id" />
+                            <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" lay-search="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 61px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -55,7 +57,7 @@
                                     <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 102px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>

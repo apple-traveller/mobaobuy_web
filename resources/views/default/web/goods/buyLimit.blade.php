@@ -2,27 +2,12 @@
 @section('title', '限时抢购')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
-	<link rel="stylesheet" href="css/global.css" />
 	<link rel="stylesheet" href="css/index.css" />
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
-		.top-search-div .search-div .logo{
-			background:none;
-		}
-		.bottom_time{
-			width: 154px;
-			color: #666;
-			float: left;
-			text-align: left;
-		}
-		.bottom_btn {
-			width: 96px;
-			float: right;
-			text-align: center;
-			height: 38px;
-			border-radius: 5px;
-			line-height: 35px;
-		}
+		.top-search-div .search-div .logo{background:none;}
+		.bottom_time{width: 154px;color: #666;float: left;text-align: left;}
+		.bottom_btn {width: 96px;float: right;text-align: center;height: 38px;border-radius: 5px;line-height: 35px;}
 	</style>
 
 @endsection

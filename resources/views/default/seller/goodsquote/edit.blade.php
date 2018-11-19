@@ -26,8 +26,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{$goodsQuote['store_name']}}" class="text" />
-                                    <input type="hidden" value="{{$goodsQuote['store_name']}}" name="store_name"  id="store_name_val"  />
+                                    <input type="text" autocomplete="off" size="40" id="store_name" value="@if($goodsQuote['shop_store_id'] == 0)自营@else{{$goodsQuote['store_name']}}@endif" class="text" />
+                                    <input type="hidden" value="@if($goodsQuote['shop_store_id'] == 0)自营@else{{$goodsQuote['store_name']}}@endif" name="store_name"  id="store_name_val"  />
                                     <input type="hidden" value="{{$goodsQuote['shop_store_id']}}" name="store_id"  id="store_id" />
                                     <div class="form_prompt"></div>
                                     <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -307,17 +307,19 @@
                 dataType: "json",
                 data:{},
                 type:"POST",
-                success:function(res){console.log(res);
+                success:function(res){
                     if(res.code==1){
                         $(".query_store_name").show();
                         var data = res.data;
+                        var _html = '<li data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;">自营</li>';
                         for(var i=0;i<data.length;i++){
-                            $(".query_store_name").append('<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>');
+                            _html += '<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>';
                         }
                     }else{
                         $(".query_store_name").show();
-                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+//                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到店铺</li>');
                     }
+                    $(".query_store_name").append(_html);
                 }
             })
         });

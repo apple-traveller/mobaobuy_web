@@ -4,10 +4,6 @@
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
         }
-        .ui-area .tit{
-            height:28px;
-            line-height: 28px;
-        }
     </style>
 @endsection
 @section('body')
@@ -19,32 +15,34 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/quote/list" class="s-back">返回</a>店铺 - 添加商品报价</div>
+        <div class="title"><a href="/seller/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改寄售</div>
         <div class="content">
+
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
-
-
+                    <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="consign_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
-                                <div class="label_value">
-                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />
-                                    <input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />
-                                    <input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />
-                                    <div class="form_prompt"></div>
-                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
-                                    </ul>
-                                </div>
-                            </div>
 
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="@if($consign_info['shop_store_id'] == 0)自营@else{{$consign_info['store_name']}}@endif" class="text" />--}}
+                                    {{--<input type="hidden" value="@if($consign_info['shop_store_id'] == 0)自营@else{{$consign_info['store_name']}}@endif" name="store_name"  id="store_name_val"  />--}}
+                                    {{--<input type="hidden" value="{{$consign_info['shop_store_id']}}" name="store_id"  id="store_id" />--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            <input type="hidden" value="自营" name="store_name"  id="store_name_val"  />
+                            <input type="hidden" value="0" name="store_id"  id="store_id" />
+                            <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" lay-search="">
+                                    <input type="text" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -52,71 +50,71 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
-                                    <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
+                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
 
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
-                                <div class="label_value">
-                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{old('delivery_place')}}" style="display: none"/>
-                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{old('place_id')}}" style="display: none"/>
-                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">
-                                    </div>
-                                    <div class="form_prompt"></div>
+                                <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{ $consign_info['delivery_place'] }}" style="display: none"/>
+                                <input type="text" readonly="readonly" id="area2" name="place_id" value="{{ $consign_info['place_id'] }}" style="display: none"/>
+                                <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="{{ $consign_info['delivery_place'] }}" style="width: 321px;height:33px;" id="test">
                                 </div>
+                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="production_date" class="text" value="{{old('production_date')}}" maxlength="40" autocomplete="off" id="production_date">
+                                    <input type="text" name="production_date" class="text" value="{{ $consign_info['production_date'] }}" maxlength="40" autocomplete="off" id="production_date">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
+                                <input type="hidden" name="currentPage" value="{{$currentPage}}">
+                            <input type="hidden" name="id" value="{{$consign_info['id']}}">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
-                                    <input type="text" name="shop_price" class="text" value="{{old('shop_price')}}" maxlength="40" autocomplete="off" id="shop_price">
+                                    <input type="text" name="shop_price" class="text" value="{{$consign_info['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">
+                                    <input type="text" name="salesman" id="salesman" class=" text" value="{{ $consign_info['salesman'] }}" maxlength="10" autocomplete="off">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
                                 <div class="label_value">
-                                    <input type="text" name="contact_info" value="{{old('contact_info')}}" id="contact_info" class=" text" maxlength="40" autocomplete="off" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" id="QQ" value="{{old('QQ')}}" class=" text" maxlength="40" autocomplete="off" >
+                                    <input type="text" name="contact_info" id="contact_info"  value="{{ $consign_info['contact_info'] }}" class=" text" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
+                                <div class="label_value">
+                                    <input type="text" name="QQ" id="qq" class=" text" value="{{ $consign_info['QQ'] }}" maxlength="40" autocomplete="off" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -133,16 +131,49 @@
     </div>
 
     <script type="text/javascript">
+
+        //时间选择器
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#expiry_time' //指定元素
+                ,type: 'datetime'
+            });
+        });
+
+
+        $(".cat_id").change(function(res){
+            $(".goods_id").children('option').remove();
+            var cat_id = $(this).val();
+            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
+                if(res.code==200){
+                    var data = res.data;
+                    for(var i=0;i<data.length;i++){
+                        if (i==0){
+                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        } else {
+                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
+                            $("#min_limit").val(data[i]['packing_spec']);
+                        }
+                    }
+                }else{
+                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
+                }
+            },"json");
+        });
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
-                if($("#article_form").valid()){
-                    $("#article_form").submit();
+                if($("#consign_form").valid()){
+                    $("#consign_form").submit();
                 }
             });
 
 
-            $('#article_form').validate({
+            $('#consign_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
                     element.parents('div.label_value').find(".notic").hide();
@@ -172,7 +203,7 @@
                     contact_info:{
                         required:true,
                     },
-                    QQ:{
+                    qq:{
                         required:true,
                     },
                     store_name:{
@@ -202,12 +233,13 @@
                     contact_info :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    QQ :{
+                    qq :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     store_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+
                 }
             });
         });
@@ -260,7 +292,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -277,7 +309,7 @@
                 dataType: "json",
                 data:{},
                 type:"POST",
-                success:function(res){console.log(res);
+                success:function(res){
                     if(res.code==1){
                         $(".query_store_name").show();
                         var data = res.data;
@@ -307,6 +339,7 @@
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
         });
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_store_name","click",function(){
             $("#store_name").siblings("div").filter(".notic").remove();

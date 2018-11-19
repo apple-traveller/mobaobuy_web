@@ -38,4 +38,10 @@
     <dl class="layui-nav-child">
         <dd><a href="javascript:;" data-url="/seller/seckill/list" s_id="S051">秒杀</a></dd>
     </dl>
+    <dl class="layui-nav-child">
+        <dd><a href="javascript:;" data-url="/seller/activity/wholesale" s_id="S052">集采拼团</a></dd>
+    </dl>
+    <dl class="layui-nav-child">
+        <dd><a href="javascript:;" data-url="/seller/activity/consign" s_id="S053">委托寄售</a></dd>
+    </dl>
 </li>
