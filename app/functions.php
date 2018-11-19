@@ -77,6 +77,7 @@ if(!function_exists('getFileUrl')){
         if(preg_match('/^(http|https):\/\/(.*)/', $file_path)){
             return $file_path;
         }
+        $file_path = str_replace('\\','/',$file_path);
         return \Illuminate\Support\Facades\Storage::url($file_path);
     }
 }
