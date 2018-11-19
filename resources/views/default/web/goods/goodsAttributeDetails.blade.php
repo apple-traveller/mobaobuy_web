@@ -24,7 +24,7 @@
 	</script>
 @endsection
 @section('content')
-	<div class="clearfix">
+	<div class="clearfix" style="background-color:white;">
 		<div class="w1200">
 			<div class="crumbs mt5">当前位置：<a href="/goodsAttribute">产品物性</a> &gt; <a href="javascript:">{{$goodsInfo['goods_name']}}</a><span class="gray"></span></div>
 			
@@ -52,7 +52,7 @@
 							</div>
 							<div class="fl mb10 mt15 ml20">
 								<span class="db"></span>
-								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}</span><span class="ml20"></span>
+								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}元</span><span class="ml20"></span>
 								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
 							<div class="phy_chart"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>

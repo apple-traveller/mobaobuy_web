@@ -367,8 +367,6 @@ class GoodsController extends Controller
         }else{
 
         }
-
-
     }
 
     //物性表详情

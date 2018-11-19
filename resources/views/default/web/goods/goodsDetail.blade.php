@@ -160,7 +160,7 @@
 @endsection
 
 @section('content')
-    <div class="clearfix">
+    <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
 		<div class="crumbs mt5">当前位置：<a href="/goodsList">产品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
@@ -288,8 +288,13 @@
         $(".orangebg").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.alert("您还没有登陆",1);
-                // window.location.href='/login';
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var id = "{{$good_info['id']}}";
@@ -308,7 +313,13 @@
         $(".follow_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.alert("您还没有登陆",1);
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var goods_id = "{{$good_info['goods_id']}}";

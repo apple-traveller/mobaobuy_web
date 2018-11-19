@@ -24,10 +24,11 @@ class ActivityPromoteController extends Controller
 
     //限时抢购详情
     public function buyLimitDetails($id){
+        $userId = session('_web_user_id');
         //进入详情页 增加点击量
         try{
             $res = ActivityPromoteService::addClickCount($id);
-            $goodsInfo = ActivityPromoteService::buyLimitDetails($id);
+            $goodsInfo = ActivityPromoteService::buyLimitDetails($id,$userId);
             return $this->display('web.goods.buyLimitDetails',compact('goodsInfo'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
