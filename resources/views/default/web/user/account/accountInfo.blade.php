@@ -48,7 +48,7 @@
             Ajax.call('/account/saveUser',jsonData,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
-                    $.msg.success('保存成功');
+                    $.msg.alert('保存成功');
                     window.location.reload();
                 } else {
                     $.msg.alert(res.msg);
@@ -63,7 +63,7 @@
                     Ajax.call('/account/accountLogout',{},function(res){
                         console.log(res.data);
                         if (res.code == 1) {
-                            $.msg.success('注销成功');
+                            $.msg.alert('注销成功');
                             window.location.href = '/';
                         } else {
                             $.msg.alert(res.msg);

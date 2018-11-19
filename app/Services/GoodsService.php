@@ -293,7 +293,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('产品信息不存在');
         }
-        $shopGoodsInfo = ShopGoodsRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
         $shopGoodsInfo['goodsInfo'] = $goodsInfo;
         return $shopGoodsInfo;
     }

@@ -246,7 +246,7 @@
             if (result.code == 1) {
                 window.location.href = result.url;
             }else{
-                $.msg.error(result.msg);
+                $.msg.alert(result.msg);
             }
         }, "POST", "JSON");
         gv()

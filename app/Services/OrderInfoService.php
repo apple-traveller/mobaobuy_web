@@ -178,12 +178,13 @@ class OrderInfoService
                 }
 
                 if($item['order_status'] == 2){
-                    $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth'][] = 'wait_Confirm';
-                    $orderList['list'][$k]['auth_desc'][] = '取消';
+                    $orderList['list'][$k]['auth'][] = 'can_cancel';
                     $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+                    $orderList['list'][$k]['auth_desc'][] = '取消';
                     $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
+
                 }
 
                 if($item['order_status'] == 3){
@@ -272,6 +273,11 @@ class OrderInfoService
                 $condition['order_status'] = 3;
                 $condition['pay_status'] = 1;
                 $condition['shipping_status'] = 1;break;
+            case 'waitInvoice':
+                $condition['order_status'] = 5;
+                $condition['pay_status'] = 1;
+//                $condition['shipping_status'] = 3;
+                break;
             case 'finish':
                 $condition['order_status'] = 4;break;
             case 'cancel':
@@ -299,7 +305,8 @@ class OrderInfoService
             'waitAffirm' => 0,
             'waitPay' => 0,
             'waitSend' => 0,
-            'waitConfirm' => 0
+            'waitConfirm' => 0,
+            'waitInvoice'=> 0
         ];
 
         //待审批数量
@@ -322,6 +329,10 @@ class OrderInfoService
         $condition = array_merge($condition, self::setStatueCondition('waitConfirm'));
         $status['waitConfirm'] = OrderInfoRepo::getTotalCount($condition);
 
+        //待开票
+        $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
+        unset($condition['pay_status']);
+        $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
         return $status;
     }
 
@@ -603,11 +614,11 @@ class OrderInfoService
     //订单确认收货
     public static function orderConfirmTake($id){
         $orderInfo = OrderInfoRepo::getInfo($id);
-        if(empty($orderInfo)){
+        if (empty($orderInfo)){
             self::throwBizError('订单信息不存在');
         }
-        if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
-            return OrderInfoRepo::modify($id,['shipping_status'=>3]);
+        if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status'] == 1){
+            return OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
         }
         self::throwBizError('订单状态有误!');
     }
@@ -780,4 +791,30 @@ class OrderInfoService
         return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
     }
 
+    /**
+     * @param $seller_id
+     * @return mixed
+     */
+    public static function getCharsData($seller_id)
+    {
+        $condition['shop_id'] = $seller_id;
+        $b = date('Y');
+        $e = date('Y-m-d H:i:s');
+        $condition['shop_id']=$seller_id;
+//        //待确认数量
+//        $waitAffirm = array_merge($condition, self::setStatueCondition('waitAffirm'));
+//        $data['waitAffirm'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitAffirm);
+
+        //待付款数量
+        $waitPay = array_merge($condition, self::setStatueCondition('waitPay'));
+        $data['waitPay'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitPay);
+        //待发货数量
+        $waitSend = array_merge($condition, self::setStatueCondition('waitSend'));
+        $data['waitSend'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitSend);
+
+        //已完成
+        $finished = array_merge($condition, self::setStatueCondition('finish'));
+        $data['finished'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitSend);
+        return $data;
+    }
 }

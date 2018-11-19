@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>会员中心 - @yield('title')</title>
+    <title>@yield('title')</title>
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
     <style>
@@ -10,15 +10,16 @@
 </head>
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
-@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '会员中心'])@endcomponent
+@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '帮助中心'])@endcomponent
 <div class="clearfix mt25 mb25">
     <div class="w1200">
         <div class="member_left">
                 <div class="member_list_mode">
                     <h1 class=""><i class="iconfont icon-46"></i>帮助中心</h1>
                     <ul class="member_left_list">
-
-                        <li><div class="bottom"></div><div class="line"></div></li>
+                        @foreach(getSidebar() as $k=>$v)
+                            <li><a @if($id == $v['id']) class="green" @endif href="/{{$v['id']}}/helpCenter.html">{{$v['title']}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
         </div>
@@ -40,22 +41,22 @@
 @yield('js')
 <script>
     $(function () {
-        $.ajax({
-            'url': '/helpCenter/sidebar',
-            'type':'post',
-            success:function (res) {
-                if (res.code==1){
-                    let cat = '';
-                    res.data.map(function (item,index) {
-                        if (Object.keys(item).length>0){
-                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
-                        }
-                    });
-                    $('.member_left_list').append(cat);
-                }
-
-            }
-        });
+//        $.ajax({
+//            'url': '/helpCenter/sidebar',
+//            'type':'post',
+//            success:function (res) {
+//                if (res.code==1){
+//                    let cat = '';
+//                    res.data.map(function (item,index) {
+//                        if (Object.keys(item).length>0){
+//                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
+//                        }
+//                    });
+//                    $('.member_left_list').append(cat);
+//                }
+//
+//            }
+//        });
     });
 </script>
 </body>

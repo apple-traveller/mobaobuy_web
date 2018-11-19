@@ -57,7 +57,7 @@ class UserController extends Controller
         if(!$mobile){
             return $this->error('参数错误！');
         }
-        $userInfo = UserRepo::getInfoByFields(['user_name'=>$mobile]);
+        $userInfo = UserService::getUserInfoByUserName($mobile);
         if(empty($userInfo)){
             return $this->error('该用户不存在！');
         }
@@ -213,8 +213,7 @@ class UserController extends Controller
         return $this->success('','',['cart_num'=>$num]);
     }
 
-
-    //显示用户收获地列表
+    //显示用户收货地列表
     public function shopAddressList(){
         $user_info = session('_web_user');
         $condition = [];
@@ -775,12 +774,12 @@ class UserController extends Controller
     public function saveUserReal(Request $request)
     {
         $user_id = session('_web_user_id');
-        $data = $request->all();
+        $dataArr = $request->all();
 
         //is_self 1是个人提交  2是企业
         $is_self = $request->input('is_self');
         $errorMsg = [];
-        $dataArr = $data['jsonData'];
+
        if($is_self == 1){
            if(empty($dataArr['real_name'])){
                $errorMsg[] = "请输入真实姓名";
@@ -809,17 +808,17 @@ class UserController extends Controller
 //           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
-               $errorMsg[] = "请上传授权电子版";
+               $errorMsg[] = "请上传授权委托书电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
-               $errorMsg[] = "请上传开票电子版";
+               $errorMsg[] = "请上传开票资料电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
-               $errorMsg[] = "请输入营业执照电子版";
+               $errorMsg[] = "请上传营业执照电子版";
                return $this->result("",0,implode("|",$errorMsg));
            }
 

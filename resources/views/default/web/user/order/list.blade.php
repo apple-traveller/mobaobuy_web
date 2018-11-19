@@ -7,7 +7,6 @@
 		.order_list_state li{height: 37px;line-height: 35px;width: 85px;text-align: center;float: left;color: #666;cursor: pointer;}
 		.order_list_state li a em{margin-left: 3px;color: red;}
 		.order_list_state .curr{border-bottom: 2px solid #75b335;color: #75b335;box-sizing: border-box;}
-
 		.data-table-box table.order-table tbody td{padding: 0px;}
 		.data-table-box .table-body table.order-table tbody tr:nth-child(even){background-color: #FFFFFF;}
 		.order-item-table td{border: 1px solid #DEDEDE;}
@@ -68,7 +67,7 @@
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;"><p>'+ full.goods[index].goods_name + '</p><p><span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span><span class="pl10">数量：'+ full.goods[index].goods_number+' </span></p></div></td>';
                                 if(index == 0){
-                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款:￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
+                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
                                         console.log(full.deliveries);
@@ -115,6 +114,9 @@
                     }
                     if(status.waitConfirm > 0){
                         $('#waitConfirm').html(status.waitConfirm);
+                    }
+                    if(status.waitInvoice > 0){
+                        $('#waitInvoice').html(status.waitInvoice);
                     }
                 }
             }, "POST", "JSON");
@@ -212,7 +214,7 @@
             $.msg.confirm('是否确认收货？',
                 function () {
                     $.ajax({
-                        url: "/orderDel",
+                        url: "/orderConfirmTake",
                         dataType: "json",
                         data: {
                             'id':id
@@ -222,7 +224,7 @@
                             if(data.code){
                                 window.location.reload();
                             }else{
-                                $.msg.error(data.msg);
+                                $.msg.alert(data.msg);
                             }
                         }
                     })
@@ -240,11 +242,15 @@
 	<div class="mt20">
 		<ul class="order_list_state">
 			<li @if(empty($tab_code)) class="curr" @endif><a href="/order/list">所有</a></li>
-			<li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
+            @if(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 0)
+            @else
+            <li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
+            @endif
 			<li @if($tab_code == 'waitAffirm') class="curr" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em id="waitAffirm"></em></a></li>
 			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>
 			<li @if($tab_code == 'waitConfirm') class="curr" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em id="waitConfirm"></em></a></li>
+            <li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/order/list?tab_code=waitInvoice">待开票<em id="waitInvoice"></em></a></li>
 			<li @if($tab_code == 'finish') class="curr" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
 			<li @if($tab_code == 'cancel') class="curr" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
 		</ul>
@@ -267,17 +273,19 @@
 		<div class="table-body">
 			<table class="table table-border table-bordered table-bg table-hover dataTable" style="border: 1px solid #DEDEDE;">
 				<thead>
-				<tr>
-					<th width="40%">商品信息</th>
-					<th width="20%">订单金额</th>
-					<th width="20%">物流跟踪</th>
-					<th>状态</th>
-				</tr>
+                    <tr>
+                        <th width="40%">商品信息</th>
+                        <th width="20%">订单金额</th>
+                        <th width="20%">物流跟踪</th>
+                        <th>状态</th>
+                    </tr>
 				</thead>
 			</table>
 
 			<table id="data-table" class="table table-border table-bordered table-bg table-hover dataTable order-table" >
-				<thead><tr><th style="padding: 0px;"></th></tr></thead>
+				<thead>
+                    <tr><th style="padding: 0px;"></th></tr>
+                </thead>
 			</table>
 		</div>
 	</div>

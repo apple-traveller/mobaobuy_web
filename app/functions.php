@@ -163,4 +163,42 @@ if(!function_exists('timeFormat')){
     }
 }
 
+if(!function_exists('getSidebar')){
+    function getSidebar()
+    {
+        $cat_list = [];
+        $Cates1 = \App\Services\ArticleCatService::getCates();
+        $Cates2 =  \App\Services\ArticleCatService::getCatesTree($Cates1,1);
+        foreach ($Cates2 as $v){
+            if ($v['parent_id']!=1 && $v['parent_id']!=0){
+                $cat_list[] = $v;
+            }
+        }
+
+        $cat_id = '';
+        foreach ($cat_list as $k=>$v1){
+            $cat_id .= '|'.$v1['id'];
+        }
+        $list = \App\Services\ArticleService::getList(['cat_id'=>$cat_id]);
+        if (!empty($cat_list)){
+            return $list;
+        } else {
+            return [];
+        }
+    }
+}
+
+if (!function_exists('getNewsSidebar')){
+    function getNewsSidebar(){
+        $cat = \App\Services\ArticleCatService::getList(2); // 新闻中心的cat_id 为2 数据库修改之后要修改这里
+        // 热门
+        $hot_news = \App\Services\ArticleService::getTopClick(1,6);
+        $data =[
+            'cat'=>$cat,
+            'hot_news'=>$hot_news['list']
+        ];
+        return $data;
+    }
+}
+
 

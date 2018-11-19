@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,10 +24,11 @@ class ActivityPromoteController extends Controller
 
     //限时抢购详情
     public function buyLimitDetails($id){
+        $userId = session('_web_user_id');
         //进入详情页 增加点击量
         try{
             $res = ActivityPromoteService::addClickCount($id);
-            $goodsInfo = ActivityPromoteService::buyLimitDetails($id);
+            $goodsInfo = ActivityPromoteService::buyLimitDetails($id,$userId);
             return $this->display('web.goods.buyLimitDetails',compact('goodsInfo'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -51,9 +53,16 @@ class ActivityPromoteController extends Controller
         }
         try{
             $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
+            //判断是否有默认地址如果有 则直接赋值 没有则取出一条
+            if($userInfo['address_id']){
+                $address_id = $userInfo['address_id'];
+            }else{
+                #取一条地址id
+                $address_id = UserService::getOneAddressId($userInfo['id']);
+            }
             $session_data = [
                 'goods_list'=>$activityInfo,
-                'address_id'=>$userInfo['address_id'],
+                'address_id'=>$address_id,
                 'from'=>'promote'
             ];
             session()->put('cartSession',$session_data);

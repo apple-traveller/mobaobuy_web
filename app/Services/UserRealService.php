@@ -33,13 +33,19 @@ class UserRealService
     public static function saveUserReal($data,$is_self,$user_id)
     {
         //is_self 1 个人  2企业
-        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$user_id]);
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$user_id,'review_status'=>2]);
         if($is_self == 2){
             $GxInfo = GsxxService::GsSearch($data['real_name_firm']);
-        }
-
-        if(!$GxInfo){
-            self::throwBizError('公司信息不存在，请检查');
+            if(!$GxInfo){
+                self::throwBizError('公司信息不存在，请检查');
+            }
+            $where = [];
+            $where['company_name'] = $data['real_name_firm'];
+            $where['review_status'] = '1|0';
+            $userRealPassInfo = UserRealRepo::getList([],$where);
+            if($userRealPassInfo){
+                self::throwBizError('该公司已被实名');
+            }
         }
 
         $userRealArr = [];

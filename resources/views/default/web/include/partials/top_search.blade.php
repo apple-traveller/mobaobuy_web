@@ -13,6 +13,7 @@
                     <input type="submit" class="opt-btn" value="搜 索"/>
                 </form>
 
+
                 <a onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');" class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
 
                 @if(!empty(getConfig('search_keywords')))
@@ -67,6 +68,19 @@
 </div>
 <script>
 $(function() {
+
+    let _path_name = window.location.pathname;
+    //设置高亮
+    $('.nav-menu ul a').each(function(){
+        let _this_path_name = $(this).attr('href');
+        if(_path_name == _this_path_name){
+            $(this).addClass('green');
+        }else{
+            $(this).removeClass('green');
+        }
+    });
+
+
     Ajax.call('/cart/num', '', function (res) {
         $('#shopping-amount').text(res.data.cart_num);
     });

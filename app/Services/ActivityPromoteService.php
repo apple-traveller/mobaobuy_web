@@ -5,6 +5,7 @@ use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\OrderInfoRepo;
+use App\Repositories\UserCollectGoodsRepo;
 use Carbon\Carbon;
 
 class ActivityPromoteService
@@ -60,12 +61,26 @@ class ActivityPromoteService
             }
         }
         unset($item);
-
-        return $info_list;
+        //未结束
+        $buyLimitArr = [];
+        //已结束
+        $buyLimitArrOver = [];
+        foreach($info_list as $k=>$v){
+            if($v['is_over'] == false){
+                $buyLimitArr[] = $v;
+            }else{
+                $buyLimitArrOver[] = $v;
+            }
+        }
+        foreach ($buyLimitArrOver as $kk=>$vv){
+            $keyLen = count($buyLimitArr) + 1;
+            $buyLimitArr[$keyLen] = $vv;
+        }
+        return $buyLimitArr;
     }
 
     //限时抢购详情
-    public static function buyLimitDetails($id){
+    public static function buyLimitDetails($id,$userId){
         $id = decrypt($id);
         $ActivityInfo =  ActivityPromoteRepo::getInfo($id);
         if(empty($ActivityInfo)){
@@ -75,6 +90,7 @@ class ActivityPromoteService
         if(empty($goodsInfo)){
             self::throwBizError('产品不存在');
         }
+
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
         $goodsInfo['activity_num'] = $ActivityInfo['num'];
         $goodsInfo['available_quantity'] = $ActivityInfo['available_quantity'];
@@ -83,9 +99,17 @@ class ActivityPromoteService
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
-        //产品历史价格
+        //产品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
         $goodsInfo['goodsList'] = $goodsList;
+
+        //产品是否已收藏
+        $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        if(empty($collectGoods)){
+            $goodsInfo['collectGoods'] = 0;
+        }else{
+            $goodsInfo['collectGoods'] = 1;
+        }
         return $goodsInfo;
     }
 

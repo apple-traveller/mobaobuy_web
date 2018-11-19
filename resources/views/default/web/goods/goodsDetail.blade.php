@@ -11,7 +11,7 @@
 		.pro_chart_img{height: 355px;border: 1px solid #DEDEDE;}
 		.pro_price{width: 635px;height: 56px;line-height: 56px;overflow: hidden;}
 		.pro_detail{overflow: hidden;margin-top: 20px;}
-		.pro_price_dj{width: 493px;border-right: 1px solid #DEDEDE;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
+		.pro_price_dj{width: 493px;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
 		.start_amount{float: left;width: 141px;line-height:20px;text-align: center;margin-top: 7px;}
 		.pro_value{width: 270px;margin-left: 15px;float: left;}
 		.letter-space{letter-spacing: 30px;}
@@ -32,6 +32,7 @@
         .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
         .History-product-list li:last-child{border-bottom: none;}
         .orangebg{background-color:#ff6f17;}
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
     
 
@@ -95,8 +96,9 @@
                 }
             });
 
-            //隐藏原料分类
-            $('.ass_menu').hide();
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
 
             //折线图
             var myChart = echarts.init(document.getElementById('price_zst'));
@@ -158,7 +160,7 @@
 @endsection
 
 @section('content')
-    <div class="clearfix">
+    <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
 		<div class="crumbs mt5">当前位置：<a href="/goodsList">产品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
@@ -174,7 +176,7 @@
 			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
-				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">{{$good_info['shop_price']}}</font>/kg</span></div>
+				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/kg</span></div>
 
 			</div>
 			<div class="pro_detail">
@@ -188,20 +190,21 @@
 			</div>
 
             <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
+                <span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
                 <span class="fl">联系方式</span><span  class="ml35 fl">{{$good_info['contact_info']}}</span>
             </div>
 
             <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value fl">{{$good_info['production_date']}}</span>
+                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value">{{$good_info['production_date']}}</span>
+                 <span class="fl letter-space">含量</span><span  class="ml5 fl">{{$good_info['goods_content']}}</span>
             </div>
 
-			<div class="pro_detail">
+			<!-- <div class="pro_detail">
 				<span class="ml15 pro_detail_title fl">产品属性</span>
 				@foreach($good_info['goods_attr'] as $vo)
 					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
 				@endforeach
-			</div>
+			</div> -->
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
@@ -223,12 +226,36 @@
 		<div class="History_offo">
 			<h1>历史报价</h1>
 		</div>
-		<ul class="Self-product-list">
-			<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>
-			@foreach($goodsList as $vo)
-				<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>
-			@endforeach
-		</ul>
+
+        <ul class="History-product-list br1">
+            <li>
+                <span style="width:15%">报价日期</span>
+                <span style="width:10%">种类</span>
+                <span style="width:25%">商品名称</span>
+                <span style="width:10%">单价（元/kg）</span>
+                <span style="width:10%">数量（kg）</span>
+                <span style="width:10%">发货地址</span>
+                <span style="width:20%">联系人</span>
+            </li>
+            @foreach($goodsList as $vo)
+                <li>
+                    <span style="width:15%">{{$vo['add_time']}}</span>
+                    <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
+                    <span style="width:25%">{{$vo['goods_full_name']}}</span>
+                    <span style="width:10%">{{$vo['goods_number']}}</span>
+                    <span style="width:10%">{{$vo['shop_price']}}</span>
+                    <span style="width:10%">{{$vo['delivery_place']}}</span>
+                    <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                </li>
+            @endforeach
+        </ul>
+
+		{{--<ul class="Self-product-list">--}}
+			{{--<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>--}}
+			{{--@foreach($goodsList as $vo)--}}
+				{{--<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>--}}
+			{{--@endforeach--}}
+		{{--</ul>--}}
 		<!--页码-->
 		<div class="news_pages">
 			<ul id="page" class="pagination">
@@ -237,6 +264,7 @@
 		</div>
 	</div>
     </div>
+    <div class="clearfix whitebg ovh mt10" style="font-size: 0;">
 @endsection
 
 @section('bottom_js')
@@ -260,7 +288,13 @@
         $(".orangebg").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var id = "{{$good_info['id']}}";
@@ -279,7 +313,13 @@
         $(".follow_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var goods_id = "{{$good_info['goods_id']}}";

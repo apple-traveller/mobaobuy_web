@@ -8,10 +8,12 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\OrderInfoService;
 use App\Services\ShopService;
 use App\Services\ShopUserService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class IndexController extends Controller
 {
@@ -82,6 +84,66 @@ class IndexController extends Controller
             return $this->success('修改成功');
         } else {
             return $this->error('修改失败');
+        }
+    }
+
+    /**
+     * 数据图
+     * @return IndexController|\Illuminate\Http\RedirectResponse
+     */
+    public function chars()
+    {
+        $shop_id = session('_seller_id')['shop_id'];
+
+        $re =  OrderInfoService::getCharsData($shop_id);
+
+        $select_month = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+        $data= [];
+        // waitPay
+        $dd = [];
+        $waitPay_month = array_column($re['waitPay'],'m');
+        foreach($re['waitPay'] as $key=>$val){
+            $dd[$val['m']] = $val['order_count'];
+        }
+        foreach($select_month as $key=>$val){
+            if(!in_array($val,$waitPay_month)){
+                $data['waitPay'][] = 0;
+            }else{
+                $data['waitPay'][] = $dd[$val];
+            }
+        }
+        // waitSend
+        $dd = [];
+        $waitPay_month = array_column($re['waitSend'],'m');
+        foreach($re['waitSend'] as $key=>$val){
+            $dd[$val['m']] = $val['order_count'];
+        }
+        foreach($select_month as $key=>$val){
+            if(!in_array($val,$waitPay_month)){
+                $data['waitSend'][] = 0;
+            }else{
+                $data['waitSend'][] = $dd[$val];
+            }
+        }
+
+        // waitSend
+        $dd = [];
+        $finished_month = array_column($re['finished'],'m');
+        foreach($re['finished'] as $key=>$val){
+            $dd[$val['m']] = $val['order_count'];
+        }
+        foreach($select_month as $key=>$val){
+            if(!in_array($val,$finished_month)){
+                $data['finished'][] = 0;
+            }else{
+                $data['finished'][] = $dd[$val];
+            }
+        }
+        if (!empty($re)){
+            return $this->success('获取成功','',$data);
+        } else {
+            return $this->error('获取失败');
         }
     }
 }

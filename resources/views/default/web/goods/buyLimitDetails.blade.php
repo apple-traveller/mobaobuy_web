@@ -186,7 +186,13 @@
         function collectGoods(obj){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                $.msg.error("未登录",1);
+                layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
                 return false;
             }
             var id = $(obj).attr('id');
@@ -240,7 +246,7 @@
 	</script>
 @endsection
 @section('content')
-	<div class="clearfix">
+	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
 			<div class="crumbs mt5">当前位置：<a href="/goodslist">产品列表</a> &gt; <a href="javascript:">产品详情</a> &gt;<span class="gray"></span></div>
 			<div class="pro_chart mt5">
@@ -258,7 +264,7 @@
                 </div>
 			</div>
 			<div class="fl ml35 mt5">
-				<h1 class="fwb fs16">{{$goodsInfo['brand_name']}}{{$goodsInfo['goods_name']}}{{$goodsInfo['goods_content']}}</h1>
+				<h1 class="fwb fs16">{{$goodsInfo['goods_full_name']}}</h1>
 				<span class="red mt5 db"></span>
 				<style type="text/css">
 					.Time_limit{height:46px;background: url(/img/limit_time.png)no-repeat;}
@@ -322,8 +328,16 @@
                     @else
                         <button class="pro_detail_btn b1b1b1bg">已结束</button>
                     @endif
-
-                    <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                    @if(session('_web_user_id'))
+                        @if($goodsInfo['collectGoods'])
+                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">已收藏</button>
+                         @else
+                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                         @endif
+                    @else
+                        <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                    @endif
+                   
 				</div>
 				<input type="hidden" name="" value="{{encrypt($goodsInfo['activity_id'])}}" id="activityId" />
 			</div>

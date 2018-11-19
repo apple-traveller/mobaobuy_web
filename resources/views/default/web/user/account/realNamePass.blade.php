@@ -37,36 +37,18 @@
 @endsection
 @section('js')
     <script type="text/javascript">
-        var flag = true,//状态true为正常的状态,false为放大的状态
-           imgH,//图片的高度
-           imgW,//图片的宽度
-            img = document.getElementById('img');//图片元
-  img.onclick =  function(){
-      //图片点击事件
-       imgH = img.height; //获取图片的高度
-       imgW = img.width; //获取图片的宽度
-       if(flag){
-           //图片为正常状态,设置图片宽高为现在宽高的2倍
-           flag = false;//把状态设为放大状态
-           img.height = imgH*2;
-           img.width = imgW*2;
-       }else{
-           //图片为放大状态,设置图片宽高为现在宽高的二分之一
-           flag = true;//把状态设为正常状态
-           img.height = imgH/2;
-           img.width = imgW/2;
-       }
- 
-   }
-
         $(function(){
             $(".account li").click(function(){
                 $(this).addClass('account_curr').siblings().removeClass('account_curr');
                 $('.tab_list>li').eq($(this).index()).show().siblings().hide();
             });
+            //调用示例
+            layer.photos({
+                photos: '.layer-photos-demo'
+                ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
 
-            
-         })
+        })
         $(document).tooltip({
             items: ".img-tooltip",
             content: function() {
@@ -144,27 +126,37 @@
                             <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" disabled="disabled" @else value="" @endif/>
                         </span>
                     </li>
-                    <li class="mt25">
-                        <span class="infor_title">性别：</span>
-                        <span class="ml10 fl">
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==0) checked @endif name="sex" value="0"> 保密
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==1) checked @endif name="sex" value="1"> 男
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==2) checked @endif name="sex" value="2"> 女
-                        </span>
-                    </li>
-                    <li class="mt25">
-                        <span class="infor_title">生日：</span>
-                        <span class=" fl">
-                            <input name="birthday" class="infor_input" type="text" @if(!empty($user_real['birthday'])) value="{{$user_real['birthday']}}" disabled="disabled" @else value="" @endif  >
-                        </span>
-                    </li>
+                    {{--<li class="mt25">--}}
+                        {{--<span class="infor_title">性别：</span>--}}
+                        {{--<span class="ml10 fl">--}}
+                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==0) checked @endif name="sex" value="0"> 保密--}}
+                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==1) checked @endif name="sex" value="1"> 男--}}
+                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==2) checked @endif name="sex" value="2"> 女--}}
+                        {{--</span>--}}
+                    {{--</li>--}}
+                    {{--<li class="mt25">--}}
+                        {{--<span class="infor_title">生日：</span>--}}
+                        {{--<span class=" fl">--}}
+                            {{--<input name="birthday" class="infor_input" type="text" @if(!empty($user_real['birthday'])) value="{{$user_real['birthday']}}" disabled="disabled" @else value="" @endif  >--}}
+                        {{--</span>--}}
+                    {{--</li>--}}
                     <li class="mt25">
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['front_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div id="layer-photos-demo" class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div id="layer-photos-demo" class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
@@ -175,9 +167,19 @@
                         <span class="infor_title">身份证反面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['reverse_of_id_card']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过 <img src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
@@ -185,7 +187,7 @@
                         </span>
                     </li>
                 @if(!empty($user_real))
-                    @if($user_real['review_status'] == '0')
+                    @if($user_real['review_status'] == 0 || $user_real['review_status'] == 1)
                         
                     @else
                     <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
@@ -230,7 +232,7 @@
                         <span class=" fl">
                             @if(!empty($user_real['attorney_letter_fileImg']))               
                                 @if($user_real['review_status']==1) 已经上传，审核已经通过<img class="userImg" id="img" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
+                                @elseif($user_real['review_status']==0) 已经上传，审核中<img class="userImg" id="img" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif
                             @else
@@ -244,7 +246,7 @@
                         <span class=" fl">
                              @if(!empty($user_real['invoice_fileImg']))
                                 @if($user_real['review_status']==1) 已经上传，审核已经通过<img src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
+                                @elseif($user_real['review_status']==0) 已经上传，审核中<img src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'invoice_fileImg'])@endcomponent
                                 @endif
                             @else
@@ -257,7 +259,7 @@
                         <span class=" fl">
                             @if(!empty($user_real['license_fileImg']))
                                 @if($user_real['review_status']==1) 已经上传，审核已经通过<img src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中
+                                @elseif($user_real['review_status']==0) 已经上传，审核中<img src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
                                 @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'license_fileImg'])@endcomponent
                                 @endif
                             @else

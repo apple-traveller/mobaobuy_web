@@ -39,16 +39,24 @@
 @section('js')
 @endsection
 @section('content')
-    <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="news.html?cat_id={{ $cat['id'] }}">{{ $cat['cat_name']}}</a></div>
+    <div class="crumbs">
+        当前位置：<a href="/">首页</a> &gt; <a href="/news.html">资讯中心</a>
+        @if($cat['id'] > 0 && $cat['id'] != 2)
+            &gt; <a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name']}}</a>
+        @elseif(!empty($title))
+            &gt; {{$title}}
+        @endif
+
+    </div>
 
     <div class="today_news whitebg fl">
-        <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">今日资讯</span><span class="fr mr10">共<span class="orange">{{ $list['total'] }}</span>条数据</span></h1>
-        <ul class="ovh ml15 today_news_list mt15">
+        <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="green">{{ $list['total'] }}</span>条数据</span></h1>
+        <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
-                <div class="fl mb15" style="width: 200px;height: 128px"><a href="detail.html?id={{ $v['id'] }}"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 128px"/></a></div>
+                <div class="fl mb15" style="width: 200px;height: 128px"><a href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 128px"/></a></div>
                 <div class="fl ml20">
-                    <h1 class="fs18 mt10"><a href="detail.html?id={{ $v['id'] }}">{{ $v['title'] }}</a></h1>
+                    <h1 class="fs18 mt10"><a href="/detail/{{ $v['id'] }}.html">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
                     <p class="news_content ovhwp">{!! $v['description'] !!}</p>
                 </div>
@@ -61,7 +69,12 @@
 @endsection
 @section('js')
     <script>
-
+       $(document).ready(function () {
+           console.log($(".today_right_news"));
+       })
+        $(function () {
+            console.log($(".today_right_news"));
+        });
     </script>
 @endsection
 

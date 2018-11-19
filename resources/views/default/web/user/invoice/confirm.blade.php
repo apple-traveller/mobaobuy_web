@@ -255,7 +255,7 @@
 				<span class="orange">¥{{ $v['goods_sn'] }}</span>
 				<span>{{ $v['goods_price'] }}</span>
 				<span>{{ $v['goods_number'] }}</span>
-				<span></span><span class="orange subtotal">{{ $v['goods_price']*$v['goods_number'] }}</span>
+				<span></span><span class="orange subtotal">{{ amount_format($v['goods_price']*$v['goods_number']) }}</span>
 			</li>
 			@endforeach
 		</ul>
@@ -271,10 +271,10 @@
 					<input type="hidden" name="total_amount" value="{{ $total_amount }}" style="display: none" id="total_amount">
 					<input type="hidden" name="goodsList" value="{{ json_encode( $goodsList['list'])  }}" style="display: none">
 				</div>
-				<div class="fr mr20">开票总金额<span class="orange">￥{{ $total_amount }}</span></div>
+				<div class="fr mr20">开票总金额<span class="orange">{{ amount_format($total_amount) }}</span></div>
 			</div>
 			<div class="address_line cccbg" style="height: 1px;"></div>
-			<div class="address_sumb fr mr30 cp"><a href="javascript:void(0);">提交申请</a></div>
+			<a href="javascript:void(0);"><div class="address_sumb fr mr30 cp">提交申请</div></a>
 		</form>
 	</div>
 </div>
