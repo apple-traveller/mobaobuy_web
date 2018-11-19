@@ -167,3 +167,15 @@ function setIframeHeight(iframe) {
         }
     }
 };
+
+function resizelayer(layerIndex,layerInitWidth,layerInitHeight) {
+    let docWidth = $(document).width();
+    let docHeight = $(document).height();
+    var minWith = layerInitWidth > docWidth ? docWidth : layerInitWidth;
+    var minHeight = layerInitHeight > docHeight ?docHeight : layerInitHeight;
+    layer.style(layerIndex,{
+        top:0,
+        width:minWith,
+        height:minHeight
+    })
+}

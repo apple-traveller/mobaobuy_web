@@ -1,5 +1,12 @@
 @extends(themePath('.')."seller.include.layouts.master")
 @section('styles')
+
+@endsection
+@section('body')
+    @include('partials.base_header')
+    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
     <style>
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
@@ -8,13 +15,10 @@
             height:28px;
             line-height: 28px;
         }
+        .ui-area .area-warp {
+            width: 278px !important;
+        }
     </style>
-@endsection
-@section('body')
-    @include('partials.base_header')
-    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
-    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
-    <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
@@ -28,12 +32,17 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />
-                                    <input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />
-                                    <input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />
+                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />--}}
+                                    <select class="query_store_name" id="store_name" style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;">
+
+                                    </select>
+                                    <input type="hidden" value="@if(old('store_name')){{old('store_name')}}@else自营@endif" name="store_name"  id="store_name_val"  />
+                                    <input type="hidden" value="@if(old('store_id')){{old('store_id')}} @else 0 @endif" name="store_id"  id="store_id" />
+                                    <div style="margin-left: 10px;" class="notic">请从下拉框中选择店铺</div>
+
                                     <div class="form_prompt"></div>
-                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
-                                    </ul>
+                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">--}}
+                                    {{--</ul>--}}
                                 </div>
                             </div>
 
@@ -69,8 +78,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
-                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{old('delivery_place')}}" style="display: none"/>
-                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{old('place_id')}}" style="display: none"/>
+                                    <input type="hidden" id="area1" name="delivery_place" value="{{old('delivery_place')}}"/>
+                                    <input type="hidden" id="area2" name="place_id" value="{{old('place_id')}}" />
                                     <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">
                                     </div>
                                     <div class="form_prompt"></div>
@@ -213,7 +222,7 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
-            $(".query_store_name").hide();
+            // $(".query_store_name").hide();
         }
 
         // 种类 获取焦点请求所有的分类数据
@@ -269,22 +278,26 @@
         });
 
         $("#store_name").focus(function(){
-            $(".query_store_name").children().filter("li").remove();
+            $(".query_store_name").children().filter("option").remove();
             $.ajax({
                 url: "/seller/store/list",
                 dataType: "json",
                 data:{},
                 type:"POST",
-                success:function(res){console.log(res);
+                async:false,
+                success:function(res){
                     if(res.code==1){
                         $(".query_store_name").show();
                         var data = res.data;
+                        $(".query_store_name").append('<option data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;" selected>自营</option>');
+
                         for(var i=0;i<data.length;i++){
-                            $(".query_store_name").append('<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>');
+                            // $(".query_store_name").append('<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>');
+                            $(".query_store_name").append('<option data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</option>');
                         }
                     }else{
                         $(".query_store_name").show();
-                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                        $(".query_store_name").append('<option  style="cursor:pointer;">该分类下没有查询到商品</option>');
                     }
                 }
             })
@@ -303,15 +316,17 @@
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
         });
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_store_name","click",function(){
-            $("#store_name").siblings("div").filter(".notic").remove();
-            var store_name = $(this).attr("data-store-name");
-            var store_id = $(this).attr("data-store-id");
+
+
+        $("#store_name").change(function () {
+            layer.msg($("#store_name option:selected").attr("data-store-name"));
+            var store_name = $("#store_name option:selected").attr("data-store-name");
+            var store_id = $("#store_name option:selected").attr("data-store-id");
             $("#store_name").val(store_name);
             $("#store_name_val").val(store_name);
             $("#store_id").val(store_id);
         });
+
 
         $("#goods_number").change(function () {
             let spac = $("#goods_name").attr("data-packing-spac");
@@ -325,6 +340,13 @@
                     $(this).val(goods_number);
                 }
             }
+        });
+
+        // 重置是清空地址选项
+        $(".button_reset").click(function () {
+            $("#area1").val('')
+            $("#area2").val('');
+            $(".tit span").html('');
         });
     </script>
 

@@ -56,8 +56,9 @@
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
                                     <td>
                                         <div class="tDiv">
+                                            <a href="/seller/quote/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_trash"><i class="icon icon-edit"></i>编辑</a>
+
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                            <a href="/seller/quote/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>

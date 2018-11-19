@@ -36,7 +36,7 @@
                                 <div class="label_value">
                                     <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input type="text" data-packing-spac="@if(!empty($good)){{$good['packing_spec']}}@endif" value="@if(!empty($promote_info)){{$promote_info['goods_name']}}@endif"  autocomplete="off"  id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -54,20 +54,20 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" name="start_date" id="start_date" @if(!empty($promote_info)) value="{{$promote_info['begin_time'][0]}}" @endif>
+                                    <input type="text" style="height:30px;width:159px" class="layui-input" name="start_date" id="start_date" @if(!empty($promote_info)) value="{{$promote_info['begin_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input"  name="start_time" id="start_time" @if(!empty($promote_info))value="{{$promote_info['begin_time'][1]}}" @endif>
+                                    <input type="text" style="height:30px;width:159px" class="layui-input"  name="start_time" id="start_time" @if(!empty($promote_info))value="{{$promote_info['begin_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input"  name="end_date" id="end_date" @if(!empty($promote_info)) value="{{$promote_info['end_time'][0]}}" @endif>
+                                    <input type="text" style="width:159px" class="layui-input"  name="end_date" id="end_date" @if(!empty($promote_info)) value="{{$promote_info['end_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
+                                    <input type="text" style="width:159px" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
@@ -79,11 +79,10 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;促销总数量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{$promote_info['num']}} @endif " maxlength="5"  autocomplete="off" id="num">
+                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{round($promote_info['num'],2)}}@endif" maxlength="5"  autocomplete="off" id="num">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -92,9 +91,9 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;最小起售量：</div>
                                 <div class="label_value">
                                     <div class="pro_detail">
-                                        <div class="pur_volume ml15">
+                                        <div class="pur_volume">
                                             <span class="pur bbright">-</span>
-                                            <input type="text" name="min_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" id="min_limit"/>
+                                            <input type="text" name="min_limit" class="pur_num" style="border: 0px #ccc solid;outline: none;" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" id="min_limit"/>
                                             <span class="pur bbleft">+</span>
                                         </div>
                                     </div>
@@ -103,15 +102,19 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：（0 不限,可以直接输入0）</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：</div>
                                 <div class="label_value">
                                     <div class="pro_detail">
-                                        <div class="pur_volume ml15">
+                                        <div class="pur_volume  ">
                                             <span class="pur bbright">-</span>
-                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit"/>
+                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit" style="border: 0px #ccc solid;outline: none;box-shadow: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+   -webkit-user-modify: read-write-plaintext-only;"/>
                                             <span class="pur bbleft">+</span>
                                         </div>
+                                        <span style="color: red">（0 不限,可以直接输入0）</span>
                                     </div>
+
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -384,7 +387,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();

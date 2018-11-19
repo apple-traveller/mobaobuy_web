@@ -461,6 +461,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/logout', 'LoginController@logout');
         Route::get('/detail', 'IndexController@detail');
         Route::post('/updateCash', 'IndexController@updateCash');
+        Route::post('/chars', 'IndexController@chars');
 
         Route::get('/store', 'ShopStoreController@getList');//店铺列表
         Route::post('/store/list', 'ShopStoreController@storeList');//ajax获取列表
