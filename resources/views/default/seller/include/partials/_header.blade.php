@@ -14,7 +14,7 @@
             <img src="{{asset(themePath('/').'layui/images/login/avtar.png')}}" class="layui-nav-img">
         </a>
         <dl class="layui-nav-child">
-            <dd><a href="javascript:void(0);">店铺：{{ $data['shop_name'] }}</a></dd>
+            <dd><a href="javascript:void(0);">商户：{{ $data['shop_name'] }}</a></dd>
             <dd><a href="javascript:void(0);">用户：{{ $data['user_name'] }}</a></dd>
             {{--{{ session('_seller')['real_name'] }}--}}
             {{--{{ session('_seller')['shop_info'] }}--}}

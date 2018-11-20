@@ -10,7 +10,8 @@
         .pro_detail{overflow: hidden;}
         .pur_volume{float:left;border: 1px solid #DEDEDE; box-sizing:border-box;}
         .pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
-        .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
+        .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: 1px solid #fff;}
+
     </style>
 @endsection
 @section('body')
@@ -22,20 +23,19 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/promoter?currentPage={{$currentPage}}" class="s-back">返回</a>促销活动</div>
+        <div class="title"><a href="/seller/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
         <div class="content">
-
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/seller/activity/savePromoter" method="post" name="theForm" id="promote_form" novalidate="novalidate">
-                        <input type="text" value="@if(!empty($promote_info)){{$promote_info['id']}}@endif" name="id" style="display: none">
+                    <form action="/seller/activity/wholesale/save" method="post" name="theForm" id="wholesale_form" novalidate="novalidate">
+                        <input type="text" value="@if(!empty($wholesale_info)){{$wholesale_info['id']}}@endif" name="id" style="display: none">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                    <input type="text" @if(!empty($wholesale_info))  cat-id="{{$wholesale_info['cat_id']}}" value="{{$wholesale_info['cat_name']}}" @else cat-id="" value="" @endif autocomplete="off" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -43,8 +43,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="@if(!empty($good)){{$good['packing_spec']}}@endif" value="@if(!empty($promote_info)){{$promote_info['goods_name']}}@endif"  autocomplete="off"  id="goods_name" size="40"  class="text">
-                                    <input type="hidden" value="" name="goods_id"  id="goods_id">
+                                    <input type="text" data-packing-spac="0" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input type="hidden" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_id']}}" @endif name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
@@ -53,47 +53,55 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" style="height:30px;width:159px" class="layui-input" name="start_date" id="start_date" @if(!empty($promote_info)) value="{{$promote_info['begin_time'][0]}}" @endif>
+                                    <input type="text" class="layui-input" style="width:159px;height: 30px;" name="start_date" id="start_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" style="height:30px;width:159px" class="layui-input"  name="start_time" id="start_time" @if(!empty($promote_info))value="{{$promote_info['begin_time'][1]}}" @endif>
+                                    <input type="text" class="layui-input" style="width:159px;height: 30px;" name="start_time" id="start_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" style="width:159px" class="layui-input"  name="end_date" id="end_date" @if(!empty($promote_info)) value="{{$promote_info['end_time'][0]}}" @endif>
+                                    <input type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_date" id="end_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" style="width:159px" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
-
+                                    <input type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_time" id="end_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;促销价格：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;拼团价格：</div>
                                 <div class="label_value">
-                                    <input type="number" name="price" class="text" value="@if(!empty($promote_info)){{$promote_info['price']}}@endif" maxlength="10" autocomplete="off" id="price">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;促销总数量：</div>
-                                <div class="label_value">
-                                    <input type="number" name="num" class="text" value="@if(!empty($promote_info)){{round($promote_info['num'],2)}}@endif" maxlength="5"  autocomplete="off" id="num">
+                                    <input type="number" name="price" class="text" value="@if(!empty($wholesale_info)){{$wholesale_info['price']}}@endif" maxlength="10" autocomplete="off" id="price">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;最小起售量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;目标数量：</div>
+                                <div class="label_value">
+                                    <input type="number" name="num" class="text" @if(!empty($wholesale_info)) value="{{$wholesale_info['num']}}" @endif maxlength="5"  autocomplete="off" id="num">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;订金比例：</div>
+                                <div class="label_value">
+                                    <input type="number" name="deposit_ratio" class="text" @if(!empty($wholesale_info)) value="{{$wholesale_info['deposit_ratio']}}" @endif maxlength="5"  autocomplete="off" id="deposit_ratio">（0 不需支付定金,可以直接输入0）
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;最小拼团量：</div>
                                 <div class="label_value">
                                     <div class="pro_detail">
                                         <div class="pur_volume">
                                             <span class="pur bbright">-</span>
-                                            <input type="text" name="min_limit" class="pur_num" style="border: 0px #ccc solid;outline: none;" value="@if(!empty($promote_info)){{$promote_info['min_limit']}}@endif" id="min_limit"/>
+                                            <input type="text" name="min_limit" class="pur_num" value="@if(!empty($wholesale_info)){{$wholesale_info['min_limit']}}@endif" id="min_limit"/>
                                             <span class="pur bbleft">+</span>
                                         </div>
                                     </div>
@@ -105,16 +113,12 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;最大限购量：</div>
                                 <div class="label_value">
                                     <div class="pro_detail">
-                                        <div class="pur_volume  ">
+                                        <div class="pur_volume">
                                             <span class="pur bbright">-</span>
-                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($promote_info)){{$promote_info['max_limit']}}@endif" id="max_limit" style="border: 0px #ccc solid;outline: none;box-shadow: none;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
-   -webkit-user-modify: read-write-plaintext-only;"/>
+                                            <input type="text" name="max_limit" class="pur_num" value="@if(!empty($wholesale_info)){{$wholesale_info['max_limit']}}@endif" id="max_limit"/>
                                             <span class="pur bbleft">+</span>
-                                        </div>
-                                        <span style="color: red">（0 不限,可以直接输入0）</span>
+                                        </div>（0 不限,可以直接输入0）
                                     </div>
-
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -159,11 +163,11 @@
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
-                if($("#promote_form").valid()){
-                    $("#promote_form").submit();
+                if($("#wholesale_form").valid()){
+                    $("#wholesale_form").submit();
                 }
             });
-            $('#promote_form').validate({
+            $('#wholesale_form').validate({
                 errorPlacement:function(error, element){
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
                     element.parents('div.label_value').find(".notic").hide();
@@ -187,6 +191,10 @@
                     },
                     end_date:{
                         required:true
+                    },
+                    deposit_ratio:{
+                        required:true,
+                        number:true
                     }
                 },
                 messages:{
@@ -205,7 +213,11 @@
                     },
                     end_date :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    }
+                    },
+                    deposit_ratio :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+                    },
                 }
             });
 
@@ -245,8 +257,15 @@
                     return false;
                 }
                 if(id == 'min_limit' && min_num-spec>max_num){
-                    $(this).siblings('.pur_num').val(max_num);
-                    $.msg.alert('不能大于最大限购量');
+                    if(max_num != 0){
+                        $(this).siblings('.pur_num').val(max_num);
+                        $.msg.alert('不能大于最大限购量');
+                    }
+                    if (b_num>0){
+                        $(this).siblings('.pur_num').val(num-spec-b_num);
+                    } else {
+                        $(this).siblings('.pur_num').val(num-spec);
+                    }
                 }else if(id == 'max_limit' && min_num>max_num-spec){
                     $(this).siblings('.pur_num').val(min_num);
                     $.msg.alert('不能小于最小起售量');
@@ -291,11 +310,14 @@
                     }
                     if(id == 'min_limit' && min_num+spec>max_num){
                         // $(this).siblings('.pur_num').val(max_num);
-                        if (min_num+spec>tota_num){
-                            $("#max_limit").val(tota_num);
-                        } else {
-                            $("#max_limit").val(num+spec);
+                        if(max_num != 0){
+                            if (min_num+spec>tota_num){
+                                $("#max_limit").val(tota_num);
+                            } else {
+                                $("#max_limit").val(num+spec);
+                            }
                         }
+
                     }
                 }
             });
@@ -387,7 +409,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();

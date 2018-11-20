@@ -24,7 +24,7 @@ class InvoiceController extends Controller
         $condition = [];
         $condition['shop_id'] = $shop_id;
         if (!empty($member_phone)){
-            $condition['member_phone'] = $member_phone;
+            $condition['member_phone'] = "%".$member_phone."%";
         }
         if (!empty($status)){
             $condition['status'] = $status;

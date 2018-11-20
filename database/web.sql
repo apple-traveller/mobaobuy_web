@@ -696,6 +696,7 @@ CREATE TABLE `shop_goods_quote` (
   `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
   `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
+  `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '报价类型 1自售 2品牌直售 3寄售',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`),
@@ -778,6 +779,8 @@ CREATE TABLE `order_info` (
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已删除 0-否 1-是',
   `is_settlement` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已结算 0-否 1-是',
   `froms` char(10) NOT NULL DEFAULT 'pc' COMMENT '订单来源',
+  `deposit` decimal(10,2) NOT NULL COMMENT '订金金额',
+  `deposit_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订金支付状态 0未支付 1已支付',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_sn` (`order_sn`),
   KEY `user_id` (`user_id`),
@@ -1220,3 +1223,14 @@ CREATE TABLE `shop_store` (
   `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+
+DROP TABLE IF EXISTS `hot_search`;
+CREATE TABLE `hot_search` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `search_key` varchar(255) NOT NULL COMMENT '搜索关键字',
+  `search_num` int(11) NOT NULL DEFAULT '1' COMMENT '搜索次数',
+  `is_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示 0不显示 1显示',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `ip` varchar(255) NOT NULL COMMENT 'ip',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='搜索记录表';

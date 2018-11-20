@@ -1,31 +1,29 @@
 @extends(themePath('.')."seller.include.layouts.master")
 @section('body')
     <div class="warpper">
-        <div class="title">秒杀列表</div>
+        <div class="title">集采拼团活动</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>商城所有的订单列表。</li>
-                    <li>点击订单号即可进入详情页面对订单进行操作。</li>
+
                 </ul>
             </div>
-
             <div class="flexilist mt30" id="listDiv">
                 <div class="common-head order-coomon-head">
-                        <div class="fl_label">
-                            <a href="/seller/seckill/add"><div class="fbutton"><div class="add" title="添加秒杀申请"><span><i class="icon icon-plus"></i>添加秒杀申请</span></div></div></a>
-                        </div>
+                    <div class="fl_label">
+                        <a href="/seller/activity/wholesale/add"><div class="fbutton"><div class="add" title="申请"><span><i class="icon icon-plus"></i>添加申请</span></div></div></a>
+                    </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)">
-                            <i class="icon icon-refresh" style="display: block;margin-top: 1px;"></i></div>
-                        <div class="refresh_span" >刷新 - 共{{$total}}条记录</div>
+                            <i class="icon icon-refresh" style="display: block;margin-top: 1px;"></i>
+                        </div>
+                        <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                     </div>
-
                     <div class="search">
-                        <form action="/seller/order/list" name="searchForm" >
+                        <form action="/seller/activity/wholesale" name="searchForm" >
                             <div class="input">
-                                <input type="text" name="order_sn" value="" class="text nofocus w180" placeholder="订单编号" autocomplete="off">
+                                <input type="text" name="order_sn" value="" class="text nofocus w180" placeholder="商品名称" autocomplete="off">
                                 <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                             </div>
                         </form>
@@ -39,12 +37,19 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">编号</div></th>
-                                    <th width="10%"><div class="tDiv">申请时间</div></th>
-                                    <th width="10%"><div class="tDiv">活动开始时间</div></th>
-                                    <th width="10%"><div class="tDiv">活动结束时间</div></th>
-                                    <th width="15%"><div class="tDiv">审核状态</div></th>
-                                    <th width="25%"><div class="tDiv">操作</div></th>
+                                    <th><div class="tDiv">编号</div></th>
+                                    <th><div class="tDiv">申请时间</div></th>
+                                    <th><div class="tDiv">拼团商品</div></th>
+                                    <th><div class="tDiv">拼团价格</div></th>
+                                    <th><div class="tDiv">目标数量</div></th>
+                                    <th><div class="tDiv">已参与数量</div></th>
+                                    <th><div class="tDiv">最小拼团量</div></th>
+                                    <th><div class="tDiv">最大限购量</div></th>
+                                    <th><div class="tDiv">订金比例</div></th>
+                                    <th><div class="tDiv">开始时间</div></th>
+                                    <th><div class="tDiv">结束时间</div></th>
+                                    <th><div class="tDiv">审核状态</div></th>
+                                    <th><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,13 +57,20 @@
                                     <tr class="">
                                         <td><div class="tDiv">{{$v["id"]}}</div></td>
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
+                                        <td><div class="tDiv">{{$v['goods_name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['price']}}</div></td>
+                                        <td><div class="tDiv">{{$v['num']}}</div></td>
+                                        <td><div class="tDiv">{{$v['partake_quantity']}}</div></td>
+                                        <td><div class="tDiv">{{$v['min_limit']}}</div></td>
+                                        <td><div class="tDiv">{{$v['max_limit']}}</div></td>
+                                        <td><div class="tDiv">{{$v['deposit_ratio']}}</div></td>
                                         <td><div class="tDiv">{{$v['begin_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['end_time']}}</div></td>
                                         <td><div class="tDiv">@if($v['review_status']==1)待审核 @elseif($v['review_status']==2)审核不通过@elseif($v['review_status']==3)审核通过@endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/seller/seckill/list_detail?seckill_id={{$v['id']}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                                <a href="javascript:void(0)"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash" id="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
+                                                <a href="/seller/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_see"><i class="sc_icon sc_icon_see"></i>编辑</a>
+                                                <a href="javascript:void(0);"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -66,7 +78,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <div class="tDiv">
 
                                             <div class="list-page">
@@ -95,8 +107,6 @@
         </div>
     </div>
     <script>
-        // window.location.reload();
-
         paginate();
         function paginate(){
             layui.use(['laypage'], function() {
@@ -108,59 +118,30 @@
                     , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/seller/seckill/list?currentPage="+obj.curr;
+                            window.location.href="/seller/activity/wholesale?currentPage="+obj.curr;
                         }
                     }
                 });
             });
         }
-        $('#btn_trash').click(function () {
-            let seckill_id = $('#btn_trash').attr('data_id');
-            let currentPage = $('#btn_trash').attr('data_page');
+        $('.btn_trash').click(function () {
+            let seckill_id = $(this).attr('data_id');
+            console.log(seckill_id);
             $.ajax({
-                url:'/seller/seckill/delete',
+                url:'/seller/activity/wholesale/delete',
                 data:{
-                    'seckill_id': seckill_id,
-                    'currentPage':currentPage
+                    id: seckill_id
                 },
                 type:'post',
                 success:function (res) {
                     if (res.code == 1){
-                        window.location.href="{{url('/seller/seckill/list')}}";
+                        layer.msg(res.msg);
+                        setTimeout(window.location.reload(),2000);
                     } else {
                         layer.msg(res.msg);
                     }
                 }
             })
         });
-        layui.use(['table','layer'],function () {
-            var table = layui.table;
-            var layer = layui.layer;
-            let seckill_id = $('#btn_see').attr('data_id');
-            $("#btn_see").click(function () {
-                // 定义弹窗数组
-                layer.open({
-                    type: 1,
-                    area: '500px',
-                    maxmin: true,
-                    content: '<table class="layui-hide" id="test_goods">'+'</table>',
-                    zIndex: layer.zIndex
-                });
-            });
-            var table = layui.table;
-            table.render({
-                elem: '#test_goods',
-                ur:'/seller/seckill/list_detail',
-                where:{
-                    'seckill_id':seckill_id
-                }
-                ,cols: [[
-                    {field:'id',  title: 'ID', sort: true}
-                    ,{field:'goods_sn',  title: '商品编号'}
-                    ,{field:'goods_name',  title: '商品名称'}
-                ]]
-            });
-
-        })
     </script>
 @stop

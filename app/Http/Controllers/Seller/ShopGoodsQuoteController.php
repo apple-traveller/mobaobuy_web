@@ -103,7 +103,7 @@ class ShopGoodsQuoteController extends Controller
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
         }
-        if(!$store_id || !$store_name){
+        if(!$store_name){
             return $this->error('店铺不能为空');
         }
         if(!$delivery_place){
@@ -152,6 +152,13 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq
         ];
+        if ($store_id==0){
+            $data['is_self_run'] = 1;
+            $data['type'] = 1;
+        } else {
+            $data['is_self_run'] = 0;
+            $data['type'] = 2;
+        }
         try{
             if($id){
                 $data['id'] = $id;
