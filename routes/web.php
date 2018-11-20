@@ -241,6 +241,10 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/invoice/detail', 'InvoiceController@detail');//查看发票详情
         Route::post('/invoice/save', 'InvoiceController@save');//保存
 
+        Route::get('/hotsearch', 'HotSearchController@index');//搜索列表
+        Route::post('/hotsearch/setShow', 'HotSearchController@setShow');//设置显示状态
+        Route::get('/hotsearch/delete', 'HotSearchController@delete');//设置显示状态
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
