@@ -2,6 +2,8 @@
 namespace App\Services;
 
 use App\Repositories\ActivityWholesaleRepo;
+use App\Repositories\GoodsRepo;
+use App\Repositories\UserCollectGoodsRepo;
 use Carbon\Carbon;
 
 class ActivityWholesaleService
@@ -14,9 +16,9 @@ class ActivityWholesaleService
      * @param $where
      * @return mixed
      */
-    public static function getListBySearch($pager,$where)
+    public static function getListBySearch($pager, $where)
     {
-        return ActivityWholesaleRepo::getListBySearch($pager,$where);
+        return ActivityWholesaleRepo::getListBySearch($pager, $where);
     }
 
     /**
@@ -51,9 +53,9 @@ class ActivityWholesaleService
      * @param $data
      * @return bool
      */
-    public static function updateById($id,$data)
+    public static function updateById($id, $data)
     {
-        return ActivityWholesaleRepo::modify($id,$data);
+        return ActivityWholesaleRepo::modify($id, $data);
     }
 
     /**
@@ -66,29 +68,30 @@ class ActivityWholesaleService
         return ActivityWholesaleRepo::delete($id);
     }
 
-    public static function getList($params=[], $page = 1 ,$pageSize=10){
+    public static function getList($params = [], $page = 1, $pageSize = 10)
+    {
         $condition = [];
-        if(isset($params['status'])){
+        if (isset($params['status'])) {
             $condition['review_status'] = $params['status'];
         }
-        if(isset($params['end_time'])){
+        if (isset($params['end_time'])) {
             $condition['end_time|>'] = Carbon::now();
         }
-        if(!empty($params['goods_name'])){
-            $condition['goods_name'] = '%'.$params['goods_name'].'%';
+        if (!empty($params['goods_name'])) {
+            $condition['goods_name'] = '%' . $params['goods_name'] . '%';
         }
 
-        $info_list = ActivityWholesaleRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['end_time'=>'desc']],$condition);
-        foreach ($info_list['list'] as &$item){
-            if(Carbon::now()->gt($item['end_time'])){
+        $info_list = ActivityWholesaleRepo::getListBySearch(['pageSize' => $pageSize, 'page' => $page, 'orderType' => ['end_time' => 'desc']], $condition);
+        foreach ($info_list['list'] as &$item) {
+            if (Carbon::now()->gt($item['end_time'])) {
                 $item['is_over'] = true;
-            }else{
+            } else {
                 $item['is_over'] = false;
             }
 
-            if(Carbon::now()->lt($item['begin_time'])){
+            if (Carbon::now()->lt($item['begin_time'])) {
                 $item['is_soon'] = true;
-            }else{
+            } else {
                 $item['is_soon'] = false;
             }
         }
@@ -96,4 +99,81 @@ class ActivityWholesaleService
         return $info_list;
     }
 
+    public static function wholesale($condition)
+    {
+        $info_list = ActivityWholesaleRepo::getList(['end_time'=>'desc'], $condition);
+        foreach ($info_list as &$item) {
+            if (Carbon::now()->gt($item['end_time'])) {
+                $item['is_over'] = true;
+            } else {
+                $item['is_over'] = false;
+            }
+
+            if (Carbon::now()->lt($item['begin_time'])) {
+                $item['is_soon'] = true;
+            } else {
+                $item['is_soon'] = false;
+            }
+        }
+        return $info_list;
+//        unset($item);dump($info_list);
+//        //未结束
+//        $buyLimitArr = [];
+//        //已结束
+//        $buyLimitArrOver = [];
+//        foreach ($info_list as $k => $v) {
+//            if ($v['is_over'] == false) {
+//                $buyLimitArr[] = $v;
+//            } else {
+//                $buyLimitArrOver[] = $v;
+//            }
+//        }
+//        foreach ($buyLimitArrOver as $kk => $vv) {
+//            $keyLen = count($buyLimitArr) + 1;
+//            $buyLimitArr[$keyLen] = $vv;
+//        }
+//        dd($buyLimitArr);
+//        return $buyLimitArr;
+    }
+
+    //增加集采拼团的点击量
+    public static function addClickCount($id)
+    {
+        $id = decrypt($id);
+        return ActivityWholesaleRepo::addClickCount($id);
+    }
+
+    public static function detail($id,$userId)
+    {
+        $id = decrypt($id);
+        $ActivityInfo =  ActivityWholesaleRepo::getInfo($id);
+        if(empty($ActivityInfo)){
+            self::throwBizError('集采商品不存在');
+        }
+        $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品不存在');
+        }
+
+        $goodsInfo['activity_price'] = $ActivityInfo['price'];
+        $goodsInfo['activity_num'] = $ActivityInfo['num'];
+        $goodsInfo['partake_quantity'] = $ActivityInfo['partake_quantity'];
+        $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        //活动有效期总秒数
+        $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
+        //产品市场价
+        $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
+        $goodsInfo['goodsList'] = $goodsList;
+
+        //产品是否已收藏
+        $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        if(empty($collectGoods)){
+            $goodsInfo['collectGoods'] = 0;
+        }else{
+            $goodsInfo['collectGoods'] = 1;
+        }
+        return $goodsInfo;
+    }
 }

@@ -16,10 +16,10 @@
 
                 <a onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');" class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
 
-                @if(!empty(getConfig('search_keywords')))
+                @if(!empty(getHotSearch()))
                     <div class="hot_search_m">热门推荐：
-                        @foreach(explode(',',getConfig('search_keywords')) as $item)
-                            <a href="/goodsList?keyword={{$item}}" target="_blank">{{$item}}</a>
+                        @foreach(getHotSearch() as $item)
+                            <a href="/goodsList?keyword={{$item['search_key']}}" target="_blank">{{$item['search_key']}}</a>
                         @endforeach
                     </div>
                 @endif

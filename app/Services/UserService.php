@@ -485,6 +485,15 @@ class UserService
         }
     }
 
+    //是否收藏
+    public static function checkUserIsCollect($userId,$goodsId){
+        $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!empty($collectGoodsInfo)){
+            return 1;
+        }
+        return 0;
+    }
+
     //添加企业会员，验证手机号是否存在
     public static function getUserInfoByUserName($mobile){
         return UserRepo::getInfoByFields(['user_name'=>$mobile]);
@@ -498,6 +507,26 @@ class UserService
         $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
         $users['total'] = UserRepo::getTotalCount();
         return $users;
+    }
+
+    //admin
+    // 添加用户实名信息
+    public static function addUserRealForm($id){
+        $userInfo = UserRepo::getInfo($id);
+        if(empty($userInfo)){
+            self::throwBizError('用户信息不存在');
+        }
+
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userInfo['id']]);
+        if(!empty($userRealInfo)){
+            if($userRealInfo['review_status'] == 1){
+                self::throwBizError('用户审核已通过');
+            }
+            if($userRealInfo['review_status'] == 0){
+                self::throwBizError('请等待管理员审核');
+            }
+        }
+        return $userInfo;
     }
     //获取第三方登录信息
     public static function getAppUserInfo($condition)

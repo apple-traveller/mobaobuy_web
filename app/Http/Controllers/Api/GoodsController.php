@@ -109,7 +109,7 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品id');
         }
         try{
-            $goodsList = GoodsService::productTrend($goodsId);
+            $goodsList = GoodsService::productTrendApi($goodsId);
             return $this->success($goodsList,'success');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
@@ -120,17 +120,11 @@ class GoodsController extends ApiController
     //保存关键词
     public function saveHotKeyWords(Request $request)
     {
-        $keyword = $request->input('keywords');
-        $user_id = $request->input('user_id');
-        if(empty($user_id)){
-            $user_id = 'a'.str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT);
+        $search_key = $request->input('search_key');
+        if(empty($search_key)){
+            return $this->error('关键字不能为空');
         }
-        $data = [
-            'keywords' => $keyword,
-            'user_id' =>$user_id,
-            'ip' =>$request->getClientIp()
-        ];
-        GoodsService::saveHotKeyWords($data);
+        GoodsService::saveHotKeyWords($search_key);
         return $this->success('','success');
     }
 
@@ -237,8 +231,12 @@ class GoodsController extends ApiController
             return $this->error('传入的数量必须为数字');
         }
         try{
-            GoodsService::editCartNum($id,$cartNum);
-            return $this->success('','success');
+            $flag = GoodsService::editCartNum($id,$cartNum);
+            if(empty($flag)){
+                return $this->error('购物车中没有此商品');
+            }else{
+                return $this->success($flag,'success');
+            }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

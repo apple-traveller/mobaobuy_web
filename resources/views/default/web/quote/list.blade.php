@@ -13,6 +13,13 @@
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
         .Self-product-list li span{
             display: block;
+            height:55px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .Self-product-list li:first-child span{
+            height:40px;
         }
 	</style>
 @endsection
@@ -150,6 +157,7 @@
 			</div>
 		</div>
 		<ul class="Self-product-list">
+
 			<li class="table_title">
                 <span class="num_bg1" style="width:9%">店铺</span>
                 <!-- <span  style="width:8%;">品牌</span> -->
@@ -164,10 +172,10 @@
             @if(!empty($search_data['list']))
                 @foreach($search_data['list'] as $vo)
                     <li>
-                        <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                         <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
-                        <span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                        <span style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span title="{{$vo['cat_name']}}" class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
+                        <span title="{{$vo['goods_full_name']}}" style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                         <span style="width:9%">{{$vo['goods_number']}}</span>
                         <span>{{$vo['shop_price']}}</span>
                         <span>{{$vo['delivery_place']}}</span>
@@ -253,6 +261,15 @@
             $('#cate_tag').attr('cate_id','');
             getInfo(1);
         });
+
+        //公司名称
+        // $('.storeName').hover(function(){
+        //     // var a = $(this).attr('stroreName');
+        //     // console.log(a);
+        //     // $(this).attr('stroreName').wrap("<h1>");
+        // },function(){
+        //     $(this).unwrap();
+        // });
     });
 
 

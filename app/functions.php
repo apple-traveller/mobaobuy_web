@@ -201,4 +201,10 @@ if (!function_exists('getNewsSidebar')){
     }
 }
 
+if (!function_exists('getHotSearch')){
+    function getHotSearch(){
+        return \App\Services\HotSearchService::getList([],['is_show'=>1]);
+    }
+}
+
 
