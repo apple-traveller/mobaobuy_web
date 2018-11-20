@@ -217,7 +217,16 @@
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
-				<button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                @if(session('_web_user_id'))
+                    @if($collectGoods)
+                        <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
+                    @else
+                        <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                    @endif
+                @else
+                    <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                @endif
+				
 			</div>
 		</div>
 

@@ -48,7 +48,7 @@
 	    <div class="w1200"> -->
 	    	<!--左边部分-->
 		
-			<div class="member_index_right whitebg fl ml15 br1 pr" style="margin-left: -31px;">
+			<div class="member_index_right whitebg fl ml15 br1 pr" style="margin-left: -31px;margin-top:20px;">
 				<ul class="member_top_per">
 					<li style="border-right:1px solid #DEDEDE;">
 						<div class="fl ml30"><img src="img/per_logo.png"/></div>

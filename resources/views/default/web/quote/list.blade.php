@@ -157,6 +157,7 @@
 			</div>
 		</div>
 		<ul class="Self-product-list">
+
 			<li class="table_title">
                 <span class="num_bg1" style="width:9%">店铺</span>
                 <!-- <span  style="width:8%;">品牌</span> -->
@@ -260,6 +261,15 @@
             $('#cate_tag').attr('cate_id','');
             getInfo(1);
         });
+
+        //公司名称
+        // $('.storeName').hover(function(){
+        //     // var a = $(this).attr('stroreName');
+        //     // console.log(a);
+        //     // $(this).attr('stroreName').wrap("<h1>");
+        // },function(){
+        //     $(this).unwrap();
+        // });
     });
 
 

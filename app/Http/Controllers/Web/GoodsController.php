@@ -153,10 +153,10 @@ class GoodsController extends Controller
 
         $invoiceInfo = UserRealService::getInfoByUserId($userId);
         if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
+            return $this->error('当前用户还没有实名认证，不能下单');
         }
         if ($invoiceInfo['review_status'] != 1 ){
-            return $this->error('您的实名认证还未通过，不能下单');
+            return $this->error('当前用户实名认证还未通过，不能下单');
         }
 
         if($request->isMethod('get')){
