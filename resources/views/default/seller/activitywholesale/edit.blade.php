@@ -324,20 +324,28 @@
         });
 
         $("#min_limit").change(function () {
-            let min_num = $(this).val();
+            let min_num = Number($(this).val());
+            let max_num = Number($("#max_limit").val());
             let spac = Number($("#goods_name").attr("data-packing-spac"));
             let tota_num = Number($("#num").val());
-            if (min_num<spac){
-                $(this).val(spac);
-            } else {
-                if (min_num>tota_num){
-                    $(this).val(tota_num);
-                }else{
-                    let _count = min_num%spac;
-                    if(_count > 0){
-                        $(this).val(min_num - _count);
+            alert(min_num);
+            alert(max_num);
+            if(max_num != 0 && min_num > max_num){
+                $(this).val(max_num);
+            }else{alert(2);
+                if (min_num<spac){
+                    $(this).val(spac);
+                } else {
+                    if (min_num>tota_num){
+                        $(this).val(tota_num);
                     }else{
-                        $(this).val(min_num);
+                        let _count = min_num%spac;
+                        if(_count > 0){
+                            $(this).val(min_num - _count);
+                        }else{
+                            $(this).val(min_num);
+                        }
+
                     }
                 }
             }
@@ -348,6 +356,7 @@
         $("#max_limit").change(function () {
            let max_val =  $(this).val();
            let min_val = $("#min_limit").val();
+           let spac = Number($("#goods_name").attr("data-packing-spac"));
            let tota_num = Number($("#num").val());
            if (max_val==0){
                $(this).val(0);
@@ -358,6 +367,14 @@
            } else {
                if (max_val>tota_num){
                    $(this).val(tota_num);
+               }else{
+                   let _count = max_val%spac;
+                   if(_count > 0){
+                       $(this).val(max_val - _count);
+                   }else{
+                       $(this).val(max_val);
+                   }
+
                }
            }
         });
