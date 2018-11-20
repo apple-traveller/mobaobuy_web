@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
-class QuoteController extends Controller
+class ConsignmentController extends Controller
 {
     /**
      * Where to redirect users after login.
@@ -23,6 +23,16 @@ class QuoteController extends Controller
      * @var string
      */
     public function  index(){
+
+    }
+
+    //寄售
+    public function consignment(){
+
+    }
+
+    //寄售详情
+    public function consignmentDetails(){
 
     }
 
@@ -495,7 +505,4 @@ class QuoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
-
-
 }

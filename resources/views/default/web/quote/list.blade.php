@@ -155,7 +155,15 @@
 
 			@foreach($search_data['list'] as $vo)
 				<li>
-                    <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                    <span data-id="{{$vo['packing_spec']}}" id="packing_spec" class="storeName" stroreName="{{$vo['store_name']}}" style="width:9%;cursor: pointer;">
+                    @if(!empty($vo['store_name']))
+                        @if(mb_strlen($vo['store_name'],'UTF8') >7)
+                            {{substr($vo['store_name'],0,18)}} ...
+                        @else
+                            {{$vo['store_name']}}
+                        @endif
+                    @else无
+                    @endif</span>
                     <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
                     <span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
                     <span style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
@@ -241,6 +249,15 @@
             $('#cate_tag').attr('cate_id','');
             getInfo(1);
         });
+
+        //公司名称
+        // $('.storeName').hover(function(){
+        //     // var a = $(this).attr('stroreName');
+        //     // console.log(a);
+        //     // $(this).attr('stroreName').wrap("<h1>");
+        // },function(){
+        //     $(this).unwrap();
+        // });
     });
 
 

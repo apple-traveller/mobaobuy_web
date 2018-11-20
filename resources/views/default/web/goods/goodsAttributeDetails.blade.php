@@ -8,6 +8,7 @@
 		.top-search-div .search-div .logo{
 			background:none;
 		}
+		a:hover {color:green;}
 	</style>
 @endsection
 @section('js')
@@ -50,14 +51,14 @@
 								<span></span> <span class="ml15"></span>
 								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
 							</div>
-							<div class="fl mb10 mt15 ml20">
+							<div class="fl mb10 mt15 ml20" style="width:358.5px;">
 								<span class="db"></span>
 								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}元</span><span class="ml20"></span>
 								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
 							<div class="phy_chart"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
 							<div class="phy_line fl"></div>
-							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');">立即询价</a></div>
+							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
 						</li>
 					@endforeach
 				@else
