@@ -2,15 +2,77 @@
 namespace App\Services;
 
 use App\Repositories\ActivityWholesaleRepo;
+
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\UserCollectGoodsRepo;
+
 use Carbon\Carbon;
 
 class ActivityWholesaleService
 {
     use CommonService;
+
+
+    /**
+     * 根据条件查询列表 —— 分页
+     * @param $pager
+     * @param $where
+     * @return mixed
+     */
+    public static function getListBySearch($pager,$where)
+    {
+        return ActivityWholesaleRepo::getListBySearch($pager,$where);
+    }
+
+    /**
+     * 根据id获取详情
+     * @param $id
+     * @return array
+     */
+    public static function getInfoById($id)
+    {
+        $res = ActivityWholesaleRepo::getInfo($id);
+        $goods_info = GoodsService::getGoodInfo($res['goods_id']);
+        $cat_info = GoodsCategoryService::getInfo($goods_info['cat_id']);
+        $res['cat_id'] = $goods_info['cat_id'];
+        $res['cat_name'] = $cat_info['cat_name'];
+        return $res;
+    }
+
+    /**
+     * 创建
+     * @param $data
+     * @return mixed
+     */
+    public static function create($data)
+    {
+        $data['add_time'] = Carbon::now();
+        return ActivityWholesaleRepo::create($data);
+    }
+
+    /**
+     * 编辑
+     * @param $id
+     * @param $data
+     * @return bool
+     */
+    public static function updateById($id,$data)
+    {
+        return ActivityWholesaleRepo::modify($id,$data);
+    }
+
+    /**
+     * delete
+     * @param $id
+     * @return bool
+     */
+    public static function delete($id)
+    {
+        return ActivityWholesaleRepo::delete($id);
+    }
+
 
     public static function getList($params=[], $page = 1 ,$pageSize=10){
         $condition = [];
@@ -191,4 +253,5 @@ class ActivityWholesaleService
 
 
     }
+
 }

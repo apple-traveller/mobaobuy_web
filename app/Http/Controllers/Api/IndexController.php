@@ -9,6 +9,8 @@ use App\Services\GoodsService;
 use App\Services\OrderInfoService;
 use App\Services\ArticleService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\UserService;
+use Illuminate\Support\Facades\Cache;
 class IndexController extends ApiController
 {
     //获取首页大图轮播
@@ -24,7 +26,7 @@ class IndexController extends ApiController
     //获取首页成交动态
     public function getTransList(Request $request)
     {
-        $trans_list = OrderInfoService::getOrderGoods([], 1, 4);
+        $trans_list = OrderInfoService::getOrderGoods([], 1, 3);
         return $this->success(['trans_list' => $trans_list['list']]);
     }
 
@@ -55,5 +57,7 @@ class IndexController extends ApiController
         $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
         return $this->success(['article_list' => $article_list['list']]);
     }
+
+
 
 }

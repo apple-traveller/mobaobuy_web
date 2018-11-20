@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'web.closed' => \App\Http\Middleware\WebClosed::class,
         'seller.auth' => \App\Http\Middleware\SellerAuthenticate::class,
         'api.auth' => \App\Http\Middleware\ApiAuthenticate::class,
+        'api.closed' => \App\Http\Middleware\ApiClosed::class,
     ];
 }

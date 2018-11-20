@@ -91,7 +91,7 @@ class ActivityController extends Controller
             'num' => $num,
             'min_limit' => $min_limit,
             'max_limit' => $max_limit,
-            $data['review_status'] = 1
+            'review_status' => 1
         ];
         if(empty($id)){
             $data['shop_id'] = $shop_info['id'];

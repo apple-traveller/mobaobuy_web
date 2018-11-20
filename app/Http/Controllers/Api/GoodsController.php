@@ -109,12 +109,23 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品id');
         }
         try{
-            $goodsList = GoodsService::productTrend($goodsId);
+            $goodsList = GoodsService::productTrendApi($goodsId);
             return $this->success($goodsList,'success');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
 
+    }
+
+    //保存关键词
+    public function saveHotKeyWords(Request $request)
+    {
+        $search_key = $request->input('search_key');
+        if(empty($search_key)){
+            return $this->error('关键字不能为空');
+        }
+        GoodsService::saveHotKeyWords($search_key);
+        return $this->success('','success');
     }
 
     //加入购物车
@@ -220,8 +231,12 @@ class GoodsController extends ApiController
             return $this->error('传入的数量必须为数字');
         }
         try{
-            GoodsService::editCartNum($id,$cartNum);
-            return $this->success('','success');
+            $flag = GoodsService::editCartNum($id,$cartNum);
+            if(empty($flag)){
+                return $this->error('购物车中没有此商品');
+            }else{
+                return $this->success($flag,'success');
+            }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -265,9 +280,10 @@ class GoodsController extends ApiController
         $cartIds = $request->input('cartId');
         $cartIds = explode(',',$cartIds);
         $userInfo = $this->getUserInfo($request);
+        //return $this->success(Cache::get('cartSession46'),'success');
         try{
             $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
-            //进入订单确认页面前先定义购物车session
+            //进入订单确认页面前先定义购物车缓存
             $cartCache = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $userInfo['address_id'],

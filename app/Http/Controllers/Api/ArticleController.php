@@ -41,6 +41,10 @@ class ArticleController extends ApiController
         }
 
         $goodsList= ArticleService::getArticleLists(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
+        foreach($goodsList['list'] as $k=>$v){
+            $goodsList['list'][$k]['image'] = getFileUrl($goodsList['list'][$k]['image']);
+        }
+
         return $this->success([
             'list'=>$goodsList['list'],
             'total'=>$goodsList['total'],
@@ -53,10 +57,17 @@ class ArticleController extends ApiController
     public function getDetail(Request $request)
     {
         $id = $request->input('id','');
+        if(empty($id)){
+            return $this->error('缺少参数，id');
+        }
         #更新点击量
         ArticleService::updateClick($id);
 
         $article = ArticleService::getInfo($id);
+        if(empty($article)){
+            return $this->error('该文章不存在');
+        }
+        $article['image'] = getFileUrl($article['image']);
 
         $cat_info = ArticleCatService::getInfo($article['cat_id']);
 
@@ -65,6 +76,5 @@ class ArticleController extends ApiController
 
         return $this->success(['cat'=>$cat_info,'page_data'=>$page_data,'article'=>$article],'success');
     }
-
 
 }

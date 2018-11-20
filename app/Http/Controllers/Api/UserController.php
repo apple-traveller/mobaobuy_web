@@ -6,6 +6,8 @@ use App\Services\UserService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Services\UserAddressService;
+use App\Services\UserRealService;
+use App\Services\UserAccountLogService;
 class UserController extends ApiController
 {
     //账号信息
@@ -30,6 +32,28 @@ class UserController extends ApiController
             $address_info = [];
         }
         return $this->success(['data'=>$address_info,'is_default'=>$is_default],'success');
+    }
+
+    //修改默认地址
+    public function updateDefaultAddress(Request $request)
+    {
+        $address_id = $request->input('address_id','');
+        if (empty($address_id)){
+            return $this->error('参数错误');
+        }
+        $userInfo  = $this->getUserInfo($request);
+        $data = [
+            'id'=>$userInfo['id'],
+            'address_id' =>$address_id
+        ];
+
+        $re = UserService::updateDefaultAddress($data);
+        if ($re){
+            Cache::forget('_api_user_'.$userInfo['id']);
+            return $this->success('','修改成功');
+        } else {
+            return $this->error('修改失败');
+        }
     }
 
     //收货地址列表
@@ -189,6 +213,118 @@ class UserController extends ApiController
         }
     }
 
-    //实名认证
+    //注销账号
+    public function accountLogout(Request $request)
+    {
+        $uuid = $request->input('token');
+        $userInfo = $this->getUserInfo($request);
+        //检测用户是否已经企业认证
+        $realInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        //已经实名认证的企业用户不能注销账号
+        if($realInfo && $realInfo['review_status'] == 1 && $realInfo['is_firm'] == 1){
+            return $this->error('已经实名认证的企业用户不能注销账号');
+        }
+        $user_data = [
+            'user_name'=>$userInfo['user_name'].'_'.time().'_logout',
+            'is_freeze'=>1
+        ];
+        $res = UserService::modify($userInfo['id'],$user_data);
+        if($res){
+            Cache::forget($uuid);
+            Cache::forget('_api_user_'.$userInfo['id']);
+            Cache::forget('_api_deputy_user_'.$userInfo['id']);
+            return $this->success('注销成功！');
+        }else{
+            return $this->error('注销失败！请联系管理员。');
+        }
+    }
+
+    //查看积分
+    public function viewPoint(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        $condition['user_id']=$user_id;
+        $pageSize = $request->input('pagesize',10);
+        $currpage = $request->input("currpage",1);
+        //积分列表
+        $user_account_logs = UserAccountLogService::getInfoByUserId(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['change_time'=>'desc']],$condition);
+        return $this->success([
+            'user_account_logs'=>$user_account_logs['list'],
+            'total'=>$user_account_logs['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+            'totalPoints'=>$this->getUserInfo($request)['points']
+        ],'success');
+    }
+
+    //实名信息
+    public function viewRealInfo(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        $user_name = $this->getUserInfo($request)['user_name'];
+        $is_firm = $this->getUserInfo($request)['is_firm'];
+        $user_real = UserRealService::getInfoByUserId($user_id);
+        if(empty($user_real)){
+            return $this->error('没有实名信息');
+        }else{
+            return $this->success([
+                'user_name'=>$user_name,
+                'is_firm'=>$is_firm,
+                'user_real'=>$user_real,
+                'user_id'=>$user_id
+            ],'json');
+        }
+    }
+
+    //保存实名信息
+    public function saveUserReal(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        $data = $request->all();
+        //is_self 1是个人提交  2是企业
+        $is_self = $request->input('is_self');
+        $dataArr = $data['jsonData'];
+        if($is_self == 1){
+            if(empty($dataArr['real_name'])){
+                return $this->error('请输入真实姓名');
+            }
+            if(empty($dataArr['front_of_id_card'])){
+                return $this->error('请上传身份证正面');
+            }
+            if(empty($dataArr['reverse_of_id_card'])){
+                return $this->error('请上传身份证反面');
+            }
+        }elseif($is_self == 2){
+            if(empty($dataArr['real_name_firm'])){
+                return $this->error("请输入企业全称");
+            }
+
+            if(empty($dataArr['attorney_letter_fileImg'])){
+                return $this->error("请上传授权电子版");
+            }
+
+            if(empty($dataArr['invoice_fileImg'])){
+                return $this->error("请上传开票电子版");
+            }
+
+            if(empty($dataArr['license_fileImg'])){
+                return $this->error("请输入营业执照电子版");
+            }
+        }else{
+            return $this->error('非法操作');
+        }
+
+        try{
+            $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
+            if($flag){
+                return $this->success("","保存成功");
+            }
+            return $this->error("保存失败");
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
 
 }

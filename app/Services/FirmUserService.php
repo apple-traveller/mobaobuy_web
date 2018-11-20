@@ -101,6 +101,10 @@ class FirmUserService
                 self::throwBizError('企业用户已绑定!');
             }
 
+            if($userInfo['is_firm'] == 1){
+                self::throwBizError('企业账户不能被添加!');
+            }
+
             $userPermi['firm_id'] = $firmId;
             $userPermi['user_id'] = $userInfo['id'];
             $userPermi['real_name'] = $userName;
