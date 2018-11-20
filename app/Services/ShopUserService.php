@@ -95,4 +95,14 @@ class ShopUserService
         return 3;
     }
 
+    /**
+     * 获取职员
+     * @param $condition
+     * @return array
+     */
+    public static function getUserByField($condition)
+    {
+        return ShopUserRepo::getInfoByFields($condition);
+    }
+
 }

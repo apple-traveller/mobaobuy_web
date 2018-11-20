@@ -4,6 +4,9 @@
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
         }
+        .ui-area .area-warp {
+            width: 278px !important;
+        }
     </style>
 @endsection
 @section('body')

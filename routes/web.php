@@ -466,6 +466,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::get('/register.html', 'LoginController@register');
     Route::post('/register', 'LoginController@register');
     Route::post('/getSmsCode', 'LoginController@getSmsCode');
+    Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {

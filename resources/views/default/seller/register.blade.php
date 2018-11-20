@@ -26,7 +26,7 @@
             </a>
         </div>
 
-        <div class="go-login">已有账号，可 <a href="seller/login.html" style="color:#36a3ef">直接登录</a></div>
+        <div class="go-login">已有账号，可 <a href="/seller/login.html" style="color:#36a3ef">直接登录</a></div>
     </div>
 </div>
 <div class="clearfix" style="height: 35px;"></div>
