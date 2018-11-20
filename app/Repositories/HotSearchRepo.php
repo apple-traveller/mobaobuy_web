@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-class ArticleRepo
+class HotSearchRepo
 {
     use CommonRepo;
 }

@@ -590,6 +590,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/cart/check_listen_cart_input','GoodsController@checkListenCartInput');//购物车判断数量
             Route::post('/cart/to_balance','GoodsController@toBalance');//购物车去结算
 
+            Route::post('/order/change_deputy','OrderController@changeDeputy');//切换代理
+            Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理
         });
 
 });

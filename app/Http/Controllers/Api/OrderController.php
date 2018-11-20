@@ -25,7 +25,7 @@ class OrderController extends ApiController
                 'firm_id'=> $this->getUserID($request),
                 'name' => $this->getUserInfo($request)['nick_name']
             ];
-            Cache::put("_api_curr_deputy_user".$this->getUserID($request), $info, 60*24*1);
+            Cache::put("_api_deputy_user_".$this->getUserID($request), $info, 60*24*1);
             return $this->success($info,'success');
         }else{
             //获取用户所代表的公司
@@ -37,16 +37,32 @@ class OrderController extends ApiController
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
-                    Cache::put("_api_curr_deputy_user".$user_id, $firm, 60*24*1);
+                    Cache::put("_api_deputy_user_".$user_id, $firm, 60*24*1);
                     return $this->success($firm,'success');
                 }
             }
-
             //找不到，清空session
             Cache::forget('_api_user_'.$user_id);
-            Cache::forget('_api_curr_deputy_user'.$user_id);
+            Cache::forget('_api_deputy_user_'.$user_id);
             return $this->success('','success');
         }
     }
+
+    //获取当前用户所代理的所有公司
+    public function getUserFirmList(Request $request)
+    {
+        $user_id = $this->getUserID($request);
+        if($user_id){
+            $user_info = $user_info = UserService::getInfo($user_id);
+            if(!$user_info['is_firm']){
+                $user_info['firms'] = UserService::getUserFirms($user_id);
+            }
+            return $this->success($user_info,'success');
+        }else{
+            return $this->error('error');
+        }
+    }
+
+
 
 }

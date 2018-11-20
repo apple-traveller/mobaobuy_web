@@ -14,9 +14,7 @@ use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
-use App\Repositories\ShopGoodsRepo;
-use Illuminate\Http\Request;
-
+use App\Repositories\HotSearchRepo;
 class GoodsService
 {
     use CommonService;
@@ -59,6 +57,23 @@ class GoodsService
     public static function getGoodInfo($id)
     {
         return GoodsRepo::getInfo($id);
+    }
+
+    //保存关键词
+    public static function saveHotKeyWords($search_key)
+    {
+        //根据$search_key查询数据库中有没有这个关键字，如果有就是修改search_num，没有就保存
+        $hot_search = HotSearchRepo::getInfoByFields(['search_key'=>$search_key]);
+        try{
+            if(empty($hot_search)){
+                return HotSearchRepo::create(['search_key'=>$search_key]);
+            }else{
+                return HotSearchRepo::modify($hot_search['id'],['search_num'=>$hot_search['search_num']+1]);
+            }
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //获取所有的单位列表
@@ -353,6 +368,27 @@ class GoodsService
         $price = [];
         foreach($goodsList as $k=>$v){
             $time[] = substr($v['add_time'],0,10);
+            $price[] = $v['shop_price'];
+        }
+        $data['time'] = $time;
+        $data['price'] = $price;
+        return $data;
+    }
+
+    public static function productTrendApi($goodsId){
+        $goodsInfo = GoodsRepo::getInfo($goodsId);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息有误');
+        }
+        //$goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
+        $goodsList = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>7, 'page'=>1, 'orderType'=>['id'=>'desc']],['goods_id'=>$goodsId]);
+        if(empty($goodsList)){
+            return [];
+        }
+        $time = [];
+        $price = [];
+        foreach($goodsList['list'] as $k=>$v){
+            $time[] = substr(substr($v['add_time'],0,10),-5);//取时间的月份和天数
             $price[] = $v['shop_price'];
         }
         $data['time'] = $time;
