@@ -176,4 +176,51 @@ class ActivityWholesaleService
         }
         return $goodsInfo;
     }
+
+    //集采拼团 立即下单
+    public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
+        $goodsInfo = GoodsRepo::getInfo($goodsId);
+        $activityInfo = ActivityWholesaleRepo::getInfo($activityId);
+
+        //先判断活动有效期
+        if(strtotime($activityInfo['end_time']) < time()){
+            self::throwBizError('该活动已结束！');
+        }
+        //规格判断处理
+//        if($goodsNum > $activityInfo['available_quantity']){
+//            self::throwBizError('超出当前可售数量');
+//        }
+        if($goodsNum < $activityInfo['min_limit']){
+            self::throwBizError('不能低于起售数量');
+        }
+
+        if($goodsNum % $goodsInfo['packing_spec'] == 0){
+            $goodsNumber = $goodsNum;
+        }else{
+            if($goodsNum > $goodsInfo['packing_spec']){
+                $yuNumber = $goodsNum % $goodsInfo['packing_spec'];
+                $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
+                $goodsNumber = $goodsNum + $dNumber;
+            }else{
+                $goodsNumber = $goodsInfo['packing_spec'];
+            }
+        }
+
+        //商品信息
+        $activityInfo['num'] = $goodsNumber;
+        $activityInfo['amount'] = $goodsNumber * $activityInfo['price'];
+        $activityInfo['deposit'] = $goodsNumber * $activityInfo['price'] * $activityInfo['deposit_ratio'] / 100;//订金金额
+        $activityArr = [];
+        $activityArr[] = $activityInfo;
+        return $activityArr;
+    }
+
+    //通过id查集采表数据
+    public static function getActivityWholesaleById($id){
+        $id = decrypt($id);
+        $activityPromoteInfo = ActivityWholesaleRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
 }

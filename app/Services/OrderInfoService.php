@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
+use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\CartRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -644,11 +645,23 @@ class OrderInfoService
                     $order_status = 3;
                     $promote = 'promote';
                     $extension_id = $cartInfo_session[0]['id'];
+                    $deposit_status = 1;
+                    $deposit = 0;
+//                    $pay_type =  1;
+                    break;
+                case 'wholesale'://集采拼团
+                    $order_status = 2;
+                    $promote = 'wholesale';
+                    $extension_id = $cartInfo_session[0]['id'];
+                    $deposit_status = 0;
+                    $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
                 default://正常下单
                     $promote = '';
                     $extension_id = '';
+                    $deposit_status = 1;
+                    $deposit = 0;
 //                    $pay_type = $payType;
                     if(!$userId['firm_id']){
                         $order_status = 2;
@@ -675,6 +688,9 @@ class OrderInfoService
                 'postscript'=>$words?$words:'',
                 'extension_code'=>$promote,
                 'extension_id'=>$extension_id,
+                'deposit_status'=>$deposit_status,
+                'deposit'=>$deposit,
+
 //                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
@@ -726,6 +742,26 @@ class OrderInfoService
                     $goods_amount += $v['goods_number'] * $v['goods_price'];
                     //减去活动库存
                     ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['available_quantity'] - $v['goods_number']]);
+                }elseif($type == 'wholesale'){
+                    //集采拼团生产订单
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($id);
+                    if(empty($activityWholesaleInfo)){
+                        self::throwBizError('商品不存在！');
+                    }
+                    $orderGoods = [
+                        'order_id'=>$orderInfoResult['id'],
+                        'goods_id'=>$v['goods_id'],
+                        'goods_name'=>$v['goods_name'],
+                        'shop_goods_quote_id'=>$activityWholesaleInfo['id'],
+//                        'goods_sn'=>$cartInfo['goods_sn'],
+                        'goods_number'=>$v['num'],
+                        'goods_price'=>$v['price'],
+                        'add_time' => Carbon::now()
+                    ];
+                    OrderGoodsRepo::create($orderGoods);
+                    $goods_amount += $v['num'] * $v['price'];
+                    //增加已参与数量
+                    ActivityWholesaleRepo::modify($id,['partake_quantity'=>$activityWholesaleInfo['partake_quantity'] - $v['num']]);
                 }
             }
             //更新订单总金额

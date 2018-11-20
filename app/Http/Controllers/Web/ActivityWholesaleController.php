@@ -36,23 +36,23 @@ class ActivityWholesaleController extends Controller
 
     }
 
-    //抢购详情 立即下单
-    public function buyLimitToBalance(Request $request){
+    //集采拼团 立即下单
+    public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
         $userInfo = session('_web_user');
 
-        if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
-            return $this->error('抢购只能是企业用户下单');
-        }
-        if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
-            if(!session('_curr_deputy_user')['can_po']){
-                return $this->error('您没有权限为该企业下单');
-            }
-        }
+//        if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
+//            return $this->error('抢购只能是企业用户下单');
+//        }
+//        if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
+//            if(!session('_curr_deputy_user')['can_po']){
+//                return $this->error('您没有权限为该企业下单');
+//            }
+//        }
         try{
-            $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
+            $activityInfo = ActivityWholesaleService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
             if($userInfo['address_id']){
                 $address_id = $userInfo['address_id'];
@@ -63,7 +63,7 @@ class ActivityWholesaleController extends Controller
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
-                'from'=>'promote'
+                'from'=>'wholesale'
             ];
             session()->put('cartSession',$session_data);
             return $this->success('','',$activityInfo);
