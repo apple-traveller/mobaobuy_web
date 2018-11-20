@@ -11,7 +11,7 @@ class LoginController extends ApiController
     //用户注册
     public function register(Request $request){
         $accountName = $request->input('accountName', '');
-        $password = base64_decode($request->input('password', ''));
+        $password = $request->input('password', '');
         $messCode = $request->input('messCode', '');
         $type = 'sms_signup';
 
@@ -82,7 +82,8 @@ class LoginController extends ApiController
     public function bindThird(Request $request)
     {
         $username = $request->input('user_name');
-        $password = base64_decode($request->input('password'));
+        //$password = base64_decode($request->input('password'));
+        $password = $request->input('password');
         $openid = $request->input('openid');
         $nick_name = $request->input('nick_name');
         $avatar = $request->input('avatar');
@@ -114,8 +115,8 @@ class LoginController extends ApiController
     public function createThird(Request $request)
     {
         $username = $request->input('user_name');
-        $password = base64_decode($request->input('password'));
-
+        //$password = base64_decode($request->input('password'));
+        $password = $request->input('password');
         $openid = $request->input('openid');
         $nick_name = $request->input('nick_name');
         $avatar = $request->input('avatar');
@@ -141,24 +142,19 @@ class LoginController extends ApiController
     //忘记密码
     public function updatePass(Request $request)
     {
-
-        $password = $request->input('password', '');
         $accountName = $request->input('accountName', '');
+        //$password = base64_decode($request->input('password', ''));
+        $password = $request->input('password', '');
         $messCode = $request->input('messCode', '');
-        $id = $request->input('id');
         $type = 'sms_find_signin';
-        if(empty($messCode)){
-            return $this->error('验证码不能为空');
-        }
-        if(empty($password)){
-            return $this->error('密码不能为空');
-        }
+
         //手机验证码是否正确
         if(Cache::get($type.$accountName) != $messCode){
-            return $this->error('验证码有误');
+            return $this->error('手机验证码不正确');
         }
+
         try{
-            UserService::userUpdatePwd($id, ['newPassword' => $password]);
+            UserService::userFindPwd($accountName, $password);
             return $this->success('','修改密码成功');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
@@ -195,6 +191,17 @@ class LoginController extends ApiController
         Cache::put($type.$accountName, $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
         return $this->success('','success');
+    }
+
+    //登出
+    public function logout(Request $request)
+    {
+        $uuid = $request->input('token');
+        $userid = $this->getUserID($request);
+        Cache::forget($uuid);
+        Cache::forget('_api_user_'.$userid);
+        Cache::forget('_api_deputy_user_'.$userid);
+        return $this->success('','退出登录成功！');
     }
 
 

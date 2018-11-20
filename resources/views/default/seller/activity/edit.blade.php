@@ -11,7 +11,6 @@
         .pur_volume{float:left;border: 1px solid #DEDEDE; box-sizing:border-box;}
         .pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
         .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
-
     </style>
 @endsection
 @section('body')
@@ -68,6 +67,7 @@
                                 </div>
                                 <div class="layui-input-inline">
                                     <input type="text" style="width:159px" class="layui-input"  name="end_time" id="end_time" @if(!empty($promote_info)) value="{{$promote_info['end_time'][1]}}" @endif>
+
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>

@@ -28,6 +28,8 @@
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+
+
                         <div class="switch_info" style="display: block;">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
@@ -299,6 +301,7 @@
                         $(".query_store_name").show();
                         $(".query_store_name").append('<option  style="cursor:pointer;">该分类下没有查询到商品</option>');
                     }
+                    $(".query_store_name").append(_html);
                 }
             })
         });
