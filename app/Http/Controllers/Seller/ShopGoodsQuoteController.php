@@ -34,6 +34,7 @@ class ShopGoodsQuoteController extends Controller
         if ($goods_name){
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
+        $condition['type'] = '1|2';
         $pageSize =5;
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
