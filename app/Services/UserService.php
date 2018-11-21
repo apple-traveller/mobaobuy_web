@@ -196,7 +196,9 @@ class UserService
             foreach($firm_list as &$item){
                 $firm_info = UserRepo::getInfo($item['firm_id']);
                 $item['firm_name'] = $firm_info['nick_name'];
+                $item['address_id'] = $firm_info['address_id'];
             }
+            unset($item);
             return $firm_list;
         }
         return [];
