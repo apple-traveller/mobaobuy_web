@@ -84,7 +84,7 @@ class ShopGoodsQuoteRepo
         }
         return [];
     }
-    //根据条件获取报价列表
+    //根据条件获取报价列表 分页
     public static function getQuoteInfoBySearch($pager,$condition)
     {
         $clazz_name = self::getBaseModel();
@@ -129,6 +129,27 @@ class ShopGoodsQuoteRepo
         $rs['pageSize'] = $page_size;
         $rs['totalPage'] = ceil($rs['total'] / $page_size);
         return $rs;
+    }
+    //根据条件获取报价列表 不分页
+    public static function getQuoteInfoByFields($order,$condition)
+    {
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name');
+
+        $query = self::setCondition($query, $condition);
+
+        //处理排序
+        if (isset($order) && !empty($order)) {
+            foreach ($order as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+        $res = $query->get()->toArray();
+        return \App\Helpers\object_array($res);
     }
 
     //获取随机报价

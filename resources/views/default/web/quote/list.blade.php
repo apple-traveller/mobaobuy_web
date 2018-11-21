@@ -117,7 +117,10 @@
 				<dl class="fl filter_item"><dt class="fl">地区:</dt>
 					<dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
 						@foreach($search_data['filter']['city_list'] as $vo)
-						    <label class=" check_box region"><input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/><span  class="fl">{{$vo['region_name']}}</span></label>
+						    <label class=" check_box region">
+                                <input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/>
+                                <span  class="fl">{{$vo['region_name']}}</span>
+                            </label>
 						@endforeach
 					</dd>
 					<div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
@@ -180,7 +183,13 @@
                         <span>{{$vo['shop_price']}}</span>
                         <span>{{$vo['delivery_place']}}</span>
                         <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
-                        <span style="width:9%">@if($vo['goods_number'])<button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>@else已售完 @endif</span>
+                        <span style="width:9%">
+                            @if($vo['goods_number'])
+                                <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                            @else
+                                已售完
+                            @endif
+                        </span>
                     </li>
                 @endforeach
             @else
@@ -192,7 +201,7 @@
 			<ul id="page" class="pagination"></ul>
 		</div>
 	</div>
-	</div>
+    </div>
 @endsection
 
 @section('bottom_js')

@@ -83,6 +83,38 @@ class GoodsController extends ApiController
         }
     }
 
+    //按商品名称查询报价
+    public function search(Request $request)
+    {
+        $goods_name = $request->input('goods_name');
+        $pageSize = $request->input('pageSize',10);
+        $currpage = $request->input('currpage',1);
+        $condition = [];
+        if(!empty($goods_name)){
+            $condition['goods_name'] = "%".$goods_name."%";
+        }
+        $goodsQuoteList= ShopGoodsQuoteService::getShopGoodsQuoteListByAjax(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->success($goodsQuoteList['list'],'success');
+    }
+
+    //查询商品名称列表
+    public function searchGoodsname(Request $request)
+    {
+        $goods_name = $request->input('goods_name');
+        $pageSize = $request->input('pageSize',10);
+        $currpage = $request->input('currpage',1);
+        $condition = [];
+        if(!empty($goods_name)){
+            $condition['goods_name'] = "%".$goods_name."%";
+        }
+        $arr = [];
+        $goodsList = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        foreach($goodsList['list'] as $k=>$v){
+            $arr[] = $goodsList['list'][$k]['goods_name'];
+        }
+        return $this->success($arr,'success');
+    }
+
     //获取所有的分类
     public function getCates(Request $request)
     {
@@ -98,7 +130,14 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品报价id');
         }
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        return $this->success($good_info,'success');
+        $goods_id = $good_info['goods_id'];
+        $shop_id = $good_info['shop_id'];
+        $condition = [
+            'goods_id'=>$good_info['goods_id'],
+            'shop_id'=>$good_info['shop_id']
+        ];
+        $goods_quote_list = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->success(['good_info'=>$good_info,'goods_quote_list'=>$goods_quote_list['list'],],'success');
     }
 
     //价格走势图
@@ -146,8 +185,8 @@ class GoodsController extends ApiController
         }
 
         //报价表添加到购物车.
-        $id = $request->input('id');
-        $number = $request->input('number');
+        $id = (int)$request->input('id');
+        $number = (int)$request->input('number');
         try{
             GoodsService::searchGoodsQuote($userId,$id,$number);
             $count = GoodsService::getCartCount($userId);
@@ -161,13 +200,16 @@ class GoodsController extends ApiController
     //购物车列表
     public function getCartList(Request $request)
     {
-        $userId = $request->input('userid');
-        if (empty($userId)){
-            return $this->error('缺少参数，userid');
-        }
+        $userId = $this->getUserID($request);
         try{
             $cartInfo = GoodsService::cart($userId);
-            return $this->success(compact('cartInfo'));
+            foreach($cartInfo['cartInfo'] as $k=>$v){
+                $cartInfo['cartInfo'][$k]['inventory'] = $cartInfo['quoteInfo'][$k]['goods_number'];
+                $cartInfo['cartInfo'][$k]['account'] = $cartInfo['quoteInfo'][$k]['account'];
+                $cartInfo['cartInfo'][$k]['delivery_place'] = $cartInfo['quoteInfo'][$k]['delivery_place'];
+            }
+            //dd($cartInfo['cartInfo']);
+            return $this->success($cartInfo['cartInfo']);
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -295,13 +337,5 @@ class GoodsController extends ApiController
             return $this->error($e->getMessage());
         }
     }
-
-
-
-
-
-
-
-
 
 }

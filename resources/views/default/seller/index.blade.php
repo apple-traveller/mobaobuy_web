@@ -1,5 +1,5 @@
 @extends(themePath('.')."seller.include.layouts.master")
-@section('title','沫宝商户')
+@section('title','秣宝商户')
 @section('styles')
     <style>
         #main{
