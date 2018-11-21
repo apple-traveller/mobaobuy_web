@@ -484,11 +484,13 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/store/save', 'ShopStoreController@save');// 保存
         Route::post('/store/delete', 'ShopStoreController@delete');// 删除
 
-        Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
-        Route::get('/shopUser/add', 'ShopUserController@add');// 添加
-        Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
-        Route::post('/shopUser/save', 'ShopUserController@save');// 保存
-        Route::post('/shopUser/delete', 'ShopUserController@delete');// 删除
+
+        /************************职员维护********************************/
+//        Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
+//        Route::get('/shopUser/add', 'ShopUserController@add');// 添加
+//        Route::get('/shopUser/edit', 'ShopUserController@edit');// 修改
+//        Route::post('/shopUser/save', 'ShopUserController@save');// 保存
+//        Route::post('/shopUser/delete', 'ShopUserController@delete');// 删除
 
         Route::get('/goods/list', 'ShopGoodsController@getList');// 商户商品操作
 //        Route::get('/goods/add', 'ShopGoodsController@add');
@@ -527,12 +529,15 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');  // 更改订单状态
         Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno'); // 修改订单号
 
-        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
-        Route::get('/seckill/add', 'SeckillController@addForm'); // 添加
-        Route::post('/seckill/save', 'SeckillController@save'); //  保存
-        Route::post('/seckill/delete', 'SeckillController@delete'); // 删除
-        Route::get('/seckill/goods_list', 'SeckillController@goods_list'); // 为添加秒杀商品提供页面
-        Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
+
+        /************************秒杀********************************/
+//        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
+//        Route::get('/seckill/add', 'SeckillController@addForm'); // 添加
+//        Route::post('/seckill/save', 'SeckillController@save'); //  保存
+//        Route::post('/seckill/delete', 'SeckillController@delete'); // 删除
+//        Route::get('/seckill/goods_list', 'SeckillController@goods_list'); // 为添加秒杀商品提供页面
+//        Route::get('/seckill/list_detail', 'SeckillController@list_detail'); // 列表详情
+        /*****************************结尾**********************************/
 
         Route::get('/activity/promoter', 'ActivityController@promoter'); // 优惠活动
         Route::get('/activity/addPromoter', 'ActivityController@addPromoter'); // 添加 编辑 页面

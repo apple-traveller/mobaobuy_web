@@ -91,7 +91,7 @@
 
                                     {{--<dt>付款方式：@if($orderInfo['pay_type']==1) 先款后货 @elseif($orderInfo['pay_type']==2) 货到付款 @endif</dt>--}}
                                     <dt>付款方式：
-                                                <select name="modules" lay-verify="required" style="width: 200px;padding: 2px 0" @if($orderInfo['order_status']>=3) disabled @endif>
+                                                <select name="modules" lay-verify="required" style="width: 100px;padding: 2px 0" @if($orderInfo['order_status']>=3) disabled @endif>
                                                     <option value="1" @if($orderInfo['pay_type']==1) selected @endif>先款后货</option>
                                                     <option value="2" @if($orderInfo['pay_type']==2) selected @endif>货到付款</option>
                                                 </select>
@@ -124,7 +124,7 @@
 
                                 </dl>
                                 <dl style="width:50%">
-                                    <dt>收货地址：[{{$region}}] 详细地址：{{$orderInfo['address']}}</dt>
+                                    <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
 
                                     <dt>邮政编码：{{$orderInfo['zipcode']}}</dt>
 
@@ -134,31 +134,31 @@
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
-                            <div class="step_title"><i class="ui-step"></i><h3>其他信息<a href="/seller/order/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currentPage={{$currentPage}}&id={{$orderInfo['id']}}"><i class="icon icon-edit"></i></a></h3></div>
-                            <div class="section">
-                                <dl>
-                                    <dt>发票抬头：{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}</dt>
-                                    <dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>
-                                </dl>
+                            <div class="step_title"><i class="ui-step"></i><h3>其他信息</h3></div>
+                            {{--<div class="section">--}}
+                                {{--<dl>--}}
+                                    {{--<dt>发票抬头：--}}{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}{{--</dt>--}}
+                                    {{--<dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>--}}
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>
+                                {{--<dl>--}}
+                                    {{--<dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>--}}
 
-                                    <dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>
+                                    {{--<dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>--}}
 
-                                </dl>
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>
+                                {{--<dl>--}}
+                                    {{--<dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>--}}
 
-                                    <dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>
+                                    {{--<dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>--}}
 
-                                </dl>
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>
-                                    <dt></dt>
-                                </dl>
+                                {{--<dl>--}}
+                                    {{--<dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>--}}
+                                    {{--<dt></dt>--}}
+                                {{--</dl>--}}
 
                                 <dl style="width:30.6%">
                                     <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
@@ -253,7 +253,7 @@
                                             <div class="order_operation_btn">
                                                 @if($orderInfo['order_status'] == 2)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
-                                                <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
+                                                <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
                                                 @elseif($orderInfo['order_status'] == 1)
                                                     <input type="button" value="待买家审核" class="btn btn25 red_btn">
                                                 @else
@@ -287,7 +287,7 @@
                                                 <td>{{$vo['action_user']}}</td>
                                                 <td>{{$vo['log_time']}}</td>
                                                 <td>
-                                                    @if($vo['order_status']==0)已作废
+                                                    @if($vo['order_status']==0)已取消
                                                     @elseif($vo['order_status']==1)待企业审核
                                                     @elseif($vo['order_status']==2)待商家确认
                                                     @else已确认
@@ -417,7 +417,7 @@
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
-                            'id':66,
+                            'id':id,
                             'to_buyer':to_buyer,
                             'order_status': 0
                         },
