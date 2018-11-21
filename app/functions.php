@@ -207,4 +207,22 @@ if (!function_exists('getHotSearch')){
     }
 }
 
+if (!function_exists('getOrderFromText')){
+    function getOrderFromText($code){
+        $res = '购物车下单';
+        switch ($code){
+            case 'promote' : $res = '限时抢购活动';
+                break;
+            case 'wholesale' : $res = '集采拼团活动';
+                break;
+            case 'consign' : $res = '清仓特价活动';
+                break;
+            default:
+
+        }
+        return $res;
+    }
+}
+
+
 

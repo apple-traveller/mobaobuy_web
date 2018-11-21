@@ -38,6 +38,7 @@ class WebClosed
                     'is_firm' => session('_web_user')['is_firm'],
                     'firm_id'=> session('_web_user_id'),
                     'name' => session('_web_user')['nick_name'],
+                    'address_id' => session('_web_user')['address_id']
                 ];
 
                 session()->put('_curr_deputy_user', $info);

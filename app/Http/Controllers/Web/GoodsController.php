@@ -231,12 +231,7 @@ class GoodsController extends Controller
         try{
             $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            if($userInfo['address_id']){
-                $address_id = $userInfo['address_id'];
-            }else{
-                #取一条地址id
-                $address_id = UserService::getOneAddressId($userInfo['id']);
-            }
+            $address_id = UserAddressService::getOneAddressId();
             //进入订单确认页面前先定义购物车session
             $cartSession = [
                 'goods_list'=>$goods_list,

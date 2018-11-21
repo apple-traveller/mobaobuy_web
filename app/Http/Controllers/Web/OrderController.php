@@ -251,9 +251,15 @@ class OrderController extends Controller
             return $this->error('没有对应的商品');
         }
 
+        //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
+        if($info['is_self'] == 0 && $info['is_firm'] == 1){
+            $u_id = $info['firm_id'];
+        }else{
+            $u_id = $userInfo['id'];
+        }
 
         // 收货地址列表
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        $addressList = UserAddressService::getInfoByUserId($u_id);
         if (!empty($addressList)){
             foreach ($addressList as $k=>$v){
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
