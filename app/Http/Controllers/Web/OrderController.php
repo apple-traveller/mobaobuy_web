@@ -79,8 +79,7 @@ class OrderController extends Controller
             if($deputy_user['is_firm'] && $deputy_user['is_self'] == 0){
                 $status = OrderInfoService::getOrderStatusCount($deputy_user['user_id'], $deputy_user['firm_id']);
             }else{
-                $firm_id = $deputy_user['firm_id'];
-                $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], $firm_id);
+                $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], $deputy_user['firm_id']);
             }
         }else{
             $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);

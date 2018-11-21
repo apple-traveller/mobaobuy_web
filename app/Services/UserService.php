@@ -58,6 +58,11 @@ class UserService
         return true;
     }
 
+    //短信登陆
+    public static function loginByMessage($username,$messageCode){
+
+    }
+
     //用户注册
     public static function userRegister($data)
     {
@@ -460,18 +465,18 @@ class UserService
     }
 
     //会员中心首页
-    public static function userMember($userId){
+    public static function userMember($userId,$firmId){
         //
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
         //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0']);
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
         //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status|>'=>0]);
         //
-        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0]);
 
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
