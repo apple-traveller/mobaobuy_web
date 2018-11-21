@@ -212,7 +212,7 @@
 
 		@endif
 	@endif
-		
+
 
 	<div class="address whitebg ovh mt20 ">
 		<h1 class="ml30 fs18 mt30">收货地址</h1>
@@ -236,12 +236,12 @@
 			@endforeach
 		</ul>
 			@else
-				<div class="ml300 ">
+				<div class="ml300 " style="margin-bottom: 25px;">
 					暂无地址信息 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
 				</div>
 			@endif
 	</div>
-	
+
 	{{--@if(session('cartSession')['from'] != 'promote')--}}
 		{{--<div class="address whitebg ovh mt20 ">--}}
 		{{--<h1 class="ml30 fs18 mt30">付款方式</h1>--}}
