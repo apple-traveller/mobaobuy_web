@@ -562,8 +562,16 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
         Route::post('/goods/list', 'GoodsController@getList');//商品报价列表
         Route::post('/goods/detail', 'GoodsController@detail');//商品详情
+        Route::post('/goods/search', 'GoodsController@search');//商品名称模糊查询报价信息
+        Route::post('/goods/search_goodsname', 'GoodsController@searchGoodsname');//商品名称模糊查询报价信息
         Route::post('/goods/ajaxcharts','GoodsController@productTrend');//价格走势图
         Route::post('/article/hot_keywords', 'GoodsController@saveHotKeyWords');//保存关键词
+
+        Route::get('/buyLimit/list', 'ActivityPromoteController@buyLimit');//限时抢购
+        Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
+        Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+        Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
+        Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
         Route::post('/article/list', 'ArticleController@getList');//获取咨询列表
         Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
@@ -603,6 +611,19 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
 
             Route::post('/order/change_deputy','OrderController@changeDeputy');//切换代理
             Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理
+            Route::post('/order/list','OrderController@orderList');//我的订单
+            Route::post('/order/detail','OrderController@orderDetails');//订单详情
+            Route::post('/order/status','OrderController@orderStatusCount');//各个状态的订单数量
+            Route::post('/order/del','OrderController@orderDel');//删除订单
+            Route::post('/order/order_cancel','OrderController@orderCancel');//订单取消
+            Route::post('/order/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
+            Route::post('/order/egis','OrderController@egis');//企业用户审核订单
+
+            Route::group(['middleware'=>'api.firmUserAuth'],function(){
+                Route::post('/order/confirmOrder','OrderController@confirmOrder');//确认订单页面
+                Route::post('/order/createOrder','OrderController@createOrder');//提交订单
+
+            });
         });
 
 });

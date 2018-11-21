@@ -675,7 +675,6 @@ class OrderInfoService
                 'postscript'=>$words?$words:'',
                 'extension_code'=>$promote,
                 'extension_id'=>$extension_id,
-//                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 

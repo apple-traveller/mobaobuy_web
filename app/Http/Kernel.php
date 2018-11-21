@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'seller.auth' => \App\Http\Middleware\SellerAuthenticate::class,
         'api.auth' => \App\Http\Middleware\ApiAuthenticate::class,
         'api.closed' => \App\Http\Middleware\ApiClosed::class,
+        'api.firmUserAuth' => \App\Http\Middleware\ApiFirmUserAuth::class,
     ];
 }
