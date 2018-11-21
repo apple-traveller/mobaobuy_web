@@ -106,7 +106,7 @@ class ShopGoodsQuoteController extends Controller
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
         }
-        if(!$store_id && !$store_name){
+        if(!$store_name || !$store_id){
             return $this->error('店铺不能为空');
         }
         if($store_id == 0 && $store_name == '自营' && empty($type)){
@@ -139,16 +139,12 @@ class ShopGoodsQuoteController extends Controller
             return $this->error('qq不能为空');
         }
 
-        $shop_name = ShopService::getShopById($shop_id)['shop_name'];
-
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
-            'store_name' => $store_name,
-            'shop_name' => $shop_name,
             'shop_id' => $shop_id,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
@@ -164,6 +160,16 @@ class ShopGoodsQuoteController extends Controller
             'QQ' => $qq,
             'type' => $type,
         ];
+
+        if ($store_id==0){
+            $data['is_self_run'] = 1;
+            $data['type'] = 1;
+            $data['store_name'] = $company_name;
+        } else {
+            $data['is_self_run'] = 0;
+            $data['type'] = 2;
+            $data['store_name'] = $store_name;
+        }
         try{
             if($id){
                 $data['id'] = $id;

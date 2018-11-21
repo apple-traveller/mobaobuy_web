@@ -317,7 +317,6 @@
                 async:false,
                 success:function(res){
                     let _select = "{{$goodsQuote['shop_store_id']}}";
-                    console.log(_select);
                     if(res.code==1){
                         var data = res.data;
                         if (_select == 0){

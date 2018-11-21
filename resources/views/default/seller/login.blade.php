@@ -7,6 +7,9 @@
     <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
     {{--<script src="{{asset(themePath('/').'layui/seller_login/fai.min.js')}}" ></script>--}}
     <script src="{{asset(themePath('/').'layui/layui.js')}}" ></script>
+    <script src="{{asset(themePath('/').'layui/layui.js')}}" ></script>
+    <script src="{{asset('js/jquery.base64.js')}}" ></script>
+    <script src="{{asset('js/jquery.cookie.js')}}" ></script>
 </head>
 
 
@@ -143,16 +146,7 @@
     }
     var cacct = "";
     var sacct = "";
-    var Biz = {
-        NONE: 'none',		//未知
-        SITE: 'site',		//建站
-        HD: 'hd',			//互动
-        FLYER: 'flyer',		//微传单
-        WXAST: 'wxast',		//公众号助手
-        PROGRAM: 'program',	//小程序
-        KTU: 'ktu'	//小程序
-    };
-    var biz = Biz.NONE;
+
     $(function(){
         //存储wx，qq注册来源业务，用于扫码回调时注册业务、注册成功回调
         login.initEvent();
@@ -196,19 +190,6 @@
 
         showCode(false);
 
-
-
-        //IE(除了IE11)，底层的灰色提示标签会被触发focus，反而顶层输入框获取不到焦点，这里特殊处理转移焦点
-        //因为IE给元素设置了绝对定位和z-index，若顶层元素是透明而底层元素非透明，还是会默认底层非透明的元素在上层（可以给底层输入框加背景颜色试试就知，加了不做以下的焦点转移也可以正常获取焦点）
-//		if($.browser.msie){
-        if(Fai.isIE()){
-            $('.log-line .log-txt').click(function(){
-                $(this).siblings('.log-input').focus();
-            });
-        }
-        if ( Fai.isIE7() || Fai.isIE8()){	//IE7/8隐藏我们自定义的checkbox样式，会错位
-            $('.goin .checkItemLabel').hide();
-        }
 
         checkFocus( 'log-cacct' );
         checkFocus( 'log-pwd' );
@@ -523,7 +504,7 @@
                 if(loginModel == 'pwdLogin'){
                     params.type='pwdLogin';
                     params.user_name=cacct;
-                    params.password = window.btoa(pwd)
+                    params.password = $.base64.btoa(pwd);
                 }else{
                     params.type = 'smsCode';
                     params.loginMoile = loginMoile;
