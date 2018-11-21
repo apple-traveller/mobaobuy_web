@@ -123,7 +123,13 @@
                 },
                 "columns": [
                     {"data": "add_time", "bSortable": false},
-                    {"data": "goods_name", "bSortable": false},
+                    {"data": "id", "bSortable": false,
+                        "render":function (data,type,row,meta) {
+                        {{--return {{'"<script>"+row.goods_id+"</script>"'}};--}}
+                                return  {{encrypt('row.goods_id')}};
+                            {{--return '<a href="/goodsAttributeDetails/{{encrypt('+row.goods_id+')}}">'+row.goods_name+'</a>';--}}
+                        }
+                    },
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, row, meta) {
                             return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)" style="margin-left:50px;width:47%;">取消收藏</button>';
