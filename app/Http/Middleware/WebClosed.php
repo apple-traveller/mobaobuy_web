@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use Closure;
 use Illuminate\Support\Facades\View;
@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Controller;
 
-class WebClosed
+
+class WebClosed extends Controller
 {
     public function handle($request, Closure $next, $guard = null)
     {
@@ -22,15 +22,18 @@ class WebClosed
 
         if(!empty(session('_web_user_id'))){
             //缓存用户的基本信息
-            if(!session()->has('_web_user')){
+//            if(!session()->has('_web_user')){
                 $user_info = UserService::getInfo(session('_web_user_id'));
+                if($user_info['is_logout']){
+                    session()->forget('_web_user_id');
+                    return $this->error('权限已被更改，请重新登陆','/login');
+                }
                 if(!$user_info['is_firm']){
                     $user_info['firms'] = UserService::getUserFirms(session('_web_user_id'));
                 }
 
-
                 session()->put('_web_user', $user_info);
-            }
+//            }
 
             if(!session()->has('_curr_deputy_user')){
                 $info = [

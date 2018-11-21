@@ -238,7 +238,7 @@ class OrderController extends Controller
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
         if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能下单');
         }
