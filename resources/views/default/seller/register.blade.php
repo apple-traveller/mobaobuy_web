@@ -3,6 +3,7 @@
 <head>
     <title>商家入驻</title>
     @include(themePath('.','seller').'seller.include.partials.base')
+    <script src="{{asset('js/jquery.base64.js')}}" ></script>
         <style>
             .register-type li {
                 width: 236px;
@@ -46,34 +47,11 @@
                     <div class="input-tip"><label id="attorney_letter_error" class="error"></label></div>
                 </div>
                 <div class="item">
-                    <div class="item-libel">营业执照注册号</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="business_license_id" name="business_license_id" placeholder="请输入营业执照注册号" onblur="licenseValidate()" /></div>
-                    <div class="input-tip"><label id="business_license_error" class="error"></label></div>
-                </div>
-                <div class="item">
                     <div class="item-libel">营业执照副本电子版</div>
                     @component('widgets.upload_file',['upload_type'=>'firm_attorney','upload_path'=>'firm/license','name'=>'license_fileImg'])@endcomponent
                     <div class="input-tip"><label id="license_error" class="error"></label></div>
                 </div>
-                <div class="item">
-                    <div class="item-libel">纳税人识别号</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="taxpayer_id" name="taxpayer_id" placeholder="纳税人识别号" onblur="taxpayerValidate()" /></div>
-                    <div class="input-tip"><label id="taxpayer_error" class="error"></label></div>
-                </div>
 
-                <div class="item">
-                    <div class="item-libel">是否自营</div>
-                    <div class="item-info">
-                        <input type="radio"  name="is_self_run" value="1"/> 是
-                        <input type="radio"  name="is_self_run" value="0"/> 否
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="item-libel">负责人姓名</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="42" id="contactName" name="contactName" placeholder="店铺负责人姓名" onblur="contactNameValidate()" /></div>
-                    <div class="input-tip"><label id="contactName_error" class="error"></label></div>
-                </div>
                 <div class="item">
                     <div class="item-libel">负责人电话</div>
                     <div class="item-info"><input type="text" class="text" maxlength="11" id="contactPhone" name="contactPhone" placeholder="负责人电话" onblur="contactPhoneValidate()" /></div>
@@ -380,7 +358,7 @@
             shop_name: $("#shop_name").val(),
             companyName: $("#company_name").val(),
             contactName: $("#contactName").val(),
-            password: window.btoa($("#password").val()),
+            password: $.base64.btoa($("#password").val()),
             mobile: $("#contactPhone").val(),
             mobile_code: $("#messCode").val(),
             business_license_id: $("#business_license_id").val(),

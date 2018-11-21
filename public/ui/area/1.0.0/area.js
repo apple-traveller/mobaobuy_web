@@ -122,7 +122,7 @@ $(function() {
 
     });
 
-    $("body").on("mouseover mouseout", ".ui-area", function() {
+    $("body").on("mouseover mouseout", ".ui-area", function(event) {
         if(event.type == "mouseover"){
             $(this).addClass('hover');
         }else if(event.type == "mouseout"){
