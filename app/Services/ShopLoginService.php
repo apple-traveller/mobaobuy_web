@@ -101,12 +101,12 @@ class ShopLoginService
         return ['shop_id'=>$user_info['shop_id'],'user_id'=>$user_info['id']];
     }
     /**
-     * 发送注册短信
+     * 发送短信
      * @param $mobile
      * @return mixed|\stdClass
      * @throws \Exception
      */
-    public static function sendRegisterCode($type,$mobile,$code)
+    public static function sendSMSCode($type,$mobile,$code)
     {
         $params = [
             'code'=>$code

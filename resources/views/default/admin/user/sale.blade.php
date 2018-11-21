@@ -38,11 +38,12 @@
                                 <tr>
                                     <th width="4%"><div class="tDiv">编号</div></th>
                                     <th width="20%"><div class="tDiv">请求时间</div></th>
-                                    <th width="18%"><div class="tDiv">会员名</div></th>
-                                    <th width="18%"><div class="tDiv">昵称</div></th>
-                                    <th width="18%"><div class="tDiv">卖货详情</div></th>
-                                    <th width="18%" class="handle">卖货文档</th>
-                                    <th width="4%" class="handle">状态</th>
+                                    <th width="15%"><div class="tDiv">会员名</div></th>
+                                    <th width="15%"><div class="tDiv">昵称</div></th>
+                                    <th width="15%"><div class="tDiv">卖货详情</div></th>
+                                    <th width="15%" class="handle">卖货文档</th>
+                                    <th width="8%" class="handle">状态</th>
+                                    <th width="18%" class="handle">操作</th>
                                 </tr>
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
@@ -88,6 +89,13 @@
                                                         已读
                                                     @else
                                                         未读
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="tDiv a2 btn_read">
+                                                    @if($v['is_read'] != 1)
+                                                        <a href="javascript:void(0);"  id="{{$v['id']}}" is_read="{{$v['is_read']}}" class="btn_trash btn_see"><i class="layui-icon layui-icon-util"></i>设为已读</a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -137,6 +145,7 @@
                         success: function(res){
                             if (res.code == 1){//设置成功
                                 _self.parents(".table_info").find(".read_info").text('已读');
+                                _self.parents('.table_info').find('.btn_read').empty();
                             } else {
                                 layer.msg(res.msg);
                             }

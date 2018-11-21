@@ -8,6 +8,9 @@
             height:28px;
             line-height: 28px;
         }
+        .ui-area .area-warp {
+            width: 278px !important;
+        }
     </style>
 @endsection
 @section('body')
@@ -57,7 +60,7 @@
                                     <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 102px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 101px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>

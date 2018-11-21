@@ -96,6 +96,7 @@ class IndexController extends Controller
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
+                    $firm['address_id'] = $firm['address_id'];
                     session()->put('_curr_deputy_user', $firm);
                     return $this->success();
                 }

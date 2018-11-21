@@ -5,7 +5,6 @@ use App\Repositories\CartRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Services\CartService;
 use App\Services\GoodsService;
-use App\Services\HotSearchService;
 use App\Services\UserAddressService;
 use App\Services\UserInvoicesService;
 use App\Services\UserService;
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
-class QuoteController extends Controller
+class ConsignmentController extends Controller
 {
     /**
      * Where to redirect users after login.
@@ -24,6 +23,16 @@ class QuoteController extends Controller
      * @var string
      */
     public function  index(){
+
+    }
+
+    //寄售
+    public function consignment(){
+
+    }
+
+    //寄售详情
+    public function consignmentDetails(){
 
     }
 
@@ -87,28 +96,6 @@ class QuoteController extends Controller
         $pageSize = 10;
         //产品报价列表
         $goodsList= ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
-
-        #热门推荐
-        if(!empty($keyword)){
-            $hot_search = HotSearchService::getInfoByFields(['search_key'=>$keyword]);
-
-            if($hot_search){
-                HotSearchService::modify([
-                    'id' => $hot_search['id'],
-                    'search_num' => $hot_search['search_num'] + 1,
-                    'update_time' => date('Y-m-d H:i:s',time())
-                ]);
-            }else{
-                $search = [
-                    'search_key' => $keyword,
-                    'search_num' => 1,
-                    'is_show' => 0,
-                    'update_time' => date('Y-m-d H:i:s',time())
-                ];
-                HotSearchService::create($search);
-            }
-        }
-
         return $this->display("web.quote.list",[
             'search_data'=>$goodsList,
             'currpage'=>$currpage,
@@ -518,7 +505,4 @@ class QuoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
-
-
 }

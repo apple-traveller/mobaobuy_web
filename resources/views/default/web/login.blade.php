@@ -3,6 +3,7 @@
 <head>
     <title>{{getConfig('shop_name')}}_登录</title>
     @include(themePath('.','web').'web.include.partials.base')
+    <script src="{{asset('js/jquery.base64.js')}}" ></script>
     <style>
         .login-sd {
             line-height: 30px;
@@ -65,7 +66,7 @@
             $('.login-error').hide();
             data = {
                 user_name: $("#user_name").val(),
-                password: window.btoa($("#password").val()),
+                password: $.base64.btoa($("#password").val()),
             };
             Ajax.call("{{url('login')}}", data , function(result) {
                 if (result.code == 1) {
@@ -77,9 +78,9 @@
 
                 }
             }, "POST", "JSON");
-        
+
         }
-     
+
     </script>
 </body>
 </html>

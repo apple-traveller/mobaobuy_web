@@ -73,11 +73,11 @@
             //文件上传
            $("#user_name").blur(function(){
                if (isNull.test($(this).val())) {
-                   layer.msg('请输入手机号',{icon:1,time:1000});
-                   $(this).val("");
+//                   layer.msg('请输入手机号',{icon:1,time:1000});
+//                   $(this).val("");
                    return false;
                } else if (!Utils.isPhone($(this).val())) {
-                   layer.msg('手机号格式不正确',{icon:1,time:1000});
+                   layer.alert('手机号格式不正确');
                    $(this).val("");
                    return false;
                }

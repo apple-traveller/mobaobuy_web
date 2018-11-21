@@ -153,10 +153,10 @@ class GoodsController extends Controller
 
         $invoiceInfo = UserRealService::getInfoByUserId($userId);
         if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
+            return $this->error('当前用户还没有实名认证，不能下单');
         }
         if ($invoiceInfo['review_status'] != 1 ){
-            return $this->error('您的实名认证还未通过，不能下单');
+            return $this->error('当前用户实名认证还未通过，不能下单');
         }
 
         if($request->isMethod('get')){
@@ -231,18 +231,14 @@ class GoodsController extends Controller
         try{
             $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            if($userInfo['address_id']){
-                $address_id = $userInfo['address_id'];
-            }else{
-                #取一条地址id
-                $address_id = UserService::getOneAddressId($userInfo['id']);
-            }
+            $address_id = UserAddressService::getOneAddressId();
             //进入订单确认页面前先定义购物车session
             $cartSession = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $address_id,
                 'from'=>'cart'
             ];
+
             session()->put('cartSession',$cartSession);
             return $this->success();
         }catch (\Exception $e){

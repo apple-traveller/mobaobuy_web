@@ -58,6 +58,11 @@ class UserService
         return true;
     }
 
+    //短信登陆
+    public static function loginByMessage($username,$messageCode){
+
+    }
+
     //用户注册
     public static function userRegister($data)
     {
@@ -196,7 +201,9 @@ class UserService
             foreach($firm_list as &$item){
                 $firm_info = UserRepo::getInfo($item['firm_id']);
                 $item['firm_name'] = $firm_info['nick_name'];
+                $item['address_id'] = $firm_info['address_id'];
             }
+            unset($item);
             return $firm_list;
         }
         return [];
@@ -460,18 +467,18 @@ class UserService
     }
 
     //会员中心首页
-    public static function userMember($userId){
+    public static function userMember($userId,$firmId){
         //
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
         //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0']);
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
         //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status|>'=>0]);
         //
-        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0]);
 
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
@@ -483,6 +490,15 @@ class UserService
         }else{
             return $userRealInfo['real_name'];
         }
+    }
+
+    //是否收藏
+    public static function checkUserIsCollect($userId,$goodsId){
+        $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!empty($collectGoodsInfo)){
+            return 1;
+        }
+        return 0;
     }
 
     //添加企业会员，验证手机号是否存在
@@ -498,6 +514,26 @@ class UserService
         $users['no_verify'] = UserRepo::getTotalCount(['id'=>implode('|',self::getUserIds(-1))]);
         $users['total'] = UserRepo::getTotalCount();
         return $users;
+    }
+
+    //admin
+    // 添加用户实名信息
+    public static function addUserRealForm($id){
+        $userInfo = UserRepo::getInfo($id);
+        if(empty($userInfo)){
+            self::throwBizError('用户信息不存在');
+        }
+
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userInfo['id']]);
+        if(!empty($userRealInfo)){
+            if($userRealInfo['review_status'] == 1){
+                self::throwBizError('用户审核已通过');
+            }
+            if($userRealInfo['review_status'] == 0){
+                self::throwBizError('请等待管理员审核');
+            }
+        }
+        return $userInfo;
     }
     //获取第三方登录信息
     public static function getAppUserInfo($condition)

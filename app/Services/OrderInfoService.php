@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
+use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\CartRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -49,6 +50,7 @@ class OrderInfoService
 
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
+
         //企业会员权限
         if($currUser['is_firm']){
             if($condition['firm_id'] && $currUser['is_self'] == 0){
@@ -58,7 +60,7 @@ class OrderInfoService
         }
 
         foreach ($orderList['list'] as $k=>&$item){
-            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status']);
+            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
@@ -223,7 +225,7 @@ class OrderInfoService
 
     }
 
-    private static function getOrderStatusName($order_status, $pay_status, $shipping_status){
+    private static function getOrderStatusName($order_status, $pay_status, $shipping_status,$deposit_status){
         $status = '';
         switch ($order_status){
             case 0: $status = '已作废';break;
@@ -249,8 +251,15 @@ class OrderInfoService
             }
 
             if($order_status == 2){
-                $status = '待确认';
+                switch ($deposit_status){
+                    case 0: $status .= ', 未付定金';break;
+                    case 1: $status .= ', 已付定金';break;
+                }
+//                $status = '待确认';
             }
+//            if($order_status == 2 && $deposit_status == 0){
+//                $status = '待确认';
+//            }
         }
         return $status;
     }
@@ -258,10 +267,14 @@ class OrderInfoService
     private static function setStatueCondition($status_code){
         $condition = [];
         switch ($status_code){
+            case 'waitDeposit':
+                $condition['order_status'] = 2;
+                $condition['deposit_status'] = 0;break;
             case 'waitApproval':
                 $condition['order_status'] = 1;break;
             case 'waitAffirm':
-                $condition['order_status'] = 2;break;
+                $condition['order_status'] = 2;
+                $condition['deposit_status'] = 1;break;
             case 'waitPay':
                 $condition['order_status'] = 3;
                 $condition['pay_status'] = '0|2';break;
@@ -306,8 +319,13 @@ class OrderInfoService
             'waitPay' => 0,
             'waitSend' => 0,
             'waitConfirm' => 0,
-            'waitInvoice'=> 0
+            'waitInvoice'=> 0,
+            'waitDeposit'=>0
         ];
+
+        //待付定金
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
+        $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
         $condition = array_merge($condition, self::setStatueCondition('waitApproval'));
@@ -642,13 +660,25 @@ class OrderInfoService
             switch($type){
                 case 'promote'://限时抢购
                     $order_status = 3;
-                    $promote = 'promote';
+                    $from = 'promote';
                     $extension_id = $cartInfo_session[0]['id'];
+                    $deposit_status = 1;
+                    $deposit = 0;
+//                    $pay_type =  1;
+                    break;
+                case 'wholesale'://集采拼团
+                    $order_status = 2;
+                    $from = 'wholesale';
+                    $extension_id = $cartInfo_session[0]['id'];
+                    $deposit_status = 0;
+                    $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
                 default://正常下单
-                    $promote = '';
+                    $from = 'cart';
                     $extension_id = '';
+                    $deposit_status = 1;
+                    $deposit = 0;
 //                    $pay_type = $payType;
                     if(!$userId['firm_id']){
                         $order_status = 2;
@@ -673,8 +703,12 @@ class OrderInfoService
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
                 'postscript'=>$words?$words:'',
-                'extension_code'=>$promote,
+                'extension_code'=>$from,
                 'extension_id'=>$extension_id,
+
+                'deposit_status'=>$deposit_status,
+                'deposit'=>$deposit,
+//                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 
@@ -725,6 +759,26 @@ class OrderInfoService
                     $goods_amount += $v['goods_number'] * $v['goods_price'];
                     //减去活动库存
                     ActivityPromoteRepo::modify($id,['available_quantity'=>$activityPromoteInfo['available_quantity'] - $v['goods_number']]);
+                }elseif($type == 'wholesale'){
+                    //集采拼团生产订单
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($id);
+                    if(empty($activityWholesaleInfo)){
+                        self::throwBizError('商品不存在！');
+                    }
+                    $orderGoods = [
+                        'order_id'=>$orderInfoResult['id'],
+                        'goods_id'=>$v['goods_id'],
+                        'goods_name'=>$v['goods_name'],
+                        'shop_goods_quote_id'=>$activityWholesaleInfo['id'],
+//                        'goods_sn'=>$cartInfo['goods_sn'],
+                        'goods_number'=>$v['num'],
+                        'goods_price'=>$v['price'],
+                        'add_time' => Carbon::now()
+                    ];
+                    OrderGoodsRepo::create($orderGoods);
+                    $goods_amount += $v['num'] * $v['price'];
+                    //增加已参与数量
+                    ActivityWholesaleRepo::modify($id,['partake_quantity'=>$activityWholesaleInfo['partake_quantity'] - $v['num']]);
                 }
             }
             //更新订单总金额

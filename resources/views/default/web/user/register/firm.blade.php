@@ -3,6 +3,7 @@
 <head>
     <title>{{getConfig('shop_name')}}_个人注册</title>
     @include(themePath('.','web').'web.include.partials.base')
+    <script src="{{asset('js/jquery.base64.js')}}" ></script>
 </head>
 <body style="background-color: #f4f4f4;">
     <div class="clearfix whitebg">
@@ -289,7 +290,7 @@
         params = {
             companyName: $("#company_name").val(),
             accountName: $("#phone").val(),
-            password: window.btoa($("#password").val()),
+            password: $.base64.btoa($("#password").val()),
             messCode: $("#messCode").val(),
             attorneyLetterFileImg: $("#attorney_letter_fileImg").val(),
             licenseFileImg: $("#license_fileImg").val(),

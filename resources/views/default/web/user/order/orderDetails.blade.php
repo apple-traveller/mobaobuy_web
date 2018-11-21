@@ -61,6 +61,7 @@
 		<div class="order_pro_progress whitebg mt5">
 			<div class="order_pro_stute">
 				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
+				<span class="Order_number">订单来源：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
 				@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
 					<span class="tac db fs24 fwb red mt30">已作废</span>
 					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
@@ -73,7 +74,6 @@
 					<span class="tac db fs24 fwb red mt30">等待付款</span>
 					<a class="order_pay_btn red">付款</a>
 				@endif
-
 			</div>
 			<div class="order_pro_jd fl">
 				<div class="order_jd_bg order_jd_bg1"></div>
@@ -109,9 +109,14 @@
 	    	<div class="consignee bbright">
 	    		<h1 style="font-size:16px;">收货人信息</h1>
 	    		<span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span></span>
-	    		<span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr"> {{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}</span></span>
-	    		<span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span></span>
-	    		<span class="ml20 db mt20"><span class="fl">买家留言: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span></span>
+				<span class="ml20 db mt5"><span class="fl">手机号码: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span></span>
+	    		<span class="ml20 ovh db mt5">
+					<span class="fl">收货地址:</span>
+					<span class="fl consignee_addr">
+						{{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}
+					</span>
+				</span>
+	    		<span class="ml20 db mt5"><span class="fl">买家留言: </span><span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span></span>
 	    	</div>
 	    	<!--商家信息-->
 	    	<div class="consignee bbright">

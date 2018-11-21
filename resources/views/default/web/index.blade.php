@@ -293,7 +293,7 @@
             </li>
             @foreach($shops as $shop)
             <li>
-                <div class="clearfix"><span>{{$shop['shop_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span class="lcolor operation">展开</span></div>
+                <div class="clearfix"><span>{{$shop['company_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span class="lcolor operation">展开</span></div>
                 <div class="supply_list_inside" style="display: none;">
                     <ul class="quote_list supply_quote_list">
                         @foreach($shop['quotes'] as $quote)
