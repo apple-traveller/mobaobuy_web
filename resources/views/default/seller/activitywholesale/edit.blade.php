@@ -328,11 +328,10 @@
             let max_num = Number($("#max_limit").val());
             let spac = Number($("#goods_name").attr("data-packing-spac"));
             let tota_num = Number($("#num").val());
-            alert(min_num);
-            alert(max_num);
+
             if(max_num != 0 && min_num > max_num){
                 $(this).val(max_num);
-            }else{alert(2);
+            }else{
                 if (min_num<spac){
                     $(this).val(spac);
                 } else {
