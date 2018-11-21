@@ -29,6 +29,7 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
+
         //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
         //获取订单状态数

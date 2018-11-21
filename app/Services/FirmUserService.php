@@ -89,7 +89,8 @@ class FirmUserService
                     $userPermi['can_stock_in'] = 0;
                     $userPermi['can_stock_view'] = 0;
                 }
-
+//                $userInfo['id']
+                UserRepo::modify($userInfo['id'],['is_logout'=>1]);
                 return FirmUserRepo::modify($firmUserInfo['id'],$userPermi);
 
             }
@@ -134,6 +135,7 @@ class FirmUserService
                     $userPermi['can_stock_view'] = 1;
                 }
             }
+            UserRepo::modify($userInfo['id'],['is_logout'=>1]);
             return FirmUserRepo::create($userPermi);
         }
     }
