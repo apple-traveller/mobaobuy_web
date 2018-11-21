@@ -27,16 +27,16 @@
     <dl class="layui-nav-child">
         <dd><a href="javascript:void(0);" data-url="/seller/detail" s_id="S040">商户资料</a></dd>
         <dd><a href="javascript:void(0);" data-url="/seller/store" s_id="S041">店铺列表</a></dd>
-        <dd><a href="javascript:void(0);" data-url="/seller/shopUser" s_id="S042">职员列表</a></dd>
+        {{--<dd><a href="javascript:void(0);" data-url="/seller/shopUser" s_id="S042">职员列表</a></dd>--}}
     </dl>
 </li>
 <li class="layui-nav-item">
     <a href="javascript:;" data-url="/seller/activity/promoter" s_id="S050">活动</a>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:;" data-url="/seller/activity/promote" s_id="S050">优惠活动</a></dd>
+        <dd><a href="javascript:;" data-url="/seller/activity/promote" s_id="S050">促销活动</a></dd>
     </dl>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:;" data-url="/seller/seckill/list" s_id="S051">秒杀</a></dd>
+        {{--<dd><a href="javascript:;" data-url="/seller/seckill/list" s_id="S051">秒杀</a></dd>--}}
     </dl>
     <dl class="layui-nav-child">
         <dd><a href="javascript:;" data-url="/seller/activity/wholesale" s_id="S052">集采拼团</a></dd>

@@ -10,6 +10,7 @@ use App\Services\OrderInfoService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\UserAddressService;
 use App\Services\UserRealService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -239,13 +240,15 @@ class OrderController extends Controller
     public function confirmOrder(Request $request, $id = '')
     {
         $info = session('_curr_deputy_user');
+
         $userInfo = session('_web_user');
         $cartSession = session('cartSession');
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
-        if (empty($invoiceInfo)) {
+
+        $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
+        if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能下单');
         }
         if ($invoiceInfo['review_status'] != 1) {
@@ -259,7 +262,7 @@ class OrderController extends Controller
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
         if ($info['is_self'] == 0 && $info['is_firm'] == 1) {
             $u_id = $info['firm_id'];
-        } else {
+        }else{
             $u_id = $userInfo['id'];
         }
 
@@ -273,7 +276,7 @@ class OrderController extends Controller
                 } else {
                     $addressList[$k]['is_select'] = '';
                 };
-                if ($v['id'] == $userInfo['address_id']) {
+                if ($v['id'] == $info['address_id']) {
                     $addressList[$k]['is_default'] = 1;
                     $first_one[$k] = $addressList[$k];
                 } else {

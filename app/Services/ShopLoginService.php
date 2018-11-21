@@ -42,15 +42,10 @@ class ShopLoginService
                 'user_id' => $data['user_id'],
                 'company_name' => $data['company_name'],
                 'shop_name' => $data['shop_name'],
-                'contactName' => $data['user_name'],
-                'contactPhone' => $data['mobile'],
                 'attorney_letter_fileImg' => $data['attorney_letter_fileImg'],
-                'business_license_id' => $data['business_license_id'],
                 'license_fileImg' => $data['license_fileImg'],
-                'taxpayer_id' => $data['taxpayer_id'],
                 'reg_time' => Carbon::now(),
-                'is_validated' => 0,
-                'is_self_run' => $data['is_self_run']
+                'is_validated' => 0
             ];
             self::beginTransaction();
             $shop_info = ShopRepo::create($shop_data);

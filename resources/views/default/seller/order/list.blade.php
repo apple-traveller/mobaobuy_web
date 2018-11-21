@@ -172,7 +172,7 @@
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
-                            'id':66,
+                            'id':id,
                             'to_buyer':to_buyer,
                             'order_status': 0
                         },

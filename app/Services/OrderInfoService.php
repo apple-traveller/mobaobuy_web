@@ -524,8 +524,11 @@ class OrderInfoService
     {
         $delivery =  OrderDeliveryRepo::getListBySearch($pager,$condition);
         foreach ($delivery['list'] as $k=>$v){
-            $orderinfo = OrderInfoRepo::getList([],['id'=>$v['order_id']],['add_time'])[0];
-            $delivery['list'][$k]['order_add_time'] = $orderinfo['add_time'];
+            $orderinfo = [];
+            $orderinfo = OrderInfoRepo::getInfoByFields(['id'=>$v['order_id']]);
+            if (!empty($orderinfo)){
+                $delivery['list'][$k]['order_add_time'] = $orderinfo['add_time'];
+            }
         }
         return $delivery;
     }

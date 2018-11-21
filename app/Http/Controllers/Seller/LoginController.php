@@ -106,17 +106,10 @@ class LoginController extends Controller
             $user_id = $request->input('user_id','0');
             $company_name = $request->input('companyName','');
             $attorney_letter_fileImg = $request->input('attorney_letter_fileImg','');
-            $business_license_id = $request->input('business_license_id','');
             $license_fileImg = $request->input('license_fileImg','');
-            $taxpayer_id = $request->input('taxpayer_id','');
-            $is_self_run = $request->input('is_self_run','0');
-            $user_name = $request->input('contactName','');
             $password = base64_decode($request->input('password', ''));
-
-            //$password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
-
 
             $type = 'sms_signup';
             //手机验证码是否正确
@@ -132,18 +125,10 @@ class LoginController extends Controller
                 return $this->error('授权委托书电子版不能为空');
             }
 
-            if (empty($business_license_id)){
-                return $this->error('营业执照注册号不能为空');
-            }
             if (empty($license_fileImg)){
                 return $this->error('营业执照副本电子版不能为空');
             }
-            if (empty($taxpayer_id)){
-                return $this->error('纳税人识别号');
-            }
-            if (empty($user_name)){
-                return $this->error('用户名称不能为空');
-            }
+
             if (empty($password)){
                 return $this->error('密码不能为空');
             }
@@ -155,13 +140,9 @@ class LoginController extends Controller
                 'shop_name' =>$company_name,
                 'company_name' => $company_name,
                 'attorney_letter_fileImg' => $attorney_letter_fileImg,
-                'business_license_id' => $business_license_id,
                 'license_fileImg' => $license_fileImg,
-                'taxpayer_id' => $taxpayer_id,
-                'is_self_run' => $is_self_run,
-                'user_name' => $user_name,
-                'password' => $password,
-                'mobile' => $mobile
+                'user_name' => $mobile,
+                'password' => $password
             ];
             try{
                $re = ShopLoginService::Register($data);
