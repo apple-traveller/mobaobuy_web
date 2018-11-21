@@ -67,23 +67,4 @@ class ActivityWholesaleController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
-    //抢购详情  最大数量控制
-    public function buyLimitMaxLimit(Request $request){
-       $goods_number =  $request->input('goods_number');
-       $id = $request->input('id');
-       if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1){
-           $userId = session('_curr_deputy_user')['firm_id'];
-       }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
-           $userId = session('_web_user_id');
-       }
-
-       try{
-            $maxBuyNumInfo = ActivityPromoteService::buyLimitMaxLimit($userId,$id,$goods_number);
-            return $this->success('','',$maxBuyNumInfo);
-       }catch (\Exception $e){
-           return $this->error($e->getMessage());
-       }
-    }
-
 }

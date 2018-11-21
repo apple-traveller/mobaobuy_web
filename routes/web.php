@@ -291,14 +291,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
     /********************************************************************/
 
-    Route::get('/wholesale', 'ActivityWholesaleController@wholesale');//拼团集采
-    Route::get('/wholesale/{id?}', 'ActivityWholesaleController@wholesaleDetails');//拼团集采详情
-
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
     Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
 
-    Route::get('/consignment', 'ConsignmentController@consignment');//寄售
-    Route::get('/consignment/{id?}', 'ConsignmentController@consignmentDetails');//寄售抢购详情
+    Route::get('/consign', 'ActivityConsignController@index');//寄售
+    Route::get('/consign/detail/{id?}', 'ActivityConsignController@detail');//寄售抢购详情
 
     Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
@@ -413,6 +410,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/wholesale/toBalance', 'ActivityWholesaleController@toBalance');//集采拼团 立即下单
         Route::post('/buyLimitMaxLimit','ActivityWholesaleController@buyLimitMaxLimit'); //集采拼团最大限购数量
+
+        Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
         Route::group(['middleware'=>'web.firmUserAuth'],function(){
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
