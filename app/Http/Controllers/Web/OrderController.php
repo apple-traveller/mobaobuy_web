@@ -87,7 +87,6 @@ class OrderController extends Controller
         } else {
             $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);
         }
-        //$status = OrderInfoService::getOrderStatusCount(0, 0);
         return $this->success('', '', $status);
     }
 

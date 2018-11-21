@@ -733,7 +733,6 @@ class OrderInfoService
                 'extension_id' => $extension_id,
                 'deposit_status' => $deposit_status,
                 'deposit' => $deposit,
-//                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 

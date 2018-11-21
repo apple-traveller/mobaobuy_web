@@ -23,7 +23,6 @@ class ShopGoodsQuoteService
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
         }
-
         //获取筛选过滤信息
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory([]);
@@ -69,9 +68,16 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::getQuoteInfoByFields($order,$condition);
     }
 
-    public static function getShopOrderByQuote($top)
+    //分页
+    public static function getShopGoodsQuoteListByAjax($pager,$condition)
     {
-        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run' => 0], $top);
+
+        $result = ShopGoodsQuoteRepo::getListBySearch($pager,$condition);
+        return $result;
+    }
+
+    public static function getShopOrderByQuote($top){
+        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
         $shop_list = [];
         foreach ($shops as $item) {
             $shop_info = ShopRepo::getInfo($item['shop_id']);

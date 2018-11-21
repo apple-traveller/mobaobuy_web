@@ -578,7 +578,10 @@ class UserService
     public static function bindThird($user_id,$openid,$nick_name,$avatar)
     {
         #认证成功 绑定qq或微信
-
+        $userInfo = AppUsersRepo::getInfoByFields(['user_id'=>$user_id]);
+        if(!empty($userInfo)){
+            return true; //如果用户的绑定信息存在就不走下面绑定过程，直接登录
+        }
         $app_data = [
             'open_id' => $openid,
             'identity_type' => 'W',//微信登录
@@ -611,7 +614,7 @@ class UserService
             $user_id = self::userRegister($data);
 
             $app_data = [
-                'app_id' => $openid,
+                'open_id' => $openid,
                 'identity_type' => 'W',
                 'user_id' => $user_id,
                 'create_time'=>date('Y-m-d H:i:s')
