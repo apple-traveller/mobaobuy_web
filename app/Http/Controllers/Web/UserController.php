@@ -33,9 +33,17 @@ class UserController extends Controller
     public function  index(){
         $userId = session('_web_user_id');
         if(!session('_curr_deputy_user')['is_self']){
+            $userId = session('_curr_deputy_user')['user_id'];
+            $firmId = session('_curr_deputy_user')['firm_id'];
+        }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
             $userId = session('_curr_deputy_user')['firm_id'];
+            $firmId = session('_curr_deputy_user')['firm_id'];
+        }else{
+            $userId = session('_curr_deputy_user')['firm_id'];
+            $firmId = 0;
         }
-        $memberInfo = UserService::userMember($userId);
+
+        $memberInfo = UserService::userMember($userId,$firmId);
         return $this->display('web.user.index',compact('memberInfo'));
     }
 

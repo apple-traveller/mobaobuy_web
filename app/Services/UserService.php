@@ -58,6 +58,11 @@ class UserService
         return true;
     }
 
+    //短信登陆
+    public static function loginByMessage($username,$messageCode){
+
+    }
+
     //用户注册
     public static function userRegister($data)
     {
@@ -196,7 +201,9 @@ class UserService
             foreach($firm_list as &$item){
                 $firm_info = UserRepo::getInfo($item['firm_id']);
                 $item['firm_name'] = $firm_info['nick_name'];
+                $item['address_id'] = $firm_info['address_id'];
             }
+            unset($item);
             return $firm_list;
         }
         return [];
@@ -460,18 +467,18 @@ class UserService
     }
 
     //会员中心首页
-    public static function userMember($userId){
+    public static function userMember($userId,$firmId){
         //
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
         //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
+         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0']);
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
         //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
+        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status|>'=>0]);
         //
-        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0]);
 
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
@@ -571,7 +578,10 @@ class UserService
     public static function bindThird($user_id,$openid,$nick_name,$avatar)
     {
         #认证成功 绑定qq或微信
-
+        $userInfo = AppUsersRepo::getInfoByFields(['user_id'=>$user_id]);
+        if(!empty($userInfo)){
+            return true; //如果用户的绑定信息存在就不走下面绑定过程，直接登录
+        }
         $app_data = [
             'open_id' => $openid,
             'identity_type' => 'W',//微信登录
@@ -604,7 +614,7 @@ class UserService
             $user_id = self::userRegister($data);
 
             $app_data = [
-                'app_id' => $openid,
+                'open_id' => $openid,
                 'identity_type' => 'W',
                 'user_id' => $user_id,
                 'create_time'=>date('Y-m-d H:i:s')

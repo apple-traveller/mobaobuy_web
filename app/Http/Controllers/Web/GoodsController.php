@@ -238,6 +238,7 @@ class GoodsController extends Controller
                 'address_id'=> $address_id,
                 'from'=>'cart'
             ];
+
             session()->put('cartSession',$cartSession);
             return $this->success();
         }catch (\Exception $e){
