@@ -643,7 +643,7 @@ class OrderInfoService
             switch($type){
                 case 'promote'://限时抢购
                     $order_status = 3;
-                    $promote = 'promote';
+                    $from = 'promote';
                     $extension_id = $cartInfo_session[0]['id'];
                     $deposit_status = 1;
                     $deposit = 0;
@@ -651,14 +651,14 @@ class OrderInfoService
                     break;
                 case 'wholesale'://集采拼团
                     $order_status = 2;
-                    $promote = 'wholesale';
+                    $from = 'wholesale';
                     $extension_id = $cartInfo_session[0]['id'];
                     $deposit_status = 0;
                     $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
                 default://正常下单
-                    $promote = '';
+                    $from = 'cart';
                     $extension_id = '';
                     $deposit_status = 1;
                     $deposit = 0;
@@ -686,11 +686,10 @@ class OrderInfoService
                 'district'=>$userAddressMes['district'],
                 'consignee'=>$userAddressMes['consignee'],
                 'postscript'=>$words?$words:'',
-                'extension_code'=>$promote,
+                'extension_code'=>$from,
                 'extension_id'=>$extension_id,
                 'deposit_status'=>$deposit_status,
                 'deposit'=>$deposit,
-
 //                'pay_type'=>$payType
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 use App\Services\ActivityWholesaleService;
+use App\Services\UserAddressService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,12 +55,7 @@ class ActivityWholesaleController extends Controller
         try{
             $activityInfo = ActivityWholesaleService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            if($userInfo['address_id']){
-                $address_id = $userInfo['address_id'];
-            }else{
-                #取一条地址id
-                $address_id = UserService::getOneAddressId($userInfo['id']);
-            }
+            $address_id = UserAddressService::getOneAddressId();
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
