@@ -411,7 +411,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
         Route::post('/buyLimitMaxLimit','ActivityPromoteController@buyLimitMaxLimit'); //抢购最大限购数量
 
-        Route::post('/buyLimitToBalance', 'ActivityWholesaleController@buyLimitToBalance');//集采拼团 立即下单
+        Route::post('/wholesale/toBalance', 'ActivityWholesaleController@toBalance');//集采拼团 立即下单
         Route::post('/buyLimitMaxLimit','ActivityWholesaleController@buyLimitMaxLimit'); //集采拼团最大限购数量
 
         Route::group(['middleware'=>'web.firmUserAuth'],function(){

@@ -220,7 +220,7 @@
             var activityIdEncrypt = $('#activityId').val();
             if('{{session('_web_user_id')}}'){
                 $.ajax({
-                    url: "/buyLimitToBalance",
+                    url: "/wholesale/toBalance",
                     dataType: "json",
                     data: {
                         'goodsId' : goodsId,
