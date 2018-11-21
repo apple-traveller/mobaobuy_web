@@ -34,6 +34,7 @@ class ShopGoodsQuoteController extends Controller
         if ($goods_name){
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
+        $condition['type'] = '1|2';
         $pageSize =5;
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
@@ -84,8 +85,9 @@ class ShopGoodsQuoteController extends Controller
     {
         $request->flash();
         $shop_id = session('_seller_id')['shop_id'];
+        $company_name = session('_seller')['shop_info']['company_name'];
         $id = $request->input('id','');
-        $store_id = $request->input('store_id','');
+        $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
         $goods_id = $request->input('goods_id','');
         $delivery_place = $request->input('delivery_place');
@@ -96,6 +98,7 @@ class ShopGoodsQuoteController extends Controller
         $salesman = $request->input('salesman','');
         $contact_info = $request->input('contact_info','');
         $qq = $request->input('QQ','');
+        $type = $request->input('type','');
 
         $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
         $place_id = substr($place_id,strripos($place_id,'|')+1);
@@ -103,8 +106,16 @@ class ShopGoodsQuoteController extends Controller
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
         }
-        if(!$store_name){
+        if(!$store_name || !$store_id){
             return $this->error('店铺不能为空');
+        }
+        if($store_id == 0 && $store_name == '自营' && empty($type)){
+            $store_name = $company_name;
+            $type = 1;
+        }else{
+            if(empty($type)){
+                $type = 2;
+            }
         }
         if(!$delivery_place){
             return $this->error('交货地不能为空');
@@ -128,16 +139,12 @@ class ShopGoodsQuoteController extends Controller
             return $this->error('qq不能为空');
         }
 
-        $shop_name = ShopService::getShopById($shop_id)['shop_name'];
-
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
-            'store_name' => $store_name,
-            'shop_name' => $shop_name,
             'shop_id' => $shop_id,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
@@ -150,28 +157,42 @@ class ShopGoodsQuoteController extends Controller
             'goods_name' => $goods['goods_full_name'],
             'salesman' => $salesman,
             'contact_info' => $contact_info,
-            'QQ' => $qq
+            'QQ' => $qq,
+            'type' => $type,
         ];
+
         if ($store_id==0){
             $data['is_self_run'] = 1;
             $data['type'] = 1;
+            $data['store_name'] = $company_name;
         } else {
             $data['is_self_run'] = 0;
             $data['type'] = 2;
+            $data['store_name'] = $store_name;
         }
         try{
             if($id){
                 $data['id'] = $id;
                 $flag = ShopGoodsQuoteService::modify($data);
                 if(!empty($flag)){
-                    return $this->success('修改成功',url('/seller/quote/list')."?currentPage=".$currentPage);
+                    if($type != 3){
+                        return $this->success('修改成功',url('/seller/quote/list')."?currentPage=".$currentPage);
+                    }else{
+                        return $this->success('修改成功',url('/seller/activity/consign')."?currentPage=".$currentPage);
+                    }
+
                 }
             }else{
                 $data['add_time'] = Carbon::now();
                 $data['shop_user_id'] = session('_seller_id')['user_id'];
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
-                    return $this->success('添加成功',url('/seller/quote/list'));
+                    if($type != 3){
+                        return $this->success('添加成功',url('/seller/quote/list'));
+                    }else{
+                        return $this->success('添加成功',url('/seller/activity/consign'));
+                    }
+
                 }
             }
             return $this->error('添加失败');

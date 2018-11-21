@@ -304,6 +304,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
     Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
 
+    Route::get('/wholesale', 'ActivityWholesaleController@index');//集采拼团
+    Route::get('/wholesale/detail/{id?}', 'ActivityWholesaleController@detail');//集采拼团详情
 
     Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
 
@@ -409,7 +411,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/buyLimitToBalance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
         Route::post('/buyLimitMaxLimit','ActivityPromoteController@buyLimitMaxLimit'); //抢购最大限购数量
 
-        Route::post('/buyLimitToBalance', 'ActivityWholesaleController@buyLimitToBalance');//集采拼团 立即下单
+        Route::post('/wholesale/toBalance', 'ActivityWholesaleController@toBalance');//集采拼团 立即下单
         Route::post('/buyLimitMaxLimit','ActivityWholesaleController@buyLimitMaxLimit'); //集采拼团最大限购数量
 
         Route::group(['middleware'=>'web.firmUserAuth'],function(){
@@ -464,6 +466,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::get('/register.html', 'LoginController@register');
     Route::post('/register', 'LoginController@register');
     Route::post('/getSmsCode', 'LoginController@getSmsCode');
+    Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
     Route::group(['middleware' => 'seller.auth'], function () {

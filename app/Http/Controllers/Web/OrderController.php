@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Services\ActivityPromoteService;
+use App\Services\ActivityWholesaleService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
 use App\Services\OrderInfoService;
@@ -235,7 +236,7 @@ class OrderController extends Controller
         $userInfo = session('_web_user');
         $cartSession = session('cartSession');
         $goodsList = $cartSession['goods_list'];
-
+        $from = $cartSession['from'];
 
         $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
         if (empty($invoiceInfo)){
@@ -249,9 +250,15 @@ class OrderController extends Controller
             return $this->error('没有对应的商品');
         }
 
+        //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
+        if($info['is_self'] == 0 && $info['is_firm'] == 1){
+            $u_id = $info['firm_id'];
+        }else{
+            $u_id = $userInfo['id'];
+        }
 
         // 收货地址列表
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        $addressList = UserAddressService::getInfoByUserId($u_id);
         if (!empty($addressList)){
             foreach ($addressList as $k=>$v){
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
@@ -275,8 +282,9 @@ class OrderController extends Controller
                 }
             }
         }
-        //限时抢购
-        if(!empty($id)){
+
+        if ($from == 'promote'){//限时抢购
+
             try{
                 ActivityPromoteService::getActivityPromoteById($id);
             }catch (\Exception $e){
@@ -285,7 +293,20 @@ class OrderController extends Controller
 
             $goods_amount = $goodsList[0]['account_money'];
             return $this->display('web.goods.confirmOrder',compact('invoiceInfo','addressList','goodsList','goods_amount','id'));
-        }else{
+
+        } elseif ($from == 'wholesale'){//集采拼团
+
+            try{
+                ActivityWholesaleService::getActivityWholesaleById($id);
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+            $goods_amount = $goodsList[0]['amount'];
+            $deposit = $goodsList[0]['deposit'];
+            return $this->display('web.goods.confirmWholesaleOrder',compact('invoiceInfo','addressList','goodsList','goods_amount','id','deposit'));
+
+        } else {
             //购物车
             $goods_amount = 0;
             try{
@@ -358,7 +379,21 @@ class OrderController extends Controller
                 return $this->error($e->getMessage());
             }
 
-        }elseif($cartSession['from'] == 'cart'){
+        } elseif ($cartSession['from'] == 'wholesale'){
+
+            try{
+                $re[] = OrderInfoService::createOrder($carList,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
+                if (!empty($re)){
+                    Session::forget('cartSession');
+                    return $this->success('订单提交成功','',$re);
+                } else {
+                    return $this->error('订单提交失败');
+                }
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+
+        } elseif ($cartSession['from'] == 'cart'){
             //购物车下单
             $shop_data = [];
             foreach ($carList as $k=>$v){

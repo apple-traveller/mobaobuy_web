@@ -244,7 +244,8 @@
                     $(this).siblings('.pur_num').val(0);
                     return false;
                 }
-                if(id == 'min_limit' && min_num-spec>max_num){
+                if(id == 'min_limit' && min_num-spec>max_num && max_num!=0){
+                    console.log(max_num);
                     $(this).siblings('.pur_num').val(max_num);
                     $.msg.alert('不能大于最大限购量');
                 }else if(id == 'max_limit' && min_num>max_num-spec){
@@ -292,30 +293,45 @@
                     if(id == 'min_limit' && min_num+spec>max_num){
                         // $(this).siblings('.pur_num').val(max_num);
                         if (min_num+spec>tota_num){
-                            $("#max_limit").val(tota_num);
+                            if(max_num===0){
+                                $("#max_limit").val(0);
+                            } else {
+                                $("#max_limit").val(tota_num);
+                            }
+
                         } else {
-                            $("#max_limit").val(num+spec);
+                            if(max_num===0){
+                                $("#max_limit").val(0);
+                            } else {
+                                $("#max_limit").val(num+spec);
+                            }
                         }
                     }
                 }
             });
         });
-
         $("#min_limit").change(function () {
-            let min_num = $(this).val();
+            let min_num = Number($(this).val());
+            let max_num = Number($("#max_limit").val());
             let spac = Number($("#goods_name").attr("data-packing-spac"));
             let tota_num = Number($("#num").val());
-            if (min_num<spac){
-                $(this).val(spac);
-            } else {
-                if (min_num>tota_num){
-                    $(this).val(tota_num);
-                }else{
-                    let _count = min_num%spac;
-                    if(_count > 0){
-                        $(this).val(min_num - _count);
+
+            if(max_num != 0 && min_num > max_num){
+                $(this).val(max_num);
+            }else{
+                if (min_num<spac){
+                    $(this).val(spac);
+                } else {
+                    if (min_num>tota_num){
+                        $(this).val(tota_num);
                     }else{
-                        $(this).val(min_num);
+                        let _count = min_num%spac;
+                        if(_count > 0){
+                            $(this).val(min_num - _count);
+                        }else{
+                            $(this).val(min_num);
+                        }
+
                     }
                 }
             }
@@ -324,20 +340,29 @@
 
         // 控制最大值直接输入
         $("#max_limit").change(function () {
-           let max_val =  $(this).val();
-           let min_val = $("#min_limit").val();
-           let tota_num = Number($("#num").val());
-           if (max_val==0){
-               $(this).val(0);
-               return false;
-           }
-           if (max_val<min_val){
-               $(this).val(min_val);
-           } else {
-               if (max_val>tota_num){
-                   $(this).val(tota_num);
-               }
-           }
+            let max_val =  $(this).val();
+            let min_val = $("#min_limit").val();
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
+            let tota_num = Number($("#num").val());
+            if (max_val==0){
+                $(this).val(0);
+                return false;
+            }
+            if (max_val<min_val){
+                $(this).val(min_val);
+            } else {
+                if (max_val>tota_num){
+                    $(this).val(tota_num);
+                }else{
+                    let _count = max_val%spac;
+                    if(_count > 0){
+                        $(this).val(max_val - _count);
+                    }else{
+                        $(this).val(max_val);
+                    }
+
+                }
+            }
         });
 
         document.onclick=function(event){
