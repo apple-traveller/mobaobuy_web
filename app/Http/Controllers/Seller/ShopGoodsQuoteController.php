@@ -106,10 +106,10 @@ class ShopGoodsQuoteController extends Controller
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
         }
-        if(!$store_name || !$store_id){
+        if(!$store_name && !$store_id){
             return $this->error('店铺不能为空');
         }
-        if($store_id == 0 && $store_name == '自营' && empty($type)){
+        if($store_id == 0 && $store_name == '自售' && empty($type)){
             $store_name = $company_name;
             $type = 1;
         }else{

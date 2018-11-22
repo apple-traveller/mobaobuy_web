@@ -252,7 +252,7 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
-            // $(".query_store_name").hide();
+//             $(".query_store_name").hide();
         }
 
         // 种类 获取焦点请求所有的分类数据
@@ -320,9 +320,9 @@
                     if(res.code==1){
                         var data = res.data;
                         if (_select == 0){
-                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;" selected:selected>自营</option>');
+                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自售" class="created_store_name" style="cursor:pointer;" selected="selected">自售</option>');
                         } else {
-                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;">自营</option>');
+                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自售" class="created_store_name" style="cursor:pointer;">自售</option>');
                         }
 
                         for(var i=0;i<data.length;i++){

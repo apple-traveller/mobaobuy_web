@@ -291,7 +291,7 @@
                     if(res.code==1){
                         $(".query_store_name").show();
                         var data = res.data;
-                        $(".query_store_name").append('<option data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;" selected>自营</option>');
+                        $(".query_store_name").append('<option data-store-id="0" data-store-name="自售" class="created_store_name" style="cursor:pointer;" selected>自售</option>');
 
                         for(var i=0;i<data.length;i++){
                             // $(".query_store_name").append('<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>');

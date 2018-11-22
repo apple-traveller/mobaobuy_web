@@ -24,9 +24,11 @@ class GoodsController extends ApiController
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
+        $goods_name = $request->input('goods_name','');
         $condition = [];
 
         $orderBy = [];
+
         if(!empty($sort_goods_number)){
             $orderBy['b.goods_number'] = $sort_goods_number;
         }
@@ -43,6 +45,11 @@ class GoodsController extends ApiController
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }
+
+        if(!empty($goods_name)){
+            $condition['b.goods_name'] = "%".$goods_name."%";
+        }
+
         if($lowest=="" && $highest!=""){
             $condition['shop_price|<='] = $highest;
         }
@@ -83,19 +90,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //按商品名称查询报价
-    public function search(Request $request)
-    {
-        $goods_name = $request->input('goods_name');
-        $pageSize = $request->input('pageSize',10);
-        $currpage = $request->input('currpage',1);
-        $condition = [];
-        if(!empty($goods_name)){
-            $condition['goods_name'] = "%".$goods_name."%";
-        }
-        $goodsQuoteList= ShopGoodsQuoteService::getShopGoodsQuoteListByAjax(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        return $this->success($goodsQuoteList['list'],'success');
-    }
+
 
     //查询商品名称列表
     public function searchGoodsname(Request $request)
@@ -210,6 +205,7 @@ class GoodsController extends ApiController
             }
             //dd($cartInfo['cartInfo']);
             return $this->success($cartInfo['cartInfo']);
+
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -333,6 +329,61 @@ class GoodsController extends ApiController
             ];
             Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);
             return $this->success($cartCache,'success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //物性表
+    public function goodsAttribute(Request $request)
+    {
+        $page = $request->input('currpage', 1);
+        $page_size = $request->input('pagesize', 10);
+        $goods_name= $request->input('goods_name', '');
+        $condition = [];
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%' . $goods_name . '%';
+        }
+        try{
+            $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
+            if(!empty($goodsInfo)){
+                return $this->success(['total'=>$goodsInfo['total'],'goodslist'=>$goodsInfo['list']]);
+            }else{
+                return $this->error('无数据');
+            }
+
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //物性表详情
+    public function goodsAttributeDetails(Request $request){
+        $id = $request->input('goods_id');
+        if(empty($id)){
+            return $this->error('缺少参数，goods_id');
+        }
+        try{
+            $shopInfo = GoodsService::getGoodInfo($id);
+            return $this->success($shopInfo,'success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
+    //物性表详情页下面的供应商列表
+    public function goodSupplyList(Request $request)
+    {
+        $id = $request->input('goods_id');
+        $page = $request->input('currpage',1);
+        $page_size = $request->input('pagesize',6);
+        if(empty($id)){
+            return $this->error('缺少参数，goods_id');
+        }
+        try{
+            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+            return $this->success($shopGoodsInfo['list'],'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

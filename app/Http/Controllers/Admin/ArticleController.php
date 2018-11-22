@@ -48,9 +48,11 @@ class ArticleController extends Controller
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);
+        $cateHasChild = ArticleCatService::getCateHasChild($cateTrees);
+        //dd($cateHasChild);
         return $this->display('admin.article.add',
             [
-                'cateTrees'=>$cateTrees,
+                'cateTrees'=>$cateHasChild,
             ]);
     }
 
@@ -62,11 +64,12 @@ class ArticleController extends Controller
         //查询所有的分类
         $cates = ArticleCatService::getCates();
         $cateTrees = ArticleCatService::getCatesTree($cates);
+        $cateHasChild = ArticleCatService::getCateHasChild($cateTrees);
         //查询
         $article = ArticleService::getInfo($id);
         return $this->display('admin.article.edit',
             [
-                'cateTrees'=>$cateTrees,
+                'cateTrees'=>$cateHasChild,
                 'article'=>$article,
                 'currpage'=>$currpage
             ]);

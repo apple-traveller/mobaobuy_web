@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Repositories\DemandRepo;
+use App\Repositories\UserSaleRepo;
 use Carbon\Carbon;
 use App\Services\UserService;
 class DemandService
@@ -55,5 +56,22 @@ class DemandService
     public static function update($id, $data){
         $data['updated_at'] = Carbon::now();
         return DemandRepo::modify($id, $data);
+    }
+
+    //获取用户需求列表
+    public static function getUserSaleList($pager, $condition)
+    {
+        $list = UserSaleRepo::getListBySearch($pager, $condition);
+        foreach ($list['list'] as $k => $v) {
+            $userInfo = UserService::getUserInfo($v['user_id']);
+            $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+        }
+        unset($userInfo);
+        return $list;
+    }
+    //修改用户需求为已读
+    public static function userSaleModify($id,$data)
+    {
+        return UserSaleRepo::modify($id,$data);
     }
 }

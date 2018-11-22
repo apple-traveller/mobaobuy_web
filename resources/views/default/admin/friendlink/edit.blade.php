@@ -79,6 +79,7 @@
                         var item = this.item;
                         item.siblings('input').attr('value', res.data.path);
                         item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('div').filter(".form_prompt").remove();
                     }else{
                         layer.msg(res.msg, {time:2000});
                     }

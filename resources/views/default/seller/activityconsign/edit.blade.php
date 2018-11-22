@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改寄售</div>
+        <div class="title"><a href="/seller/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特价</div>
         <div class="content">
 
             <div class="flexilist">
@@ -37,7 +37,7 @@
                                     {{--</ul>--}}
                                 {{--</div>--}}
                             {{--</div>--}}
-                            <input type="hidden" value="自营" name="store_name"  id="store_name_val"  />
+                            <input type="hidden" value="自售" name="store_name"  id="store_name_val"  />
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">

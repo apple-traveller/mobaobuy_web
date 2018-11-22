@@ -71,8 +71,10 @@
 					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
 					<span class="tac db fs24 fwb red mt30">已确认</span>
 					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
-					<span class="tac db fs24 fwb red mt30">等待付款</span>
-					<a class="order_pay_btn red">付款</a>
+					<span class="tac db fs24 fwb red mt30">已完成</span>
+					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
+					<span class="tac db fs24 fwb red mt30">待开票</span>
+					
 				@endif
 			</div>
 			<div class="order_pro_jd fl">
@@ -83,6 +85,33 @@
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
 					</li>
 
+					@if(!empty($orderDetailsInfo['orderInfo']['confirm_time']))
+					<li>
+						<span class="jd_text_con black">卖家确认</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_time']}}</span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
+					<li>
+						<span class="jd_text_con black">付款时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<li>
+						<span class="jd_text_con black">发货时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['confirm_take_time']))
+					<li>
+						<span class="jd_text_con black">确认收货时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>
+					</li>
+					@endif
 				</ul>
 			</div>
 		</div>

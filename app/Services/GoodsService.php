@@ -137,8 +137,7 @@ class GoodsService
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] = number_format($v['goods_number'] * $v['goods_price'],2);
-
+            $quoteInfo[$k]['account'] =$v['goods_number'] * $v['goods_price'];
             //取goods表的规格
             $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
@@ -243,10 +242,16 @@ class GoodsService
     public static function addCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
+            if(empty($cartInfo)){
+                self::throwBizError('购物车信息不存在');
+            }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            if(empty($goodsInfo)){
+                self::throwBizError('商品信息不存在');
+            }
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
             throw $e;
         }
@@ -256,10 +261,19 @@ class GoodsService
     public static function reduceCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
+            if(empty($cartInfo)){
+                self::throwBizError('商品信息不存在');
+            }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            if(empty($goodsInfo)){
+                self::throwBizError('商品信息不存在');
+            }
+            if($cartInfo['goods_number']<=$goodsInfo['packing_spec']){
+                self::throwBizError('该商品不能减少了');
+            }
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];;
         }catch (\Exception $e){
             throw $e;
         }
@@ -300,9 +314,10 @@ class GoodsService
 
     //物性表详情
     public static function goodsAttributeDetails($id,$page,$pageSize){
-        dump($id);
-        $id = decrypt($id);
-        dd($id);
+        if(!is_numeric($id)){
+            $id = decrypt($id);
+        }
+
         if($id<0){
             self::throwBizError('产品信息有误');
         }
@@ -315,9 +330,7 @@ class GoodsService
         return $shopGoodsInfo;
     }
 
-
-
-    //购物车数量判断
+    //购物车blur数量判断
     public static function checkListenCartInput($id,$goodsNumber){
         $cartInfo = CartRepo::getInfo($id);
         if(empty($cartInfo)){
@@ -331,7 +344,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('商品数据有误');
         }
-        if(!is_numeric($goodsNumber)){
+        if(!is_numeric($goodsNumber) || $goodsNumber < 0){
             self::throwBizError('数量只能输入正整数');
         }
 
@@ -350,7 +363,8 @@ class GoodsService
         }
         $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
         if($cartResult){
-            return $goods_number;
+            $cartResult['account'] = $cartResult['goods_number'] * $cartResult['goods_price'];
+            return $cartResult;
         }
         self::throwBizError('修改数量失败');
 
