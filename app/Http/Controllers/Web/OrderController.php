@@ -468,4 +468,13 @@ class OrderController extends Controller
         }
         return $this->display('web.user.order.orderSubmission', ['re' => $re]);
     }
+    //支付界面
+    public function pay(){
+        return $this->display('web.order.pay');
+    }
+    //等待审核界面
+    public function waitConfirm(){
+        return $this->display('web.order.waitConfirm');
+    }
+
 }
