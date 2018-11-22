@@ -588,7 +588,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::get('/buyLimit/list', 'ActivityPromoteController@buyLimit');//限时抢购
         Route::post('/buyLimit/detail', 'ActivityPromoteController@buyLimitDetail');//限时抢购详情
         Route::post('/goods/goods_attribute', 'GoodsController@goodsAttribute');//物性表
-        Route::get('/goods/goods_attribute_details', 'GoodsController@goodsAttributeDetails');//物性表详情
+        Route::post('/goods/goods_attribute_details', 'GoodsController@goodsAttributeDetails');//物性表详情
+        Route::post('/goods/goods_supply_list', 'GoodsController@goodSupplyList');//物性表供应商
 
         Route::post('/article/list', 'ArticleController@getList');//获取咨询列表
         Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
