@@ -143,7 +143,6 @@ class OrderController extends ApiController
         if ($userRealInfo['review_status'] != 1 ){
             return $this->error('您的实名认证还未通过，不能下单');
         }
-
         if(empty($goodsList)){
             return $this->error('没有对应的商品');
         }
@@ -247,8 +246,8 @@ class OrderController extends ApiController
             try{
                 $re[] = OrderInfoService::createOrder($cartList,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
                 if (!empty($re)){
-                    Session::forget('cartSession');
-                    return $this->success('订单提交成功','',$re);
+                    Cache::forget('cartSession'.$user_id);
+                    return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');
                 }
@@ -280,7 +279,7 @@ class OrderController extends ApiController
                     $re[] =  OrderInfoService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
                 }
                 if (!empty($re)){
-                    Cache::forget('cartSession');
+                    Cache::forget('cartSession'.$user_id);
                     return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');

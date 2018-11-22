@@ -143,9 +143,48 @@ class ActivityWholesaleService
         return ActivityWholesaleRepo::addClickCount($id);
     }
 
+    //增加集采拼团的点击量
+    public static function addClickCountApi($id)
+    {
+        return ActivityWholesaleRepo::addClickCount($id);
+    }
+
     public static function detail($id,$userId)
     {
         $id = decrypt($id);
+        $ActivityInfo =  ActivityWholesaleRepo::getInfo($id);
+        if(empty($ActivityInfo)){
+            self::throwBizError('集采商品不存在');
+        }
+        $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品不存在');
+        }
+
+        $goodsInfo['activity_price'] = $ActivityInfo['price'];
+        $goodsInfo['activity_num'] = $ActivityInfo['num'];
+        $goodsInfo['partake_quantity'] = $ActivityInfo['partake_quantity'];
+        $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        //活动有效期总秒数
+        $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
+        //产品市场价
+        $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
+        $goodsInfo['goodsList'] = $goodsList;
+
+        //产品是否已收藏
+        $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        if(empty($collectGoods)){
+            $goodsInfo['collectGoods'] = 0;
+        }else{
+            $goodsInfo['collectGoods'] = 1;
+        }
+        return $goodsInfo;
+    }
+
+    public static function detailApi($id,$userId)
+    {
         $ActivityInfo =  ActivityWholesaleRepo::getInfo($id);
         if(empty($ActivityInfo)){
             self::throwBizError('集采商品不存在');
