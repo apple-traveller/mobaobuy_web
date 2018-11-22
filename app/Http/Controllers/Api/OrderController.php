@@ -10,6 +10,7 @@ use App\Services\UserAddressService;
 use App\Services\OrderInfoService;
 use App\Services\ActivityPromoteService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\ActivityWholesaleService;
 class OrderController extends ApiController
 {
     //订单删除
@@ -130,71 +131,97 @@ class OrderController extends ApiController
     //订单确认页面
     public function confirmOrder(Request $request)
     {
-
+        $id = $request->input('id');
         $info = $this->getDeputyUserInfo($request);
         $userInfo = $this->getUserInfo($request);
         $cartSession = Cache::get("cartSession".$userInfo['id']);
         $goodsList = $cartSession['goods_list'];
+        $from = $cartSession['from'];
 
-        $userRealInfo = UserRealService::getInfoByUserId($userInfo['id']);
-        if (empty($userRealInfo)){
+        $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
+        if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能下单');
         }
-        if ($userRealInfo['review_status'] != 1 ){
+        if ($invoiceInfo['review_status'] != 1) {
             return $this->error('您的实名认证还未通过，不能下单');
         }
-
-        if(empty($goodsList)){
+        if (empty($goodsList)) {
             return $this->error('没有对应的商品');
         }
 
+        //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
+        if ($info['is_self'] == 0 && $info['is_firm'] == 1) {
+            $u_id = $info['firm_id'];
+        }else{
+            $u_id = $userInfo['id'];
+        }
 
         // 收货地址列表
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-        if (!empty($addressList)){
-            foreach ($addressList as $k=>$v){
+        $addressList = UserAddressService::getInfoByUserId($u_id);
+        if (!empty($addressList)) {
+            foreach ($addressList as $k => $v) {
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
-                if ($v['id'] == $cartSession['address_id']){
+                if ($v['id'] == $cartSession['address_id']) {
                     $addressList[$k]['is_select'] = 1;
-                }else{
-                    $addressList[$k]['is_select'] ='';
+                } else {
+                    $addressList[$k]['is_select'] = '';
                 };
-                if ($v['id'] == $userInfo['address_id']){
-                    $addressList[$k]['is_default'] =1;
+                if (isset($info['address_id']) && $v['id'] == $info['address_id']) {
+                    $addressList[$k]['is_default'] = 1;
                     $first_one[$k] = $addressList[$k];
                 } else {
-                    $addressList[$k]['is_default'] ='';
+                    $addressList[$k]['is_default'] = '';
                 };
-
             }
-            if(!empty($first_one)){
-                foreach ($first_one as $k1=>$v1){
+            if (!empty($first_one)) {
+                foreach ($first_one as $k1 => $v1) {
                     unset($addressList[$k1]);
-                    array_unshift($addressList,$first_one[$k1]);
+                    array_unshift($addressList, $first_one[$k1]);
                 }
             }
         }
-        //限时抢购
-        if(!empty($id)){
-            try{
+
+        if ($from == 'promote') {//限时抢购
+            try {
                 ActivityPromoteService::getActivityPromoteById($id);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
-
             $goods_amount = $goodsList[0]['account_money'];
-            return $this->success(compact('invoiceInfo','addressList','goodsList','goods_amount','id'),'success');
-        }else{
+            return $this->success(compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id'),'success');
+        } elseif ($from == 'wholesale') {//集采拼团
+            try {
+                ActivityWholesaleService::getActivityWholesaleByIdApi($id);
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+            $goods_amount = $goodsList[0]['amount'];
+            $deposit = $goodsList[0]['deposit'];
+            return $this->success( compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id', 'deposit'),'success');
+        } elseif ($from == 'consign') {//清仓特价
+            $goods_amount = 0;
+            try {
+                foreach ($goodsList as $k3 => $v3) {
+                    $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['id'])['delivery_place'];
+                    $goodsList[$k3]['account'] = number_format($v3['shop_price'] * $v3['goods_number'], 2);
+                    $goods_amount += $v3['shop_price'] * $v3['goods_number'];
+                }
+                $goods_amount = number_format($goods_amount, 2);
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+            return $this->success( compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount'),'success');
+        } else {
             //购物车
             $goods_amount = 0;
-            try{
-                foreach ($goodsList as $k3=>$v3){
+            try {
+                foreach ($goodsList as $k3 => $v3) {
                     $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
-                    $goodsList[$k3]['account'] = number_format($v3['goods_price']*$v3['goods_number'],2);
-                    $goods_amount += $v3['goods_price']*$v3['goods_number'];
+                    $goodsList[$k3]['account'] = number_format($v3['goods_price'] * $v3['goods_number'], 2);
+                    $goods_amount += $v3['goods_price'] * $v3['goods_number'];
                 }
-                $goods_amount = number_format($goods_amount,2);
-            }catch (\Exception $e){
+                $goods_amount = number_format($goods_amount, 2);
+            } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
         }
@@ -205,90 +232,101 @@ class OrderController extends ApiController
     public function createOrder(Request $request)
     {
         $info = $this->getDeputyUserInfo($request);
+        $userInfo = $this->getUserInfo($request);
         $userIds = [];
         // 判断是否为企业用户
-        if($info['is_firm']){
+        if ($info['is_firm']) {
             //企业用户，企业
-            $userInfo = $this->getUserInfo($request);
             $userIds['user_id'] = $this->getUserID($request);
             $userIds['firm_id'] = $info['firm_id'];
-        }else{
+        } else {
             //个人
-            $userInfo = $this->getUserInfo($request);
             $userIds['user_id'] = $this->getUserID($request);
             $userIds['firm_id'] = '';
         }
-        $words = $request->input('words',' ');
+        $words = $request->input('words', ' ');
         // 判断是否有开票信息 地址可用
-        $userRealInfo = UserRealService::getInfoByUserId($userInfo['id']);
-        if (empty($userRealInfo)){
+        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        if (empty($invoiceInfo)) {
             return $this->error('您还没有实名认证，不能下单');
         }
-        if ($userRealInfo['review_status'] != 1 ){
+        if ($invoiceInfo['review_status'] != 1) {
             return $this->error('您的实名认证还未通过，不能下单');
         }
         $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
-        if (empty($addressList)){
+        if (empty($addressList)) {
             return $this->error('无地址信息请前去维护');
         }
 
         // 没有默认地址的情况下
-        if (empty($userInfo['address_id'])){
+        if (empty($userInfo['address_id'])) {
             $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
+
         }
-        $user_id = $this->getUserID($request);
-        $cartSession = Cache::get("cartSession".$user_id);
-        $cartList = $cartSession['goods_list'];
-        if($cartSession['address_id'] == ''){
+        $cartSession = Cache::get("cartSession".$userInfo['id']);
+        $carList = $cartSession['goods_list'];
+        if ($cartSession['address_id'] == '') {
             return $this->error('请选择收货地址');
         }
         //限时抢购下单
-        if($cartSession['from'] == 'promote'){
-            try{
-                $re[] = OrderInfoService::createOrder($cartList,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
-                if (!empty($re)){
-                    Session::forget('cartSession');
-                    return $this->success('订单提交成功','',$re);
-                } else {
-                    return $this->error('订单提交失败');
-                }
-            }catch (\Exception $e){
-                return $this->error($e->getMessage());
-            }
-
-        }elseif($cartSession['from'] == 'cart'){
-            //购物车下单
-            $shop_data = [];
-            foreach ($cartList as $k=>$v){
-                if (!isset($shop_data[$v['shop_id']])){
-                    $shop_data[$v['shop_id']] = $v['shop_id'];
-                }
-            }
-
-            foreach ($shop_data as $k2=>$v2){
-                $shop_data[$v2] = [];
-                foreach ($cartList as $k3=>$v3){
-                    if ($k2 == $v3['shop_id']){
-                        $shop_data[$v2][]=$v3;
-                    }
-                }
-            }
-           // dd($shop_data);
-            try{
-                $re=[];
-                foreach ($shop_data as $k4=>$v4){
-                    $re[] =  OrderInfoService::createOrder($v4,$userIds,$cartSession['address_id'],$words,$cartSession['from']);
-                }
-                if (!empty($re)){
-                    Cache::forget('cartSession');
+        if ($cartSession['from'] == 'promote') {
+            try {
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                if (!empty($re)) {
+                    Cache::forget('cartSession'.$userInfo['id']);
                     return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');
                 }
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+        } elseif ($cartSession['from'] == 'wholesale') {
+            try {
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                if (!empty($re)) {
+                    Cache::forget('cartSession'.$userInfo['id']);
+                    return $this->success($re,'订单提交成功');
+                } else {
+                    return $this->error('订单提交失败');
+                }
+            } catch (\Exception $e) {
+                return $this->error($e->getMessage());
+            }
+
+        } else {
+            //购物车下单
+            $shop_data = [];
+            foreach ($carList as $k => $v) {
+                if (!isset($shop_data[$v['shop_id']])) {
+                    $shop_data[$v['shop_id']] = $v['shop_id'];
+                }
+            }
+            foreach ($shop_data as $k2 => $v2) {
+                $shop_data[$v2] = [];
+                foreach ($carList as $k3 => $v3) {
+                    if ($k2 == $v3['shop_id']) {
+                        $shop_data[$v2][] = $v3;
+                    }
+                }
+            }
+
+            try {
+                $re = [];
+                foreach ($shop_data as $k4 => $v4) {
+                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                }
+                if (!empty($re)) {
+                    Cache::forget('cartSession'.$userInfo['id']);
+                    return $this->success($re,'订单提交成功');
+                } else {
+                    return $this->error('订单提交失败');
+                }
+            } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
         }
+
     }
 
 
@@ -341,8 +379,6 @@ class OrderController extends ApiController
             return $this->error('error');
         }
     }
-
-
 
 
 }

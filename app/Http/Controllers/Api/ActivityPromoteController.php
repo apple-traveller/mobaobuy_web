@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 use App\Services\UserService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ActivityPromoteService;
@@ -23,7 +22,11 @@ class ActivityPromoteController extends ApiController
     //限时抢购详情
     public function buyLimitDetail(Request $request){
         $id = $request->input('id');
-        $userId = $this->getUserID($request);
+        $userId = 0;
+        $uuid = $request->input('token');
+        if(!empty($uuid)){
+            $userId = Cache::get($uuid, 0);
+        }
         //进入详情页 增加点
         try{
             $res = ActivityPromoteService::addClickCountApi($id);
@@ -66,28 +69,12 @@ class ActivityPromoteController extends ApiController
                 'from'=>'promote'
             ];
             Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
-            return $this->success($activityInfo,'success');
+            return $this->success($session_data,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }
 
-    //抢购详情  最大数量控制
-    public function buyLimitMaxLimit(Request $request){
-       $goods_number =  $request->input('goods_number');
-       $id = $request->input('id');
-       if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1){
-           $userId = session('_curr_deputy_user')['firm_id'];
-       }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
-           $userId = session('_web_user_id');
-       }
 
-       try{
-            $maxBuyNumInfo = ActivityPromoteService::buyLimitMaxLimit($userId,$id,$goods_number);
-            return $this->success('','',$maxBuyNumInfo);
-       }catch (\Exception $e){
-           return $this->error($e->getMessage());
-       }
-    }
 
 }

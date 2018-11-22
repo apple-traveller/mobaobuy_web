@@ -296,8 +296,39 @@
 
 		//去结算
 		function toBalance(){
-		    //todo  重新获取 check_arr的值
-            check_arr = [];
+			 var userId = "{{session('_web_user_id')}}";
+			 if(userId > 0){
+			 	 $.ajax({
+			 		url: "/isReal",
+					dataType: "json",
+					data: {
+					'userId':userId
+					},
+					async:false, 
+					type: "POST",
+					success: function (data) {
+						if(data.code == 0){
+							 layer.confirm('请先实名再进行操作。', {
+			                    btn: ['去实名','再看看'] //按钮
+			                }, function(){
+			                    window.location.href='/account/userRealInfo';
+			                }, function(){
+
+			                });
+			                return;
+						}else{
+							toBalances();
+						}
+					}
+				 })
+				 
+			 }else{
+			 	$.msg.error('用户信息有误');
+			 }
+		}
+			
+          function toBalances(){
+          	check_arr = [];
             $('.shop_list .check_all span label input:checked').each(function(){
                 check_arr.push($(this).val());
             });
@@ -321,7 +352,10 @@
 			}else{
                 $.msg.error('请选择商品');return;
 			}
-		}
+          }
+		    
+            
+		
 
 		
     </script>

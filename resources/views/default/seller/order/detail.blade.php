@@ -112,6 +112,14 @@
                                 </dl>
                             </div>
                         </div>
+                        <div style="margin-left: 40px">
+                            定金凭证:
+                            @if(!empty($oorderInfo['deposit_pay_voucher']))
+                                <button type="button" onclick="depositImg()" class="layui-btn mt3">查看</button>
+                            @else
+                                <div><p style="line-height: 38px">暂无</p></div>
+                            @endif
+                        </div>
 
                         <!--收货人信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
@@ -259,9 +267,12 @@
                                                 @else
 
                                                 <input name="order_id" type="hidden" value="4">
-                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
+                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2 && $orderInfo['order_status']==3) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
                                                 @endif
-                                                    @if($orderInfo['order_status']>=3)
+                                                    @if($orderInfo['order_status']>=3 && $orderInfo['order_status'] <4)
+
+                                                        @if($orderInfo['deposit_status'] == 0 && $orderInfo['order_status']==3) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
+
                                                     <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
 
                                                     @endif
@@ -377,19 +388,54 @@
                 }
             });
         }
+        function depositImg() {
+            //示范一个公告层
+            layer.open({
+                type: 1
+                ,
+                title: false //不显示标题栏
+                ,
+                closeBtn: false
+                ,
+                area: '300px;'
+                ,
+                shade: 0.8
+                ,
+                id: 'PayImg' //设定一个id，防止重复弹出
+                ,
+                btn: ['关闭']
+                ,
+                btnAlign: 'c'
+                ,
+                moveType: 1 //拖拽模式，0或者1
+                ,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}" alt=""> </div>'
+                ,
+                yes: function (layero) {
+                    layer.closeAll();
+                }
+            });
+        }
         // 确认订单
         function conf(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
+                layer.prompt({
+                    title: '确认订单,并输入交货日期',
+                }, function(value, index, elem){
+
+
                     let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
                             'action_note':action_note,
-                            'order_status': 3
+                            'order_status': 3,
+                            'delivery_period':value
                         },
                         type: 'post',
                         success: function (res) {
@@ -407,31 +453,36 @@
             });
         }
 
-        //作废订单
+        //取消订单
         function cancelOne(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否取消订单?', {icon: 3, title:'提示'}, function(index){
-                    let to_buyer = $("input[ name='to_buyer' ]").val();
+                layer.prompt({
+                    title: '确认取消订单,并输入原因',
+                }, function(value, index, elem){
+
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
-                            'to_buyer':to_buyer,
-                            'order_status': 0
+                            'order_status': 0,
+                            'to_buyer':value
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 1,time:2000});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:3000});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 5,time:2000});
                             }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
+
+                    layer.close(index);
                 });
             });
         }
@@ -456,6 +507,38 @@
                             }
                         }
                     });
+                    layer.close(index);
+                });
+            });
+        }
+
+        // 确认收到定金
+        function receiveDep(id) {
+            layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
+                let layer = layui.layer;
+                layer.prompt({
+                    title: '确认收到定金，填写备注',
+                }, function(value, index, elem){
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'deposit_status': 1,
+                            'action_note':value
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:2000});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+                        }
+                    });
+
                     layer.close(index);
                 });
             });
