@@ -1212,6 +1212,7 @@ CREATE TABLE `user_sale` (
   `bill_file` varchar(200) NOT NULL DEFAULT '' COMMENT '清单文件',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卖货需求';

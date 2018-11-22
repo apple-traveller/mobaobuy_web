@@ -34,8 +34,11 @@ class ShopDeliveryController extends Controller
         }
 
         $condition['status'] = $status;
-
-        $deliverys = OrderInfoService::getDeliveryList(['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']], $condition);
+        try{
+            $deliverys = OrderInfoService::getDeliveryList(['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']], $condition);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
         return $this->display('seller.delivery.list', [
             'deliverys' => $deliverys['list'],
             'total' => $deliverys['total'],
@@ -55,7 +58,13 @@ class ShopDeliveryController extends Controller
     {
         $id = $request->input('id');
         $currentPage = $request->input('currentPage');
-        $delivery = OrderInfoService::getDeliveryInfo($id);
+        try{
+            $delivery = OrderInfoService::getDeliveryInfo($id);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
+
         //地区信息
         $region = RegionService::getRegion($delivery['country'], $delivery['province'], $delivery['city'], $delivery['district']);
         //商品信息

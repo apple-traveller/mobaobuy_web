@@ -84,18 +84,24 @@
                                             @endif
 
                                             <td>
-                                                <div class="read_info">
+                                                <div class="tDiv read_status">
                                                     @if(!empty($v['is_read']) && $v['is_read'] == 1)
-                                                        已读
+                                                        <div class='layui-btn layui-btn-sm layui-btn-radius'>已处理</div>
                                                     @else
-                                                        未读
+                                                        <div class='layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary'>待处理</div>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td class="handle">
                                                 <div class="tDiv a2 btn_read">
                                                     @if($v['is_read'] != 1)
-                                                        <a href="javascript:void(0);"  id="{{$v['id']}}" is_read="{{$v['is_read']}}" class="btn_trash btn_see"><i class="layui-icon layui-icon-util"></i>设为已读</a>
+                                                        <a href="javascript:void(0);" id="{{$v['id']}}" class="btn_trash btn_see btn_input_opinion">
+                                                            <i class="layui-icon layui-icon-util"></i>去处理
+                                                        </a>
+                                                    @else
+                                                        <a href="javascript:void(0);" content="{{$v['opinion']}}" class="btn_trash btn_see btn_see_opinion">
+                                                            <i class="sc_icon sc_icon_see"></i>查看处理意见
+                                                        </a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -132,27 +138,58 @@
 
 <script>
         $(function(){
-            $('.btn_see').click(function(){
+            //输入处理意见
+            $('.btn_input_opinion').click(function () {
                 let _self = $(this);
                 let _id = _self.attr('id');
-                let _is_read = _self.attr('is_read');
-                if(_is_read == 0){
+                layer.prompt({title: '请输入处理意见', formType: 2}, function(text, index){
                     $.ajax({
                         type: "GET",
-                        url: "/admin/user/setRead",
-                        data: {'id':_id},
+                        url: "/admin/demand/setRead",
+                        data: {'id':_id,'opinion':text},
                         dataType: "json",
                         success: function(res){
                             if (res.code == 1){//设置成功
-                                _self.parents(".table_info").find(".read_info").text('已读');
-                                _self.parents('.table_info').find('.btn_read').empty();
+                                let _read = '<div class="layui-btn layui-btn-sm layui-btn-radius">已处理</div>';
+                                let _content = '<a href="javascript:void(0);" content="'+text+'" class="btn_trash btn_see btn_see_opinion">' +
+                                    '<i class="sc_icon sc_icon_see"></i>查看处理意见 </a>';
+                                _self.parents(".table_info").find(".read_status").html(_read);
+                                _self.parents('.table_info').find('.btn_read').html(_content);
                             } else {
                                 layer.msg(res.msg);
                             }
                         }
                     });
-                }
+                    layer.close(index);
+                });
             });
+
+            //查看处理意见
+            $(document).delegate('.btn_see_opinion','click',function(){
+                let _content = $(this).attr('content');
+                layer.alert(_content);
+            });
+//            $('.btn_see').click(function(){
+//                let _self = $(this);
+//                let _id = _self.attr('id');
+//                let _is_read = _self.attr('is_read');
+//                if(_is_read == 0){
+//                    $.ajax({
+//                        type: "GET",
+//                        url: "/admin/user/setRead",
+//                        data: {'id':_id},
+//                        dataType: "json",
+//                        success: function(res){
+//                            if (res.code == 1){//设置成功
+//                                _self.parents(".table_info").find(".read_info").text('已读');
+//                                _self.parents('.table_info').find('.btn_read').empty();
+//                            } else {
+//                                layer.msg(res.msg);
+//                            }
+//                        }
+//                    });
+//                }
+//            });
         });
         paginate();
         function paginate(){

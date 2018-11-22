@@ -34,7 +34,7 @@ class ShopOrderController extends Controller
         $condition = [];
         $condition['is_delete'] = 0;
         $condition['shop_id'] = $shop_id;
-        $condition[]['order_status']='!1';
+        $condition['order_status']='!1';
         if (!empty($tab_code)){
             $condition['tab_code'] = $tab_code;
         }
@@ -62,7 +62,7 @@ class ShopOrderController extends Controller
     public function getStatusCount()
     {
         $seller_id = session('_seller_id')['shop_id'];
-        $status = OrderInfoService::getOrderStatusCount(0,0,$seller_id);
+        $status = OrderInfoService::getOrderStatusCount(0,'',$seller_id);
         if (!empty($status)){
             return $this->success('success','',$status);
         } else {

@@ -86,10 +86,10 @@ class ShopLoginService
         }
         $shop_info = ShopRepo::getInfoByFields(['id'=>$user_info['shop_id']]);
         if ($shop_info['is_validated'] == 0){
-            self::throwBizError('该店铺未通过审核，暂不能登录，请耐心等待');
+            self::throwBizError('未通过审核,暂不能登录,请耐心等待');
         }
         if ($shop_info['is_freeze'] == 1){
-            self::throwBizError('该店铺已经冻结，暂不能登录');
+            self::throwBizError('该店铺已经冻结,暂不能登录');
         }
         // 验证成功后，创建事件
         createEvent('sellerUserLogin',['shop_id'=>$shop_info['id'],'user_id'=>$user_info['id'],'ip'=>$data['ip']]);
