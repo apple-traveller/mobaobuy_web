@@ -357,15 +357,9 @@ class GoodsController extends ApiController
         $id = $request->input('id');
         $page = $request->input('page',0);
         $page_size = $request->input('length',6);
-        $url = '/goodsAttributeDetails/'.$id .'?page=%d';
         try{
             $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
-            if(!empty($shopGoodsInfo['list'])){
-                $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
-            }else{
-                $linker = createPage($url, 1, 1);
-            }
-            return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list'],'linker'=>$linker]);
+            return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list']]);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

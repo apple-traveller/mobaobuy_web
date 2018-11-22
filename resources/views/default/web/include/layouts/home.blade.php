@@ -6,6 +6,7 @@
     @yield('css')
 </head>
 <body style="background-color: rgb(244, 244, 244);">
+    @yield('top_ad')
     @include(themePath('.','web').'web.include.partials.top')
     @include(themePath('.','web').'web.include.partials.top_search')
 
