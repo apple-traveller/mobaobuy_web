@@ -276,7 +276,7 @@ class OrderController extends Controller
                 } else {
                     $addressList[$k]['is_select'] = '';
                 };
-                if ($v['id'] == $info['address_id']) {
+                if (isset($info['address_id']) && $v['id'] == $info['address_id']) {
                     $addressList[$k]['is_default'] = 1;
                     $first_one[$k] = $addressList[$k];
                 } else {
@@ -468,4 +468,13 @@ class OrderController extends Controller
         }
         return $this->display('web.user.order.orderSubmission', ['re' => $re]);
     }
+    //支付界面
+    public function pay(){
+        return $this->display('web.order.pay');
+    }
+    //等待审核界面
+    public function waitConfirm(){
+        return $this->display('web.order.waitConfirm');
+    }
+
 }

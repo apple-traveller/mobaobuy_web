@@ -15,6 +15,7 @@
                     <div class="order_state_tab">
                         <a href="/seller/order/list" @if(empty($tab_code)) class="current" @endif>全部订单@if(empty($tab_code)) <em>({{$total}})</em> @endif</a>
                         <a href="/seller/order/list?tab_code=waitAffirm" @if($tab_code=='waitAffirm') class="current" @endif>待确认 <em id="waitAffirm"></em> </a>
+                        <a href="/seller/order/list?tab_code=waitDeposit" @if($tab_code=='waitDeposit') class="current" @endif>待付定金 <em id="waitDeposit"></em> </a>
                         <a href="/seller/order/list?tab_code=waitPay" @if($tab_code=='waitPay') class="current" @endif>待付款 <em id="waitPay"></em> </a>
                         <a href="/seller/order/list?tab_code=waitSend" @if($tab_code=='waitSend') class="current" @endif>待发货<em id="waitSend"></em> </a>
                         <a href="/seller/order/list?tab_code=finish" @if($tab_code=='finish') class="current" @endif>已完成<em id="finish"></em> </a>
@@ -198,6 +199,9 @@
             success:function (result) {
                 if (result.code == 1) {
                     let res = result.data;
+                    if(res.waitDeposit > 0){
+                        $('#waitDeposit').html(res.waitDeposit);
+                    }
                     if(res.waitAffirm > 0){
                         $('#waitAffirm').html(res.waitAffirm);
                     }

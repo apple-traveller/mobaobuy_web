@@ -349,39 +349,4 @@ class UserController extends Controller
         }
     }
 
-    //会员卖货需求
-    public function userSale(Request $request)
-    {
-        $user_name = $request->input('user_name','');
-        $currpage = $request->input("currpage",1);
-        $condition = [];
-        if(!empty($user_name)){
-            $condition['user_name'] = "%".$user_name."%";
-        }
-        $pageSize = 10;
-        $list = UserService::getUserSaleList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        return $this->display('admin.user.sale',[
-            'saleList'=>$list['list'],
-            'user_name'=>$user_name,
-            'saleCount'=>$list['total'],
-            'currpage'=>$currpage,
-            'pageSize'=>$pageSize,
-        ]);
-    }
-    //设为已读
-    public function setRead(Request $request)
-    {
-        $id = $request->get('id');
-        if(empty($id)){
-            return $this->error('无法获取参数ID');
-        }
-        #修改数据库
-        $data = ['is_read' => 1];
-        $res = UserService::userSaleModify($id,$data);
-        if($res){
-            return $this->success('设置成功');
-        }else{
-            return $this->error('设置失败！请联系管理员。');
-        }
-    }
 }
