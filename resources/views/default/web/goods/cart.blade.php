@@ -340,13 +340,13 @@
 					<span class="check_tick fl" style="margin: 33px 0px;">
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
 					</span>
-					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v['goods_name']}}</a>
+					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
 					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元</span>
 					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
-							<input type="text" class="shop_num_amount Bidders_record_text" id="{{$v['id']}}" class="goods_numberListen" value="{{$v['goods_number']}}"/>
+							<input type="text" class="shop_num_amount Bidders_record_text goods_numberListen" id="{{$v['id']}}" value="{{$v['goods_number']}}"/>
 							<a class="shop_num_plus num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
 						</div>
 					</div>
