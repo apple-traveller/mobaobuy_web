@@ -37,7 +37,7 @@
                                     {{--</ul>--}}
                                 {{--</div>--}}
                             {{--</div>--}}
-                            <input type="hidden" value="自营" name="store_name"  id="store_name_val"  />
+                            <input type="hidden" value="自售" name="store_name"  id="store_name_val"  />
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
