@@ -289,8 +289,6 @@ class GoodsController extends Controller
     public function checkListenCartInput(Request $request){
         $id = $request->input('id');
         $goodsNumber = $request->input('goodsNumber');
-
-
         try{
             $goods_number = GoodsService::checkListenCartInput($id,$goodsNumber);
             return $this->success('','',$goods_number);

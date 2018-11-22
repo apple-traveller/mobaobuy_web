@@ -66,6 +66,12 @@
 		}
     </style>
     <script type="text/javascript">
+    	//数字千分位
+    	function formatNum(num){  
+    		var num = num.toFixed(2)+"";//保留两位小数
+			return num.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g,'$1,');
+
+		}  
     	//购物车选中的数据
     	var check_arr = new Array();
     	$(function(){
@@ -75,13 +81,20 @@
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
 				var thisMul = $(this).attr('data-id');//规格
-				MaxNum = $(this).parent().parent().siblings('.shop_price').text();
+				MaxNum = $(this).parent().parent().siblings('.shop_price').text();//可售
 				var ipts=$(this).siblings('input.Bidders_record_text');
-				var iptsVal=ipts.attr('value');
-				var id = $(this).attr('id');
+				var iptsVal=ipts.attr('value');//点击加号后input的值
+				var id = $(this).attr('id');//数据库cart自增id
 				var thisDom = $(this);
+				// console.log(thisMul);
+				// console.log(MaxNum);
+				// console.log(ipts);
+				// console.log(iptsVal);
+				// console.log(id);
+				// console.log(thisDom);
+				//console.log(ipts.val()); //cart表的goods_number
+				// return;
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
-					// ipts.val(Number(MaxNum));
                     layer.msg('不能大于可售', {icon: 5});
 					return;
 				}else{
@@ -94,9 +107,9 @@
 	                'data':{'id':id},
 	                'url':'{{url('/addCartGoodsNum')}}',
 	                success:function(res){
-	                    // var result = JSON.parse(res);
+	                     // console.log(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(number_format(res['data'],2));
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 	                    }else{
                             layer.msg('增加失败请重试', {icon: 5});
 	                        window.location.reload();
@@ -112,7 +125,7 @@
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
 				var thisDom = $(this);
-				if (Number(ipts.val())-Number(thisMul)<1) {
+				if (Number(ipts.val())-Number(thisMul)<Number(thisMul)) {
                     layer.msg('已经是最低的购买数量了', {icon: 5});
 					return;
 				}else{
@@ -127,7 +140,7 @@
 	                success:function(res){
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
-	                        thisDom.parent().parent().nextAll('.shop_price_d').html(number_format(res['data'],2));
+	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 	                    }else{
                             layer.msg('减少失败请重试', {icon: 5});
 	                        window.location.reload();
@@ -155,17 +168,20 @@
 
 			//数量输入检测
 			$(document).find('input:text').blur(function(){  
+				var thisDom = $(this);
 				//数量
 				var goodsNumber = $(this).val();
 				//当前购物车数据id
 				var id = $(this).attr('id');
-                	if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                	if((/^(\+|-)?\d+$/.test( goodsNumber )) && goodsNumber>0){
+
             			$.ajax({
             				'type':'post',
 			                'data':{'id':id,'goodsNumber':goodsNumber},
 			                'url':'{{url('/checkListenCartInput')}}',
 			                success:function(res){
 			                    if(res.code){
+			                    	thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 			                    }else{
 			                        layer.msg('输入的数量有误');
 			                        window.location.reload();
@@ -352,7 +368,7 @@
 					</div>
 				    
 				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-				    <span class="shop_price_d fl tac">￥{{$cartInfo['quoteInfo'][$k]['account']}}</span>
+				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
 				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{$v['id']}}" onclick="del(this)"></a></span>
 				</li>
 			</ul>
