@@ -276,7 +276,7 @@ class OrderController extends Controller
                 } else {
                     $addressList[$k]['is_select'] = '';
                 };
-                if ($v['id'] == $info['address_id']) {
+                if (isset($info['address_id']) && $v['id'] == $info['address_id']) {
                     $addressList[$k]['is_default'] = 1;
                     $first_one[$k] = $addressList[$k];
                 } else {
