@@ -46,7 +46,17 @@
     </script>
 @endsection
 
+@section('top_ad')
+    @if(!empty($top_ad))
+        <div style="background:url({{$top_ad['ad_link']}}) no-repeat center top;height:80px;"></div>
+    @else
+
+    @endif
+@endsection
+
 @section('content')
+    {{--<div style="background:url() no-repeat center top;height:80px;"></div>--}}
+
     <div class="play_banner">
         <div class="banner-imgs-div">
             @foreach($banner_ad as $item)
