@@ -262,4 +262,11 @@ class ActivityWholesaleService
             self::throwBizError('不存在的商品信息');
         }
     }
+
+    public static function getActivityWholesaleByIdApi($id){
+        $activityPromoteInfo = ActivityWholesaleRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
 }

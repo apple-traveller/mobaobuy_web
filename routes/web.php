@@ -596,6 +596,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::get('/wholesale/list', 'ActivityWholesaleController@index');//集采拼团
         Route::post('/wholesale/detail', 'ActivityWholesaleController@detail');//集采拼团详情
 
+        Route::get('/consign/list', 'ActivityConsignController@index');//寄售
+        Route::post('/consign/detail', 'ActivityConsignController@detail');//寄售抢购详情
+
         Route::post('/article/list', 'ArticleController@getList');//获取咨询列表
         Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
 
@@ -634,6 +637,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
 
             Route::post('/buyLimit/to_balance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
             Route::post('/wholesale/to_balance', 'ActivityWholesaleController@toBalance');//集采拼团 立即下单
+            Route::post('/consign/to_balance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
             Route::post('/order/change_deputy','OrderController@changeDeputy');//切换代理
             Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理

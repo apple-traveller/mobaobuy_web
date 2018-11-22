@@ -22,7 +22,11 @@ class ActivityPromoteController extends ApiController
     //限时抢购详情
     public function buyLimitDetail(Request $request){
         $id = $request->input('id');
-        $userId = $this->getUserID($request);
+        $userId = 0;
+        $uuid = $request->input('token');
+        if(!empty($uuid)){
+            $userId = Cache::get($uuid, 0);
+        }
         //进入详情页 增加点
         try{
             $res = ActivityPromoteService::addClickCountApi($id);

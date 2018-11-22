@@ -191,6 +191,14 @@ class ActivityPromoteService
         }
     }
 
+    //通过id查抢购表数据
+    public static function getActivityPromoteByIdApi($id){
+        $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
+
     //增加限时抢购的点击量
     public static function addClickCount($id)
     {
