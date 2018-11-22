@@ -33,7 +33,7 @@ class IndexController extends Controller
 
         $now = Carbon::now();
         //获取顶部广告
-        $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'desc']],['position_id'=>2, 'start_time|<='=>$now, 'end_time|>=' => $now]);
+        $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2, 'start_time|<='=>$now, 'end_time|>=' => $now]);
         //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
         //获取订单状态数

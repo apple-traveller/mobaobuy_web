@@ -48,7 +48,7 @@
 
 @section('top_ad')
     @if(!empty($top_ad))
-        <div style="background:url({{$top_ad['ad_link']}}) no-repeat center top;height:80px;"></div>
+        <div style="background:url({{getFileUrl($top_ad['ad_link'])}}) no-repeat center top;height:80px;"></div>
     @else
 
     @endif
