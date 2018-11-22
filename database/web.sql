@@ -56,6 +56,7 @@ CREATE TABLE `user` (
   `is_firm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否企业用户 0-否 1-是',
   `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单是否需审批 0-否 1-是',
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
+  `is_logout` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '默认0，被企业修改了权限 就为1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';

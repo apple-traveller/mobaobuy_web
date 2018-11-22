@@ -302,9 +302,10 @@ class GoodsService
 
     //物性表详情
     public static function goodsAttributeDetails($id,$page,$pageSize){
-        dump($id);
-        $id = decrypt($id);
-        dd($id);
+        if(!is_numeric($id)){
+            $id = decrypt($id);
+        }
+
         if($id<0){
             self::throwBizError('产品信息有误');
         }
