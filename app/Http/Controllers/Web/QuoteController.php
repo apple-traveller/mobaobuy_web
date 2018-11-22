@@ -75,6 +75,7 @@ class QuoteController extends Controller
             $condition['place_id'] = $place_id;
         }
         if (!empty($keyword)) {
+
             $con['opt'] = 'OR';
             $con['b.goods_name'] = '%' . $keyword . '%';
             $con['cat.cat_name'] = '%' . $keyword . '%';

@@ -513,6 +513,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
         Route::post('/order/updateOrderStatus', 'ShopOrderController@updateOrderStatus'); // 更新订单状态
         Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
+        Route::post('/order/updateDepositStatus', 'ShopOrderController@updateDepositStatus'); // 更改定金状态
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
