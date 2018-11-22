@@ -252,7 +252,7 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
-            // $(".query_store_name").hide();
+//             $(".query_store_name").hide();
         }
 
         // 种类 获取焦点请求所有的分类数据
