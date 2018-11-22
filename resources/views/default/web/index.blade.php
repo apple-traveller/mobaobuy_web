@@ -46,7 +46,19 @@
     </script>
 @endsection
 
+@section('top_ad')
+    @if(!empty($top_ad))
+        <a  style="display:block;" @if(strlen(trim($top_ad['ad_link']))!=0) target="_blank" href="{{$top_ad['ad_link']}}" @else href="#" @endif>
+            <div  style="background:url('{{getFileUrl($top_ad['ad_img'])}}') no-repeat center top;height:80px;"></div>
+        </a>
+    @else
+
+    @endif
+@endsection
+
 @section('content')
+    {{--<div style="background:url() no-repeat center top;height:80px;"></div>--}}
+
     <div class="play_banner">
         <div class="banner-imgs-div">
             @foreach($banner_ad as $item)
