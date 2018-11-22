@@ -1,24 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Repositories\CartRepo;
-use App\Services\CartService;
 use App\Services\GoodsService;
 use App\Services\UserAddressService;
-use App\Services\UserInvoicesService;
 use App\Services\UserRealService;
-use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\ShopGoodsQuoteService;
-use Illuminate\Support\Facades\Session;
-use App\Services\GoodsCategoryService;
-use App\Services\BrandService;
-use App\Services\RegionService;
-use function App\Helpers\createPage;
+
 class CartController extends Controller
 {
-    //购物车
+    /**
+     * cart
+     * @param Request $request
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function cart(Request $request){
         $userId = session('_web_user_id');
         if(session('_curr_deputy_user')['is_firm']){
@@ -54,7 +49,12 @@ class CartController extends Controller
         }
     }
 
-    //删除购物车商品
+    /**
+     * 删除购物车信息
+     * delCart
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function delCart(Request $request){
         $id = $request->input('id');
         try{
@@ -65,7 +65,12 @@ class CartController extends Controller
         }
     }
 
-    //递加产品数量
+    /**
+     * 递加产品数量
+     * addCartGoodsNum
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
@@ -76,7 +81,12 @@ class CartController extends Controller
         }
     }
 
-    //递减产品数量
+    /**
+     * 递减产品数量
+     * reduceCartGoodsNum
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse]
+     */
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
@@ -87,7 +97,11 @@ class CartController extends Controller
         }
     }
 
-    //清空购物车
+    /**
+     * 清空购物车
+     * clearCart
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function clearCart(){
         $userId = session('_web_user_id');
         try{
@@ -98,7 +112,12 @@ class CartController extends Controller
         }
     }
 
-    //购物车 去结算
+    /**
+     * 购物车 去结算
+     * toBalance
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function toBalance(Request $request){
         $cartIds = $request->input('cartId');
         $userInfo = session('_web_user');
@@ -119,8 +138,6 @@ class CartController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
-
 
     /**
      * 选择订单收货地址
@@ -145,9 +162,12 @@ class CartController extends Controller
         return $this->success('选择成功');
     }
 
-
-
-    //购物车多选
+    /**
+     * 购物车多选
+     * checkListen
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function checkListen(Request $request){
         $userId = session('_web_user_id');
         $cartIds = $request->input('cartId');
@@ -159,7 +179,12 @@ class CartController extends Controller
         }
     }
 
-    //购物车input判断
+    /**
+     * 购物车input判断
+     * checkListenCartInput
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function checkListenCartInput(Request $request){
         $id = $request->input('id');
         $goodsNumber = $request->input('goodsNumber');
@@ -173,7 +198,12 @@ class CartController extends Controller
         }
     }
 
-    //修改购物车数量
+    /**
+     * 修改购物车数量
+     * editCartNum
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function editCartNum(Request $request){
         $cartNum = $request->input('cartNum');
         $id = $request->input('id');
