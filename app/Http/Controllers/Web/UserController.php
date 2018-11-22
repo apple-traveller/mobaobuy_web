@@ -676,6 +676,20 @@ class UserController extends Controller
             return $this->error($e->getMessage());
         }
     }
+    /**
+     * @param Request $request
+     * @return $this
+     * 检测用户是否实名通过
+     */
+    public function isReal(Request $request){
+        $userId = $request->input('userId');
+        try{
+            UserService::isReal($userId);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 
     //用户信息
     public function userInfo(Request $request)

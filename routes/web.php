@@ -334,7 +334,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/account/saveUserReal', 'UserController@saveUserReal');//保存实名
         Route::any('/account/editPayPassword', 'UserController@editPayPassword');//修改支付密码
         Route::any('/account/editPayPassword/sendSms', 'UserController@sendPayPwdSms');//发送支付密码短信
-
+        Route::post('/isReal', 'UserController@isReal');//根据用户id检测用户是否实名
         Route::get('/account/accountLogout', 'UserController@accountLogout');//注销账号
         /********************************************************************/
 
@@ -414,9 +414,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
-        Route::group(['middleware'=>'web.firmUserAuth'],function(){
+
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
             Route::post('/createOrder','OrderController@createOrder');//提交订单
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
 
         });
 
