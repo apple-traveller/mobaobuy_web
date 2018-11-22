@@ -143,7 +143,7 @@
         {
             layui.use('layer', function(){
                 let layer = layui.layer;
-                layer.confirm('是否取消?', {icon: 3, title:'提示'}, function(index){
+                layer.confirm('是否取消开票?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
                         url:'/seller/invoice/cancelInvoice',
                         data: {

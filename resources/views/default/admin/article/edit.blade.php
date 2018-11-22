@@ -33,12 +33,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;文章分类：</div>
                                 <div class="label_value">
 
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
+                                    <select style="float:left;height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
 
                                         @foreach($cateTrees as $vo)
-                                            <option @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
+                                            <option @if(isset($vo['hasChild'])) disabled="disabled"  @endif @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
                                         @endforeach
                                     </select>
+                                    <div style="float: left;margin-left: 10px;" class="notice">子分类才能被选中</div>
 
                                 </div>
                             </div>
@@ -90,6 +91,7 @@
                                     <button type="button" class="layui-btn upload-file" data-type="" data-path="article" >上传图片</button>
                                     <input type="text" value="{{$article['image']}}" class="text"  name="image" style="display:none;">
                                     <img @if(empty($article['image'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($article['image'])}}"  @endif   class="layui-upload-img"><br/>
+                                    <div class="form_prompt"></div>
                                 </div>
                             </div>
                         </div>
@@ -140,6 +142,7 @@
                         var item = this.item;
                         item.siblings('input').attr('value', res.data.path);
                         item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('div').filter(".form_prompt").remove();
                     }else{
                         layer.msg(res.msg, {time:2000});
                     }
@@ -152,6 +155,11 @@
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
+                    var content = ue.getContent();
+                    if(content==""){
+                        alert("文章内容不能为空");
+                        return false;
+                    }
                     $("#article_form").submit();
                 }
             });

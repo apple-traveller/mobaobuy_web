@@ -67,7 +67,7 @@
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;">';
                                 html += '<p>'+ full.goods[index].goods_name + '</p><p>';
-                                if(full.order_status == 2 && full.deposit_status == 1 && full.extension_code == 'wholesale'){
+                                if(full.order_status == 2 && full.deposit_status == 0 && full.extension_code == 'wholesale'){
                                     html += '<span style="float:left;width:50%;">单价不超过：￥' + full.goods[index].goods_price + '</span>';
                                 }else{
                                     html += '<span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span>';
@@ -76,10 +76,10 @@
                                 html += '<span class="pl10">数量：'+ full.goods[index].goods_number+' kg</span></p></div></td>';
                                 if(index == 0){
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
-                                    if(full.order_status == 2 && full.deposit_status == 1){
-                                        html +='<p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p>';
-                                    }else{
+                                    if(full.order_status == 2 && full.deposit_status == 0){
                                         html +='<p>待支付订金：￥'+ full.deposit +'</p>';
+                                    }else{
+                                        html +='<p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p>';
                                     }
 
                                     html += '</td><td width="20%" rowspan="'+ full.goods.length +'">';
