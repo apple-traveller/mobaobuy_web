@@ -38,8 +38,8 @@
                                     <td><div class="tDiv">{{$vo['id']}}</div></td>
                                     <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                    <td><div class="tDiv changeInput">
-                                            <input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}"  type="text">
+                                    <td><div style="margin-left: 80px;" class="tDiv changeInput">
+                                            <input  name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}"  type="text">
                                         </div>
                                     </td>
                                     <td class="handle">

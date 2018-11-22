@@ -42,7 +42,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系方式：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员电话号码：</div>
                                 <div class="label_value">
                                     <input type="text" name="contact_info" class="text" value="" maxlength="40" autocomplete="off" id="contact_info">
                                     <div class="form_prompt"></div>

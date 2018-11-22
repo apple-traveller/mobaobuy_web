@@ -137,8 +137,7 @@ class GoodsService
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] = number_format($v['goods_number'] * $v['goods_price'],2);
-
+            $quoteInfo[$k]['account'] =$v['goods_number'] * $v['goods_price'];
             //取goods表的规格
             $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
@@ -246,7 +245,7 @@ class GoodsService
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
             throw $e;
         }
@@ -257,9 +256,12 @@ class GoodsService
         try{
             $cartInfo = CartRepo::getInfo($id);
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            if($cartInfo['goods_number']<=$goodsInfo['packing_spec']){
+                self::throwBizError('该商品不能减少了');
+            }
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];;
         }catch (\Exception $e){
             throw $e;
         }

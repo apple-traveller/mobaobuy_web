@@ -582,7 +582,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::post('/article/hot_keywords', 'GoodsController@saveHotKeyWords');//保存关键词
 
         Route::get('/buyLimit/list', 'ActivityPromoteController@buyLimit');//限时抢购
-        Route::get('/buyLimitDetails/{id?}', 'ActivityPromoteController@buyLimitDetails');//限时抢购详情
+        Route::post('/buyLimit/detail', 'ActivityPromoteController@buyLimitDetail');//限时抢购详情
         Route::get('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
         Route::post('/goodsAttribute', 'GoodsController@goodsAttribute');//物性表
         Route::get('/goodsAttributeDetails/{id?}', 'GoodsController@goodsAttributeDetails');//物性表详情
@@ -622,6 +622,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/cart/get_num','GoodsController@getCartNum');//获取用户购物车数量
             Route::post('/cart/check_listen_cart_input','GoodsController@checkListenCartInput');//购物车判断数量
             Route::post('/cart/to_balance','GoodsController@toBalance');//购物车去结算
+
+            Route::post('/buyLimit/to_balance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
+            Route::post('/buyLimit/maxLimit','ActivityPromoteController@buyLimitMaxLimit'); //抢购最大限购数量
 
             Route::post('/order/change_deputy','OrderController@changeDeputy');//切换代理
             Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理

@@ -292,7 +292,6 @@ class OrderController extends ApiController
     }
 
 
-
     //选择公司
     public function changeDeputy(Request $request)
     {
