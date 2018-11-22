@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>会员中心 - @yield('title')</title>
+    <title>@yield('title')</title>
+    <meta name="description" content="@yield('description')" />
+    <meta name="keywords" content="@yield('keywords')" />
     @include(themePath('.','web').'web.include.partials.base')
     @yield('style')
 </head>

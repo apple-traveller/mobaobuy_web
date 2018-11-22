@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '首页')
+@section('title', getSeoInfoByType('index')['title'])
+@section('keywords', getSeoInfoByType('index')['keywords'])
+@section('description', getSeoInfoByType('index')['description'])
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/index.css')}}" />
     <style>

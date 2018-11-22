@@ -224,5 +224,19 @@ if (!function_exists('getOrderFromText')){
     }
 }
 
+if(!function_exists('getSeoInfoByType')){
+    function getSeoInfoByType($type){
+        $res = \App\Services\SeoService::getInfoByType($type);
+        if($res){
+            return $res;
+        }
+        return [
+            'title'=>'',
+            'keywords'=>'',
+            'description'=>''
+        ];
+    }
+}
+
 
 
