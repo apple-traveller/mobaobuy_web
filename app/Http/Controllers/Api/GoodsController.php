@@ -334,4 +334,41 @@ class GoodsController extends ApiController
         }
     }
 
+    //物性表
+    public function goodsAttribute(Request $request)
+    {
+        $page = $request->input('currpage', 1);
+        $page_size = $request->input('pagesize', 10);
+        $goods_name= $request->input('goods_name', '');
+        $condition = [];
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%' . $goods_name . '%';
+        }
+        try{
+            $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
+            return $this->success(['total'=>$goodsInfo['total'],'goodslist'=>$goodsInfo['list']]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //物性表详情
+    public function goodsAttributeDetails(Request $request){
+        $id = $request->input('id');
+        $page = $request->input('page',0);
+        $page_size = $request->input('length',6);
+        $url = '/goodsAttributeDetails/'.$id .'?page=%d';
+        try{
+            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+            if(!empty($shopGoodsInfo['list'])){
+                $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
+            }else{
+                $linker = createPage($url, 1, 1);
+            }
+            return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list'],'linker'=>$linker]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
 }
