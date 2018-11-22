@@ -219,10 +219,4 @@ class CartController extends Controller
         }
     }
 
-    //我的订单
-    public function orderList(){
-        $userId = session('_web_user_id');
-        $orderList = GoodsService::orderList($userId);
-        return $this->display('web.order.order',compact('orderList'));
-    }
 }
