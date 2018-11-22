@@ -346,7 +346,12 @@ class GoodsController extends ApiController
         }
         try{
             $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
-            return $this->success(['total'=>$goodsInfo['total'],'goodslist'=>$goodsInfo['list']]);
+            if(!empty($goodsInfo)){
+                return $this->success(['total'=>$goodsInfo['total'],'goodslist'=>$goodsInfo['list']]);
+            }else{
+                return $this->error('无数据');
+            }
+
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -354,12 +359,31 @@ class GoodsController extends ApiController
 
     //物性表详情
     public function goodsAttributeDetails(Request $request){
-        $id = $request->input('id');
-        $page = $request->input('page',0);
-        $page_size = $request->input('length',6);
+        $id = $request->input('goods_id');
+        if(empty($id)){
+            return $this->error('缺少参数，goods_id');
+        }
+        try{
+            $shopInfo = GoodsService::getGoodInfo($id);
+            return $this->success($shopInfo,'success');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
+    //物性表详情页下面的供应商列表
+    public function goodSupplyList(Request $request)
+    {
+        $id = $request->input('goods_id');
+        $page = $request->input('currpage',1);
+        $page_size = $request->input('pagesize',6);
+        if(empty($id)){
+            return $this->error('缺少参数，goods_id');
+        }
         try{
             $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
-            return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list']]);
+            return $this->success($shopGoodsInfo['list'],'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
