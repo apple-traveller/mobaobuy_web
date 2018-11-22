@@ -48,7 +48,9 @@
 
 @section('top_ad')
     @if(!empty($top_ad))
-        <div style="background:url({{getFileUrl($top_ad['ad_link'])}}) no-repeat center top;height:80px;"></div>
+        <a target="_blank" style="display:block;" @if(!empty($top_ad['ad_link'])) href="{{$top_ad['ad_link']}}" @else href="#" @endif>
+            <div  style="background:url('{{getFileUrl($top_ad['ad_img'])}}') no-repeat center top;height:80px;"></div>
+        </a>
     @else
 
     @endif
