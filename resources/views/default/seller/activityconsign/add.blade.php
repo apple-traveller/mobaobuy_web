@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加寄售</div>
+        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加清仓特价</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">
@@ -30,17 +30,6 @@
 
 
                         <div class="switch_info" style="display: block;">
-                            {{--<div class="item">--}}
-                                {{--<div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>--}}
-                                {{--<div class="label_value">--}}
-                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />--}}
-                                    {{--<input type="hidden" value="{{old('store_name')}}" name="store_name"  id="store_name_val"  />--}}
-                                    {{--<input type="hidden" value="{{old('store_id')}}" name="store_id"  id="store_id" />--}}
-                                    {{--<div class="form_prompt"></div>--}}
-                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">--}}
-                                    {{--</ul>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
                             <input type="hidden" value="自售" name="store_name"  id="store_name_val"  />
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
@@ -275,30 +264,6 @@
             })
         });
 
-        $("#store_name").focus(function(){
-            $(".query_store_name").children().filter("li").remove();
-            $.ajax({
-                url: "/seller/store/list",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){console.log(res);
-                    if(res.code==1){
-                        $(".query_store_name").show();
-                        var data = res.data;
-                        var _html = '<li data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;">自营</li>';
-                        for(var i=0;i<data.length;i++){
-                            _html += '<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>';
-                        }
-                    }else{
-                        $(".query_store_name").show();
-//                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到店铺</li>');
-                    }
-                    $(".query_store_name").append(_html);
-                }
-            })
-        });
-
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -311,15 +276,6 @@
             $("#goods_name").attr("data-packing-spac",packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
-        });
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_store_name","click",function(){
-            $("#store_name").siblings("div").filter(".notic").remove();
-            var store_name = $(this).attr("data-store-name");
-            var store_id = $(this).attr("data-store-id");
-            $("#store_name").val(store_name);
-            $("#store_name_val").val(store_name);
-            $("#store_id").val(store_id);
         });
 
         $("#goods_number").change(function () {
