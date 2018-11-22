@@ -36,6 +36,18 @@ class UserService
         return false;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     * 验证用户id是否实名并通过
+     */
+    public static function isReal($userId){
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
+        if(empty($userRealInfo)){
+            self::throwBizError('实名认证通过后才能下单');
+        }
+    }
+
     public static function checkCompanyNameCanAdd($name){
         if(UserRepo::getTotalCount(['is_firm'=>1, 'nick_name'=> $name])){
             return false;
