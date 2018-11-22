@@ -262,8 +262,10 @@ class OrderController extends Controller
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
         if ($info['is_self'] == 0 && $info['is_firm'] == 1) {
             $u_id = $info['firm_id'];
+            $address_id = $info['address_id'] ? $info['address_id'] : 0;
         }else{
             $u_id = $userInfo['id'];
+            $address_id = $userInfo['address_id'] ? $userInfo['address_id'] : 0;
         }
 
         // 收货地址列表
@@ -276,7 +278,7 @@ class OrderController extends Controller
                 } else {
                     $addressList[$k]['is_select'] = '';
                 };
-                if (isset($info['address_id']) && $v['id'] == $info['address_id']) {
+                if ($v['id'] == $address_id) {
                     $addressList[$k]['is_default'] = 1;
                     $first_one[$k] = $addressList[$k];
                 } else {
@@ -352,38 +354,36 @@ class OrderController extends Controller
     {
         $info = session('_curr_deputy_user');
 //        $payType = $request->input('payType','');
+
         $userIds = [];
         // 判断是否为企业用户
         if ($info['is_firm']) {
             //企业用户，企业
-            $userInfo = session('_web_user');
+            $userInfo = $info;
             $userIds['user_id'] = session('_web_user_id');
             $userIds['firm_id'] = $info['firm_id'];
+            $u_id = $info['firm_id'];
         } else {
             //个人
             $userInfo = session('_web_user');
-            $userIds['user_id'] = session('_web_user_id');
+            $userIds['user_id'] = $userInfo['id'];
             $userIds['firm_id'] = '';
+            $u_id = $userInfo['id'];
         }
         $words = $request->input('words', ' ');
         // 判断是否有开票信息 地址可用
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        $invoiceInfo = UserRealService::getInfoByUserId($userIds['user_id']);
         if (empty($invoiceInfo)) {
             return $this->error('您还没有实名认证，不能下单');
         }
         if ($invoiceInfo['review_status'] != 1) {
             return $this->error('您的实名认证还未通过，不能下单');
         }
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        $addressList = UserAddressService::getInfoByUserId($u_id);
         if (empty($addressList)) {
             return $this->error('无地址信息请前去维护');
         }
 
-        // 没有默认地址的情况下
-        if (empty($userInfo['address_id'])) {
-            $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
-
-        }
         $cartSession = session('cartSession');
         $carList = $cartSession['goods_list'];
         if ($cartSession['address_id'] == '') {
