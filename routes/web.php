@@ -334,7 +334,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/account/saveUserReal', 'UserController@saveUserReal');//保存实名
         Route::any('/account/editPayPassword', 'UserController@editPayPassword');//修改支付密码
         Route::any('/account/editPayPassword/sendSms', 'UserController@sendPayPwdSms');//发送支付密码短信
-
+        Route::post('/isReal', 'UserController@isReal');//根据用户id检测用户是否实名
         Route::get('/account/accountLogout', 'UserController@accountLogout');//注销账号
         /********************************************************************/
 
@@ -414,9 +414,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
-        Route::group(['middleware'=>'web.firmUserAuth'],function(){
+
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
             Route::post('/createOrder','OrderController@createOrder');//提交订单
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
 
         });
 
@@ -592,6 +593,12 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::post('/goods/goods_attribute_details', 'GoodsController@goodsAttributeDetails');//物性表详情
         Route::post('/goods/goods_supply_list', 'GoodsController@goodSupplyList');//物性表供应商
 
+        Route::get('/wholesale/list', 'ActivityWholesaleController@index');//集采拼团
+        Route::post('/wholesale/detail', 'ActivityWholesaleController@detail');//集采拼团详情
+
+        Route::get('/consign/list', 'ActivityConsignController@index');//寄售
+        Route::post('/consign/detail', 'ActivityConsignController@detail');//寄售抢购详情
+
         Route::post('/article/list', 'ArticleController@getList');//获取咨询列表
         Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
 
@@ -629,7 +636,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/cart/to_balance','GoodsController@toBalance');//购物车去结算
 
             Route::post('/buyLimit/to_balance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
-            Route::post('/buyLimit/maxLimit','ActivityPromoteController@buyLimitMaxLimit'); //抢购最大限购数量
+            Route::post('/wholesale/to_balance', 'ActivityWholesaleController@toBalance');//集采拼团 立即下单
+            Route::post('/consign/to_balance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
             Route::post('/order/change_deputy','OrderController@changeDeputy');//切换代理
             Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理

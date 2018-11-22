@@ -236,6 +236,7 @@ class OrderController extends Controller
         }
     }
 
+
     //确认订单页面
     public function confirmOrder(Request $request, $id = '')
     {
@@ -248,12 +249,12 @@ class OrderController extends Controller
 
 
         $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
-        if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
-        }
-        if ($invoiceInfo['review_status'] != 1) {
-            return $this->error('您的实名认证还未通过，不能下单');
-        }
+//        if (empty($invoiceInfo)){
+//            return $this->error('您还没有实名认证，不能下单');
+//        }
+//        if ($invoiceInfo['review_status'] != 1) {
+//            return $this->error('您的实名认证还未通过，不能下单');
+//        }
 
         if (empty($goodsList)) {
             return $this->error('没有对应的商品');
