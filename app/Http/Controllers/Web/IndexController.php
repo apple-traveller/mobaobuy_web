@@ -7,6 +7,7 @@ use App\Services\ActivityPromoteService;
 use App\Services\AdService;
 use App\Services\ArticleService;
 use App\Services\BrandService;
+use App\Services\CartService;
 use App\Services\GoodsCategoryService;
 use App\Services\OrderInfoService;
 use App\Services\UserService;
@@ -30,6 +31,10 @@ class IndexController extends Controller
 
     public function  index(Request $request){
 
+        $now = Carbon::now();
+        //获取顶部广告
+        $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2, 'start_time|<='=>$now, 'end_time|>=' => $now]);
+        //dd($top_ad['list'][0]);
         //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
         //获取订单状态数
@@ -70,7 +75,7 @@ class IndexController extends Controller
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
-            'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'trans_false_list'=>$trans_false_list]);
+            'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'trans_false_list'=>$trans_false_list,'top_ad'=>$top_ad['list'][0]]);
     }
 
     //选择公司

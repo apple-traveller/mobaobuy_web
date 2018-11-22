@@ -60,7 +60,7 @@ class OrderInfoService
         }
 
         foreach ($orderList['list'] as $k=>&$item){
-            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status']);
+            $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
 
@@ -242,7 +242,7 @@ class OrderInfoService
 
     }
 
-    private static function getOrderStatusName($order_status, $pay_status, $shipping_status,$deposit_status){
+    private static function getOrderStatusName($order_status, $pay_status, $shipping_status,$deposit_status,$extension_code = ''){
         $status = '';
         switch ($order_status){
             case 0: $status = '已作废';break;
@@ -268,10 +268,13 @@ class OrderInfoService
             }
 
             if($order_status == 2){
-                switch ($deposit_status){
-                    case 0: $status .= ', 未付定金';break;
-                    case 1: $status .= ', 已付定金';break;
+                if($extension_code == 'wholesale'){
+                    switch ($deposit_status){
+                        case 0: $status .= ', 未付定金';break;
+                        case 1: $status .= ', 已付定金';break;
+                    }
                 }
+
 //                $status = '待确认';
             }
 //            if($order_status == 2 && $deposit_status == 0){
