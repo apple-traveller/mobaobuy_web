@@ -323,7 +323,9 @@ class OrderInfoService
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
-        $condition['firm_id'] = $firm_id;
+        if ($firm_id!=''){
+            $condition['firm_id'] = $firm_id;
+        }
 
         // 商户后台
         if ($seller_id>0){
@@ -341,7 +343,7 @@ class OrderInfoService
         ];
 
         //待付定金
-        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));  
         $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
@@ -526,6 +528,10 @@ class OrderInfoService
         foreach ($delivery['list'] as $k=>$v){
             $orderinfo = [];
             $orderinfo = OrderInfoRepo::getInfoByFields(['id'=>$v['order_id']]);
+//            if (empty($orderinfo)){
+////                self::throwBizError('订单不存在');
+//                OrderDeliveryRepo::deleteByFields(['order_id'=>$v['order_id']]);
+//            }
             if (!empty($orderinfo)){
                 $delivery['list'][$k]['order_add_time'] = $orderinfo['add_time'];
             }
@@ -539,6 +545,9 @@ class OrderInfoService
         $delivery = OrderDeliveryRepo::getInfo($id);
         $user = UserRepo::getList([],['id'=>$delivery['user_id']],['user_name'])[0];
         $order = OrderInfoRepo::getList([],['id'=>$delivery['order_id']],['add_time','shipping_fee'])[0];
+        if (empty($order)){
+            self::throwBizError('订单不存在');
+        }
         $delivery['user_name'] = $user['user_name'];//购货人
         $delivery['order_add_time'] = $order['add_time'];//购货人
         $delivery['shipping_fee'] = $order['shipping_fee'];//配送费用
