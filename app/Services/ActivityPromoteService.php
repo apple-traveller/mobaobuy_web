@@ -150,7 +150,6 @@ class ActivityPromoteService
     public static function buyLimitToBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
-
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
             self::throwBizError('该活动已结束！');
@@ -162,7 +161,6 @@ class ActivityPromoteService
         if($goodsNum < $activityInfo['min_limit']){
             self::throwBizError('不能低于起售数量');
         }
-
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
         }else{
