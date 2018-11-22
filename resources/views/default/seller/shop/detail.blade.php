@@ -35,11 +35,11 @@
                         </dl>
                         <dl>
                             <dt>授权委托书电子版：</dt>
-                            <dd><div  path="{{getFileUrl($shop['attorney_letter_fileImg'])}}" class="layui-btn viewPic">点击查看</div></dd>
+                            <dd><div  path="{{getFileUrl($shop['attorney_letter_fileImg'])}}" class="layui-btn layui-btn-radius layui-btn-normal viewPic">点击查看</div></dd>
                         </dl>
                         <dl>
                             <dt>营业执照副本电子版：</dt>
-                            <dd><div path="{{getFileUrl($shop['license_fileImg'])}}" class="layui-btn viewPic">点击查看</div></dd>
+                            <dd><div path="{{getFileUrl($shop['license_fileImg'])}}" class="layui-btn layui-btn-radius layui-btn-normal viewPic">点击查看</div></dd>
                         </dl>
                         <dl>
                             <dt>注册时间：</dt>
@@ -61,9 +61,9 @@
                             <dt>是否通过审核：</dt>
                             <dd>
                                 @if($shop['is_validated']==1)
-                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-warm  is_validate">已通过</div>
+                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-radius  is_validate">已通过</div>
                                 @else
-                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-warm layui-btn-danger is_validate">待审核</div>
+                                    <div data_value="{{$shop['is_validated']}}" class="layui-btn layui-btn-radius layui-btn-warm layui-btn-danger is_validate">待审核</div>
                                 @endif
                             </dd>
                         </dl>

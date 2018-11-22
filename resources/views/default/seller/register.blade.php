@@ -53,8 +53,8 @@
                 </div>
 
                 <div class="item">
-                    <div class="item-libel">负责人电话</div>
-                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactPhone" name="contactPhone" placeholder="负责人电话" onblur="contactPhoneValidate()" /></div>
+                    <div class="item-libel">手机号</div>
+                    <div class="item-info"><input type="text" class="text" maxlength="11" id="contactPhone" name="mobile" placeholder="手机号" onblur="contactPhoneValidate()" /></div>
                     <div class="input-tip"><label id="contactPhone_error" class="error"></label></div>
                 </div>
 
@@ -68,7 +68,7 @@
                     <div class="item-info" style="width: 178px;">
                         <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码"  id="verify" onblur="verifyValidate();">
                     </div>
-                    <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                    <img src="" title="点击换一个校验码" style="margin-left: 10px;margin-top:-4px;line-height: 35px;height: 45px; width: 130px;" alt="点击换一个校验码" id="imVcode">
                     <div class="input-tip"><label id="verify_error" class="error"></label></div>
                 </div>
                 <div class="item">
@@ -138,38 +138,6 @@
                     }
                 }
             });
-        }
-    }
-    //验证注册号
-    function licenseValidate(){
-        var business_license_id = $("#business_license_id").val();
-        if(jQuery.trim(business_license_id).length==0){
-            $("#business_license_error").html("<i class='iconfont icon-minus-circle-fill'></i>注册号不能为空");
-            return false;
-        } else {
-            $("#business_license_error").html("");
-        }
-    }
-
-    //验证纳税号
-    function taxpayerValidate(){
-        var taxpayer_id = $("#taxpayer_id").val();
-        if(jQuery.trim(taxpayer_id).length==0){
-            $("#taxpayer_error").html("<i class='iconfont icon-minus-circle-fill'></i>纳税号不能为空");
-            return false;
-        } else {
-            $("#taxpayer_error").html("");
-        }
-    }
-
-    //验证店铺负责人
-    function contactNameValidate(){
-        var contactName = $("#contactName").val();
-        if(jQuery.trim(contactName).length==0){
-            $("#contactName_error").html("<i class='iconfont icon-minus-circle-fill'></i>负责人不能为空");
-            return false;
-        } else {
-            $("#contactName_error").html("");
         }
     }
 
@@ -270,7 +238,6 @@
             checkAccount = true;
             return true;
         }
-        console.log(checkAccount);
 
     }
     $('#messCode_but').click(function ()  {
@@ -355,14 +322,11 @@
             return false;
         }
         params = {
-            shop_name: $("#shop_name").val(),
+            shop_name: $("#company_name").val(),
             companyName: $("#company_name").val(),
-            contactName: $("#contactName").val(),
             password: $.base64.btoa($("#password").val()),
             mobile: $("#contactPhone").val(),
             mobile_code: $("#messCode").val(),
-            business_license_id: $("#business_license_id").val(),
-            taxpayer_id: $("#taxpayer_id").val(),
             is_self_run: $('input:radio[name="is_self_run"]:checked').val(),
             attorney_letter_fileImg: $("#attorney_letter_fileImg").val(),
             license_fileImg: $("#license_fileImg").val(),
@@ -379,7 +343,7 @@
 
     //验证店铺唯一性
     function shopNameValidate(){
-        var shop_name = $("#shop_name").val();
+        var shop_name = $("#company_name").val();
         if(jQuery.trim(shop_name).length==0){
             $("#shop_error").html("<i class='iconfont icon-minus-circle-fill'></i>店铺名称不能为空");
             checkShop = false;

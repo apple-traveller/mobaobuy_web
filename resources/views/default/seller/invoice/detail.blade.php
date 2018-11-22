@@ -112,7 +112,7 @@
                                         @elseif($invoiceInfo['status'] == 2)
                                             <input name="cancel" type="button" value="已开票，无法进行其他操作" class="btn btn25 red_btn">
                                         @elseif($invoiceInfo['status'] == 0)
-                                            <input name="cancel" type="button" value="已作废，无法进行其他操作" class="btn btn25 red_btn">
+                                            <input name="cancel" type="button" value="已取消，无法进行其他操作" class="btn btn25 red_btn">
                                         @endif
                                        </div>
                                 </div>
@@ -176,12 +176,12 @@
                 });
         });
     }
-    //作废订单
+    //取消订单
     function cancelOne(id)
     {
         layui.use('layer', function(){
             let layer = layui.layer;
-            layer.confirm('是否作废订单?', {icon: 3, title:'提示'}, function(index){
+            layer.confirm('是否取消开票?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url:'/seller/invoice/cancelInvoice',
                     data: {

@@ -231,9 +231,19 @@
                          <span class="infor_title">授权委托书电子版：</span>
                         <span class=" fl">
                             @if(!empty($user_real['attorney_letter_fileImg']))               
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过<img class="userImg" id="img" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中<img class="userImg" id="img" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div id="layer-photos-demo" class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
@@ -245,9 +255,19 @@
                          <span class="infor_title">开票资料电子版：</span>
                         <span class=" fl">
                              @if(!empty($user_real['invoice_fileImg']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过<img src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中<img src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'invoice_fileImg'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'invoice_fileImg'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
@@ -258,9 +278,19 @@
                          <span class="infor_title">营业执照电子版：</span>
                         <span class=" fl">
                             @if(!empty($user_real['license_fileImg']))
-                                @if($user_real['review_status']==1) 已经上传，审核已经通过<img src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @elseif($user_real['review_status']==0) 已经上传，审核中<img src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="" style="width:60px;height: 50px;" />
-                                @else <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span> @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'license_fileImg'])@endcomponent
+                                @if($user_real['review_status']==1)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="营业执照电子版">
+                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                    </div>
+                                @elseif($user_real['review_status']==0)
+                                    <div class="layer-photos-demo">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="营业执照电子版">
+                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                    </div>
+                                @else
+                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'license_fileImg'])@endcomponent
                                 @endif
                             @else
                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
