@@ -50,7 +50,7 @@ class IndexController extends Controller
         $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 2);
 
         //成交动态 假数据 暂时定为$trans_type=1 时为开启创建并显示假数据 暂时创建的是8点到18点之间的数据 缓存有效期一天
-        $trans_type = 1;
+        $trans_type = getConfig('open_trans_flow');
         $trans_false_list = [];
         if($trans_type == 1){
             $day = date('Ymd');
@@ -70,7 +70,8 @@ class IndexController extends Controller
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
-        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
+        $article_list = ArticleService::getTopClick(1,7)['list'];
+
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 

@@ -20,6 +20,14 @@ class FlowController extends Controller
         return $this->display('web.flow.payment', compact('order_info','sellerInfo'));
     }
 
+    public function toPayDeposit(Request $request){
+        $userId = session('_web_user_id');
+        $order_id = $request->input('order_id');
+        $order_info = OrderInfoService::getOrderInfoById($order_id);
+        $sellerInfo  = UserRealService::getUserRealInfoByUserId($userId);
+        return $this->display('web.flow.paydeposit', compact('order_info','sellerInfo'));
+    }
+
     //上传凭证
     public function payVoucherSave(Request $request){
         $orderSn = $request->input('orderSn');

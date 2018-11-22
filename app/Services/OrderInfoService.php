@@ -90,7 +90,7 @@ class OrderInfoService
                     } elseif ($item['deposit_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_pay';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPayDeposit?order_id='.$item['id'].'"';
                     }
 
                 }
