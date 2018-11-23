@@ -151,6 +151,7 @@ class ShopGoodsQuoteController extends Controller
             'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
+            'total_number' => $goods_number,
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],

@@ -49,7 +49,7 @@
                 // console.log(res.data);
                 console.log(res);
                 if (res.code == 1) {
-                    $.msg.alert('提交成功');
+                    $.msg.alert('提交成功,请等待客服与您联系！');
                     $('textarea[name=content]').val('');
                 } else {
                     $.msg.alert(res.msg);

@@ -80,8 +80,8 @@ class ActivityWholesaleController extends Controller
      */
     public function DemandSubmission(Request $request){
         $userId = session('_web_user_id');
-        $demandFile = $request->input('bill_file');
-        $demandText = $request->input('content');
+        $demandFile = self::requestGetNotNull('bill_file','');
+        $demandText = self::requestGetNotNull('bill_file','');
         try{
             ActivityWholesaleService::DemandSubmission($userId,$demandFile,$demandText);
             return $this->success();

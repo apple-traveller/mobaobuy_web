@@ -239,11 +239,10 @@
 
 				<div class="ml300 " style="margin-bottom: 25px;">
 					@if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1)
-						企业暂无地址信息,无法下单
+						企业暂未维护地址,无法下单
 						@else
-						暂无地址信息 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
+						暂未维护地址 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
 					@endif
-
 				</div>
 			@endif
 	</div>

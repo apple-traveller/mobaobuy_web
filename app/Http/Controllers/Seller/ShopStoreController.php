@@ -24,7 +24,7 @@ class ShopStoreController extends Controller
         $condition['shop_id']= $shop_id;
         $pageSize =5;
         $shopStoreList = ShopStoreService::getShopStoreList(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
-        return $this->display('seller.shopStore.list',[
+        return $this->display('seller.shopstore.list',[
             'total'=>$shopStoreList['total'],
             'storeList'=>$shopStoreList['list'],
             'currentPage'=>$currentPage,

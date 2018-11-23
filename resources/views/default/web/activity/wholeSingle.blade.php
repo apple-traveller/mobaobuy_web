@@ -150,7 +150,7 @@
 		}
 		
 		// if(){}
-		if(trim(bill_file) == '' && trim(content) == ''){
+		if($.trim(bill_file) == '' && $.trim(content) == ''){
 			alert('提交内容不能为空');
 			return;
 		}
@@ -160,7 +160,13 @@
 			dataType:'json',
 			type:'post',
 			success:function(res){
-				
+				if (res.code == 1) {
+                    $.msg.alert('提交成功,请等待客服与您联系！');
+                    $('textarea[name=content]').val('');
+                } else {
+                    $.msg.alert(res.msg);
+
+                }
 			}
 		})
 	}
