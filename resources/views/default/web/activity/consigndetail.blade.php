@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '清仓特价详情')
+@section('title', '清仓特卖详情')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />--}}
@@ -222,7 +222,7 @@
 					.Surplus_time{float:right;width:200px;height: 46px;line-height: 46px;margin-right: 20px;}
 				</style>
 				<div class="Time_limit mt3">
-					<span class="xs_ms fl">清仓特价</span>
+					<span class="xs_ms fl">清仓特卖</span>
 				</div>
 				<style type="text/css">
 					.price_market{width:635px;height: 109px;background-color: #f4f4f4;}

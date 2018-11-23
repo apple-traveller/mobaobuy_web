@@ -47,13 +47,8 @@ class OrderController extends Controller
             $condition['end_time'] = $request->input('end_time');
 
             if (session('_curr_deputy_user')['is_firm']) {
-                if (session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm']) {
-                    $condition['user_id'] = session('_curr_deputy_user')['user_id'];
-                    $condition['firm_id'] = $firm_id;
-                } else {
                     $condition['user_id'] = $firm_id;
                     $condition['firm_id'] = $firm_id;
-                }
             } else {
                 $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = 0;
@@ -241,24 +236,22 @@ class OrderController extends Controller
     public function confirmOrder(Request $request, $id = '')
     {
         $info = session('_curr_deputy_user');
-
         $userInfo = session('_web_user');
         $cartSession = session('cartSession');
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
-
+        if(empty($cartSession) || !isset($cartSession) || empty($goodsList)){
+            return $this->error('非法操作');
+        }
 
         $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
-//        if (empty($invoiceInfo)){
-//            return $this->error('您还没有实名认证，不能下单');
-//        }
-//        if ($invoiceInfo['review_status'] != 1) {
-//            return $this->error('您的实名认证还未通过，不能下单');
-//        }
-
-        if (empty($goodsList)) {
-            return $this->error('没有对应的商品');
+        if (empty($invoiceInfo)){
+            return $this->error('您还没有实名认证，不能下单');
         }
+        if ($invoiceInfo['review_status'] != 1) {
+            return $this->error('您的实名认证还未通过，不能下单');
+        }
+
 
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
         if ($info['is_self'] == 0 && $info['is_firm'] == 1) {
@@ -296,7 +289,6 @@ class OrderController extends Controller
         }
 
         if ($from == 'promote') {//限时抢购
-
             try {
                 ActivityPromoteService::getActivityPromoteById($id);
             } catch (\Exception $e) {
@@ -318,7 +310,7 @@ class OrderController extends Controller
             $deposit = $goodsList[0]['deposit'];
             return $this->display('web.goods.confirmWholesaleOrder', compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id', 'deposit'));
 
-        } elseif ($from == 'consign') {//清仓特价
+        } elseif ($from == 'consign') {//清仓特卖
 
             $goods_amount = 0;
             try {
@@ -342,7 +334,6 @@ class OrderController extends Controller
                     $goodsList[$k3]['account'] = number_format($v3['goods_price'] * $v3['goods_number'], 2);
                     $goods_amount += $v3['goods_price'] * $v3['goods_number'];
                 }
-                $goods_amount = number_format($goods_amount, 2);
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }

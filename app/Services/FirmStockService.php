@@ -87,7 +87,6 @@ class FirmStockService
 
     //入库记录列表
     public static function firmStockIn($params, $page = 1 ,$pageSize=10){
-
         $condition = [];
         $condition['firm_id'] = $params['firm_id'];
         if(!empty($params['goods_name'])){

@@ -13,9 +13,9 @@ use App\Services\ActivityPromoteService;
 
 class ActivityConsignController extends Controller
 {
-    //清仓特价
+    //清仓特卖
     public function index(){
-        $condition['type'] = 3;//清仓特价
+        $condition['type'] = 3;//清仓特卖
         try{
             $consignInfo =  ShopGoodsQuoteService::getShopGoodsQuoteListByFields(['add_time'=>'desc'],$condition);
             return $this->display('web.activity.consign',compact('consignInfo'));
@@ -24,7 +24,7 @@ class ActivityConsignController extends Controller
         }
     }
 
-    //清仓特价详情
+    //清仓特卖详情
     public function detail($id){
         $userId = session('_web_user_id');
         //进入详情页 增加点击量
@@ -37,7 +37,7 @@ class ActivityConsignController extends Controller
 
     }
 
-    //清仓特价 立即下单
+    //清仓特卖 立即下单
     public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');

@@ -54,6 +54,44 @@ class PayController extends Controller
                         'sub_mch_id' => '',// 微信支付分配的子商户号
                     ];
                     $url = Charge::run(Config::WX_CHANNEL_QR, $payConfig, $payData);
+                    break;
+                case 'alipay_deposit':
+                    $payConfig = require_once app_path('Plugins/payment/examples/aliconfig.php');
+                    // 订单信息
+                    $orderNo = $order_info['order_sn'];
+                    $payData = [
+                        'body'    => '商品订金',
+                        'subject'    => getConfig('shop_name').'在线购物支付',
+                        'order_no'    => $orderNo,
+                        'timeout_express' => time() + 600,// 表示必须 600s 内付款
+                        'amount'    => $order_info['deposit'],// 单位为元 ,最小为0.01
+                        'return_param' => '',
+                        // 'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+                        'goods_type' => '1',// 0—虚拟类商品，1—实物类商品
+                        'store_id' => '',
+                        'qr_mod' => '',
+                    ];
+                    $url = Charge::run(Config::ALI_CHANNEL_WEB, $payConfig, $payData);
+                    break;
+                case 'wxpay_deposit':
+                    $payConfig = require_once app_path('Plugins/payment/examples/wxconfig.php');
+                    $orderNo = $order_info['order_sn'];
+                    $payData = [
+                        'body'    => '商品订金',
+                        'subject'    => getConfig('shop_name').'在线购物支付',
+                        'order_no'    => $orderNo,
+                        'timeout_express' => time() + 600,// 表示必须 600s 内付款
+                        'amount'    => $payConfig['use_sandbox'] ? '3.01' : $order_info['deposit'],// 微信沙箱模式，需要金额固定为3.01
+                        'return_param' => '123',
+                        'client_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',// 客户地址
+                        'openid' => 'ohQeiwnNrAsfdsdf9VvmGFIhba--k',
+                        'product_id' => '123',
+
+                        // 如果是服务商，请提供以下参数
+                        'sub_appid' => '',//微信分配的子商户公众账号ID
+                        'sub_mch_id' => '',// 微信支付分配的子商户号
+                    ];
+                    $url = Charge::run(Config::WX_CHANNEL_QR, $payConfig, $payData);
             }
 
             return $this->redirect($url);

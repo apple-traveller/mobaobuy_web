@@ -90,7 +90,7 @@ class OrderInfoService
                     } elseif ($item['deposit_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_pay';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPayDeposit?order_id='.$item['id'].'"';
                     }
 
                 }
@@ -707,7 +707,7 @@ class OrderInfoService
                     $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
-                case 'consign'://清仓特价
+                case 'consign'://清仓特卖
                     $order_status = 2;
                     $from = 'consign';
                     $extension_id = $cartInfo_session[0]['id'];
@@ -737,7 +737,7 @@ class OrderInfoService
                 'shop_id' => $cartInfo_session[0]['shop_id'],
                 'shop_name' => $cartInfo_session[0]['shop_name'],
                 'country' => 1,
-                'zipcode' => $userAddressMes['zipcode'],
+                'zipcode' => $userAddressMes['zipcode'] ? $userAddressMes['zipcode'] : '',
                 'mobile_phone' => $userAddressMes['mobile_phone'],
                 'province' => $userAddressMes['province'],
                 'city' => $userAddressMes['city'],

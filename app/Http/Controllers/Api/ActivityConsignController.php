@@ -8,9 +8,9 @@ use App\Services\ActivityPromoteService;
 use Illuminate\Support\Facades\Cache;
 class ActivityConsignController extends ApiController
 {
-    //清仓特价
+    //清仓特卖
     public function index(){
-        $condition['type'] = 3;//清仓特价
+        $condition['type'] = 3;//清仓特卖
         try{
             $consignInfo =  ShopGoodsQuoteService::getShopGoodsQuoteListByFields(['add_time'=>'desc'],$condition);
             return $this->success(compact('consignInfo'),'success');
@@ -19,7 +19,7 @@ class ActivityConsignController extends ApiController
         }
     }
 
-    //清仓特价详情
+    //清仓特卖详情
     public function detail(Request $request){
         $userId = 0;
         $uuid = $request->input('token');
@@ -37,13 +37,12 @@ class ActivityConsignController extends ApiController
 
     }
 
-    //清仓特价 立即下单
+    //清仓特卖 立即下单
     public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
-        $userInfo = session('_web_user');
-
+        $userInfo = $this->getUserInfo($request);
         try{
             $activityInfo = ShopGoodsQuoteService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
@@ -53,8 +52,8 @@ class ActivityConsignController extends ApiController
                 'address_id'=>$address_id,
                 'from'=>'consign'
             ];
-            session()->put('cartSession',$session_data);
-            return $this->success('','',$activityInfo);
+            Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
+            return $this->success($session_data,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

@@ -1,12 +1,12 @@
 @extends(themePath('.')."seller.include.layouts.master")
 @section('body')
     <div class="warpper">
-        <div class="title">清仓特价活动</div>
+        <div class="title">清仓特卖活动</div>
         <div class="content">
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/seller/activity/consign/add"><div class="fbutton"><div class="add" title="添加清仓特价"><span><i class="icon icon-plus"></i>添加清仓特价</span></div></div></a>
+                        <a href="/seller/activity/consign/add"><div class="fbutton"><div class="add" title="添加清仓特卖"><span><i class="icon icon-plus"></i>添加清仓特卖</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据">

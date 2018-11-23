@@ -264,7 +264,7 @@ class ShopGoodsQuoteService
         return $goodsInfo;
     }
 
-    //清仓特价 立即下单
+    //清仓特卖 立即下单
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ShopGoodsQuoteRepo::getInfo($activityId);
