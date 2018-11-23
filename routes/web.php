@@ -414,7 +414,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
-
+        Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购
+        Route::post('/wholeSingle/DemandSubmission', 'ActivityWholesaleController@DemandSubmission');//整单采购 需求提交
 
         Route::group(['middleware'=>'web.firmUserAuth'],function(){
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面

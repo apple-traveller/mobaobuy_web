@@ -97,6 +97,9 @@ class IndexController extends Controller
                 'name' => session('_web_user')['nick_name']
             ];
             session()->put('_curr_deputy_user', $info);
+            if(!empty(session('cartSession'))){
+                session()->forget('cartSession');
+            }
             return $this->success();
         }else{
             //获取用户所代表的公司
@@ -110,6 +113,9 @@ class IndexController extends Controller
                     $firm['name'] = $firm['firm_name'];
                     $firm['address_id'] = $firm['address_id'];
                     session()->put('_curr_deputy_user', $firm);
+                    if(!empty(session('cartSession'))){
+                        session()->forget('cartSession');
+                    }
                     return $this->success();
                 }
             }

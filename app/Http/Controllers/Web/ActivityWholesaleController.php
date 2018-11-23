@@ -67,4 +67,11 @@ class ActivityWholesaleController extends Controller
             return $this->error($e->getMessage());
         }
     }
+    /**
+     * 整单采购
+     */
+
+    public function wholeSingle(Request $request){
+        return $this->display('web.activity.wholeSingle');
+    }
 }
