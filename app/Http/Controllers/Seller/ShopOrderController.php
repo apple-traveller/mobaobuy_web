@@ -158,6 +158,7 @@ class ShopOrderController extends Controller
                         $action_note = "修改交货时间";
                     }
                 }
+
                 if (!empty($order_status)) {
                     $data['order_status'] = $order_status;
                 }
@@ -181,7 +182,6 @@ class ShopOrderController extends Controller
                         $action_note = "确认收到定金";
                     }
                 }
-                dd($data);
                 $re = OrderInfoService::modify($data);
 
                 if (!empty($re)) {

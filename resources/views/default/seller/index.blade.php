@@ -66,8 +66,6 @@
     <script src="{{asset(themePath('/').'e-chars/echarts-all.js')}}" ></script>
     <script src="{{asset(themePath('/').'e-chars/require.js')}}" ></script>
     <script type="text/javascript">
-        $('#cnv').perfectScrollbar();
-        $('#cnv').perfectScrollbar('update');
         require.config({
             paths: {
                 echarts: 'theme/macarons'
