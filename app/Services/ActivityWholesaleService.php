@@ -4,7 +4,7 @@ namespace App\Services;
 use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\UserCollectGoodsRepo;
-use App\Repositories\UserRealRepo;
+use App\Repositories\UserRepo;
 use Carbon\Carbon;
 
 class ActivityWholesaleService
@@ -275,18 +275,17 @@ class ActivityWholesaleService
      *
      */
     public static function DemandSubmission($userId,$demandFile,$demandText){
-        $userInfo = UserRealRepo::getInfo($userId);
+        $userInfo = UserRepo::getInfo($userId);
         if(empty($userInfo)){
             self::throwBizError('用户信息有误!');
         }
         $demand = [];
         $demand['user_id'] = $userId;
         $demand['user_name'] = $userInfo['user_name'];
-        $demand['content'] = $demandText;
-        $demand['bill_file'] = $demandFile;
+        $demand['content'] = $demandText ? $demandText : '';
+        $demand['bill_file'] = $demandFile ? $demandFile : '';
         $demand['add_time'] = Carbon::now();
-
-        ActivityWholesaleRepo::create();
+//        return UserWh::create($demand);
     }
 
 }
