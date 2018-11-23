@@ -1330,3 +1330,16 @@ CREATE TABLE `user_invoices` (
   KEY `user_id` (`user_id`),
   KEY `audit_status` (`audit_status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='会员发票';
+DROP TABLE IF EXISTS `user_whole_single`;
+CREATE TABLE `user_whole_single` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名（手机号）',
+  `content` varchar(255) DEFAULT NULL COMMENT '需求内容',
+  `bill_file` varchar(200) DEFAULT '' COMMENT '清单文件',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='整单采购需求';

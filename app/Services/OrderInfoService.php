@@ -737,7 +737,7 @@ class OrderInfoService
                 'shop_id' => $cartInfo_session[0]['shop_id'],
                 'shop_name' => $cartInfo_session[0]['shop_name'],
                 'country' => 1,
-                'zipcode' => $userAddressMes['zipcode'],
+                'zipcode' => $userAddressMes['zipcode'] ? $userAddressMes['zipcode'] : '',
                 'mobile_phone' => $userAddressMes['mobile_phone'],
                 'province' => $userAddressMes['province'],
                 'city' => $userAddressMes['city'],
