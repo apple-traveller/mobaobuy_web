@@ -16,7 +16,7 @@
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/activity/wholesale/add"><div class="fbutton"><div class="add" title="添加优惠活动"><span><i class="icon icon-plus"></i>添加优惠活动</span></div></div></a>
+                        <a href="/admin/activity/wholesale/add"><div class="fbutton"><div class="add" title="添加集采拼团活动"><span><i class="icon icon-plus"></i>添加集采拼团活动</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -25,7 +25,7 @@
                     <div class="search">
                         <form action="/admin/activity/wholesale" name="searchForm" >
                             <div class="input">
-                                <input type="text" name="shop_name" value="{{$shop_name}}" class="text nofocus" placeholder="店铺名称" autocomplete="off">
+                                <input type="text" name="shop_name" value="{{$shop_name}}" class="text nofocus" placeholder="商家名称" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>
