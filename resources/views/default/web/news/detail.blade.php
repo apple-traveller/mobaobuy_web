@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-@section('title', '资讯详情')
+@section('title', getSeoInfoByType('article_content')['title'])
+@section('keywords', getSeoInfoByType('article_content')['keywords'])
+@section('description', getSeoInfoByType('article_content')['description'])
 @section('style')
     <style>
         .crumbs {padding: 5px 0;overflow: hidden;clear: both;zoom: 1;}

@@ -19,16 +19,11 @@ use App\Services\RegionService;
 class QuoteController extends Controller
 {
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
+     * 报价列表
+     * goodsList
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
-    {
-
-    }
-
-    //产品列表
     public function goodsList(Request $request)
     {
         $currpage = $request->input("currpage", 1);
@@ -126,7 +121,12 @@ class QuoteController extends Controller
         ]);
     }
 
-    //根据条件范围收索产品(ajax)
+    /**
+     * 根据条件范围收索报价(ajax)
+     * goodsListByCondition
+     * @param Request $request
+     * @return $this
+     */
     public function goodsListByCondition(Request $request)
     {
 
@@ -199,7 +199,12 @@ class QuoteController extends Controller
         }
     }
 
-    //产品详情
+    /**
+     * 报价详情
+     * goodsDetail
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function goodsDetail(Request $request)
     {
         $id = $request->input("id");

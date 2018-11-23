@@ -62,6 +62,7 @@ class ShopGoodsQuoteService
         }
         return $result;
     }
+
     //不分页
     public static function getShopGoodsQuoteListByFields($order,$condition)
     {
@@ -203,6 +204,37 @@ class ShopGoodsQuoteService
     public static function detail($id,$userId)
     {
         $id = decrypt($id);
+        $ActivityInfo =  ShopGoodsQuoteRepo::getInfo($id);
+        if(empty($ActivityInfo)){
+            self::throwBizError('清仓商品不存在');
+        }
+        $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品不存在');
+        }
+
+        $goodsInfo['activity_price'] = $ActivityInfo['shop_price'];
+        $goodsInfo['activity_num'] = $ActivityInfo['goods_number'];
+        $goodsInfo['delivery_place'] = $ActivityInfo['delivery_place'];
+        $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['goods_sn'] = $ActivityInfo['goods_sn'];
+        $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        //产品市场价
+        $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
+        $goodsInfo['goodsList'] = $goodsList;
+
+        //产品是否已收藏
+        $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        if(empty($collectGoods)){
+            $goodsInfo['collectGoods'] = 0;
+        }else{
+            $goodsInfo['collectGoods'] = 1;
+        }
+        return $goodsInfo;
+    }
+
+    public static function detailApi($id,$userId)
+    {
         $ActivityInfo =  ShopGoodsQuoteRepo::getInfo($id);
         if(empty($ActivityInfo)){
             self::throwBizError('清仓商品不存在');

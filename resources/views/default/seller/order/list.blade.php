@@ -101,12 +101,14 @@
                                             <div class="tDiv a3">
                                                 <a href="/seller/order/detail?id={{$vo['id']}}&currentPage={{$currentPage}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                                 @if($tab_code=='waitAffirm')
-                                                <a href="javascript:void(0);" onclick="conf({{ $vo['id'] }})"  title="确认" class="btn_see"><i class="sc_icon sc_icon_see"></i>确认</a>
-                                                <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon sc_icon_see"></i>取消</a>
+                                                <a href="javascript:void(0);" onclick="conf({{ $vo['id'] }})"  title="确认" class="btn_see"><i class="sc_icon icon-edit"></i>确认</a>
+                                                <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon icon-trash"></i>取消</a>
+                                                @elseif($tab_code=='waitDeposit')
+                                                    <a href="javascript:void(0);"  title="确认收款" onclick="receiveDep({{ $vo['id'] }})" class="btn_see"><i class="sc_icon icon-edit"></i>确认收款</a>
                                                 @elseif($tab_code=='waitPay')
-                                                    <a href="javascript:void(0);"  title="确认收款" onclick="receiveM({{ $vo['id'] }})" class="btn_see"><i class="sc_icon sc_icon_see"></i>确认收款</a>
+                                                    <a href="javascript:void(0);"  title="确认收款" onclick="receiveM({{ $vo['id'] }})" class="btn_see"><i class="sc_icon icon-edit"></i>确认收款</a>
                                                 @elseif($tab_code=='waitSend')
-                                                    <a href="/seller/order/delivery?order_id={{$vo['id']}}&currentPage={{$currentPage}}"  title="发货" class="btn_see"><i class="sc_icon sc_icon_see"></i>发货</a>
+                                                    <a href="/seller/order/delivery?order_id={{$vo['id']}}&currentPage={{$currentPage}}"  title="发货" class="btn_see"><i class="sc_icon icon-edit"></i>发货</a>
                                                 @endif
                                             </div>
                                         </td>
@@ -167,28 +169,32 @@
         function cancelOne(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否取消订单?', {icon: 3, title:'提示'}, function(index){
-                    let to_buyer = $("input[ name='to_buyer' ]").val();
+                layer.prompt({
+                    title: '确认取消订单,并输入原因',
+                }, function(value, index, elem){
+
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
-                            'to_buyer':to_buyer,
-                            'order_status': 0
+                            'order_status': 0,
+                            'to_buyer':value
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 1,time:2000});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:3000});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 5,time:2000});
                             }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
 
+                    layer.close(index);
                 });
             });
         }
@@ -235,6 +241,37 @@
                             'action_note':action_note,
                             'order_status': 3,
                             'delivery_period':value
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:2000});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+                        }
+                    });
+
+                    layer.close(index);
+                });
+            });
+        }
+        // 确认收到定金
+        function receiveDep(id) {
+            layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
+                let layer = layui.layer;
+                layer.prompt({
+                    title: '确认收到定金，填写备注',
+                }, function(value, index, elem){
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'deposit_status': 1,
+                            'action_note':value
                         },
                         type: 'post',
                         success: function (res) {

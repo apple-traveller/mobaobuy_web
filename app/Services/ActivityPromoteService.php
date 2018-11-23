@@ -161,7 +161,6 @@ class ActivityPromoteService
         if($goodsNum < $activityInfo['min_limit']){
             self::throwBizError('不能低于起售数量');
         }
-
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
         }else{
@@ -186,6 +185,14 @@ class ActivityPromoteService
     //通过id查抢购表数据
     public static function getActivityPromoteById($id){
         $id = decrypt($id);
+        $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
+
+    //通过id查抢购表数据
+    public static function getActivityPromoteByIdApi($id){
         $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
         if(empty($activityPromoteInfo)){
             self::throwBizError('不存在的商品信息');

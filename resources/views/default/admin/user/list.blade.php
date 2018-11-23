@@ -26,7 +26,7 @@
                 </div>
                 <div style="margin-left:10px;margin-top:4px;" class="fl">
                     <a href="/admin/user/addForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加新用户</span></div></div></a>
-                    <a href="/admin/user/addUserRealForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加实名认证</span></div></div></a>
+                    {{--<a href="/admin/user/addUserRealForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加实名认证</span></div></div></a>--}}
                     <a href="javascript:download_userlist();"><div class="fbutton"><div class="csv" title="导出会员列表"><span><i class="icon icon-download-alt"></i>导出会员列表</span></div></div></a>
                 </div>
 
@@ -52,15 +52,15 @@
                             <thead>
                             <tr>
                                 <th width="5%"><div class="tDiv">编号</div></th>
-                                <th width="10%"><div class="tDiv">用户名</div></th>
-                                <th width="10%"><div class="tDiv">昵称</div></th>
-                                <th width="8%"><div class="tDiv">是否实名</div></th>
+                                <th width="8%"><div class="tDiv">用户名</div></th>
+                                <th width="8%"><div class="tDiv">昵称</div></th>
+                                <th width="6%"><div class="tDiv">是否实名</div></th>
                                 <th width="10%"><div class="tDiv">是否企业用户</div></th>
-                                <th width="8%"><div class="tDiv">积分</div></th>
+                                <th width="6%"><div class="tDiv">积分</div></th>
                                 <th width="8%"><div class="tDiv">注册时间</div></th>
-                                <th width="8%"><div class="tDiv">访问次数</div></th>
+                                <th width="6%"><div class="tDiv">访问次数</div></th>
                                 <th width="6%"><div class="tDiv">是否冻结</div></th>
-                                <th width="18%" class="handle">操作</th>
+                                <th width="28%" class="handle">操作</th>
                             </tr>
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>

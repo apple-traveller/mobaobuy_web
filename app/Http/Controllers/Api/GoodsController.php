@@ -365,6 +365,7 @@ class GoodsController extends ApiController
         }
         try{
             $shopInfo = GoodsService::getGoodInfo($id);
+            //dd($shopInfo);
             return $this->success($shopInfo,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
