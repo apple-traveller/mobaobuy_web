@@ -42,8 +42,7 @@ class ActivityConsignController extends ApiController
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
-        $userInfo = session('_web_user');
-
+        $userInfo = $this->getUserInfo($request);
         try{
             $activityInfo = ShopGoodsQuoteService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
@@ -53,8 +52,8 @@ class ActivityConsignController extends ApiController
                 'address_id'=>$address_id,
                 'from'=>'consign'
             ];
-            session()->put('cartSession',$session_data);
-            return $this->success('','',$activityInfo);
+            Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
+            return $this->success($session_data,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

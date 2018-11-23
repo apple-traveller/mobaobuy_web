@@ -162,9 +162,9 @@ class UserController extends Controller
         $excel = new ExcelController();
         $data = array();
         $data = [
-            ['ID','用户名','昵称','邮箱','访问次数','注册时间','会员积分']
+            ['ID','用户名','昵称','邮箱','访问次数','注册时间']
         ];
-        $users = UserService::getUsers(['id','user_name','nick_name','email','visit_count','reg_time','points']);
+        $users = UserService::getUsers(['id','user_name','nick_name','email','visit_count','reg_time']);
         foreach($users as $item){
             $data[]=$item;
         }

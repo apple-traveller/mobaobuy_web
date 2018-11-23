@@ -651,6 +651,31 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/order/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
             Route::post('/order/egis','OrderController@egis');//企业用户审核订单
 
+            /*************************************企业库存*****************************************************/
+            Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
+            Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
+
+            Route::post('/firmstock/stockIn','FirmStockController@FirmStockIn');//入库记录列表
+            Route::get('/firmstock/addStockIn','FirmStockController@addFirmStock');//新增入库记录
+            Route::post('/firmstock/addStockIn','FirmStockController@addFirmStock');//新增入库记录
+            Route::post('/firmstock/searchGoodsName','FirmStockController@searchGoodsName');//入库检索商品名称
+            Route::post('/firmstock/searchPartnerName','FirmStockController@searchPartnerName');//入库检索供应商名称
+            Route::post('/firmstock/searchStockIn','FirmStockController@searchStockIn');//入库查询
+
+            Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');   //出库记录列表
+            Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
+            Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
+            Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+            Route::post('/stock/info','FirmStockController@stockInfo');//可出库单条记录
+            Route::post('/curStockSave','FirmStockController@curStockSave');//出库更新保存
+
+            Route::get('/stock/list','FirmStockController@stockList');//实时库存
+            Route::post('/stock/list','FirmStockController@stockList');//实时库存
+            Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+            Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+
+            /********************************************************************************************/
+
             Route::group(['middleware'=>'api.firmUserAuth'],function(){
                 Route::post('/order/confirmOrder','OrderController@confirmOrder');//确认订单页面
                 Route::post('/order/createOrder','OrderController@createOrder');//提交订单
