@@ -324,6 +324,7 @@
 				 
 			 }else{
 			 	$.msg.error('用户信息有误');
+			 	window.location.href='/login';
 			 }
 		}
 			

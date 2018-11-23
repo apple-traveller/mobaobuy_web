@@ -25,8 +25,34 @@ class WebClosed extends Controller
 //            if(!session()->has('_web_user')){
                 $user_info = UserService::getInfo(session('_web_user_id'));
                 if($user_info['is_logout']){
-                    session()->forget('_web_user_id');
-                    return $this->error('权限已被更改，请重新登陆','/login');
+//                    session()->flush();
+//                    return $this->error('权限已被更改，请重新登陆','/login');
+
+//                    $res = array('code' => 200,'msg' => '权限已被更改，请重新登陆');
+//                    return response()->json($res);
+//                    session()->put();
+
+
+                    //获取用户所代表的公司
+//                    $firms = UserService::getUserFirms(session('_web_user_id'));
+//                    foreach ($firms as $firm){
+//                        if($user_id == $firm['firm_id']){
+//                            //修改代表信息
+//                            $firm['is_self'] = 0;
+//                            $firm['is_firm'] = 1;
+//                            $firm['firm_id'] = $user_id;
+//                            $firm['name'] = $firm['firm_name'];
+//                            $firm['address_id'] = $firm['address_id'];
+//                            session()->put('_curr_deputy_user', $firm);
+//                            return $this->success();
+//                        }
+//                    }
+//
+//                    //找不到，清空session
+//                    session()->forget('_curr_deputy_user');
+//                    session()->forget('_web_user');
+
+
                 }
                 if(!$user_info['is_firm']){
                     $user_info['firms'] = UserService::getUserFirms(session('_web_user_id'));

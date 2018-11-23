@@ -415,10 +415,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特价 立即下单
 
 
+
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
             Route::post('/createOrder','OrderController@createOrder');//提交订单
-        Route::group(['middleware'=>'web.firmUserAuth'],function(){
-
         });
 
         Route::get('/toPay','FlowController@toPay');//去付款

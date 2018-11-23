@@ -32,20 +32,20 @@
             });
         });
 
-        function formToJson(data){
-            data= decodeURIComponent(data,true);//防止中文乱码
-            data = data.replace(/&/g, "','" );
-            data = data.replace(/=/g, "':'" );
-            data = "({'" +data + "'})" ;
-            obj = eval(data);
-            return obj;
-        }
+        // function formToJson(data){
+        //     data= decodeURIComponent(data,true);//防止中文乱码
+        //     data = data.replace(/&/g, "','" );
+        //     data = data.replace(/=/g, "':'" );
+        //     data = "({'" +data + "'})" ;
+        //     obj = eval(data);
+        //     return obj;
+        // }
 
         $('.account_infor_btn').click(function (){
 
             var data = $("#user_real_form").serialize();
-            var jsonData = formToJson(data);
-            Ajax.call('/account/saveUser',jsonData,function(res){
+            // var jsonData = formToJson(data);
+            Ajax.call('/account/saveUser',data,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
                     $.msg.alert('保存成功');
