@@ -27,15 +27,15 @@ class ShopOrderController extends Controller
     public function getList(Request $request)
     {
         $currentPage = $request->input("currentPage", 1);
-        $order_sn = $request->input('order_sn','');
-        $tab_code = $request->input('tab_code','');
+        $order_sn = $request->input('order_sn', '');
+        $tab_code = $request->input('tab_code', '');
         $shop_id = session('_seller_id')['shop_id'];
 
         $condition = [];
         $condition['is_delete'] = 0;
         $condition['shop_id'] = $shop_id;
-        $condition['order_status']='!1';
-        if (!empty($tab_code)){
+        $condition['order_status'] = '!1';
+        if (!empty($tab_code)) {
             $condition['tab_code'] = $tab_code;
         }
         $pageSize = 10;
@@ -43,7 +43,7 @@ class ShopOrderController extends Controller
             $condition['order_sn'] = "%" . $order_sn . "%";
         }
         $orders = OrderInfoService::getOrderInfoList(['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']], $condition);
-        $users = UserService::getUsersByColumn([],['id','user_name']);
+        $users = UserService::getUsersByColumn([], ['id', 'user_name']);
         return $this->display('seller.order.list', [
             'orders' => $orders['list'],
             'total' => $orders['total'],
@@ -62,9 +62,9 @@ class ShopOrderController extends Controller
     public function getStatusCount()
     {
         $seller_id = session('_seller_id')['shop_id'];
-        $status = OrderInfoService::getOrderStatusCount(0,'',$seller_id);
-        if (!empty($status)){
-            return $this->success('success','',$status);
+        $status = OrderInfoService::getOrderStatusCount(0, '', $seller_id);
+        if (!empty($status)) {
+            return $this->success('success', '', $status);
         } else {
             return $this->error('error');
         }
@@ -89,16 +89,16 @@ class ShopOrderController extends Controller
         $region = RegionService::getRegion($orderInfo['country'], $orderInfo['province'], $orderInfo['city'], $orderInfo['district']);
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
-        if (!empty($orderInfo)){
+        if (!empty($orderInfo)) {
             $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
-            if (empty($user_invoices)){
+            if (empty($user_invoices)) {
                 $user_invoices = [];
             }
         } else {
             $user_invoices = [];
         }
         $user = UserService::getInfo($orderInfo['user_id']);
-        if(empty($user)){
+        if (empty($user)) {
             $user = FirmUserService::getFirmInfo($orderInfo['firm_id']);
         }
         return $this->display('seller.order.detail', [
@@ -122,9 +122,10 @@ class ShopOrderController extends Controller
         $shop_id = session('_seller_id')['shop_id'];
         $id = $request->input('id', '');
         $order_status = $request->input('order_status', '');
-        $pay_status = $request->input('pay_status','');
+        $pay_status = $request->input('pay_status', '');
+        $deposit_status = $request->input('deposit_status','');
         $action_note = $request->input('action_note', '');
-        $delivery_period = $request->input('delivery_period','');
+        $delivery_period = $request->input('delivery_period', '');
         $where = [
             'id' => $id,
             'shop_id' => $shop_id
@@ -132,40 +133,59 @@ class ShopOrderController extends Controller
         // 判断订单是否存在
         try {
             $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
-            if ($order_status ==3){
-                if ($orderInfo['extension_code'] == ''){
-                    $re_rock =  ShopGoodsQuoteService::updateStock($id);
-                    if (!$re_rock){
-                        return $this->error('库存不足，无法确认');
+            if (!empty($orderInfo)) {
+                $data = ['id' => $id];
+                // 确认订单
+                if ($order_status == 3) {
+                    if ($orderInfo['extension_code'] == '') {
+                        $re_rock = ShopGoodsQuoteService::updateStock($id);
+                        if (!$re_rock) {
+                            return $this->error('库存不足，无法确认');
+                        }
+                    }
+                    if ($orderInfo['order_status'] != 2) {
+                        return $this->error('订单状态不符合执行该操作的条件');
+                    }
+                    $data['confirm_time'] = Carbon::now();
+                }
+                // 交货时间
+                if (!empty($delivery_period)) {
+                    if ($orderInfo['order_status'] != 2) {
+                        return $this->error('订单状态不符合执行该操作的条件');
+                    }
+                    $data['delivery_period'] = $delivery_period;
+                    if (empty($action_note)) {
+                        $action_note = "修改交货时间";
                     }
                 }
-                if ($orderInfo['order_status'] !=2){
-                    return $this->error('订单状态不符合执行该操作的条件');
-                }
-            }
-            if (!empty($orderInfo)) {
-                $data = [
-                    'id' => $id,
-                    'confirm_time' => Carbon::now()
-                ];
-                // 交货时间
-                if (!empty($delivery_period)){
-                    $data['delivery_period'] = $delivery_period;
-                }
-                if (!empty($order_status)){
+                if (!empty($order_status)) {
                     $data['order_status'] = $order_status;
+
                 }
-                if (!empty($pay_status)){
+                // 付款
+                if (!empty($pay_status)&&$pay_status>0) {
                     $data['pay_status'] = $pay_status;
                     // 已收款&&已收货 变更订单 待开票
-                    if ($pay_status==1 && $orderInfo['shipping_status']==3){
+                    $data['pay_time'] = Carbon::now();
+                    if ($pay_status == 1 && $orderInfo['shipping_status'] == 3) {
                         $data['order_status'] = 5;
+                    }
+                }
+                // 收定金
+                if (!empty($deposit_status)){
+                    if ($orderInfo['order_status'] != 2) {
+                        return $this->error('订单状态不符合执行该操作的条件');
+                    }
+                    $data['pay_time'] = Carbon::now();
+                    $data['deposit_status'] = $deposit_status;
+                    if (empty($action_note)) {
+                        $action_note = "确认收到定金";
                     }
                 }
                 $re = OrderInfoService::modify($data);
 
                 if (!empty($re)) {
-                    if(empty($action_note)){
+                    if (empty($action_note)) {
                         $action_note = "修改订单状态";
                     }
                     //存储日志信息
@@ -178,7 +198,7 @@ class ShopOrderController extends Controller
                         'pay_status' => $re['pay_status'],
                         'log_time' => Carbon::now()
                     ];
-                    if (!empty($order_status)){
+                    if (!empty($order_status)) {
                         $logData['order_status'] = $order_status;
                     } else {
                         $logData['pay_status'] = $pay_status;
@@ -189,7 +209,7 @@ class ShopOrderController extends Controller
             } else {
                 return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }

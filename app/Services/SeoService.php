@@ -21,5 +21,10 @@ class SeoService
        return SeoRepo::modify($data['id'],$data);
     }
 
+    public static function getInfoByType($type)
+    {
+        return SeoRepo::getInfoByFields(['type'=>$type]);
+    }
+
 
 }

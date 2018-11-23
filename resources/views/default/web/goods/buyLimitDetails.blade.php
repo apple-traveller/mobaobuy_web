@@ -185,7 +185,41 @@
             }
         }
 
+
         function toBalance(goodsId,activityId){
+            var userId = "{{session('_web_user_id')}}";
+             if(userId > 0){
+                 $.ajax({
+                    url: "/isReal",
+                    dataType: "json",
+                    data: {
+                    'userId':userId
+                    },
+                    async:false, 
+                    type: "POST",
+                    success: function (data) {
+                        if(data.code == 0){
+                             layer.confirm('请先实名再进行操作。', {
+                                btn: ['去实名','再看看'] //按钮
+                            }, function(){
+                                window.location.href='/account/userRealInfo';
+                            }, function(){
+
+                            });
+                            return;
+                        }else{
+
+                            toBalances(goodsId,activityId);
+                        }
+                    }
+                 })
+                 
+             }else{
+                $.msg.error('用户信息有误');
+                window.location.href='/login';
+             }
+         }
+        function toBalances(goodsId,activityId){
             var goodsNum = $('#goodsNum').val();
             var activityIdEncrypt = $('#activityId').val();
             if('{{session('_web_user_id')}}'){
