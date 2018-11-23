@@ -41,7 +41,7 @@ class ShopController extends Controller
         $currpage = $request->input('currpage',1);
         $shopUsers = ShopUserService::getShopUserList([],[]);//所有的店铺用户
         $admins = AdminService::getAdminList([],[]);//所有的店铺用户
-        $shop_logs = ShopService::getShopLogList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['log_time'=>'asc']],[]);
+        $shop_logs = ShopService::getShopLogList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['log_time'=>'desc']],[]);
         //dd($shopUsers['list']);
         return $this->display('admin.shop.loglist',[
             'shop_logs'=>$shop_logs['list'],
@@ -51,7 +51,6 @@ class ShopController extends Controller
             'shopUsers'=>$shopUsers['list'],
             'admins'=>$admins
         ]);
-
     }
 
     //添加
@@ -83,9 +82,10 @@ class ShopController extends Controller
     public function save(Request $request)
     {
         $data = $request->all();
+        $data['user_id'] = $this->requestGetNotNull('user_id','');
+        $data['shop_name'] = $this->requestGetNotNull('shop_name','');
         $currpage = $request->input('currpage',1);
         unset($data['nick_name']);
-        unset($data['_token']);
         unset($data['currpage']);
         $errorMsg = [];
         if(empty($data['shop_name'])){
@@ -118,7 +118,7 @@ class ShopController extends Controller
         }
         try{
             if(!key_exists('id',$data)){
-                ShopService::uniqueValidate($data['shop_name']);//唯一性验证
+                ShopService::uniqueValidate($data['company_name'],$data['user_name']);//唯一性验证
                 $data['reg_time']=Carbon::now();
                 $flag = ShopService::create($data);
                 //dd($flag);
