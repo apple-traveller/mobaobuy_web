@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加清仓特价</div>
+        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加清仓特卖</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">

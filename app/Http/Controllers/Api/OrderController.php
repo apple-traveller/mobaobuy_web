@@ -198,7 +198,7 @@ class OrderController extends ApiController
             $goods_amount = $goodsList[0]['amount'];
             $deposit = $goodsList[0]['deposit'];
             return $this->success( compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id', 'deposit'),'success');
-        } elseif ($from == 'consign') {//清仓特价
+        } elseif ($from == 'consign') {//清仓特卖
             $goods_amount = 0;
             try {
                 foreach ($goodsList as $k3 => $v3) {

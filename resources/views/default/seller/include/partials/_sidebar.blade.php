@@ -42,6 +42,6 @@
         <dd><a href="javascript:;" data-url="/seller/activity/wholesale" s_id="S052">集采拼团</a></dd>
     </dl>
     <dl class="layui-nav-child">
-        <dd><a href="javascript:;" data-url="/seller/activity/consign" s_id="S053">清仓特价</a></dd>
+        <dd><a href="javascript:;" data-url="/seller/activity/consign" s_id="S053">清仓特卖</a></dd>
     </dl>
 </li>

@@ -707,7 +707,7 @@ class OrderInfoService
                     $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
-                case 'consign'://清仓特价
+                case 'consign'://清仓特卖
                     $order_status = 2;
                     $from = 'consign';
                     $extension_id = $cartInfo_session[0]['id'];

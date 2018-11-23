@@ -17,7 +17,7 @@ class HotSearchController extends Controller
         $condition = [];
 //        $condition = ['is_show' => 1];
 
-        $hot = HotSearchService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['update_time'=>'desc']],$condition);
+        $hot = HotSearchService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['search_num'=>'desc','update_time'=>'desc']],$condition);
 
         return $this->display('admin.hotsearch.list',[
             'hot'=>$hot['list'],

@@ -318,7 +318,7 @@ class OrderController extends Controller
             $deposit = $goodsList[0]['deposit'];
             return $this->display('web.goods.confirmWholesaleOrder', compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id', 'deposit'));
 
-        } elseif ($from == 'consign') {//清仓特价
+        } elseif ($from == 'consign') {//清仓特卖
 
             $goods_amount = 0;
             try {

@@ -102,8 +102,10 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_02_promotion"></i><h4>促销管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>
+                        {{--<li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>--}}
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/wholesale" data-param="menushopping|05_bonustype_list" target="workspace">集采拼团</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/consign" data-param="menushopping|06_bonustype_list" target="workspace">清仓特卖</a></li>
                     </ul>
                 </div>
             </div>
