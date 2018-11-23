@@ -196,9 +196,10 @@ class UserController extends Controller
     //登出
     public function logout()
     {
-        session()->forget('_web_user_id');
-        session()->forget('_web_user');
-        session()->forget('_curr_deputy_user');
+//        session()->forget('_web_user_id');
+//        session()->forget('_web_user');
+//        session()->forget('_curr_deputy_user');
+        session()->flush();
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
@@ -709,13 +710,12 @@ class UserController extends Controller
     //保存
     public function saveUser(Request $request)
     {
-//        dump(session('_web_user'));
-//        dump(session('_web_user_id'));
         $params = $request->all();
+        $params['nick_name'] = trim($request->input('nick_name'));
         try{
             $data = [];
             $data['email'] = $params['email'];
-            $data['nick_name'] = $params['nick_name'];
+            $data['nick_name'] = htmlspecialchars($params['nick_name']);
             $userId = session('_web_user_id');
             $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
             if(!empty($data['email'])){
@@ -1021,9 +1021,10 @@ class UserController extends Controller
         ];
         $res = UserService::modify($userInfo['id'],$user_data);
         if($res){
-            session()->forget('_web_user_id');
-            session()->forget('_web_user');
-            session()->forget('_curr_deputy_user');
+//            session()->forget('_web_user_id');
+//            session()->forget('_web_user');
+//            session()->forget('_curr_deputy_user');
+            session()->flush();
             return $this->success('注销成功！');
         }else{
             return $this->error('注销失败！请联系管理员。');

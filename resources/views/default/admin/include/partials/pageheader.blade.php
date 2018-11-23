@@ -10,8 +10,8 @@
         <ul>
             <li data-param="menuplatform"><a href="javascript:void(0);">平台</a></li>
             <li data-param="menushopping"><a href="javascript:void(0);">商城</a></li>
-            <li data-param="finance"><a href="javascript:void(0);">财务</a></li>
-            <li data-param="third_party"><a href="javascript:void(0);">第三方服务</a></li>
+        {{--    <li data-param="finance"><a href="javascript:void(0);">财务</a></li>
+            <li data-param="third_party"><a href="javascript:void(0);">第三方服务</a></li>--}}
         </ul>
     </div>
     <div class="admin-header-right">

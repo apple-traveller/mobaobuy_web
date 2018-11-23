@@ -418,11 +418,12 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::post('/consign/toBalance', 'ActivityConsignController@toBalance');//清仓特卖 立即下单
 
+        Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购
+        Route::post('/wholeSingle/DemandSubmission', 'ActivityWholesaleController@DemandSubmission');//整单采购 需求提交
 
+        Route::group(['middleware'=>'web.firmUserAuth'],function(){
             Route::get('/confirmOrder/{id?}','OrderController@confirmOrder');//确认订单页面
             Route::post('/createOrder','OrderController@createOrder');//提交订单
-        Route::group(['middleware'=>'web.firmUserAuth'],function(){
-
         });
 
         Route::get('/toPay','FlowController@toPay');//去付款
@@ -653,6 +654,28 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/order/order_cancel','OrderController@orderCancel');//订单取消
             Route::post('/order/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
             Route::post('/order/egis','OrderController@egis');//企业用户审核订单
+
+            /*************************************企业库存*****************************************************/
+            Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
+            Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
+
+            Route::post('/firmstock/stock_in','FirmStockController@firmStockIn');//入库记录列表
+            Route::post('/firmstock/add_stock_in','FirmStockController@addFirmStock');//新增入库记录
+            Route::post('/firmstock/search_goods_name','FirmStockController@searchGoodsName');//入库检索商品名称
+            Route::post('/firmstock/search_partner_name','FirmStockController@searchPartnerName');//入库检索供应商名称
+
+            Route::post('/firmstock/stock_out','FirmStockController@firmStockOut');   //出库记录列表
+            Route::get('/firmstock/add_stock_out','FirmStockController@addFirmSotckOut');//新增出库记录
+            Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
+            Route::post('/stock/info','FirmStockController@stockInfo');//可出库单条记录
+            Route::post('/curStockSave','FirmStockController@curStockSave');//出库更新保存
+
+            Route::get('/stock/list','FirmStockController@stockList');//实时库存
+            Route::post('/stock/list','FirmStockController@stockList');//实时库存
+            Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+            Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+
+            /********************************************************************************************/
 
             Route::group(['middleware'=>'api.firmUserAuth'],function(){
                 Route::post('/order/confirmOrder','OrderController@confirmOrder');//确认订单页面

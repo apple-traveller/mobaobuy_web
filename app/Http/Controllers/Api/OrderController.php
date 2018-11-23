@@ -361,7 +361,7 @@ class OrderController extends ApiController
             //找不到，清空session
             Cache::forget('_api_user_'.$user_id);
             Cache::forget('_api_deputy_user_'.$user_id);
-            return $this->success('','success');
+            return $this->error('切换失败');
         }
     }
 

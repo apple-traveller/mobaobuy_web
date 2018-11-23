@@ -56,9 +56,8 @@
                                 <th width="8%"><div class="tDiv">昵称</div></th>
                                 <th width="6%"><div class="tDiv">是否实名</div></th>
                                 <th width="10%"><div class="tDiv">是否企业用户</div></th>
-                                <th width="6%"><div class="tDiv">积分</div></th>
-                                <th width="8%"><div class="tDiv">注册时间</div></th>
-                                <th width="6%"><div class="tDiv">访问次数</div></th>
+                                <th width="10%"><div class="tDiv">注册时间</div></th>
+                                <th width="8%"><div class="tDiv">访问次数</div></th>
                                 <th width="6%"><div class="tDiv">是否冻结</div></th>
                                 <th width="28%" class="handle">操作</th>
                             </tr>
@@ -68,7 +67,6 @@
                             @if(!empty($users))
                             @foreach($users as $user)
                             <tr class="">
-
                                 <td><div class="tDiv">{{$user['id']}}</div></td>
                                 <td><div class="tDiv">{{$user['user_name']}}</div></td>
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
@@ -88,11 +86,11 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td>
+                               {{-- <td>
                                     <div class="tDiv">
                                         <a href="/admin/user/points?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
                                     </div>
-                                </td>
+                                </td>--}}
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
                                 <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 

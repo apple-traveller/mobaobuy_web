@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 class ApiController
 {
+
+    protected function requestGetNotNull($name, $default=''){
+        $value = request($name, $default);
+        if(is_null($value)){
+            $value = $default;
+        }
+        return $value;
+    }
+
+
     protected function success($data = '',$msg = '')
     {
         $result = [

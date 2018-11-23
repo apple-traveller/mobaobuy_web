@@ -152,6 +152,14 @@ class GoodsCategoryService
     //删除
     public static function delete($ids)
     {
+        //dd($ids);
+        foreach($ids as $k=>$v){
+            $good = GoodsRepo::getInfoByFields(['cat_id'=>$v]);
+            if(!empty($good)){
+                self::throwBizError('该分类下有商品不能删除');
+                return false;
+            }
+        }
         return GoodsCategoryRepo::delete($ids);
     }
 

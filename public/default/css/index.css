@@ -1,3 +1,15 @@
+.beaeaea{border:1px solid #eaeaea;}
+.bdccc {border: 1px solid #CCCCCC;}
+.redb {border: 1px solid #db4f2e;}
+.bggray{background:#9b9b9b !important;}
+.bgwhite{background:#fff !important;}
+.bgf1f1 {background: #f1f1f1 !important;}
+.bb1{border-bottom: 1px solid #ddd;}
+.bd1{border-bottom: 1px dashed #DDDDDD;}
+.bbright{border-right: 1px solid #ddd;}
+.bbleft{border-left: 1px solid #ddd;}
+
+
 .bbright{border-right: 1px solid #ddd;}
 .bbleft{border-left: 1px solid #ddd;}
 .play_banner{height: 344px;position:relative;}
