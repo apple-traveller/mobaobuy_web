@@ -61,21 +61,12 @@
 
                                 <input type="hidden" name="id"  value="{{$brand['id']}}"/>
                                 <input type="hidden" name="currpage"  value="{{$currpage}}"/>
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>是否删除：</div>
-                                    <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_delete" id="is_delete">
-                                            <option @if($brand['is_delete']==0) selected @endif  value="0">否</option>
-                                            <option @if($brand['is_delete']==1) selected @endif  value="1">是</option>
-                                        </select>
-                                    </div>
-                                    <div class="form_prompt"></div>
-                                </div>
+
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>是否推荐：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_recommend" id="is_recommend">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_recommend" id="is_recommend">
                                             <option @if($brand['is_recommend']==0) selected @endif  value="0">否</option>
                                             <option @if($brand['is_recommend']==1) selected @endif  value="1">是</option>
                                         </select>
