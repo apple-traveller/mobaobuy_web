@@ -67,7 +67,6 @@
                             @if(!empty($users))
                             @foreach($users as $user)
                             <tr class="">
-
                                 <td><div class="tDiv">{{$user['id']}}</div></td>
                                 <td><div class="tDiv">{{$user['user_name']}}</div></td>
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>

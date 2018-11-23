@@ -15,7 +15,7 @@
                     <form action="/admin/shop/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
 
-                            <div class="item">
+                            {{--<div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;会员：</div>
                                 <div class="label_value">
                                     <input type="text" name="nick_name" class="text" value="" maxlength="40" autocomplete="off" id="nick_name">
@@ -24,15 +24,15 @@
                                     </ul>
                                     <div class="form_prompt"></div>
                                 </div>
-                            </div>
+                            </div>--}}
 
-                            <div class="item">
+                            {{--<div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_name" class="text" value="" maxlength="40" autocomplete="off" id="shop_name">
                                     <div class="form_prompt"></div>
                                 </div>
-                            </div>
+                            </div>--}}
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;企业全称：</div>
@@ -125,16 +125,6 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否自营：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_self_run" id="is_self_run">
-                                        <option value="0">否</option>
-                                        <option selected  value="1">是</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否通过审核：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_validated" id="is_validated">
@@ -147,7 +137,7 @@
 
 <hr>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>默认店铺管理员：</div>
+                                <div class="label"><span class="require-field">*</span>店铺管理员：</div>
                                 <div class="label_value">
                                     <input type="text" name="user_name" class="text" value="" maxlength="40" autocomplete="off" id="user_name">
                                     <div class="form_prompt"></div>
@@ -165,7 +155,6 @@
                             </div>
 
 
-                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">

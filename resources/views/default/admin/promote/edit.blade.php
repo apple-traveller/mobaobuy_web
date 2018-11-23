@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}" class="s-back">返回</a>优惠活动 - 编辑活动</div>
+        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}" class="s-back">返回</a>优惠活动 - 编辑优惠活动</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                    <div class="label">&nbsp;选择商品分类：</div>
                                     <div class="label_value">
                                         <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
@@ -70,6 +70,7 @@
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                         </ul>
+                                        <div style="margin-left: 10px;" class="notic">产品规格{{$goods_info['packing_spec']}}</div>
                                     </div>
                                 </div>
 
@@ -78,6 +79,7 @@
                                     <div class="label_value">
                                         <input type="text" name="price" value="{{$promote['price']}}" autocomplete="off" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
+
                                     </div>
                                 </div>
 
@@ -86,6 +88,7 @@
                                     <div class="label_value">
                                         <input type="text" name="num" value="{{$promote['num']}}" autocomplete="off" id="num" size="40"  class="text">
                                         <div class="form_prompt"></div>
+                                        <div style="margin-left: 10px;" class="notic">数量为规格的整数倍</div>
                                     </div>
                                 </div>
 
@@ -215,6 +218,10 @@
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#price").val("");
+            $("#num").val("");
+            $("#min_limit").val("");
+            $("#max_limit").val("");
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+'</div>');
         });
