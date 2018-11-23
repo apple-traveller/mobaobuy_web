@@ -34,3 +34,4 @@
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
 <script src="{{asset(themePath('/').'layui/layui.js')}}" ></script>
 <script src="{{asset(themePath('/').'layui/index.js')}}" ></script>
+{{--<script src="{{asset(themePath('/').'layui/jquery-3.2.1.min.js')}}" ></script>--}}

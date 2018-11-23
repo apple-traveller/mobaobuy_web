@@ -41,7 +41,7 @@
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label">选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>

@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" cat-id="{{$goodsQuote['cat_id']}}"  autocomplete="off" value="{{$goodsQuote['cat_name']}}" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>

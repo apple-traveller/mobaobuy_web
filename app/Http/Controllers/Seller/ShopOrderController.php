@@ -113,7 +113,7 @@ class ShopOrderController extends Controller
     }
 
     /**
-     * 订单确认
+     * 更该订单状态
      * @param Request $request
      * @return ShopOrderController|\Illuminate\Http\RedirectResponse
      */
@@ -160,7 +160,6 @@ class ShopOrderController extends Controller
                 }
                 if (!empty($order_status)) {
                     $data['order_status'] = $order_status;
-
                 }
                 // 付款
                 if (!empty($pay_status)&&$pay_status>0) {
@@ -182,6 +181,7 @@ class ShopOrderController extends Controller
                         $action_note = "确认收到定金";
                     }
                 }
+                dd($data);
                 $re = OrderInfoService::modify($data);
 
                 if (!empty($re)) {

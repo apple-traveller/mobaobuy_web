@@ -12,6 +12,8 @@
             border-radius: 4px;
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
         }
+        　 #cnv {position:relative;margin:0px auto;padding:0px;width:600px;height:400px;overflow:hidden;}
+    /*　　　　#cnv .content {background:#666;width:1280px;height:720px;padding:10px;color:#fff}*/
     </style>
 @endsection
 @section('content')
@@ -31,20 +33,23 @@
     <div class="layui-side" style="background:#383838; ">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="left-menu" style="color: #ffffff">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="left-menu" style="color: #ffffff;">
                 @include(themePath('.')."seller.include.partials._sidebar")
             </ul>
         </div>
     </div>
     <div class="clearfix"></div>
     <!-- 内容主体区域 -->
-    <div class="layui-body ">
+    <div class="layui-body" id="cnv">
         <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch" >
-            <ul class="layui-tab-title">
+            <ul class="layui-tab-title" style="position: sticky;top: 0px;background-color: white">
                 <li class="layui-this" >后台首页</li>
             </ul>
-            <div class="layui-tab-content">
+            <div class="layui-tab-content" >
                 <div class="layui-tab-item layui-show">
+                    <div id="list" style="height: 400px">
+
+                    </div>
                     <div id="main">
 
                     </div>
@@ -61,6 +66,8 @@
     <script src="{{asset(themePath('/').'e-chars/echarts-all.js')}}" ></script>
     <script src="{{asset(themePath('/').'e-chars/require.js')}}" ></script>
     <script type="text/javascript">
+        $('#cnv').perfectScrollbar();
+        $('#cnv').perfectScrollbar('update');
         require.config({
             paths: {
                 echarts: 'theme/macarons'

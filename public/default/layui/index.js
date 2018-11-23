@@ -168,6 +168,12 @@ function setIframeHeight(iframe) {
     }
 };
 
+/**
+ * 让弹窗适应大小
+ * @param layerIndex
+ * @param layerInitWidth
+ * @param layerInitHeight
+ */
 function resizelayer(layerIndex,layerInitWidth,layerInitHeight) {
     let docWidth = $(document).width();
     let docHeight = $(document).height();

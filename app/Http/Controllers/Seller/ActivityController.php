@@ -23,7 +23,7 @@ class ActivityController extends Controller
         $condition['shop_id'] = $shop_id;
         $pageSize = 10;
         $list = ActivityService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
-        return $this->display('seller.Activity.promoter',[
+        return $this->display('seller.activity.promoter',[
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
