@@ -5,7 +5,7 @@
  * Date: 2018-10-25
  * Time: 20:28
  */
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ActivityWholesaleService;
@@ -43,6 +43,24 @@ class ActivityConsignController extends Controller
     public function add(Request $request)
     {
         return $this->display('seller.activityconsign.add');
+//        $currentPage = $request->input('currentPage',1);
+//
+//        $id = $request->input('id','');
+//
+//        if($id){
+//            $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+//            $consign_info['begin_time'] = explode(' ',$consign_info['begin_time']);
+//            $consign_info['end_time'] = explode(' ',$consign_info['end_time']);
+//            $good = GoodsService::getGoodInfo($consign_info['goods_id']);
+//        } else {
+//            $consign_info = [];
+//            $good = [];
+//        }
+//        return $this->display('seller.activityconsign.edit',[
+//            'currentPage' => $currentPage,
+//            'consign_info' => $consign_info,
+//            'good' => $good
+//        ]);
     }
 
     public function edit(Request $request)

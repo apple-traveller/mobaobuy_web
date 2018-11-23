@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加清仓特价</div>
+        <div class="title"><a href="/seller/activity/consign" class="s-back">返回</a>添加清仓特卖</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">
@@ -34,7 +34,7 @@
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label">选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" lay-search="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>

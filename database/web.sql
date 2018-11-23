@@ -689,6 +689,7 @@ CREATE TABLE `shop_goods_quote` (
   `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '发货地',
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
+  `total_number` int(10) NOT NULL DEFAULT '0' COMMENT '报价总数',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT 0 COMMENT '店铺职员ID',
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',

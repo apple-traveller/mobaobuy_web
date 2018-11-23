@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '清仓特价')
+@section('title', '清仓特卖')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	<link rel="stylesheet" href="css/index.css" />
@@ -8,6 +8,18 @@
 		.top-search-div .search-div .logo{background:none;}
 		.bottom_time{width: 154px;color: #666;float: left;text-align: left;}
 		.bottom_btn {width: 96px;float: right;text-align: center;height: 38px;border-radius: 5px;line-height: 35px;}
+		.ClearSale_banner{height: 539px;background: url(/default/img/ClearSale_banner.jpg)no-repeat center;}
+		.ClearSale_bg{background-color: #db0505;}
+		.ClearSale_main{width: 1200px;margin: 0 auto;}
+		.ClearSale_title{height:70px;background: url(/default/img/ClearSale_title.png)no-repeat center;}
+		.ClearSale_seize{width:1200px;margin: 30px auto 10px;text-align: center;}
+		.ms_list_center .bq__addr {height: 32px;line-height: 30px;border: 1px solid #ffa800;color: #ff6000;
+			background-color: #fff6f0;box-sizing: border-box;text-align: left;padding:0 5px;}
+		.bq__progress_com {height: 10px; background-color: #ffba00;}
+		.bq_price {width: 250px;height: 65px;line-height: 65px;margin-top: 15px;margin-bottom: 10px;text-align: center;background-color: #fff6f0;font-size: 16px;}
+		.mx_progress{
+			margin-right: 5px;
+		}
 	</style>
 
 @endsection
@@ -22,56 +34,49 @@
 	</script>
 @endsection
 @section('content')
-	<div class="limit_bg">
-		<div class="ms_title"></div>
-		{{--<div class="limit_date">2018年10月1日-2018年10月31日</div>--}}
-		
-		
-		<div class="w1200 ovh">
-		<ul class="ms_list">
-			@if(empty($consignInfo))
-				无清仓特价活动
-			@else
-				@foreach($consignInfo as $v)
-				<li>
-					<div class="ms_list_center">
-						<div class="ovh">
-							<h1 class="fs18 fl" style="height: 36px;">{{$v['goods_full_name']}}</h1>
-							{{--<span class="fr pt10 ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>--}}
-						</div>
-						<div class="ovh mt30">
-							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div>
-							<div class="mx_addr fl ml15" style="width: 117px;">{{$v['goods_number']}}kg</div>
-						</div>
-						<div class="ovh mt20 ">
-							<div class="mx_progress">
-								<div class="mx_progress_com"></div>
+	<div class="ClearSale_banner"></div>
+	<div class="ClearSale_bg ovh">
+		<div class="ClearSale_main">
+			<div class="ClearSale_title"></div>
+			<div class="ClearSale_seize"><img src="/default/img/seize.png"/></div>
+			<ul class="ms_list">
+				@if(empty($consignInfo))
+					无清仓特卖活动
+				@else
+					@foreach($consignInfo as $v)
+						<li>
+							<div class="ms_list_center">
+								<div class="ovh">
+									<h1 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h1>
+								</div>
+								<div class="ovh mt10">
+									<div class="bq__addr fl">{{$v['shop_name']}}</div>
+								</div>
+								<div class="ovh mt10 ">
+									<div class="mx_progress">
+										<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
+									</div>
+									<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
+								</div>
+								<div class="tac mt30 ovh" style="text-align: left !important;">
+									<span class="addr_dw">{{$v['delivery_place']}}</span>
+									<span class="fr ovh di gray">可售 {{$v['goods_number']}}kg</span>
+								</div>
+								<div class="bq_price">
+									<font class="gray">单价</font>
+									<font class="orange fs24">￥{{$v['shop_price']}}</font>/kg
+								</div>
+								<a href="/consign/detail/{{encrypt($v['id'])}}">
+									<div class="mx_btn">立即抢购</div>
+								</a>
 							</div>
-							<span class="fl fs16 ml10 gray">交货地 {{$v['delivery_place']}}</span>
-						</div>
-						<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
-						<div class="mx_price"><font class="gray">售价</font> <font class="orange fs24">￥{{$v['shop_price']}}</font>/kg</div>
+						</li>
+					@endforeach
+				@endif
+			</ul>
+		</div>
+	</div>
 
-							<div class="graybg">
-								<a href="/consign/detail/{{encrypt($v['id'])}}"><div class="bottom_btn redbg fs16 white cp">立即下单</div></a>
-							</div>
-					</div>
-				</li>
-				@endforeach
-			@endif
-		</ul>
-	
-	</div>
-	<div class="w1200 redbg ovh" style="margin-bottom: 30px;">
-		
-		<div class="Rules_activity">集采规则</div>
-		<ul class="Rules_text">
-			<li>1.本活动对所有会员开放</li>
-			<li>2.秒杀订单需要在30分钟内完成支付，逾期未付款，系统将自动取消订单</li>
-			<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：400-100-1234</li>
-		</ul>
-	</div>
-	</div>
 @endsection
 
 
