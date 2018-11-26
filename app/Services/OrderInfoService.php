@@ -932,4 +932,38 @@ class OrderInfoService
         $data['finished'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitSend);
         return $data;
     }
+
+    /**
+     * 检测报价是否存在订单
+     * checkQuoteExistOrder
+     * @param $quote_id
+     * @return bool
+     */
+    public static function checkQuoteExistOrder($quote_id)
+    {
+        $res = OrderGoodsRepo::getTotalCount(['shop_goods_quote_id'=>$quote_id]);
+        if($res>0){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 检测活动是否存在订单
+     * checkActivityExistOrder
+     * @param $extension_id
+     * @param $extension_code
+     * @return bool
+     */
+    public static function checkActivityExistOrder($extension_id,$extension_code)
+    {
+        $where = [
+            'extension_id'=>$extension_id,
+            'extension_code'=>$extension_code,
+        ];
+        $res = OrderInfoRepo::getTotalCount($where);
+        if($res>0){
+            return true;
+        }
+        return false;
+    }
 }
