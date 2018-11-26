@@ -380,5 +380,11 @@ class OrderController extends ApiController
         }
     }
 
+    //确认订单等待审核页面
+    public function waitConfirm(Request $request)
+    {
+        return $this->success(['service_phone'=>getConfig('service_phone'),'service_qq'=>getConfig('service_qq')]);
+    }
+
 
 }
