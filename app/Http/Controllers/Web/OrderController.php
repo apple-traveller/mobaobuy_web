@@ -345,8 +345,6 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         $info = session('_curr_deputy_user');
-//        $payType = $request->input('payType','');
-
         $userIds = [];
         // 判断是否为企业用户
         if ($info['is_firm']) {
@@ -460,13 +458,6 @@ class OrderController extends Controller
         }
         return $this->display('web.user.order.orderSubmission', ['re' => $re]);
     }
-    //支付界面
-    public function pay(){
-        return $this->display('web.order.pay');
-    }
-    //等待审核界面
-    public function waitConfirm(){
-        return $this->display('web.order.waitConfirm');
-    }
+
 
 }

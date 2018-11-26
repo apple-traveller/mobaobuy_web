@@ -11,6 +11,7 @@ use App\Services\ArticleService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Cache;
+use App\Services\DemandService;
 class IndexController extends ApiController
 {
     //获取首页大图轮播
@@ -54,8 +55,48 @@ class IndexController extends ApiController
     //咨询列表
     public function getArticleList(Request $request)
     {
-        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
+        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1]);
         return $this->success(['article_list' => $article_list['list']]);
+    }
+
+    //获取供应商
+    public function getShopsList(Request $request)
+    {
+        $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
+        return $this->success(['shops' => $shops]);
+    }
+
+    //卖货需求
+    public function addDemand(Request $request){
+        $uuid = $request->input('token');
+        $user_id = 0;
+        if(!empty($uuid)){
+            $user_id = Cache::get($uuid, 0);
+        }
+        if(empty($user_id) || $user_id!=0){
+            $data = [
+                'user_id' => 0,
+                'contact_info' => $request->input('contact',''),
+                'desc' => $request->input('content','')
+            ];
+        }else{
+            $userinfo = UserService::getInfo($user_id);
+            $data = [
+                'user_id' => $user_id,
+                'contact_info' => $userinfo['user_name'],
+                'desc' => $request->input('content','')
+            ];
+        }
+        if(empty($data['contact_info'])){
+            return $this->error('联系方法不能为空!');
+        }
+        if(empty($data['desc'])){
+            return $this->error('需求内容不能为空!');
+        }
+
+        DemandService::create($data);
+
+        return $this->success('','需求信息提交成功，请耐心等待客服联系！');
     }
 
 

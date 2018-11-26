@@ -19,32 +19,32 @@
                         <form method="post" action="" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品全称：</div>
+                                <div class="label">&nbsp;商品全称：</div>
                                 <div class="label_value font14">{{$good['goods_full_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
+                                <div class="label">&nbsp;商品名称：</div>
                                 <div class="label_value font14">{{$good['goods_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品编码：</div>
+                                <div class="label">&nbsp;商品编码：</div>
                                 <div class="label_value font14">{{$good['goods_sn']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
+                                <div class="label">&nbsp;关键词：</div>
                                 <div class="label_value font14">{{$good['keywords']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;所属品牌：</div>
+                                <div class="label">&nbsp;所属品牌：</div>
                                 <div class="label_value font14">{{$good['brand_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;所属分类：</div>
+                                <div class="label">&nbsp;所属分类：</div>
                                 <div class="label_value font14">
                                     @foreach($cates as $cate)
                                         @if($cate['id']==$good['cat_id'])
@@ -55,49 +55,54 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;单位名称：</div>
+                                <div class="label">&nbsp;单位名称：</div>
                                 <div class="label_value font14">{{$good['unit_name']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
+                                <div class="label">&nbsp;商品型号：</div>
                                 <div class="label_value font14">{{$good['goods_model']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
+                                <div class="label">&nbsp;含量：</div>
                                 <div class="label_value font14">{{$good['goods_content']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;包装规格：</div>
+                                <div class="label">&nbsp;包装规格：</div>
                                 <div class="label_value font14">{{$good['packing_spec']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
+                                <div class="label">&nbsp;商品属性：</div>
                                 <div class="label_value font14">{{$good['goods_attr']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;市场价：</div>
+                                <div class="label">&nbsp;市场价：</div>
                                 <div class="label_value font14">{{$good['market_price']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
+                                <div class="label">&nbsp;商品重量：</div>
                                 <div class="label_value font14">{{$good['goods_weight']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;pc商品详情：</div>
+                                <div class="label">&nbsp;商品原图：</div>
+                                <div  path="{{getFileUrl($good['original_img'])}}" class="layui-btn viewPic">点击查看</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label">&nbsp;pc商品详情：</div>
                                 <div class="label_value font14">
-                                    <div  content="{{$good['goods_desc']}}" class="layui-btn viewContent">点击查看</div>
+                                    <div  content="{{$good['goods_desc']}}" class="layui-btn viewPic">点击查看</div>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;移动端商品详情：</div>
+                                <div class="label">&nbsp;移动端商品详情：</div>
                                 <div class="label_value font14">
                                     <div  content="{{$good['desc_mobile']}}" class="layui-btn viewContent">点击查看</div>
                                 </div>

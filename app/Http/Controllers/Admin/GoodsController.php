@@ -99,6 +99,9 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '商品名称不能为空';
         }
+        if(empty($data['original_img'])){
+            $errorMsg[] = '商品原图不能为空';
+        }
         if(empty($data['keywords'])){
             $errorMsg[] = '商品关键字不能为空';
         }
@@ -127,6 +130,8 @@ class GoodsController extends Controller
             return $this->error(implode('<br/>',$errorMsg));
         }
 
+        $data['goods_img'] = $data['original_img'];
+        $data['goods_thumb'] = $data['original_img'];
         $data['goods_full_name'] = $data['brand_name']." ".$data['goods_name']." ".$data['goods_content'];
 
         try{

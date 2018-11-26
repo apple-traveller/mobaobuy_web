@@ -125,13 +125,16 @@ class GoodsCategoryService
     public static function getLevel($parent_id){
         $data = self::getCates();
         $cates = self::getCatesTree($data);
-        $level = "";
-        foreach($cates as $k=>$v){
-            if($v['parent_id']==$parent_id){
-                $level = $v['level'];
-                break;
+        $level = 1;
+        if(!empty($cates)){
+            foreach($cates as $k=>$v){
+                if($v['parent_id']==$parent_id){
+                    $level = $v['level'];
+                    break;
+                }
             }
         }
+
         return $level;
     }
 
