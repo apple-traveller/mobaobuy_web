@@ -224,7 +224,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
-        Route::post('/activity/consign/save', 'ActivityConsignController@save');//添加
+        Route::get('/activity/consign/edit', 'ActivityConsignController@edit');//编辑
+        Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
 
 
 

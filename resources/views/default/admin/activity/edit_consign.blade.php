@@ -23,23 +23,22 @@
 
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="consign_form" novalidate="novalidate">
+                    <form action="/admin/activity/consign/save" method="post" enctype="multipart/form-data" name="theForm" id="consign_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
 
-                            {{--<div class="item">--}}
-                                {{--<div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>--}}
-                                {{--<div class="label_value">--}}
-                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="@if($consign_info['shop_store_id'] == 0)自营@else{{$consign_info['store_name']}}@endif" class="text" />--}}
-                                    {{--<input type="hidden" value="@if($consign_info['shop_store_id'] == 0)自营@else{{$consign_info['store_name']}}@endif" name="store_name"  id="store_name_val"  />--}}
-                                    {{--<input type="hidden" value="{{$consign_info['shop_store_id']}}" name="store_id"  id="store_id" />--}}
-                                    {{--<div class="form_prompt"></div>--}}
-                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">--}}
-                                    {{--</ul>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                            <input type="hidden" value="自售" name="store_name"  id="store_name_val"  />
-                            <input type="hidden" value="0" name="store_id"  id="store_id" />
-                            <input type="hidden" value="3" name="type"  id="store_id" />
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
+                                <div class="label_value">
+                                    <input type="text"  shop-id="{{$consign_info['shop_store_id']}}" autocomplete="off" id="company_name" size="40"  class="text" value="{{$consign_info['shop_name']}}">
+                                    <input type="hidden" name="shop_name" id="company_name_val" value="{{$consign_info['shop_name']}}"/>
+                                    <input type="hidden" name="shop_id" id="shop_id" value="{{$consign_info['shop_id']}}"/>
+                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    </ul>
+                                </div>
+                            </div>
+                            {{--<input type="hidden" value="自售" name="store_name"  id="store_name_val"  />--}}
+                            {{--<input type="hidden" value="0" name="shop_store_id"  id="store_id" />--}}
+                            {{--<input type="hidden" value="3" name="type"  id="store_id" />--}}
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
@@ -87,7 +86,7 @@
                                 </div>
                             </div>
 
-                                <input type="hidden" name="currentPage" value="{{$currentPage}}">
+                                {{--<input type="hidden" name="currentPage" value="{{$currentPage}}">--}}
                             <input type="hidden" name="id" value="{{$consign_info['id']}}">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
@@ -150,7 +149,7 @@
         $(".cat_id").change(function(res){
             $(".goods_id").children('option').remove();
             var cat_id = $(this).val();
-            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
+            $.post('/admin/promote/getGoods',{'cat_id':cat_id},function(res){
                 if(res.code==200){
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
@@ -257,7 +256,7 @@
         $("#cat_name").focus(function(){
             $(".query_cat_name").children().filter("li").remove();
             $.ajax({
-                url: "/seller/goods/getGoodsCat",
+                url: "/admin/promote/getGoodsCat",
                 dataType: "json",
                 data:{},
                 type:"POST",
@@ -273,6 +272,36 @@
             })
         });
 
+        // 商家 获取焦点请求所有的商家数据
+        $("#company_name").focus(function(){
+            $(".query_company_name").children().filter("li").remove();
+            $.ajax({
+                url: "/admin/promote/getShopList",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        $(".query_company_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_company_name","click",function(){
+            $("#company_name").siblings("div").filter(".notic").remove();
+            var company_name = $(this).text();
+            var shop_id = $(this).attr("data-shop-id");
+            $("#company_name").val(company_name);
+            $("#company_name_val").val(company_name);
+            $("#shop_id").val(shop_id);
+            $(".query_company_name").hide();
+        });
+
         // 种类 点击将选中的值填入input框内
         $(document).delegate(".created_cat_name","click",function(){
             var cat_name = $(this).text();
@@ -286,7 +315,7 @@
             $(".query_goods_name").children().filter("li").remove();
             var cat_id = $("#cat_name").attr("cat-id");
             $.ajax({
-                url: "/seller/goods/getGood",
+                url: "/admin/promote/getGood",
                 dataType: "json",
                 data:{"cat_id":cat_id},
                 type:"POST",
@@ -305,30 +334,6 @@
             })
         });
 
-        $("#store_name").focus(function(){
-            $(".query_store_name").children().filter("li").remove();
-            $.ajax({
-                url: "/seller/store/list",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_store_name").show();
-                        var data = res.data;
-                        var _html = '<li data-store-id="0" data-store-name="自营" class="created_store_name" style="cursor:pointer;">自营</li>';
-                        for(var i=0;i<data.length;i++){
-                            _html += '<li data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</li>';
-                        }
-                    }else{
-                        $(".query_store_name").show();
-//                        $(".query_store_name").append('<li  style="cursor:pointer;">该分类下没有查询到店铺</li>');
-                    }
-                    $(".query_store_name").append(_html);
-                }
-            })
-        });
-
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -341,16 +346,6 @@
             $("#goods_name").attr("data-packing-spac",packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
-        });
-
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_store_name","click",function(){
-            $("#store_name").siblings("div").filter(".notic").remove();
-            var store_name = $(this).attr("data-store-name");
-            var store_id = $(this).attr("data-store-id");
-            $("#store_name").val(store_name);
-            $("#store_name_val").val(store_name);
-            $("#store_id").val(store_id);
         });
 
         $("#goods_number").change(function () {

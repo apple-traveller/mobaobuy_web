@@ -289,5 +289,13 @@ class ShopGoodsQuoteService
         $activityArr[] = $activityInfo;
         return $activityArr;
     }
+
+    /**
+     * 检测报价是否存在订单
+     */
+    public function checkQuoteExistOrder()
+    {
+
+    }
 }
 
