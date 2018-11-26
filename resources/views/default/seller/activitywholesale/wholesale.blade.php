@@ -125,22 +125,25 @@
             });
         }
         $('.btn_trash').click(function () {
-            let seckill_id = $(this).attr('data_id');
-            console.log(seckill_id);
-            $.ajax({
-                url:'/seller/activity/wholesale/delete',
-                data:{
-                    id: seckill_id
-                },
-                type:'post',
-                success:function (res) {
-                    if (res.code == 1){
-                        layer.msg(res.msg);
-                        setTimeout(window.location.reload(),2000);
-                    } else {
-                        layer.msg(res.msg);
+            layer.confirm('确认删除?', {icon: 3, title: '提示'}, function (index) {
+                let seckill_id = $(this).attr('data_id');
+                console.log(seckill_id);
+                $.ajax({
+                    url: '/seller/activity/wholesale/delete',
+                    data: {
+                        id: seckill_id
+                    },
+                    type: 'post',
+                    success: function (res) {
+                        if (res.code == 1) {
+
+                        } else {
+                            layer.msg(res.msg);
+                            setTimeout(window.location.reload(), 2000);
+                        }
                     }
-                }
+                });
+                layer.close(index);
             })
         });
     </script>

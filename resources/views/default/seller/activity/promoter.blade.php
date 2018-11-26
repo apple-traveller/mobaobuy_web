@@ -124,7 +124,7 @@
         }
         $('.btn_trash').click(function () {
             let seckill_id = $(this).attr('data_id');
-            console.log(seckill_id);
+            layer.confirm('确认删除?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url:'/seller/activity/deletePromoter',
                 data:{
@@ -133,13 +133,16 @@
                 type:'post',
                 success:function (res) {
                     if (res.code == 1){
-                        layer.msg(res.msg);
                         setTimeout(window.location.reload(),2000);
                     } else {
-                        layer.msg(res.msg);
+                        layer.alert(res.msg);
+                        setTimeout(window.location.reload(),2000);
                     }
                 }
             })
+                layer.close(index);
+        })
+
         });
     </script>
 @stop
