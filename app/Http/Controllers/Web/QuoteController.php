@@ -235,5 +235,4 @@ class QuoteController extends Controller
             'collectGoods' => $collectGoods
         ]);
     }
-
 }
