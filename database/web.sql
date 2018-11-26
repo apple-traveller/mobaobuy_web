@@ -1065,6 +1065,28 @@ CREATE TABLE `activity_promote` (
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='促销活动表';
 
+DROP TABLE IF EXISTS `activity_wholesale`;
+CREATE TABLE `activity_wholesale` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商家ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '商家名称',
+  `begin_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团商品ID',
+  `goods_name` varchar(200) NOT NULL DEFAULT '' COMMENT '拼团商品名',
+  `price` decimal(10,2) NOT NULL COMMENT '拼团价格',
+  `num` decimal(5,0) NOT NULL COMMENT '拼团目标数量',
+  `partake_quantity` decimal(5,0) NOT NULL COMMENT '已参与数量',
+  `min_limit` decimal(5,0) NOT NULL DEFAULT 1 COMMENT '最小参与数量',
+  `max_limit` decimal(5,0) NOT NULL DEFAULT 0 COMMENT '最大限购数量 0-不限',
+  `deposit_ratio` decimal(3,0) NOT NULL DEFAULT 0 COMMENT '订金比例 0-不支付订金',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  PRIMARY KEY (`id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
