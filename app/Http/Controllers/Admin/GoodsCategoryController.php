@@ -115,6 +115,7 @@ class GoodsCategoryController extends Controller
                 GoodsCategoryService::uniqueValidate($data['cat_name']);//唯一性验证
                 $info = GoodsCategoryService::create($data);
             }else{
+                $data['id'] = $id;
                 $info = GoodsCategoryService::modify($data);
             }
             if(!$info){
