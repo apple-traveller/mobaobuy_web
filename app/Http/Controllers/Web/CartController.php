@@ -57,6 +57,7 @@ class CartController extends Controller
      */
     public function delCart(Request $request){
         $id = $request->input('id');
+        $id = decrypt($id);
         try{
             GoodsService::delCart($id);
             return $this->success();
@@ -103,9 +104,9 @@ class CartController extends Controller
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function clearCart(){
-        $userId = session('_web_user_id');
+        $currUser = session('_curr_deputy_user');
         try{
-            GoodsService::clearCart($userId);
+            GoodsService::clearCart($currUser['firm_id']);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());

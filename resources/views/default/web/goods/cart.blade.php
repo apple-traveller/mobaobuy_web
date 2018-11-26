@@ -173,8 +173,8 @@
 				var goodsNumber = $(this).val();
 				//当前购物车数据id
 				var id = $(this).attr('id');
-                	if((/^(\+|-)?\d+$/.test( goodsNumber )) && goodsNumber>0){
-
+                	if( (/(^[1-9]\d*$)/.test(goodsNumber)) && goodsNumber>0){
+                		// (/^(\+|-)?\d+$/.test( goodsNumber ))
             			$.ajax({
             				'type':'post',
 			                'data':{'id':id,'goodsNumber':goodsNumber},
@@ -404,7 +404,7 @@
 				    
 				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
 				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
-				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{$v['id']}}" onclick="del(this)"></a></span>
+				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{encrypt($v['id'])}}" onclick="del(this)"></a></span>
 				</li>
 			</ul>
 			@endforeach
