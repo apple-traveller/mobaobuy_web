@@ -20,10 +20,10 @@ class ShopGoodsQuoteController extends Controller
         $shop_name = $request->input('shop_name',"");
         $condition = [];
         if(!empty($shop_name)){
-            $condition['shop_name']="%".$shop_name."%";
+            $condition['b.shop_name']="%".$shop_name."%";
         }
-        $condition['type'] = '1|2';
-        $condition['is_delete'] = 0;
+        $condition['b.type'] = '1|2';
+        $condition['b.is_delete'] = 0;
         $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);

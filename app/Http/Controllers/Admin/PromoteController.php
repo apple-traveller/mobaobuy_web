@@ -22,6 +22,7 @@ class PromoteController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
+        $condition['is_delete'] = 0;
         $promotes = ActivityService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         //dd($seckills);
         return $this->display('admin.promote.list',[
