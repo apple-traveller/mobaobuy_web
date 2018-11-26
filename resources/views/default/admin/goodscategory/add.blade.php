@@ -225,7 +225,7 @@
             });
 
             jQuery.validator.addMethod("specialchar", function(value, element) {
-                return this.optional(element) || !/[@'\\"#$%&\^*]/.test(value);
+                return this.optional(element) || !/[@'\\"#$&\^*]/.test(value);
             },("不能包含特殊字符"));
 
             $('#category_info_form').validate({
