@@ -95,7 +95,7 @@ class GoodsCategoryController extends Controller
             'is_show'=>$request->input('is_show'),
             'is_nav_show'=>$request->input('is_nav_show'),
             'is_top_show'=>$request->input('is_top_show'),
-            'cat_icon'=>$request->input('cat_icon')
+            'cat_icon'=>$this->requestGetNotNull('cat_icon')
         ];
 
         if(empty($data['cat_name'])){
