@@ -45,7 +45,7 @@
                                             <option  value="{{$v['id']}}">{{$v['brand_name']}}</option>
                                         @endforeach
                                     </select>
-                                    <input class="brand_name" type="hidden" name="brand_name" value="{{$brands[0]['brand_name']}}">
+                                    <input class="brand_name" type="hidden" name="brand_name" value="">
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
