@@ -228,6 +228,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/demand/userSale', 'DemandController@userSale');//会员卖货需求
         Route::get('/demand/setRead', 'DemandController@setRead');//会员卖货需求 设为已读
 
+        Route::get('/demand/userWholeSingle', 'DemandController@userWholeSingle');//整单采购需求
+        Route::get('/demand/setSingleRead', 'DemandController@setSingleRead');//整单采购需求 设为已读
+
         Route::get('/ad/position/list', 'AdPositionController@getList');//广告位置列表
         Route::get('/ad/position/addForm', 'AdPositionController@addForm');//广告位置添加
         Route::get('/ad/position/editForm', 'AdPositionController@editForm');//广告位置编辑

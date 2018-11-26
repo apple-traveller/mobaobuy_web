@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-class ActivityWholesaleRepo
+class UserWholeSingleRepo
 {
     use CommonRepo;
 
