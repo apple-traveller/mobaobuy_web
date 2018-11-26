@@ -68,6 +68,9 @@
 		　　	.textrare textarea:-ms-input-placeholder { /* Internet Explorer 10+ */color:#ccc;font-size:16px;}
 			.textera_file{width: 572px;margin: 0 auto;overflow: hidden;}
 			.pursh_sumbit{background-color: #75b335;width: 259px;height: 50px;line-height: 50px;color: #fff;margin: 0 auto;text-align: center;margin-bottom: 10px;border-radius: 6px;font-size: 23px;margin-top: 35px;box-shadow: 0px 5px 0px #58911e; }
+			/*#bill_file{
+				background-color:#ccc;
+			}*/
     </style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -108,14 +111,17 @@
 				</div>
 				<div class="advantage">
 				</div>
+
 				<div class="pursh_form_title">
 					<span class="fs28 fl">填写整单采购需求：</span><span class="fl" style="color: #333333;padding-top: 2px;font-size: 16px;">您还可以联系在线客服提交采购需求</span><div class="pursh_service">在线客服</div>
 				</div>
-				<div class="file"><span class="tip">仅支持格式为jpg,bmp,zip,rar,大小在10M以内的文件。</span><span class="fs16 fl gray"><i class="red">*</i> 上传采购清单：</span><div class="updownd"><input type="text" class="up_text"/></div>
-					<div class="browse">浏览</div><div class="upload">上传<input type="file" class="filesc"/></div>
+				<div class="file"><span class="tip">仅支持格式为jpg,bmp,zip,rar,大小在10M以内的文件。</span><span class="fs16 fl gray"><i class="reds">*</i> 上传采购清单：</span>
+					<span class="ml10">@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSingle/','name'=>'bill_file'])@endcomponent</span>
+					<!-- <div class="updownd"><input type="text" class="up_text"/></div> -->
+					<!-- <div class="browse">浏览</div><div class="upload">上传<input type="file" class="filesc"/></div> -->
 				</div>
-				<div class="textera_file" style="margin-top: 55px;"><span class="fs16 fl gray"><i class="red">*</i> 整单采购需求：</span><textarea class="textrare" placeholder="请填写整单采购需求"></textarea></div>
-			<div class="pursh_sumbit">提交</div>
+				<div class="textera_file" style="margin-top: 55px;"><span class="fs16 fl gray"><i class="reds">*</i> 整单采购需求：</span><textarea name="content" class="textrare" placeholder="请填写整单采购需求"></textarea></div>
+			<div class="pursh_sumbit" onclick="demandSub();" style="cursor:pointer;">提交</div>
 			</div>
 		</div>
 
@@ -127,5 +133,43 @@
     @include(themePath('.','web').'web.include.partials.copyright')
 </body>
 </html>
+<script type="text/javascript">
+	function demandSub(){
+		var bill_file = $('input[name=bill_file]').val();
+		var content = $('textarea[name=content]').val();
+		var userId = {{session('_web_user_id')}};
+		if(userId == '' || userId < 0){
+			 layer.confirm('请先登录再进行操作。', {
+                    btn: ['去登陆','再看看'] //按钮
+                }, function(){
+                    window.location.href='/login';
+                }, function(){
+
+                });
+                return false;
+		}
+		
+		// if(){}
+		if($.trim(bill_file) == '' && $.trim(content) == ''){
+			alert('提交内容不能为空');
+			return;
+		}
+		$.ajax({
+			url:'/wholeSingle/DemandSubmission',
+			data:{'bill_file':bill_file,'content':content},
+			dataType:'json',
+			type:'post',
+			success:function(res){
+				if (res.code == 1) {
+                    $.msg.alert('提交成功,请等待客服与您联系！');
+                    $('textarea[name=content]').val('');
+                } else {
+                    $.msg.alert(res.msg);
+
+                }
+			}
+		})
+	}
+</script>
 
 

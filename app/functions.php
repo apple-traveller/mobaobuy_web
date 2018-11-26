@@ -215,7 +215,7 @@ if (!function_exists('getOrderFromText')){
                 break;
             case 'wholesale' : $res = '集采拼团活动';
                 break;
-            case 'consign' : $res = '清仓特价活动';
+            case 'consign' : $res = '清仓特卖活动';
                 break;
             default:
 

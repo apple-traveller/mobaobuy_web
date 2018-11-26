@@ -8,9 +8,9 @@ use App\Services\ActivityPromoteService;
 use Illuminate\Support\Facades\Cache;
 class ActivityConsignController extends ApiController
 {
-    //清仓特价
+    //清仓特卖
     public function index(){
-        $condition['type'] = 3;//清仓特价
+        $condition['type'] = 3;//清仓特卖
         try{
             $consignInfo =  ShopGoodsQuoteService::getShopGoodsQuoteListByFields(['add_time'=>'desc'],$condition);
             return $this->success(compact('consignInfo'),'success');
@@ -19,7 +19,7 @@ class ActivityConsignController extends ApiController
         }
     }
 
-    //清仓特价详情
+    //清仓特卖详情
     public function detail(Request $request){
         $userId = 0;
         $uuid = $request->input('token');
@@ -37,7 +37,7 @@ class ActivityConsignController extends ApiController
 
     }
 
-    //清仓特价 立即下单
+    //清仓特卖 立即下单
     public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');

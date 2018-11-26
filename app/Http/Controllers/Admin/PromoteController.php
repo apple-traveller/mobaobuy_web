@@ -177,7 +177,7 @@ class PromoteController extends Controller
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
         }
-        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec']);
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit']);
         if(!empty($goods)){
             return $this->result($goods,200,'获取数据成功');
         }else{
@@ -186,6 +186,18 @@ class PromoteController extends Controller
 
     }
 
-
+    //ajax获取商家列表
+    public function getShopList()
+    {
+        $condition = [
+            'is_validated' => 1,
+            'is_freeze' => 0,
+        ];
+        $res = ShopService::getList([],$condition);
+        if($res){
+            return $this->success('成功！','',$res);
+        }
+        return $this->error();
+    }
 
 }

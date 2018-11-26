@@ -12,6 +12,8 @@
             border-radius: 4px;
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
         }
+        　 #cnv {position:relative;margin:0px auto;padding:0px;width:600px;height:400px;overflow:hidden;}
+    /*　　　　#cnv .content {background:#666;width:1280px;height:720px;padding:10px;color:#fff}*/
     </style>
 @endsection
 @section('content')
@@ -19,7 +21,7 @@
 
     <!-- 内容主体区域 -->
     <div class="layui-header" style="background:#3b8cd8;" >
-        <a href="">
+        <a href="" id="firstT">
             <div class="layui-logo" style="background:#fff;">
             <img style="max-height: 40px;" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
             </div>
@@ -31,20 +33,23 @@
     <div class="layui-side" style="background:#383838; ">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="left-menu" style="color: #ffffff">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="left-menu" style="color: #ffffff;">
                 @include(themePath('.')."seller.include.partials._sidebar")
             </ul>
         </div>
     </div>
     <div class="clearfix"></div>
     <!-- 内容主体区域 -->
-    <div class="layui-body ">
+    <div class="layui-body" id="cnv">
         <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch" >
-            <ul class="layui-tab-title">
+            <ul class="layui-tab-title" style="position: sticky;top: 0px;background-color: white">
                 <li class="layui-this" >后台首页</li>
             </ul>
-            <div class="layui-tab-content">
+            <div class="layui-tab-content" >
                 <div class="layui-tab-item layui-show">
+                    <div id="list" style="height: 400px">
+
+                    </div>
                     <div id="main">
 
                     </div>
@@ -153,8 +158,25 @@
                 }
             ]
         });
+        var bodyWidth = $("body").width();
 
+        if(bodyWidth<1380){
+            $("#flyOwn").attr("height","92%");
+        }else{
+            $("#flyOwn").attr("height","95%");
+        }
+
+        $(window).resize(function(e) {
+            bodyWidth = $("body").width();
+
+            if(bodyWidth<1380){
+                $("#flyOwn").attr("height","92%");
+            }else{
+                $("#flyOwn").attr("height","95%");
+            }
+        });
     </script>
+
 @endsection
 
 

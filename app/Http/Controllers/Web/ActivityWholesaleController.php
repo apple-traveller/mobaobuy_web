@@ -67,11 +67,26 @@ class ActivityWholesaleController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
     /**
      * 整单采购
      */
-
     public function wholeSingle(Request $request){
         return $this->display('web.activity.wholeSingle');
+    }
+
+    /**
+     * 整单采购提交需求
+     */
+    public function DemandSubmission(Request $request){
+        $userId = session('_web_user_id');
+        $demandFile = self::requestGetNotNull('bill_file','');
+        $demandText = self::requestGetNotNull('content','');
+        try{
+            ActivityWholesaleService::DemandSubmission($userId,$demandFile,$demandText);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 }

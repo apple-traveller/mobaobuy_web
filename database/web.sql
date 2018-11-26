@@ -689,6 +689,7 @@ CREATE TABLE `shop_goods_quote` (
   `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '发货地',
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
+  `total_number` int(10) NOT NULL DEFAULT '0' COMMENT '报价总数',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT 0 COMMENT '店铺职员ID',
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
@@ -1073,6 +1074,28 @@ CREATE TABLE `activity_promote` (
   KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='促销活动表';
 
+DROP TABLE IF EXISTS `activity_wholesale`;
+CREATE TABLE `activity_wholesale` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商家ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '商家名称',
+  `begin_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团商品ID',
+  `goods_name` varchar(200) NOT NULL DEFAULT '' COMMENT '拼团商品名',
+  `price` decimal(10,2) NOT NULL COMMENT '拼团价格',
+  `num` decimal(5,0) NOT NULL COMMENT '拼团目标数量',
+  `partake_quantity` decimal(5,0) NOT NULL COMMENT '已参与数量',
+  `min_limit` decimal(5,0) NOT NULL DEFAULT 1 COMMENT '最小参与数量',
+  `max_limit` decimal(5,0) NOT NULL DEFAULT 0 COMMENT '最大限购数量 0-不限',
+  `deposit_ratio` decimal(3,0) NOT NULL DEFAULT 0 COMMENT '订金比例 0-不支付订金',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  PRIMARY KEY (`id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
@@ -1330,3 +1353,16 @@ CREATE TABLE `user_invoices` (
   KEY `user_id` (`user_id`),
   KEY `audit_status` (`audit_status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='会员发票';
+DROP TABLE IF EXISTS `user_whole_single`;
+CREATE TABLE `user_whole_single` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名（手机号）',
+  `content` varchar(255) DEFAULT NULL COMMENT '需求内容',
+  `bill_file` varchar(200) DEFAULT '' COMMENT '清单文件',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='整单采购需求';

@@ -645,11 +645,15 @@ class OrderInfoService
             if($orderInfo['extension_code'] == 'promote'){//限时抢购
                 $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                 ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+            }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团
+
+            }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖
+
             }else{//购物车下单
-                foreach ($orderGoodsInfo as $k=>$v){
-                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
-                }
+//                foreach ($orderGoodsInfo as $k=>$v){
+//                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+//                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+//                }
             }
 
             OrderInfoRepo::modify($id,['order_status'=>0]);
@@ -707,7 +711,7 @@ class OrderInfoService
                     $deposit = $cartInfo_session[0]['deposit'];
 //                    $pay_type =  1;
                     break;
-                case 'consign'://清仓特价
+                case 'consign'://清仓特卖
                     $order_status = 2;
                     $from = 'consign';
                     $extension_id = $cartInfo_session[0]['id'];
@@ -737,7 +741,7 @@ class OrderInfoService
                 'shop_id' => $cartInfo_session[0]['shop_id'],
                 'shop_name' => $cartInfo_session[0]['shop_name'],
                 'country' => 1,
-                'zipcode' => $userAddressMes['zipcode'],
+                'zipcode' => $userAddressMes['zipcode'] ? $userAddressMes['zipcode'] : '',
                 'mobile_phone' => $userAddressMes['mobile_phone'],
                 'province' => $userAddressMes['province'],
                 'city' => $userAddressMes['city'],
@@ -795,7 +799,7 @@ class OrderInfoService
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['num'] * $v['price'];
                     //增加已参与数量
-                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
+//                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {

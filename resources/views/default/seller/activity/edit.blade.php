@@ -31,7 +31,7 @@
                         <input type="text" value="@if(!empty($promote_info)){{$promote_info['id']}}@endif" name="id" style="display: none">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
+                                <div class="label">&nbsp选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>

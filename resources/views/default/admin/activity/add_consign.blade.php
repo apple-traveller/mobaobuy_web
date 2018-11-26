@@ -4,6 +4,10 @@
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
         }
+        .ui-area .tit{
+            height:28px;
+            line-height: 28px;
+        }
         .ui-area .area-warp {
             width: 278px !important;
         }
@@ -18,36 +22,33 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/quote/list?currentPage={{$currentPage}}" class="s-back">返回</a>店铺 - 修改商品报价</div>
+        <div class="title"><a href="/admin/activity/consign" class="s-back">返回</a>添加清仓特卖</div>
         <div class="content">
-
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/seller/quote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+                    <form action="/admin/activity/consign/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
+
+
                         <div class="switch_info" style="display: block;">
-
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
                                 <div class="label_value">
-                                    {{--<input type="text" autocomplete="off" size="40" id="store_name" value="{{$goodsQuote['store_name']}}" class="text" />--}}
-                                    <select class="query_store_name" id="store_name" style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;">
-
-                                    </select>
-                                    <input type="hidden" value="{{$goodsQuote['store_name']}}" name="store_name"  id="store_name_val"  />
-
-                                    <input type="hidden" value="{{$goodsQuote['shop_store_id']}}" name="store_id"  id="store_id" />
-                                    <div class="form_prompt"></div>
-                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 61px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <input type="text"  shop-id="" value="" autocomplete="off" id="company_name" size="40"  class="text">
+                                    <input type="hidden" name="shop_name" id="company_name_val" />
+                                    <input type="hidden" name="shop_id" id="shop_id" />
+                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
-
+                            <input type="hidden" value="自售" name="store_name"  id="store_name_val"  />
+                            <input type="hidden" value="0" name="shop_store_id"  id="store_id" />
+                            <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
                                 <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id="{{$goodsQuote['cat_id']}}"  autocomplete="off" value="{{$goodsQuote['cat_name']}}" id="cat_name" size="40"  class="text">
+                                    <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" lay-search="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -55,71 +56,71 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
-                                    <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
+                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 142px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
 
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
-                                <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{ $goodsQuote['delivery_place'] }}" style="display: none"/>
-                                <input type="text" readonly="readonly" id="area2" name="place_id" value="{{ $goodsQuote['place_id'] }}" style="display: none"/>
-                                <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="{{ $goodsQuote['delivery_place'] }}" style="width: 321px;height:33px;" id="test">
+                                <div class="label_value">
+                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{old('delivery_place')}}" style="display: none"/>
+                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{old('place_id')}}" style="display: none"/>
+                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">
+                                    </div>
+                                    <div class="form_prompt"></div>
                                 </div>
-                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
                                 <div class="label_value">
-                                    <input type="text" name="production_date" class="text" value="{{ $goodsQuote['production_date'] }}" maxlength="40" autocomplete="off" id="production_date">
+                                    <input type="text" name="production_date" class="text" value="{{old('production_date')}}" maxlength="40" autocomplete="off" id="production_date">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-                                <input type="hidden" name="currentPage" value="{{$currentPage}}">
-                            <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
-                                    <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
+                                    <input type="text" name="shop_price" class="text" value="{{old('shop_price')}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" id="salesman" class=" text" value="{{ $goodsQuote['salesman'] }}" maxlength="10" autocomplete="off">
+                                    <input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
                                 <div class="label_value">
-                                    <input type="text" name="contact_info" id="contact_info"  value="{{ $goodsQuote['contact_info'] }}" class=" text" maxlength="40" autocomplete="off" >
+                                    <input type="text" name="contact_info" value="{{old('contact_info')}}" id="contact_info" class=" text" maxlength="40" autocomplete="off" >
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
+                                <div class="label_value">
+                                    <input type="text" name="QQ" id="QQ" value="{{old('QQ')}}" class=" text" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" id="qq" class=" text" value="{{ $goodsQuote['QQ'] }}" maxlength="40" autocomplete="off" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -136,39 +137,6 @@
     </div>
 
     <script type="text/javascript">
-
-        //时间选择器
-        layui.use('laydate', function(){
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#expiry_time' //指定元素
-                ,type: 'datetime'
-            });
-        });
-
-
-        $(".cat_id").change(function(res){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/seller/goods/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        if (i==0){
-                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        } else {
-                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        }
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-            },"json");
-        });
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -208,7 +176,7 @@
                     contact_info:{
                         required:true,
                     },
-                    qq:{
+                    QQ:{
                         required:true,
                     },
                     store_name:{
@@ -238,13 +206,12 @@
                     contact_info :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    qq :{
+                    QQ :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     store_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-
                 }
             });
         });
@@ -252,14 +219,45 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
-//             $(".query_store_name").hide();
+            $(".query_store_name").hide();
         }
+
+        // 商家 获取焦点请求所有的商家数据
+        $("#company_name").focus(function(){
+            $(".query_company_name").children().filter("li").remove();
+            $.ajax({
+                url: "/admin/promote/getShopList",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        $(".query_company_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_company_name","click",function(){
+            $("#company_name").siblings("div").filter(".notic").remove();
+            var company_name = $(this).text();
+            var shop_id = $(this).attr("data-shop-id");
+            $("#company_name").val(company_name);
+            $("#company_name_val").val(company_name);
+            $("#shop_id").val(shop_id);
+            $(".query_company_name").hide();
+        });
 
         // 种类 获取焦点请求所有的分类数据
         $("#cat_name").focus(function(){
             $(".query_cat_name").children().filter("li").remove();
             $.ajax({
-                url: "/seller/goods/getGoodsCat",
+                url: "/admin/promote/getGoodsCat",
                 dataType: "json",
                 data:{},
                 type:"POST",
@@ -288,7 +286,7 @@
             $(".query_goods_name").children().filter("li").remove();
             var cat_id = $("#cat_name").attr("cat-id");
             $.ajax({
-                url: "/seller/goods/getGood",
+                url: "/admin/promote/getGood",
                 dataType: "json",
                 data:{"cat_id":cat_id},
                 type:"POST",
@@ -307,39 +305,6 @@
             })
         });
 
-        $(function(){
-            $(".query_store_name").children().filter("option").remove();
-            $.ajax({
-                url: "/seller/store/list",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                async:false,
-                success:function(res){
-                    let _select = "{{$goodsQuote['shop_store_id']}}";
-                    if(res.code==1){
-                        var data = res.data;
-                        if (_select == 0){
-                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自售" class="created_store_name" style="cursor:pointer;" selected="selected">自售</option>');
-                        } else {
-                            $(".query_store_name").append('<option data-store-id="0" data-store-name="自售" class="created_store_name" style="cursor:pointer;">自售</option>');
-                        }
-
-                        for(var i=0;i<data.length;i++){
-                            if (_select == data[i].id){
-                                $(".query_store_name").append('<option data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" selected>'+data[i].store_name+'</option>');
-                            } else {
-                                $(".query_store_name").append('<option data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name">'+data[i].store_name+'</option>');
-                            }
-                        }
-                    }else{
-                        $(".query_store_name").append('<option  style="cursor:pointer;">该分类下没有查询到商品</option>');
-                    }
-                    $(".query_store_name").append(_html);
-                }
-            })
-        });
-
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -352,15 +317,6 @@
             $("#goods_name").attr("data-packing-spac",packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
-        });
-
-        // 选择店铺填充id
-        $("#store_name").change(function () {
-            var store_name = $("#store_name option:selected").attr("data-store-name");
-            var store_id = $("#store_name option:selected").attr("data-store-id");
-            $("#store_name").val(store_name);
-            $("#store_name_val").val(store_name);
-            $("#store_id").val(store_id);
         });
 
         $("#goods_number").change(function () {

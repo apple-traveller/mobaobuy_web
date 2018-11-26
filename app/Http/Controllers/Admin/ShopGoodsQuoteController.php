@@ -110,6 +110,13 @@ class ShopGoodsQuoteController extends Controller
         $data['goods_name'] = $goods['goods_name'];
         $currpage = $request->input('currpage');
         unset($data['currpage']);
+
+        if(empty($data['store_id']) && $data['store_name'] == '自售'){
+            $data['store_name'] = $data['shop_name'];
+            $data['type'] = 1;
+        }else{
+            $data['type'] = 2;
+        }
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);

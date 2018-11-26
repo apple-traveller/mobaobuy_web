@@ -113,7 +113,7 @@ class ShopOrderController extends Controller
     }
 
     /**
-     * 订单确认
+     * 更该订单状态
      * @param Request $request
      * @return ShopOrderController|\Illuminate\Http\RedirectResponse
      */
@@ -122,6 +122,7 @@ class ShopOrderController extends Controller
         $shop_id = session('_seller_id')['shop_id'];
         $id = $request->input('id', '');
         $order_status = $request->input('order_status', '');
+        $to_buyer = $request->input('to_buyer', '');
         $pay_status = $request->input('pay_status', '');
         $deposit_status = $request->input('deposit_status','');
         $action_note = $request->input('action_note', '');
@@ -137,7 +138,7 @@ class ShopOrderController extends Controller
                 $data = ['id' => $id];
                 // 确认订单
                 if ($order_status == 3) {
-                    if ($orderInfo['extension_code'] == '') {
+                    if ($orderInfo['extension_code'] == 'cart') {
                         $re_rock = ShopGoodsQuoteService::updateStock($id);
                         if (!$re_rock) {
                             return $this->error('库存不足，无法确认');
@@ -158,9 +159,10 @@ class ShopOrderController extends Controller
                         $action_note = "修改交货时间";
                     }
                 }
-                if (!empty($order_status)) {
+                $data['order_status'] = $order_status;
+                if ($order_status!='' && $order_status==0 ) {
                     $data['order_status'] = $order_status;
-
+                    $data['to_buyer'] =$to_buyer;
                 }
                 // 付款
                 if (!empty($pay_status)&&$pay_status>0) {

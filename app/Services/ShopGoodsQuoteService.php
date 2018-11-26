@@ -267,7 +267,7 @@ class ShopGoodsQuoteService
         return $goodsInfo;
     }
 
-    //清仓特价 立即下单
+    //清仓特卖 立即下单
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ShopGoodsQuoteRepo::getInfo($activityId);
@@ -291,6 +291,14 @@ class ShopGoodsQuoteService
         $activityArr = [];
         $activityArr[] = $activityInfo;
         return $activityArr;
+    }
+
+    /**
+     * 检测报价是否存在订单
+     */
+    public function checkQuoteExistOrder()
+    {
+
     }
 }
 

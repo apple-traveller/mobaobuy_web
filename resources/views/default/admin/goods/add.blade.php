@@ -41,11 +41,13 @@
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="brand_id" id="brand_id">
                                         <option value="">请选择品牌</option>
+                                        @if(!empty($brands))
                                         @foreach($brands as $v)
                                             <option  value="{{$v['id']}}">{{$v['brand_name']}}</option>
                                         @endforeach
+                                        @endif
                                     </select>
-                                    <input class="brand_name" type="hidden" name="brand_name" value="{{$brands[0]['brand_name']}}">
+                                    <input class="brand_name" type="hidden" name="brand_name" value="">
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
@@ -55,9 +57,11 @@
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="cat_id" id="cat_id">
                                         <option value="">请选择分类</option>
+                                        @if(!empty($cateTrees))
                                         @foreach($cateTrees as $v)
                                             <option  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
                                         @endforeach
+                                        @endif
                                     </select>
                                 </div>
                                 <div class="form_prompt"></div>

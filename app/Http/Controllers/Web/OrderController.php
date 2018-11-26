@@ -47,13 +47,8 @@ class OrderController extends Controller
             $condition['end_time'] = $request->input('end_time');
 
             if (session('_curr_deputy_user')['is_firm']) {
-                if (session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm']) {
-                    $condition['user_id'] = session('_curr_deputy_user')['user_id'];
+//                    $condition['user_id'] = $firm_id;
                     $condition['firm_id'] = $firm_id;
-                } else {
-                    $condition['user_id'] = $firm_id;
-                    $condition['firm_id'] = $firm_id;
-                }
             } else {
                 $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = 0;
@@ -315,7 +310,7 @@ class OrderController extends Controller
             $deposit = $goodsList[0]['deposit'];
             return $this->display('web.goods.confirmWholesaleOrder', compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id', 'deposit'));
 
-        } elseif ($from == 'consign') {//清仓特价
+        } elseif ($from == 'consign') {//清仓特卖
 
             $goods_amount = 0;
             try {

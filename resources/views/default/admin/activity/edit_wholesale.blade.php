@@ -23,19 +23,29 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
+        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">
-                    <form action="/seller/activity/wholesale/save" method="post" name="theForm" id="wholesale_form" novalidate="novalidate">
+                    <form action="/admin/activity/wholesale/save" method="post" name="theForm" id="wholesale_form" novalidate="novalidate">
                         <input type="text" value="@if(!empty($wholesale_info)){{$wholesale_info['id']}}@endif" name="id" style="display: none">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
-                                <div class="label">选择商品分类：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
+                                <div class="label_value">
+                                    <input type="text" @if(!empty($wholesale_info))  shop-id="{{$wholesale_info['shop_id']}}" value="{{$wholesale_info['shop_name']}}" @else shop-id="" value="" @endif autocomplete="off" id="company_name" size="40"  class="text">
+                                    <input type="hidden" name="company_name" @if(!empty($wholesale_info)) value="{{$wholesale_info['shop_name']}}" @endif id="company_name_val" />
+                                    <input type="hidden" name="shop_id" @if(!empty($wholesale_info)) value="{{$wholesale_info['shop_id']}}" @endif id="shop_id" />
+                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="text" @if(!empty($wholesale_info))  cat-id="{{$wholesale_info['cat_id']}}" value="{{$wholesale_info['cat_name']}}" @else cat-id="" value="" @endif autocomplete="off" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -43,10 +53,10 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input type="text" @if(!empty($good['packing_spec'])) data-packing-spac="{{$good['packing_spec']}}" @else data-packing-spac="" @endif @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
                                     <input type="hidden" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_id']}}" @endif name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 142px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -383,11 +393,31 @@
             $(".query_goods_name").hide();
         }
 
+        // 商家 获取焦点请求所有的商家数据
+        $("#company_name").focus(function(){
+            $(".query_company_name").children().filter("li").remove();
+            $.ajax({
+                url: "/admin/promote/getShopList",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        $(".query_company_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
         // 种类 获取焦点请求所有的分类数据
         $("#cat_name").focus(function(){
             $(".query_cat_name").children().filter("li").remove();
             $.ajax({
-                url: "/seller/goods/getGoodsCat",
+                url: "/admin/promote/getGoodsCat",
                 dataType: "json",
                 data:{},
                 type:"POST",
@@ -416,7 +446,7 @@
             $(".query_goods_name").children().filter("li").remove();
             var cat_id = $("#cat_name").attr("cat-id");
             $.ajax({
-                url: "/seller/goods/getGood",
+                url: "/admin/promote/getGood",
                 dataType: "json",
                 data:{"cat_id":cat_id},
                 type:"POST",
@@ -425,7 +455,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -441,7 +471,7 @@
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
-            let packing_unit = $(this).data('packing_unit');
+            let packing_unit = $(this).attr('data-packing-unit');
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
@@ -449,6 +479,17 @@
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        //点击将li标签里面的值填入input框内
+        $(document).delegate(".created_company_name","click",function(){
+            $("#company_name").siblings("div").filter(".notic").remove();
+            var company_name = $(this).text();
+            var shop_id = $(this).attr("data-shop-id");
+            $("#company_name").val(company_name);
+            $("#company_name_val").val(company_name);
+            $("#shop_id").val(shop_id);
+            $(".query_company_name").hide();
         });
 
         $("#goods_number").change(function () {

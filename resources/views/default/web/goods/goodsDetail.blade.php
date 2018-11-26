@@ -78,7 +78,7 @@
                 var can_num = Number(_self.attr('can_num')); //可售
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
                     if(goodsNumber > can_num){
-                        var _count = can_num%packing_spec;
+                        var _count = can_num%packing_spec; //整除为0
                         if(_count>0){
                             $(".pur_num").val(can_num - _count);
                         }else{
@@ -87,7 +87,10 @@
                     }else{
                         var _count2 = goodsNumber%packing_spec;
                         if(_count2>0){
-                            $(".pur_num").val(goodsNumber - _count2);
+                            // $(".pur_num").val(goodsNumber - _count2);
+                             $(".pur_num").val(packing_spec);
+                        }else if(_count2=0){
+                        	$(".pur_num").val(goodsNumber);
                         }
                     }
                 }else{
