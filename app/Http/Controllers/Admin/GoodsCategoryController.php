@@ -107,9 +107,6 @@ class GoodsCategoryController extends Controller
         if($data['parent_id']==""){
             $errorMsg[] = '上级分类不能为空';
         }
-        if(empty($data['cat_icon'])){
-            $errorMsg[] = '分类图标不能为空';
-        }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
