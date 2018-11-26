@@ -5,6 +5,7 @@ use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\UserWholeSingleRepo;
 use Carbon\Carbon;
 
 class ActivityWholesaleService
@@ -285,7 +286,7 @@ class ActivityWholesaleService
         $demand['content'] = $demandText ? $demandText : '';
         $demand['bill_file'] = $demandFile ? $demandFile : '';
         $demand['add_time'] = Carbon::now();
-//        return UserWh::create($demand);
+        return UserWholeSingleRepo::create($demand);
     }
 
 }

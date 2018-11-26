@@ -32,15 +32,19 @@ class UserController extends Controller
 
     public function  index(){
         $userId = session('_web_user_id');
-        if(!session('_curr_deputy_user')['is_self']){
-            $userId = session('_curr_deputy_user')['user_id'];
+        //企业
+        if(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
+//            $userId = session('_curr_deputy_user')['firm_id'];
+            $userId = '';
             $firmId = session('_curr_deputy_user')['firm_id'];
-        }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
-            $userId = session('_curr_deputy_user')['firm_id'];
-            $firmId = session('_curr_deputy_user')['firm_id'];
-        }else{
+        }elseif(session('_curr_deputy_user')['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 1){
+            //个人
             $userId = session('_curr_deputy_user')['firm_id'];
             $firmId = 0;
+        }elseif(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1){
+            //代理企业
+            $userId = '';
+            $firmId = session('_curr_deputy_user')['firm_id'];
         }
 
         $memberInfo = UserService::userMember($userId,$firmId);
