@@ -122,17 +122,14 @@
                         success: function (res) {
                             console.log(res.code);
                             if (res.code == 1){
-
-                            } else {
                                 layer.msg(res.msg, {icon: 1,time:1000});
                                 layer.close(index);
-
+                                window.location.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
                             }
                         }
                     });
-                    layer.close(index);
-                    window.location.reload();
-                    // window.location.href="/seller/quote/delete?id="+id;
 
                 });
             });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\OrderInfoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopGoodsService;
@@ -21,6 +22,8 @@ class ShopGoodsQuoteController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name']="%".$shop_name."%";
         }
+        $condition['type'] = '1|2';
+        $condition['is_delete'] = 0;
         $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
@@ -146,8 +149,20 @@ class ShopGoodsQuoteController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
         try{
-            $flag = ShopGoodsQuoteService::delete($id);
+            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+            if(!$check){
+                return $this->error('无法获取对应报价信息');
+            }
+            //检测报价是否存在对应的订单
+            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+            if($is_exist_order){
+                return $this->error('该报价存在相应订单，无法删除');
+            }
+            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/admin/shopgoodsquote/list'));
             }

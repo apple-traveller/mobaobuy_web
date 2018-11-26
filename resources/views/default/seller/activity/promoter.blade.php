@@ -124,24 +124,25 @@
         }
         $('.btn_trash').click(function () {
             let seckill_id = $(this).attr('data_id');
-            layer.confirm('确认删除?', {icon: 3, title:'提示'}, function(index){
-            $.ajax({
-                url:'/seller/activity/deletePromoter',
-                data:{
-                    id: seckill_id
-                },
-                type:'post',
-                success:function (res) {
-                    if (res.code == 1){
-                        setTimeout(window.location.reload(),2000);
-                    } else {
-                        layer.alert(res.msg);
-                        setTimeout(window.location.reload(),2000);
+            layer.confirm('确定要删除此活动么？',function(){
+                $.ajax({
+                    url:'/seller/activity/deletePromoter',
+                    data:{
+                        id: seckill_id
+                    },
+                    type:'post',
+                    success:function (res) {
+                        if (res.code == 1){
+                            layer.msg(res.msg, {icon: 1,time:1000});
+                            setTimeout(window.location.reload(),2000);
+                        } else {
+                            layer.msg(res.msg, {icon: 5,time:1000});
+                        }
                     }
-                }
-            })
-                layer.close(index);
-        })
+                })
+            },function(){
+
+            });
 
         });
     </script>

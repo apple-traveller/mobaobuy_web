@@ -573,7 +573,7 @@ CREATE TABLE `goods` (
   `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
   `unit_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '单位ID',
   `unit_name` varchar(15) NOT NULL DEFAULT 'KG' COMMENT '单位名称',
-  `goods_model` varchar(50) NOT NULL DEFAULT '' COMMENT '商品型号',
+  `goods_model` varchar(50) DEFAULT '' COMMENT '产品型号',
   `packing_spec` int NOT NULL DEFAULT 1 COMMENT '包装规格',
   `packing_unit` varchar(20) NOT NULL DEFAULT '包' COMMENT '包装单位',
   `goods_thumb` varchar(255) NOT NULL DEFAULT '' COMMENT '商品小图',

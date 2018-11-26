@@ -125,26 +125,27 @@
             });
         }
         $('.btn_trash').click(function () {
-            layer.confirm('确认删除?', {icon: 3, title: '提示'}, function (index) {
-                let seckill_id = $(this).attr('data_id');
-                console.log(seckill_id);
+            let _id = $(this).attr('data_id');
+            layer.confirm('确定要删除次活动么？',function(){
                 $.ajax({
-                    url: '/seller/activity/wholesale/delete',
-                    data: {
-                        id: seckill_id
+                    url:'/seller/activity/wholesale/delete',
+                    data:{
+                        id: _id
                     },
-                    type: 'post',
-                    success: function (res) {
-                        if (res.code == 1) {
-
+                    type:'post',
+                    success:function (res) {
+                        if (res.code == 1){
+                            layer.msg(res.msg, {icon: 1,time:1000});
+                            setTimeout(window.location.reload(),2000);
                         } else {
-                            layer.msg(res.msg);
-                            setTimeout(window.location.reload(), 2000);
+                            layer.msg(res.msg, {icon: 5,time:1000});
                         }
                     }
-                });
-                layer.close(index);
-            })
+                })
+            },function(){
+
+            });
+
         });
     </script>
 @stop
