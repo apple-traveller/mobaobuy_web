@@ -25,12 +25,10 @@ class WebClosed extends Controller
 //            if(!session()->has('_web_user')){
                 $user_info = UserService::getInfo(session('_web_user_id'));
 
-                //is_logout为企业的id
+                //用户不切换生效权限,is_logout存的是企业的id
                 if($user_info['is_logout']){
 //                    session()->flush();
 //                    return $this->error('权限已被更改，请重新登陆','/login');
-//                    $res = array('code' => 200,'msg' => '权限已被更改，请重新登陆');
-//                    return response()->json($res);
 
                     if($user_info['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 0){
                         //获取用户所代表的公司
@@ -50,6 +48,7 @@ class WebClosed extends Controller
                         }
                     }
                 }
+
                 if(!$user_info['is_firm']){
                     $user_info['firms'] = UserService::getUserFirms(session('_web_user_id'));
                 }

@@ -152,9 +152,15 @@
                             @else
                                 <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
                                     <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    @if($item['available_quantity'] == 0)
+                                    <a href="javascript:void(0)">
+                                        <div class="bottom_btn redbg fs16 white cp">已售完</div>
+                                    </a>
+                                     @else 
                                     <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
                                         <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
                                     </a>
+                                    @endif
                                 </div>
                             @endif
                         </div>
