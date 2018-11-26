@@ -54,9 +54,18 @@
 								</div>
 								<div class="ovh mt10 ">
 									<div class="mx_progress">
-										<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
+										@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
+											<div class="bq__progress_com" style="width: 0%;"></div>
+										@else
+											<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
+										@endif
+
 									</div>
-									<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
+									@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
+										<span class="fl fs16 gray">已售0%</span>
+									@else
+										<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
+									@endif
 								</div>
 								<div class="tac mt30 ovh" style="text-align: left !important;">
 									<span class="addr_dw">{{$v['delivery_place']}}</span>

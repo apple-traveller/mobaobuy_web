@@ -95,7 +95,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
+                                <div class="label">&nbsp;商品型号：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_model" class="text" value="{{$good['goods_model']}}" maxlength="40" autocomplete="off" id="goods_model">
                                     <div class="form_prompt"></div>
@@ -150,9 +150,11 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>产品原图：</div>
+                                <div class="label"><span class="require-field">*</span>商品图片：</div>
                                 <div class="label_value">
-                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >上传图片</button>
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >
+                                        <i class="layui-icon">&#xe681;</i> 上传图片
+                                    </button>
                                     <input type="hidden" value="" class="text" id="original_img"  name="original_img" style="display:none;">
                                     <img @if(empty($good['original_img'])) style="width:60px;height:60px;display:none;margin-top:-5px;margin-left:10px;" @else src="{{getFileUrl($good['original_img'])}}" style="width:60px;height:60px;margin-top:-5px;margin-left:10px;" @endif class="layui-upload-img">
                                     <div style="margin-left: 10px;line-height:40px;" class="form_prompt"></div>
@@ -168,14 +170,14 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_weight" class="text" value="{{$good['goods_weight']}}" maxlength="40" autocomplete="off" id="goods_weight">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="goods_weight" class="text" value="{{$good['goods_weight']}}" maxlength="40" autocomplete="off" id="goods_weight">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                    {{--<div class="notic"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="item">
                                 <div class="label">&nbsp;pc商品详情：</div>
@@ -420,9 +422,9 @@
                     unit_id:{
                         required : true
                     },
-                    goods_model:{
-                        required : true
-                    },
+//                    goods_model:{
+//                        required : true
+//                    },
                     packing_spec:{
                         required : true,
                         number:true,
@@ -434,10 +436,10 @@
                         required : true,
                         number:true
                     },
-                    goods_weight:{
-                        required : true,
-                        number:true
-                    },
+//                    goods_weight:{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_attr:{
                         required:true
                     },
@@ -461,9 +463,9 @@
                     unit_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_model :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    goods_model :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
                     packing_spec :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
@@ -475,10 +477,10 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
-                    goods_weight :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    goods_weight :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_attr :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },

@@ -130,7 +130,6 @@
                             }
                         }
                     });
-                    // window.location.href="/seller/quote/delete?id="+id;
 
                 });
             });

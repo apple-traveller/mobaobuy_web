@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\ShopGoodsQuoteService;
 use App\Services\ShopStoreService;
 use Illuminate\Http\Request;
 use League\Flysystem\Exception;
@@ -91,6 +92,11 @@ class ShopStoreController extends Controller
         return $this->display('seller.shopStore.edit',compact('storeInfo','currentPage'));
     }
 
+    /**
+     * delete
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function delete(Request $request)
     {
         $id = $request->get('id',0);
@@ -98,7 +104,17 @@ class ShopStoreController extends Controller
             return $this->error('无法获取店铺ID');
         }
 
-        $res = ShopStoreService::delete($id);
+        $check = ShopStoreService::getShopStoreById($id);
+        if(empty($check)){
+            return $this->error('店铺信息不存在');
+        }
+        //检测店铺是否存在报价
+        $is_exist_order = ShopGoodsQuoteService::checkStoreExistQuote($id);
+        if($is_exist_order){
+            return $this->error('该店铺存在相应报价，无法删除');
+        }
+
+        $res = ShopStoreService::modify(['id'=>$id,'is_delete'=>1]);
         if($res){
             return $this->success('删除成功！');
         }else{
