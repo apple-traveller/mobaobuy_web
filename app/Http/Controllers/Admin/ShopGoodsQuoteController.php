@@ -128,6 +128,7 @@ class ShopGoodsQuoteController extends Controller
                 $data['add_time'] = Carbon::now();
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
+                //dd($data);
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shopgoodsquote/list'));

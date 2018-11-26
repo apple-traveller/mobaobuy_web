@@ -38,9 +38,11 @@
 
                                             <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="parent_id" id="parent_id">
                                                 <option value="0">顶级分类</option>
+                                                @if(!empty($catesTree))
                                                 @foreach($catesTree as $cates)
                                                 <option @if($cates['id']==$parent_id) selected @endif value="{{$cates['id']}}">|<?php echo str_repeat('-->',$cates['level']).$cates['cat_name'];?></option>
                                                 @endforeach
+                                                @endif
                                             </select>
 
                                     </div>
@@ -223,7 +225,7 @@
             });
 
             jQuery.validator.addMethod("specialchar", function(value, element) {
-                return this.optional(element) || !/[@'\\"#$%&\^*]/.test(value);
+                return this.optional(element) || !/[@'\\"#$&\^*]/.test(value);
             },("不能包含特殊字符"));
 
             $('#category_info_form').validate({

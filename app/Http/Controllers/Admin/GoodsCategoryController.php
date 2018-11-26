@@ -95,7 +95,7 @@ class GoodsCategoryController extends Controller
             'is_show'=>$request->input('is_show'),
             'is_nav_show'=>$request->input('is_nav_show'),
             'is_top_show'=>$request->input('is_top_show'),
-            'cat_icon'=>$request->input('cat_icon')
+            'cat_icon'=>$this->requestGetNotNull('cat_icon')
         ];
 
         if(empty($data['cat_name'])){
@@ -106,9 +106,6 @@ class GoodsCategoryController extends Controller
         }
         if($data['parent_id']==""){
             $errorMsg[] = '上级分类不能为空';
-        }
-        if(empty($data['cat_icon'])){
-            $errorMsg[] = '分类图标不能为空';
         }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));

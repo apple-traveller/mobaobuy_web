@@ -7,7 +7,7 @@ require_once dirname(__DIR__) . '/GSXXInterface.php';
  */
 class GsxxObj implements GSXXInterface {
     protected $apikey;
-    protected $url = 'http://i.yjapi.com/ECISimple/GetDetailsByName';
+    protected $url = 'http://i.yjapi.com/ECIV4/GetDetailsByName';
     protected $data_type = 'json';  //json|xml
     protected $db_recode = true;  //json|xml
 

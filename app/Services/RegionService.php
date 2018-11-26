@@ -148,6 +148,13 @@ class RegionService
         return $unique_regions;
     }
 
+    //根据地区名字返回代号
+    public static function getRegionId($region_name)
+    {
+        $region = RegionRepo::getInfoByFields(['region_name'=>$region_name]);
+        return $region['region_id'];
+    }
+
 
 
 

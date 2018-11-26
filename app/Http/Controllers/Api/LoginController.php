@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Facades\Hash;
 class LoginController extends ApiController
 {
     public function login(Request $request)
@@ -155,8 +155,30 @@ class LoginController extends ApiController
 
     }
 
+    //重置密码
+    public function resetPass(Request $request)
+    {
+        $accountName = $request->input('mobile', '');
+        $psw = $request->input('repsaaword');
+        $password = $request->input('password', '');
+        $messCode = $request->input('messCode', '');
+        $type = 'sms_find_signin';
 
-    //注册新用户获取手机验证码
+        //手机验证码是否正确
+        if(Cache::get($type.$accountName) != $messCode){
+            return $this->error('手机验证码不正确');
+        }
+
+        try{
+            UserService::resetPwd($accountName, $psw,$password);
+            return $this->success('','修改密码成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
+        //注册新用户获取手机验证码
     public function sendRegisterSms(Request $request){
         $accountName = $request->input('accountName');
         $t = $request->input('t');

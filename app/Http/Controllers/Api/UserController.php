@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\UserAddressService;
 use App\Services\UserRealService;
 use App\Services\UserAccountLogService;
+use App\Services\RegionService;
 class UserController extends ApiController
 {
     //账号信息
@@ -23,7 +24,7 @@ class UserController extends ApiController
     }
 
     //收货地址详情
-    public function editAddress(Request $request){
+    public function detailAddress(Request $request){
         $id = $request->input('address_id','');
         $is_default = $request->input('is_default','');
         if ($id){
@@ -46,6 +47,10 @@ class UserController extends ApiController
             'id'=>$userInfo['id'],
             'address_id' =>$address_id
         ];
+        $user_address = UserAddressService::getInfoByConditions(['id'=>$address_id,'user_id'=>$userInfo['id']]);
+        if(empty($user_address)){
+            return $this->error('该地址不存在');
+        }
 
         $re = UserService::updateDefaultAddress($data);
         if ($re){
@@ -112,14 +117,15 @@ class UserController extends ApiController
         $data = [
             'user_id' => $user_id,
             'consignee' => $consignee,
-            'country' => $address_ids[0],
-            'province' => $address_ids[1],
-            'city' => $address_ids[2],
-            'district' => empty($address_ids[3])?0:$address_ids[3],
+            'country' => 1,
+            'province' => $address_ids[0],
+            'city' => $address_ids[1],
+            'district' => $address_ids[2],
             'address' => $address,
             'zipcode' => $zipcode,
             'mobile_phone' => $mobile_phone
         ];
+        //dd($data);
         try{
             if ($id){
                 $res = UserService::updateShopAdderss($id,$data);
@@ -128,7 +134,6 @@ class UserController extends ApiController
                         'id'=>$user_id,
                         'address_id' =>$id
                     ];
-                    //session()->forget('_web_user');
                     Cache::forget('_api_user_'.$user_id);
                     UserService::updateDefaultAddress($data);
                 }
@@ -143,7 +148,7 @@ class UserController extends ApiController
                     Cache::forget('_api_user_'.$user_id);
                     UserService::updateDefaultAddress($data);
                 }
-                return $this->success('','添加收获地址成功');
+                return $this->success($re,'添加收获地址成功');
             }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -321,6 +326,25 @@ class UserController extends ApiController
             }
             return $this->error("保存失败");
         }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //我要卖货
+    public function sale(Request $request)
+    {
+        $userInfo = $this->getUserInfo($request);
+        $saleData['user_id'] = $userInfo['id'];
+        $saleData['user_name'] = $userInfo['user_name'];
+        $saleData['content'] = $request->input('content');
+        $saleData['bill_file'] = $request->input('bill_file');
+        if(empty($saleData['content'])){
+            return $this->error('需求内容不能为空');
+        }
+        try{
+            UserService::sale($saleData);
+            return $this->success();
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }

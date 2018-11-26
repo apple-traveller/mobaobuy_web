@@ -93,6 +93,9 @@ class FirmStockController extends ApiController
     //入库检索商品名称
     public function searchGoodsName(Request $request){
         $goodsName = $request->input('goodsName');
+        if(empty($goodsName)){
+            return $this->error('缺少参数，goodsName');
+        }
         try{
             $goodsInfo = FirmStockService::searchGoodsName($goodsName);
             return $this->success($goodsInfo,'success');
@@ -106,6 +109,9 @@ class FirmStockController extends ApiController
         $id = $this->getUserID($request);
         $partnerName = $this->requestGetNotNull('partnerName','');
         $is_type = $request->input('is_type');
+        if(empty($id)){
+            return $this->error('缺少参数，id');
+        }
         try{
             $partnerNameInfo = FirmStockService::searchPartnerName($partnerName,$id,$is_type);
             return $this->success($partnerNameInfo,'success');
@@ -117,54 +123,49 @@ class FirmStockController extends ApiController
     //企业库存商品流水
     public function stockFlowList(Request $request){
         $id = $request->input('id');
-        $firm_id = session('_curr_deputy_user.firm_id');
+        $firm_id = $this->getDeputyUserInfo($request)['firm_id'];
         $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
         if(empty($firmStockInfo)){
             return $this->error('非法访问操作！');
         }
+        if(empty($id)){
+            return $this->error('缺少参数，id');
+        }
         $goods_id = $firmStockInfo['goods_id'];
-        if($request->isMethod('get')){
-            return $this->display('web.user.stock.waterList', compact('firmStockInfo'));
-        }else{
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $page_size = $request->input('length', 10);
-            $params = [
-                'firm_id' => session('_curr_deputy_user.firm_id'),
-                'goods_id' => $goods_id
-            ];
-            $rs_list = FirmStockService::stockFlowList($params, $page, $page_size);
+        $page = $request->input('currpage', 0);
+        $page_size = $request->input('pagesize', 10);
+        $params = [
+            'firm_id' => $firm_id,
+            'goods_id' => $goods_id
+        ];
+        $rs_list = FirmStockService::stockFlowList($params, $page, $page_size);
 
+        $data = [
+            'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+            'recordsTotal' => $rs_list['total'], //数据总行数
+            'recordsFiltered' => $rs_list['total'], //数据总行数
+            'data' => $rs_list['list']
+        ];
+        return $this->success( $data,'success');
+    }
+
+    //企业实时库存列表
+    public function stockList(Request $request){
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_firm']){
+            $firm_id = $deputy_user['firm_id'];
+            $page = $request->input('currpage', 0);
+            $page_size = $request->input('pagesize', 10);
+            $goods_name = $request->input('goods_name');
+            $cat_id = $request->input('cat_id');
+            $rs_list = FirmStockService::stockList($firm_id,$cat_id,$goods_name, $page, $page_size,1);
             $data = [
                 'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
                 'recordsTotal' => $rs_list['total'], //数据总行数
                 'recordsFiltered' => $rs_list['total'], //数据总行数
                 'data' => $rs_list['list']
             ];
-            return $this->success('', '', $data);
-        }
-    }
-
-    //企业实时库存列表
-    public function stockList(Request $request){
-        if(session('_curr_deputy_user')['is_firm']){
-            $firm_id = session('_curr_deputy_user')['firm_id'];
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $page_size = $request->input('length', 10);
-            $goods_name = $request->input('goods_name');
-            $cat_id = $request->input('cat_id');
-            if($request->isMethod('get')){
-                $catInfo = FirmStockService::stockList($firm_id, $cat_id,$goods_name, $page, $page_size,0);
-                return $this->display('web.user.stock.list',compact('catInfo'));
-            }else{
-                $rs_list = FirmStockService::stockList($firm_id,$cat_id,$goods_name, $page, $page_size,1);
-                $data = [
-                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
-                    'recordsTotal' => $rs_list['total'], //数据总行数
-                    'recordsFiltered' => $rs_list['total'], //数据总行数
-                    'data' => $rs_list['list']
-                ];
-                return $this->success('', '', $data);
-            }
+            return $this->success($data,'success');
         }
 
         return $this->error('非法访问');
@@ -172,51 +173,48 @@ class FirmStockController extends ApiController
 
     //企业可出库列表
     public function canStockOut(Request $request){
-        if(session('_curr_deputy_user')['is_firm']){
-            if($request->isMethod('get')){
-                return $this->display('web.user.stock.canStockOut');
-            }else{
-                $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-                $page_size = $request->input('length', 10);
-                $firm_id = session('_curr_deputy_user')['firm_id'];
-                $goods_name = $request->input('goods_name');
-                $rs_list = FirmStockService::canStockOut($firm_id, $goods_name, $page, $page_size);
-
-                $data = [
-                    'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
-                    'recordsTotal' => $rs_list['total'], //数据总行数
-                    'recordsFiltered' => $rs_list['total'], //数据总行数
-                    'data' => $rs_list['list']
-                ];
-                return $this->success('', '', $data);
-            }
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_firm']){
+            $page = $request->input('currpage', 0);
+            $page_size = $request->input('pagesize', 10);
+            $firm_id = $deputy_user['firm_id'];
+            $goods_name = $request->input('goods_name');
+            $rs_list = FirmStockService::canStockOut($firm_id, $goods_name, $page, $page_size);
+            $data = [
+                'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+                'recordsTotal' => $rs_list['total'], //数据总行数
+                'recordsFiltered' => $rs_list['total'], //数据总行数
+                'data' => $rs_list['list']
+            ];
+            return $this->success($data,'success');
         }
-
         return $this->error('非法访问');
     }
 
     //获取单条可出库数据
     public function stockInfo(Request $request){
-        if(session('_curr_deputy_user')['is_firm']){
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_firm']){
                 $id = $request->input('id');
-                $firm_id = session('_curr_deputy_user.firm_id');
+                $firm_id = $deputy_user['firm_id'];
                 $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
-                return $this->success('', '', $firmStockInfo);
+                return $this->success($firmStockInfo,'success');
         }
         return $this->error('非法访问');
     }
 
     //出库更新
     public function curStockSave(Request $request){
-        if(session('_curr_deputy_user')['is_firm']){
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_firm']){
             $currStockOut = [];
             $currStockOut['id'] = $request->input('id');
             $currStockOut['order_sn'] = $this->requestGetNotNull('order_sn', '');
             $currStockOut['partner_name'] = $this->requestGetNotNull('partner_name', '');
             $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
             $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
-            $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
-            $currStockOut['created_by'] = session('_web_user_id');
+            $currStockOut['firm_id']= $deputy_user['firm_id'];
+            $currStockOut['created_by'] = $this->getUserID($request);
             $currStockOut['price'] = $this->requestGetNotNull('price', '0');
             try{
                 FirmStockService::createFirmStockOut($currStockOut);
