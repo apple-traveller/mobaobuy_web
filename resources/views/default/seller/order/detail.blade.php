@@ -259,6 +259,8 @@
                                         <div class="value">
                                             <div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
                                             <div class="order_operation_btn">
+                                                // 取消的订单没有操作选项
+                                                @if($orderInfo['order_status']!=0)
                                                 @if($orderInfo['order_status'] == 2)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
                                                 <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
@@ -277,6 +279,7 @@
                                                 // 发货
                                                 @if($orderInfo['order_status']>=3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
                                                         <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                @endif
                                                 @endif
                                             </div>
                                         </div>

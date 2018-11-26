@@ -36,7 +36,7 @@
                             <div class="item">
                                 <div class="label">选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" lay-search="">
+                                    <input type="text" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40" data-name="" class="text" lay-search="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                     <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 61px; background: #fff;width: 319px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
@@ -46,7 +46,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-packing-spac="0" value="" data-name=""  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 101px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -232,12 +232,39 @@
             })
         });
 
+        $("#cat_name").bind("input propertychange", function () {
+            let input_v = $(this).val();
+            $.ajax({
+                url: "/seller/goods/getGoodsCat",
+                dataType: "json",
+                data:{
+                    'cat_name':input_v
+                },
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $(".query_cat_name").children().filter("li").remove();
+                        $(".query_cat_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
         // 种类 点击将选中的值填入input框内
         $(document).delegate(".created_cat_name","click",function(){
             var cat_name = $(this).text();
             var cat_id = $(this).attr("data-cat-id");
             $("#cat_name").val(cat_name);
             $("#cat_name").attr("cat-id",cat_id);
+            $("#cat_name").attr("data-name",cat_name);
+        });
+
+        $("#cat_name").blur(function () {
+            $(this).val($(this).attr('data-name'));
         });
 
         // 商品 获取焦点请求所有的商品数据
@@ -264,6 +291,38 @@
             })
         });
 
+        // 输入商品名字查询
+        $("#goods_name").bind("input propertychange", function () {
+            let input_v = $(this).val();
+            if (input_v===''){
+                return false;
+            }
+            // $(".query_goods_name").children().filter("li").remove();
+            var cat_id = $("#cat_name").attr("cat-id");
+            $.ajax({
+                url: "/seller/goods/getGood",
+                dataType: "json",
+                data:{
+                    "cat_id":cat_id,
+                    "goods_name":input_v
+                },
+                type:"POST",
+                success:function(res){
+                    $(".query_goods_name").children().filter("li").remove();
+                    if(res.code==200){
+                        $(".query_goods_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                        }
+                    }else{
+                        $(".query_goods_name").show();
+                        $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                    }
+                }
+            })
+        });
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -274,8 +333,14 @@
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#goods_name").attr("data-name",goods_name);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        $("#goods_name").blur(function () {
+            let goods_name = $(this).attr('data-name');
+            $(this).val(goods_name);
         });
 
         $("#goods_number").change(function () {

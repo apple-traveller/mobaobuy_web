@@ -143,12 +143,14 @@ window.onload =function() {
         $("#firstT").find('a').click();
     }
     let hash = $.cookie('anchor');
+
     if (!hash || typeof (hash)==="undefined"){
         return false;
     }
 
     let tL = hash.indexOf('&');
     let IL = hash.lastIndexOf('#');
+
     let tabTitle = $.base64.atob(hash.substring(0,tL));
          tabTitle = decodeURIComponent(tabTitle);
     let url = $.base64.atob(hash.substring(tL+1,IL));
