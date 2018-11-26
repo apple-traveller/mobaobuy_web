@@ -447,7 +447,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/invoice/getStatusCount',  'InvoiceController@getStatusCount'); // 各状态数量
         Route::get('/invoice',  'InvoiceController@invoiceList'); // 待开票列表
         Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
-        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
+        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认保存
         Route::post('/invoice/editInvoiceAddress',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
@@ -483,6 +483,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
+    Route::post('checkSession', 'LoginController@checkSession');
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');

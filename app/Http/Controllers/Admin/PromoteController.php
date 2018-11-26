@@ -35,7 +35,7 @@ class PromoteController extends Controller
     //添加
     public function addForm(Request $request)
     {
-        $shops = ShopService::getShopList([],[]);
+        $shops = ShopService::getShopList([],['is_validated' => 1,'is_freeze' => 0]);
         return $this->display('admin.promote.add',[
             'shops'=>$shops['list'],
         ]);
@@ -46,7 +46,7 @@ class PromoteController extends Controller
         $id = $request->input("id");
         $currpage = $request->input("currpage");
         $promote = ActivityService::getInfoById($id);
-        $shops = ShopService::getShopList([],[]);
+        $shops = ShopService::getShopList([],['is_validated' => 1,'is_freeze' => 0]);
         $goods_info = GoodsService::getGoodInfo($promote['goods_id']);
         return $this->display('admin.promote.edit',[
             'promote'=>$promote,

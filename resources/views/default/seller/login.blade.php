@@ -524,7 +524,6 @@
                         if (res.code == 1){
                             window.location.href="{{url('/seller')}}";
                         } else {
-                            console.log(params);
                             $('#password').val('');
                             showMsg(res.msg);
                             me.removeClass( 'disabled' ).html('登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录');
@@ -650,8 +649,5 @@
         }
     }(jQuery));
 </script>
-
-
-
 </body>
 </html>
