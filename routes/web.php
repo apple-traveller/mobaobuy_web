@@ -638,6 +638,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/logout','LoginController@logout');//退出登录
             Route::post('/user/sale','UserController@sale');// 我要卖货
 
+            Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
+
             Route::post('/firmuser/list','FirmUserController@getList');//企业用户列表
             Route::post('/firmuser/detail','FirmUserController@getDetail');//企业用户详情
             Route::post('/firmuser/add','FirmUserController@addFirmUser');//添加企业用户
