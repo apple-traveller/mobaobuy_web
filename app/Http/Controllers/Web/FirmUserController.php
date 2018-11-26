@@ -22,6 +22,7 @@ class FirmUserController extends Controller
 
     //新增企业会员
     public function createFirmUser(Request $request){
+        $firmId = session('_web_user_id');
         $user = session('_web_user');
         if(!$user['is_firm']){
             return $this->error('个人会员并无此功能！');

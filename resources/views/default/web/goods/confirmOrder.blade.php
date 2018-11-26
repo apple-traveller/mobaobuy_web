@@ -212,7 +212,7 @@
 
 		@endif
 	@endif
-		
+
 
 	<div class="address whitebg ovh mt20 ">
 		<h1 class="ml30 fs18 mt30">收货地址</h1>
@@ -236,12 +236,17 @@
 			@endforeach
 		</ul>
 			@else
-			<div class="ml300 ">
-			暂无地址信息 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
-			</div>
+
+				<div class="ml300 " style="margin-bottom: 25px;">
+					@if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1)
+						企业暂未维护地址,无法下单
+						@else
+						暂未维护地址 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
+					@endif
+				</div>
 			@endif
 	</div>
-	
+
 	{{--@if(session('cartSession')['from'] != 'promote')--}}
 		{{--<div class="address whitebg ovh mt20 ">--}}
 		{{--<h1 class="ml30 fs18 mt30">付款方式</h1>--}}
@@ -260,11 +265,21 @@
 		<h1 class="ml30 fs18 mt30">商品信息</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
 			<li class="graybg">
-				<span>商品</span><span>单价（元）</span><span>数量（kg）</span><span>发货地</span><span></span><span>小计</span>
+				<span>商品</span>
+				<span>单价（元）</span>
+				<span>数量（kg）</span>
+				<span>发货地</span>
+				<span></span>
+				<span>小计</span>
 			</li>
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
-				<span class="ovhwp">{{ $v['goods_name'] }}</span><span class="green">¥{{ $v['goods_price'] }}</span><span>{{ $v['goods_number'] }}</span><span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span><span></span><span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ number_format($v['account_money'],2) }} @endif</span>
+				<span class="ovhwp">{{ $v['goods_name'] }}</span>
+				<span class="green">¥{{ $v['goods_price'] }}</span>
+				<span>{{ $v['goods_number'] }}</span>
+				<span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span>
+				<span></span>
+				<span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ number_format($v['account_money'],2) }} @endif</span>
 			</li>
 			@endforeach
 		</ul>
@@ -272,11 +287,10 @@
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
-				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">¥{{$goods_amount}}</span></div>
+				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>
 				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家确认</span></div>
-				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">¥{{$goods_amount}}</span></div>
+				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>
 			</div>
-
 		</div>
 		<div class="address_line cccbg" style="height: 1px;"></div>
 		<div class="address_sumb fr mr30 cp">提交订单</div><a href="/cart" class="fr gray" style="line-height: 50px;">< 返回</a>

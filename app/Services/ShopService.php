@@ -23,6 +23,10 @@ class ShopService
         return ShopLogRepo::getListBySearch($pager,$condition);
     }
 
+    public static function getList($order=[],$condition=[])
+    {
+        return ShopRepo::getList($order,$condition);
+    }
 
     //新增
     public static function create($data)
@@ -65,11 +69,15 @@ class ShopService
     }
 
     //验证唯一性
-    public static function uniqueValidate($shop_name)
+    public static function uniqueValidate($company_name,$user_name)
     {
-        $info = ShopRepo::getInfoByFields(['shop_name'=>$shop_name]);
+        $info = ShopRepo::getInfoByFields(['company_name'=>$company_name]);
+        $shop_user = ShopUserRepo::getInfoByFields(['user_name'=>$user_name]);
         if(!empty($info)){
-            self::throwBizError('该店铺名已经存在！');
+            self::throwBizError('该企业已经存在！');
+        }
+        if(!empty($shop_user)){
+            self::throwBizError('该管理员名称已经存在,请重新选择！');
         }
         return $info;
     }

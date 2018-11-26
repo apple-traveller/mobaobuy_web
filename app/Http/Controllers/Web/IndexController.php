@@ -7,6 +7,7 @@ use App\Services\ActivityPromoteService;
 use App\Services\AdService;
 use App\Services\ArticleService;
 use App\Services\BrandService;
+use App\Services\CartService;
 use App\Services\GoodsCategoryService;
 use App\Services\OrderInfoService;
 use App\Services\UserService;
@@ -29,6 +30,16 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
+
+        $now = Carbon::now();
+        //获取顶部广告
+        $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]);
+        if(empty($top_ad['list'])){
+            $top_ad=$top_ad['list'];
+        }else{
+            $top_ad=$top_ad['list'][0];
+        }
+        //dd(strlen($top_ad['list'][0]['ad_link']));
         //获取大轮播图
         $banner_ad = AdService::getActiveAdvertListByPosition(1);
         //获取订单状态数
@@ -44,7 +55,7 @@ class IndexController extends Controller
         $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 2);
 
         //成交动态 假数据 暂时定为$trans_type=1 时为开启创建并显示假数据 暂时创建的是8点到18点之间的数据 缓存有效期一天
-        $trans_type = 1;
+        $trans_type = getConfig('open_trans_flow');
         $trans_false_list = [];
         if($trans_type == 1){
             $day = date('Ymd');
@@ -64,12 +75,12 @@ class IndexController extends Controller
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
-        $article_list = ArticleService::getArticleLists(['pageSize'=>7, 'page'=>1,'orderType'=>['add_time'=>'desc']], ['is_show'=> 1])['list'];
+        $article_list = ArticleService::getTopClick(1,7)['list'];
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
 
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
-            'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'trans_false_list'=>$trans_false_list]);
+            'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'trans_false_list'=>$trans_false_list,'top_ad'=>$top_ad]);
     }
 
     //选择公司
@@ -85,6 +96,9 @@ class IndexController extends Controller
                 'name' => session('_web_user')['nick_name']
             ];
             session()->put('_curr_deputy_user', $info);
+            if(!empty(session('cartSession'))){
+                session()->forget('cartSession');
+            }
             return $this->success();
         }else{
             //获取用户所代表的公司
@@ -96,7 +110,11 @@ class IndexController extends Controller
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
+                    $firm['address_id'] = $firm['address_id'];
                     session()->put('_curr_deputy_user', $firm);
+                    if(!empty(session('cartSession'))){
+                        session()->forget('cartSession');
+                    }
                     return $this->success();
                 }
             }

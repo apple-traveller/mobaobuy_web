@@ -36,6 +36,18 @@ class UserService
         return false;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     * 验证用户id是否实名并通过
+     */
+    public static function isReal($userId){
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
+        if(empty($userRealInfo)){
+            self::throwBizError('实名认证通过后才能下单');
+        }
+    }
+
     public static function checkCompanyNameCanAdd($name){
         if(UserRepo::getTotalCount(['is_firm'=>1, 'nick_name'=> $name])){
             return false;
@@ -56,6 +68,11 @@ class UserService
         }
 
         return true;
+    }
+
+    //短信登陆
+    public static function loginByMessage($username,$messageCode){
+
     }
 
     //用户注册
@@ -159,6 +176,7 @@ class UserService
         if (!$info['is_validated']) {
             self::throwBizError('账号需待审核通过后才可登录！');
         }
+        UserRepo::modify($info['id'],['is_logout'=>0]);
         unset($info['password']);
         //登录成功后事件
         createEvent('webUserLogin', ['user_id'=>$info['id'], 'client_ip'=>$other_params['ip']]);
@@ -196,7 +214,9 @@ class UserService
             foreach($firm_list as &$item){
                 $firm_info = UserRepo::getInfo($item['firm_id']);
                 $item['firm_name'] = $firm_info['nick_name'];
+                $item['address_id'] = $firm_info['address_id'];
             }
+            unset($item);
             return $firm_list;
         }
         return [];
@@ -460,18 +480,29 @@ class UserService
     }
 
     //会员中心首页
-    public static function userMember($userId){
-        //
+    public static function userMember($userId,$firmId){
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
-        //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'order_status|>'=>'0']);
+
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
-        //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>0,'order_status'=>3]);
-        //
-        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'pay_status'=>1]);
+        //企业和代理用户
+        if(empty($userId)){
+            $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['firm_id'=>$firmId,'pay_status'=>0,'order_status'=>3,'is_delete'=>0]);
+            $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0,'is_delete'=>0]);
+            //订单
+            $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['firm_id'=>$firmId,'order_status|>'=>'0','is_delete'=>0]);
+        }else{
+            //个人用户
+            //未付款订单数
+            $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status'=>3,'is_delete'=>0]);
+
+            //已付款
+            $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0,'is_delete'=>0]);
+
+            //订单
+            $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0','is_delete'=>0]);
+        }
 
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
@@ -483,6 +514,15 @@ class UserService
         }else{
             return $userRealInfo['real_name'];
         }
+    }
+
+    //是否收藏
+    public static function checkUserIsCollect($userId,$goodsId){
+        $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!empty($collectGoodsInfo)){
+            return 1;
+        }
+        return 0;
     }
 
     //添加企业会员，验证手机号是否存在
@@ -499,6 +539,26 @@ class UserService
         $users['total'] = UserRepo::getTotalCount();
         return $users;
     }
+
+    //admin
+    // 添加用户实名信息
+    public static function addUserRealForm($id){
+        $userInfo = UserRepo::getInfo($id);
+        if(empty($userInfo)){
+            self::throwBizError('用户信息不存在');
+        }
+
+        $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userInfo['id']]);
+        if(!empty($userRealInfo)){
+            if($userRealInfo['review_status'] == 1){
+                self::throwBizError('用户审核已通过');
+            }
+            if($userRealInfo['review_status'] == 0){
+                self::throwBizError('请等待管理员审核');
+            }
+        }
+        return $userInfo;
+    }
     //获取第三方登录信息
     public static function getAppUserInfo($condition)
     {
@@ -509,22 +569,7 @@ class UserService
     {
         return AppUsersRepo::create($data);
     }
-    //获取用户需求列表
-    public static function getUserSaleList($pager, $condition)
-    {
-        $list = UserSaleRepo::getListBySearch($pager, $condition);
-        foreach ($list['list'] as $k => $v) {
-            $userInfo = self::getUserInfo($v['user_id']);
-            $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
-        }
-        unset($userInfo);
-        return $list;
-    }
-    //修改用户需求为已读
-    public static function userSaleModify($id,$data)
-    {
-        return UserSaleRepo::modify($id,$data);
-    }
+
     //获取用户详细信息（小程序接口）
     public static function getApiUserInfo($id)
     {
@@ -542,7 +587,10 @@ class UserService
     public static function bindThird($user_id,$openid,$nick_name,$avatar)
     {
         #认证成功 绑定qq或微信
-
+        $userInfo = AppUsersRepo::getInfoByFields(['user_id'=>$user_id]);
+        if(!empty($userInfo)){
+            return true; //如果用户的绑定信息存在就不走下面绑定过程，直接登录
+        }
         $app_data = [
             'open_id' => $openid,
             'identity_type' => 'W',//微信登录
@@ -575,7 +623,7 @@ class UserService
             $user_id = self::userRegister($data);
 
             $app_data = [
-                'app_id' => $openid,
+                'open_id' => $openid,
                 'identity_type' => 'W',
                 'user_id' => $user_id,
                 'create_time'=>date('Y-m-d H:i:s')

@@ -26,7 +26,7 @@
                 </div>
                 <div style="margin-left:10px;margin-top:4px;" class="fl">
                     <a href="/admin/user/addForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加新用户</span></div></div></a>
-                    <a href="/admin/user/addUserRealForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加实名认证</span></div></div></a>
+                    {{--<a href="/admin/user/addUserRealForm"><div class="fbutton"><div class="add" title="添加新用户"><span><i class="icon icon-plus"></i>添加实名认证</span></div></div></a>--}}
                     <a href="javascript:download_userlist();"><div class="fbutton"><div class="csv" title="导出会员列表"><span><i class="icon icon-download-alt"></i>导出会员列表</span></div></div></a>
                 </div>
 
@@ -52,15 +52,14 @@
                             <thead>
                             <tr>
                                 <th width="5%"><div class="tDiv">编号</div></th>
-                                <th width="10%"><div class="tDiv">用户名</div></th>
-                                <th width="10%"><div class="tDiv">昵称</div></th>
-                                <th width="8%"><div class="tDiv">是否实名</div></th>
+                                <th width="8%"><div class="tDiv">用户名</div></th>
+                                <th width="8%"><div class="tDiv">昵称</div></th>
+                                <th width="6%"><div class="tDiv">是否实名</div></th>
                                 <th width="10%"><div class="tDiv">是否企业用户</div></th>
-                                <th width="8%"><div class="tDiv">积分</div></th>
-                                <th width="8%"><div class="tDiv">注册时间</div></th>
+                                <th width="10%"><div class="tDiv">注册时间</div></th>
                                 <th width="8%"><div class="tDiv">访问次数</div></th>
                                 <th width="6%"><div class="tDiv">是否冻结</div></th>
-                                <th width="18%" class="handle">操作</th>
+                                <th width="28%" class="handle">操作</th>
                             </tr>
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
@@ -68,7 +67,6 @@
                             @if(!empty($users))
                             @foreach($users as $user)
                             <tr class="">
-
                                 <td><div class="tDiv">{{$user['id']}}</div></td>
                                 <td><div class="tDiv">{{$user['user_name']}}</div></td>
                                 <td><div class="tDiv">{{$user['nick_name']}}</div></td>
@@ -88,11 +86,11 @@
                                         @endif
                                     </div>
                                 </td>
-                                <td>
+                               {{-- <td>
                                     <div class="tDiv">
                                         <a href="/admin/user/points?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="layui-btn layui-btn-normal">{{$user['points']}}</a>
                                     </div>
-                                </td>
+                                </td>--}}
                                 <td><div class="tDiv">{{$user['reg_time']}}</div></td>
                                 <td><div class="tDiv">{{$user['visit_count']}}</div></td>
 
@@ -110,6 +108,7 @@
                                         <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                         <a href="{{url('/admin/user/log')}}?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
                                         <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a href="{{url('/admin/user/addUserRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>添加认证</a>
                                         <a @if($user['is_firm']==1 && $user['review_status']==1)  @else style="display:none;" @endif href="{{url('/admin/user/firmStock')}}?firm_id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>企业库存</a>
                                     </div>
                                 </td>

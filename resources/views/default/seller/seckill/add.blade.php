@@ -10,7 +10,7 @@
                         <div class="switch_info" style="display: block;">
                             <div class="item">
                                 <div class="layui-inline">
-                                    <label class="layui-form-label">秒杀日期</label>
+                                    <label class="layui-form-label">秒杀日期:</label>
                                     <div class="layui-input-inline">
                                         <input type="text" class="layui-input" id="date_choose" placeholder="申请日期"  maxlength="40px">
                                     </div>
@@ -31,10 +31,9 @@
                             <div class="item fbutton add"><p id="addTable" style="width: 150px"><i class="icon icon-plus"></i>选择加入秒杀的商品</p></div>
                             <br>
                             <table class="layui-hide" id="form_ui"></table>
-                            <div class="item">
-                                <div class="label">&nbsp;</div>
-                                <div class="label_value info_btn">
-                                    <input type="hidden" id="resource_goods"></input>
+                            <div class="item" style="" align="center">
+                                <div class="label_value info_btn" align="center">
+                                    <input type="hidden" id="resource_goods">
                                     <input type="button" value="提交" class="button" id="submitBtn">
                                     <input type="reset" value="取消" class="button button_reset">
                                 </div>
@@ -75,7 +74,7 @@
                    , max: '2080-10-14'
                    , theme: '#393D49'
                    , ready: function () {
-                       date_chose.hint('日期可选值设定在 <br> 2016-10-14 到 2080-10-14');
+                       date_chose.hint('2016-10-14 到 2080-10-14');
                    }
                });
                $("#addTable").click(function () {
@@ -87,7 +86,13 @@
                        area: ['75%', '80%'],
                        fixed: false, //不固定
                        maxmin: true,
-                       content: '/seller/seckill/goods_list'
+                       content: '/seller/seckill/goods_list',
+                       success:function (layero,index) {
+                           layerIndex = index;
+                           layerInitWidth = $("#layui-layer"+layerIndex).width();
+                           layerInitHeight = $("#layui-layer"+layerIndex).height();
+                           resizelayer(layerIndex,layerInitWidth,layerInitHeight);
+                       }
                    });
 
                });

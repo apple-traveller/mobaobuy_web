@@ -27,7 +27,7 @@ class BrandService
     //唯一性验证
     public static function uniqueValidate($brand_name)
     {
-        $flag = BrandRepo::getInfoByFields(['brand_name'=>$brand_name]);
+        $flag = BrandRepo::getInfoByFields(['brand_name'=>$brand_name,'is_delete'=>1]);
         if($flag){
             self::throwBizError('该品牌名称已经存在');
         }

@@ -42,15 +42,10 @@ class ShopLoginService
                 'user_id' => $data['user_id'],
                 'company_name' => $data['company_name'],
                 'shop_name' => $data['shop_name'],
-                'contactName' => $data['user_name'],
-                'contactPhone' => $data['mobile'],
                 'attorney_letter_fileImg' => $data['attorney_letter_fileImg'],
-                'business_license_id' => $data['business_license_id'],
                 'license_fileImg' => $data['license_fileImg'],
-                'taxpayer_id' => $data['taxpayer_id'],
                 'reg_time' => Carbon::now(),
-                'is_validated' => 0,
-                'is_self_run' => $data['is_self_run']
+                'is_validated' => 0
             ];
             self::beginTransaction();
             $shop_info = ShopRepo::create($shop_data);
@@ -91,22 +86,22 @@ class ShopLoginService
         }
         $shop_info = ShopRepo::getInfoByFields(['id'=>$user_info['shop_id']]);
         if ($shop_info['is_validated'] == 0){
-            self::throwBizError('该店铺未通过审核，暂不能登录，请耐心等待');
+            self::throwBizError('未通过审核,暂不能登录,请耐心等待');
         }
         if ($shop_info['is_freeze'] == 1){
-            self::throwBizError('该店铺已经冻结，暂不能登录');
+            self::throwBizError('该店铺已经冻结,暂不能登录');
         }
         // 验证成功后，创建事件
         createEvent('sellerUserLogin',['shop_id'=>$shop_info['id'],'user_id'=>$user_info['id'],'ip'=>$data['ip']]);
         return ['shop_id'=>$user_info['shop_id'],'user_id'=>$user_info['id']];
     }
     /**
-     * 发送注册短信
+     * 发送短信
      * @param $mobile
      * @return mixed|\stdClass
      * @throws \Exception
      */
-    public static function sendRegisterCode($type,$mobile,$code)
+    public static function sendSMSCode($type,$mobile,$code)
     {
         $params = [
             'code'=>$code

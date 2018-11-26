@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '首页')
+@section('title', getSeoInfoByType('index')['title'])
+@section('keywords', getSeoInfoByType('index')['keywords'])
+@section('description', getSeoInfoByType('index')['description'])
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/index.css')}}" />
     <style>
@@ -46,7 +48,19 @@
     </script>
 @endsection
 
+@section('top_ad')
+    @if(!empty($top_ad))
+        <a  style="display:block;" @if(strlen(trim($top_ad['ad_link']))!=0) target="_blank" href="{{$top_ad['ad_link']}}" @else href="#" @endif>
+            <div  style="background:url('{{getFileUrl($top_ad['ad_img'])}}') no-repeat center top;height:80px;"></div>
+        </a>
+    @else
+
+    @endif
+@endsection
+
 @section('content')
+    {{--<div style="background:url() no-repeat center top;height:80px;"></div>--}}
+
     <div class="play_banner">
         <div class="banner-imgs-div">
             @foreach($banner_ad as $item)
@@ -289,11 +303,11 @@
 
         <ul class="supply_list mt15">
             <li class="graybg">
-                <span>公司名称</span><span>联系人</span><span>联系电话</span><span>主营品种</span><span>操作</span>
+                <span>公司名称</span><span>联系人</span><span>联系电话</span><span>主营品种</span><span>更新时间</span><span>操作</span>
             </li>
             @foreach($shops as $shop)
             <li>
-                <div class="clearfix"><span>{{$shop['shop_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span class="lcolor operation">展开</span></div>
+                <div class="clearfix"><span>{{$shop['company_name']}}</span><span>{{$shop['contactName']}}</span><span>{{$shop['contactPhone']}}</span><span>{{$shop['major_business']}}</span><span>1小时前</span><span class="lcolor operation">展开</span></div>
                 <div class="supply_list_inside" style="display: none;">
                     <ul class="quote_list supply_quote_list">
                         @foreach($shop['quotes'] as $quote)

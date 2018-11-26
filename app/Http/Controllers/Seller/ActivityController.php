@@ -23,7 +23,7 @@ class ActivityController extends Controller
         $condition['shop_id'] = $shop_id;
         $pageSize = 10;
         $list = ActivityService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
-        return $this->display('seller.Activity.promoter',[
+        return $this->display('seller.activity.promoter',[
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
@@ -91,7 +91,7 @@ class ActivityController extends Controller
             'num' => $num,
             'min_limit' => $min_limit,
             'max_limit' => $max_limit,
-            $data['review_status'] = 1
+            'review_status' => 1
         ];
         if(empty($id)){
             $data['shop_id'] = $shop_info['id'];

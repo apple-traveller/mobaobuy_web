@@ -56,6 +56,7 @@ CREATE TABLE `user` (
   `is_firm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否企业用户 0-否 1-是',
   `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单是否需审批 0-否 1-是',
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
+  `is_logout` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '默认0，被企业修改了权限 就为1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';
@@ -300,7 +301,10 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (5, 'site_domain', 'text','','','网站域名','','请输入您当前网站的域名，避免资源找不到（如：http://www.xxxx.com/）',''),
 (5, 'article_path', 'text','','','文章资源路径','../article','',''),
 (5, 'friend_link_path', 'text','','','友情链接路径','friend_link','',''),
-(5, 'firm_path', 'text','','','企业资质路径','firm','','');
+(5, 'firm_path', 'text','','','企业资质路径','firm','',''),
+(1, 'open_trans_flow', 'select', '0|否,1|是', '', '是否开启交易流水', '0', '', ''),
+(1, 'service_qq', 'text', '', '', '客服QQ', '1216765487', '', '');
+
 
 DROP TABLE IF EXISTS `ad_position`;
 CREATE TABLE `ad_position` (
@@ -685,6 +689,7 @@ CREATE TABLE `shop_goods_quote` (
   `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '发货地',
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
+  `total_number` int(10) NOT NULL DEFAULT '0' COMMENT '报价总数',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT 0 COMMENT '店铺职员ID',
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
@@ -696,6 +701,7 @@ CREATE TABLE `shop_goods_quote` (
   `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
   `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
+  `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '报价类型 1自售 2品牌直售 3寄售',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`),
@@ -778,6 +784,9 @@ CREATE TABLE `order_info` (
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已删除 0-否 1-是',
   `is_settlement` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已结算 0-否 1-是',
   `froms` char(10) NOT NULL DEFAULT 'pc' COMMENT '订单来源',
+  `deposit` decimal(10,2) NOT NULL COMMENT '订金金额',
+  `deposit_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订金支付状态 0未支付 1已支付',
+  `deposit_pay_voucher` varchar(255) DEFAULT NULL COMMENT '订金付款凭证',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_sn` (`order_sn`),
   KEY `user_id` (`user_id`),
@@ -1230,6 +1239,7 @@ CREATE TABLE `user_sale` (
   `bill_file` varchar(200) NOT NULL DEFAULT '' COMMENT '清单文件',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员卖货需求';
@@ -1242,3 +1252,117 @@ CREATE TABLE `shop_store` (
   `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+
+DROP TABLE IF EXISTS `hot_search`;
+CREATE TABLE `hot_search` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `search_key` varchar(255) NOT NULL COMMENT '搜索关键字',
+  `search_num` int(11) NOT NULL DEFAULT '1' COMMENT '搜索次数',
+  `is_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示 0不显示 1显示',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `ip` varchar(255) NOT NULL COMMENT 'ip',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='搜索记录表';
+
+DROP TABLE IF EXISTS `activity_wholesale`;
+CREATE TABLE `activity_wholesale` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商家ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '商家名称',
+  `begin_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团商品ID',
+  `goods_name` varchar(200) NOT NULL DEFAULT '' COMMENT '拼团商品名',
+  `price` decimal(10,2) NOT NULL COMMENT '拼团价格',
+  `num` decimal(5,0) NOT NULL COMMENT '拼团目标数量',
+  `partake_quantity` decimal(5,0) NOT NULL COMMENT '已参与数量',
+  `min_limit` decimal(5,0) NOT NULL DEFAULT '1' COMMENT '最小参与数量',
+  `max_limit` decimal(5,0) NOT NULL DEFAULT '0' COMMENT '最大限购数量 0-不限',
+  `deposit_ratio` decimal(3,0) NOT NULL DEFAULT '0' COMMENT '订金比例 0-不支付订金',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  PRIMARY KEY (`id`),
+  KEY `shop_id` (`shop_id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
+
+DROP TABLE IF EXISTS `user_sale`;
+CREATE TABLE `user_sale` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名（手机号）',
+  `content` varchar(255) DEFAULT NULL COMMENT '需求内容',
+  `bill_file` varchar(200) DEFAULT '' COMMENT '清单文件',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='会员卖货需求';
+
+DROP TABLE IF EXISTS `app_users`;
+CREATE TABLE `app_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identity_type` char(255) NOT NULL COMMENT '登录类型',
+  `user_id` int(11) NOT NULL COMMENT '会员id',
+  `open_id` varchar(255) NOT NULL COMMENT '第三方唯一标识',
+  `profile` varchar(255) DEFAULT NULL COMMENT '序列化用户信息',
+  `access_token` char(255) NOT NULL COMMENT 'token',
+  `expires_in` datetime DEFAULT NULL COMMENT 'token过期时间',
+  `expires_at` datetime DEFAULT NULL COMMENT 'token保存时间',
+  `login_ip` varchar(255) DEFAULT NULL COMMENT '登录ip',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`) USING BTREE,
+  KEY `open_id` (`user_id`,`open_id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1 COMMENT='第三方登录';
+
+DROP TABLE IF EXISTS `hot_search`;
+CREATE TABLE `hot_search` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `search_key` varchar(255) NOT NULL COMMENT '搜索关键字',
+  `search_num` int(11) NOT NULL DEFAULT '1' COMMENT '搜索次数',
+  `is_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示 0不显示 1显示',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `ip` varchar(255) NOT NULL COMMENT 'ip',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='搜索记录表';
+
+DROP TABLE IF EXISTS `user_invoices`;
+CREATE TABLE `user_invoices` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '公司抬头',
+  `tax_id` varchar(20) NOT NULL DEFAULT '' COMMENT '税号',
+  `bank_of_deposit` varchar(20) NOT NULL DEFAULT '' COMMENT '开户银行',
+  `bank_account` varchar(30) NOT NULL DEFAULT '' COMMENT '银行账号',
+  `company_address` varchar(255) NOT NULL DEFAULT '' COMMENT '开票地址',
+  `company_telephone` varchar(20) NOT NULL DEFAULT '' COMMENT '开票电话',
+  `consignee_name` varchar(20) NOT NULL DEFAULT '' COMMENT '收票人',
+  `consignee_mobile_phone` varchar(15) NOT NULL DEFAULT '' COMMENT '收票人电话',
+  `country` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-国家',
+  `province` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-省',
+  `city` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-市',
+  `district` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收票地址-县',
+  `street` smallint(5) NOT NULL DEFAULT '0' COMMENT '收票地址-街道',
+  `consignee_address` varchar(255) NOT NULL DEFAULT '' COMMENT '收票地址-详细地址',
+  `audit_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态 0-待审核 1-已审核',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `audit_status` (`audit_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='会员发票';
+DROP TABLE IF EXISTS `user_whole_single`;
+CREATE TABLE `user_whole_single` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名（手机号）',
+  `content` varchar(255) DEFAULT NULL COMMENT '需求内容',
+  `bill_file` varchar(200) DEFAULT '' COMMENT '清单文件',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_read` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已读 1-是 0-否',
+  `opinion` varchar(255) DEFAULT NULL COMMENT '处理意见',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='整单采购需求';

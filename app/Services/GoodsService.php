@@ -14,9 +14,7 @@ use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
-use App\Repositories\ShopGoodsRepo;
-use Illuminate\Http\Request;
-
+use App\Repositories\HotSearchRepo;
 class GoodsService
 {
     use CommonService;
@@ -59,6 +57,23 @@ class GoodsService
     public static function getGoodInfo($id)
     {
         return GoodsRepo::getInfo($id);
+    }
+
+    //保存关键词
+    public static function saveHotKeyWords($search_key)
+    {
+        //根据$search_key查询数据库中有没有这个关键字，如果有就是修改search_num，没有就保存
+        $hot_search = HotSearchRepo::getInfoByFields(['search_key'=>$search_key]);
+        try{
+            if(empty($hot_search)){
+                return HotSearchRepo::create(['search_key'=>$search_key]);
+            }else{
+                return HotSearchRepo::modify($hot_search['id'],['search_num'=>$hot_search['search_num']+1]);
+            }
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //获取所有的单位列表
@@ -122,8 +137,7 @@ class GoodsService
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] = number_format($v['goods_number'] * $v['goods_price'],2);
-
+            $quoteInfo[$k]['account'] =$v['goods_number'] * $v['goods_price'];
             //取goods表的规格
             $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
@@ -228,10 +242,16 @@ class GoodsService
     public static function addCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
+            if(empty($cartInfo)){
+                self::throwBizError('购物车信息不存在');
+            }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            if(empty($goodsInfo)){
+                self::throwBizError('商品信息不存在');
+            }
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
             throw $e;
         }
@@ -241,10 +261,19 @@ class GoodsService
     public static function reduceCartGoodsNum($id){
         try{
             $cartInfo = CartRepo::getInfo($id);
+            if(empty($cartInfo)){
+                self::throwBizError('商品信息不存在');
+            }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            if(empty($goodsInfo)){
+                self::throwBizError('商品信息不存在');
+            }
+            if($cartInfo['goods_number']<=$goodsInfo['packing_spec']){
+                self::throwBizError('该商品不能减少了');
+            }
             $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2);
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
-            return $account;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];;
         }catch (\Exception $e){
             throw $e;
         }
@@ -285,7 +314,10 @@ class GoodsService
 
     //物性表详情
     public static function goodsAttributeDetails($id,$page,$pageSize){
-        $id = decrypt($id);
+        if(!is_numeric($id)){
+            $id = decrypt($id);
+        }
+
         if($id<0){
             self::throwBizError('产品信息有误');
         }
@@ -298,9 +330,7 @@ class GoodsService
         return $shopGoodsInfo;
     }
 
-
-
-    //购物车数量判断
+    //购物车blur数量判断
     public static function checkListenCartInput($id,$goodsNumber){
         $cartInfo = CartRepo::getInfo($id);
         if(empty($cartInfo)){
@@ -314,7 +344,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('商品数据有误');
         }
-        if(!is_numeric($goodsNumber)){
+        if(!is_numeric($goodsNumber) || $goodsNumber < 0){
             self::throwBizError('数量只能输入正整数');
         }
 
@@ -333,7 +363,8 @@ class GoodsService
         }
         $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
         if($cartResult){
-            return $goods_number;
+            $cartResult['account'] = $cartResult['goods_number'] * $cartResult['goods_price'];
+            return $cartResult;
         }
         self::throwBizError('修改数量失败');
 
@@ -353,6 +384,27 @@ class GoodsService
         $price = [];
         foreach($goodsList as $k=>$v){
             $time[] = substr($v['add_time'],0,10);
+            $price[] = $v['shop_price'];
+        }
+        $data['time'] = $time;
+        $data['price'] = $price;
+        return $data;
+    }
+
+    public static function productTrendApi($goodsId){
+        $goodsInfo = GoodsRepo::getInfo($goodsId);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品信息有误');
+        }
+        //$goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
+        $goodsList = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>7, 'page'=>1, 'orderType'=>['id'=>'desc']],['goods_id'=>$goodsId]);
+        if(empty($goodsList)){
+            return [];
+        }
+        $time = [];
+        $price = [];
+        foreach($goodsList['list'] as $k=>$v){
+            $time[] = substr(substr($v['add_time'],0,10),-5);//取时间的月份和天数
             $price[] = $v['shop_price'];
         }
         $data['time'] = $time;

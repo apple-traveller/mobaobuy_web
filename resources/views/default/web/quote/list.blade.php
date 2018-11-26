@@ -13,6 +13,13 @@
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
         .Self-product-list li span{
             display: block;
+            height:55px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .Self-product-list li:first-child span{
+            height:40px;
         }
 	</style>
 @endsection
@@ -110,7 +117,10 @@
 				<dl class="fl filter_item"><dt class="fl">地区:</dt>
 					<dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
 						@foreach($search_data['filter']['city_list'] as $vo)
-						    <label class=" check_box region"><input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/><span  class="fl">{{$vo['region_name']}}</span></label>
+						    <label class=" check_box region">
+                                <input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/>
+                                <span  class="fl">{{$vo['region_name']}}</span>
+                            </label>
 						@endforeach
 					</dd>
 					<div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
@@ -150,29 +160,48 @@
 			</div>
 		</div>
 		<ul class="Self-product-list">
-			<li class="table_title"><span class="num_bg1" style="width:9%">店铺</span><!-- <span  style="width:8%;">品牌</span> --><span style="width:8%;">种类</span><span style="width:18%">商品名称</span><span style="width:9%;">数量（kg）</span><span>单价（元/kg）</span><span style="widows:8%;">发货地址</span><span style="width:18%;">联系人</span><span style="width: 9%;">操作</span></li>
 
-
-			@foreach($search_data['list'] as $vo)
-				<li>
-                    <span data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                    <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
-                    <span class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                    <span style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                    <span style="width:9%">{{$vo['goods_number']}}</span>
-                    <span>{{$vo['shop_price']}}</span>
-                    <span>{{$vo['delivery_place']}}</span>
-                    <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
-                    <span style="width:9%">@if($vo['goods_number'])<button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>@else已售完 @endif</span>
-                </li>
-			@endforeach
+			<li class="table_title">
+                <span class="num_bg1" style="width:9%">店铺</span>
+                <!-- <span  style="width:8%;">品牌</span> -->
+                <span style="width:8%;">种类</span>
+                <span style="width:18%">商品名称</span>
+                <span style="width:9%;">数量（kg）</span>
+                <span>单价（元/kg）</span>
+                <span style="widows:8%;">发货地址</span>
+                <span style="width:18%;">联系人</span>
+                <span style="width: 9%;">操作</span>
+            </li>
+            @if(!empty($search_data['list']))
+                @foreach($search_data['list'] as $vo)
+                    <li>
+                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                        <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
+                        <span title="{{$vo['cat_name']}}" class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
+                        <span title="{{$vo['goods_full_name']}}" style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span style="width:9%">{{$vo['goods_number']}}</span>
+                        <span>{{$vo['shop_price']}}</span>
+                        <span>{{$vo['delivery_place']}}</span>
+                        <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                        <span style="width:9%">
+                            @if($vo['goods_number'])
+                                <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                            @else
+                                已售完
+                            @endif
+                        </span>
+                    </li>
+                @endforeach
+            @else
+                <li style="color:red;text-align: center">无相关数据</li>
+            @endif
 		</ul>
 		<!--页码-->
 		<div class="news_pages" style="margin-top: 20px;text-align: center;">
 			<ul id="page" class="pagination"></ul>
 		</div>
 	</div>
-	</div>
+    </div>
 @endsection
 
 @section('bottom_js')
@@ -241,6 +270,15 @@
             $('#cate_tag').attr('cate_id','');
             getInfo(1);
         });
+
+        //公司名称
+        // $('.storeName').hover(function(){
+        //     // var a = $(this).attr('stroreName');
+        //     // console.log(a);
+        //     // $(this).attr('stroreName').wrap("<h1>");
+        // },function(){
+        //     $(this).unwrap();
+        // });
     });
 
 

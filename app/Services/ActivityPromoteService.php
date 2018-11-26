@@ -113,11 +113,43 @@ class ActivityPromoteService
         return $goodsInfo;
     }
 
+    //限时抢购详情
+    public static function buyLimitDetailsApi($id,$userId){
+        $ActivityInfo =  ActivityPromoteRepo::getInfo($id);
+        if(empty($ActivityInfo)){
+            self::throwBizError('促销商品不存在');
+        }
+        $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('产品不存在');
+        }
+
+        $goodsInfo['activity_price'] = $ActivityInfo['price'];
+        $goodsInfo['activity_num'] = $ActivityInfo['num'];
+        $goodsInfo['available_quantity'] = $ActivityInfo['available_quantity'];
+        $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        //活动有效期总秒数
+        $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
+        //产品市场价
+        $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
+        $goodsInfo['goodsList'] = $goodsList;
+
+        //产品是否已收藏
+        $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        if(empty($collectGoods)){
+            $goodsInfo['collectGoods'] = 0;
+        }else{
+            $goodsInfo['collectGoods'] = 1;
+        }
+        return $goodsInfo;
+    }
+
     //限时抢购 立即下单
     public static function buyLimitToBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
-
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
             self::throwBizError('该活动已结束！');
@@ -129,7 +161,6 @@ class ActivityPromoteService
         if($goodsNum < $activityInfo['min_limit']){
             self::throwBizError('不能低于起售数量');
         }
-
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
         }else{
@@ -160,10 +191,24 @@ class ActivityPromoteService
         }
     }
 
+    //通过id查抢购表数据
+    public static function getActivityPromoteByIdApi($id){
+        $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+        if(empty($activityPromoteInfo)){
+            self::throwBizError('不存在的商品信息');
+        }
+    }
+
     //增加限时抢购的点击量
     public static function addClickCount($id)
     {
         $id = decrypt($id);
+        return ActivityPromoteRepo::addClickCount($id);
+    }
+
+    //增加限时抢购的点击量
+    public static function addClickCountApi($id)
+    {
         return ActivityPromoteRepo::addClickCount($id);
     }
 

@@ -73,23 +73,26 @@
             $('#pur_num').blur(function(){
                 var _self = $(this);
                 //数量
-                var goodsNumber = _self.val();
-                var packing_spec = _self.attr('packing_spec');
-                //当前购物车数据id
-                var id = _self.attr('cid');
+                var goodsNumber = Number(_self.val());//当前输入值
+                var packing_spec = Number(_self.attr('packing_spec'));//规格
+                var can_num = Number(_self.attr('can_num')); //可售
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
-                    $.ajax({
-                        'type':'post',
-                        'data':{'id':id,'goodsNumber':goodsNumber},
-                        'url':'{{url('/checkListenCartInput')}}',
-                        success:function(res){
-                            if(res.code){
-                            }else{
-                                $.msg.error('输入的数量有误');
-                                _self.val(packing_spec);
-                            }
+                    if(goodsNumber > can_num){
+                        var _count = can_num%packing_spec; //整除为0
+                        if(_count>0){
+                            $(".pur_num").val(can_num - _count);
+                        }else{
+                            $(".pur_num").val(can_num);
                         }
-                    })
+                    }else{
+                        var _count2 = goodsNumber%packing_spec;
+                        if(_count2>0){
+                            // $(".pur_num").val(goodsNumber - _count2);
+                             $(".pur_num").val(packing_spec);
+                        }else if(_count2=0){
+                        	$(".pur_num").val(goodsNumber);
+                        }
+                    }
                 }else{
                     $.msg.error('输入的数量有误');
                     _self.val(packing_spec);
@@ -210,66 +213,75 @@
 
 				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                 <div class="pur_volume ml15">
-                    <span class="pur bbright">-</span>
-                        <input type="text" cid="{{$good_info['id']}}" packing_spec="{{$good_info['packing_spec']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" />
-                    <span class="pur bbleft">+</span></div>
-
+                    <span class="pur shop_num_reduce">-</span>
+                        <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" />
+                    <span class="pur shop_num_plus">+</span>
+                </div>
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
-				<button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                @if(session('_web_user_id'))
+                    @if($collectGoods)
+                        <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
+                    @else
+                        <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                    @endif
+                @else
+                    <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                @endif
+				
 			</div>
 		</div>
 
 	</div>
-	<div class="w1200" style="margin-top: 80px;">
-		<div class="History_offo">
-			<h1>历史报价</h1>
-		</div>
+        <div class="w1200" style="margin-top: 80px;">
+            <div class="History_offo">
+                <h1>历史报价</h1>
+            </div>
 
-        <ul class="History-product-list br1">
-            <li>
-                <span style="width:15%">报价日期</span>
-                <span style="width:10%">种类</span>
-                <span style="width:25%">商品名称</span>
-                <span style="width:10%">单价（元/kg）</span>
-                <span style="width:10%">数量（kg）</span>
-                <span style="width:10%">发货地址</span>
-                <span style="width:20%">联系人</span>
-            </li>
-            @foreach($goodsList as $vo)
+            <ul class="History-product-list br1">
                 <li>
-                    <span style="width:15%">{{$vo['add_time']}}</span>
-                    <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
-                    <span style="width:25%">{{$vo['goods_full_name']}}</span>
-                    <span style="width:10%">{{$vo['goods_number']}}</span>
-                    <span style="width:10%">{{$vo['shop_price']}}</span>
-                    <span style="width:10%">{{$vo['delivery_place']}}</span>
-                    <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                    <span style="width:15%">报价日期</span>
+                    <span style="width:10%">种类</span>
+                    <span style="width:25%">商品名称</span>
+                    <span style="width:10%">单价（元/kg）</span>
+                    <span style="width:10%">数量（kg）</span>
+                    <span style="width:10%">发货地址</span>
+                    <span style="width:20%">联系人</span>
                 </li>
-            @endforeach
-        </ul>
+                @foreach($goodsList as $vo)
+                    <li>
+                        <span style="width:15%">{{$vo['add_time']}}</span>
+                        <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
+                        <span style="width:25%">{{$vo['goods_full_name']}}</span>
+                        <span style="width:10%">{{$vo['goods_number']}}</span>
+                        <span style="width:10%">{{$vo['shop_price']}}</span>
+                        <span style="width:10%">{{$vo['delivery_place']}}</span>
+                        <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                    </li>
+                @endforeach
+            </ul>
 
-		{{--<ul class="Self-product-list">--}}
-			{{--<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>--}}
-			{{--@foreach($goodsList as $vo)--}}
-				{{--<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>--}}
-			{{--@endforeach--}}
-		{{--</ul>--}}
-		<!--页码-->
-		<div class="news_pages">
-			<ul id="page" class="pagination">
+            {{--<ul class="Self-product-list">--}}
+                {{--<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>--}}
+                {{--@foreach($goodsList as $vo)--}}
+                    {{--<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>--}}
+                {{--@endforeach--}}
+            {{--</ul>--}}
+            <!--页码-->
+            <div class="news_pages">
+                <ul id="page" class="pagination">
 
-			</ul>
-		</div>
-	</div>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="clearfix whitebg ovh mt10" style="font-size: 0;">
 @endsection
 
 @section('bottom_js')
 	<script>
-        $(".bbright").click(function(){
+        $(".shop_num_reduce").click(function(){
             var number = parseInt($(".pur_num").val());
             var packing_spec = parseInt("{{$good_info['packing_spec']}}");
             if(number<=packing_spec){
@@ -279,10 +291,21 @@
             }
         });
 
-        $(".bbleft").click(function(){
+        $(".shop_num_plus").click(function(){
             var number = parseInt($(".pur_num").val());
             var packing_spec = parseInt("{{$good_info['packing_spec']}}");
-            $(".pur_num").val(number+packing_spec);
+            var can_num = parseInt($(".pur_num").attr('can_num'));
+            if(number + packing_spec > can_num){
+                var _count = can_num%packing_spec;
+                if(_count>0){
+                    $(".pur_num").val(can_num - _count);
+                }else{
+                    $(".pur_num").val(can_num);
+                }
+
+            }else{
+                $(".pur_num").val(number+packing_spec);
+            }
         });
 
         $(".orangebg").click(function(){

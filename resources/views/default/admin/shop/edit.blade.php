@@ -15,17 +15,7 @@
                     <form action="/admin/shop/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;会员：</div>
-                                <div class="label_value">
-                                    <input type="text" name="nick_name" class="text" value="{{$nick_name}}" maxlength="40" autocomplete="off" id="nick_name">
-                                    <input type="hidden" name="user_id" class="text" value="{{$shop['user_id']}}" maxlength="40" autocomplete="off" id="user_id">
-                                    <ul class="query" style="overflow:auto;display:none;height:200px;position: absolute;top: 60px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
-                                    </ul>
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺名称：</div>
@@ -150,7 +140,7 @@
                             <input type="hidden" name="id"  value="{{$shop['id']}}"/>
                             <input type="hidden" name="currpage"  value="{{$currpage}}"/>
 
-                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">

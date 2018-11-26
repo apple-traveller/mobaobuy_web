@@ -55,7 +55,7 @@
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
                                     <td>
                                         <div class="tDiv">
-                                            @if($vo['is_validated']==0)
+                                            @if($vo['is_validated']==1)
                                                 <div  class='review_status layui-btn layui-btn-sm layui-btn-radius '>已审核</div>
                                             @else
                                                 <div class='review_status layui-btn layui-btn-sm layui-btn-radius  layui-btn-primary  '>待审核</div>

@@ -32,7 +32,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;是否是店铺管理员：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="is_super" id="is_super">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="is_super" id="is_super">
                                         <option @if($shopUser['is_super']==0) selected @endif value="0">否</option>
                                         <option @if($shopUser['is_super']==1) selected @endif value="1">是</option>
                                     </select>

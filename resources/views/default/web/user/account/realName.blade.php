@@ -116,20 +116,7 @@
                             <input type="text" style="width:102px;" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                         </span>
                     </li>
-                   <!--  <li class="mt25">
-                        <span class="infor_title">性别：</span>
-                        <span class="ml10 fl">
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==0) checked @endif name="sex" value="0"> 保密
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==1) checked @endif name="sex" value="1"> 男
-                            <input type="radio" @if(!empty($user_real)&&$user_real['sex']==2) checked @endif name="sex" value="2"> 女
-                        </span>
-                    </li>
-                    <li class="mt25">
-                        <span class="infor_title">生日：</span>
-                        <span class=" fl">
-                            <input name="birthday" class="infor_input" type="text" @if(!empty($user_real['birthday'])) value="{{$user_real['birthday']}}" @else value="" @endif  >
-                        </span>
-                    </li> -->
+                
                     <li class="mt25">
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">

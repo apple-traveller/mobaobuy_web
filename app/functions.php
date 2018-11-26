@@ -77,6 +77,7 @@ if(!function_exists('getFileUrl')){
         if(preg_match('/^(http|https):\/\/(.*)/', $file_path)){
             return $file_path;
         }
+        $file_path = str_replace('\\','/',$file_path);
         return \Illuminate\Support\Facades\Storage::url($file_path);
     }
 }
@@ -199,5 +200,43 @@ if (!function_exists('getNewsSidebar')){
         return $data;
     }
 }
+
+if (!function_exists('getHotSearch')){
+    function getHotSearch(){
+        return \App\Services\HotSearchService::getList([],['is_show'=>1]);
+    }
+}
+
+if (!function_exists('getOrderFromText')){
+    function getOrderFromText($code){
+        $res = '购物车下单';
+        switch ($code){
+            case 'promote' : $res = '限时抢购活动';
+                break;
+            case 'wholesale' : $res = '集采拼团活动';
+                break;
+            case 'consign' : $res = '清仓特卖活动';
+                break;
+            default:
+
+        }
+        return $res;
+    }
+}
+
+if(!function_exists('getSeoInfoByType')){
+    function getSeoInfoByType($type){
+        $res = \App\Services\SeoService::getInfoByType($type);
+        if($res){
+            return $res;
+        }
+        return [
+            'title'=>'',
+            'keywords'=>'',
+            'description'=>''
+        ];
+    }
+}
+
 
 

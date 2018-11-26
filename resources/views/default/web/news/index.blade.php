@@ -1,12 +1,14 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-@section('title', '资讯首页')
+@section('title', getSeoInfoByType('article')['title'])
+@section('keywords', getSeoInfoByType('article')['keywords'])
+@section('description', getSeoInfoByType('article')['description'])
 @section('style')
     <style>
         .crumbs {padding: 5px 0;overflow: hidden;clear: both;zoom: 1;}
         .crumbs a {padding: 0 5px;}
         .crumbs span {padding-left: 5px;}
         .today_news{width: 912px;height: auto;}
-        .today_news_top{height: 50;line-height: 50px;border-bottom:2px solid #75b335;}
+        .today_news_top{height: 50px;line-height: 50px;border-bottom:2px solid #75b335;}
         .today_news_list li{border-bottom: 1px solid #DEDEDE;margin-top:10px;overflow: hidden;}
         .news_content{width: 600px;margin-top: 10px;color: #666;}
         .mr10{margin-right:10px;}

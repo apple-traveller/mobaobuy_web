@@ -25,6 +25,9 @@ class InvoiceController extends Controller
      */
     public function myInvoice(Request $request)
     {
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         $tab_code = $request->input('tab_code', '');
         if ($request->isMethod('get')){
             return $this->display('web.user.invoice.myInvoice',compact('tab_code'));
@@ -97,6 +100,9 @@ class InvoiceController extends Controller
     public function invoiceDetail($invoice_id)
     {
 
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         if (empty($invoice_id)){
             return $this->error('该开票信息不存在');
         }
@@ -120,6 +126,9 @@ class InvoiceController extends Controller
      */
     public function invoiceList(Request $request)
     {
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         $shop_name = $request->input('shop_name','');
         $order_sn = $request->input('order_sn','');
         $start_time = $request->input('begin_time','');
@@ -181,6 +190,9 @@ class InvoiceController extends Controller
      */
     public function confirm(Request $request)
     {
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
 
         $order_ids = $request->input('order_id','');
@@ -249,6 +261,9 @@ class InvoiceController extends Controller
      */
     public function editInvoiceAddress(Request $request)
     {
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         $address_id = $request->input('address_id','');
         if(!$address_id){
             return $this->error('缺少地址ID！');
@@ -290,6 +305,9 @@ class InvoiceController extends Controller
      */
     public function applyInvoice(Request $request)
     {
+        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+            return $this->error('您没有申请开票的权限');
+        }
         $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
         $invoiceSession = session('invoiceSession');
         $goodsList = $invoiceSession['goods_list'];

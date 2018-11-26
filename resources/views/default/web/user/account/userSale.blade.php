@@ -49,8 +49,8 @@
                 // console.log(res.data);
                 console.log(res);
                 if (res.code == 1) {
-                    $.msg.success('提交成功');
-                    window.location.reload();
+                    $.msg.alert('提交成功,请等待客服与您联系！');
+                    $('textarea[name=content]').val('');
                 } else {
                     $.msg.alert(res.msg);
 

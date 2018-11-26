@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\GsxxService;
 use App\Services\ShopLoginService;
+use App\Services\ShopService;
+use App\Services\ShopUserService;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -21,15 +23,22 @@ class LoginController extends Controller
         if ($request->isMethod('get')){
             return $this->display('seller.login');
         } else {
+            $type = $request->input('type');
             $user_name = $request->input('user_name','');
             $password = base64_decode($request->input('password',''));
+            $mobile = $request->input('mobile','');
+            $mobileCode = $request->input('mobileCode','');
+            if ($type=='pwdLogin'){
+                if (empty($user_name)){
+                    return $this->error('用户名不能为空');
+                }
+                if (empty($password)){
+                    return $this->error('密码不能为空');
+                }
+            } else {
+                return $this->error('网络错误');
+            }
 
-            if (empty($user_name)){
-                return $this->error('用户名不能为空');
-            }
-            if (empty($password)){
-                return $this->error('密码不能为空');
-            }
             $request->setTrustedProxies(['116.226.54.5'],0);
             $params = [
                 'user_name'=>$user_name,
@@ -97,17 +106,10 @@ class LoginController extends Controller
             $user_id = $request->input('user_id','0');
             $company_name = $request->input('companyName','');
             $attorney_letter_fileImg = $request->input('attorney_letter_fileImg','');
-            $business_license_id = $request->input('business_license_id','');
             $license_fileImg = $request->input('license_fileImg','');
-            $taxpayer_id = $request->input('taxpayer_id','');
-            $is_self_run = $request->input('is_self_run','0');
-            $user_name = $request->input('contactName','');
             $password = base64_decode($request->input('password', ''));
-
-            //$password = $request->input('password', '');
             $mobile= $request->input('mobile','');
             $mobile_code = $request->input('mobile_code','');
-
 
             $type = 'sms_signup';
             //手机验证码是否正确
@@ -123,18 +125,10 @@ class LoginController extends Controller
                 return $this->error('授权委托书电子版不能为空');
             }
 
-            if (empty($business_license_id)){
-                return $this->error('营业执照注册号不能为空');
-            }
             if (empty($license_fileImg)){
                 return $this->error('营业执照副本电子版不能为空');
             }
-            if (empty($taxpayer_id)){
-                return $this->error('纳税人识别号');
-            }
-            if (empty($user_name)){
-                return $this->error('用户名称不能为空');
-            }
+
             if (empty($password)){
                 return $this->error('密码不能为空');
             }
@@ -146,13 +140,9 @@ class LoginController extends Controller
                 'shop_name' =>$company_name,
                 'company_name' => $company_name,
                 'attorney_letter_fileImg' => $attorney_letter_fileImg,
-                'business_license_id' => $business_license_id,
                 'license_fileImg' => $license_fileImg,
-                'taxpayer_id' => $taxpayer_id,
-                'is_self_run' => $is_self_run,
-                'user_name' => $user_name,
-                'password' => $password,
-                'mobile' => $mobile
+                'user_name' => $mobile,
+                'password' => $password
             ];
             try{
                $re = ShopLoginService::Register($data);
@@ -166,14 +156,22 @@ class LoginController extends Controller
         }
     }
 
-    //获取手机验证码
+    /**
+     * 获取手机验证码 -- 商户注册
+     * @param Request $request
+     * @return LoginController|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function getSmsCode(Request $request){
-        $mobile = $request->input('mobile');
+        $mobile = $request->input('mobile','');
+        if (!$mobile){
+            return $this->error('手机号错误');
+        }
         $type = 'sms_signup';
         //生成的随机数
         $code = SmsService::getRandom(6);
         Cache::add(session()->getId().$type.$mobile, $code, 5);
-        $re = ShopLoginService::sendRegisterCode($type,$mobile,$code);
+        $re = ShopLoginService::sendSMSCode($type,$mobile,$code);
         if ($re == 0){
             return $this->success('发送成功');
         } else {
@@ -182,6 +180,29 @@ class LoginController extends Controller
 
     }
 
+    /**
+     * 获取手机验证码 -- 商户登录
+     * @param Request $request
+     * @return LoginController|\Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function SmsCodeLogin(Request $request){
+        $mobile = $request->input('mobile','');
+        if (!$mobile){
+            return $this->error('手机号错误');
+        }
+        $type = 'sms_seller_signin';
+        //生成的随机数
+        $code = SmsService::getRandom(6);
+        Cache::add(session()->getId().$type.$mobile, $code, 5);
+        $re = ShopLoginService::sendSMSCode($type,$mobile,$code);
+        if ($re == 0){
+            return $this->success('发送成功');
+        } else {
+            return $this->error('发送失败,请稍后重试');
+        }
+
+    }
     /**
      * 登出
      * @return LoginController|\Illuminate\Http\RedirectResponse

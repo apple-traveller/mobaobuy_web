@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <title>@yield('title')</title>
+    <meta name="description" content="@yield('description')" />
+    <meta name="keywords" content="@yield('keywords')" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
 </head>
 <body style="background-color: rgb(244, 244, 244);">
+    @yield('top_ad')
     @include(themePath('.','web').'web.include.partials.top')
     @include(themePath('.','web').'web.include.partials.top_search')
 

@@ -51,11 +51,11 @@
                                         </div>
                                     </td>
                                     <td class="handle">
-                                        <div class="tDiv a3">
+                                        <div class="tDiv a2">
                                             <a href="/seller/invoice/detail?invoice_id={{$v['id']}}&currentPage={{$currentPage}}" title="详情" class="btn_see"><i class="sc_icon sc_icon_see"></i>详情</a>
                                             @if($v['status']==1)
-                                            <a href="javascript:void(0);" title="审核" id="{{$v['id']}}" onclick="conf({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>审核</a>
-                                            <a href="javascript:void(0);" title="取消" onclick="cancelOne({{$v['id']}})" class="btn_see"><i class="sc_icon sc_icon_see"></i>取消</a>
+                                            <a href="javascript:void(0);" title="审核" id="{{$v['id']}}" onclick="conf({{$v['id']}})" class="btn_see"><i class="icon icon-edit"></i>审核</a>
+                                            <a href="javascript:void(0);" title="取消" onclick="cancelOne({{$v['id']}})" class="btn_see"><i class="icon icon-trash"></i>取消</a>
                                             @endif
                                         </div>
                                     </td>
@@ -143,7 +143,7 @@
         {
             layui.use('layer', function(){
                 let layer = layui.layer;
-                layer.confirm('是否取消?', {icon: 3, title:'提示'}, function(index){
+                layer.confirm('是否取消开票?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
                         url:'/seller/invoice/cancelInvoice',
                         data: {

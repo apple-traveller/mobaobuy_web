@@ -22,7 +22,7 @@
             color: #fff;
         }
         .search_div{
-            width: 95%;
+            width: 98%;
             position: fixed;
             z-index: 2;
             background-color: #fff;
@@ -36,7 +36,7 @@
     </style>
 @endsection
 @section('body')
-    <div class="warpper">
+    <div class="warpper" >
         <div class="title">商品</div>
         <div class="search_div">
 
@@ -87,12 +87,14 @@
             var theEvent = e || window.event;
             var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
             if (code == 13) {
+                var kwds = $("#searchInput").val();
+                reloda(kwds);
                 //回车执行查询
-                $("#form").click(function () {
-                    console.log(shop_name);
-                    return false;
-                });
             }
+        });
+        $("#form").click(function () {
+            var kwds = $("#searchInput").val();
+            reloda(kwds);
         });
 
         form.on("submit(formDemo)",function(data){

@@ -65,10 +65,24 @@
                             html += '<tr  class="tal"><td colspan="4"><p class="pl10 fs16">'+ full.status +'</p>';
                             html += '<p><span class="pl10 fl" style="width:30%">订单单号：<a>' + full.order_sn +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.add_time +'</span></p></td></tr>';
                             for(var index in full.goods){
-                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;"><p>'+ full.goods[index].goods_name + '</p><p><span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span><span class="pl10">数量：'+ full.goods[index].goods_number+' </span></p></div></td>';
+                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;">';
+                                html += '<p>'+ full.goods[index].goods_name + '</p><p>';
+                                if(full.order_status == 2 && full.deposit_status == 0 && full.extension_code == 'wholesale'){
+                                    html += '<span style="float:left;width:50%;">单价不超过：￥' + full.goods[index].goods_price + '</span>';
+                                }else{
+                                    html += '<span style="float:left;width:50%;">单价：￥' + full.goods[index].goods_price + '</span>';
+                                }
+
+                                html += '<span class="pl10">数量：'+ full.goods[index].goods_number+' kg</span></p></div></td>';
                                 if(index == 0){
-                                    html += '<td width="20%" rowspan="'+ full.goods.length +'"><p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p></td>';
                                     html += '<td width="20%" rowspan="'+ full.goods.length +'">';
+                                    if(full.order_status == 2 && full.deposit_status == 0){
+                                        html +='<p>待支付订金：￥'+ full.deposit +'</p>';
+                                    }else{
+                                        html +='<p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p>';
+                                    }
+
+                                    html += '</td><td width="20%" rowspan="'+ full.goods.length +'">';
                                     for(var i in full.deliveries){
                                         console.log(full.deliveries);
                                         html += '<p><img class="track-tooltip" data-id='+ full.deliveries[i].id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
@@ -117,6 +131,9 @@
                     }
                     if(status.waitInvoice > 0){
                         $('#waitInvoice').html(status.waitInvoice);
+                    }
+                    if(status.waitDeposit > 0){
+                        $('#waitDeposit').html(status.waitDeposit);
                     }
                 }
             }, "POST", "JSON");
@@ -242,10 +259,12 @@
 	<div class="mt20">
 		<ul class="order_list_state">
 			<li @if(empty($tab_code)) class="curr" @endif><a href="/order/list">所有</a></li>
+            <li @if($tab_code == 'waitDeposit') class="curr" @endif><a href="/order/list?tab_code=waitDeposit">待付定金<em id="waitDeposit"></em></a></li>
             @if(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 0)
             @else
             <li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
             @endif
+
 			<li @if($tab_code == 'waitAffirm') class="curr" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em id="waitAffirm"></em></a></li>
 			<li @if($tab_code == 'waitPay') class="curr" @endif><a href="/order/list?tab_code=waitPay">待付款<em id="waitPay"></em></a></li>
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>

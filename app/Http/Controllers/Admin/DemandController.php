@@ -83,6 +83,86 @@ class DemandController extends Controller
     }
 
 
+    //会员卖货需求
+    public function userSale(Request $request)
+    {
+        $user_name = $request->input('user_name','');
+        $currpage = $request->input("currpage",1);
+        $condition = [];
+        if(!empty($user_name)){
+            $condition['user_name'] = "%".$user_name."%";
+        }
+        $pageSize = 10;
+        $list = DemandService::getUserSaleList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        return $this->display('admin.demand.sale',[
+            'saleList'=>$list['list'],
+            'user_name'=>$user_name,
+            'saleCount'=>$list['total'],
+            'currpage'=>$currpage,
+            'pageSize'=>$pageSize,
+        ]);
+    }
+    //设为已读
+    public function setRead(Request $request)
+    {
+        $id = $request->get('id');
+        $opinion = $request->get('opinion','');
+        if(empty($id)){
+            return $this->error('无法获取参数ID');
+        }
+        if(empty($opinion)){
+            return $this->error('处理意见不能为空');
+        }
+        #修改数据库
+        $data = ['is_read' => 1,'opinion'=>$opinion];
+        $res = DemandService::userSaleModify($id,$data);
+        if($res){
+            return $this->success('处理成功');
+        }else{
+            return $this->error('处理失败！请联系管理员。');
+        }
+    }
 
+    //整单采购需求
+    public function userWholeSingle(Request $request)
+    {
+        $user_name = $request->input('user_name', '');
+        $currpage = $request->input("currpage", 1);
+        $condition = [];
+        if (!empty($user_name)) {
+            $condition['user_name'] = "%" . $user_name . "%";
+        }
+        $pageSize = 10;
+        $list = DemandService::getUserWholeSingleList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
+        return $this->display('admin.demand.userWholeSingle'
+            , [
+                'saleList' => $list['list'],
+                'user_name' => $user_name,
+                'saleCount' => $list['total'],
+                'currpage' => $currpage,
+                'pageSize' => $pageSize,
+            ]
+        );
+    }
+    //整单采购设为已读
+    public function setSingleRead(Request $request)
+    {
+        $id = $request->get('id');
+        $opinion = $request->get('opinion','');
+        if(empty($id)){
+            return $this->error('无法获取参数ID');
+        }
+        if(empty($opinion)){
+            return $this->error('处理意见不能为空');
+        }
+        #修改数据库
+        $data = ['is_read' => 1,'opinion'=>$opinion];
+        $res = DemandService::userWholeSaleModify($id,$data);
+        if($res){
+            return $this->success('处理成功');
+        }else{
+            return $this->error('处理失败！请联系管理员。');
+        }
+    }
 
 }

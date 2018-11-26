@@ -162,9 +162,9 @@ class UserController extends Controller
         $excel = new ExcelController();
         $data = array();
         $data = [
-            ['ID','用户名','昵称','邮箱','访问次数','注册时间','会员积分']
+            ['ID','用户名','昵称','邮箱','访问次数','注册时间']
         ];
-        $users = UserService::getUsers(['id','user_name','nick_name','email','visit_count','reg_time','points']);
+        $users = UserService::getUsers(['id','user_name','nick_name','email','visit_count','reg_time']);
         foreach($users as $item){
             $data[]=$item;
         }
@@ -267,42 +267,86 @@ class UserController extends Controller
     //添加实名认证信息
     public function addUserRealForm(Request $request)
     {
-        return $this->display('admin.user.adduserreal');
+
+        if($request->isMethod('get')){
+            $userId = $request->input('id');
+            try{
+                $userInfo = UserService::addUserRealForm($userId);
+                return $this->display('admin.user.adduserreal',compact('userInfo'));
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }else{
+
+            $dataArr = $request->all();
+            $userId = $request->input('user_id');
+
+            //is_self 1是个人提交  2是企业
+            $is_self = $request->input('is_self');
+            $errorMsg = [];
+
+            if($is_self == 1){
+                if(empty($dataArr['real_name'])){
+                    $errorMsg[] = "请输入真实姓名";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+                if(empty($dataArr['front_of_id_card'])){
+                    $errorMsg[] = "请上传身份证正面";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+                if(empty($dataArr['reverse_of_id_card'])){
+                    $errorMsg[] = "请上传身份证反面";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+                if(!empty($errorMsg)){
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+            }elseif($is_self == 2){
+                if(empty($dataArr['real_name_firm'])){
+                    $errorMsg[] = "请输入企业全称";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+
+//           if(empty($dataArr['tax_id'])){
+//               $errorMsg[] = "税号";
+//               return $this->result("",0,implode("|",$errorMsg));
+//           }
+
+                if(empty($dataArr['attorney_letter_fileImg'])){
+                    $errorMsg[] = "请上传授权委托书电子版";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+
+                if(empty($dataArr['invoice_fileImg'])){
+                    $errorMsg[] = "请上传开票资料电子版";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+
+                if(empty($dataArr['license_fileImg'])){
+                    $errorMsg[] = "请上传营业执照电子版";
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+
+
+
+                if(!empty($errorMsg)){
+                    return $this->result("",0,implode("|",$errorMsg));
+                }
+            }else{
+                return $this->result("",0,'非法操作');
+            }
+
+            try{
+                $flag = UserRealService::saveUserReal($dataArr,$is_self,$userId);
+                if($flag){
+                    return $this->result("",1,"保存成功");
+                }
+                return $this->result('',0,"保存失败");
+            }catch(\Exception $e){
+                return $this->result('',0,$e->getMessage());
+            }
+
+        }
     }
 
-    //会员卖货需求
-    public function userSale(Request $request)
-    {
-        $user_name = $request->input('user_name','');
-        $currpage = $request->input("currpage",1);
-        $condition = [];
-        if(!empty($user_name)){
-            $condition['user_name'] = "%".$user_name."%";
-        }
-        $pageSize = 10;
-        $list = UserService::getUserSaleList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        return $this->display('admin.user.sale',[
-            'saleList'=>$list['list'],
-            'user_name'=>$user_name,
-            'saleCount'=>$list['total'],
-            'currpage'=>$currpage,
-            'pageSize'=>$pageSize,
-        ]);
-    }
-    //设为已读
-    public function setRead(Request $request)
-    {
-        $id = $request->get('id');
-        if(empty($id)){
-            return $this->error('无法获取参数ID');
-        }
-        #修改数据库
-        $data = ['is_read' => 1];
-        $res = UserService::userSaleModify($id,$data);
-        if($res){
-            return $this->success('设置成功');
-        }else{
-            return $this->error('设置失败！请联系管理员。');
-        }
-    }
 }

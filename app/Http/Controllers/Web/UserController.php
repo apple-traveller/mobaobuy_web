@@ -32,10 +32,22 @@ class UserController extends Controller
 
     public function  index(){
         $userId = session('_web_user_id');
-        if(!session('_curr_deputy_user')['is_self']){
+        //企业
+        if(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 1){
+//            $userId = session('_curr_deputy_user')['firm_id'];
+            $userId = '';
+            $firmId = session('_curr_deputy_user')['firm_id'];
+        }elseif(session('_curr_deputy_user')['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 1){
+            //个人
             $userId = session('_curr_deputy_user')['firm_id'];
+            $firmId = 0;
+        }elseif(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1){
+            //代理企业
+            $userId = '';
+            $firmId = session('_curr_deputy_user')['firm_id'];
         }
-        $memberInfo = UserService::userMember($userId);
+
+        $memberInfo = UserService::userMember($userId,$firmId);
         return $this->display('web.user.index',compact('memberInfo'));
     }
 
@@ -188,9 +200,10 @@ class UserController extends Controller
     //登出
     public function logout()
     {
-        session()->forget('_web_user_id');
-        session()->forget('_web_user');
-        session()->forget('_curr_deputy_user');
+//        session()->forget('_web_user_id');
+//        session()->forget('_web_user');
+//        session()->forget('_curr_deputy_user');
+        session()->flush();
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
@@ -272,11 +285,11 @@ class UserController extends Controller
                 'consignee' => $consignee,
                 'country' => $address_ids[0],
                 'province' => $address_ids[1],
-                'city' => $address_ids[2]??0,
+                'city' => $address_ids[2],
                 'district' => $address_ids[3],
                 'address' => $address,
                 'zipcode' => $zipcode,
-                'mobile_phone' => $mobile_phone
+                'mobile_phone' => $mobile_phone,
             ];
             try{
 
@@ -668,6 +681,20 @@ class UserController extends Controller
             return $this->error($e->getMessage());
         }
     }
+    /**
+     * @param Request $request
+     * @return $this
+     * 检测用户是否实名通过
+     */
+    public function isReal(Request $request){
+        $userId = $request->input('userId');
+        try{
+            UserService::isReal($userId);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
 
     //用户信息
     public function userInfo(Request $request)
@@ -687,13 +714,12 @@ class UserController extends Controller
     //保存
     public function saveUser(Request $request)
     {
-//        dump(session('_web_user'));
-//        dump(session('_web_user_id'));
         $params = $request->all();
+        $params['nick_name'] = trim($request->input('nick_name'));
         try{
             $data = [];
             $data['email'] = $params['email'];
-            $data['nick_name'] = $params['nick_name'];
+            $data['nick_name'] = htmlspecialchars($params['nick_name']);
             $userId = session('_web_user_id');
             $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
             if(!empty($data['email'])){
@@ -999,9 +1025,10 @@ class UserController extends Controller
         ];
         $res = UserService::modify($userInfo['id'],$user_data);
         if($res){
-            session()->forget('_web_user_id');
-            session()->forget('_web_user');
-            session()->forget('_curr_deputy_user');
+//            session()->forget('_web_user_id');
+//            session()->forget('_web_user');
+//            session()->forget('_curr_deputy_user');
+            session()->flush();
             return $this->success('注销成功！');
         }else{
             return $this->error('注销失败！请联系管理员。');

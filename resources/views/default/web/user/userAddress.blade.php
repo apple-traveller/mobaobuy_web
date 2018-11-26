@@ -238,10 +238,10 @@
 							type:'POST',
 							success:function (res) {
 								if (res.code == 1){
-									$.msg.alert(res.msg);
+									// $.msg.alert(res.msg);
 									io.parents(".Receive_address li").remove();
 								} else {
-									$.msg.alert(res.msg);
+									// $.msg.alert(res.msg);
 									return false;
 								}
 							}

@@ -91,7 +91,7 @@
 
                                     {{--<dt>付款方式：@if($orderInfo['pay_type']==1) 先款后货 @elseif($orderInfo['pay_type']==2) 货到付款 @endif</dt>--}}
                                     <dt>付款方式：
-                                                <select name="modules" lay-verify="required" style="width: 200px;padding: 2px 0" @if($orderInfo['order_status']>=3) disabled @endif>
+                                                <select name="modules" lay-verify="required" style="width: 100px;padding: 2px 0" @if($orderInfo['order_status']>=3) disabled @endif>
                                                     <option value="1" @if($orderInfo['pay_type']==1) selected @endif>先款后货</option>
                                                     <option value="2" @if($orderInfo['pay_type']==2) selected @endif>货到付款</option>
                                                 </select>
@@ -112,6 +112,14 @@
                                 </dl>
                             </div>
                         </div>
+                        <div style="margin-left: 40px">
+                            定金凭证:
+                            @if(!empty($oorderInfo['deposit_pay_voucher']))
+                                <button type="button" onclick="depositImg()" class="layui-btn mt3">查看</button>
+                            @else
+                                <div><p style="line-height: 38px">暂无</p></div>
+                            @endif
+                        </div>
 
                         <!--收货人信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
@@ -124,7 +132,7 @@
 
                                 </dl>
                                 <dl style="width:50%">
-                                    <dt>收货地址：[{{$region}}] 详细地址：{{$orderInfo['address']}}</dt>
+                                    <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
 
                                     <dt>邮政编码：{{$orderInfo['zipcode']}}</dt>
 
@@ -134,31 +142,31 @@
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
-                            <div class="step_title"><i class="ui-step"></i><h3>其他信息<a href="/seller/order/modifyInvoice?invoice_id={{$orderInfo['invoice_id']}}&currentPage={{$currentPage}}&id={{$orderInfo['id']}}"><i class="icon icon-edit"></i></a></h3></div>
-                            <div class="section">
-                                <dl>
-                                    <dt>发票抬头：{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}</dt>
-                                    <dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>
-                                </dl>
+                            <div class="step_title"><i class="ui-step"></i><h3>其他信息</h3></div>
+                            {{--<div class="section">--}}
+                                {{--<dl>--}}
+                                    {{--<dt>发票抬头：--}}{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}{{--</dt>--}}
+                                    {{--<dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>--}}
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>
+                                {{--<dl>--}}
+                                    {{--<dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>--}}
 
-                                    <dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>
+                                    {{--<dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>--}}
 
-                                </dl>
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>
+                                {{--<dl>--}}
+                                    {{--<dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>--}}
 
-                                    <dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>
+                                    {{--<dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>--}}
 
-                                </dl>
+                                {{--</dl>--}}
 
-                                <dl>
-                                    <dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>
-                                    <dt></dt>
-                                </dl>
+                                {{--<dl>--}}
+                                    {{--<dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>--}}
+                                    {{--<dt></dt>--}}
+                                {{--</dl>--}}
 
                                 <dl style="width:30.6%">
                                     <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
@@ -253,15 +261,18 @@
                                             <div class="order_operation_btn">
                                                 @if($orderInfo['order_status'] == 2)
                                                 <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
-                                                <input name="cancel" type="button" value="作废" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
+                                                <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
                                                 @elseif($orderInfo['order_status'] == 1)
                                                     <input type="button" value="待买家审核" class="btn btn25 red_btn">
                                                 @else
 
                                                 <input name="order_id" type="hidden" value="4">
-                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
+                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2 && $orderInfo['order_status']==3) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
                                                 @endif
-                                                    @if($orderInfo['order_status']>=3)
+                                                    @if($orderInfo['order_status']>=3 && $orderInfo['order_status'] <4)
+
+                                                        @if($orderInfo['deposit_status'] == 0 && $orderInfo['order_status']==3) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
+
                                                     <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
 
                                                     @endif
@@ -287,7 +298,7 @@
                                                 <td>{{$vo['action_user']}}</td>
                                                 <td>{{$vo['log_time']}}</td>
                                                 <td>
-                                                    @if($vo['order_status']==0)已作废
+                                                    @if($vo['order_status']==0)已取消
                                                     @elseif($vo['order_status']==1)待企业审核
                                                     @elseif($vo['order_status']==2)待商家确认
                                                     @else已确认
@@ -377,19 +388,54 @@
                 }
             });
         }
+        function depositImg() {
+            //示范一个公告层
+            layer.open({
+                type: 1
+                ,
+                title: false //不显示标题栏
+                ,
+                closeBtn: false
+                ,
+                area: '300px;'
+                ,
+                shade: 0.8
+                ,
+                id: 'PayImg' //设定一个id，防止重复弹出
+                ,
+                btn: ['关闭']
+                ,
+                btnAlign: 'c'
+                ,
+                moveType: 1 //拖拽模式，0或者1
+                ,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}" alt=""> </div>'
+                ,
+                yes: function (layero) {
+                    layer.closeAll();
+                }
+            });
+        }
         // 确认订单
         function conf(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否确认订单?', {icon: 3, title:'提示'}, function(index){
+                layer.prompt({
+                    title: '确认订单,并输入交货日期',
+                }, function(value, index, elem){
+
+
                     let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
                             'action_note':action_note,
-                            'order_status': 3
+                            'order_status': 3,
+                            'delivery_period':value
                         },
                         type: 'post',
                         success: function (res) {
@@ -407,31 +453,36 @@
             });
         }
 
-        //作废订单
+        //取消订单
         function cancelOne(id)
         {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('是否取消订单?', {icon: 3, title:'提示'}, function(index){
-                    let to_buyer = $("input[ name='to_buyer' ]").val();
+                layer.prompt({
+                    title: '确认取消订单,并输入原因',
+                }, function(value, index, elem){
+
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
-                            'id':66,
-                            'to_buyer':to_buyer,
-                            'order_status': 0
+                            'id':id,
+                            'order_status': 0,
+                            'to_buyer':value
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 1,time:2000});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:3000});
-                                window.location.href="/seller/order/list?id="+id;
+                                layer.msg(res.msg, {icon: 5,time:2000});
                             }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
+
+                    layer.close(index);
                 });
             });
         }
@@ -456,6 +507,38 @@
                             }
                         }
                     });
+                    layer.close(index);
+                });
+            });
+        }
+
+        // 确认收到定金
+        function receiveDep(id) {
+            layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
+                let layer = layui.layer;
+                layer.prompt({
+                    title: '确认收到定金，填写备注',
+                }, function(value, index, elem){
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'deposit_status': 1,
+                            'action_note':value
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:2000});
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+                        }
+                    });
+
                     layer.close(index);
                 });
             });

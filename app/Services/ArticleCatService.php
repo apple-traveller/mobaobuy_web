@@ -81,6 +81,21 @@ class ArticleCatService
         return $data;
     }
 
+    //给分类添加一个是否有子类的标签
+    public static function getCateHasChild($cateTrees)
+    {
+        foreach($cateTrees as $k=>$v){
+           foreach($cateTrees as $kk=>$vv){
+               if($v['id']==$vv['parent_id']){
+                   $cateTrees[$k]['hasChild']=true;
+                   break;
+               }
+
+           }
+        }
+        return $cateTrees;
+    }
+
     //获取所有子类id
     public static function getChilds($cates,$id)
     {

@@ -60,18 +60,6 @@
                             </div>
 
 
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>是否删除：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_delete" id="is_delete">
-                                        <option  value="0">否</option>
-                                        <option  value="1">是</option>
-                                    </select>
-                                </div>
-                                <div class="form_prompt"></div>
-                            </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>是否推荐：</div>
                                 <div class="label_value">

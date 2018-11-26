@@ -89,7 +89,8 @@ class FirmUserService
                     $userPermi['can_stock_in'] = 0;
                     $userPermi['can_stock_view'] = 0;
                 }
-
+//                $userInfo['id']
+                UserRepo::modify($userInfo['id'],['is_logout'=>$firmId]);
                 return FirmUserRepo::modify($firmUserInfo['id'],$userPermi);
 
             }
@@ -99,6 +100,10 @@ class FirmUserService
 
             if($firmUserInfo){
                 self::throwBizError('企业用户已绑定!');
+            }
+
+            if($userInfo['is_firm'] == 1){
+                self::throwBizError('企业账户不能被添加!');
             }
 
             $userPermi['firm_id'] = $firmId;
@@ -130,6 +135,7 @@ class FirmUserService
                     $userPermi['can_stock_view'] = 1;
                 }
             }
+            UserRepo::modify($userInfo['id'],['is_logout'=>$firmId]);
             return FirmUserRepo::create($userPermi);
         }
     }
