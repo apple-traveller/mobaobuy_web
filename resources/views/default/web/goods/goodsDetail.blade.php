@@ -349,6 +349,7 @@
             $.post("/addCollectGoods",{'id':goods_id},function(res){
                 if(res.code==1){
                     $.msg.success("收藏成功",1);
+                    window.location.reload();
                 }else{
                     $.msg.alert(res.msg);
                 }

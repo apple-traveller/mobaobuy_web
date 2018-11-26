@@ -17,6 +17,9 @@ class FirmStockController extends Controller
     //入库记录列表
     public function FirmStockIn(Request $request){
         if(session('_curr_deputy_user')['is_firm']) {
+            if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_in']){
+                return $this->error('无权访问');
+            }
             if ($request->isMethod('get')) {
                 return $this->display('web.user.stock.stockIn');
             } else {
@@ -56,6 +59,9 @@ class FirmStockController extends Controller
     //出库记录列表
     public function firmStockOut(Request $request,$goodsName='',$beginTime='',$endTime=''){
         if(session('_curr_deputy_user')['is_firm']) {
+            if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_out']){
+                return $this->error('无权访问');
+            }
             if ($request->isMethod('get')) {
                 return $this->display('web.user.stock.stockOut');
             } else {
@@ -138,6 +144,9 @@ class FirmStockController extends Controller
     //企业实时库存列表
     public function stockList(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
+            if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_view']){
+                return $this->error('无权访问');
+            }
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
             $page_size = $request->input('length', 10);
@@ -164,6 +173,9 @@ class FirmStockController extends Controller
     //企业可出库列表
     public function canStockOut(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
+            if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_out']){
+                return $this->error('无权访问');
+            }
             if($request->isMethod('get')){
                 return $this->display('web.user.stock.canStockOut');
             }else{
