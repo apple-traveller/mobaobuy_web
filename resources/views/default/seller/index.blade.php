@@ -21,7 +21,7 @@
 
     <!-- 内容主体区域 -->
     <div class="layui-header" style="background:#3b8cd8;" >
-        <a href="">
+        <a href="" id="firstT">
             <div class="layui-logo" style="background:#fff;">
             <img style="max-height: 40px;" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
             </div>
@@ -158,8 +158,25 @@
                 }
             ]
         });
+        var bodyWidth = $("body").width();
 
+        if(bodyWidth<1380){
+            $("#flyOwn").attr("height","92%");
+        }else{
+            $("#flyOwn").attr("height","95%");
+        }
+
+        $(window).resize(function(e) {
+            bodyWidth = $("body").width();
+
+            if(bodyWidth<1380){
+                $("#flyOwn").attr("height","92%");
+            }else{
+                $("#flyOwn").attr("height","95%");
+            }
+        });
     </script>
+
 @endsection
 
 

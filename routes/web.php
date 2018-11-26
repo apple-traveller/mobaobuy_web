@@ -216,8 +216,15 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/promote/delete', 'PromoteController@delete');//删除促销活动
         Route::post('/promote/getGoodsCat', 'PromoteController@getGoodsCat');//ajax获取商品分类
         Route::post('/promote/getGood', 'PromoteController@getGood');//ajax获取商品
+        Route::post('/promote/getShopList', 'PromoteController@getShopList');//ajax获取商家
 
         Route::get('/activity/wholesale', 'ActivityWholesaleController@index');//集采拼团申请列表
+        Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add');//添加
+        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//添加
+
+        Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
+        Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
+        Route::post('/activity/consign/save', 'ActivityConsignController@save');//添加
 
 
 

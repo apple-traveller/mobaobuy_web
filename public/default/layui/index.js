@@ -110,7 +110,7 @@ function addTab(tabTitle,tabUrl,tabId){
     }else{
         element.tabAdd('tab-switch', {
             title: tabTitle
-            ,content: '<iframe src='+tabUrl+' width="100%" style="min-height: 500px;" frameborder="0" scrolling="auto" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
+            ,content: '<iframe src='+tabUrl+' width="100%" style="min-height: 500px;" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
             ,id: tabId //选项卡标题的lay-id属性值
         });
         element.tabChange('tab-switch', tabId); //切换到新增的tab上
@@ -127,26 +127,36 @@ function loadIframe(tabTitle,url,tabId) {
     var end = u.indexOf("#");
     var rurl = u.substring(0,end);
     //设置新的锚点
-    // let anchor = {'tabTitle':tabTitle,'url':window.btoa(url),'tabId':tabId}; anchor = JSON.stringify(anchor);
-    let anchor =  window.btoa(encodeURIComponent(tabTitle))+ "&" + window.btoa(url) + "#" + window.btoa(tabId);
-    window.location.href = "#" + anchor;
+    let anchor =$.base64.btoa(encodeURIComponent(tabTitle))+ "&" + $.base64.btoa(url) + "#" + $.base64.btoa(tabId);
+    $.cookie('anchor', anchor , { expires: 1 ,path:'/'});
+    // window.location.href = "#" + anchor;
 }
 
 
 window.onload=function() {
-    var hash = location.hash;
-    if (!hash){
-        return ;
+    console.log(window.sessionStorage["_seller_id"]);
+    let session = "{:session('_seller_id')}";
+    console.log(session);
+    if (window.sessionStorage["_seller_id"])
+    {
     }
+    // var hash = location.hash;
+    // if (!hash){
+    //     return ;
+    // }
+    if ($.cookie('anchor')==null){
+        $("#firstT").find('a').click();
+    }
+    let hash = $.cookie('anchor');
     let tL = hash.indexOf('&');
     let IL = hash.lastIndexOf('#');
 
-    let tabTitle = decodeURIComponent(window.atob(hash.substring(1,tL)));
-    let url = window.atob(hash.substring(tL+1,IL));
-    let tabId = window.atob(hash.substring(IL+1,hash.length));
+    let tabTitle = decodeURIComponent($.base64.atob(hash.substring(0,tL)));
+    let url = $.base64.atob(hash.substring(tL+1,IL));
+    let tabId =$.base64.atob(hash.substring(IL+1,hash.length));
     element.tabAdd('tab-switch', {
         title: tabTitle
-        ,content: '<iframe src='+url+' width="100%" style="min-height: 500px;" frameborder="0" scrolling="auto" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
+        ,content: '<iframe src='+url+' width="100%" id="flyOwn" style="min-height: 500px;" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
         ,id: tabId //选项卡标题的lay-id属性值
     });
     element.tabChange('tab-switch', tabId);

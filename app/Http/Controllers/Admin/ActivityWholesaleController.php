@@ -55,7 +55,7 @@ class ActivityWholesaleController extends Controller
             $wholesale_info = [];
             $good = [];
         }
-         return $this->display('seller.activitywholesale.edit',[
+         return $this->display('admin.activity.edit_wholesale',[
             'currentPage' => $currentPage,
             'wholesale_info' => $wholesale_info,
             'good' => $good
@@ -69,10 +69,6 @@ class ActivityWholesaleController extends Controller
      */
     public function save(Request $request)
     {
-        $shop_info = session('_seller')['shop_info'];
-        if(empty($shop_info)){
-            return $this->error('没有商户信息');
-        }
         $id = $request->input('id','');
         $goods_id = $request->input('goods_id','');
         $start_date = $request->input('start_date','');
@@ -85,6 +81,8 @@ class ActivityWholesaleController extends Controller
         $min_limit = $request->input('min_limit','');
         $max_limit = $request->input('max_limit','');
         $currentPage = $request->input('currentPage',1);
+        $shop_id = $request->input('shop_id',0);
+        $company_name = $request->input('company_name','');
         $goodsInfo = GoodsService::getGoodInfo($goods_id);
 
         $data = [
@@ -100,8 +98,8 @@ class ActivityWholesaleController extends Controller
             'review_status' => 1
         ];
         if(empty($id)){
-            $data['shop_id'] = $shop_info['id'];
-            $data['shop_name'] = $shop_info['company_name'];
+            $data['shop_id'] = $shop_id;
+            $data['shop_name'] = $company_name;
             $data['click_count'] = 0;
             $data['partake_quantity'] = $num;
             $re = ActivityWholesaleService::create($data);
@@ -109,7 +107,7 @@ class ActivityWholesaleController extends Controller
             $re = ActivityWholesaleService::updateById($id,$data);
         }
         if ($re){
-            return $this->redirect('/seller/activity/wholesale',['currentPage'=>$currentPage]);
+            return $this->redirect('/admin/activity/wholesale',['currentPage'=>$currentPage]);
         } else {
             return $this->error('操作失败');
         }

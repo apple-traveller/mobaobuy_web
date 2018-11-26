@@ -23,6 +23,10 @@ class ShopService
         return ShopLogRepo::getListBySearch($pager,$condition);
     }
 
+    public static function getList($order=[],$condition=[])
+    {
+        return ShopRepo::getList($order,$condition);
+    }
 
     //新增
     public static function create($data)

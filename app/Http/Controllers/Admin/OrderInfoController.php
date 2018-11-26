@@ -55,6 +55,7 @@ class OrderInfoController extends Controller
         $id = $data['id'];
         unset($data['currpage']);
         unset($data['order_status']);
+
         try{
             if(key_exists('id',$data)){
                 $order = OrderInfoService::modify($data);
