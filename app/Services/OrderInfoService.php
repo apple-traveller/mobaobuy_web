@@ -645,11 +645,15 @@ class OrderInfoService
             if($orderInfo['extension_code'] == 'promote'){//限时抢购
                 $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                 ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+            }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团
+
+            }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖
+
             }else{//购物车下单
-                foreach ($orderGoodsInfo as $k=>$v){
-                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
-                }
+//                foreach ($orderGoodsInfo as $k=>$v){
+//                    $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+//                    ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+//                }
             }
 
             OrderInfoRepo::modify($id,['order_status'=>0]);
@@ -795,7 +799,7 @@ class OrderInfoService
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['num'] * $v['price'];
                     //增加已参与数量
-                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
+//                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {
