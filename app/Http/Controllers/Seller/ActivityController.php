@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ActivityService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
+use App\Services\OrderInfoService;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
@@ -21,6 +22,7 @@ class ActivityController extends Controller
         $currentPage = $request->input('currentPage',1);
         $condition = [];
         $condition['shop_id'] = $shop_id;
+        $condition['is_delete'] = 0;
         $pageSize = 10;
         $list = ActivityService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['add_time' => 'desc']]],$condition);
         return $this->display('seller.activity.promoter',[
@@ -116,16 +118,24 @@ class ActivityController extends Controller
      */
     public function delete(Request $request)
     {
-        $id = $request->input('id');
         $shop_id = session('_seller_id')['shop_id'];
-        $check = ActivityService::getListBySearch([],['shop_id'=>$shop_id,'id'=>$id]);
+
+        $id = $request->input('id');
         if (!$id){
             return $this->error('信息出错，请刷新');
         }
+
+        $check = ActivityService::getListBySearch([],['shop_id'=>$shop_id,'id'=>$id]);
         if (!$check){
             return $this->error('您的店铺没有该订单，请刷新');
         }
-        $re = ActivityService::delete($id);
+
+        $is_exist_order = OrderInfoService::checkActivityExistOrder($id,'promote');
+        if($is_exist_order){
+            return $this->error('该活动存在相应订单，无法删除');
+        }
+
+        $re = ActivityService::updateById($id,['is_delete'=>1]);
 
         if ($re){
             return $this->success('删除成功');

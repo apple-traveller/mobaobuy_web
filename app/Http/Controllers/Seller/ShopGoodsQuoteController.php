@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
+use App\Services\OrderInfoService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\ShopService;
 use Carbon\Carbon;
@@ -29,12 +30,13 @@ class ShopGoodsQuoteController extends Controller
         $goods_name = $request->input('goods_name','');
         $condition = [];
         if(!empty($shop_id)){
-            $condition['shop_id']= $shop_id;
+            $condition['b.shop_id']= $shop_id;
         }
         if ($goods_name){
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
-        $condition['type'] = '1|2';
+        $condition['b.type'] = '1|2';
+        $condition['b.is_delete'] = 0;
         $pageSize =5;
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
@@ -210,8 +212,19 @@ class ShopGoodsQuoteController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
         try{
-            $flag = ShopGoodsQuoteService::delete($id);
+            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+            if(empty($check)){
+                return $this->error('报价信息不存在');
+            }
+            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+            if($is_exist_order){
+                return $this->error('该活动存在相应订单，无法删除');
+            }
+            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/seller/quote/list'));
             }
