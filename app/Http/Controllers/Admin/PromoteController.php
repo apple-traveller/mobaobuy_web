@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\OrderInfoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ActivityService;
@@ -35,9 +36,14 @@ class PromoteController extends Controller
     //添加
     public function addForm(Request $request)
     {
-        $shops = ShopService::getShopList([],[]);
+        $condition = [
+            'is_validated' => 1,
+            'is_freeze' => 0,
+        ];
+        $shops = ShopService::getList([],$condition);
+
         return $this->display('admin.promote.add',[
-            'shops'=>$shops['list'],
+            'shops'=>$shops,
         ]);
     }
 
@@ -46,13 +52,18 @@ class PromoteController extends Controller
         $id = $request->input("id");
         $currpage = $request->input("currpage");
         $promote = ActivityService::getInfoById($id);
-        $shops = ShopService::getShopList([],[]);
+
+        $condition = [
+            'is_validated' => 1,
+            'is_freeze' => 0,
+        ];
+        $shops = ShopService::getList([],$condition);
         $goods_info = GoodsService::getGoodInfo($promote['goods_id']);
         return $this->display('admin.promote.edit',[
             'promote'=>$promote,
             'goods_info'=>$goods_info,
             'currpage'=>$currpage,
-            'shops'=>$shops['list']
+            'shops'=>$shops
         ]);
 
     }
@@ -142,8 +153,19 @@ class PromoteController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
         try{
-            $flag = ActivityService::delete($id);
+            $check = ActivityService::getInfoById($id);
+            if(!$check){
+                return $this->error('活动信息不存在');
+            }
+            $is_exist_order = OrderInfoService::checkActivityExistOrder($id,'promote');
+            if($is_exist_order){
+                return $this->error('该活动存在相应订单，无法删除');
+            }
+            $flag = ActivityService::updateById($id,['is_delete'=>1]);
             if($flag){
                 return $this->success("删除成功",url("/admin/promote/list"));
             }

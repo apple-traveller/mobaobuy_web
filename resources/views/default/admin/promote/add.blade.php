@@ -22,7 +22,7 @@
                                         <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" >
                                             <option value="">请选择店铺</option>
                                             @foreach($shops as $vo)
-                                            <option value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
+                                            <option value="{{$vo['id']}}">{{$vo['company_name']}}</option>
                                             @endforeach
                                         </select>
                                         <input type="hidden" name="shop_name" id="shop_name">

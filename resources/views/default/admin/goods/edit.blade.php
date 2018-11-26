@@ -150,6 +150,16 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>产品原图：</div>
+                                <div class="label_value">
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >上传图片</button>
+                                    <input type="hidden" value="" class="text" id="original_img"  name="original_img" style="display:none;">
+                                    <img @if(empty($good['original_img'])) style="width:60px;height:60px;display:none;margin-top:-5px;margin-left:10px;" @else src="{{getFileUrl($good['original_img'])}}" style="width:60px;height:60px;margin-top:-5px;margin-left:10px;" @endif class="layui-upload-img">
+                                    <div style="margin-left: 10px;line-height:40px;" class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;市场价：</div>
                                 <div class="label_value">
                                     <input type="text" name="market_price" class="text" value="{{$good['market_price']}}" maxlength="40" autocomplete="off" id="market_price">
@@ -168,7 +178,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;pc商品详情：</div>
+                                <div class="label">&nbsp;pc商品详情：</div>
                                 <div class="label_value">
                                     <script id="goods_desc" name="goods_desc" type="text/plain"><?php echo stripslashes($good['goods_desc']);?></script>
 
@@ -177,7 +187,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;移动端商品详情：</div>
+                                <div class="label">&nbsp;移动端商品详情：</div>
                                 <div class="label_value">
                                     <script id="desc_mobile" name="desc_mobile" type="text/plain"><?php echo  stripslashes($good['desc_mobile']);?></script>
                                     <div class="form_prompt"></div>
@@ -353,6 +363,32 @@
             });
         });
 
+        layui.use(['upload','layer'], function(){
+            var upload = layui.upload;
+            var layer = layui.layer;
+
+            //文件上传
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
+                    //上传完毕回调
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('div').filter(".form_prompt").remove();
+                    }else{
+                        layer.msg(res.msg, {time:2000});
+                    }
+                }
+            });
+        });
+
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -407,7 +443,10 @@
                     },
                     goods_content:{
                         required :true,
-                    }
+                    },
+                    original_img:{
+                        required :true,
+                    },
                 },
                 messages:{
                     goods_name:{
@@ -444,6 +483,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },
                     goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    original_img:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 

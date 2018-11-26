@@ -77,11 +77,10 @@
                                     <select  style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="goods_id" name="goods_id" id="goods_id">
                                         <option value="">请选择商品</option>
                                         @foreach($goods as $vo)
-                                            <option data-extra="{{$vo['packing_spec']}}" value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
+                                            <option  data-extra="{{$vo['packing_spec']}}" value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
                                         @endforeach
                                     </select>
                                     <div style="margin-left: 10px" class="form_prompt"></div>
-
                                 </div>
                             </div>
 
@@ -120,7 +119,6 @@
                                 </div>
                             </div>
 
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
@@ -128,7 +126,6 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -165,7 +162,7 @@
                     var data = res.data;
                     $(".goods_id").append('<option value="">请选择商品</option>');
                     for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option data-extra="'+data[i]['packing_spec']+'" value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
+                        $(".goods_id").append('<option  data-extra="'+data[i]['packing_spec']+'" value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
                     }
                 }else{
                     $(".goods_id").append('<option value="">该分类下没有商品</option>');

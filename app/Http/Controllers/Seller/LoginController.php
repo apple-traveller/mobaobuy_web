@@ -14,6 +14,7 @@ use App\Services\ShopService;
 use App\Services\ShopUserService;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
@@ -213,5 +214,14 @@ class LoginController extends Controller
         session()->forget('_seller');
 
         return $this->success('退出成功','seller/login.html','',0);
+    }
+
+    /**
+     * 前端获取session
+     * @return LoginController
+     */
+    public function checkSession()
+    {
+        return $this->result(session('_seller_id'),'200','');
     }
 }

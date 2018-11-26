@@ -95,7 +95,10 @@ class ShopGoodsQuoteService
     public static function create($data)
     {
         $shop_info = ShopService::getShopById($data['shop_id']);
-        $data['is_self_run'] = $shop_info['is_self_run'];
+        $data['is_self_run'] = $shop_info['is_self_run'];//是否自营
+        $goods_info = GoodsRepo::getInfo($data['goods_id']);
+        $data['goods_name'] = $goods_info['goods_full_name'];
+        //dd($data);
         return ShopGoodsQuoteRepo::create($data);
     }
 
@@ -290,12 +293,5 @@ class ShopGoodsQuoteService
         return $activityArr;
     }
 
-    /**
-     * 检测报价是否存在订单
-     */
-    public function checkQuoteExistOrder()
-    {
-
-    }
 }
 

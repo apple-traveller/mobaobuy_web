@@ -469,6 +469,7 @@ CREATE TABLE `goods_category` (
   `sort_order` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `is_nav_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示在导航条 0-否 1-是',
   `is_show` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示 0-否 1-是',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `cat_icon` varchar(50) NOT NULL DEFAULT '' COMMENT '图标',
   `is_top_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否在顶级分类页显示 0-否 1-是',
   `category_links` varchar(200) NOT NULL DEFAULT '' COMMENT '分类链接',
@@ -702,6 +703,7 @@ CREATE TABLE `shop_goods_quote` (
   `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
   `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '报价类型 1自售 2品牌直售 3寄售',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`),
@@ -1069,6 +1071,7 @@ CREATE TABLE `activity_promote` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
   `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
@@ -1092,6 +1095,7 @@ CREATE TABLE `activity_wholesale` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
   `review_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1-待审核 2-审核不通过 3-已审核',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
