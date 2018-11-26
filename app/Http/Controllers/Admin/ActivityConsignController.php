@@ -51,7 +51,7 @@ class ActivityConsignController extends Controller
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
-        return $this->display('admin.activityconsign.edit',[
+        return $this->display('admin.activity.edit_consign',[
             'consign_info'=>$consign_info,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
@@ -70,9 +70,9 @@ class ActivityConsignController extends Controller
         if($data['delivery_place']==""){
             $errorMsg[] = '发货地不能为空';
         }
-        if($data['shop_id']==0||empty($data['shop_id'])){
-            $errorMsg[] = '店铺不能为空';
-        }
+//        if($data['shop_id']==0||empty($data['shop_id'])){
+//            $errorMsg[] = '店铺不能为空';
+//        }
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
@@ -92,21 +92,17 @@ class ActivityConsignController extends Controller
         $place_ids = explode('|',$data['place_id']);//先转化为数组
         $data['place_id'] = array_pop($place_ids);//取最后的一个地区
 
-        $data['shop_name'] = ShopService::getShopById($data['shop_id'])['shop_name'];
+//        $data['shop_name'] = ShopService::getShopById($data['shop_id'])['shop_name'];
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
-
-        if(empty($data['store_id']) && $data['store_name'] == '自售'){
-            $data['store_name'] = $data['shop_name'];
-            $data['type'] = 1;
-        }else{
-            $data['type'] = 2;
-        }
-
+        $data['store_name'] = $data['shop_name'];
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
+                if(empty($goodsQuote)){
+                    return $this->error('活动信息不存在');
+                }
                 $flag = ShopGoodsQuoteService::modify($data);
                 if(!empty($flag)){
                     return $this->success('修改成功',url('/admin/activity/consign'));

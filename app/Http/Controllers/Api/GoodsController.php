@@ -8,6 +8,7 @@ use App\Services\GoodsService;
 use App\Services\UserRealService;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
+use App\Services\UserAddressService;
 class GoodsController extends ApiController
 {
     //报价列表
@@ -203,6 +204,7 @@ class GoodsController extends ApiController
                 $cartInfo['cartInfo'][$k]['inventory'] = $cartInfo['quoteInfo'][$k]['goods_number'];
                 $cartInfo['cartInfo'][$k]['account'] = $cartInfo['quoteInfo'][$k]['account'];
                 $cartInfo['cartInfo'][$k]['delivery_place'] = $cartInfo['quoteInfo'][$k]['delivery_place'];
+                $cartInfo['cartInfo'][$k]['packing_spec'] = $cartInfo['goodsInfo'][$k]['packing_spec'];
             }
             //dd($cartInfo['cartInfo']);
             return $this->success($cartInfo['cartInfo']);
@@ -271,10 +273,11 @@ class GoodsController extends ApiController
         }
         try{
             $flag = GoodsService::editCartNum($id,$cartNum);
+            //dd($flag);
             if(empty($flag)){
                 return $this->error('购物车中没有此商品');
             }else{
-                return $this->success($flag,'success');
+                return $this->success(['goods_number'=>$flag['goods_number'],'account'=>$flag['goods_price']*$flag['goods_number']],'success');
             }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -317,15 +320,17 @@ class GoodsController extends ApiController
     public function toBalance(Request $request)
     {
         $cartIds = $request->input('cartId');
-        $cartIds = explode(',',$cartIds);
+        $cartIds_array = explode(',',$cartIds);
         $userInfo = $this->getUserInfo($request);
-        //return $this->success(Cache::get('cartSession46'),'success');
+        $dupty_user = $this->getDeputyUserInfo($request);
         try{
-            $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
+            $goods_list = GoodsService::toBalance($cartIds_array,$userInfo['id']);
+            //判断是否有默认地址如果有 则直接赋值 没有则取出一条
+            $address_id = UserAddressService::getOneAddressIdApi($userInfo,$dupty_user);
             //进入订单确认页面前先定义购物车缓存
             $cartCache = [
                 'goods_list'=>$goods_list,
-                'address_id'=> $userInfo['address_id'],
+                'address_id'=> $address_id,
                 'from'=>'cart'
             ];
             Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);

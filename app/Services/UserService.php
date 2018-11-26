@@ -198,6 +198,29 @@ class UserService
             self::throwBizError('用户名不正确！');
         }
 
+
+        if ($info['is_freeze']) {
+            self::throwBizError('用户名已被冻结！');
+        }
+        if (!$info['is_validated']) {
+            self::throwBizError('账号审核通过后才可操作！');
+        }
+        $newData['password'] = bcrypt($new_pwd);
+        return UserRepo::modify($info['id'], $newData);
+    }
+
+    //重置密码
+    public static function resetPwd($username, $psw,$new_pwd){
+        $newData = [];
+        $info = UserRepo::getInfoByFields(['user_name'=>$username]);
+        if(empty($info)){
+            self::throwBizError('用户名不正确！');
+        }
+
+        if(!Hash::check($psw, $info['password'])){
+            self::throwBizError('旧密码不正确！');
+        }
+
         if ($info['is_freeze']) {
             self::throwBizError('用户名已被冻结！');
         }
@@ -481,17 +504,28 @@ class UserService
 
     //会员中心首页
     public static function userMember($userId,$firmId){
-        //
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
-        //订单
-         $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0','is_delete'=>0]);
+
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
 
-        //未付款订单数
-        $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status|>'=>3,'is_delete'=>0]);
-        //
-        $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0,'is_delete'=>0]);
+        //企业和代理用户
+        if(empty($userId)){
+            $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['firm_id'=>$firmId,'pay_status'=>0,'order_status'=>3,'is_delete'=>0]);
+            $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0,'is_delete'=>0]);
+            //订单
+            $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['firm_id'=>$firmId,'order_status|>'=>'0','is_delete'=>0]);
+        }else{
+            //个人用户
+            //未付款订单数
+            $nPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>0,'order_status'=>3,'is_delete'=>0]);
+
+            //已付款
+            $yPayOrderTotalCount = OrderInfoRepo::getTotalCount(['user_id'=>$userId,'firm_id'=>$firmId,'pay_status'=>1,'order_status|>'=>0,'is_delete'=>0]);
+
+            //订单
+            $orderInfo =  OrderInfoRepo::getListBySearch(['pageSize'=>3,'page'=>1,'orderType'=>['add_time'=>'desc']],['user_id'=>$userId,'firm_id'=>$firmId,'order_status|>'=>'0','is_delete'=>0]);
+        }
 
         return ['orderInfo'=>$orderInfo['list'],'shopGoodsInfo'=>$shopGoodsInfo['list'],'nPayOrderTotalCount'=>$nPayOrderTotalCount?$nPayOrderTotalCount:0,'yPayOrderTotalCount'=>$yPayOrderTotalCount?$yPayOrderTotalCount:0,'userRealInfo'=>$userRealInfo];
     }
