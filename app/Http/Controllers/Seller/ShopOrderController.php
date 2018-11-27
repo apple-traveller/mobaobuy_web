@@ -123,7 +123,8 @@ class ShopOrderController extends Controller
         $id = $request->input('id', '');
         $order_status = $request->input('order_status', '');
         $to_buyer = $request->input('to_buyer', '');
-        $pay_status = $request->input('pay_status', '');
+//        $pay_status = $request->input('pay_status', '');
+        $pay_number = $request->input('pay_number','');
         $deposit_status = $request->input('deposit_status','');
         $action_note = $request->input('action_note', '');
         $delivery_period = $request->input('delivery_period', '');
@@ -164,20 +165,49 @@ class ShopOrderController extends Controller
                     $data['order_status'] = $order_status;
                     $data['to_buyer'] =$to_buyer;
                 }
+                $pay_error = '';
                 // 付款
-                if (!empty($pay_status)&&$pay_status>0) {
-                    $data['pay_status'] = $pay_status;
+                if (!empty($pay_number)&&$pay_number>0) {
+                    // 剩余应付金额
+                    $paid = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'];
+                    if ($orderInfo['deposit_status']==1){
+                        $paid = $paid + $orderInfo['deposit'];
+                    }
+                    if ($paid<=0){
+                        return $this->error('款已收齐，请不要重复操作');
+                    }
+                    // 部分付款
+                    if ($pay_number<$paid){
+                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
+                        $data['pay_status'] = 2;
+                    // 全款
+                    } else if ($pay_number==$paid){
+                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
+                        $data['pay_status'] = 1;
+                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
+                        if ($orderInfo['shipping_status'] == 3) {
+                            $data['order_status'] = 5;
+                        }
+                    // 当付款金额大于订单金额时 为商家准备
+                    } else if ($pay_number>$paid){
+                        $data['money_paid'] = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'];// 订单总金额
+                        $data['pay_status'] = 1;
+                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
+                        if ($orderInfo['shipping_status'] == 3) {
+                            $data['order_status'] = 5;
+                        }
+                        $pay_error = "填写的金额超过订单总金额，已自动调整";
+                    }
                     // 已收款&&已收货 变更订单 待开票
                     $data['pay_time'] = Carbon::now();
-                    if ($pay_status == 1 && $orderInfo['shipping_status'] == 3) {
-                        $data['order_status'] = 5;
-                    }
+                    $action_note = "商家确认收款";
                 }
                 // 收定金
                 if (!empty($deposit_status)){
                     if ($orderInfo['order_status'] != 2) {
                         return $this->error('订单状态不符合执行该操作的条件');
                     }
+
                     $data['pay_time'] = Carbon::now();
                     $data['deposit_status'] = $deposit_status;
                     if (empty($action_note)) {
@@ -200,18 +230,19 @@ class ShopOrderController extends Controller
                         'pay_status' => $re['pay_status'],
                         'log_time' => Carbon::now()
                     ];
-                    if (!empty($order_status)) {
-                        $logData['order_status'] = $order_status;
-                    } else {
-                        $logData['pay_status'] = $pay_status;
-                    }
+
                     OrderInfoService::createLog($logData);
+                    if ($pay_error){
+                        return $this->success($pay_error,url('/seller/order/list'));
+                    }
                     return $this->success('修改成功', url('/seller/order/list'));
                 }
             } else {
+                dd('sd');
                 return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }
@@ -374,6 +405,16 @@ class ShopOrderController extends Controller
     {
         $currentPage = $request->input('currentPage');
         $order_id = $request->input('order_id');
+        $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+        if ($orderInfo['order_status']!=0 && $orderInfo['pay_type']== 1 ){
+            if ($orderInfo['order_status']!=0 && $orderInfo['pay_status']!=1 || $orderInfo['shipping_status']==3 || $orderInfo['shipping_status']==1){
+               return $this->error('订单未付款，无法生成发货单');
+            }
+        } else {
+            if ($orderInfo['shipping_status']==3 || $orderInfo['shipping_status']==1){
+                return $this->error('订单已全部发货，无法再次生成发货单');
+            }
+        }
         //查询所有的快递信息
         $shippings = OrderInfoService::getShippingList();
         //查询该订单的所有商品信息
