@@ -41,11 +41,13 @@
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="brand_id" id="brand_id">
                                         <option value="">请选择品牌</option>
+                                        @if(!empty($brands))
                                         @foreach($brands as $v)
                                             <option  value="{{$v['id']}}">{{$v['brand_name']}}</option>
                                         @endforeach
+                                        @endif
                                     </select>
-                                    <input class="brand_name" type="hidden" name="brand_name" value="{{$brands[0]['brand_name']}}">
+                                    <input class="brand_name" type="hidden" name="brand_name" value="">
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
@@ -55,9 +57,11 @@
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="cat_id" id="cat_id">
                                         <option value="">请选择分类</option>
+                                        @if(!empty($cateTrees))
                                         @foreach($cateTrees as $v)
                                             <option  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
                                         @endforeach
+                                        @endif
                                     </select>
                                 </div>
                                 <div class="form_prompt"></div>
@@ -78,7 +82,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品型号：</div>
+                                <div class="label">&nbsp;商品型号：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_model" class="text" value="" maxlength="40" autocomplete="off" id="goods_model">
                                     <div class="form_prompt"></div>
@@ -126,6 +130,19 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>商品图片：</div>
+                                <div class="label_value">
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >
+                                        <i class="layui-icon">&#xe681;</i> 上传图片
+                                    </button>
+                                    <input type="hidden" value="" class="text" id="original_img"  name="original_img" style="display:none;">
+                                    <img  style="width:60px;height:60px;display:none;margin-top: -5px;margin-left:10px;" class="layui-upload-img">
+                                    <div style="margin-left: 10px;line-height:40px;" class="form_prompt"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;市场价：</div>
                                 <div class="label_value">
                                     <input type="text" name="market_price" class="text" value="" maxlength="40" autocomplete="off" id="market_price">
@@ -134,17 +151,17 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_weight" class="text" value="" maxlength="40" autocomplete="off" id="goods_weight">
-                                    <div class="form_prompt"></div>
-                                    <div class="notic"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="goods_weight" class="text" value="" maxlength="40" autocomplete="off" id="goods_weight">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                    {{--<div class="notic"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;pc商品详情：</div>
+                                <div class="label">&nbsp;pc商品详情：</div>
                                 <div class="label_value">
                                     <script id="goods_desc" name="goods_desc" type="text/plain"></script>
                                     <div class="form_prompt"></div>
@@ -152,7 +169,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;移动端商品详情：</div>
+                                <div class="label">&nbsp;移动端商品详情：</div>
                                 <div class="label_value">
                                     <script id="desc_mobile" name="desc_mobile" type="text/plain"></script>
                                     <div class="form_prompt"></div>
@@ -326,6 +343,32 @@
             });
         });
 
+        layui.use(['upload','layer'], function(){
+            var upload = layui.upload;
+            var layer = layui.layer;
+
+            //文件上传
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
+                    //上传完毕回调
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('div').filter(".form_prompt").remove();
+                    }else{
+                        layer.msg(res.msg, {time:2000});
+                    }
+                }
+            });
+        });
+
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -360,9 +403,9 @@
                     unit_id:{
                         required : true
                     },
-                    goods_model:{
-                        required : true
-                    },
+//                    goods_model:{
+//                        required : true
+//                    },
                     packing_spec:{
                         required : true,
                         number:true,
@@ -374,10 +417,10 @@
                         required : true,
                         number:true
                     },
-                    goods_weight:{
-                        required : true,
-                        number:true
-                    },
+//                    goods_weight:{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_attr:{
                         required:true
                     },
@@ -386,7 +429,10 @@
                     },
                     goods_content:{
                         required :true,
-                    }
+                    },
+                    original_img:{
+                        required :true,
+                    },
 
                 },
                 messages:{
@@ -402,9 +448,9 @@
                     unit_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_model :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    goods_model :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
                     packing_spec :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
@@ -416,10 +462,10 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
-                    goods_weight :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    goods_weight :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_attr :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
                     },
@@ -427,6 +473,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    original_img:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                 }

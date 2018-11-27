@@ -79,7 +79,7 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_see"><i class="sc_icon sc_icon_see"></i>编辑</a>
-                                                <a href="javascript:void(0);"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
+                                                <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
                                     </tr>

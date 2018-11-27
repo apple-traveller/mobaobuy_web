@@ -57,6 +57,7 @@ class CartController extends Controller
      */
     public function delCart(Request $request){
         $id = $request->input('id');
+        $id = decrypt($id);
         try{
             GoodsService::delCart($id);
             return $this->success();
@@ -103,9 +104,9 @@ class CartController extends Controller
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function clearCart(){
-        $userId = session('_web_user_id');
+        $currUser = session('_curr_deputy_user');
         try{
-            GoodsService::clearCart($userId);
+            GoodsService::clearCart($currUser['firm_id']);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -123,6 +124,7 @@ class CartController extends Controller
         $userInfo = session('_web_user');
         try{
             $goods_list = GoodsService::toBalance($cartIds,$userInfo['id']);
+            //dd($goods_list);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
             $address_id = UserAddressService::getOneAddressId();
             //进入订单确认页面前先定义购物车session

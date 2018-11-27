@@ -95,7 +95,10 @@ class ShopGoodsQuoteService
     public static function create($data)
     {
         $shop_info = ShopService::getShopById($data['shop_id']);
-        $data['is_self_run'] = $shop_info['is_self_run'];
+        $data['is_self_run'] = $shop_info['is_self_run'];//是否自营
+        $goods_info = GoodsRepo::getInfo($data['goods_id']);
+        $data['goods_name'] = $goods_info['goods_full_name'];
+        //dd($data);
         return ShopGoodsQuoteRepo::create($data);
     }
 
@@ -288,6 +291,16 @@ class ShopGoodsQuoteService
         $activityArr = [];
         $activityArr[] = $activityInfo;
         return $activityArr;
+    }
+
+    //
+    public static function checkStoreExistQuote($store_id)
+    {
+        $res = ShopGoodsQuoteRepo::getTotalCount(['shop_store_id'=>$store_id]);
+        if($res>0){
+            return true;
+        }
+        return false;
     }
 }
 

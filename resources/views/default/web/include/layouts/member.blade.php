@@ -33,7 +33,7 @@
                         @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_out'))
                         <li @if(request()->path() == 'stockOut' || request()->path() == 'canStockOut' ) class="curr" @endif><a href="/stockOut">出库管理</a></li>
                         @endif
-                        @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_out'))
+                        @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_view'))
                         <li @if(request()->path() == 'stock/list') class="curr" @endif><a href="/stock/list">库存查询</a></li>
                         @endif
                         <li><div class="bottom"></div><div class="line"></div></li>

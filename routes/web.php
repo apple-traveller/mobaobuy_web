@@ -221,10 +221,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/activity/wholesale', 'ActivityWholesaleController@index');//集采拼团申请列表
         Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add');//添加
         Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//添加
+        Route::get('/activity/wholesale/delete', 'ActivityWholesaleController@delete');//删除
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
-        Route::post('/activity/consign/save', 'ActivityConsignController@save');//添加
+        Route::get('/activity/consign/edit', 'ActivityConsignController@edit');//编辑
+        Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
+        Route::post('/activity/consign/delete', 'ActivityConsignController@delete');//删除
 
 
 
@@ -450,7 +453,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/invoice/getStatusCount',  'InvoiceController@getStatusCount'); // 各状态数量
         Route::get('/invoice',  'InvoiceController@invoiceList'); // 待开票列表
         Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
-        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
+        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认保存
         Route::post('/invoice/editInvoiceAddress',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
@@ -486,6 +489,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
+    Route::post('checkSession', 'LoginController@checkSession');
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');
@@ -516,7 +520,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
-        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
         Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
@@ -589,11 +592,13 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::post('/create_third', 'LoginController@createThird');//没有账号和微信先绑定再注册
 
         Route::get('/index/banner', 'IndexController@getBannerAd');//首页轮播
-        Route::get('/index/trans_list', 'IndexController@getTransList');//首页成交动态
+        Route::get('/index/tran_list', 'IndexController@getTransList');//首页成交动态
         Route::get('/index/promote_list', 'IndexController@getPromoteList');//首页优惠活动
         Route::get('/index/goods_quote_list', 'IndexController@getGoodsQuoteList');//首页自营报价
-        Route::get('/index/goods_list', 'IndexController@getGoodsList');//首页商品列表
+        Route::get('/index/good_list', 'IndexController@getGoodsList');//首页商品列表
         Route::get('/index/article_list', 'IndexController@getArticleList');//首页商品列表
+        Route::get('/index/shop_list', 'IndexController@getShopsList');//首页供应商列表
+        Route::post('/index/demand_add','IndexController@addDemand');//获取用户需求信息
 
         Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
         Route::post('/goods/list', 'GoodsController@getList');//商品报价列表
@@ -622,7 +627,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/detail', 'UserController@detail');//用户个人信息
             Route::post('/user/add_address','UserController@addAddress');//添加收货地址
             Route::post('/user/list_address','UserController@addressList');//收货地址列表
-            Route::post('/user/detail_address','UserController@editAddress');//编辑地址列表
+            Route::post('/user/detail_address','UserController@detailAddress');//收货地址详情
             Route::post('/user/edit_default_address','UserController@updateDefaultAddress');//修改默认收货地址
             Route::post('/user/edit_nickname','UserController@editNickname');//修改昵称
             Route::post('/user/collection','UserController@myCollection');//个人收藏列表
@@ -633,6 +638,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/view_real_info','UserController@viewRealInfo');//查看实名信息
             Route::post('/user/save_real_info','UserController@saveUserReal');//保存实名信息
             Route::post('/user/logout','LoginController@logout');//退出登录
+            Route::post('/user/sale','UserController@sale');// 我要卖货
+
+            Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 
             Route::post('/firmuser/list','FirmUserController@getList');//企业用户列表
             Route::post('/firmuser/detail','FirmUserController@getDetail');//企业用户详情
@@ -664,10 +672,20 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/order/order_cancel','OrderController@orderCancel');//订单取消
             Route::post('/order/orderConfirmTake','OrderController@orderConfirmTake');//确认收货
             Route::post('/order/egis','OrderController@egis');//企业用户审核订单
+            Route::post('/order/wait_confirm','OrderController@waitConfirm');//企业用户审核订单
+
+            Route::post('/invoice/my_invoice',  'InvoiceController@myInvoice'); // 我的开票列表接口
+            Route::post('/invoice/get_status_count',  'InvoiceController@getStatusCount'); // 各状态数量
+            Route::post('/invoice/detail',  'InvoiceController@invoiceDetail'); // 开票详情
+            Route::post('/invoice/list',  'InvoiceController@invoiceList'); // 待开票列表
+            Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
+            Route::post('/invoice/edit_invoice_address',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
+            Route::post('/invoice/edit_invoice_type',  'InvoiceController@editInvoiceType'); // 选择开票类型
+            Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 申请开票
+
 
             /*************************************企业库存*****************************************************/
-            Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
-            Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
+
 
             Route::post('/firmstock/stock_in','FirmStockController@firmStockIn');//入库记录列表
             Route::post('/firmstock/add_stock_in','FirmStockController@addFirmStock');//新增入库记录
@@ -675,15 +693,13 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/firmstock/search_partner_name','FirmStockController@searchPartnerName');//入库检索供应商名称
 
             Route::post('/firmstock/stock_out','FirmStockController@firmStockOut');   //出库记录列表
-            Route::get('/firmstock/add_stock_out','FirmStockController@addFirmSotckOut');//新增出库记录
-            Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
-            Route::post('/stock/info','FirmStockController@stockInfo');//可出库单条记录
-            Route::post('/curStockSave','FirmStockController@curStockSave');//出库更新保存
+            Route::post('/firmstock/add_stock_out','FirmStockController@addFirmSotckOut');//新增出库记录
+            Route::post('/firmstock/info','FirmStockController@stockInfo');//获取单条可出库数据
+            Route::post('/firmstock/can_stock_out','FirmStockController@canStockOut');//可出库库存
+            Route::post('/firmstock/cur_stock_save','FirmStockController@cur_stock_save');//出库更新保存
 
-            Route::get('/stock/list','FirmStockController@stockList');//实时库存
             Route::post('/stock/list','FirmStockController@stockList');//实时库存
-            Route::get('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
-            Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存详细
+            Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存流水
 
             /********************************************************************************************/
 

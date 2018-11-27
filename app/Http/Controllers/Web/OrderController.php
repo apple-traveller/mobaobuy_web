@@ -74,13 +74,11 @@ class OrderController extends Controller
     public function orderStatusCount()
     {
         $deputy_user = session('_curr_deputy_user');
+//        dump($deputy_user);
         if ($deputy_user['is_firm']) {
-            if ($deputy_user['is_firm'] && $deputy_user['is_self'] == 0) {
-                $status = OrderInfoService::getOrderStatusCount($deputy_user['user_id'], $deputy_user['firm_id']);
-            } else {
-                $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], $deputy_user['firm_id']);
-            }
+            $status = OrderInfoService::getOrderStatusCount('', $deputy_user['firm_id']);
         } else {
+            //个人
             $status = OrderInfoService::getOrderStatusCount($deputy_user['firm_id'], 0);
         }
         return $this->success('', '', $status);
@@ -212,8 +210,9 @@ class OrderController extends Controller
     public function orderCancel(Request $request)
     {
         $id = $request->input('id');
+        $type = $request->input('waitAffirm');
         try {
-            OrderInfoService::orderCancel($id);
+            OrderInfoService::orderCancel($id,$type);
             return $this->success('取消成功');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -241,7 +240,8 @@ class OrderController extends Controller
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
         if(empty($cartSession) || !isset($cartSession) || empty($goodsList)){
-            return $this->error('非法操作');
+//           return $this->error('非法操作');
+             return $this->redirect('/cart');
         }
 
         $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
@@ -345,8 +345,6 @@ class OrderController extends Controller
     public function createOrder(Request $request)
     {
         $info = session('_curr_deputy_user');
-//        $payType = $request->input('payType','');
-
         $userIds = [];
         // 判断是否为企业用户
         if ($info['is_firm']) {
@@ -460,13 +458,6 @@ class OrderController extends Controller
         }
         return $this->display('web.user.order.orderSubmission', ['re' => $re]);
     }
-    //支付界面
-    public function pay(){
-        return $this->display('web.order.pay');
-    }
-    //等待审核界面
-    public function waitConfirm(){
-        return $this->display('web.order.waitConfirm');
-    }
+
 
 }

@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'layui/css/layui.css')}}" />
 
 <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
+<script src="{{asset('js/jquery.base64.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/jquery.json.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/transport_jquery.js')}}" ></script>
 <script src="{{asset(themePath('/').'js/utils.js')}}" ></script>
@@ -34,5 +35,5 @@
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
 <script src="{{asset(themePath('/').'layui/layui.js')}}" ></script>
 <script src="{{asset(themePath('/').'layui/index.js')}}" ></script>
-<script src="{{asset('js/jquery.base64.js')}}" ></script>
+
 

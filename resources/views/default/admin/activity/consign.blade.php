@@ -74,7 +74,7 @@
                                                         float: left;
                                                         width: 30px;
                                                         line-height: 30px;}
-                                                </style>\
+                                                </style>
                                             </div>
                                         </div>
                                     </td>
@@ -114,11 +114,11 @@
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
-                        'url':'/admin/quote/delete',
+                        'url':'/admin/shopgoodsquote/delete',
                         'data':{
                             'id':id
                         },
-                        'type':'post',
+                        'type':'get',
                         success: function (res) {
                             console.log(res.code);
                             if (res.code == 1){
@@ -130,8 +130,6 @@
                             }
                         }
                     });
-                    // window.location.href="/seller/quote/delete?id="+id;
-
                 });
             });
         }

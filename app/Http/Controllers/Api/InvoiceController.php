@@ -5,17 +5,16 @@
  * Date: 2018-10-30
  * Time: 14:36
  */
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use App\Services\UserAddressService;
 use App\Services\UserRealService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-
-class InvoiceController extends Controller
+use Illuminate\Support\Facades\Cache;
+class InvoiceController extends ApiController
 {
 
     /**
@@ -25,69 +24,65 @@ class InvoiceController extends Controller
      */
     public function myInvoice(Request $request)
     {
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        $dupty_user = $this->getDeputyUserInfo($request);
+        if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
         $tab_code = $request->input('tab_code', '');
-        if ($request->isMethod('get')){
-            return $this->display('web.user.invoice.myInvoice',compact('tab_code'));
-        } else {
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $begin_time = $request->input('begin_time','');
-            $end_time = $request->input('end_time','');
-            $page_size = $request->input('length', 10);
-            $firm_id = session('_curr_deputy_user')['firm_id'];
-            $invoice_numbers = $request->input('invoice_numbers','');
-            $condition['user_id'] = $firm_id;
-
-            if ($tab_code == 'waitInvoice'){
-                $condition['status'] = 1;
-            } elseif($tab_code == 'Completed'){
-                $condition['status'] = 2;
-            }
-
-            if (!empty($begin_time)){
-                $condition['created_at|>'] = $begin_time . ' 00:00:00';
-            }
-            if (!empty($end_time)){
-                $condition['created_at|<'] = $end_time . ' 23:59:59';
-            }
-
-            if(!empty($invoice_numbers)){
-                $condition['invoice_numbers'] = '%'.$invoice_numbers.'%';
-            }
-
-            $pager = [
-                'page'=>$page,
-                'page_size'=>$page_size
-            ];
-
-            $rs_list = InvoiceService::getListBySearch($pager,$condition);
-
-            $data = [
-                'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
-                'recordsTotal' => $rs_list['total'], //数据总行数
-                'recordsFiltered' => $rs_list['total'], //数据总行数
-                'data' => $rs_list['list']
-            ];
-
-            return $this->success('', '', $data);
+        $page = $request->input('currpage', 0);
+        $page_size = $request->input('pagesize', 10);
+        $begin_time = $request->input('begin_time','');
+        $end_time = $request->input('end_time','');
+        $invoice_numbers = $request->input('invoice_numbers','');
+        $firm_id = $dupty_user['firm_id'];
+        $condition['user_id'] = $firm_id;
+        if ($tab_code == 'waitInvoice'){
+            $condition['status'] = 1;
+        } elseif($tab_code == 'Completed'){
+            $condition['status'] = 2;
         }
+
+        if (!empty($begin_time)){
+            $condition['created_at|>'] = $begin_time . ' 00:00:00';
+        }
+        if (!empty($end_time)){
+            $condition['created_at|<'] = $end_time . ' 23:59:59';
+        }
+
+        if(!empty($invoice_numbers)){
+            $condition['invoice_numbers'] = '%'.$invoice_numbers.'%';
+        }
+
+        $pager = [
+            'page'=>$page,
+            'page_size'=>$page_size
+        ];
+
+        $rs_list = InvoiceService::getListBySearch($pager,$condition);
+
+        $data = [
+            'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
+            'recordsTotal' => $rs_list['total'], //数据总行数
+            'recordsFiltered' => $rs_list['total'], //数据总行数
+            'data' => $rs_list['list']
+        ];
+
+        return $this->success($data,'success');
     }
 
     /** 获取各状态数量
      * @return InvoiceController|\Illuminate\Http\RedirectResponse
      */
-    public function getStatusCount()
+    public function getStatusCount(Request $request)
     {
-        $deputy_user = session('_curr_deputy_user');
+        $deputy_user = $this->getDeputyUserInfo($request);
 
         // 待开票数量
         $status = InvoiceService::getStatusCount($deputy_user);
         if (!empty($status)){
-            return $this->success('success','',$status);
+            return $this->success($status,'success');
         } else {
-            return $this->error('error','',$status);
+            return $this->error('error');
         }
     }
 
@@ -97,10 +92,15 @@ class InvoiceController extends Controller
      * @return InvoiceController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Exception
      */
-    public function invoiceDetail($invoice_id)
+    public function invoiceDetail(Request $request)
     {
+        $deputy_user = $this->getDeputyUserInfo($request);
+        $invoice_id = $request->input('invoice_id');
+        if(empty($invoice_id)){
+            return $this->error('开票id不能为空');
+        }
 
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        if (isset($deputy_user['can_invoice']) && $deputy_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
         if (empty($invoice_id)){
@@ -113,37 +113,36 @@ class InvoiceController extends Controller
             }
         }
 
-        return $this->display('web.user.invoice.detail', [
+        return $this->success([
             'invoiceInfo' => $invoiceDetail['invoiceInfo'],
             'invoiceGoods' => $invoiceDetail['invoiceGoods']
-        ]);
+        ],'success');
     }
 
     /**
-     * 开票列表
+     * 待开票列表
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function invoiceList(Request $request)
     {
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if (isset($deputy_user['can_invoice']) && $deputy_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
         $shop_name = $request->input('shop_name','');
         $order_sn = $request->input('order_sn','');
         $start_time = $request->input('begin_time','');
         $end_time = $request->input('end_time','');
-        $firm_id = session('_curr_deputy_user')['firm_id'];
-
+        $firm_id = $deputy_user['firm_id'];
         $userInfo = UserService::getInfo($firm_id);
         $condition = [
             'order_status' =>  5,
             'is_delete' =>  0
         ];
-
-        if(session('_curr_deputy_user')['is_firm']){
-            if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] ){
-                $condition['user_id'] = session('_curr_deputy_user')['user_id'];
+        if($deputy_user['is_firm']){
+            if($deputy_user['is_self'] == 0 && $deputy_user['is_firm'] ){
+                $condition['user_id'] = $deputy_user['user_id'];
                 $condition['firm_id'] = $firm_id;
             }else{
                 $condition['user_id'] = $firm_id;
@@ -153,7 +152,6 @@ class InvoiceController extends Controller
             $condition['user_id'] = $firm_id;
             $condition['firm_id'] = 0;
         }
-
         if (!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -166,20 +164,17 @@ class InvoiceController extends Controller
         if (!empty($end_time)){
             $condition['confirm_take_time|<'] = $end_time.' 23:59:59';
         }
-
         $orderList = OrderInfoService::getOrderInfoList(['orderType' =>  ['confirm_take_time' =>  'desc']],$condition);
-
         $orderList = $orderList['list'];
-
         //预先存入开票信息到session
         $invoice_type = 1;
         $invoiceSession = [
             'address_id'=>$userInfo['address_id'],
             'invoice_type'=>$invoice_type,
         ];
-        session()->put('invoiceSession',$invoiceSession);
+        Cache::put('invoiceSession'.$this->getUserID($request),$invoiceSession,60*24*1);
 
-        return $this->display('web.user.invoice.list',compact('orderList','invoice_type'));
+        return $this->success(compact('orderList','invoice_type'),'success');
     }
 
 
@@ -190,17 +185,16 @@ class InvoiceController extends Controller
      */
     public function confirm(Request $request)
     {
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        $dupty_user = $this->getDeputyUserInfo($request);
+        if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
-        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
-
+        $user_info = UserService::getInfo($dupty_user['firm_id']);
         $order_ids = $request->input('order_id','');
         $total_amount = $request->input('total_amount','');
         if (empty($order_ids)){
             return $this->error('请选择订单');
         }
-
         $order_ids = explode(',',$order_ids);
         $invoiceInfo = UserRealService::getInfoByUserId($user_info['id']);
         if (empty($invoiceInfo)){
@@ -210,7 +204,7 @@ class InvoiceController extends Controller
             return $this->error('您的实名认证还未通过，不能申请发票');
         }
         // 判断默认地址 和当前选择地址
-        $invoiceSession = session('invoiceSession');
+        $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
         foreach ($addressList as $k =>  $v){
@@ -242,13 +236,14 @@ class InvoiceController extends Controller
             }
         }
         $goodsList = OrderInfoService::getOrderGoodsList($order_id);
+        foreach ($goodsList as $k=>$v){
 
+        }
         //重新封装session 加入商品信息
         $invoiceSession['goods_list'] = $goodsList['list'];
         $invoiceSession['total_amount'] = $total_amount;
-        session()->put('invoiceSession',$invoiceSession);
-
-        return $this->display('web.user.invoice.confirm',compact('invoiceInfo','addressList','goodsList','total_amount','invoice_type'));
+        Cache::put('invoiceSession'.$user_info['id'], $invoiceSession, 60*24*1);
+        return $this->success(compact('invoiceInfo','addressList','goodsList','total_amount','invoice_type'),'success');
     }
 
     /**
@@ -259,7 +254,8 @@ class InvoiceController extends Controller
      */
     public function editInvoiceAddress(Request $request)
     {
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        $dupty_user = $this->getDeputyUserInfo($request);
+        if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
         $address_id = $request->input('address_id','');
@@ -270,14 +266,13 @@ class InvoiceController extends Controller
         if(!$address_info){
             return $this->error('地址信息不存在！');
         }
-        $invoiceSession = session('invoiceSession');
+        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['address_id'] = $address_id;
-
-        session()->put('invoiceSession',$invoiceSession);
+        Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
         return $this->success('选择成功');
     }
     /**
-     * 选择开票类型地址
+     * 选择开票类型
      * editOrderAddress
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -288,10 +283,9 @@ class InvoiceController extends Controller
         if(!$invoice_type){
             return $this->error('缺少开票类型参数！');
         }
-        $invoiceSession = session('invoiceSession');
+        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['invoice_type'] = $invoice_type;
-
-        session()->put('invoiceSession',$invoiceSession);
+        Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
         return $this->success('选择成功');
     }
 
@@ -303,17 +297,17 @@ class InvoiceController extends Controller
      */
     public function applyInvoice(Request $request)
     {
-        if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
+        $dupty_user = $this->getDeputyUserInfo($request);
+        if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
-        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
-        $invoiceSession = session('invoiceSession');
+        $user_info = UserService::getInfo($dupty_user['firm_id']);
+        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
             return $this->error('您不符合开增值专用发票的条件');
         }
-//dd($goodsList[0]['order_id']);
         // 通过订单商品获取订单详情->店铺信息
         $orderInfo = OrderInfoService::getOrderInfoById($goodsList[0]['order_id']);
         $address_info = UserAddressService::getAddressInfo($invoiceSession['address_id']);
@@ -354,23 +348,10 @@ class InvoiceController extends Controller
         $invoice_data['invoice_numbers'] = $invoice_numbers;
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
         if ($re){
-            return $this->success('提交成功','',$re['invoice_numbers']);
+            return $this->success($re['invoice_numbers'],'提交成功');
         } else{
             return $this->error('申请失败');
         }
     }
 
-    /**
-     * 提交后的等待页面
-     * @param Request $request
-     * @return InvoiceController|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function waitFor(Request $request)
-    {
-        $re = $request->input('re','');
-        if (empty($re)){
-            return $this->error('缺少参数');
-        }
-        return $this->display('web.user.invoice.alreadyInvoice',compact('re'));
-    }
 }

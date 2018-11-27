@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\OrderInfoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopGoodsService;
@@ -19,8 +20,10 @@ class ShopGoodsQuoteController extends Controller
         $shop_name = $request->input('shop_name',"");
         $condition = [];
         if(!empty($shop_name)){
-            $condition['shop_name']="%".$shop_name."%";
+            $condition['b.shop_name']="%".$shop_name."%";
         }
+        $condition['b.type'] = '1|2';
+        $condition['b.is_delete'] = 0;
         $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
@@ -128,6 +131,7 @@ class ShopGoodsQuoteController extends Controller
                 $data['add_time'] = Carbon::now();
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
+                //dd($data);
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shopgoodsquote/list'));
@@ -145,8 +149,20 @@ class ShopGoodsQuoteController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
         try{
-            $flag = ShopGoodsQuoteService::delete($id);
+            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+            if(!$check){
+                return $this->error('无法获取对应报价信息');
+            }
+            //检测报价是否存在对应的订单
+            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+            if($is_exist_order){
+                return $this->error('该报价存在相应订单，无法删除');
+            }
+            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/admin/shopgoodsquote/list'));
             }

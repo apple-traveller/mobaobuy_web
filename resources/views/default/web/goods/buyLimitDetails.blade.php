@@ -177,6 +177,7 @@
                     success:function(data){
                         if(data.code){
                             $.msg.alert('收藏成功');
+                            window.location.reload();
                         }else{
                             $.msg.alert(data.msg);
                         }
@@ -252,7 +253,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="/goodslist">产品列表</a> &gt; <a href="javascript:">产品详情</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodslist">商品列表</a> &gt; <a href="javascript:">商品详情</a> &gt;<span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势

@@ -64,27 +64,21 @@
                                 @endforeach
                                 </tbody>
                                 <tfoot>
-                                <tr>
-                                    <td colspan="12">
-                                        <div class="tDiv">
-
-                                            <div class="list-page">
-
-
-                                                <ul id="page"></ul>
-
-                                                <style>
-                                                    .pagination li{
-                                                        float: left;
-                                                        width: 30px;
-                                                        line-height: 30px;}
-                                                </style>
-
-
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="tDiv">
+                                                <div class="list-page">
+                                                    <ul id="page"></ul>
+                                                    <style>
+                                                        .pagination li{
+                                                            float: left;
+                                                            width: 30px;
+                                                            line-height: 30px;}
+                                                    </style>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -136,7 +130,6 @@
                             }
                         }
                     });
-                    // window.location.href="/seller/quote/delete?id="+id;
 
                 });
             });
