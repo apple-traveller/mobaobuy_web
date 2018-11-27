@@ -70,11 +70,11 @@
                                         <td><div class="tDiv">{{$v['end_time']}}</div></td>
                                         <td><div class="tDiv">
                                                 @if($v['review_status']==1)
-                                                    待审核
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
                                                 @elseif($v['review_status']==2)
-                                                    审核不通过
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>不通过</div>
                                                 @elseif($v['review_status']==3)
-                                                    审核通过
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius '>审核通过</div>
                                                 @endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">

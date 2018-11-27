@@ -548,6 +548,15 @@ class UserService
         return 0;
     }
 
+    //是否收藏
+    public static function checkUserIsCollectApi($userId,$goodsId){
+        $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!empty($collectGoodsInfo)){
+            return $collectGoodsInfo['id'];
+        }
+        return 0;
+    }
+
     //添加企业会员，验证手机号是否存在
     public static function getUserInfoByUserName($mobile){
         return UserRepo::getInfoByFields(['user_name'=>$mobile]);
@@ -625,6 +634,14 @@ class UserService
             $app_res = self::createAppUserInfo($app_data);
             if(!$app_res){
                 self::throwBizError('绑定失败！');
+            }
+            //如果是企业用户不能修改昵称
+            $userInfo = self::getInfo($user_id);
+            if($userInfo['is_firm']==1){
+                $user_res = self::modify($user_id,['avatar'=>$avatar]);
+                if(!$user_res){
+                    self::throwBizError('用户信息更新失败！');
+                }
             }
             #更新用户信息
             $user_res = self::modify($user_id,['nick_name'=>$nick_name,'avatar'=>$avatar]);
