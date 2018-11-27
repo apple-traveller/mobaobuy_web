@@ -40,7 +40,9 @@
                         d.tab_code = '{{$tab_code}}',
                         d.order_no = $('#order_no').val(),
                         d.begin_time = $('#begin_time').val(),
-                        d.end_time = $('#end_time').val()
+                        d.end_time = $('#end_time').val(),
+                        // d.start = 0,
+                         d.length = 5
                     },
                     dataSrc:
                         function (json) {
