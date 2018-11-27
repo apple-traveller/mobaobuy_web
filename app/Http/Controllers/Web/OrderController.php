@@ -36,8 +36,8 @@ class OrderController extends Controller
         if ($request->isMethod('get')) {
             return $this->display('web.user.order.list', compact('tab_code'));
         } else {
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $page_size = $request->input('length', 10);
+            $page = $request->input('start', 0) / $request->input('length', 5) + 1;
+            $page_size = $request->input('length', 5);
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $currUser = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
@@ -191,6 +191,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
+//        dd($orderDetailsInfo);
         return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
     }
 
@@ -320,7 +321,7 @@ class OrderController extends Controller
                     $goodsList[$k3]['account'] = number_format($v3['shop_price'] * $v3['goods_number'], 2);
                     $goods_amount += $v3['shop_price'] * $v3['goods_number'];
                 }
-                $goods_amount = number_format($goods_amount, 2);
+//                $goods_amount = number_format($goods_amount, 2);
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }

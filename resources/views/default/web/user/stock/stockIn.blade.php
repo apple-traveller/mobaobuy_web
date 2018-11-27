@@ -144,7 +144,7 @@
                         $('#appendGoodsName').append(strHtml);
                     }else{
                         $('#appendGoodsName ul').remove();
-                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendGoodsName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -193,7 +193,7 @@
                        
                     }else{
                          $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -227,26 +227,27 @@
         function addStockSave(){
             var partner_name = $('input[name=partner_name]').val();
             var order_sn = $('input[name=order_sn]').val();
-            var goods_name = $('#goodName').val();
+            // var goods_name = $('#goodName').val();
             var goods_id = $('#goodName').attr('goodsId');
             var number = $('input[name=number]').val();
             var price = $('input[name=price]').val();
             var flow_desc = $('textarea[name=flow_desc]').val();
-            if(Utils.isEmpty(goods_id)){
+            if(goods_id == '' || goods_id <= 0){
                 $.msg.error('商品必须从检索的下拉列表中点击选择');
                 return false;
             }
-            if(Utils.isEmpty(number)){
-                $.msg.error('入库数量不能为空');
+            if(number == '' || number <= 0){
+                $.msg.error('入库数量有误');
                 return false;
             }
+            
             $.ajax({
                 url: "/addStockIn",
                 dataType: "json",
                 data: {
                     'partner_name':partner_name,
                     'order_sn':order_sn,
-                    'goods_name':goods_name,
+                    // 'goods_name':goods_name,
                     'number':number,
                     'price':price,
                     'flow_desc':flow_desc,

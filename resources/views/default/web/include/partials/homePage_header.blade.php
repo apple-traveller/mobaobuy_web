@@ -99,7 +99,7 @@
             </div>
 
             <div class="menu">
-                <ul><a href="/"><li>首页</li></a><a href="/goodsList"><li>报价列表</li></a><li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>产品列表</li><li>帮助中心</li></ul>
+                <ul><a href="/"><li>首页</li></a><a href="/goodsList"><li>报价列表</li></a><li>拼团活动</li><li>限时秒杀</li><li>资讯中心</li><li>商品列表</li><li>帮助中心</li></ul>
             </div>
         </div>
     </div>

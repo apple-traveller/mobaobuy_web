@@ -179,8 +179,8 @@
         $("#goods_id").change(function(){
             var packing_spec = $(this).find("option:selected").attr("data-extra");
             $(this).siblings("span").remove();
-            $(this).after('<span id="packing_spec" data="'+packing_spec+'" style="margin-left: 20px;color:red;">产品规格为：'+packing_spec+'</span>');
-            $("#goods_number").after('<span style="margin-left: 10px;color:red;">库存数量只能是产品规格的整数倍</span>');
+            $(this).after('<span id="packing_spec" data="'+packing_spec+'" style="margin-left: 20px;color:red;">商品规格为：'+packing_spec+'</span>');
+            $("#goods_number").after('<span style="margin-left: 10px;color:red;">库存数量只能是商品规格的整数倍</span>');
         });
 
         layui.use(['layer'], function(){

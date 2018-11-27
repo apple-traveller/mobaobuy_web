@@ -132,7 +132,7 @@ class RegionService
         return $country."-".$province."-".$city."-"."$district";
     }
 
-    //产品列表
+    //商品列表
     public static function getRegionsByGoodsList($goodsList)
     {
         $region_ids = [];

@@ -196,6 +196,11 @@ class InvoiceController extends ApiController
             return $this->error('请选择订单');
         }
         $order_ids = explode(',',$order_ids);
+        //判断order_id是不是属于该user_id的
+        $flag = OrderInfoService::verifyOrderIds($order_ids,$user_info['id']);
+        if(!$flag){
+            return $this->error("订单id有误");
+        }
         $invoiceInfo = UserRealService::getInfoByUserId($user_info['id']);
         if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能申请发票');
@@ -303,6 +308,9 @@ class InvoiceController extends ApiController
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        if(empty($invoiceSession['goods_list'])){
+            return $this->error('请先选择订单');
+        }
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){

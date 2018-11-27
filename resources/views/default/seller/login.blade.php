@@ -109,10 +109,13 @@
             <!--<div class="clear"></div>-->
 
             <div class="foot">
-                <div class="graw">Copyright <font style="font-family:" 微软雅黑',="" '黑体',="" '新宋体',="" 'arial="" unicode="" ms'"="">© </font> 2010-2018 沫宝有限公司<br>
+                <div class="graw">Copyright <font style="font-family: 微软雅黑,黑体,新宋体" arial="" unicode="" ms="">© </font> 2010-2018 沫宝有限公司<br>
                     <div style="padding:5px 0 10px 0;">
 
-                        <a target="_blank" href="{{env('APP_URL'.'seller/register.html')}}" style="display:inline-block;text-decoration:none;height:20px;line-height:20px; margin-right:5px;"><img src="{{asset(themePath('/').'layui/seller_login/beianIcon.png')}}" width="20" height="20" /><p style="float:left;height:20px;line-height:20px;margin: 0px 5px 0px 0px; color:#898989;">粤公网安备 XXXXXXXXXXX号</p></a>
+                        <a target="_blank" href="{{env('APP_URL'.'seller/register.html')}}" style="display:inline-block;text-decoration:none;height:20px;line-height:20px; margin-right:5px;">
+                            <img src="{{asset(themePath('/').'layui/seller_login/beianIcon.png')}}" width="20" height="20" />
+                            <p style="float:left;height:20px;line-height:20px;margin: 0px 5px 0px 0px; color:#898989;">粤公网安备 XXXXXXXXXXX号</p>
+                        </a>
 
                         <a href="" target="_blank" rel="nofollow">粤XXXXXXX号</a>
                     </div>
@@ -130,8 +133,8 @@
         <span class="close"></span>
         <div class="title">请先完成下方验证</div>
         <div class="inputLine">
-            <input type="text" maxlength="4" class="codeVal" placeholder="请输入右侧验证码"><!--
-			--><img class="codeImg">
+            <input type="text" maxlength="4" class="codeVal" placeholder="请输入右侧验证码">
+            <img class="codeImg">
             <span class="refreshBtn">换一张</span>
         </div>
         <div class="msg"></div>

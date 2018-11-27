@@ -35,6 +35,7 @@ class QuoteController extends Controller
         $cat_name = $request->input('cat_name', "");
         $place_id = $request->input('place_id', "");
         $keyword = $request->input('keyword', "");//搜索关键字
+        $t = $request->input('t', "");//搜索关键字
         $condition = [];
         if (!empty($orderType)) {
             $order = explode(":", $orderType);
@@ -60,6 +61,9 @@ class QuoteController extends Controller
         if (!empty($brand_id)) {
             $condition['g.brand_id'] = $brand_id;
         }
+        if (!empty($t)) {
+            $condition['b.type'] = $t;
+        }
         if (!empty($cate_id)) {
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
@@ -78,11 +82,11 @@ class QuoteController extends Controller
         }
         $orderBy = [];
         if (!empty($orderType)) {
-            $t = explode(":", $orderType);
-            $orderBy[$t[0]] = $t[1];
+            $type = explode(":", $orderType);
+            $orderBy[$type[0]] = $type[1];
         }
         $pageSize = 10;
-        //产品报价列表
+        //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
 
         #热门推荐
@@ -118,6 +122,7 @@ class QuoteController extends Controller
             'cat_name' => $cat_name,
             'place_id' => $place_id,
             'keyword' => $keyword,
+            't' => $t,
         ]);
     }
 
@@ -140,6 +145,7 @@ class QuoteController extends Controller
         $brand_id = $request->input("brand_id", "");
         $cate_id = $request->input('cate_id', "");
         $place_id = $request->input('place_id', "");
+        $t = $request->input('t', "");
         $condition = [];
 
         $orderBy = [];
@@ -153,8 +159,8 @@ class QuoteController extends Controller
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
         if (empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)) {
-            $t = explode(":", $orderType);
-            $orderBy[$t[0]] = $t[1];
+            $type = explode(":", $orderType);
+            $orderBy[$type[0]] = $type[1];
         }
         if (empty($lowest) && empty($highest)) {
             $condition = [];
@@ -176,6 +182,9 @@ class QuoteController extends Controller
         if (!empty($brand_id)) {
             $condition['g.brand_id'] = $brand_id;
         }
+        if (!empty($t)) {
+            $condition['b.type'] = $t;
+        }
         if (!empty($cate_id)) {
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
@@ -194,7 +203,8 @@ class QuoteController extends Controller
                 'list' => $goodsList['list'],
                 'currpage' => $currpage,
                 'total' => $goodsList['total'],
-                'pageSize' => $pageSize
+                'pageSize' => $pageSize,
+                't' => $t
             ], 200, 'success');
         }
     }
@@ -216,7 +226,7 @@ class QuoteController extends Controller
             'shop_id' => $shop_id,
             'goods_id' => $goods_id
         ];
-        $pageSize = 10;
+        $pageSize = 4;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);

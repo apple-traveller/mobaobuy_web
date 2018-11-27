@@ -207,7 +207,7 @@ class UserController extends Controller
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
-    //获取用户购物车产品数
+    //获取用户购物车商品数
     public function getCartNum()
     {
 
@@ -1000,7 +1000,6 @@ class UserController extends Controller
             return $this->display('web.user.account.userSale');
         }else{
             try{
-                dd($saleData);
                 UserService::sale($saleData);
                 return $this->success();
             }catch (\Exception $e){

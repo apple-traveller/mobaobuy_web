@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
 <div class="warpper">
-    <div class="title">会员 - 卖货需求</div>
+    <div class="title">会员 - 采购需求</div>
     <div class="content">
         <div class="explanation" id="explanation">
             <div class="ex_tit">
@@ -10,7 +10,7 @@
                 <span id="explanationZoom" title="收起提示"></span>
             </div>
             <ul>
-                <li>点击下载查看，可以下载用户上传的卖货需求，帮助用户完成卖货</li>
+                <li>点击下载查看，可以下载用户上传的采购需求，帮助用户完成采购</li>
             </ul>
         </div>
         <div class="flexilist">
@@ -40,8 +40,8 @@
                                     <th width="20%"><div class="tDiv">请求时间</div></th>
                                     <th width="15%"><div class="tDiv">会员名</div></th>
                                     <th width="15%"><div class="tDiv">昵称</div></th>
-                                    <th width="15%"><div class="tDiv">卖货详情</div></th>
-                                    <th width="15%" class="handle">卖货文档</th>
+                                    <th width="15%"><div class="tDiv">采购详情</div></th>
+                                    <th width="15%" class="handle">采购文档</th>
                                     <th width="8%" class="handle">状态</th>
                                     <th width="18%" class="handle">操作</th>
                                 </tr>

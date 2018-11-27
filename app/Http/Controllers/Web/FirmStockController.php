@@ -92,14 +92,14 @@ class FirmStockController extends Controller
         if(session('_curr_deputy_user')['is_firm']) {
             $stockInData = [];
             $stockInData['goods_id'] = $request->input('goods_id');
-            $stockInData['created_by'] = session('_web_user_id');
             $stockInData['partner_name'] = $this->requestGetNotNull('partner_name','');
-            $stockInData['goods_name'] = $request->input('goods_name');
+//            $stockInData['goods_name'] = $request->input('goods_name');
             $stockInData['number'] = $request->input('number', 1);
             $stockInData['flow_desc'] = $this->requestGetNotNull('flow_desc','');
             $stockInData['order_sn'] = $this->requestGetNotNull('order_sn','');
             $stockInData['price'] = $this->requestGetNotNull('price', 0);
             $stockInData['firm_id'] = session('_curr_deputy_user')['firm_id'];
+            $stockInData['created_by'] = session('_web_user_id');
             $stockInData['flow_type'] = 2;
             try {
                 FirmStockService::createFirmStock($stockInData);

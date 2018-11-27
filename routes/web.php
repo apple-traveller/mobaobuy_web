@@ -152,12 +152,14 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
         Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
+        Route::post('/shop/ajax_list', 'ShopController@getShopList');//ajax获取商家列表
 
         Route::get('/shopuser/list', 'ShopUserController@getList');//店铺职员列表
         Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员
         Route::get('/shopuser/editForm', 'ShopUserController@editForm');//修改职员
         Route::post('/shopuser/save', 'ShopUserController@save');//保存
         Route::get('/shopuser/delete', 'ShopUserController@delete');//删除
+
 
         /*Route::get('/shopgoods/list', 'ShopGoodsController@getList');//店铺商品列表
         Route::get('/shopgoods/addForm', 'ShopGoodsController@addForm');//店铺商品添加
@@ -220,8 +222,10 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::get('/activity/wholesale', 'ActivityWholesaleController@index');//集采拼团申请列表
         Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add');//添加
-        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//添加
+        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//保存
         Route::get('/activity/wholesale/delete', 'ActivityWholesaleController@delete');//删除
+        Route::get('/activity/wholesale/detail', 'ActivityWholesaleController@detail');//详情
+        Route::post('/activity/wholesale/modifyStatus', 'ActivityWholesaleController@modifyStatus');//详情
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
@@ -304,9 +308,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
     /********************************报价信息*****************************/
-    Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
-    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
-    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
+    Route::any('/goodsList', 'QuoteController@goodsList');//商品列表
+    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
+    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//商品详情
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
@@ -322,7 +326,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholesale', 'ActivityWholesaleController@index');//集采拼团
     Route::get('/wholesale/detail/{id?}', 'ActivityWholesaleController@detail');//集采拼团详情
 
-    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
+    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//商品走势图价格
 
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
@@ -386,7 +390,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
 
 
-//        Route::get('/stockNum','FirmStockController@stockList');//企业库存
         Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
 
@@ -629,6 +632,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/add_address','UserController@addAddress');//添加收货地址
             Route::post('/user/list_address','UserController@addressList');//收货地址列表
             Route::post('/user/detail_address','UserController@detailAddress');//收货地址详情
+            Route::post('/user/delete_address','UserController@deleteAddress');//删除收货地址
             Route::post('/user/edit_default_address','UserController@updateDefaultAddress');//修改默认收货地址
             Route::post('/user/edit_nickname','UserController@editNickname');//修改昵称
             Route::post('/user/collection','UserController@myCollection');//个人收藏列表

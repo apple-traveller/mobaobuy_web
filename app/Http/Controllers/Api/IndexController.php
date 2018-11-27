@@ -45,7 +45,7 @@ class IndexController extends ApiController
         return $this->success(['goodsQuoteList' => $goodsQuoteList['list']]);
     }
 
-    //产品列表
+    //商品列表
     public function getGoodsList(Request $request)
     {
         $goodsList = GoodsService::getGoodsList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],['is_delete'=>0]);

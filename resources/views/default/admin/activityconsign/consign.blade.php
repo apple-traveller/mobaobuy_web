@@ -3,6 +3,15 @@
     <div class="warpper">
         <div class="title">清仓特卖活动</div>
         <div class="content">
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                </div>
+                <ul>
+                    <li>展示了所有优惠活动相关信息列表。</li>
+                    <li>展示信息有：商家名称、集采拼团名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
@@ -54,8 +63,8 @@
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
-                                    <td>
-                                        <div class="tDiv">
+                                    <td class="handle">
+                                        <div class="tDiv a3">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                             <a href="/admin/activity/consign/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
