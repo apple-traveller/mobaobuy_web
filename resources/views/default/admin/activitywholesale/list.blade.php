@@ -44,11 +44,11 @@
                                     <th><div class="tDiv">拼团价格</div></th>
                                     <th><div class="tDiv">目标数量</div></th>
                                     <th><div class="tDiv">已参与数量</div></th>
-                                    <th><div class="tDiv">最小拼团量</div></th>
+                                    {{--<th><div class="tDiv">最小拼团量</div></th>
                                     <th><div class="tDiv">最大限购量</div></th>
                                     <th><div class="tDiv">订金比例</div></th>
                                     <th><div class="tDiv">开始时间</div></th>
-                                    <th><div class="tDiv">结束时间</div></th>
+                                    <th><div class="tDiv">结束时间</div></th>--}}
                                     <th><div class="tDiv">审核状态</div></th>
                                     <th><div class="tDiv">操作</div></th>
                                 </tr>
@@ -63,11 +63,11 @@
                                         <td><div class="tDiv">{{$v['price']}}</div></td>
                                         <td><div class="tDiv">{{$v['num']}}</div></td>
                                         <td><div class="tDiv">{{$v['partake_quantity']}}</div></td>
-                                        <td><div class="tDiv">{{$v['min_limit']}}</div></td>
+                                        {{--<td><div class="tDiv">{{$v['min_limit']}}</div></td>
                                         <td><div class="tDiv">{{$v['max_limit']}}</div></td>
                                         <td><div class="tDiv">{{$v['deposit_ratio']}}</div></td>
                                         <td><div class="tDiv">{{$v['begin_time']}}</div></td>
-                                        <td><div class="tDiv">{{$v['end_time']}}</div></td>
+                                        <td><div class="tDiv">{{$v['end_time']}}</div></td>--}}
                                         <td><div class="tDiv">
                                                 @if($v['review_status']==1)
                                                     <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
@@ -78,7 +78,8 @@
                                                 @endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_see"><i class="sc_icon sc_icon_see"></i>编辑</a>
+                                                <a href="/admin/activity/wholesale/detail?id={{$v['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                                 <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>

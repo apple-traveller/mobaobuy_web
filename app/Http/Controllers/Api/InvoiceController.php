@@ -196,6 +196,11 @@ class InvoiceController extends ApiController
             return $this->error('请选择订单');
         }
         $order_ids = explode(',',$order_ids);
+        //判断order_id是不是属于该user_id的
+        $flag = OrderInfoService::verifyOrderIds($order_ids,$user_info['id']);
+        if(!$flag){
+            return $this->error("订单id有误");
+        }
         $invoiceInfo = UserRealService::getInfoByUserId($user_info['id']);
         if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能申请发票');

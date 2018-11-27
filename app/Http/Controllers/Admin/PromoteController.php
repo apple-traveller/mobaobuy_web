@@ -191,20 +191,21 @@ class PromoteController extends Controller
     //ajax获取商品值
     public function getGood(Request $request)
     {
-        $cat_id = $request->input('cat_id');
+        $cat_id = trim($request->input('cat_id'));
         $goods_name = $request->input('goods_name');
         $condition = [];
-        if($cat_id!="" || $cat_id!=0){
+        if($cat_id!="" && $cat_id!=0){
             $condition['cat_id'] = $cat_id;
         }
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
         }
+        $condition['is_delete'] = 0;
         $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit']);
         if(!empty($goods)){
-            return $this->result($goods,200,'获取数据成功');
+            return $this->success('success','',$goods);
         }else{
-            return $this->result([],400,'没有查询到数据');
+            return $this->error('error');
         }
 
     }
