@@ -63,7 +63,7 @@
 @section('content')
 	<div class="clearfix" style="background-color: #FFF;">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
+		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">报价列表</a>
             <div class="condition">
                 <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
                     <i style="cursor: pointer" class="mode_close close_brand"></i>
@@ -132,7 +132,7 @@
 		{{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
 	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">产品列表</h1>
+		<h1 class="product_title">报价列表</h1>
 		<div class="scr">
 			<div class="width1200">
 				<div class="sequence-bar" style="padding:0;padding-right:10px;">
@@ -159,7 +159,6 @@
 				</div>
 			</div>
 		</div>
-        <input type="hidden" id="t" value="{{$t}}" />
 		<ul class="Self-product-list">
 
 			<li class="table_title">
@@ -208,7 +207,7 @@
 @section('bottom_js')
 <script>
     paginate();
-
+    changeURL();
 
     //取消地区选择
     $('.cancel_region').click(function(){
@@ -363,7 +362,6 @@
             $('.shop_price span').attr('class','sm_breed_span sort_down_up');
         }
 
-        var _t = $('#t').val();
         $.ajax({
             type: "get",
             url: "/condition/goodsList",
@@ -377,19 +375,16 @@
                 'place_id':_place_id,//地区
                 'sort_goods_number':_goods_number,//数量排序
                 'sort_shop_price':_shop_price,//价格排序
-                'sort_add_time':_add_time,//时间排序
-                't':_t //时间排序
+                'sort_add_time':_add_time//时间排序
             },
             dataType: "json",
             success: function(res){
-                changeURL();
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;
                     var total = data.total;
                     var list = data.list;
-                    $('#t').val(res.data.t);
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
                     let _html = '';

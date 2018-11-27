@@ -287,6 +287,7 @@
 		<div class="address_line">
 			<div class="fl"><span class="gray">给卖家留言：</span><input type="text" name="words" style="width: 314px;height: 30px;line-height: 30px;border: 1px solid #e6e6e6;padding-left: 5px;box-sizing: border-box;" placeholder="选填：对本次交易的说明"/></div>
 			<div class="fr">
+				
 				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>
 				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家确认</span></div>
 				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>

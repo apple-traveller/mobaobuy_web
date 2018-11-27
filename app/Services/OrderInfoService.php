@@ -93,8 +93,8 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'][] = 'wait_Confirm';
                         $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
-                        $orderList['list'][$k]['auth_html'][] = '';
+                        $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc"';
                     } elseif ($item['deposit_status'] == 0) {
                         $orderList['list'][$k]['auth'][] = 'can_pay';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
@@ -111,10 +111,22 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
                         $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
-                    }elseif($item['pay_status'] == 1){
+                    }
+//                    elseif($item['pay_status'] == 1){
+//                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+//                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
+//                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+//                    }
+                    //未发货
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+                        $orderList['list'][$k]['auth_desc'][] = '待卖家发货';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    }
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
+                            $orderList['list'][$k]['auth'][] = 'can_confirm';
+                            $orderList['list'][$k]['auth_desc'][] = '确认发货';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
             }
@@ -189,7 +201,7 @@ class OrderInfoService
                         }elseif($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                             if($currUserAuth[0]['can_confirm']){
                                 $orderList['list'][$k]['auth'][] = 'can_confirm';
-                                $orderList['list'][$k]['auth_desc'][] = '待确认发货';
+                                $orderList['list'][$k]['auth_desc'][] = '确认发货';
                                 $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                             }
                         }
@@ -229,9 +241,21 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
-                    } elseif ($item['pay_status'] == 1){
+                    }
+//                    elseif ($item['pay_status'] == 1){
+//                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+//                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
+//                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+//                    }
+                    //未发货
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
+                        $orderList['list'][$k]['auth_desc'][] = '待卖家发货';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    }
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
+                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+                        $orderList['list'][$k]['auth_desc'][] = '确认发货';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
@@ -652,6 +676,8 @@ class OrderInfoService
         $city = RegionRepo::getInfo($orderInfo['city']);
         $district = RegionRepo::getInfo($orderInfo['district']);
 
+        $delivery_info = OrderDeliveryRepo::getInfoByFields(['order_id'=>$orderInfo['id']]);
+
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];
         }else{
@@ -659,7 +685,16 @@ class OrderInfoService
         }
         //获取会员发票信息
         $userInvoceInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
-        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
+        return [
+            'orderInfo'=>$orderInfo,
+            'userInvoceInfo'=>$userInvoceInfo,
+            'goodsInfo'=>$goodsInfo,
+            'country'=>$country['region_name'],
+            'province'=>$province['region_name'],
+            'city'=>$city['region_name'],
+            'district'=>$district['region_name'],
+            'delivery_info'=>$delivery_info,
+        ];
     }
 
     //企业订单审核通过操作

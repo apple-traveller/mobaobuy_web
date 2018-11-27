@@ -12,8 +12,12 @@ class FirmStockService
 
     //新增入库记录
     public static function createFirmStock($data){
+        $goodsInfo = GoodsRepo::getInfo($data['goods_id']);
+        if(empty($goodsInfo)){
+            self::throwBizError('商品信息有误');
+        }
+        $data['goods_name']  = $goodsInfo['goods_name'];
         $data['flow_time'] = Carbon::now();
-
         $insertData = [];
         $insertData['firm_id'] = $data['firm_id'];
         $insertData['goods_id'] = $data['goods_id'];
@@ -35,7 +39,7 @@ class FirmStockService
             $stockData = [];
             $stockData['firm_id'] = $data['firm_id'];
             $stockData['goods_id'] = $data['goods_id'];
-            $stockData['goods_name'] = $data['goods_name'];
+            $stockData['goods_name'] = $goodsInfo['goods_name'];
             $stockData['number'] = $data['number'];
             try{
                 self::beginTransaction();
@@ -136,6 +140,9 @@ class FirmStockService
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
+            if(empty($goodsCatInfo)){
+                self::throwBizError('找不到对应的分类');
+            }
 
             //顶部多选框分类名
             if(!in_array($goodsCatInfo['id'],$catInfo)){

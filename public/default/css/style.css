@@ -67,11 +67,16 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .nav-div .nav-cate .cate_title{background-color:#75b335; width: 100%;height: 100%;line-height: 38px;color: #fff;position: absolute;font-size: 16px;}
 .nav-div .nav-cate .ass_menu {position: absolute;left: 0;top: 40px;width: 224px;height: 330px;z-index: 1;background-color: #282828;}
 .ass_menu li {height: 50px;line-height: 50px;font-size: 16px;color: #fff;padding-left: 20px;}
-.ass_menu .ass_fn {display: none;width: 976px;position: absolute;top: 0;left: 224px;}
-.ass_fn .ass_fn_list {margin-left: 20px;margin-top: 35px;margin-bottom: 60px;}
-.ass_fn .ass_fn_list li {color: #333333;display: flex;height: 40px;line-height: 40px;padding-left: 0;}
-.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px solid #DEDEDE;font-size: 14px;color: #999;}
-.ass_fn .ass_fn_list .ass_fn_list_that span {width: 120px;display: inline-block;}
+.ass_menu .ass_fn {display: none;width: 900px;position: absolute;top: 0;left: 224px;}
+.ass_fn .ass_fn_list {margin-left: 20px;margin-top:15px;margin-bottom:20px;}
+.ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;}
+.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px dotted #DEDEDE;font-size: 14px;color: #999;}
+.ass_fn .ass_fn_list .ass_fn_list_that span { float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:30px; overflow:hidden;}
+
+.fn_title{width:70px;}
+
+
+
 .ass_menu>li:hover {background-color: #fff; color: #75b335;}
 .nav-div .nav-menu{background: #fff;float: left;padding-left: 7px;float: left;height: 38px;line-height: 38px;}
 .nav-div .nav-menu li {float: left;position: relative;font-size: 16px;margin: 0 30px;cursor: pointer;}
