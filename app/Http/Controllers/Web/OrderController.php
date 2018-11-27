@@ -36,8 +36,8 @@ class OrderController extends Controller
         if ($request->isMethod('get')) {
             return $this->display('web.user.order.list', compact('tab_code'));
         } else {
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $page_size = $request->input('length', 10);
+            $page = $request->input('start', 0) / $request->input('length', 5) + 1;
+            $page_size = $request->input('length', 5);
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $currUser = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
