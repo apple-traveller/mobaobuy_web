@@ -30,7 +30,7 @@ class ActivityConsignController extends Controller
         $condition['type'] = '3';
         $pageSize =5;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
-        return $this->display('admin.activity.consign',[
+        return $this->display('admin.activityconsign.consign',[
             'total'=>$consign_info['total'],
             'consign_list'=>$consign_info['list'],
             'currentPage'=>$currentPage,
@@ -41,7 +41,7 @@ class ActivityConsignController extends Controller
 
     public function add(Request $request)
     {
-        return $this->display('admin.activity.add_consign');
+        return $this->display('admin.activityconsign.add_consign');
     }
 
     public function edit(Request $request)
@@ -51,7 +51,7 @@ class ActivityConsignController extends Controller
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
-        return $this->display('admin.activity.edit_consign',[
+        return $this->display('admin.activityconsign.edit_consign',[
             'consign_info'=>$consign_info,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],

@@ -13,7 +13,9 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>带星号的为必填项。</li>
+                    <li>请注意选择文章分类；请严谨描述文章内容。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>输入关键字时请用逗号隔开。</li>
                 </ul>
             </div>
             <div class="flexilist">

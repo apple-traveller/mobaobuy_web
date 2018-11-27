@@ -63,7 +63,7 @@
 @section('content')
 	<div class="clearfix" style="background-color: #FFF;">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
+		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">报价列表</a>
             <div class="condition">
                 <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
                     <i style="cursor: pointer" class="mode_close close_brand"></i>
@@ -79,7 +79,7 @@
                 @endif
             </div>
 			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
+			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
         </div>
 
 
@@ -132,7 +132,7 @@
 		{{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
 	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">产品列表</h1>
+		<h1 class="product_title">报价列表</h1>
 		<div class="scr">
 			<div class="width1200">
 				<div class="sequence-bar" style="padding:0;padding-right:10px;">

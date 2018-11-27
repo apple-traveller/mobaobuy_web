@@ -1,6 +1,6 @@
 @extends(themePath('.','web').'web.include.layouts.home')
 
-@section('title', '产品列表')
+@section('title', '商品列表')
 @section('css')
 	<style>
 		.Self-product-list li span{width:14%;}
@@ -9,7 +9,7 @@
 		.pro_chart{float:left;width: 528px; }
 		.pro_chart_title{line-height: 70px;text-align: center;font-size: 18px;border: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}
 		.pro_chart_img{height: 355px;border: 1px solid #DEDEDE;}
-		.pro_price{width:660px;height: 56px;line-height: 56px;overflow: hidden;}
+		.pro_price{width: 635px;height: 56px;line-height: 56px;overflow: hidden;}
 		.pro_detail{overflow: hidden;margin-top: 20px;}
 		.pro_price_dj{width: 493px;height: 45px;line-height: 45px;margin-top: 5px;display: block;}
 		.start_amount{float: left;width: 141px;line-height:20px;text-align: center;margin-top: 7px;}
@@ -33,18 +33,6 @@
         .History-product-list li:last-child{border-bottom: none;}
         .orangebg{background-color:#ff6f17;}
         .nav-div .nav-cate .ass_menu {display: none;}
-		
-		.mbao_pic{float:left;border:1px solid #DEDEDE;}
-		.w300{float:left;width:240px;}
-		.product_title{border:1px solid #dedede;line-height:42px;font-size:16px;padding:0 10px; background:#fcfcfc;}
-		.product_list{border:1px solid #dedede;border-top:0 none;}
-		.product_list li{padding:10px 15px;border-bottom:1px dotted #dedede;}
-		.product_list li:last-child{border-bottom:0;}
-		.product_list li .pirce{color:#ff6f17;padding-bottom:5px;}
-		.w900{float:right;width:940px;}
-		.detailwrap{border:1px solid #dedede;border-top:0 none;}
-		.pro_parameter{padding:15px 0;margin:0 20px;border-bottom:1px dotted #dedede; overflow:hidden;}
-		.pro_parameter li{float:left;width:198px;padding-right:26px;line-height:30px;height:30px;text-overflow:ellipsis;white-space:nowrap; overflow:hidden;}
     </style>
     
 
@@ -177,8 +165,16 @@
 @section('content')
     <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
-		<div class="crumbs mt5">当前位置：<a href="/goodsList">产品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
-		<div class="mbao_pic"><img src="/default/images/img_001.jpg?v=2019"  width="400" height="400"/></div>
+		<div class="crumbs mt5">当前位置：<a href="/goodsList">商品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
+		<div class="pro_chart mt5">
+			<h1 class="pro_chart_title">
+				商品价格走势
+			</h1>
+			<div class="pro_chart_img" id="price_zst">
+
+			</div>
+
+		</div>
 		<div class="fl ml35 mt5">
 			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
 			<span class="red mt5 db"></span>
@@ -207,7 +203,7 @@
             </div>
 
 			<!-- <div class="pro_detail">
-				<span class="ml15 pro_detail_title fl">产品属性</span>
+				<span class="ml15 pro_detail_title fl">商品属性</span>
 				@foreach($good_info['goods_attr'] as $vo)
 					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
 				@endforeach
@@ -236,99 +232,9 @@
 				
 			</div>
 		</div>
-       
-       <!--<div class="pro_chart mt5">
-			<h1 class="pro_chart_title">
-				商品价格走势
-			</h1>
-			<div class="pro_chart_img" id="price_zst">
 
-			</div>
-
-		</div>
-		--> 
 	</div>
-        <div class="w1200" style="margin-top:30px;">
-        
-        <div class="w300">
-        	<h3 class="product_title">热卖推荐</h3>
-            
-            <ul class="product_list">
-            	<li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-            </ul>
-            
-            <h3 class="product_title mt20">浏览记录</h3>
-            
-            <ul class="product_list">
-            	<li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-                <li>
-                	<p class="tac"><a href="#" title=""><img src="/default/images/img_001.jpg?v=2019" width="150" height="150" alt="维生素"/></a></p>
-                    <p class="pirce">900元/KG</p>
-                    <p class="txt"><a href="#" title="">新和成 饲料级维生素饲料级维生素</a></p>
-                </li>
-            </ul>
-            
-        </div>
-        <div class="w900">
-        	<h3 class="product_title">产品详情</h3>
-            <div class="detailwrap">
-            <ul class="pro_parameter">
-            	<li>品　　牌：新和成</li>
-            	<li>可 售 数：600kg</li>
-                <li>包装规格：20箱</li>
-                <li>编　　号：P000002</li>
-                <li>生产日期：2018-9-9</li>
-                <li>含　　量：10%</li>
-                <li>含　　量：10%</li>
-                <li>含　　量：10%</li>
-            </ul>
-            <div style="width:860px;overflow:hidden;padding:20px;">
-            
-            	<p class="tac"><img src="/default/images/img_001.jpg?v=2019" width="400" height="400" alt="维生素"/></p>
-            	<p style="font-size:18px;line-height:38px;">中文名称：维生素A英文名称：vitamin A其他名称：视黄醇(retinol)定义：所有β紫萝酮衍生物的总称。一种在结构上与胡萝卜素相关的脂溶性维生素。有维生素A1及维生素A2两种。</p>
-                <p class="tac"><img src="/default/images/img_001.jpg?v=2019" width="400" height="400" alt="维生素"/></p>
-            	<p style="font-size:18px;line-height:38px;">中文名称：维生素A英文名称：vitamin A其他名称：视黄醇(retinol)定义：所有β紫萝酮衍生物的总称。一种在结构上与胡萝卜素相关的脂溶性维生素。有维生素A1及维生素A2两种。</p>
-                <p class="tac"><img src="/default/images/img_001.jpg?v=2019" width="400" height="400" alt="维生素"/></p>
-            	<p style="font-size:18px;line-height:38px;">中文名称：维生素A英文名称：vitamin A其他名称：视黄醇(retinol)定义：所有β紫萝酮衍生物的总称。一种在结构上与胡萝卜素相关的脂溶性维生素。有维生素A1及维生素A2两种。</p>
-                <p class="tac"><img src="/default/images/img_001.jpg?v=2019" width="400" height="400" alt="维生素"/></p>
-            	<p style="font-size:18px;line-height:38px;">中文名称：维生素A英文名称：vitamin A其他名称：视黄醇(retinol)定义：所有β紫萝酮衍生物的总称。一种在结构上与胡萝卜素相关的脂溶性维生素。有维生素A1及维生素A2两种。</p>
-            </div>
-            </div>
-        </div>
-        <!--
+        <div class="w1200" style="margin-top: 80px;">
             <div class="History_offo">
                 <h1>历史报价</h1>
             </div>
@@ -362,15 +268,12 @@
                     {{--<li style="width:1200px;height: 60px;clear:both;"><span>{{$vo['add_time']}}</span><span>{{$vo['brand_name']}}</span><span class="ovh">{{$vo['cat_name']}}</span><span >{{$vo['goods_name']}}</span><span>{{$vo['goods_number']}}</span><span>{{$vo['shop_price']}}</span><span>{{$vo['delivery_place']}}</span><span>{{$vo['salesman']}}/{{$vo['contact_info']}}</span></li>--}}
                 {{--@endforeach--}}
             {{--</ul>--}}
-            <!--页码
+            <!--页码-->
             <div class="news_pages">
                 <ul id="page" class="pagination">
 
                 </ul>
             </div>
-            -->
-           
-            
         </div>
     </div>
     <div class="clearfix whitebg ovh mt10" style="font-size: 0;">

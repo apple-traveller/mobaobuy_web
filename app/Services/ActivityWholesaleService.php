@@ -160,7 +160,7 @@ class ActivityWholesaleService
         }
         $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('产品不存在');
+            self::throwBizError('商品不存在');
         }
 
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
@@ -171,11 +171,11 @@ class ActivityWholesaleService
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
-        //产品市场价
+        //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
         $goodsInfo['goodsList'] = $goodsList;
 
-        //产品是否已收藏
+        //商品是否已收藏
         $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
         if(empty($collectGoods)){
             $goodsInfo['collectGoods'] = 0;
@@ -193,7 +193,7 @@ class ActivityWholesaleService
         }
         $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('产品不存在');
+            self::throwBizError('商品不存在');
         }
 
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
@@ -204,11 +204,11 @@ class ActivityWholesaleService
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
-        //产品市场价
+        //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
         $goodsInfo['goodsList'] = $goodsList;
 
-        //产品是否已收藏
+        //商品是否已收藏
         $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
         if(empty($collectGoods)){
             $goodsInfo['collectGoods'] = 0;

@@ -460,6 +460,18 @@ class OrderInfoService
         return $order_goods;
     }
 
+    //判断orderid是否是user_id的
+    public static function verifyOrderIds($order_ids,$user_id)
+    {
+        foreach ($order_ids as $k=>$v){
+            $order_info = OrderInfoRepo::getList([],['id'=>$v,'user_id'=>$user_id]);
+            if(empty($order_info)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static function getOrderGoods($params=[], $page = 1 ,$pageSize=10){
         $condition = [];
         if(!empty($params['order_id'])){
@@ -666,6 +678,8 @@ class OrderInfoService
         $city = RegionRepo::getInfo($orderInfo['city']);
         $district = RegionRepo::getInfo($orderInfo['district']);
 
+        $delivery_info = OrderDeliveryRepo::getInfoByFields(['order_id'=>$orderInfo['id']]);
+
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];
         }else{
@@ -673,7 +687,16 @@ class OrderInfoService
         }
         //获取会员发票信息
         $userInvoceInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
-        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
+        return [
+            'orderInfo'=>$orderInfo,
+            'userInvoceInfo'=>$userInvoceInfo,
+            'goodsInfo'=>$goodsInfo,
+            'country'=>$country['region_name'],
+            'province'=>$province['region_name'],
+            'city'=>$city['region_name'],
+            'district'=>$district['region_name'],
+            'delivery_info'=>$delivery_info,
+        ];
     }
 
     //企业订单审核通过操作

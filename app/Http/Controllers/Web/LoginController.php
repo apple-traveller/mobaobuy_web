@@ -25,7 +25,7 @@ class LoginController extends Controller
     }
 
     //用户登录提交
-    public function login(Request $request)
+        public function login(Request $request)
     {
         $username = $request->input('user_name');
         $password = base64_decode($request->input('password'));

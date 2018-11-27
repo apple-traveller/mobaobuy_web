@@ -1,4 +1,4 @@
-/*产品列表-页面*/
+/*商品列表-页面*/
 /*当前位置*/
 .mode_add{float:left;height: 24px;line-height: 24px;border: 1px solid #75b335;color:#75b335;padding-left: 5px;padding-right: 5px;}
 .mode_close {float: right;width: 8px;height: 7px;    margin-right: 5px;margin-top: 8px;margin-left: 5px;background: url(/images/x.png)no-repeat;}
@@ -25,7 +25,7 @@
 .region{float: left;margin-right:30px;}
 .heightcurr{height: auto;}
 .height0{height: 0;}
-/*产品列表-页面*/
+/*商品列表-页面*/
 .Self-product-list{margin-top: 10px;}
 .crumbs {padding: 5px 0;overflow: hidden;clear: both;zoom: 1;}
 

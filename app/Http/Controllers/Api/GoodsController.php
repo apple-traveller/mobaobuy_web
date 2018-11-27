@@ -246,7 +246,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //递加产品数量
+    //递加商品数量
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');//购物车id
         try{
@@ -257,7 +257,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //递减产品数量
+    //递减商品数量
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');//购物车id
         try{
@@ -300,7 +300,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //获取购物车产品数量
+    //获取购物车商品数量
     public function getCartNum(Request $request)
     {   $user_id = $this->getUserID($request);
         $num = 0;

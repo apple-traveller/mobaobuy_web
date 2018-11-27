@@ -47,7 +47,7 @@ class BrandService
         return BrandRepo::delete($id);
     }
 
-    //产品列表页品牌列表
+    //商品列表页品牌列表
     public static function getBrandsByGoodsList($goodsList)
     {
         $brands = [];

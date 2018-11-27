@@ -21,7 +21,7 @@
 
     <!-- 内容主体区域 -->
     <div class="layui-header" style="background:#3b8cd8;" >
-        <a href="" id="firstT">
+        <a href="/seller" id="firstT">
             <div class="layui-logo" style="background:#fff;">
             <img style="max-height: 40px;" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
             </div>
@@ -40,9 +40,9 @@
     </div>
     <div class="clearfix"></div>
     <!-- 内容主体区域 -->
-    <div class="layui-body" id="cnv">
+    <div class="layui-body" id="cnv" style="bottom: 0px;overflow:scroll;overflow-y:hidden;overflow-x:hidden;">
         <div class="layui-tab" lay-allowClose="true" lay-filter="tab-switch" >
-            <ul class="layui-tab-title" style="position: sticky;top: 0px;background-color: white">
+            <ul class="layui-tab-title" style="position: sticky;background-color: white">
                 <li class="layui-this" >后台首页</li>
             </ul>
             <div class="layui-tab-content" >

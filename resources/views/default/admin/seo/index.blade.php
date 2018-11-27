@@ -30,6 +30,7 @@
                 </div>
                 <ul>
                     <li>该页面展示了seo信息。</li>
+                    <li>输入关键字时请用逗号隔开。</li>
                 </ul>
             </div>
             <div class="flexilist visible">
@@ -40,7 +41,7 @@
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <input  type="hidden" name="id" value="{{$seo['id']}}"/>
                             <div class="item shop_name" data-val="101">
-                                <div class="label"><span class="require-field">*</span>title：</div>
+                                <div class="label">title：</div>
                                 <div class="label_value">
                                     <input type="text" name="title" value="{{$seo['title']}}" class="text" ectype="text" autocomplete="off">
                                     <div class="form_prompt"></div>
@@ -49,7 +50,7 @@
                             </div>
 
                             <div class="item shop_name" data-val="101">
-                                <div class="label"><span class="require-field">*</span>keywords：</div>
+                                <div class="label">keywords：</div>
                                 <div class="label_value">
                                     <input type="text" name="keywords" value="{{$seo['keywords']}}" class="text" ectype="text" autocomplete="off">
                                     <div class="form_prompt"></div>
@@ -57,7 +58,7 @@
                             </div>
 
                             <div class="item shop_name" data-val="101">
-                                <div class="label"><span class="require-field">*</span>description：</div>
+                                <div class="label">description：</div>
                                 <div class="label_value">
                                     <input type="text" name="description" value="{{$seo['description']}}" class="text" ectype="text" autocomplete="off">
                                     <div class="form_prompt"></div>
@@ -87,41 +88,42 @@
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
-                if($("#shopConfigForm").valid()){
-                    $("#shopConfigForm").submit();
-                }
+                $("#shopConfigForm").submit();
+//                if($("#shopConfigForm").valid()){
+//                    $("#shopConfigForm").submit();
+//                }
             });
 
 
-            $('#shopConfigForm').validate({
-                errorPlacement:function(error, element){
-                    var error_div = element.parents('div.label_value').find('div.form_prompt');
-                    element.parents('div.label_value').find(".notic").hide();
-                    error_div.append(error);
-                },
-                rules:{
-                    title :{
-                        required : true,
-                    },
-                    keywords :{
-                        required : true
-                    },
-                    description:{
-                        required : true
-                    }
-                },
-                messages:{
-                    title:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'标题不能为空'
-                    },
-                    keywords :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
-                    },
-                    description:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'描述不能为空'
-                    }
-                }
-            });
+//            $('#shopConfigForm').validate({
+//                errorPlacement:function(error, element){
+//                    var error_div = element.parents('div.label_value').find('div.form_prompt');
+//                    element.parents('div.label_value').find(".notic").hide();
+//                    error_div.append(error);
+//                },
+//                rules:{
+//                    title :{
+//                        required : true,
+//                    },
+//                    keywords :{
+//                        required : true
+//                    },
+//                    description:{
+//                        required : true
+//                    }
+//                },
+//                messages:{
+//                    title:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'标题不能为空'
+//                    },
+//                    keywords :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
+//                    },
+//                    description:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'描述不能为空'
+//                    }
+//                }
+//            });
         });
     </script>
 @stop

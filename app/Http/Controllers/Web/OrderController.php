@@ -36,7 +36,6 @@ class OrderController extends Controller
         if ($request->isMethod('get')) {
             return $this->display('web.user.order.list', compact('tab_code'));
         } else {
-//            dump($request->all());
             $page = $request->input('start', 0) / $request->input('length', 5) + 1;
             $page_size = $request->input('length', 5);
             $firm_id = session('_curr_deputy_user')['firm_id'];
@@ -192,6 +191,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
+//        dd($orderDetailsInfo);
         return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
     }
 

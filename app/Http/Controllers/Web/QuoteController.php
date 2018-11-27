@@ -86,7 +86,7 @@ class QuoteController extends Controller
             $orderBy[$type[0]] = $type[1];
         }
         $pageSize = 10;
-        //产品报价列表
+        //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
 
         #热门推荐
@@ -226,7 +226,7 @@ class QuoteController extends Controller
             'shop_id' => $shop_id,
             'goods_id' => $goods_id
         ];
-        $pageSize = 10;
+        $pageSize = 4;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
