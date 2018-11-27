@@ -15,11 +15,11 @@
     </style>
 @endsection
 @section('body')
-    @include('partials.base_header')
-    <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
-    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
+    {{--@include('partials.base_header')--}}
+    {{--<script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>--}}
     <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
-    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+   {{-- <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />--}}
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
@@ -55,7 +55,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" @if(!empty($good['packing_spec'])) data-packing-spac="{{$good['packing_spec']}}" @else data-packing-spac="" @endif @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input data-goodsname="" type="text" @if(!empty($good['packing_spec']))  data-packing-spac="{{$good['packing_spec']}}" @else data-packing-spac="" @endif @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
                                     <input type="hidden" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_id']}}" @endif name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 142px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -393,6 +393,7 @@
         document.onclick=function(event){
             $(".query_cat_name").hide();
             $(".query_company_name").hide();
+            $(".query_goods_name").hide();
         }
 
         // 商家 获取焦点请求所有的商家数据
@@ -483,7 +484,6 @@
                 if(res.code==1){
                     $(".query_cat_name").show();
                     var data = res.data;
-                    console.log(data);
                     for(var i=0;i<data.length;i++){
                         $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
                     }
@@ -507,7 +507,7 @@
                 data:{"cat_id":cat_id},
                 type:"POST",
                 success:function(res){
-                    if(res.code==200){
+                    if(res.code==1){
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
@@ -521,6 +521,23 @@
             })
         });
 
+        //根据company里面输入的文字实时查询分类数据
+        $("#goods_name").bind("input propertychange",function(res){
+            var goods_name = $(this).val();
+            var cat_id = $("#cat_name").attr("cat-id");
+            $(".query_goods_name").children().filter("li").remove();
+            $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
+                if(res.code==1){
+                    $(".query_goods_name").show();
+                    var data = res.data;
+                    console.log(data);
+                    for(var i=0;i<data.length;i++){
+                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                    }
+                }
+            },"json");
+        });
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -531,10 +548,16 @@
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#goods_name").attr("data-goodsname",goods_name);
             $("#min_limit").val(packing_spac);
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+        });
+
+        $("#goods_name").blur(function(){
+            let _goods_name = $(this).attr("data-goodsname");
+            $(this).val(_goods_name);
         });
 
         $("#goods_number").change(function () {

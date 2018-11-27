@@ -222,8 +222,10 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 
         Route::get('/activity/wholesale', 'ActivityWholesaleController@index');//集采拼团申请列表
         Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add');//添加
-        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//添加
+        Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//保存
         Route::get('/activity/wholesale/delete', 'ActivityWholesaleController@delete');//删除
+        Route::get('/activity/wholesale/detail', 'ActivityWholesaleController@detail');//详情
+        Route::post('/activity/wholesale/modifyStatus', 'ActivityWholesaleController@modifyStatus');//详情
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加

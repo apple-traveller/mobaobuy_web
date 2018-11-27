@@ -37,6 +37,19 @@ class ActivityWholesaleController extends Controller
         ]);
     }
 
+    //详情
+    public function detail(Request $request)
+    {
+        $id = $request->input('id','');
+        $currpage = $request->input('currpage',1);
+        $result = ActivityWholesaleService::getInfoById($id);
+        return $this->display('admin.activitywholesale.detail',[
+            'result' => $result,
+            'currpage' => $currpage,
+        ]);
+    }
+
+
     /**
      * 添加 编辑 页面
      * @param Request $request
@@ -45,9 +58,7 @@ class ActivityWholesaleController extends Controller
     public function add(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
-
         $id = $request->input('id','');
-
         if($id){
             $wholesale_info = ActivityWholesaleService::getInfoById($id);
             $wholesale_info['begin_time'] = explode(' ',$wholesale_info['begin_time']);
@@ -57,8 +68,7 @@ class ActivityWholesaleController extends Controller
             $wholesale_info = [];
             $good = [];
         }
-
-         return $this->display('admin.activitywholesale.edit',[
+        return $this->display('admin.activitywholesale.edit',[
             'currentPage' => $currentPage,
             'wholesale_info' => $wholesale_info,
             'good' => $good
@@ -147,5 +157,17 @@ class ActivityWholesaleController extends Controller
             return $this->error('删除失败');
         }
 
+    }
+
+    public function modifyStatus(Request $request)
+    {
+        $id = $request->input('id');
+        $review_status = $request->input('review_status');
+        try{
+            $res = ActivityWholesaleService::updateById($id,['review_status'=>$review_status]);
+            return $this->success('修改审核状态成功');
+        }catch (\Exception $e){
+            return $this->error('修改失败');
+        }
     }
 }

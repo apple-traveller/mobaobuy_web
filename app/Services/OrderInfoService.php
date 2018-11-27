@@ -434,6 +434,18 @@ class OrderInfoService
         return $order_goods;
     }
 
+    //判断orderid是否是user_id的
+    public static function verifyOrderIds($order_ids,$user_id)
+    {
+        foreach ($order_ids as $k=>$v){
+            $order_info = OrderInfoRepo::getList([],['id'=>$v,'user_id'=>$user_id]);
+            if(empty($order_info)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static function getOrderGoods($params=[], $page = 1 ,$pageSize=10){
         $condition = [];
         if(!empty($params['order_id'])){
