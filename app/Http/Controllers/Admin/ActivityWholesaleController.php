@@ -24,6 +24,7 @@ class ActivityWholesaleController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name'] = '%'.$shop_name.'%';
         }
+        $condition['is_delete'] = 0;
         $pageSize = 10;
         $list = ActivityWholesaleService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['begin_time' => 'desc']]],$condition);
 

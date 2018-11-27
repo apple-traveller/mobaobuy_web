@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="css/index.css" />
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
-		.top-search-div .search-div .logo{background:none;}
+		.top-search-div .search-div .logo{background:none;margin-top: 0}
 		.bottom_time{width: 154px;color: #666;float: left;text-align: left;}
 		.bottom_btn {width: 96px;float: right;text-align: center;height: 38px;border-radius: 5px;line-height: 35px;}
 		.ClearSale_banner{height: 539px;background: url(/default/img/ClearSale_banner.jpg)no-repeat center;}

@@ -69,7 +69,8 @@
 <script>
 $(function() {
 
-    let _path_name = window.location.pathname;
+    let _path_name = window.location.pathname+window.location.search;
+    console.log(_path_name);
     //设置高亮
     $('.nav-menu ul a').each(function(){
         let _this_path_name = $(this).attr('href');
