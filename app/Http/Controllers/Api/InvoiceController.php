@@ -303,6 +303,9 @@ class InvoiceController extends ApiController
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        if(empty($invoiceSession['goods_list'])){
+            return $this->error('请先选择订单');
+        }
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){

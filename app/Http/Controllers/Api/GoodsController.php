@@ -9,6 +9,7 @@ use App\Services\UserRealService;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserAddressService;
+use App\Services\UserService;
 class GoodsController extends ApiController
 {
     //报价列表
@@ -126,14 +127,17 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品报价id');
         }
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        //判断该商品是否被收藏
+        $user_id = $this->getUserID($request);
+        $flag = UserService::checkUserIsCollectApi($user_id,$good_info['goods_id']);
+        $good_info['is_collect'] = $flag;
         $goods_id = $good_info['goods_id'];
         $shop_id = $good_info['shop_id'];
         $condition = [
-            'goods_id'=>$good_info['goods_id'],
-            'shop_id'=>$good_info['shop_id']
+            'goods_id'=>$goods_id,
+            'shop_id'=>$shop_id
         ];
         $goods_quote_list = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($goods_quote_list['list']);
         return $this->success(['good_info'=>$good_info,'goods_quote_list'=>$goods_quote_list['list'],],'success');
     }
 

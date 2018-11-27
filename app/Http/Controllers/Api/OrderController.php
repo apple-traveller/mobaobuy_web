@@ -183,7 +183,8 @@ class OrderController extends ApiController
 
         if ($from == 'promote') {//限时抢购
             try {
-                ActivityPromoteService::getActivityPromoteById($id);
+                //ActivityPromoteService::getActivityPromoteById($id);
+                ActivityPromoteService::getActivityPromoteByIdApi($id);
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }

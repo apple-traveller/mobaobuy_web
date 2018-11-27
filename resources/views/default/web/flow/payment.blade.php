@@ -43,7 +43,7 @@
     </script>
     <style type="text/css">
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 30%;}
+        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 300px;}
         .whitebg{background: #FFFFFF;}
         .pay_title{height: 50px;line-height: 50px;}
         .f4bg{background-color: #f4f4f4;}
