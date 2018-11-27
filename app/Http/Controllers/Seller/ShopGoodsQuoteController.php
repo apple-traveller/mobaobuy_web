@@ -111,8 +111,10 @@ class ShopGoodsQuoteController extends Controller
         if(!$store_name && !$store_id){
             return $this->error('店铺不能为空');
         }
+        $is_self_run = 0;
         if($store_id == 0 && $store_name == '自售' && empty($type)){
             $store_name = $company_name;
+            $is_self_run = 1;
             $type = 1;
         }else{
             if(empty($type)){
@@ -147,7 +149,9 @@ class ShopGoodsQuoteController extends Controller
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
+            'store_name' => $store_name,
             'shop_id' => $shop_id,
+            'shop_name' => $company_name,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
             'place_id' => $place_id,
@@ -162,17 +166,18 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
+            'is_self_run' => $is_self_run,
         ];
 
-        if ($store_id==0){
-            $data['is_self_run'] = 1;
-            $data['type'] = 1;
-            $data['store_name'] = $company_name;
-        } else {
-            $data['is_self_run'] = 0;
-            $data['type'] = 2;
-            $data['store_name'] = $store_name;
-        }
+//        if ($store_id==0){
+//            $data['is_self_run'] = 1;
+//            $data['type'] = 1;
+//            $data['store_name'] = $company_name;
+//        } else {
+//            $data['is_self_run'] = 0;
+//            $data['type'] = 2;
+//            $data['store_name'] = $store_name;
+//        }
         try{
             if($id){
                 $data['id'] = $id;
