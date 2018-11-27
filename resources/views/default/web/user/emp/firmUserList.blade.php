@@ -174,7 +174,7 @@
                             success:function(res){
                                 // var result = JSON.parse(res);
                                 if(res.code){
-                                    $.msg.alert('删除成功');
+                                    // $.msg.alert('删除成功');
                                     window.location.reload();
                                 }else{
                                     alert('删除失败');
@@ -213,7 +213,7 @@
             if($('#firmUserPhone').attr('disabled') == 'disabled'){
                  Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName,'isEdit':1}, function(result){
                     if(result.code){
-                        $.msg.alert('修改成功');
+                        // $.msg.alert('修改成功');
                         window.location.reload();
                     }else{
                         $.msg.alert(result.msg);
@@ -224,7 +224,7 @@
                 //新增
                  Ajax.call('{{url('addFirmUser')}}', {'phone':phone,'permi':arr,'user_name':realName,'isEdit':0}, function(result){
                     if(result.code){
-                        $.msg.alert('添加成功');
+                        // $.msg.alert('添加成功');
                         window.location.reload();
                     }else{
                         $.msg.alert(result.msg);

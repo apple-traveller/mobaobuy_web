@@ -125,7 +125,7 @@ class OrderInfoService
                     }
                     if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                             $orderList['list'][$k]['auth'][] = 'can_confirm';
-                            $orderList['list'][$k]['auth_desc'][] = '待确认发货';
+                            $orderList['list'][$k]['auth_desc'][] = '确认发货';
                             $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
@@ -201,7 +201,7 @@ class OrderInfoService
                         }elseif($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                             if($currUserAuth[0]['can_confirm']){
                                 $orderList['list'][$k]['auth'][] = 'can_confirm';
-                                $orderList['list'][$k]['auth_desc'][] = '待确认发货';
+                                $orderList['list'][$k]['auth_desc'][] = '确认发货';
                                 $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                             }
                         }
@@ -255,7 +255,7 @@ class OrderInfoService
                     }
                     if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '待确认发货';
+                        $orderList['list'][$k]['auth_desc'][] = '确认发货';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }

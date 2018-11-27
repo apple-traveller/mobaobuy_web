@@ -89,7 +89,7 @@
 
 	<div class="WholeSheet">
 			<div class="WholeSheet_banner">
-				<div class="WholeSheet_banner_btn">提交采购需求</div>
+				<div class="WholeSheet_banner_btn"><a href="#pursh_form_title">提交采购需求</a></div>
 				<div class="pursh_text">
 					<div class="pursh_main">
 						<div class="pursh_title">整单采购订单：</div>
@@ -112,7 +112,7 @@
 				<div class="advantage">
 				</div>
 
-				<div class="pursh_form_title">
+				<div class="pursh_form_title" id="pursh_form_title">
 					<span class="fs28 fl">填写整单采购需求：</span><span class="fl" style="color: #333333;padding-top: 2px;font-size: 16px;">您还可以联系在线客服提交采购需求</span><div class="pursh_service"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');">在线客服</a></div>
 				</div>
 				<div class="file"><span class="tip">仅支持格式为jpg,bmp,zip,rar,大小在10M以内的文件。</span><span class="fs16 fl gray"><i class="reds">*</i> 上传采购清单：</span>
