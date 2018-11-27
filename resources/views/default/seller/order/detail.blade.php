@@ -287,7 +287,7 @@
                                                             <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
                                                         @endif
                                                 @endif
-                                                    
+
                                                 @endif
                                             </div>
                                         </div>
