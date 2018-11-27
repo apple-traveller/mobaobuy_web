@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.goods')
-@section('title', '产品列表')
+@section('title', '商品列表')
 @section('css')
 	<style>
 		.Self-product-list li span{width:11%;}
@@ -42,12 +42,12 @@
 @section('content')
 	<div class="clearfix">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
+		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">商品列表</a>
 			<div class="condition">
 
 			</div>
 			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="orange">{{$total}}</font>个相关产品</div></div>
+			<div class="fr">共<font class="orange">{{$total}}</font>个相关商品</div></div>
 
 
 		<div class="pro_screen">
@@ -90,7 +90,7 @@
 		<div class="more_filter_box">更多选项...</div>
 	</div>
 	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">产品列表</h1>
+		<h1 class="product_title">商品列表</h1>
 		<div class="scr">
 			<div class="width1200">
 				<div class="sequence-bar" style="padding:0;padding-right:10px;">

@@ -144,7 +144,7 @@
                         $('#appendGoodsName').append(strHtml);
                     }else{
                         $('#appendGoodsName ul').remove();
-                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendGoodsName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -193,7 +193,7 @@
                        
                     }else{
                          $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");

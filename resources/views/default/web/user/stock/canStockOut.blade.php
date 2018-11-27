@@ -130,7 +130,7 @@
                        
                     }else{
                          $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");

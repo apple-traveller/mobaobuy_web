@@ -34,7 +34,7 @@
 			<table class="Physical_table">
 				<tr>
 					<td class="letW">品  牌</td><td>{{$goodsInfo['brand_name']}}</td>
-					<td>产品编码</td><td>{{$goodsInfo['goods_sn']}}</td>
+					<td>商品编码</td><td>{{$goodsInfo['goods_sn']}}</td>
 				</tr>
 				<tr>
 					<td>包装规格</td><td>{{$goodsInfo['packing_spec']}}</td>
@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td>包装单位</td><td>{{$goodsInfo['packing_unit']}}</td>
-					<td>产品型号</td><td>{{$goodsInfo['goods_model']}}</td>
+					<td>商品型号</td><td>{{$goodsInfo['goods_model']}}</td>
 				</tr>
 				@if(!empty($goods_attr))
 					@foreach($goods_attr as $k=>$v)
@@ -89,7 +89,7 @@
 						</li>
 					@endforeach
 				@else
-					无此产品供应商信息
+					无此商品供应商信息
 				@endif
 			</ul>
 			{!! $linker !!}

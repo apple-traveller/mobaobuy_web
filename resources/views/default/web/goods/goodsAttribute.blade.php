@@ -52,7 +52,7 @@
 				</li>
 				@endforeach
 			@else
-			无产品
+			无商品
 			@endif
 		</table>
 	</ul>

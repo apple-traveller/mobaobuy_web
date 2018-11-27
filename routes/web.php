@@ -308,9 +308,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
     /********************************报价信息*****************************/
-    Route::any('/goodsList', 'QuoteController@goodsList');//产品列表
-    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//产品列表
-    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//产品详情
+    Route::any('/goodsList', 'QuoteController@goodsList');//商品列表
+    Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
+    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//商品详情
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
@@ -326,7 +326,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholesale', 'ActivityWholesaleController@index');//集采拼团
     Route::get('/wholesale/detail/{id?}', 'ActivityWholesaleController@detail');//集采拼团详情
 
-    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//产品走势图价格
+    Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//商品走势图价格
 
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出

@@ -27,7 +27,7 @@ class GoodsController extends Controller
 
     }
 
-    //产品列表
+    //商品列表
     public function goodsList(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -60,11 +60,11 @@ class GoodsController extends Controller
         $pageSize = 10;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
-        //产品报价列表
+        //商品报价列表
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
-        //产品分类
+        //商品分类
         $cate = GoodsCategoryService::getCatesByGoodsList($goodsList['list']);
-        //产品品牌
+        //商品品牌
         $brand = BrandService::getBrandsByGoodsList($goodsList['list']);
         //发货地
         $delivery_place = RegionService::getRegionsByGoodsList($goodsList['list']);
@@ -85,7 +85,7 @@ class GoodsController extends Controller
         ]);
     }
 
-    //根据条件范围收索产品(ajax)
+    //根据条件范围收索商品(ajax)
     public function goodsListByCondition(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -113,7 +113,7 @@ class GoodsController extends Controller
         }
     }
 
-    //产品详情
+    //商品详情
     public function goodsDetail(Request $request)
     {
         $id = $request->input("id");

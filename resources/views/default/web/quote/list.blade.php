@@ -79,7 +79,7 @@
                 @endif
             </div>
 			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
+			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
         </div>
 
 
