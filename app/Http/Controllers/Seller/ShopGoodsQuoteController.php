@@ -111,14 +111,14 @@ class ShopGoodsQuoteController extends Controller
         if(!$store_name && !$store_id){
             return $this->error('店铺不能为空');
         }
-        if($store_id == 0 && $store_name == '自售' && empty($type)){
-            $store_name = $company_name;
-            $type = 1;
-        }else{
-            if(empty($type)){
-                $type = 2;
-            }
-        }
+//        if($store_id == 0 && $store_name == '自售' && empty($type)){
+//            $store_name = $company_name;
+//            $type = 1;
+//        }else{
+//            if(empty($type)){
+//                $type = 2;
+//            }
+//        }
         if(!$delivery_place){
             return $this->error('交货地不能为空');
         }
@@ -148,6 +148,7 @@ class ShopGoodsQuoteController extends Controller
         $data = [
             'shop_store_id' => $store_id,
             'shop_id' => $shop_id,
+            'shop_name' => $company_name,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
             'place_id' => $place_id,

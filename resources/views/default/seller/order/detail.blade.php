@@ -274,7 +274,7 @@
                                                 @endif
                                                 // 确认收到定金
                                                 @if($orderInfo['order_status']==2)
-                                                    @if($orderInfo['deposit_status'] == 0 && $orderInfo['order_status']==3) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
+                                                    @if($orderInfo['deposit_status'] == 1) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
                                                 @endif
                                                 // 发货
                                                 @if($orderInfo['order_status']>=3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)

@@ -370,18 +370,25 @@
                 @for ($i = 0; $i < 4; $i++)
                     @php $article = $article_list[$i]??[]; @endphp
                     @if(!empty($article))
-                    <li><a href="detail.html?id={{$article['id']}}">
-                        <div class="Quotate-img"><img src="{{getFileUrl($article['image'])}}" /></div>
-                        <div class="Quotate_text">{{$article['title']}}</div>
+                        <a href="detail/{{$article['id']}}.html">
+                            <li>
+                                <div class="Quotate-img"><img src="{{getFileUrl($article['image'])}}" /></div>
+                                <div class="Quotate_text">{{$article['title']}}</div>
+                            </li>
                         </a>
-                    </li>
                     @endif
                 @endfor
             </ul>
 
             <ul class="Quotate_right">
                 @foreach($article_list as $item)
-                <li><a href="detail.html?id={{$item['id']}}"><span class="fl ml5">{{$item['title']}}</span><span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span></a></li>
+                    <a href="detail/{{$item['id']}}.html">
+                        <li>
+                            <span class="fl ml5">{{$item['title']}}</span>
+                            <span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span>
+                        </li>
+                    </a>
+
                 @endforeach
             </ul>
         </div>
