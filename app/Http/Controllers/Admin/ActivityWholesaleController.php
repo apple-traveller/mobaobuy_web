@@ -26,7 +26,7 @@ class ActivityWholesaleController extends Controller
         $pageSize = 10;
         $list = ActivityWholesaleService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['begin_time' => 'desc']]],$condition);
 
-        return $this->display('admin.activity.wholesale',[
+        return $this->display('admin.activitywholesale.list',[
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
@@ -51,11 +51,12 @@ class ActivityWholesaleController extends Controller
             $wholesale_info['begin_time'] = explode(' ',$wholesale_info['begin_time']);
             $wholesale_info['end_time'] = explode(' ',$wholesale_info['end_time']);
             $good = GoodsService::getGoodInfo($wholesale_info['goods_id']);
-        } else {
+        }else{
             $wholesale_info = [];
             $good = [];
         }
-         return $this->display('admin.activity.edit_wholesale',[
+
+         return $this->display('admin.activitywholesale.edit',[
             'currentPage' => $currentPage,
             'wholesale_info' => $wholesale_info,
             'good' => $good

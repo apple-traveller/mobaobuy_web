@@ -14,10 +14,7 @@ class UserController extends ApiController
     //账号信息
     public function detail(Request $request)
     {
-        $id = $request->input('id');
-        if(empty($id)){
-            return $this->error('请传入用户id');
-        }
+        $id = $this->getUserID($request);
         //查询用户信息和实名信息
         $user = UserService::getApiUserInfo($id);
         return $this->success($user,'success');
@@ -152,6 +149,22 @@ class UserController extends ApiController
             }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
+        }
+    }
+
+    //删除收货地址
+    public function deleteAddress(Request $request)
+    {
+        $id = $request->input('id','');
+        if (empty($id)){
+            return $this->error('参数错误');
+        }
+        $re = UserAddressService::delete($id);
+
+        if ($re){
+            return $this->success('删除成功');
+        } else {
+            return $this->error('删除失败');
         }
     }
 

@@ -162,7 +162,7 @@ class PromoteController extends Controller
             $condition['cat_name'] = "%".$cat_name."%";
         }
         $cates = GoodsCategoryService::getCatesByCondition($condition);
-        return $this->result($cates,200,'获取数据成功');
+        return $this->success('success','',$cates);
     }
 
     //ajax获取商品值
@@ -187,12 +187,13 @@ class PromoteController extends Controller
     }
 
     //ajax获取商家列表
-    public function getShopList()
+    public function getShopList(Request $request)
     {
         $condition = [
             'is_validated' => 1,
             'is_freeze' => 0,
         ];
+
         $res = ShopService::getList([],$condition);
         if($res){
             return $this->success('成功！','',$res);
