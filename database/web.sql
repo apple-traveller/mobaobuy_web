@@ -978,7 +978,7 @@ CREATE TABLE `invoice` (
   `district` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '县',
   `street` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '街道',
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
-  `zipcode` varchar(60) NOT NULL DEFAULT '' COMMENT '邮政编码',
+  `zipcode` varchar(60) DEFAULT '' COMMENT '邮政编码',
   `mobile_phone` varchar(60) NOT NULL DEFAULT '' COMMENT '联系电话',
 
   `invoice_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '发票类型 1-普票 2-专票',

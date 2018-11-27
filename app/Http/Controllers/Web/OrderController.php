@@ -191,6 +191,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
+//        dd($orderDetailsInfo);
         return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
     }
 
