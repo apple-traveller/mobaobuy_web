@@ -25,9 +25,10 @@
             <a href="/">
                 <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
             </a>
+            <div class="go-login">已有账号，可 <a href="/seller/login.html" style="color:#36a3ef">直接登录</a></div>
         </div>
 
-        <div class="go-login">已有账号，可 <a href="/seller/login.html" style="color:#36a3ef">直接登录</a></div>
+
     </div>
 </div>
 <div class="clearfix" style="height: 35px;"></div>
@@ -68,7 +69,7 @@
                     <div class="item-info" style="width: 178px;">
                         <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码"  id="verify" onblur="verifyValidate();">
                     </div>
-                    <img src="" title="点击换一个校验码" style="margin-left: 10px;margin-top:-4px;line-height: 35px;height: 45px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                    <img src="" title="点击换一个校验码" style="margin-left: 10px;margin-top:-4px;line-height: 35px;height: 44px; width: 140px;" alt="点击换一个校验码" id="imVcode">
                     <div class="input-tip"><label id="verify_error" class="error"></label></div>
                 </div>
                 <div class="item">
@@ -76,14 +77,22 @@
                     <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
                         <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" readonly maxlength="6" onblur="msgCodeValidate();">
                     </div>
-                    <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                    <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 140px;" id="messCode_but" value="获取手机验证码">
                     <div class="input-tip"><label id="msgCode_error" class="error"></label></div>
                 </div>
 
             </div>
         </div>
-        <div class="register-checkbox">
-            <label class="check_box"><input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />我已阅读并同意<a class="orange">《注册服务协议》</a></label>
+        <div class="register-checkbox" style="width:300px;margin: 0 auto">
+            <label class="check_box">
+                <p style="width:20px; height:20px;overflow: hidden;float:left;margin-top: 1px;">
+                    <input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />
+                </p>
+                <span>
+                        我已阅读并同意<a class="orange">《秣宝平台用户注册协议》</a>
+                    </span>
+
+            </label>
         </div>
         <button class="register-button" id="sub-btn">同意并提交申请</button>
     </div>
@@ -333,9 +342,9 @@
         };
         Ajax.call("{{url('/seller/register')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href="/seller/login.html";
+                window.location.href="/seller/waitForExamine.html";
             }else{
-                $.msg.error(result.msg);
+                $.msg.alert(result.msg);
             }
         }, "POST", "JSON");
         gv()

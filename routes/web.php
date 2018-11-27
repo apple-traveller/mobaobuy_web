@@ -488,6 +488,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::post('/login', 'LoginController@login');
     Route::get('/register.html', 'LoginController@register');
     Route::post('/register', 'LoginController@register');
+    Route::get('/waitForExamine.html', 'LoginController@waitForExamine');
     Route::post('/getSmsCode', 'LoginController@getSmsCode');
     Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
