@@ -176,20 +176,32 @@ class GoodsController extends Controller
 
     //物性表详情
     public function goodsAttributeDetails(Request $request,$id){
-       $page = $request->input('page',0);
-       $page_size = $request->input('length',6);
+        $page = $request->input('page',0);
+        $page_size = $request->input('length',6);
         $url = '/goodsAttributeDetails/'.$id .'?page=%d';
-       try{
-           $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
-           if(!empty($shopGoodsInfo['list'])){
-               $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
-           }else{
-               $linker = createPage($url, 1, 1);
-           }
-           return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list'],'linker'=>$linker]);
-       }catch (\Exception $e){
-           return $this->error($e->getMessage());
-       }
+        try{
+            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+            $goods_attr = [];
+            if(!empty($shopGoodsInfo['goodsInfo'])){
+                $attr = explode(';', $shopGoodsInfo['goodsInfo']['goods_attr']);
+                foreach ($attr as $k=>$v){
+                    $goods_attr[$k] = explode(':',$v);
+                }
+            }
+            if(!empty($shopGoodsInfo['list'])){
+                $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
+            }else{
+                $linker = createPage($url, 1, 1);
+            }
+            return $this->display('web.goods.goodsAttributeDetails',[
+                'goodsInfo'=>$shopGoodsInfo['goodsInfo'],
+                'list'=>$shopGoodsInfo['list'],
+                'linker'=>$linker,
+                'goods_attr'=>$goods_attr,
+            ]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     //商品走势图

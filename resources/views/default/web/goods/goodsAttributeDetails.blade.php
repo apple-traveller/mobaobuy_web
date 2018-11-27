@@ -32,10 +32,37 @@
 			<h1 class="fs20 tac fwb bb1 lh40 ">{{$goodsInfo['goods_name']}}</h1>
 			<div class="Physical_table_title Physical_table_Name">{{$goodsInfo['goods_name']}}</div>
 			<table class="Physical_table">
-				<tr><td class="letW">品 牌</td><td>{{$goodsInfo['brand_name']}}</td><td>产品编码</td><td>{{$goodsInfo['goods_sn']}}</td></tr>
-				<tr><td>包装规格</td><td>{{$goodsInfo['packing_spec']}}</td><td>单位名称</td><td>{{$goodsInfo['unit_name']}}</td></tr>
-				<tr><td>包装单位</td><td>{{$goodsInfo['packing_unit']}}</td><td>产品型号</td><td>{{$goodsInfo['goods_model']}}</td></tr>
-				<tr><td class="letW">属  性</td><td class="ovhwp">{{$goodsInfo['goods_attr']}}</td><td class="letW">含 量</td><td>{{$goodsInfo['goods_content']}}</td></tr>
+				<tr>
+					<td class="letW">品  牌</td><td>{{$goodsInfo['brand_name']}}</td>
+					<td>产品编码</td><td>{{$goodsInfo['goods_sn']}}</td>
+				</tr>
+				<tr>
+					<td>包装规格</td><td>{{$goodsInfo['packing_spec']}}</td>
+					<td>单位名称</td><td>{{$goodsInfo['unit_name']}}</td>
+				</tr>
+				<tr>
+					<td>包装单位</td><td>{{$goodsInfo['packing_unit']}}</td>
+					<td>产品型号</td><td>{{$goodsInfo['goods_model']}}</td>
+				</tr>
+				@if(!empty($goods_attr))
+					@foreach($goods_attr as $k=>$v)
+						@if($k == 0)
+							<tr>
+							<td class="letW">含  量</td><td>{{$goodsInfo['goods_content']}}</td>
+							<td class="letW">{{$v[0]}}</td><td class="ovhwp">{{$v[1]}}</td>
+						@else
+							@if($k%2 == 1)
+								</tr><tr>
+							@endif
+							<td class="letW">{{$v[0]}}</td><td class="ovhwp">{{$v[1]}}</td>
+						@endif
+					@endforeach
+						</tr>
+				@endif
+				{{--<tr>--}}
+					{{--<td class="letW">属  性</td><td class="ovhwp">{{$goodsInfo['goods_attr']}}</td>--}}
+					{{--<td class="letW">含  量</td><td>{{$goodsInfo['goods_content']}}</td>--}}
+				{{--</tr>--}}
 				<!-- <tr ><td>用       途</td><td colspan="4">可做纯天然保健品食用，广泛用于营养品、食品添加剂和药品 </td></tr> -->
 			</table>
 			<div class="Physical_table_title Physical_table_supply">{{$goodsInfo['goods_name']}}</div>
@@ -51,21 +78,21 @@
 								<span></span> <span class="ml15"></span>
 								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
 							</div>
-							<div class="fl mb10 mt15 ml20" style="width:358.5px;">
+							<div class="fl mb10 mt15 ml20" style="width:585px;">
 								<span class="db"></span>
 								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}元</span><span class="ml20"></span>
 								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
-							<div class="phy_chart"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
+							<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
 							<div class="phy_line fl"></div>
 							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
 						</li>
 					@endforeach
 				@else
-				无此产品供应商信息
+					无此产品供应商信息
 				@endif
 			</ul>
-			 {!! $linker !!}
+			{!! $linker !!}
 		</div>
 	</div>
 @endsection
