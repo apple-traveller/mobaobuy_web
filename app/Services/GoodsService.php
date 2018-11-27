@@ -235,6 +235,10 @@ class GoodsService
 
     //删除购物车某条商品
     public static function delCart($id){
+        $cartInfo = CartRepo::getInfo($id);
+        if(empty($cartInfo)){
+            self::throwBizError('购物车商品不存在');
+        }
         return CartRepo::delete($id);
     }
 

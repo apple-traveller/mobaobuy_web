@@ -293,12 +293,14 @@ class ShopGoodsQuoteService
         return $activityArr;
     }
 
-    /**
-     * 检测报价是否存在订单
-     */
-    public function checkQuoteExistOrder()
+    //
+    public static function checkStoreExistQuote($store_id)
     {
-
+        $res = ShopGoodsQuoteRepo::getTotalCount(['shop_store_id'=>$store_id]);
+        if($res>0){
+            return true;
+        }
+        return false;
     }
 }
 

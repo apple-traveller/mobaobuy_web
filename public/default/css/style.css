@@ -74,7 +74,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .ass_fn .ass_fn_list .ass_fn_list_that span {width: 120px;display: inline-block;}
 .ass_menu>li:hover {background-color: #fff; color: #75b335;}
 .nav-div .nav-menu{background: #fff;float: left;padding-left: 7px;float: left;height: 38px;line-height: 38px;}
-.nav-div .nav-menu li {float: left;position: relative;font-size: 16px;margin: 0 37px;cursor: pointer;}
+.nav-div .nav-menu li {float: left;position: relative;font-size: 16px;margin: 0 30px;cursor: pointer;}
 
 .footer-service-box {clear: both;background-color: #FFFFFF;}
 .footer-service-box .icons {overflow: hidden;}

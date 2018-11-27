@@ -72,6 +72,12 @@ class ShopLoginService
         }
     }
 
+    /**
+     * 商户登录
+     * @param $data
+     * @return array|void
+     * @throws \Exception
+     */
     public static function CheckLogin($data)
     {
         if (empty($data)){
@@ -85,6 +91,9 @@ class ShopLoginService
             self::throwBizError('密码不正确');
         }
         $shop_info = ShopRepo::getInfoByFields(['id'=>$user_info['shop_id']]);
+        if (empty($shop_info)){
+            self::throwBizError('店铺不存在');
+        }
         if ($shop_info['is_validated'] == 0){
             self::throwBizError('未通过审核,暂不能登录,请耐心等待');
         }

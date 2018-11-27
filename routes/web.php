@@ -223,11 +223,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/activity/wholesale', 'ActivityWholesaleController@index');//集采拼团申请列表
         Route::get('/activity/wholesale/add', 'ActivityWholesaleController@add');//添加
         Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//添加
+        Route::get('/activity/wholesale/delete', 'ActivityWholesaleController@delete');//删除
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
         Route::get('/activity/consign/edit', 'ActivityConsignController@edit');//编辑
         Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
+        Route::post('/activity/consign/delete', 'ActivityConsignController@delete');//删除
 
 
 
@@ -452,7 +454,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/invoice/getStatusCount',  'InvoiceController@getStatusCount'); // 各状态数量
         Route::get('/invoice',  'InvoiceController@invoiceList'); // 待开票列表
         Route::post('/invoice/confirm',  'InvoiceController@confirm'); // 开票确认页面
-        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认页面
+        Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 开票确认保存
         Route::post('/invoice/editInvoiceAddress',  'InvoiceController@editInvoiceAddress'); // 选择收票地址
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
@@ -488,6 +490,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     Route::post('/SmsCodeLogin', 'LoginController@SmsCodeLogin');
     Route::post('/checkShopName', 'LoginController@checkShopName');
     Route::get('/checkCompany', 'LoginController@checkCompany');
+    Route::post('checkSession', 'LoginController@checkSession');
     Route::group(['middleware' => 'seller.auth'], function () {
 
         Route::get('/', 'IndexController@index');
@@ -518,7 +521,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
-        Route::post('/goods/getGoods', 'ShopGoodsController@getGoods');
         Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 

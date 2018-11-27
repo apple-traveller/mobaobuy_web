@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ActivityWholesaleService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
+use App\Services\OrderInfoService;
 use Illuminate\Http\Request;
 
 class ActivityWholesaleController extends Controller
@@ -23,6 +24,7 @@ class ActivityWholesaleController extends Controller
         if(!empty($shop_name)){
             $condition['shop_name'] = '%'.$shop_name.'%';
         }
+        $condition['is_delete'] = 0;
         $pageSize = 10;
         $list = ActivityWholesaleService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['begin_time' => 'desc']]],$condition);
 
@@ -65,8 +67,9 @@ class ActivityWholesaleController extends Controller
 
     /**
      * 添加&修改——动作
+     * save
      * @param Request $request
-     * @return ActivityController|\Illuminate\Http\RedirectResponse
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
@@ -115,25 +118,31 @@ class ActivityWholesaleController extends Controller
     }
 
     /**
+     * 删除集采拼团
      * delete
      * @param Request $request
-     * @return ActivityController|\Illuminate\Http\RedirectResponse
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        $shop_id = session('_seller_id')['shop_id'];
-        $check = ActivityWholesaleService::getListBySearch([],['shop_id'=>$shop_id,'id'=>$id]);
-        if (!$id){
-            return $this->error('信息出错，请刷新');
+        $currentPage = $request->input('currentPage',1);
+        if(!$id){
+            return $this->error('无法获取参数ID');
         }
+        $check = ActivityWholesaleService::getInfoById($id);
         if (!$check){
             return $this->error('您的店铺没有该订单，请刷新');
         }
-        $re = ActivityWholesaleService::delete($id);
+        $is_exist_order = OrderInfoService::checkActivityExistOrder($id,'wholesale');
+        if($is_exist_order){
+            return $this->error('该活动存在相应订单，无法删除');
+        }
+
+        $re = ActivityWholesaleService::updateById($id,['is_delete'=>1]);
 
         if ($re){
-            return $this->success('删除成功');
+            return $this->redirect('/admin/activity/wholesale',['currentPage'=>$currentPage]);
         } else {
             return $this->error('删除失败');
         }

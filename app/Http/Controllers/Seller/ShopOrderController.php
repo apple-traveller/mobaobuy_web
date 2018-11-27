@@ -148,18 +148,18 @@ class ShopOrderController extends Controller
                         return $this->error('订单状态不符合执行该操作的条件');
                     }
                     $data['confirm_time'] = Carbon::now();
-                }
-                // 交货时间
-                if (!empty($delivery_period)) {
-                    if ($orderInfo['order_status'] != 2) {
-                        return $this->error('订单状态不符合执行该操作的条件');
+                    $data['order_status'] = $order_status;
+                    // 交货时间
+                    if (!empty($delivery_period)) {
+                        if ($orderInfo['order_status'] != 2) {
+                            return $this->error('订单状态不符合执行该操作的条件');
+                        }
+                        $data['delivery_period'] = $delivery_period;
+                        if (empty($action_note)) {
+                            $action_note = "修改交货时间";
+                        }
                     }
-                    $data['delivery_period'] = $delivery_period;
-                    if (empty($action_note)) {
-                        $action_note = "修改交货时间";
-                    }
                 }
-                $data['order_status'] = $order_status;
                 if ($order_status!='' && $order_status==0 ) {
                     $data['order_status'] = $order_status;
                     $data['to_buyer'] =$to_buyer;

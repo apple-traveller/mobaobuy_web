@@ -110,7 +110,7 @@ function addTab(tabTitle,tabUrl,tabId){
     }else{
         element.tabAdd('tab-switch', {
             title: tabTitle
-            ,content: '<iframe src='+tabUrl+' width="100%" style="min-height: 500px;" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
+            ,content: '<iframe src='+tabUrl+' width="100%" id="flyOwn" style="min-height: 500px;" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
             ,id: tabId //选项卡标题的lay-id属性值
         });
         element.tabChange('tab-switch', tabId); //切换到新增的tab上
@@ -133,25 +133,26 @@ function loadIframe(tabTitle,url,tabId) {
 }
 
 
-window.onload=function() {
-    console.log(window.sessionStorage["_seller_id"]);
-    let session = "{:session('_seller_id')}";
-    console.log(session);
-    if (window.sessionStorage["_seller_id"])
-    {
-    }
+window.onload =function() {
     // var hash = location.hash;
     // if (!hash){
     //     return ;
     // }
+
     if ($.cookie('anchor')==null){
         $("#firstT").find('a').click();
     }
     let hash = $.cookie('anchor');
+
+    if (!hash || typeof (hash)==="undefined"){
+        return false;
+    }
+
     let tL = hash.indexOf('&');
     let IL = hash.lastIndexOf('#');
 
-    let tabTitle = decodeURIComponent($.base64.atob(hash.substring(0,tL)));
+    let tabTitle = $.base64.atob(hash.substring(0,tL));
+         tabTitle = decodeURIComponent(tabTitle);
     let url = $.base64.atob(hash.substring(tL+1,IL));
     let tabId =$.base64.atob(hash.substring(IL+1,hash.length));
     element.tabAdd('tab-switch', {
@@ -194,4 +195,39 @@ function resizelayer(layerIndex,layerInitWidth,layerInitHeight) {
         width:minWith,
         height:minHeight
     })
+
+
+}
+
+// $(function () {
+//     $("*[ectype='iframeHref']").on("click",function(){
+//         var url = $(this).attr('href');
+//         // checkLogin();
+//
+//         $('.layui-tab-item iframe[id="flyOwn"]').attr('src',url);
+//         console.log($('.layui-tab-item iframe[id="flyOwn"]').attr('src'));
+//     });
+//     // $(document).on("click", "a", function(){
+//
+//     // });
+// });
+
+function checkLogin() {
+    $.ajax({
+        url:'/seller/checkSession',
+        data:'',
+        type:'POST',
+        sync:false,
+        success:function (res) {
+            if (res.code==200){
+                if (res.data!=null||res.data!==""){
+                    return true;
+                } else {console.log(res);
+                    top.location.href = '/seller/login.html';
+                    top.location = '/seller/login.html';
+                    window.location.reload();
+                }
+            }
+        }
+    });
 }
