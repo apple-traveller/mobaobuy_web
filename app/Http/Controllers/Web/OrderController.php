@@ -320,7 +320,7 @@ class OrderController extends Controller
                     $goodsList[$k3]['account'] = number_format($v3['shop_price'] * $v3['goods_number'], 2);
                     $goods_amount += $v3['shop_price'] * $v3['goods_number'];
                 }
-                $goods_amount = number_format($goods_amount, 2);
+//                $goods_amount = number_format($goods_amount, 2);
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
