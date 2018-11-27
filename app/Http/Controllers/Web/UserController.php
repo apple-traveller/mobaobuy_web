@@ -1000,7 +1000,6 @@ class UserController extends Controller
             return $this->display('web.user.account.userSale');
         }else{
             try{
-                dd($saleData);
                 UserService::sale($saleData);
                 return $this->success();
             }catch (\Exception $e){

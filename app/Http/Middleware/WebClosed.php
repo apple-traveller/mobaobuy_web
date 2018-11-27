@@ -54,6 +54,7 @@ class WebClosed extends Controller
                 }
 
                 session()->put('_web_user', $user_info);
+
 //            }
 
             if(!session()->has('_curr_deputy_user')){
@@ -67,6 +68,7 @@ class WebClosed extends Controller
 
                 session()->put('_curr_deputy_user', $info);
             }
+
 
             //缓存模板信息
             if(!session()->has('web_theme')){
