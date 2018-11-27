@@ -119,6 +119,8 @@ class ShopGoodsQuoteController extends Controller
         }else{
             if(empty($type)){
                 $type = 2;
+            }else{
+                $store_name = $company_name;
             }
         }
         if(!$delivery_place){
