@@ -101,9 +101,9 @@ class UserController extends ApiController
         if (empty($address)){
             return $this->error('请输入详细地址');
         }
-        if (empty($zipcode)){
+       /* if (empty($zipcode)){
             return $this->error('请输入邮政编码');
-        }
+        }*/
         if (empty($consignee)){
             return $this->error('请填写收货人');
         }

@@ -679,4 +679,22 @@ class UserService
             self::throwBizError($e);
         }
     }
+
+    //解绑
+    public static function deleteThird($openid)
+    {
+        try{
+            $condition = [
+                'open_id' => $openid,
+            ];
+            $flag = AppUsersRepo::getInfoByFields($condition);
+            if(empty($flag)){
+                self::throwBizError('参数有误');
+            }
+            return AppUsersRepo::deleteByFields($condition);
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
+    }
 }

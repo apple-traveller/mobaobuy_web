@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>文章作者：</div>
+                                <div class="label">文章作者：</div>
                                 <div class="label_value">
                                     <input type="text" name="author" class="text" autocomplete="off" value="">
                                     <div class="form_prompt"></div>
@@ -67,12 +67,12 @@
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>关键字：</div>
+                                <div class="label">关键字：</div>
                                 <div class="label_value"><input type="text" name="keywords" class="text" autocomplete="off" value=""><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>网页描述：</div>
+                                <div class="label">网页描述：</div>
                                 <div class="label_value">
                                     <textarea name="description" class="textarea"></textarea>
                                     <div class="form_prompt"></div>
@@ -87,7 +87,7 @@
                                 <div class="label_value"><input type="text" name="file_url" class="text valid" autocomplete="off" id="link_url" value="http://" aria-invalid="false"></div>
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>上传图片：</div>
+                                <div class="label">上传图片：</div>
                                 <div class="label_value">
                                     <button type="button" class="layui-btn upload-file" data-type="" data-path="article" >上传图片</button>
                                     <input type="hidden" value="" class="text" id="image"  name="image" style="display:none;">
@@ -117,9 +117,9 @@
         </div>
     </div>
     <script type="text/javascript">
-        var ue = UE.getEditor('container',{initialFrameHeight:400});
-        ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        var ue = UE.getEditor('container',{
+            initialFrameWidth : '100%',//宽度
+            initialFrameHeight: 500//高度
         });
     </script>
     <script type="text/javascript">
@@ -178,15 +178,7 @@
                     content :{
                         required : true,
                     },
-                    author :{
-                        required : true,
-                    },
-                    keywords :{
-                        required : true,
-                    },
-                    image :{
-                        required : true,
-                    }
+
                 },
                 messages:{
                     title:{
@@ -195,15 +187,7 @@
                     content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'文章内容不能为空'
                     },
-                    author:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章作者不能为空'
-                    },
-                    keywords:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
-                    },
-                    image:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'图片不能为空'
-                    },
+
                 }
             });
         });
