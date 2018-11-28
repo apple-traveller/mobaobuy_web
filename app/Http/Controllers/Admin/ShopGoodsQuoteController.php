@@ -41,16 +41,7 @@ class ShopGoodsQuoteController extends Controller
     //添加
     public function addForm(Request $request)
     {
-        $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
-        //dd($goods);
-        return $this->display('admin.shopgoodsquote.add',[
-            'goodsCatTree'=>$goodsCatTree,
-            'shops'=>$shops['list'],
-            'goods'=>$goods['list']
-        ]);
+        return $this->display('admin.shopgoodsquote.add');
     }
 
     //编辑
@@ -86,7 +77,7 @@ class ShopGoodsQuoteController extends Controller
             $errorMsg[] = '发货地不能为空';
         }
         if($data['shop_id']==0||empty($data['shop_id'])){
-            $errorMsg[] = '店铺不能为空';
+            $errorMsg[] = '商家不能为空';
         }
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
@@ -114,7 +105,7 @@ class ShopGoodsQuoteController extends Controller
         $currpage = $request->input('currpage');
         unset($data['currpage']);
 
-        if(empty($data['store_id']) && $data['store_name'] == '自售'){
+        if(empty($data['shop_store_id']) && $data['store_name'] == '自售'){
             $data['store_name'] = $data['shop_name'];
             $data['type'] = 1;
         }else{
@@ -123,6 +114,9 @@ class ShopGoodsQuoteController extends Controller
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
+                if(empty($goodsQuote)){
+                    return $this->error('报价信息不存在');
+                }
                 $flag = ShopGoodsQuoteService::modify($data);
                 if(!empty($flag)){
                     return $this->success('修改成功',url('/admin/shopgoodsquote/list')."?currpage=".$currpage);

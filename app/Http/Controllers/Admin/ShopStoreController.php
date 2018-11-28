@@ -35,9 +35,11 @@ class ShopStoreController extends Controller
     public function storeList(Request $request)
     {
         $shop_id = $request->get('shop_id','');
+        $store_name = $request->get('store_name','');
 
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
+        $condition['store_name']= '%'.$store_name.'%';
 
         $storeList = ShopStoreService::getShopStoreList([],$condition);
         if($storeList){
