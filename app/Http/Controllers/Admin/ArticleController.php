@@ -91,22 +91,19 @@ class ArticleController extends Controller
         if(empty($data['content'])){
             $errorMsg[] = '文章内容不能为空';
         }
-        if(empty($data['author'])){
-            $errorMsg[] = '文章作者不能为空';
-        }
-        if(empty($data['keywords'])){
-            $errorMsg[] = '文章关键字不能为空';
-        }
+
         if(empty($data['cat_id'])){
             $errorMsg[] = '所属分类不能为空';
-        }
-        if(empty($data['image'])){
-            $errorMsg[] = '图片不能为空';
         }
 
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
+        $data['author'] = $this->requestGetNotNull('author','');
+        $data['keywords'] = $this->requestGetNotNull('keywords','');
+        $data['file_url'] = $this->requestGetNotNull('file_url','');
+        $data['image'] = $this->requestGetNotNull('image','');
+        $data['description'] = $this->requestGetNotNull('description','');
         try{
             if(empty($id)){
                 ArticleService::uniqueValidate($data['title']);//唯一性验证

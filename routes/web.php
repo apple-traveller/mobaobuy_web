@@ -645,6 +645,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/save_real_info','UserController@saveUserReal');//保存实名信息
             Route::post('/user/logout','LoginController@logout');//退出登录
             Route::post('/user/sale','UserController@sale');// 我要卖货
+            Route::post('/user/untying','LoginController@untying');// 解绑微信
 
             Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 

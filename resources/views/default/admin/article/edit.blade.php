@@ -63,17 +63,17 @@
                             </div>
                             <!--  -->
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>文章作者：</div>
+                                <div class="label">文章作者：</div>
                                 <div class="label_value"><input type="text" name="author" class="text" autocomplete="off" value="{{$article['author']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>关键字：</div>
+                                <div class="label">关键字：</div>
                                 <div class="label_value"><input type="text" name="keywords" class="text" autocomplete="off" value="{{$article['keywords']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>网页描述：</div>
+                                <div class="label">网页描述：</div>
                                 <div class="label_value">
                                     <textarea name="description" class="textarea">{{$article['description']}}</textarea>
                                     <div class="form_prompt"></div>
@@ -179,12 +179,7 @@
                     content :{
                         required : true,
                     },
-                    author :{
-                        required : true,
-                    },
-                    keywords :{
-                        required : true,
-                    },
+
 
 
                 },
@@ -195,12 +190,7 @@
                     content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'文章内容不能为空'
                     },
-                    author:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章作者不能为空'
-                    },
-                    keywords:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
-                    },
+
 
                 }
             });
