@@ -390,7 +390,7 @@ class OrderInfoService
         ];
 
         //待付定金
-        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));  
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
         $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
@@ -443,6 +443,7 @@ class OrderInfoService
         foreach ($order_goods as $k => $vo) {
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
+            $order_goods[$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -456,6 +457,7 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
+            $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }

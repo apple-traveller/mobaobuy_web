@@ -59,6 +59,7 @@
                                                 <th lay-data="{type:'checkbox',LAY_CHECKED:true}"></th>
                                                 <th lay-data="{field:'goods_name'}">商品名称</th>
                                                 <th lay-data="{field:'goods_sn'}">商品编码</th>
+                                                <th lay-data="{field:'packing_spec'}">商品规格</th>
                                                 <th lay-data="{field:'goods_price'}">价格</th>
                                                 <th lay-data="{field:'goods_number'}">购买数量</th>
                                                 <th lay-data="{field:'send_number'}">已发货数量</th>
@@ -102,18 +103,18 @@
                     var data = table.checkStatus('idTest');
                     console.log(data);
                     if (data.data.length<=0){
-                        layer.msg('未选中商品');
+                        layer.alert('未选中商品');
 
                     }
                     let error = [];
                     $.each(data.data,function (index,value) {
                         if (!Number(value.send_number_delivery) || value.send_number_delivery === 'undefined') {
-                            layer.msg('请填写发货数量');
+                            layer.alert('请填写发货数量');
                             error.push(index);
                             return false;
                         }
                         if (Number(value.send_number_delivery)> value.goods_number - value.send_number){
-                            layer.msg('发货数不能大于购买商品数');
+                            layer.alert('发货数不能大于购买商品数');
                             error.push(index);
                             return false;
                         }

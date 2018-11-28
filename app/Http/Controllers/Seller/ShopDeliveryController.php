@@ -112,7 +112,8 @@ class ShopDeliveryController extends Controller
         $status = $request->input('status','');
         $data = [
             'id'=> $id,
-            'status'=>$status
+            'status'=>$status,
+            'shipping_time'=>Carbon::now()
         ];
         try{
             //修改订单表的发货状态

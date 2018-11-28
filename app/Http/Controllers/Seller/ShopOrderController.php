@@ -139,7 +139,7 @@ class ShopOrderController extends Controller
                 $data = ['id' => $id];
                 // 确认订单
                 if ($order_status == 3) {
-                    if ($orderInfo['extension_code'] == 'cart') {
+                    if ($orderInfo['extension_code'] == 'cart' || $orderInfo['extension_code'] == 'consign') {
                         $re_rock = ShopGoodsQuoteService::updateStock($id);
                         if (!$re_rock) {
                             return $this->error('库存不足，无法确认');
@@ -161,9 +161,17 @@ class ShopOrderController extends Controller
                         }
                     }
                 }
+                // 取消订单
                 if ($order_status!='' && $order_status==0 ) {
-                    $data['order_status'] = $order_status;
-                    $data['to_buyer'] =$to_buyer;
+                    $re = OrderInfoService::orderCancel($orderInfo['id'],$orderInfo['extension_code']);
+                    if ($re==true){
+                        $data['order_status'] = $order_status;
+                        $data['to_buyer'] =$to_buyer;
+                        if (empty($action_note)){
+                            $action_note = "取消订单";
+                        }
+                    }
+
                 }
                 $pay_error = '';
                 // 付款
@@ -238,11 +246,9 @@ class ShopOrderController extends Controller
                     return $this->success('修改成功', url('/seller/order/list'));
                 }
             } else {
-                dd('sd');
                 return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }

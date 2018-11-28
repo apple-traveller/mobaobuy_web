@@ -163,7 +163,7 @@ class ShopGoodsQuoteService
 
 
     /**
-     * 确认订单时更新库存
+     * 确认订单时改变库存
      * @param $order_id
      * @return bool
      * @throws \Exception
