@@ -110,7 +110,7 @@ class RegionService
     }
 
     //根据id获取地区(订单模块)
-    public static function getRegion($country_id, $province_id, $city_id, $district_id)
+    public static function getRegion($country_id, $province_id, $city_id, $district_id, $address)
     {
         $country = "";
         $city = "";
@@ -129,7 +129,7 @@ class RegionService
             $district = RegionRepo::getInfo($district_id)['region_name'];
         }
 
-        return $country."-".$province."-".$city."-"."$district";
+        return $country."-".$province."-".$city."-".$district.' '.$address;
     }
 
     //商品列表

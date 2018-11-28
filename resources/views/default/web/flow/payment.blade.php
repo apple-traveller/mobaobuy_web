@@ -25,9 +25,13 @@
             //付款凭证
              var orderSn = $('input[type=hidden]').val();
              var payVoucher = $('input[name=pay_voucher]').val();
+             if(orderSn == '' || payVoucher == ''){
+                $.msg.alert('上传凭证不能为空');
+                return;
+             }
              $.ajax({
                 url:'/payVoucherSave',
-                data:{'orderSn':orderSn,'payVoucher':payVoucher},
+                data:{'orderSn':orderSn,'payVoucher':payVoucher,'deposit':0},
                 type:'POST',
                 dataType:'json',
                 success:function(res){
@@ -102,9 +106,9 @@
         <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['real_name']}}</div>
-                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['bank_of_deposit']}}</div>
-                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['bank_account']}}</div>
+                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['company_name']}}</div>
+                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['settlement_bank_account_number']}}</div>
                 <div class="ovh mt10"><span>上传付款凭证:</span></div>
                 
             </li>

@@ -244,8 +244,8 @@
                     <span style="width:15%">报价日期</span>
                     <span style="width:10%">种类</span>
                     <span style="width:25%">商品名称</span>
-                    <span style="width:10%">单价（元/kg）</span>
                     <span style="width:10%">数量（kg）</span>
+                    <span style="width:10%">单价（元/kg）</span>
                     <span style="width:10%">发货地址</span>
                     <span style="width:20%">联系人</span>
                 </li>
