@@ -131,14 +131,16 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
+                                <div class="label">&nbsp;商品属性：</div>
                                 <div class="label_value">
                                     <div class="attribute">
                                         @foreach($attrArr as $arr)
-                                            <div style="width:299px;margin-top:10px;height:28px;" >
-                                                <span style="font-size:16px;color:skyblue;" >{{$arr}}</span>&nbsp;&nbsp;
-                                                <button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button>
-                                            </div>
+                                            @if(!empty($arr))
+                                                <div style="width:299px;margin-top:10px;height:28px;" >
+                                                    <span style="font-size:16px;color:skyblue;" >{{$arr}}</span>&nbsp;&nbsp;
+                                                    <button style="font-size:14px;color:#8bff58;cursor:pointer;" class="deleteAttr layui-btn layui-btn-xs" attr-data="'+attr_name+':'+attr_value+'" >删除</button>
+                                                </div>
+                                            @endif
                                         @endforeach
                                     </div>
                                     <input type="hidden" id="goods_attr" value="{{$good['goods_attr']}}" name="goods_attr">
@@ -150,7 +152,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>商品图片：</div>
+                                <div class="label">商品图片：</div>
                                 <div class="label_value">
                                     <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >
                                         <i class="layui-icon">&#xe681;</i> 上传图片
@@ -440,15 +442,15 @@
 //                        required : true,
 //                        number:true
 //                    },
-                    goods_attr:{
-                        required:true
-                    },
+//                    goods_attr:{
+//                        required:true
+//                    },
                     goods_content:{
                         required :true,
                     },
-                    original_img:{
-                        required :true,
-                    },
+//                    original_img:{
+//                        required :true,
+//                    },
                 },
                 messages:{
                     goods_name:{
@@ -481,15 +483,15 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
 //                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
 //                    },
-                    goods_attr :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
-                    },
+//                    goods_attr :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
+//                    },
                     goods_content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    original_img:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    original_img:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
 
                 }
             });
