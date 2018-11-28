@@ -49,6 +49,7 @@ class ActivityConsignController extends Controller
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        dd($consign_info);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
         return $this->display('admin.activityconsign.edit_consign',[

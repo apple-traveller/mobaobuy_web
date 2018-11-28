@@ -137,7 +137,7 @@ class GoodsService
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] =$v['goods_number'] * $v['goods_price'];
+            $quoteInfo[$k]['account'] =number_format($v['goods_number'] * $v['goods_price'],2,".","");
             //取goods表的规格
             $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         }
@@ -253,7 +253,7 @@ class GoodsService
             if(empty($goodsInfo)){
                 self::throwBizError('商品信息不存在');
             }
-            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
+            $account =  number_format(round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2),2,".","");
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
             return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
