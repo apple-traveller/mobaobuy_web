@@ -82,8 +82,9 @@ class OrderController extends ApiController
     //订单取消
     public function orderCancel(Request $request){
         $id = $request->input('id');
+        $type = $request->input('waitAffirm');
         try{
-            OrderInfoService::orderCancel($id);
+            OrderInfoService::orderCancel($id,$type);
             return $this->success('取消成功');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
