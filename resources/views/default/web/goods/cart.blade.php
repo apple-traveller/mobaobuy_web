@@ -408,7 +408,11 @@
 			@endforeach
 		</div>
 		<div class="sumbit_cart whitebg ovh mb30">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp"><a href="/goodsList">继续购买</a></span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
+			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span>
+			<span class="fl ml40 cp">
+				<a href="/goodsList">继续购买</a>
+			</span>
+			<span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 	@else

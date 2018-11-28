@@ -39,9 +39,7 @@ class WebClosed extends Controller
                                 //修改代表信息
                                 $firm['is_self'] = 0;
                                 $firm['is_firm'] = 1;
-                                $firm['firm_id'] = $firm['firm_id'];
                                 $firm['name'] = $firm['firm_name'];
-                                $firm['address_id'] = $firm['address_id'];
                                 session()->put('_curr_deputy_user', $firm);
 
                             }
