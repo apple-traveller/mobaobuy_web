@@ -186,6 +186,7 @@ class InvoiceController extends ApiController
     public function confirm(Request $request)
     {
         $dupty_user = $this->getDeputyUserInfo($request);
+        //dd($dupty_user);
         if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
@@ -274,7 +275,7 @@ class InvoiceController extends ApiController
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['address_id'] = $address_id;
         Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
-        return $this->success('选择成功');
+        return $this->success('','success');
     }
     /**
      * 选择开票类型

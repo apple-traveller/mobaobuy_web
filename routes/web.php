@@ -154,6 +154,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
         Route::post('/shop/ajax_list', 'ShopController@getShopList');//ajax获取商家列表
 
+        Route::get('/shop/store', 'ShopStoreController@getList');//店铺列表
+        Route::post('/shop/store/list', 'ShopStoreController@storeList');//ajax获取列表
+        Route::get('/shop/store/add', 'ShopStoreController@add');// 添加
+        Route::get('/shop/store/edit', 'ShopStoreController@edit');// 修改
+        Route::post('/shop/store/save', 'ShopStoreController@save');// 保存
+        Route::post('/shop/store/delete', 'ShopStoreController@delete');// 删除
+
         Route::get('/shopuser/list', 'ShopUserController@getList');//店铺职员列表
         Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员
         Route::get('/shopuser/editForm', 'ShopUserController@editForm');//修改职员
@@ -232,6 +239,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/activity/consign/edit', 'ActivityConsignController@edit');//编辑
         Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
         Route::post('/activity/consign/delete', 'ActivityConsignController@delete');//删除
+        Route::get('/activity/consign/detail', 'ActivityConsignController@detail');//详情
 
 
 
@@ -644,6 +652,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/save_real_info','UserController@saveUserReal');//保存实名信息
             Route::post('/user/logout','LoginController@logout');//退出登录
             Route::post('/user/sale','UserController@sale');// 我要卖货
+            Route::post('/user/untying','LoginController@untying');// 解绑微信
 
             Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 

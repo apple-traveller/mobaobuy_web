@@ -112,12 +112,20 @@
                                 </dl>
                             </div>
                         </div>
-                        <div style="margin-left: 40px">
+                        <div style="margin-left: 40px;height: 40px;">
                             定金凭证:
-                            @if(!empty($oorderInfo['deposit_pay_voucher']))
-                                <button type="button" onclick="depositImg()" class="layui-btn mt3">查看</button>
+                            @if(!empty($orderInfo['deposit_pay_voucher']))
+                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3">查看</button>
                             @else
-                                <div><p style="line-height: 38px">暂无</p></div>
+                                <span>暂无</span>
+                            @endif
+                        </div>
+                        <div style="margin-left: 40px;height: 40px;">
+                            付款凭证:
+                            @if(!empty($orderInfo['pay_voucher']))
+                                <button type="button" onclick="payImg('{{ getFileUrl($orderInfo['pay_voucher']) }}')" class="layui-btn mt3">查看</button>
+                            @else
+                                <span>暂无</span>
                             @endif
                         </div>
 
@@ -238,14 +246,6 @@
                                     <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']+$orderInfo['deposit']-$orderInfo['money_paid'],2)}}</dt>
                                 </dl>
                             </div>
-                        </div>
-                        <div style="margin-left: 40px">
-                            付款凭证:
-                            @if(!empty($oorderInfo['pay_voucher']))
-                                <button type="button" onclick="payImg()" class="layui-btn mt3">查看</button>
-                            @else
-                                <div><p style="line-height: 38px">暂无</p></div>
-                            @endif
                         </div>
 
                         <!--操作信息-->
@@ -380,7 +380,7 @@
                 layer.close(index);
             });
         });
-        function payImg() {
+        function payImg(pay_img) {
             //示范一个公告层
            layer.open({
                 type: 1
@@ -401,14 +401,14 @@
                 ,
                 moveType: 1 //拖拽模式，0或者1
                 ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="{{ getFileUrl($orderInfo['pay_voucher']) }}" alt=""> </div>'
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+pay_img+'" alt=""> </div>'
                 ,
                 yes: function () {
                     layer.closeAll();
                 }
             });
         }
-        function depositImg() {
+        function depositImg(deposit_img) {
             //示范一个公告层
             layer.open({
                 type: 1
@@ -429,7 +429,7 @@
                 ,
                 moveType: 1 //拖拽模式，0或者1
                 ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}" alt=""> </div>'
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+deposit_img+'" alt=""> </div>'
                 ,
                 yes: function () {
                     layer.closeAll();

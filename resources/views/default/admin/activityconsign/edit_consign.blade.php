@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特卖</div>
+        <div class="title"><a href="/admin/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特卖</div>
         <div class="content">
 
             <div class="flexilist">
@@ -42,7 +42,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
+                                    <input type="text" data-catname="{{$consign_info['cat_name']}}" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                     <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
@@ -52,7 +52,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-goodsname="{{$good['goods_name']}}" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -146,26 +146,7 @@
         });
 
 
-        $(".cat_id").change(function(res){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/admin/promote/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        if (i==0){
-                            $(".goods_id").append('<option selected value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        } else {
-                            $(".goods_id").append('<option value="'+data[i]['id']+'" data-num="'+data[i]['packing_spec']+'">'+data[i]['goods_name']+'</option>');
-                            $("#min_limit").val(data[i]['packing_spec']);
-                        }
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-            },"json");
-        });
+
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){
@@ -247,36 +228,16 @@
         });
 
         document.onclick=function(event){
-            $(".query_cat_name").hide();
+            $(".query_company_name").hide();
             $(".query_goods_name").hide();
-            $(".query_store_name").hide();
+            $(".query_cat_name").hide();
         }
-
-        // 种类 获取焦点请求所有的分类数据
-        $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==200){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
 
         // 商家 获取焦点请求所有的商家数据
         $("#company_name").focus(function(){
             $(".query_company_name").children().filter("li").remove();
             $.ajax({
-                url: "/admin/promote/getShopList",
+                url: "/admin/shop/ajax_list",
                 dataType: "json",
                 data:{},
                 type:"POST",
@@ -291,9 +252,11 @@
                 }
             })
         });
+
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_company_name","click",function(){
-            $("#company_name").siblings("div").filter(".notic").remove();
+            //$("#company_name").siblings("div").filter(".notic").remove();
             var company_name = $(this).text();
             var shop_id = $(this).attr("data-shop-id");
             $("#company_name").val(company_name);
@@ -302,13 +265,75 @@
             $(".query_company_name").hide();
         });
 
+        //根据company里面输入的文字实时查询分类数据
+        $("#company_name").bind("input propertychange",function(res){
+            var company_name = $(this).val();
+            $(".query_company_name").children().filter("li").remove();
+            $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
+                if(res.code==1){
+                    $(".query_company_name").show();
+                    var data = res.data;
+                    for(var i=0;i<data.length;i++){
+                        $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+                    }
+                }
+            },"json");
+        });
+
+        $("#company_name").blur(function(){
+            let _name = $("#company_name_val").val();
+            $(this).val(_name);
+        });
+
+        // 种类 获取焦点请求所有的分类数据
+        $("#cat_name").focus(function(){
+            $(".query_cat_name").children().filter("li").remove();
+            $.ajax({
+                url: "/admin/promote/getGoodsCat",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        $(".query_cat_name").show();
+                        var data = res.data;
+                        for(var i=0;i<data.length;i++){
+                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+                        }
+                    }
+                }
+            })
+        });
+
         // 种类 点击将选中的值填入input框内
         $(document).delegate(".created_cat_name","click",function(){
             var cat_name = $(this).text();
             var cat_id = $(this).attr("data-cat-id");
+            $("#cat_name").attr('data-catname',cat_name);
             $("#cat_name").val(cat_name);
             $("#cat_name").attr("cat-id",cat_id);
         });
+
+        //根据company里面输入的文字实时查询分类数据
+        $("#cat_name").bind("input propertychange",function(res){
+            var cat_name = $(this).val();
+            $(".query_cat_name").children().filter("li").remove();
+            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
+                if(res.code==1){
+                    $(".query_cat_name").show();
+                    var data = res.data;
+                    for(var i=0;i<data.length;i++){
+                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+                    }
+                }
+            },"json");
+        });
+
+        $("#cat_name").blur(function(){
+            let _name = $(this).attr("data-catname");
+            $(this).val(_name);
+        });
+
 
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
@@ -320,11 +345,11 @@
                 data:{"cat_id":cat_id},
                 type:"POST",
                 success:function(res){
-                    if(res.code==200){
+                    if(res.code==1){
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -334,32 +359,59 @@
             })
         });
 
+        //根据company里面输入的文字实时查询分类数据
+        $("#goods_name").bind("input propertychange",function(res){
+            var goods_name = $(this).val();
+            var cat_id = $("#cat_name").attr("cat-id");
+            $(".query_goods_name").children().filter("li").remove();
+            $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
+                if(res.code==1){
+                    $(".query_goods_name").show();
+                    var data = res.data;
+                    console.log(data);
+                    for(var i=0;i<data.length;i++){
+                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                    }
+                }
+            },"json");
+        });
+
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
-            let packing_unit = $(this).data('packing_unit');
+            let packing_unit = $(this).attr('data-packing-unit');
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#goods_name").attr("data-goodsname",goods_name);
+            $("#min_limit").val(packing_spac);
+            $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
         });
 
-        $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
-            let goods_number = $(this).val();
-            if (Number(spac) > Number(goods_number)){
-                $(this).val(spac);
-            } else {
-                if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
-                } else {
-                    $(this).val(goods_number);
+        $("#goods_name").blur(function(){
+            let _goods_name = $(this).attr("data-goodsname");
+            $(this).val(_goods_name);
+        });
+        layui.use(['layer'], function() {
+            $("#goods_number").blur(function () {
+                let spac = parseInt($("#goods_name").attr("data-packing-spac"));
+                let goods_number = $(this).val();
+                if (spac == 0) {
+                    layer.msg("请先选择商品", {icon: 5, time: 1000});
+                    return false;
                 }
-            }
+                if (goods_number =="" || goods_number ==0) {
+                    console.log('123');
+                    $(this).val(spac);
+                    return false;
+                }
+                $(this).val(Math.ceil(goods_number/spac) * spac);
+            });
         });
     </script>
 

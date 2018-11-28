@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Repositories\UserAddressRepo;
 use App\Repositories\RegionRepo;
+use League\Flysystem\Exception;
+
 class UserAddressService
 {
     use CommonService;
@@ -38,7 +40,25 @@ class UserAddressService
 
     public static function delete($id)
     {
-        return UserAddressRepo::delete($id);
+        $user_info = session('_web_user');
+        //先判断是否是默认地址
+        try{
+            self::beginTransaction();
+            if($id == $user_info['address_id']){//是默认地址 清空user表的默认地址字段
+                UserService::modify($user_info['id'],['address_id'=>0]);
+            }
+            $res = UserAddressRepo::delete($id);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //确认订单页 获取选中地址 有默认则为默认 没有默认任意选择一条
