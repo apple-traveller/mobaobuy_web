@@ -99,9 +99,9 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '商品名称不能为空';
         }
-        if(empty($data['original_img'])){
-            $errorMsg[] = '商品原图不能为空';
-        }
+//        if(empty($data['original_img'])){
+//            $errorMsg[] = '商品原图不能为空';
+//        }
         if(empty($data['keywords'])){
             $errorMsg[] = '商品关键字不能为空';
         }
@@ -129,9 +129,11 @@ class GoodsController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
+        if(!empty($data['original_img'])){
+            $data['goods_img'] = $data['original_img'];
+            $data['goods_thumb'] = $data['original_img'];
+        }
 
-        $data['goods_img'] = $data['original_img'];
-        $data['goods_thumb'] = $data['original_img'];
         $data['goods_full_name'] = $data['brand_name']." ".$data['goods_name']." ".$data['goods_content'];
 
         try{
@@ -139,8 +141,11 @@ class GoodsController extends Controller
                 GoodsService::uniqueValidate($data['goods_name']);
                 $data['add_time']=Carbon::now();
                 $data['last_update']=Carbon::now();
-                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
-                $data['goods_attr_ids']=$goods_attr_ids;
+                if(!empty($data['goods_attr'])){
+                    $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                    $data['goods_attr_ids']=$goods_attr_ids;
+                }
+
                 $data['goods_weight'] = 1;
                 $info = GoodsService::create($data);
                 if(empty($info)){
@@ -151,8 +156,10 @@ class GoodsController extends Controller
                 return $this->success('添加成功',url('/admin/goods/list'));
             }else{
                 $data['last_update']=Carbon::now();
-                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
-                $data['goods_attr_ids']=$goods_attr_ids;
+                if(!empty($data['goods_attr'])){
+                    $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                    $data['goods_attr_ids']=$goods_attr_ids;
+                }
                 $info = GoodsService::modify($data);
                 if(empty($info)){
                     return $this->error('修改失败');

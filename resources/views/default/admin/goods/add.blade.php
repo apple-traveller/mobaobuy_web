@@ -118,7 +118,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品属性：</div>
+                                <div class="label">&nbsp;商品属性：</div>
                                 <div class="label_value">
                                     <div class="attribute"></div>
                                     <input type="hidden" id="goods_attr" name="goods_attr">
@@ -130,7 +130,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>商品图片：</div>
+                                <div class="label">商品图片：</div>
                                 <div class="label_value">
                                     <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="goods" >
                                         <i class="layui-icon">&#xe681;</i> 上传图片
@@ -421,18 +421,18 @@
 //                        required : true,
 //                        number:true
 //                    },
-                    goods_attr:{
-                        required:true
-                    },
+//                    goods_attr:{
+//                        required:true
+//                    },
                     cat_id:{
                         required:true
                     },
                     goods_content:{
                         required :true,
                     },
-                    original_img:{
-                        required :true,
-                    },
+//                    original_img:{
+//                        required :true,
+//                    },
 
                 },
                 messages:{
@@ -466,18 +466,18 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
 //                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
 //                    },
-                    goods_attr :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
-                    },
+//                    goods_attr :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
+//                    },
                     cat_id:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    original_img:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    original_img:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
                 }
             });
         });
