@@ -59,6 +59,18 @@ class ActivityConsignController extends Controller
         ]);
     }
 
+    public function detail(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage');
+        $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        //dd($consign_info);
+        return $this->display('admin.activityconsign.detail_consign',[
+            'consign_info'=>$consign_info,
+            'currpage'=>$currpage
+        ]);
+    }
+
     //保存
     public function save(Request $request)
     {
