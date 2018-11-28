@@ -547,6 +547,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
+        Route::post('/order/updateDeliveryPeriod', 'ShopOrderController@updateDeliveryPeriod'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
         Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作

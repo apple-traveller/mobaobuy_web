@@ -210,12 +210,12 @@ class ShopOrderController extends Controller
                     $data['pay_time'] = Carbon::now();
                     $action_note = "商家确认收款";
                 }
-                // 收定金
+                // 收定金 订单状态已确认
                 if (!empty($deposit_status)){
                     if ($orderInfo['order_status'] != 2) {
                         return $this->error('订单状态不符合执行该操作的条件');
                     }
-
+                    $data['order_status'] = 3;
                     $data['pay_time'] = Carbon::now();
                     $data['deposit_status'] = $deposit_status;
                     if (empty($action_note)) {
@@ -250,6 +250,33 @@ class ShopOrderController extends Controller
             }
         } catch (\Exception $e) {
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
+        }
+    }
+
+    /**
+     * 修改交货日期
+     * @param Request $request
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
+    public function updateDeliveryPeriod(Request $request)
+    {
+        $order_id = $request->input('id','');
+        $delivery_period = $request->input('val','');
+        if (empty($order_id)){
+            return $this->error('找不到该订单');
+        }
+        if (empty($delivery_period)){
+            return $this->error('交货日期不能为空');
+        }
+        $data = [
+            'id'=>$order_id,
+            'delivery_period'=>$delivery_period
+        ];
+        $re = OrderInfoService::modify($data);
+        if ($re){
+            return $this->result($re['delivery_period'],200,'修改成功');
+        } else {
+            return $this->result(' ',400,'修改失败');
         }
     }
 
