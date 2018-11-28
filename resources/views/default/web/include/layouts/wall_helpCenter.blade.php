@@ -18,7 +18,7 @@
                     <h1 class=""><i class="iconfont icon-46"></i>帮助中心</h1>
                     <ul class="member_left_list">
                         @foreach(getSidebar() as $k=>$v)
-                            <li><a @if($id == $v['id']) class="green" @endif href="/{{$v['id']}}/helpCenter.html">{{$v['title']}}</a></li>
+                            <li class="ovhwp" title="{{$v['title']}}"><a @if($id == $v['id']) class="green" @endif href="/{{$v['id']}}/helpCenter.html">{{$v['title']}}</a></li>
                         @endforeach
                     </ul>
                 </div>

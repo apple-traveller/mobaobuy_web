@@ -169,7 +169,7 @@
                 <span style="width:18%">商品名称</span>
                 <span style="width:9%;">数量（kg）</span>
                 <span>单价（元/kg）</span>
-                <span style="widows:8%;">发货地址</span>
+                <span style="width:8%;">发货地址</span>
                 <span style="width:18%;">联系人</span>
                 <span style="width: 9%;">操作</span>
             </li>
@@ -329,6 +329,7 @@
     }
     //请求ajax获取列表数据
     function getInfo(currpage){
+        let _keyword = $('.search-input').val();
         var _cate_id = $('#cate_tag').attr('cate_id');
         var _brand_id = $('#brand_tag').attr('brand_id');
         var region_ids = [];
@@ -378,11 +379,15 @@
                 'sort_goods_number':_goods_number,//数量排序
                 'sort_shop_price':_shop_price,//价格排序
                 'sort_add_time':_add_time,//时间排序
+                'keyword':_keyword,//时间排序
                 't':_t //时间排序
             },
             dataType: "json",
             success: function(res){
-                changeURL();
+                if(_keyword != ''){
+                    changeURL();
+                }
+
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;

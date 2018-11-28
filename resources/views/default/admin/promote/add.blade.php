@@ -82,7 +82,7 @@
                                     <div class="label_value">
                                         <input type="text" name="num"  autocomplete="off" value="" id="num" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
                                     </div>
                                 </div>
 
@@ -143,7 +143,7 @@
                 data:{},
                 type:"POST",
                 success:function(res){
-                    if(res.code==200){
+                    if(res.code==1){
                         $(".query_cat_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
@@ -167,7 +167,7 @@
             var cat_name = $(this).val();
             $(".query_cat_name").children().filter("li").remove();
             $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==200){
+                if(res.code==1){
                     $(".query_cat_name").show();
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
@@ -187,7 +187,7 @@
                 data:{"cat_id":cat_id},
                 type:"POST",
                 success:function(res){
-                    if(res.code==200){
+                    if(res.code==1){
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
@@ -226,7 +226,7 @@
             var goods_name = $("#goods_name").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{"cat_id":cat_id,"goods_name":goods_name},function(res){
-                if(res.code==200){
+                if(res.code==1){
                     $(".query_goods_name").show();
                     var data = res.data;
                     for(var i=0;i<data.length;i++){

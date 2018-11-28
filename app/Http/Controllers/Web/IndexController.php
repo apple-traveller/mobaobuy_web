@@ -30,7 +30,6 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
-
         $now = Carbon::now();
         //获取顶部广告
         $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]);
@@ -110,7 +109,6 @@ class IndexController extends Controller
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
-                    $firm['address_id'] = $firm['address_id'];
                     session()->put('_curr_deputy_user', $firm);
                     if(!empty(session('cartSession'))){
                         session()->forget('cartSession');

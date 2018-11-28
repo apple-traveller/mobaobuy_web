@@ -132,6 +132,27 @@ class LoginController extends ApiController
         }
     }
 
+    //解绑操作
+    public function untying(Request $request)
+    {
+        $openid = $request->input('openid');
+        $uuid = $request->input('token');
+        $userid = $this->getUserID($request);
+        if(empty($openid)){
+            return $this->error('缺少参数，openid');
+        }
+        //删除app_user表里面的一条数据
+        try{
+            Cache::forget($uuid);
+            Cache::forget('_api_user_'.$userid);
+            Cache::forget('_api_deputy_user_'.$userid);
+            UserService::deleteThird($openid);
+            return $this->success([],'success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //忘记密码
     public function updatePass(Request $request)
     {

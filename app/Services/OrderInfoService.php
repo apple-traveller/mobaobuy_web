@@ -403,7 +403,7 @@ class OrderInfoService
         ];
 
         //待付定金
-        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));  
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
         $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
@@ -456,6 +456,7 @@ class OrderInfoService
         foreach ($order_goods as $k => $vo) {
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
+            $order_goods[$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -469,6 +470,7 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
+            $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -744,10 +746,15 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团
-
-                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖
-
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
+                    foreach ($orderGoodsInfo as $k=>$v){
+                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                    }
                 }else{//购物车下单
 
                     foreach ($orderGoodsInfo as $k=>$v){
@@ -758,7 +765,6 @@ class OrderInfoService
                 }
 
             }
-
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
             return true;

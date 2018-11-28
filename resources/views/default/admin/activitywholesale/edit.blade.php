@@ -65,20 +65,20 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" style="width:159px;height: 30px;" name="start_date" id="start_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][0]}}" @endif>
+                                    <input autocomplete="off" type="text" class="layui-input" style="width:159px;height: 30px;" name="start_date" id="start_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" style="width:159px;height: 30px;" name="start_time" id="start_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][1]}}" @endif>
+                                    <input autocomplete="off" type="text" class="layui-input" style="width:159px;height: 30px;" name="start_time" id="start_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['begin_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;结束时间：</div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_date" id="end_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][0]}}" @endif>
+                                    <input autocomplete="off" type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_date" id="end_date" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][0]}}" @endif>
                                 </div>
                                 <div class="layui-input-inline">
-                                    <input type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_time" id="end_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][1]}}" @endif>
+                                    <input autocomplete="off" type="text" class="layui-input"  style="width:159px;height: 30px;" name="end_time" id="end_time" @if(!empty($wholesale_info)) value="{{$wholesale_info['end_time'][1]}}" @endif>
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>

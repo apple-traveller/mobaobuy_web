@@ -74,9 +74,9 @@ class LoginController extends Controller
         if (!$checkShopName){
             return $this->error('参数为空');
         }
-        $re = ShopLoginService::checkShopNameExists($checkShopName);
-        if ($re){
-            return $this->error('店铺已存在');
+        $re = ShopLoginService::checkShopExists($checkShopName);
+        if ($re['status']==4){
+            return $this->error($re['msg']);
         }
         return $this->success('');
     }

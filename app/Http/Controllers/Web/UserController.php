@@ -20,6 +20,7 @@ use App\Services\SmsService;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserAccountLogService;
 use Monolog\Handler\IFTTTHandler;
+use League\Flysystem\Exception;
 
 class UserController extends Controller
 {
@@ -375,13 +376,18 @@ class UserController extends Controller
         if (empty($id)){
             return $this->error('参数错误');
         }
-        $re = UserAddressService::delete($id);
+        try{
+            $re = UserAddressService::delete($id);
 
-        if ($re){
-            return $this->success('删除成功');
-        } else {
-            return $this->error('删除失败');
+            if ($re){
+                return $this->success('删除成功');
+            } else {
+                return $this->error('删除失败');
+            }
+        }catch (Exception $e){
+            return $this->error($e->getMessage());
         }
+
     }
 
     /**
