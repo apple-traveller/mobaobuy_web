@@ -129,6 +129,7 @@ class ShopGoodsQuoteController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
+                $data['total_number'] = $data['goods_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
                 //dd($data);

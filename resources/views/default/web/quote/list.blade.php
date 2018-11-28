@@ -207,7 +207,7 @@
 @section('bottom_js')
 <script>
     paginate();
-    changeURL();
+
 
     //取消地区选择
     $('.cancel_region').click(function(){
@@ -328,6 +328,8 @@
     }
     //请求ajax获取列表数据
     function getInfo(currpage){
+        changeURL();
+        let _keyword = $('.search-input').val();
         var _cate_id = $('#cate_tag').attr('cate_id');
         var _brand_id = $('#brand_tag').attr('brand_id');
         var region_ids = [];
@@ -375,7 +377,8 @@
                 'place_id':_place_id,//地区
                 'sort_goods_number':_goods_number,//数量排序
                 'sort_shop_price':_shop_price,//价格排序
-                'sort_add_time':_add_time//时间排序
+                'sort_add_time':_add_time,//时间排序
+                'keyword':_keyword//时间排序
             },
             dataType: "json",
             success: function(res){
