@@ -313,7 +313,7 @@
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
 				</div>
 				<div class="pro_detail">
-					<!-- <span class="ml15 pro_detail_title fl">产品含量</span><span  class="pro_value">50%</span> -->
+					<!-- <span class="ml15 pro_detail_title fl">商品含量</span><span  class="pro_value">50%</span> -->
 				</div>
 				<div class="pro_detail bd1"></div>
 				<div class="pro_detail">

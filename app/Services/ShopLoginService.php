@@ -68,7 +68,7 @@ class ShopLoginService
             }
         } catch (\Exception $e) {
             self::rollBack();
-            self::throwBizError($e);
+            self::throwBizError($e->getMessage());
         }
     }
 

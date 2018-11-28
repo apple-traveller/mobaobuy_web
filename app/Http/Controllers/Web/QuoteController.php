@@ -86,7 +86,7 @@ class QuoteController extends Controller
             $orderBy[$type[0]] = $type[1];
         }
         $pageSize = 10;
-        //产品报价列表
+        //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
 
         #热门推荐

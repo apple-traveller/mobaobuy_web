@@ -70,7 +70,7 @@
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                         </ul>
-                                        <div style="margin-left: 10px;" class="notic">产品规格{{$goods_info['packing_spec']}}</div>
+                                        <div style="margin-left: 10px;" class="notic">商品规格{{$goods_info['packing_spec']}}</div>
                                     </div>
                                 </div>
 

@@ -169,7 +169,7 @@
                                 {{--</dl>--}}
 
                                 <dl style="width:30.6%">
-                                    <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
+                                    <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></dt>
                                     <dt style="width: 252%">买家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dt>
                                 </dl>
                             </div>
@@ -208,7 +208,8 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i>
+                                <h3>费用信息<a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
                                     <dt>商品总金额：<em>¥</em>{{$orderInfo['goods_amount']}}</dt>
@@ -229,14 +230,12 @@
 
                                 </dl>
                                 <dl>
-                                    <dt></dt>
-
-
+                                    <dt>定金：+ <em>¥</em>{{$orderInfo['deposit']}}</dt>
                                     <dt>已付款金额：- <em>¥</em>{{$orderInfo['money_paid']}}</dt>
                                 </dl>
                                 <dl>
-                                    <dt class="red">订单总金额: {{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'],2)}}</dt>
-                                    <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'],2)}}</dt>
+                                    <dt class="red">订单总金额: {{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']+$orderInfo['deposit']-$orderInfo['discount'],2)}}</dt>
+                                    <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']+$orderInfo['deposit']-$orderInfo['money_paid'],2)}}</dt>
                                 </dl>
                             </div>
                         </div>
@@ -257,8 +256,8 @@
                                     <div class="item">
                                         <div class="label">操作备注：</div>
                                         <div class="value">
-                                            <div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
-                                            <div class="order_operation_btn">
+                                            {{--<div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>--}}
+                                            <div class="order_operation_btn" style="margin-top: 0px">
                                                 // 取消的订单没有操作选项
                                                 @if($orderInfo['order_status']!=0)
                                                 @if($orderInfo['order_status'] == 2)
@@ -274,12 +273,21 @@
                                                 @endif
                                                 // 确认收到定金
                                                 @if($orderInfo['order_status']==2)
-                                                    @if($orderInfo['deposit_status'] == 0 && $orderInfo['order_status']==3) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
+                                                    @if($orderInfo['deposit_status'] == 0) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @elseif($orderInfo['deposit_status'] == 1 && $orderInfo['deposit']==0)  @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
                                                 @endif
                                                 // 发货
-                                                @if($orderInfo['order_status']>=3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                                        <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+
+                                                @if($orderInfo['pay_type'] == 1)
+                                                    @if($orderInfo['order_status'] == 3 && $orderInfo['pay_status']==1 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
+                                                            <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                    @endif
+
+                                                @elseif($orderInfo['pay_type'] == 2)
+                                                    @if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
+                                                            <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                        @endif
                                                 @endif
+
                                                 @endif
                                             </div>
                                         </div>
@@ -491,30 +499,40 @@
                 });
             });
         }
+        // 收款
         function receiveM(id) {
-            layui.use('layer', function(){
-                let layer = layui.layer;
-                layer.confirm('确认收到付款?', {icon: 3, title:'提示'}, function(index){
-                    let action_note = $("#action_note").val();
-                    $.ajax({
-                        url:'/seller/order/updateOrderStatus',
-                        data: {
-                            'id':id,
-                            'action_note':action_note,
-                            'pay_status': 1
-                        },
-                        type: 'post',
-                        success: function (res) {
-                            if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
-                            } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
-                            }
+                layui.use('layer', function(){
+                    let index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.iframeAuto(index);
+                    let layer = layui.layer;
+                    layer.prompt({
+                        title: '确认收到付款?，请填写金额',
+                    }, function(value, index, elem){
+                        let num = /^\d+(\.{0,1}\d+){0,1}$/;
+                        if (!num.test(value)){
+                            layer.msg('请填写正数');
+                            return false;
                         }
+                        $.ajax({
+                            url:'/seller/order/updateOrderStatus',
+                            data: {
+                                'id':id,
+                                'pay_number': value
+                            },
+                            type: 'post',
+                            success: function (res) {
+                                if (res.code == 1){
+                                    layer.msg(res.msg, {icon: 1,time:2000});
+                                } else {
+                                    layer.msg(res.msg, {icon: 5,time:2000});
+                                }
+                                setTimeout( window.location.href="/seller/order/list?id="+id,3000);
+                            }
+                        });
+                        layer.close(index);
+
                     });
-                    layer.close(index);
                 });
-            });
         }
 
         // 确认收到定金

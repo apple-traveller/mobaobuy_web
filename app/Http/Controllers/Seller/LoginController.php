@@ -22,6 +22,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->isMethod('get')){
+            if (!empty(session('_seller_id'))){
+                return $this->redirect('/seller');
+            }
             return $this->display('seller.login');
         } else {
             $type = $request->input('type');
@@ -223,5 +226,10 @@ class LoginController extends Controller
     public function checkSession()
     {
         return $this->result(session('_seller_id'),'200','');
+    }
+
+    public function waitForExamine()
+    {
+        return $this->display('seller.waitForExamine');
     }
 }

@@ -289,31 +289,41 @@
             });
         }
         // 确认收款
+        // 收款
         function receiveM(id) {
             layui.use('layer', function(){
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.confirm('确认收到付款?', {icon: 3, title:'提示'}, function(index){
-                    let action_note = $("#action_note").val();
+                layer.prompt({
+                    title: '确认收到付款?，请填写金额',
+                }, function(value, index, elem){
+                    let num = /^\d+(\.{0,1}\d+){0,1}$/;
+                    if (!num.test(value)){
+                        layer.msg('请填写正数');
+                        return false;
+                    }
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
-                            'action_note':action_note,
-                            'pay_status': 1
+                            'pay_number': value
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
+                                layer.msg(res.msg, {icon: 1,time:2000});
                             } else {
                                 layer.msg(res.msg, {icon: 5,time:2000});
                             }
-                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+                            setTimeout( window.location.href="/seller/order/list?id="+id,3000);
                         }
                     });
                     layer.close(index);
+
                 });
             });
         }
+
     </script>
 @stop

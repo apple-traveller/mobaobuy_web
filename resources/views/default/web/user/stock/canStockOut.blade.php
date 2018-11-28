@@ -130,7 +130,7 @@
                        
                     }else{
                          $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此产品数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -180,8 +180,8 @@
             var price = $('#price').val();
             var flow_desc = $('#flow_desc').val();
             var id = $('.currStockOut').attr('id');
-            if(currStockNum == ''){
-                $.msg.alert(出库数量不能为空);
+            if(currStockNum == '' || currStockNum <= 0){
+                $.msg.alert('出库数量有误,请重新填写');
                 return;
             }
             Ajax.call('/curStockSave',{currStockNum:currStockNum,flow_desc:flow_desc,id:id,price:price,partner_name:partner_name,order_sn:order_sn}, function(data){

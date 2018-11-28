@@ -1,6 +1,6 @@
 @extends(themePath('.','web').'web.include.layouts.home')
 
-@section('title', '产品列表')
+@section('title', '商品列表')
 @section('css')
 	<style>
 		.Self-product-list li span{width:14%;}
@@ -165,7 +165,7 @@
 @section('content')
     <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
-		<div class="crumbs mt5">当前位置：<a href="/goodsList">产品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
+		<div class="crumbs mt5">当前位置：<a href="/goodsList">商品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
 			<h1 class="pro_chart_title">
 				商品价格走势
@@ -203,7 +203,7 @@
             </div>
 
 			<!-- <div class="pro_detail">
-				<span class="ml15 pro_detail_title fl">产品属性</span>
+				<span class="ml15 pro_detail_title fl">商品属性</span>
 				@foreach($good_info['goods_attr'] as $vo)
 					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
 				@endforeach

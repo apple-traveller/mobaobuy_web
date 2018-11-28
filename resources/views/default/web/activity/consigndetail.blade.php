@@ -197,7 +197,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="/goodslist">产品列表</a> &gt; <a href="javascript:">产品详情</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodslist">商品列表</a> &gt; <a href="javascript:">商品详情</a> &gt;<span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势
@@ -253,7 +253,7 @@
                     <span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
 				</div>
 				<div class="pro_detail">
-					<!-- <span class="ml15 pro_detail_title fl">产品含量</span><span  class="pro_value">50%</span> -->
+					<!-- <span class="ml15 pro_detail_title fl">商品含量</span><span  class="pro_value">50%</span> -->
 				</div>
 				<div class="pro_detail bd1"></div>
 				<div class="pro_detail">

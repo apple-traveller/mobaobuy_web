@@ -67,7 +67,7 @@ class CartController extends Controller
     }
 
     /**
-     * 递加产品数量
+     * 递加商品数量
      * addCartGoodsNum
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
@@ -83,7 +83,7 @@ class CartController extends Controller
     }
 
     /**
-     * 递减产品数量
+     * 递减商品数量
      * reduceCartGoodsNum
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse]

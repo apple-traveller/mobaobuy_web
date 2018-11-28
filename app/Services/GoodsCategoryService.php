@@ -166,7 +166,7 @@ class GoodsCategoryService
         return GoodsCategoryRepo::delete($ids);
     }
 
-    //产品报价页面
+    //商品报价页面
     public static function getCatesByGoodsList($goodList)
     {
         $cates = [];

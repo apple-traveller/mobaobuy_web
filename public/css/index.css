@@ -215,7 +215,7 @@
 .phy_search_list_btn{cursor:pointer;float: left;margin-top:55px;margin-left:40px;width: 100px;height: 34px;line-height: 32px;border: 1px solid #75b335;color:#75b335;border-radius:3px;box-sizing:border-box;text-align: center;}
 .phy_search_list_btn:hover{background-color: #75b335;color: #fff;}
 
-/*产品列表-页面*/
+/*商品列表-页面*/
 /*当前位置*/
 .mode_add{float:left;height: 24px;line-height: 24px;border: 1px solid #ff6f17;color:#ff6f17;padding-left: 5px;padding-right: 5px;}
 .mode_close {float: right;width: 8px;height: 7px;    margin-right: 5px;margin-top: 8px;margin-left: 5px;background: url(/images/x.png)no-repeat;}
@@ -242,7 +242,7 @@
 .region{float: left;margin-right:30px;}
 .heightcurr{height: auto;}
 .height0{height: 0;}
-/*产品列表-页面*/
+/*商品列表-页面*/
 .Self-product-list{margin-top: 10px;}
 
 .Self-product-list li span{width: 14.2%;float: left;text-align: center;}
@@ -279,7 +279,7 @@
 .sequence-bar .line {padding: 0px;font-size: 14px;font-family: monospace;color: #888;}
 .sequence-bar .confirm { border: 0 none; background: none;  font-size: 12px; cursor: pointer; height: 26px; line-height: 26px;
     text-align: center; width: 60px; color: #fff; cursor: pointer; background: #ff6f17;}
-/*产品详情-页面*/
+/*商品详情-页面*/
 /*商品价格走势*/
 .pro_chart{float:left;width: 528px; }
 .pro_chart_title{line-height: 70px;text-align: center;font-size: 18px;border: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;}

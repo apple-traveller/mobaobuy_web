@@ -19,7 +19,7 @@ class CartService
     }
 
     /**
-     * 获取用户购物车产品数
+     * 获取用户购物车商品数
      * @param $user_id
      * @return mixed
      *

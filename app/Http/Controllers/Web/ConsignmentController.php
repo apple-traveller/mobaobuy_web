@@ -36,7 +36,7 @@ class ConsignmentController extends Controller
 
     }
 
-    //产品列表
+    //商品列表
     public function goodsList(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -94,7 +94,7 @@ class ConsignmentController extends Controller
             $orderBy[$t[0]] = $t[1];
         }
         $pageSize = 10;
-        //产品报价列表
+        //商品报价列表
         $goodsList= ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         return $this->display("web.quote.list",[
             'search_data'=>$goodsList,
@@ -111,7 +111,7 @@ class ConsignmentController extends Controller
         ]);
     }
 
-    //根据条件范围收索产品(ajax)
+    //根据条件范围收索商品(ajax)
     public function goodsListByCondition(Request $request)
     {
 
@@ -184,7 +184,7 @@ class ConsignmentController extends Controller
         }
     }
 
-    //产品详情
+    //商品详情
     public function goodsDetail(Request $request)
     {
         $id = $request->input("id");
@@ -255,7 +255,7 @@ class ConsignmentController extends Controller
         }
     }
 
-    //递加产品数量
+    //递加商品数量
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
@@ -266,7 +266,7 @@ class ConsignmentController extends Controller
         }
     }
 
-    //递减产品数量
+    //递减商品数量
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');
         try{
