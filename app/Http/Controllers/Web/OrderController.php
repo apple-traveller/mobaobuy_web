@@ -223,9 +223,20 @@ class OrderController extends Controller
     //确认收货
     public function orderConfirmTake(Request $request)
     {
+        $firmUser = session('_curr_deputy_user');
+        if(!$firmUser['is_firm']){
+            return $this->error('当前没有权限操作');
+        }
+        if($firmUser['is_firm'] && $firmUser['is_self']){
+            $userId = $firmUser['firm_id'];
+        }
+        if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
+            $userId = $firmUser['user_id'];
+        }
         $id = $request->input('id');
         try {
-            OrderInfoService::orderConfirmTake($id);
+            OrderInfoService::orderConfirmTake($id,$firmUser['firm_id'],$userId);
+            return $this->success();
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }

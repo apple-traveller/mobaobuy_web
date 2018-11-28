@@ -69,12 +69,6 @@ class FirmUserController extends Controller
         }
     }
 
-
-
-    public function destroy($id){
-
-    }
-
     //权限审批属性设置页面
     public function Approval(){
         $userId = session('_web_user_id');

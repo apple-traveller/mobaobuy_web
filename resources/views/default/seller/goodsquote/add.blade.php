@@ -38,7 +38,7 @@
                                     <select class="query_store_name" id="store_name" style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;">
 
                                     </select>
-                                    <input type="hidden" value="@if(old('store_name')){{old('store_name')}}@else自营@endif" name="store_name"  id="store_name_val"  />
+                                    <input type="hidden" value="@if(old('store_name')){{old('store_name')}}@else自售@endif" name="store_name"  id="store_name_val"  />
                                     <input type="hidden" value="@if(old('store_id')){{old('store_id')}} @else 0 @endif" name="store_id"  id="store_id" />
                                     <div style="margin-left: 10px;" class="notic">请从下拉框中选择店铺</div>
 
