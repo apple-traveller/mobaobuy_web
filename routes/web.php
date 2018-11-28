@@ -232,6 +232,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/activity/consign/edit', 'ActivityConsignController@edit');//编辑
         Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
         Route::post('/activity/consign/delete', 'ActivityConsignController@delete');//删除
+        Route::get('/activity/consign/detail', 'ActivityConsignController@detail');//详情
 
 
 

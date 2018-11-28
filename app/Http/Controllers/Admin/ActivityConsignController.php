@@ -49,7 +49,6 @@ class ActivityConsignController extends Controller
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        dd($consign_info);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
         return $this->display('admin.activityconsign.edit_consign',[
@@ -57,6 +56,18 @@ class ActivityConsignController extends Controller
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
             'good'=>$good
+        ]);
+    }
+
+    public function detail(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage');
+        $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        //dd($consign_info);
+        return $this->display('admin.activityconsign.detail_consign',[
+            'consign_info'=>$consign_info,
+            'currpage'=>$currpage
         ]);
     }
 
