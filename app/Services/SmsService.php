@@ -17,6 +17,13 @@ class SmsService
     use CommonService;
 
 
+    /**
+     * @param $phoneNumbers
+     * @param $type
+     * @param $params
+     * @param int $outId
+     * @throws \Exception
+     */
     public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
     {
         if (empty($phoneNumbers)){
@@ -64,10 +71,10 @@ class SmsService
 
     /**
      * @param $phoneNumbers
-     * @param $temp_id
-     * @param $signName
-     * @param $templateParam
-     * @return \Aliyun\Core\Http\HttpResponse|mixed|\stdClass|string
+     * @param $type
+     * @param $params
+     * @return \Aliyun\Core\Http\HttpResponse|false|mixed|\stdClass|string
+     * @throws \Exception
      */
     public static function sendBatchSms($phoneNumbers, $type, $params)
     {

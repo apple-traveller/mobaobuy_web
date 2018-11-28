@@ -260,35 +260,43 @@
                                             <div class="order_operation_btn" style="margin-top: 0px">
                                                 // 取消的订单没有操作选项
                                                 @if($orderInfo['order_status']!=0)
-                                                @if($orderInfo['order_status'] == 2)
-                                                <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
-                                                <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
-                                                @elseif($orderInfo['order_status'] == 1)
-                                                    <input type="button" value="待买家审核" class="btn btn25 red_btn">
-                                                @else
+                                                    @if($orderInfo['order_status'] == 2)
+                                                        <input name="pay" type="button" value="确定" class="btn btn25 red_btn" onclick="conf({{ $orderInfo['id'] }})">
+                                                        <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
 
-                                                <input name="order_id" type="hidden" value="4">
-                                                // 确认收款
-                                                @if($orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2 && $orderInfo['order_status']==3) <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})"> @else <input type="button" value="已收款" class="btn btn25 gray_btn"> @endif
+                                                        // 确认收到定金
+                                                        @if($orderInfo['deposit_status'] == 0)
+                                                            <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})">
+                                                        @elseif($orderInfo['deposit_status'] == 1 && $orderInfo['deposit']==0)
+
+                                                        @else
+                                                            <input type="button" value="已收到定金" class="btn btn25 gray_btn">
+                                                        @endif
+                                                    @endif
+
+                                                    // 确认收款
+                                                    @if($orderInfo['order_status']==3)
+                                                        @if( $orderInfo['pay_status'] == 0 || $orderInfo['pay_status'] == 2)
+                                                            <input type="button" value="确认收款" class="btn btn25 blue_btn" onclick="receiveM({{ $orderInfo['id'] }})">
+                                                        @else
+                                                            <input type="button" value="已收款" class="btn btn25 gray_btn">
+                                                        @endif
+                                                            <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $orderInfo['id'] }})">
                                                 @endif
-                                                // 确认收到定金
-                                                @if($orderInfo['order_status']==2)
-                                                    @if($orderInfo['deposit_status'] == 0) <input type="button" value="确认收到定金" class="btn btn25 blue_btn" onclick="receiveDep({{ $orderInfo['id'] }})"> @elseif($orderInfo['deposit_status'] == 1 && $orderInfo['deposit']==0)  @else <input type="button" value="已收到定金" class="btn btn25 gray_btn"> @endif
-                                                @endif
+
                                                 // 发货
 
                                                 @if($orderInfo['pay_type'] == 1)
                                                     @if($orderInfo['order_status'] == 3 && $orderInfo['pay_status']==1 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                                            <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                        <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
                                                     @endif
 
                                                 @elseif($orderInfo['pay_type'] == 2)
                                                     @if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                                            <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
-                                                        @endif
+                                                        <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                    @endif
                                                 @endif
-
-                                                @endif
+                                                    @endif
                                             </div>
                                         </div>
                                     </div>
@@ -338,16 +346,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </form>
-            </div>
+                    </div>
         </div>
-    </div>
+            </div>
     <script>
 
         layui.use(['layer'], function() {
-            var layer = layui.layer;
-            var index = 0;
+            let layer = layui.layer;
+            let index = 0;
             $(".viewMessage").click(function(){
                 index = layer.open({
                     type: 1,
@@ -360,8 +367,8 @@
                 });
             });
             $(document).delegate(".messageButton","click",function(){
-                var id = "{{$orderInfo['id']}}";
-                var to_buyer = $(".to_buyer").val();
+                let id = "{{$orderInfo['id']}}";
+                let to_buyer = $(".to_buyer").val();
                 $.post('/seller/order/toBuyerModify',{'id':id,'to_buyer':to_buyer},function(res){
                     if(res.code==1){
                         console.log(res.msg);
@@ -396,7 +403,7 @@
                 ,
                 content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+pay_img+'" alt=""> </div>'
                 ,
-                yes: function (layero) {
+                yes: function () {
                     layer.closeAll();
                 }
             });
@@ -424,7 +431,7 @@
                 ,
                 content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+deposit_img+'" alt=""> </div>'
                 ,
-                yes: function (layero) {
+                yes: function () {
                     layer.closeAll();
                 }
             });
@@ -475,7 +482,7 @@
                 let layer = layui.layer;
                 layer.prompt({
                     title: '确认取消订单,并输入原因',
-                }, function(value, index, elem){
+                }, function(value, index){
 
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',

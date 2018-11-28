@@ -10,6 +10,7 @@ use App\Repositories\OrderGoodsRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\GoodsRepo;
+use App\Repositories\ShopRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use App\Repositories\OrderActionLogRepo;
@@ -99,8 +100,11 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc"';
                     } elseif ($item['deposit_status'] == 0) {
                         $orderList['list'][$k]['auth'][] = 'can_pay';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+                        $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                     }
 
                 }
@@ -144,8 +148,6 @@ class OrderInfoService
 //                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
 //                    }
 
-
-
                     //待企业审核订单
                     if($item['order_status'] == 1){
                         if($currUserAuth[0]['need_approval']){
@@ -178,9 +180,15 @@ class OrderInfoService
                             $orderList['list'][$k]['auth_desc'][] = '待商家确认';
                             $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
                         } elseif ($item['deposit_status'] == 0) {
-                            $orderList['list'][$k]['auth'][] = 'can_pay';
-                            $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            if($currUserAuth[0]['can_pay']){
+                                $orderList['list'][$k]['auth'][] = 'can_pay';
+                                $orderList['list'][$k]['auth'][] = 'can_cancel';
+                                $orderList['list'][$k]['auth_desc'][] = '支付订金';
+                                $orderList['list'][$k]['auth_desc'][] = '取消';
+                                $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+                                $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+                            }
+
                         }
                     }
                     //已确认
@@ -189,9 +197,11 @@ class OrderInfoService
 //                            $orderList['list'][$k]['auth'][] = 'can_cancel';
 //                            $orderList['list'][$k]['auth_desc'][] = '取消';
 //                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
                             $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';
                             $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                             $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
 
                         }
@@ -230,8 +240,11 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                     } elseif ($item['deposit_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_pay';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                     }
                 }
 
@@ -390,7 +403,7 @@ class OrderInfoService
         ];
 
         //待付定金
-        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));  
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
         $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
@@ -426,7 +439,7 @@ class OrderInfoService
     public static function getOrderInfoById($id)
     {
         $order_info = OrderInfoRepo::getInfo($id);
-        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street'],$order_info['district']);
+        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['district'],$order_info['address']);
         return $order_info;
     }
 
@@ -443,6 +456,7 @@ class OrderInfoService
         foreach ($order_goods as $k => $vo) {
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
+            $order_goods[$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -456,6 +470,7 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
+            $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -704,6 +719,16 @@ class OrderInfoService
         return OrderInfoRepo::modify($id,['order_status'=>2]);
     }
 
+    //根据shopid获取用户商家信息
+    public static function getShopInfoByShopId($shopId){
+        $shopInfo = ShopRepo::getInfo($shopId);
+        if(empty($shopInfo) || $shopId <=0){
+            self::throwBizError('商家信息不存在');
+        }
+        return $shopInfo;
+    }
+
+
     //订单取消
     public static function orderCancel($id,$type){
         try{
@@ -731,6 +756,7 @@ class OrderInfoService
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
                     }
                 }else{//购物车下单
+
                     foreach ($orderGoodsInfo as $k=>$v){
                         $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
@@ -1024,13 +1050,18 @@ class OrderInfoService
 
 
     //付款凭证提交
-    public static function payVoucherSave($orderSn,$payVoucher){
+    public static function payVoucherSave($orderSn,$payVoucher,$deposit){
         $orderSn = decrypt($orderSn);
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
             self::throwBizError('订单信息不存在');
         }
-        return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+        if($deposit){
+            return OrderInfoRepo::modify($orderInfo['id'],['deposit_pay_voucher'=>$payVoucher]);
+        }else{
+            return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+        }
+
     }
 
     /**

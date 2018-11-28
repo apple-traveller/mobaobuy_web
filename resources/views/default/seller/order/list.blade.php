@@ -105,10 +105,13 @@
                                                 <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon icon-trash"></i>取消</a>
                                                 @elseif($tab_code=='waitDeposit')
                                                     <a href="javascript:void(0);"  title="确认收款" onclick="receiveDep({{ $vo['id'] }})" class="btn_see"><i class="sc_icon icon-edit"></i>确认收款</a>
+                                                    <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon icon-trash"></i>取消</a>
                                                 @elseif($tab_code=='waitPay')
                                                     <a href="javascript:void(0);"  title="确认收款" onclick="receiveM({{ $vo['id'] }})" class="btn_see"><i class="sc_icon icon-edit"></i>确认收款</a>
+                                                    <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon icon-trash"></i>取消</a>
                                                 @elseif($tab_code=='waitSend')
                                                     <a href="/seller/order/delivery?order_id={{$vo['id']}}&currentPage={{$currentPage}}"  title="发货" class="btn_see"><i class="sc_icon icon-edit"></i>发货</a>
+                                                    <a href="javascript:void(0);" onclick="cancelOne({{ $vo['id'] }})"  title="取消" class="btn_see"><i class="sc_icon icon-trash"></i>取消</a>
                                                 @endif
                                             </div>
                                         </td>
