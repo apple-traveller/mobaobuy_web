@@ -145,6 +145,7 @@ class QuoteController extends Controller
         $brand_id = $request->input("brand_id", "");
         $cate_id = $request->input('cate_id', "");
         $place_id = $request->input('place_id', "");
+        $keyword = $request->input('keyword', "");
         $t = $request->input('t', "");
         $condition = [];
 
@@ -193,6 +194,12 @@ class QuoteController extends Controller
         }
         if (!empty($place_id)) {
             $condition['place_id'] = $place_id;
+        }
+        if (!empty($keyword)) {
+            $con['opt'] = 'OR';
+            $con['b.goods_name'] = '%' . $keyword . '%';
+            $con['cat.cat_name'] = '%' . $keyword . '%';
+            $condition[] = $con;
         }
         $pageSize = 10;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);

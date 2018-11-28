@@ -159,7 +159,6 @@ class ShopGoodsQuoteController extends Controller
             'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
-            'total_number' => $goods_number,
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],
@@ -194,6 +193,7 @@ class ShopGoodsQuoteController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
+                $data['total_number'] = $goods_number;
                 $data['shop_user_id'] = session('_seller_id')['user_id'];
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){

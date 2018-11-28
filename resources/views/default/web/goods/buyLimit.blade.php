@@ -3,6 +3,7 @@
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	<link rel="stylesheet" href="css/index.css" />
+	<script type="text/javascript" src="{{asset('js/jqmeter.min.js')}}"></script>
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
 		.top-search-div .search-div .logo{background:none;margin-top: 0px}
@@ -13,6 +14,7 @@
 @endsection
 @section('js')
 	<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
+
 	<script type="text/javascript">
 		$(function(){
 			$(".nav-cate").hover(function(){
@@ -56,6 +58,11 @@
 							<div class="graybg count-down" data-endtime="{{$v['begin_time']}}">
 								<div class="bottom_time"><p>距离开始：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<div class="bottom_btn b1b1b1bg fs16 white cp">敬请期待</div>
+							</div>
+						@elseif($v['available_quantity'] == 0)
+							<div class="graybg">
+								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已结束</div>
 							</div>
 						@else
 							<div class="graybg count-down" data-endtime="{{$v['end_time']}}">
