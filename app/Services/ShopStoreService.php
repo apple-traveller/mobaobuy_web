@@ -10,7 +10,13 @@ class ShopStoreService
     //分页
     public static function getShopStoreList($pager,$condition)
     {
-        return ShopStoreRepo::getListBySearch($pager,$condition);
+        $store_list = ShopStoreRepo::getListBySearch($pager,$condition);
+
+        foreach ($store_list['list'] as $k=>$v){
+            $shop_info = ShopService::getShopById($v['shop_id']);
+            $store_list['list'][$k]['company_name'] = $shop_info['company_name'];
+        }
+        return $store_list;
     }
 
     //删除

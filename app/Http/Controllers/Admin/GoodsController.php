@@ -117,6 +117,9 @@ class GoodsController extends Controller
         if(empty($data['market_price'])){
             $errorMsg[] = '市场价不能为空';
         }
+        if(empty($data['goods_content'])){
+            $errorMsg[] = '含量不能为空';
+        }
 //        if(empty($data['goods_weight'])){
 //            $errorMsg[] = '商品重量不能为空';
 //        }
@@ -138,7 +141,7 @@ class GoodsController extends Controller
 
         try{
             if(!key_exists('id',$data)){
-                GoodsService::uniqueValidate($data['goods_name']);
+//                GoodsService::uniqueValidate($data['goods_name']);
                 $data['add_time']=Carbon::now();
                 $data['last_update']=Carbon::now();
                 if(!empty($data['goods_attr'])){
