@@ -12,11 +12,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
                                 <div class="label_value">
-                                    <input type="text"  shop-id="" value="" autocomplete="off" id="company_name" size="40"  class="text">
-                                    <input type="hidden" name="shop_name" id="company_name_val" />
-                                    <input type="hidden" name="shop_id" id="shop_id" />
-                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" >
+                                        <option value="">请选择商家</option>
+                                    </select>
+                                    <input type="hidden" name="shop_name" id="shop_name">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
                                 </div>
                             </div>
                             <div class="item">
@@ -43,6 +43,7 @@
     <script type="text/javascript">
 
         $(function(){
+            getShopList();
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#store_form").valid()){
@@ -68,44 +69,29 @@
                     },
                 }
             });
-
-            // 商家 获取焦点请求所有的商家数据
-            $("#company_name").focus(function(){
-                $(".query_company_name").children().filter("li").remove();
-                $.ajax({
-                    url: "/admin/shop/ajax_list",
-                    dataType: "json",
-                    data:{},
-                    type:"POST",
-                    success:function(res){
-                        if(res.code==1){
-                            $(".query_company_name").show();
-                            var data = res.data;
-                            for(var i=0;i<data.length;i++){
-                                $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-                            }
-                        }
-                    }
-                })
-            });
-
-            //点击将li标签里面的值填入input框内
-            $(document).delegate(".created_company_name","click",function(){
-                //$("#company_name").siblings("div").filter(".notic").remove();
-                var company_name = $(this).text();
-                var shop_id = $(this).attr("data-shop-id");
-                $("#company_name").val(company_name);
-                $("#company_name_val").val(company_name);
-                $("#shop_id").val(shop_id);
-                $(".query_company_name").hide();
-            });
-
-            $("#company_name").blur(function(){
-
-                let _name = $("#company_name_val").val();
-                $(this).val(_name);
+            //选择商家
+            $("#shop_id").change(function(){
+                var shop_name = $(this).find("option:selected").text();
+                $("#shop_name").val(shop_name);
             });
         });
+        // 商家 请求所有的商家数据
+        function getShopList(){
+            $.ajax({
+                url: "/admin/shop/ajax_list",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
+                        }
+                    }
+                }
+            })
+        }
     </script>
 
 

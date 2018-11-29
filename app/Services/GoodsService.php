@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
+use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -57,6 +58,27 @@ class GoodsService
     public static function getGoodInfo($id)
     {
         return GoodsRepo::getInfo($id);
+    }
+
+    /**
+     * 检测商品是否存在对应的信息
+     * checkGoodsExistOtherInfo
+     * @param $id
+     * @return bool
+     */
+    public static function checkGoodsExistOtherInfo($id)
+    {
+        //检测报价列表
+        $quote_res = ShopGoodsQuoteRepo::getTotalCount(['goods_id'=>$id]);
+        //检测限时抢购活动
+        $promote_res = ActivityPromoteRepo::getTotalCount(['goods_id'=>$id]);
+        //检测集采拼团活动
+        $wholesale_res = ActivityWholesaleRepo::getTotalCount(['goods_id'=>$id]);
+        if($quote_res > 0 || $promote_res > 0 || $wholesale_res > 0){
+            return false;
+        }
+        return true;
+
     }
 
     //保存关键词

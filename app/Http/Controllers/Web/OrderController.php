@@ -186,20 +186,21 @@ class OrderController extends Controller
     //订单详情
     public function orderDetails($id)
     {
-        dump(session('_curr_deputy_user'));
-        dump($id);
-        if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm']){
+        if(session('_curr_deputy_user')['is_firm']){
             $firmId = session('_curr_deputy_user')['firm_id'];
-        }elseif(session('_curr_deputy_user')['is_self'] == 1 && session('_curr_deputy_user')['is_firm'] == 0){
+        }else{
             $firmId = session('_curr_deputy_user')['firm_id'];
         }
         try {
-            $orderDetailsInfo = OrderInfoService::orderDetails($id);
+            $orderDetailsInfo = OrderInfoService::orderDetails($id,$firmId);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
-//        dd($orderDetailsInfo);
-        return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
+        if($orderDetailsInfo){
+            return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
+        }else{
+            return $this->redirect('/order/list');
+        }
     }
 
     //审核通过

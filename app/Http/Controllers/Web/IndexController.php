@@ -70,7 +70,7 @@ class IndexController extends Controller
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
 
         //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯

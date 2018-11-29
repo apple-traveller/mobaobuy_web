@@ -21,23 +21,22 @@
                 <div class="mian-info">
                     <form action="/admin/shopgoodsquote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
                                 <div class="label_value">
-                                    <input type="text"  shop-id="{{$goodsQuote['shop_id']}}" value="{{$goodsQuote['shop_name']}}" autocomplete="off" id="company_name" size="40"  class="text">
-                                    <input type="hidden" name="shop_name" value="{{$goodsQuote['shop_name']}}" id="company_name_val" />
-                                    <input type="hidden" name="shop_id" value="{{$goodsQuote['shop_id']}}" id="shop_id" />
-                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" value="{{$goodsQuote['shop_id']}}">
+                                        <option value="">请选择商家</option>
+                                    </select>
+                                    <input type="hidden" name="shop_name" id="shop_name" value="{{$goodsQuote['shop_name']}}">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">
-                                    <input type="hidden" name="store_name" value="{{$goodsQuote['store_name']}}" id="store_name_val" />
+                                    <input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">
+                                    <input type="hidden" name="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" id="store_name_val" />
                                     <input type="hidden" name="shop_store_id" value="{{$goodsQuote['shop_store_id']}}" id="store_id" />
                                     <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
                                     </ul>
@@ -166,29 +165,6 @@
             });
         });
 
-//        $(".cat_id").change(function(){
-//            $(".goods_id").children('option').remove();
-//            var cat_id = $(this).val();
-//            $.post('/admin/shopgoodsquote/getGoods',{'cat_id':cat_id},function(res){
-//                if(res.code==200){
-//                    var data = res.data;
-//                    $(".goods_id").append('<option value="">请选择商品</option>');
-//                    for(var i=0;i<data.length;i++){
-//                        $(".goods_id").append('<option data-extra="'+data[i]['packing_spec']+'" value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
-//                    }
-//                }else{
-//                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-//                }
-//            },"json");
-//        });
-//
-//        $("#goods_number").change(function(){
-//            var packing_spec = $(this).find("option:selected").attr("data-extra");
-//            $(this).siblings("span").remove();
-//            $(this).after('<span id="packing_spec" data="'+packing_spec+'" style="margin-left: 20px;color:red;">商品规格为：'+packing_spec+'</span>');
-//            $("#goods_number").after('<span style="margin-left: 10px;color:red;">库存数量必须是商品规格的整数倍</span>');
-//        });
-
         layui.use(['layer'], function(){
             var layer = layui.layer;
 
@@ -211,6 +187,7 @@
 
         });
         $(function(){
+            getShopList('{{$goodsQuote['shop_id'] or 0}}');
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
@@ -276,31 +253,20 @@
                 }
             });
             document.onclick=function(event){
-                $(".query_company_name").hide();
                 $(".query_store_name").hide();
                 $(".query_goods_name").hide();
                 $(".query_cat_name").hide();
             }
 
-            // 商家 获取焦点请求所有的商家数据
-            $("#company_name").focus(function(){
-                $(".query_company_name").children().filter("li").remove();
-                $.ajax({
-                    url: "/admin/shop/ajax_list",
-                    dataType: "json",
-                    data:{},
-                    type:"POST",
-                    success:function(res){
-                        if(res.code==1){
-                            $(".query_company_name").show();
-                            var data = res.data;
-                            for(var i=0;i<data.length;i++){
-                                $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-                            }
-                        }
-                    }
-                })
-            })
+            //选择商家
+            $("#shop_id").change(function(){
+                var shop_name = $(this).find("option:selected").text();
+                $("#shop_name").val(shop_name);
+
+                $("#store_name").val('');
+                $("#store_name_val").val('');
+                $("#store_id").val('');
+            });
             // 店铺 获取焦点请求所有的店铺数据
             $("#store_name").focus(function(){
                 let _shop_id = $('#shop_id').val();
@@ -327,20 +293,6 @@
                 })
             });
 
-            //商家 点击将li标签里面的值填入input框内
-            $(document).delegate(".created_company_name","click",function(){
-                //$("#company_name").siblings("div").filter(".notic").remove();
-                let company_name = $(this).text();
-                let shop_id = $(this).attr("data-shop-id");
-                $("#company_name").val(company_name);
-                $("#company_name_val").val(company_name);
-                $("#shop_id").val(shop_id);
-                $(".query_company_name").hide();
-
-                $("#store_name").val('');
-                $("#store_name_val").val('');
-                $("#store_id").val('');
-            });
             //店铺 点击将li标签里面的值填入input框内
             $(document).delegate(".created_store_name","click",function(){
                 //$("#company_name").siblings("div").filter(".notic").remove();
@@ -388,10 +340,6 @@
                 },"json");
             });
 
-            $("#company_name").blur(function(){
-                let _name = $("#company_name_val").val();
-                $(this).val(_name);
-            });
             $("#store_name").blur(function(){
                 let _name = $("#store_name_val").val();
                 $(this).val(_name);
@@ -510,6 +458,28 @@
                 $(this).val(_goods_name);
             });
         });
+        // 商家 请求所有的商家数据
+        function getShopList(_id){
+            $.ajax({
+                url: "/admin/shop/ajax_list",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            if(_id == data[i].id){
+                                $("#shop_id").append('<option value="'+data[i].id+'" selected>'+data[i].company_name+'</option>');
+                            }else{
+                                $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
+                            }
+
+                        }
+                    }
+                }
+            })
+        }
     </script>
 
 

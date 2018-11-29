@@ -111,10 +111,11 @@ class ArticleCatController extends Controller
         $cates = ArticleCatService::getCates();
         //获取当前id的所有下级id
         $ids = ArticleCatService::getChilds($cates,$id);
-        $ids[]=$id;
-        //dd($ids);
+        if(!empty($ids)){
+            return $this->error('该分类下存在子分类，无法删除');
+        }
         try{
-            $flag = ArticleCatService::delete($ids);
+            $flag = ArticleCatService::delete($id);
             if($flag){
                 return $this->success('删除成功',url('/admin/articlecat/list'));
             }else{
