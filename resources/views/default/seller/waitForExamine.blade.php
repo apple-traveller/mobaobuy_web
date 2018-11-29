@@ -98,8 +98,10 @@
         <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
         <div class="mt15 tac fs16">客服 : 王经理   <span class="ml15">电话 : <font class="orange">021-02136452</font></span><span class="ml15">QQ :<font class="orange">321456129</font></span></div>
         <div class="comfirm ovh">
+            <a href="/">
             <div class="comfirm_btn code_greenbg" style="margin-left: 75px;">
-                <a href="/">返回首页</a></div>
+                返回首页</div>
+            </a>
         </div>
     </div>
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;">
