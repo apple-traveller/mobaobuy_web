@@ -29,6 +29,11 @@ class LoginController extends Controller
     {
         $username = $request->input('user_name');
         $password = base64_decode($request->input('password'));
+        if(1){
+            $type = 'sms_signin';
+            $a = Cache::get(session()->getId().$type.$username);
+            dump($a);
+        }
 
         if(empty($username)){
             return $this->error('用户名不能为空');
