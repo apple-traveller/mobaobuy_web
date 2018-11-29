@@ -154,6 +154,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
         Route::post('/shop/ajax_list', 'ShopController@getShopList');//ajax获取商家列表
 
+        Route::get('/shop/store', 'ShopStoreController@getList');//店铺列表
+        Route::post('/shop/store/list', 'ShopStoreController@storeList');//ajax获取列表
+        Route::get('/shop/store/add', 'ShopStoreController@add');// 添加
+        Route::get('/shop/store/edit', 'ShopStoreController@edit');// 修改
+        Route::post('/shop/store/save', 'ShopStoreController@save');// 保存
+        Route::post('/shop/store/delete', 'ShopStoreController@delete');// 删除
+
         Route::get('/shopuser/list', 'ShopUserController@getList');//店铺职员列表
         Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员
         Route::get('/shopuser/editForm', 'ShopUserController@editForm');//修改职员
@@ -540,6 +547,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
+        Route::post('/order/updateDeliveryPeriod', 'ShopOrderController@updateDeliveryPeriod'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
         Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作

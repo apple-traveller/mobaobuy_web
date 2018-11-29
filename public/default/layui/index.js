@@ -96,6 +96,36 @@ layui.use(['element','jquery','form', 'layedit'],function(){
             $("#"+id).attr("class","layui-this");
         }
     });
+    window.onload = function() {
+        // var hash = location.hash;
+        // if (!hash){
+        //     return ;
+        // }
+        if ($.cookie('anchor')==null){
+            $("#firstT").find('a').click();
+            return false;
+        }
+        let hash = $.cookie('anchor');
+
+        if (!hash || typeof (hash)==="undefined"){
+            return false;
+        }
+
+        let tL = hash.indexOf('&');
+        let IL = hash.lastIndexOf('#');
+
+        let tabTitle = hash.substring(0,tL);
+        tabTitle = decodeURIComponent(tabTitle);  // 取得标题
+        let url = hash.substring(tL+1,IL); // 取得路由
+        let tabId =hash.substring(IL+1,hash.length); // 取得标签id
+        element.tabAdd('tab-switch', {
+            title: tabTitle
+            ,content: '<iframe src='+url+' width="100%" id="flyOwn" style="min-height: 784px;max-height: 784px" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
+            ,id: tabId //选项卡标题的lay-id属性值
+        });
+        element.tabChange('tab-switch', tabId);
+
+    }
 });
 
 /**
@@ -118,42 +148,42 @@ function addTab(tabTitle,tabUrl,tabId){
     }
 }
 
+$(function () {
+    $("#firstT").click(function () {
+        $.cookie('anchor','',-1);
+        console.log($.cookie('anchor'));
+    });
+
+   // $('#flyOwn').children().find('a').click(function () {
+   //      console.log(this);
+   //      return false;
+   //      if ($.cookie('anchor')!=null){
+   //          let hash = $.cookie('anchor');
+   //
+   //          if (!hash || typeof (hash)==="undefined"){
+   //              return false;
+   //          }
+   //
+   //          let tL = hash.indexOf('&');
+   //          let IL = hash.lastIndexOf('#');
+   //
+   //          let tabTitle = $.base64.atob(hash.substring(0,tL));
+   //          tabTitle = decodeURIComponent(tabTitle);  // 取得标题
+   //          let url = $.base64.atob(hash.substring(tL+1,IL)); // 取得路由
+   //          let tabId =$.base64.atob(hash.substring(IL+1,hash.length)); // 取得标签id
+   //
+   //      }
+   //  });
+});
 
 function loadIframe(tabTitle,url,tabId) {
     //设置新的锚点
-    let anchor =$.base64.btoa(encodeURIComponent(tabTitle))+ "&" + $.base64.btoa(url) + "#" + $.base64.btoa(tabId);
+    // let anchor =$.base64.btoa(encodeURIComponent(tabTitle))+ "&" + $.base64.btoa(url) + "#" + $.base64.btoa(tabId);
+    let anchor =encodeURIComponent(tabTitle)+ "&" + url + "#" + tabId;
     $.cookie('anchor', anchor , { expires: 1 ,path:'/'});
 }
 
-window.onload =function() {
-    // var hash = location.hash;
-    // if (!hash){
-    //     return ;
-    // }
-    if ($.cookie('anchor')==null){
-        $("#firstT").find('a').click();
-    }
-    let hash = $.cookie('anchor');
 
-    if (!hash || typeof (hash)==="undefined"){
-        return false;
-    }
-
-    let tL = hash.indexOf('&');
-    let IL = hash.lastIndexOf('#');
-
-    let tabTitle = $.base64.atob(hash.substring(0,tL));
-         tabTitle = decodeURIComponent(tabTitle);
-    let url = $.base64.atob(hash.substring(tL+1,IL));
-    let tabId =$.base64.atob(hash.substring(IL+1,hash.length));
-    element.tabAdd('tab-switch', {
-        title: tabTitle
-        ,content: '<iframe src='+url+' width="100%" id="flyOwn" style="min-height: 784px;max-height: 784px" frameborder="0" onload="setIframeHeight(this)"></iframe>' // 选项卡内容，支持传入html
-        ,id: tabId //选项卡标题的lay-id属性值
-    });
-    element.tabChange('tab-switch', tabId);
-
-}
 
 
 

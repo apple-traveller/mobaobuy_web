@@ -379,6 +379,7 @@
             $("#goods_name").attr("data-name",goods_name);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+            $("#goods_number").val(packing_spac);
         });
 
         $("#goods_name").blur(function () {

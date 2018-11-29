@@ -3,7 +3,6 @@
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	<link rel="stylesheet" href="css/index.css" />
-	<script type="text/javascript" src="{{asset('js/jqmeter.min.js')}}"></script>
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
 		.top-search-div .search-div .logo{background:none;margin-top: 0px}
@@ -21,6 +20,8 @@
 				$(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
 			});
 		})
+
+
 	</script>
 @endsection
 @section('content')
@@ -44,6 +45,9 @@
 							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}kg</div>
 						</div>
 						<div class="ovh mt20 ">
+
+							<!-- <div class="mx_progress"><div class="mx_progress_com" ></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}kg</span> -->
+
 							<div class="mx_progress">
 								@if($v['available_quantity'] <= 0)
 									<div class="mx_progress_com" style="width: 100%"></div>

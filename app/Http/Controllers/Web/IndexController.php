@@ -30,7 +30,6 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
-
         $now = Carbon::now();
         //获取顶部广告
         $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]);

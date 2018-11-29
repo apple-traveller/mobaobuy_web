@@ -789,6 +789,7 @@ CREATE TABLE `order_info` (
   `deposit` decimal(10,2) NOT NULL COMMENT '订金金额',
   `deposit_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '订金支付状态 0未支付 1已支付',
   `deposit_pay_voucher` varchar(255) DEFAULT NULL COMMENT '订金付款凭证',
+  `consign_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '清仓特卖审核状态 0待审核 1已审核 2审核不通过',
   PRIMARY KEY (`id`),
   UNIQUE KEY `order_sn` (`order_sn`),
   KEY `user_id` (`user_id`),

@@ -52,7 +52,7 @@
                                 <div class="log-input-container">
                                     <div class="clear" style="font-size:0px;"></div>
                                     <div class="log-line log-line-hover" id="rowCacct">
-                                        <div class="log-txt log-txt-hover" style="display: block;">用户名</div>
+                                        <div class="log-txt log-txt-hover" style="display: block;">手机号</div>
                                         <input id="log-cacct" type="text" autocomplete="off" maxlength="34" class="log-input input2">
                                         <div class="logIcoNew logIcoCacct">&nbsp;</div>
                                     </div>
