@@ -105,10 +105,21 @@ class OrderController extends ApiController
     //确认收货
     public function orderConfirmTake(Request $request){
         $id = $request->input('id');
-        try{
-            OrderInfoService::orderConfirmTake($id);
-            return $this->success('','success');
-        }catch (\Exception $e){
+        $firmUser = $this->getDeputyUserInfo($request);
+        if(!$firmUser['is_firm']){
+            return $this->error('当前没有权限操作');
+        }
+        if($firmUser['is_firm'] && $firmUser['is_self']){
+            $userId = $firmUser['firm_id'];
+        }
+        if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
+            $userId = $firmUser['user_id'];
+        }
+
+        try {
+            OrderInfoService::orderConfirmTake($id,$firmUser['firm_id'],$userId);
+            return $this->success();
+        } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
     }
@@ -134,22 +145,23 @@ class OrderController extends ApiController
     {
         $id = $request->input('id');
         $info = $this->getDeputyUserInfo($request);
+        //dd($info);
         $userInfo = $this->getUserInfo($request);
-        $cartSession = Cache::get("cartSession".$userInfo['id']);
+        $cartSession = Cache::get("cartSession".$info['firm_id']);
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 
-        //dd($userInfo);
+        if(empty($cartSession) || !isset($cartSession) || empty($goodsList)){
+           return $this->error('非法操作');
+        }
 
         $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
         if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能下单');
         }
+
         if ($invoiceInfo['review_status'] != 1) {
             return $this->error('您的实名认证还未通过，不能下单');
-        }
-        if (empty($goodsList)) {
-            return $this->error('没有对应的商品');
         }
 
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
@@ -160,10 +172,8 @@ class OrderController extends ApiController
             $u_id = $userInfo['id'];
             $address_id = $userInfo['address_id'] ? $userInfo['address_id'] : 0;
         }
-
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($u_id);
-        //dd($addressList);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
@@ -240,48 +250,48 @@ class OrderController extends ApiController
     {
         $token = $request->input('token');
         $info = $this->getDeputyUserInfo($request);
-        $userInfo = $this->getUserInfo($request);
         $userIds = [];
         // 判断是否为企业用户
         if ($info['is_firm']) {
             //企业用户，企业
+            $userInfo = $info;
             $userIds['user_id'] = $this->getUserID($request);
             $userIds['firm_id'] = $info['firm_id'];
+            $u_id = $info['firm_id'];
         } else {
             //个人
-            $userIds['user_id'] = $this->getUserID($request);
+            $userInfo = $this->getUserInfo($request);
+            $userIds['user_id'] = $userInfo['id'];
             $userIds['firm_id'] = '';
+            $u_id = $userInfo['id'];
         }
         $words = $request->input('words', ' ');
         // 判断是否有开票信息 地址可用
-        $invoiceInfo = UserRealService::getInfoByUserId($userInfo['id']);
+        $invoiceInfo = UserRealService::getInfoByUserId($userIds['user_id']);
         if (empty($invoiceInfo)) {
             return $this->error('您还没有实名认证，不能下单');
         }
         if ($invoiceInfo['review_status'] != 1) {
             return $this->error('您的实名认证还未通过，不能下单');
         }
-        $addressList = UserAddressService::getInfoByUserId($userInfo['id']);
+        $addressList = UserAddressService::getInfoByUserId($u_id);
         if (empty($addressList)) {
             return $this->error('无地址信息请前去维护');
         }
 
-        // 没有默认地址的情况下
-        if (empty($userInfo['address_id'])) {
-            $userInfo['address_id'] = UserAddressService::getInfoByUserId($userInfo['id'])[0]['id'];
-
-        }
-        $cartSession = Cache::get("cartSession".$userInfo['id']);
+        $cartSession = Cache::get("cartSession".$userIds['user_id']);
         $carList = $cartSession['goods_list'];
+
         if ($cartSession['address_id'] == '') {
             return $this->error('请选择收货地址');
         }
+
         //限时抢购下单
         if ($cartSession['from'] == 'promote') {
             try {
                 $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 if (!empty($re)) {
-                    Cache::forget('cartSession'.$userInfo['id']);
+                    Cache::forget('cartSession'.$userIds['user_id']);
                     return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');
@@ -289,11 +299,12 @@ class OrderController extends ApiController
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
+
         } elseif ($cartSession['from'] == 'wholesale') {
             try {
                 $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 if (!empty($re)) {
-                    Cache::forget('cartSession'.$userInfo['id']);
+                    Cache::forget('cartSession'.$userIds['user_id']);
                     return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');
@@ -325,7 +336,7 @@ class OrderController extends ApiController
                     $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 }
                 if (!empty($re)) {
-                    Cache::forget('cartSession'.$userInfo['id']);
+                    Cache::forget('cartSession'.$userIds['user_id']);
                     return $this->success($re,'订单提交成功');
                 } else {
                     return $this->error('订单提交失败');
@@ -362,7 +373,11 @@ class OrderController extends ApiController
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
-                    Cache::put("_api_deputy_user_".$user_id, $firm, 60*24*1);
+                    Cache::put("_api_deputy_user_".$this->getUserID($request), $firm, 60*24*1);
+                    if(!Cache::has('cartSession'.$this->getUserID($request))){
+                        Cache::forget('cartSession'.$this->getUserID($request));
+                    }
+                    //dd(Cache::get("_api_deputy_user_".$this->getUserID($request)));
                     return $this->success($firm,'success');
                 }
             }

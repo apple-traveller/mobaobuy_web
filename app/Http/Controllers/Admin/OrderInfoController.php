@@ -79,8 +79,7 @@ class OrderInfoController extends Controller
         $order_status = $request->input("order_status");
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
-        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district'],"");
-        //$user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district'],$orderInfo['address']);
         $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
@@ -366,7 +365,7 @@ class OrderInfoController extends Controller
         $currpage = $request->input('currpage');
         $delivery = OrderInfoService::getDeliveryInfo($id);
         //地区信息
-        $region = RegionService::getRegion($delivery['country'],$delivery['province'],$delivery['city'],$delivery['district']);
+        $region = RegionService::getRegion($delivery['country'],$delivery['province'],$delivery['city'],$delivery['district'],"");
         //商品信息
         $delivery_goods = OrderInfoService::getDeliveryGoods($id);
         //dd($delivery_goods);
