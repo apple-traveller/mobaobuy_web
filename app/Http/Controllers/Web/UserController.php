@@ -639,6 +639,24 @@ class UserController extends Controller
     }
 
 
+    //手机验证码登陆获取手机验证码
+    public function sendMessLoginSms(Request $request){
+        $accountName = $request->input('user_name');
+        if(!UserService::checkNameExists($accountName)){
+            return $this->error('账号不存在');
+        }
+        $type = 'sms_signin';
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+       
+        createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
+
 
     public function empList(Request $request){
         return $this->display('web.user.emp.list');
