@@ -105,7 +105,7 @@
                     , curr: "{{$currentPage}}" //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            {{--window.location.href="/seller/quote/list?currentPage="+obj.curr+"&goods_name="+"{{$goods_name}}";--}}
+                            window.location.href="/seller/invoice/list?currentPage="+obj.curr+"&member_phone="+"{{$member_phone}}";
                         }
                     }
                 });

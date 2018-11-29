@@ -44,7 +44,15 @@ class BrandService
     //删除
     public static function delete($id)
     {
-        return BrandRepo::delete($id);
+        //先验证是否存在商品
+        $res = GoodsRepo::getTotalCount(['brand_id'=>$id]);
+        if(!$res){
+            self::throwBizError('该品牌存在商品，无法删除');
+            return false;
+        }
+
+        $flag = BrandService::modify(['id'=>$id,'is_delete'=>1]);
+        return $flag;
     }
 
     //商品列表页品牌列表

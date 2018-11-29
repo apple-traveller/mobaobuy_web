@@ -96,7 +96,7 @@ class ActivityWholesaleController extends Controller
         $max_limit = $request->input('max_limit','');
         $currentPage = $request->input('currentPage',1);
         $shop_id = $request->input('shop_id',0);
-        $company_name = $request->input('company_name','');
+        $company_name = $request->input('shop_name','');
         $goodsInfo = GoodsService::getGoodInfo($goods_id);
 
         $data = [

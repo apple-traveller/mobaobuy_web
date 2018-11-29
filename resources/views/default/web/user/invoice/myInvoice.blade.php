@@ -107,7 +107,7 @@
                             html += '<tr  class="tal"><td colspan="4">';
                             html += '<p><span class="pl10 fl" style="width:30%">开票流水号：<a>' + full.invoice_numbers +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.created_at +'</span></p></td></tr>';
 
-                            html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span></p></div></td>';
+                            html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：' + full.shipping_billno + '</span></p></div></td>';
 
                             html += '<td width="20%"><p>发票总金额:￥'+ full.invoice_amount +'</p></td>';
                             html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">订单详情</a></span></p></td>';

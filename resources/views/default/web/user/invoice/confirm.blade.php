@@ -252,7 +252,7 @@
 			@foreach($goodsList['list'] as $k =>$v)
 			<li class="graybg">
 				<span class="ovhwp">{{ $v['goods_name'] }}</span>
-				<span class="orange">{{ $v['goods_sn'] }}</span>
+				<span >{{ $v['goods_sn'] }}</span>
 				<span class="orange">¥{{ $v['goods_price'] }}</span>
 				<span>{{ $v['goods_number'] }}</span>
 				<span></span><span class="orange subtotal">{{ amount_format($v['goods_price']*$v['goods_number']) }}</span>

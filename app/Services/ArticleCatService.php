@@ -41,18 +41,16 @@ class ArticleCatService
     }
 
     //删除
-    public static function delete($ids)
+    public static function delete($id)
     {
         try{
-            foreach($ids as $k=>$v){
-                $article = ArticleRepo::getInfo($v);
-                if(!empty($article)){
-                    self::throwBizError('该分类下有文章，不能删除');
-                }
-                $info = ArticleCatRepo::delete($v);
-                if(!$info){
-                    return false;
-                }
+            $article = ArticleRepo::getTotalCount(['cat_id'=>$id]);
+            if(!empty($article)){
+                self::throwBizError('该分类下有文章，不能删除');
+            }
+            $info = ArticleCatRepo::delete($id);
+            if(!$info){
+                return false;
             }
         }catch(\Exception $e){
             self::throwBizError($e->getMessage());
