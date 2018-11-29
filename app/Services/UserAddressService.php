@@ -61,6 +61,28 @@ class UserAddressService
 
     }
 
+    public static function deleteApi($id,$user_info)
+    {
+        //先判断是否是默认地址
+        try{
+            self::beginTransaction();
+            if($id == $user_info['address_id']){//是默认地址 清空user表的默认地址字段
+                UserService::modify($user_info['id'],['address_id'=>0]);
+            }
+            $res = UserAddressRepo::delete($id);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
+    }
+
     //确认订单页 获取选中地址 有默认则为默认 没有默认任意选择一条
     public static function getOneAddressId()
     {

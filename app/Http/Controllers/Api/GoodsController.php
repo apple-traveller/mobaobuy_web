@@ -335,7 +335,7 @@ class GoodsController extends ApiController
             $cartCache = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $address_id,
-                'from'=>'cart'
+                'from'=>'cart',
             ];
             Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);
             return $this->success($cartCache,'success');
