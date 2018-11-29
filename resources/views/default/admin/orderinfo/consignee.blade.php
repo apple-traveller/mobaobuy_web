@@ -194,8 +194,6 @@
                     city :{
                         required : true,
                     },
-
-
                 },
                 messages:{
                     mobile_phone:{

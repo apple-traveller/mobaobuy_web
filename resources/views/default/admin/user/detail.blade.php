@@ -22,7 +22,7 @@
 <div>基础信息</div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;登录名：</div>
+                                <div class="label">&nbsp;登录名：</div>
                                 <div class="label_value font14">
                                     @if(!empty($info['user_name']))
                                         {{$info['user_name']}}
@@ -33,7 +33,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;昵称：</div>
+                                <div class="label">&nbsp;昵称：</div>
                                 <div class="label_value font14">
                                     @if(!empty($info['nick_name']))
                                         {{$info['nick_name']}}
@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;邮件地址：</div>
+                                <div class="label">&nbsp;邮件地址：</div>
                                 <div class="label_value font14">
                                     @if(!empty($info['email']))
                                         {{$info['email']}}
@@ -56,47 +56,44 @@
 
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;注册时间：</div>
+                                <div class="label">&nbsp;注册时间：</div>
                                 <div class="label_value font14">{{$info['reg_time']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;上次访问ip：</div>
+                                <div class="label">&nbsp;上次访问ip：</div>
                                 <div class="label_value font14">{{$info['last_ip']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;上次登录时间：</div>
+                                <div class="label">&nbsp;上次登录时间：</div>
                                 <div class="label_value font14">{{$info['last_time']}}</div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;会员积分：</div>
-                                <div class="label_value font14">{{$info['points']}}</div>
-                            </div>
+
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;会员可用金额：</div>
+                                <div class="label">&nbsp;会员可用金额：</div>
                                 <div class="label_value font14">{{$info['user_money']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;会员冻结金额：</div>
+                                <div class="label">&nbsp;会员冻结金额：</div>
                                 <div class="label_value font14">{{$info['frozen_money']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;用户头像：</div>
+                                <div class="label">&nbsp;用户头像：</div>
                                 <div class="label_value font14"><img src="{{$info['avatar']}}" style="width:80px;height:80px;"></div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;访问次数：</div>
+                                <div class="label">&nbsp;访问次数：</div>
                                 <div class="label_value font14">{{$info['visit_count']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;是否冻结：</div>
+                                <div class="label">&nbsp;是否冻结：</div>
                                 <div class="label_value font14">
                                     @if($info['is_freeze']==1)冻结
                                     @elseif($info['is_freeze']==0)未冻结
@@ -106,7 +103,7 @@
 
                             @if($info['is_firm']==1)
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;订单是否需审批：</div>
+                                    <div class="label">订单是否需审批：</div>
                                     <div class="label_value font14">
                                         <div style="float: left;" data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['need_approval']==0) @else layui-btn-primary @endif '>不需要</div>
                                         <div style="float: left;" data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['need_approval']==1) @else layui-btn-primary @endif '>需要</div>
