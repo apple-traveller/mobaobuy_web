@@ -50,17 +50,17 @@ class ShopGoodsQuoteController extends Controller
         $currpage = $request->input('currpage',1);
         $id = $request->input('id');
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
-        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-        $goods = GoodsService::getGoodsList([],[]);
+//        $shops = ShopService::getShopList([],[]);
+//        $goodsCat = GoodsCategoryService::getCates();
+//        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
+//        $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
         return $this->display('admin.shopgoodsquote.edit',[
             'goodsQuote'=>$goodsQuote,
             'currpage'=>$currpage,
-            'shops'=>$shops['list'],
-            'goodsCatTree'=>$goodsCatTree,
-            'goods'=>$goods['list'],
+//            'shops'=>$shops['list'],
+//            'goodsCatTree'=>$goodsCatTree,
+//            'goods'=>$goods['list'],
             'good'=>$good
         ]);
     }
@@ -98,7 +98,10 @@ class ShopGoodsQuoteController extends Controller
         $place_ids = explode('|',$data['place_id']);//先转化为数组
         $data['place_id'] = array_pop($place_ids);//取最后的一个地区
 
-        $data['shop_name'] = ShopService::getShopById($data['shop_id'])['shop_name'];
+        $shop_info = ShopService::getShopById($data['shop_id']);
+        $data['shop_name'] = $shop_info['shop_name'];
+        $data['is_self_run'] = $shop_info['is_self_run'];
+
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
