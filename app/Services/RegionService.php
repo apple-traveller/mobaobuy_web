@@ -110,7 +110,7 @@ class RegionService
     }
 
     //根据id获取地区(订单模块)
-    public static function getRegion($country_id, $province_id, $city_id, $district_id, $address)
+    public static function getRegion($country_id, $province_id, $city_id, $district_id, $address='')
     {
         $country = "";
         $city = "";
