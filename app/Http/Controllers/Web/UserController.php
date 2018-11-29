@@ -738,6 +738,7 @@ class UserController extends Controller
                 //企业
                 $data['need_approval'] = $params['need_approval'];
             }
+
             $flag = UserService::modify($userId,$data);
 
             if(!$flag['is_firm']){

@@ -54,13 +54,16 @@ class OrderInfoService
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
 
+
         //企业会员权限
         if($currUser['is_firm']){
+            $needApproval = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
             if($condition['firm_id'] && $currUser['is_self'] == 0){
                 $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$currUser['user_id']);
-                $currUserAuth[0]['need_approval'] = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
+                $currUserAuth[0]['need_approval'] = $needApproval;
             }
         }
+
 
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
@@ -83,11 +86,14 @@ class OrderInfoService
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
                 }
                 if($item['order_status'] == 1){
-                    $orderList['list'][$k]['auth'][] = 'can_approval';
+                    if($needApproval){
+                        $orderList['list'][$k]['auth'][] = 'can_approval';
+                        $orderList['list'][$k]['auth_desc'][] = '审批';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
+                    }
+
                     $orderList['list'][$k]['auth'][] = 'can_cancel';
-                    $orderList['list'][$k]['auth_desc'][] = '审批';
                     $orderList['list'][$k]['auth_desc'][] = '取消';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                 }
                 if ($item['order_status'] == 2) {
@@ -182,11 +188,11 @@ class OrderInfoService
                         } elseif ($item['deposit_status'] == 0) {
                             if($currUserAuth[0]['can_pay']){
                                 $orderList['list'][$k]['auth'][] = 'can_pay';
-                                $orderList['list'][$k]['auth'][] = 'can_cancel';
+//                                $orderList['list'][$k]['auth'][] = 'can_cancel';
                                 $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                                $orderList['list'][$k]['auth_desc'][] = '取消';
+//                                $orderList['list'][$k]['auth_desc'][] = '取消';
                                 $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
-                                $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+//                                $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                             }
 
                         }
@@ -195,13 +201,10 @@ class OrderInfoService
                     if($item['order_status'] == 3){
                         if($item['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
 //                            $orderList['list'][$k]['auth'][] = 'can_cancel';
-//                            $orderList['list'][$k]['auth_desc'][] = '取消';
-//                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-                            $orderList['list'][$k]['auth'][] = 'can_cancel';
                             $orderList['list'][$k]['auth'][] = 'can_pay';
-                            $orderList['list'][$k]['auth_desc'][] = '取消';
+//                            $orderList['list'][$k]['auth_desc'][] = '取消';
                             $orderList['list'][$k]['auth_desc'][] = '去支付';
-                            $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+//                            $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                             $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
 
                         }
@@ -257,11 +260,7 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                     }
-//                    elseif ($item['pay_status'] == 1){
-//                        $orderList['list'][$k]['auth'][] = 'can_confirm';
-//                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
-//                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
-//                    }
+
                     //未发货
                     if($item['pay_status'] == 1 && $item['shipping_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
@@ -688,8 +687,17 @@ class OrderInfoService
     }
 
     // 订单详情
-    public static function orderDetails($id){
+    public static function orderDetails($id,$firmId){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        if($orderInfo['firm_id'] && $orderInfo['user_id']){
+            if($firmId != $orderInfo['firm_id']){
+                return '';
+            }
+        }else if($orderInfo['firm_id'] == 0 && $orderInfo['user_id']){
+            if($firmId != $orderInfo['user_id']){
+                return '';
+            }
+        }
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
 
         $country = RegionRepo::getInfo($orderInfo['country']);
