@@ -17,6 +17,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
+
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
+
     <div class="warpper">
         <div class="title"><a href="/admin/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特卖</div>
         <div class="content">
@@ -42,10 +50,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" data-catname="{{$consign_info['cat_name']}}" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
-                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
+                                    <input type="hidden" name="cat_id" id="cat_id" value="{{$consign_info['cat_id']}}"/>
+                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" value="{{$consign_info['cat_name']}}" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                 </div>
                             </div>
 
@@ -239,56 +245,9 @@
             var shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
         });
-
-        // 种类 获取焦点请求所有的分类数据
         $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
+            showWinZtreeSelector(this);
         });
-
-        // 种类 点击将选中的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").attr('data-catname',cat_name);
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-        });
-
-        //根据company里面输入的文字实时查询分类数据
-        $("#cat_name").bind("input propertychange",function(res){
-            var cat_name = $(this).val();
-            $(".query_cat_name").children().filter("li").remove();
-            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==1){
-                    $(".query_cat_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                    }
-                }
-            },"json");
-        });
-
-        $("#cat_name").blur(function(){
-            let _name = $(this).attr("data-catname");
-            $(this).val(_name);
-        });
-
 
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
