@@ -294,7 +294,7 @@
 			}
 		}
 
-		//去结算
+		//去结算  先判断用户是否实名通过.
 		function toBalance(){
 			 var userId = "{{session('_web_user_id')}}";
 			 if(userId > 0){
@@ -342,7 +342,7 @@
 					},
 					type: "POST",
 					success: function (data) {
-					    console.log(data);
+					    // console.log(data);
 						if(data.code){
 							window.location.href='/confirmOrder';
 						}else{

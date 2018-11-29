@@ -156,6 +156,7 @@
                     success:function(data){
                         if(data.code){
                             $.msg.alert('收藏成功');
+                            window.location.reload();
                         }else{
                             $.msg.alert(data.msg);
                         }
