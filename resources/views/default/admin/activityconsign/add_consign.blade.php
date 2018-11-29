@@ -11,6 +11,15 @@
         .ui-area .area-warp {
             width: 278px !important;
         }
+        .treeSelect {
+            margin-top: 10px;
+            border: 1px solid #617775;
+            background:#f0f6e4;
+            width: 220px;
+            height: 360px;
+            overflow-y: scroll;
+            overflow-x: auto;
+        }
     </style>
 @endsection
 @section('body')
@@ -18,9 +27,14 @@
     <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
+
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
     <div class="warpper">
         <div class="title"><a href="/admin/activity/consign" class="s-back">返回</a>添加清仓特卖</div>
         <div class="content">
@@ -46,10 +60,11 @@
                             <div class="item">
                                 <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" data-catname="" cat-id=""  autocomplete="off" value="{{old('cat_name')}}" id="cat_name" size="40"  class="text" >
+                                    <input type="hidden" name="cat_id" id="cat_id"/>
+                                    <input type="text" data-catname="" cat_id="" name="cat_id_LABELS"  autocomplete="off" value="{{old('cat_name')}}" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text"  title="平台资源树">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
+                                    {{--<ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">--}}
+                                    {{--</ul>--}}
                                 </div>
                             </div>
 
@@ -136,6 +151,7 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
         $(function(){
             getShopList();
@@ -278,62 +294,61 @@
 //        $("#company_name").blur(function(){
 //            let _name = $("#company_name_val").val();
 //            $(this).val(_name);
+//        });showWinZtreeSelector(this)
+        // 种类 获取焦点请求所有的分类数据
+//        $("#cat_name").focus(function(){
+//            $(".query_cat_name").children().filter("li").remove();
+//            $.ajax({
+//                url: "/admin/promote/getGoodsCat",
+//                dataType: "json",
+//                data:{},
+//                type:"POST",
+//                success:function(res){
+//                    if(res.code==1){
+//                        $(".query_cat_name").show();
+//                        var data = res.data;
+//                        for(var i=0;i<data.length;i++){
+//                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+//                        }
+//                    }
+//                }
+//            })
 //        });
 
-        // 种类 获取焦点请求所有的分类数据
-        $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
-
         // 种类 点击将选中的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").attr('data-catname',cat_name);
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-        });
+//        $(document).delegate(".created_cat_name","click",function(){
+//            var cat_name = $(this).text();
+//            var cat_id = $(this).attr("data-cat-id");
+//            $("#cat_name").attr('data-catname',cat_name);
+//            $("#cat_name").val(cat_name);
+//            $("#cat_name").attr("cat-id",cat_id);
+//        });
 
         //根据company里面输入的文字实时查询分类数据
-        $("#cat_name").bind("input propertychange",function(res){
-            var cat_name = $(this).val();
-            $(".query_cat_name").children().filter("li").remove();
-            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==1){
-                    $(".query_cat_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                    }
-                }
-            },"json");
-        });
+//        $("#cat_name").bind("input propertychange",function(res){
+//            var cat_name = $(this).val();
+//            $(".query_cat_name").children().filter("li").remove();
+//            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
+//                if(res.code==1){
+//                    $(".query_cat_name").show();
+//                    var data = res.data;
+//                    for(var i=0;i<data.length;i++){
+//                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
+//                    }
+//                }
+//            },"json");
+//        });
 
-        $("#cat_name").blur(function(){
-            let _name = $(this).attr("data-catname");
-            $(this).val(_name);
-        });
+//        $("#cat_name").blur(function(){
+//            let _name = $(this).attr("data-catname");
+//            $(this).val(_name);
+//        });
 
 
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",
@@ -357,7 +372,7 @@
         //根据company里面输入的文字实时查询分类数据
         $("#goods_name").bind("input propertychange",function(res){
             var goods_name = $(this).val();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
                 if(res.code==1){
@@ -426,6 +441,89 @@
                 }
             })
         }
+
+        $("#cat_name").focus(function(){
+            showWinZtreeSelector(this);
+        });
+//        function showZtreeSelect(treeId, x, y){
+//            $("#"+treeId).parent().css({"top":y+"px", "left":x+"px","z-index":"999","position":"fixed", "visibility":"visible"}).slideDown("fast");
+//            $("body").bind("mousedown", function(){
+//                if (!(event.target.id == treeId || $(event.target).parents("#"+treeId).length>0)) {
+//                    hideZtreeSelect(treeId);
+//                }
+//            });
+//        }
+//        function hideZtreeSelect(treeId){
+//            $("#"+treeId).parent().fadeOut("fast");
+//            $("body").unbind("mousedown");
+//        }
+//        function showWinZtreeSelector(combobj){
+//            var treeId = $(combobj).attr("treeId");
+//            var selectOffset = $(combobj).offset();
+//            if($('#'+treeId).length == 0){
+//                treeId = 'setCatTree';
+//
+//                var labelName = $(combobj).attr("name");
+//                var valueName = labelName.substring(0,labelName.lastIndexOf("_LABELS"));
+//                var needCheckId = $("input[name='"+valueName+"']").val();
+//                var selectorurl = $(combobj).attr("treeDataUrl");
+//                var title = $(combobj).attr("title");
+//                var datarule = $(combobj).attr("datarule");
+//                var callbackfn = $(combobj).attr("callbackfn");
+//
+//                //生成添加元素
+////                treeId = PlatUtil.getUUID();
+//                $(combobj).attr("treeId", treeId);
+//
+//                var treeSetting = {
+//                    check : {
+//                        enable : false
+//                    },
+//                    edit : {
+//                        enable : true,
+//                        showRemoveBtn : false,
+//                        showRenameBtn : false
+//                    },
+//                    view : {
+//                        selectedMulti : false,
+////                        fontCss: PlatUtil.getTreeNodeHighLightFont
+//                    },
+//                    async : {
+//                        enable : true,
+//                        url: selectorurl,
+//                        otherParam : {
+//                            //是否显示树形标题
+//                            "isShowTreeTitle" : title.length>0?true:false,
+//                            //根据节点名称
+//                            "treeTitle": title
+//                        }
+//                    },
+//                    callback: {
+//                        onClick: function(event, treeId, treeNode, clickFlag) {
+//                            if(event.target.tagName=="SPAN"){
+//                                $(combobj).val(treeNode.name);
+//                                $("input[name='"+valueName+"']").val(treeNode.id);
+//                                if(datarule){
+//                                    $(combobj).trigger("validate");
+//                                }
+//                                if(callbackfn){
+//                                    eval(callbackfn).call(this,treeNode.id,treeNode.name);
+//                                }
+//                            }
+//                            hideZtreeSelect(treeId);
+//                        },
+//                        onAsyncSuccess: function(event, treeId, treeNode, clickFlag) {
+//                            var zTreeObj = $.fn.zTree.getZTreeObj(treeId);
+//                            zTreeObj.selectNode(zTreeObj.getNodesByParam('id', needCheckId)[0]);
+//                        }
+//                    }
+//                };
+//
+//                $.fn.zTree.init($("#"+treeId), treeSetting);
+//            }
+//
+//            showZtreeSelect(treeId, selectOffset.left, selectOffset.top+$(combobj).outerHeight());
+//        }
     </script>
 
 

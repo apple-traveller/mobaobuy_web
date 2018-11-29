@@ -127,9 +127,6 @@ class GoodsCategoryController extends Controller
         }
     }
 
-
-
-
     //上传自定义图标
     public function upload(Request $request)
     {
@@ -191,5 +188,12 @@ class GoodsCategoryController extends Controller
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    public function getCategoryTree()
+    {
+        $res = GoodsCategoryService::getCategoryTreeAdmin();
+
+        return $res;
     }
 }
