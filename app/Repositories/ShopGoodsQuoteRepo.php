@@ -19,7 +19,7 @@ class ShopGoodsQuoteRepo
         $clazz = self::getBaseModel();
         $query = $clazz::query();
         $query = self::setCondition($query, $condition);
-        $rs = $query->orderBy('add_time','desc')->groupBy('shop_id')->take($top)->get(['shop_id']);
+        $rs = $query->orderBy('add_time','desc')->groupBy('shop_id')->take($top)->get();
         if($rs){
             return $rs->toArray();
         }

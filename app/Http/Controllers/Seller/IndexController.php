@@ -24,7 +24,8 @@ class IndexController extends Controller
             'user_name'=>$info['user_name'],
             'shop_name'=> $info['shop_info']['shop_name'],
             'is_super'=>'',
-            'last_log'=>$info['shop_info']['last_time']
+            'last_log'=>$info['shop_info']['last_time'],
+            'is_self_run'=>$info['shop_info']['is_self_run']
         ];
         return $this->display('seller.index',compact('data'));
     }
