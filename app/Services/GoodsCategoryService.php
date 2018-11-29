@@ -153,17 +153,14 @@ class GoodsCategoryService
     }
 
     //删除
-    public static function delete($ids)
+    public static function delete($id)
     {
-        //dd($ids);
-        foreach($ids as $k=>$v){
-            $good = GoodsRepo::getInfoByFields(['cat_id'=>$v]);
-            if(!empty($good)){
-                self::throwBizError('该分类下有商品不能删除');
-                return false;
-            }
+        $good = GoodsRepo::getInfoByFields(['cat_id'=>$id]);
+        if(!empty($good)){
+            self::throwBizError('该分类下有商品不能删除');
+            return false;
         }
-        return GoodsCategoryRepo::delete($ids);
+        return GoodsCategoryRepo::modify($id,['is_delete'=>1]);
     }
 
     //商品报价页面

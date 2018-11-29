@@ -175,10 +175,14 @@ class GoodsCategoryController extends Controller
         $cates = GoodsCategoryService::getCates();
         //获取当前id的所有下级id
         $ids = GoodsCategoryService::getChilds($cates,$id);
-        $ids[]=$id;
-        //dd($ids);
+        //此时ids如果有值 则代表该分类下有子分类
+        if(!empty($ids)){
+            return $this->error('该分类下存在子分类，无法删除');
+        }
+
         try{
-            $flag = GoodsCategoryService::delete($ids);
+
+            $flag = GoodsCategoryService::delete($id);
             if($flag){
                 return $this->success('删除成功',url('/admin/goodscategory/list'));
             }else{
@@ -187,17 +191,5 @@ class GoodsCategoryController extends Controller
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
-
-
     }
-
-
-
-
-
-
-
-
-
-
 }
