@@ -588,9 +588,9 @@ class OrderInfoService
                 }
             }
             if($flag==false){
-                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2]);//部分发货
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2,'shipping_time'=>Carbon::now()]);//部分发货
             }else{
-                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1]);//全部发货
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
             self::commit();
             return $orderDelivery;

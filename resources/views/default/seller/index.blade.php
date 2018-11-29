@@ -50,7 +50,7 @@
                     <div id="list" style="height: 400px">
 
                     </div>
-                    <div id="main">
+                    <div id="main" style="margin: 0 4px">
 
                     </div>
                 </div>
@@ -158,6 +158,9 @@
                 }
             ]
         });
+
+
+
         var bodyWidth = $("body").width();
 
         if(bodyWidth<1380){

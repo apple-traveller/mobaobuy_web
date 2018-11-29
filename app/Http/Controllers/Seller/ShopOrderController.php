@@ -527,7 +527,7 @@ class ShopOrderController extends Controller
         $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];
         $order_delivery_data['postscript'] = $orderInfo['postscript'];
         $order_delivery_data['update_time'] = Carbon::now();
-        $order_delivery_data['status'] = 0;
+        $order_delivery_data['status'] = 1; // 默认已发货
         //dd($order_delivery_data);
         try{
             $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
