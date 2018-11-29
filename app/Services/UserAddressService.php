@@ -19,7 +19,11 @@ class UserAddressService
             $user_address[$k]['province'] = RegionRepo::getInfo($vo['province'])['region_name'];
             $user_address[$k]['country'] = RegionRepo::getInfo($vo['country'])['region_name'];
             $user_address[$k]['city'] = RegionRepo::getInfo($vo['city'])['region_name'];
-            $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            if(!empty(RegionRepo::getInfo($vo['district']))){
+                $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            }else{
+                $user_address[$k]['district'] = "";
+            }
             if(!empty($user_address[$k]['street'])){
                 $user_address[$k]['street'] = RegionRepo::getInfo($vo['street'])['region_name'];
             }
