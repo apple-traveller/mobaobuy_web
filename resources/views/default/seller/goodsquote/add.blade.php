@@ -358,9 +358,6 @@
                         for(var i=0;i<data.length;i++){
                             $(".query_store_name").append('<option data-store-id="'+data[i].id+'" data-store-name="'+data[i].store_name+'" class="created_store_name" style="cursor:pointer;">'+data[i].store_name+'</option>');
                         }
-                    }else{
-                        $(".query_store_name").show();
-                        $(".query_store_name").append('<option  style="cursor:pointer;">该分类下没有查询到商品</option>');
                     }
                 }
             })
