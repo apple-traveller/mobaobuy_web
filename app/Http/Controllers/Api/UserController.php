@@ -62,6 +62,7 @@ class UserController extends ApiController
     public function addressList(Request $request)
     {
         $user_info = $this->getUserInfo($request);
+        //$deputy_user = $this->getDeputyUserInfo($request);
         $condition = [];
         $condition['user_id'] = $user_info['id'];
         $addressList = UserService::shopAddressList($condition);

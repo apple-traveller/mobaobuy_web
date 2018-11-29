@@ -10,7 +10,7 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==3) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==3||$orderInfo['order_status']==4 ||$orderInfo['order_status']==5) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
@@ -34,13 +34,14 @@
                             </em>
                         </dd>
                     </dl>
-                    <dl @if($orderInfo['shipping_status']==1) class="cur" @endif>
+                    <dl @if($orderInfo['shipping_status']==1||$orderInfo['shipping_status']==2||$orderInfo['shipping_status']==3) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">商家发货<br>
                             <em class="ftx-03">
                                 @if($orderInfo['shipping_status']==0)待发货
                                 @elseif($orderInfo['shipping_status']==1)已发货
                                 @elseif($orderInfo['shipping_status']==2)部分发货
+                                @else 已确认收货
                                 @endif
                             </em>
                         </dd>
@@ -125,16 +126,12 @@
                             <div class="step_title"><i class="ui-step"></i><h3>收货人信息<a href="/admin/orderinfo/modifyConsignee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>收货人：</dt>
-                                    <dd>{{$orderInfo['consignee']}}</dd>
-                                    <dt>手机号码：</dt>
-                                    <dd>{{$orderInfo['mobile_phone']}}</dd>
+                                    <dt>收货人：<span style="color:#62b3ff">{{$orderInfo['consignee']}}</span></dt>
+                                    <dt>手机号码：<span style="color:#62b3ff">{{$orderInfo['mobile_phone']}}</span></dt>
                                 </dl>
                                 <dl style="width:50%">
-                                    <dt>收货地址：</dt>
-                                    <dd>[{{$region}}] 地址：{{$orderInfo['address']}}</dd>
-                                    <dt>邮政编码：</dt>
-                                    <dd>{{$orderInfo['zipcode']}}</dd>
+                                    <dt>收货地址：<span style="color:#62b3ff">{{$region}}&nbsp;&nbsp;&nbsp;&nbsp;{{$orderInfo['address']}}</span></dt>
+                                    <dt>邮政编码：<span style="color:#62b3ff">@if(empty($orderInfo['zipcode'])) 无 @else{{$orderInfo['zipcode']}} @endif</span></dt>
                                 </dl>
                             </div>
                         </div>
@@ -150,31 +147,27 @@
                             </div>
                             <div class="section">
                                 <dl>
-                                    <dt>发票抬头:</dt>
-                                    <dd>@if(!empty($user_real['company_name'])) {{$user_real['company_name']}} @else 无 @endif</dd>
-                                    <dt>税号:：</dt>
-                                    <dd>@if(!empty($user_real['tax_id'])) {{$user_real['tax_id']}} @else 无 @endif</dd>
+                                    <dt>发票抬头:<span style="color:#62b3ff">@if(!empty($user_real['company_name'])) {{$user_real['company_name']}} @else 无 @endif</span></dt>
+
+                                    <dt>税号:<span style="color:#62b3ff">@if(!empty($user_real['tax_id'])) {{$user_real['tax_id']}} @else 无 @endif</span></dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>开票地址:</dt>
-                                    <dd>@if(!empty($user_real['company_address'])) {{$user_real['company_address']}} @else 无 @endif</dd>
-                                    <dt>开票电话：</dt>
-                                    <dd>@if(!empty($user_real['company_telephone'])) {{$user_real['company_telephone']}} @else 无 @endif</dd>
+                                    <dt>开票地址:<span style="color:#62b3ff">@if(!empty($user_real['company_address'])) {{$user_real['company_address']}} @else 无 @endif</span></dt>
+
+                                    <dt>开票电话:<span style="color:#62b3ff">@if(!empty($user_real['company_telephone'])) {{$user_real['company_telephone']}} @else 无 @endif</span></dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>开户银行:</dt>
-                                    <dd>@if(!empty($user_real['bank_of_deposit'])) {{$user_real['bank_of_deposit']}} @else 无 @endif</dd>
-                                    <dt>银行账号：</dt>
-                                    <dd>@if(!empty($user_real['bank_account'])) {{$user_real['bank_account']}} @else 无 @endif</dd>
+                                    <dt>开户银行:<span style="color:#62b3ff">@if(!empty($user_real['bank_of_deposit'])) {{$user_real['bank_of_deposit']}} @else 无 @endif</span></dt>
+
+                                    <dt>银行账号:<span style="color:#62b3ff">@if(!empty($user_real['bank_account'])) {{$user_real['bank_account']}} @else 无 @endif</span></dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>卖家留言：<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
-                                    <dd>@if(empty($orderInfo['to_buyer'])) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
-                                    <dt>买家留言：</dt>
-                                    <dd>@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</dd>
+                                    <dt>卖家留言:<div class="div_a"><span class="viewMessage" style="color:red;cursor:pointer;">留言</span><span style="color:#62b3ff">@if(empty($orderInfo['to_buyer'])) 无 @else {{$orderInfo['to_buyer']}} @endif</span></div></dt>
+
+                                    <dt>买家留言:<span style="color:#62b3ff">@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</span></dt>
                                 </dl>
 
 
