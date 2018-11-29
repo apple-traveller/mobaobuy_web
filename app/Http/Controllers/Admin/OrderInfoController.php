@@ -28,7 +28,6 @@ class OrderInfoController extends Controller
             }else{
                 $condition['order_status'] = $order_status;
             }
-
         }
         if($order_sn!=""){
             $condition['order_sn'] = "%".$order_sn."%";
@@ -80,7 +79,7 @@ class OrderInfoController extends Controller
         $order_status = $request->input("order_status");
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
-        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
+        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district'],"");
         //$user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
         $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品

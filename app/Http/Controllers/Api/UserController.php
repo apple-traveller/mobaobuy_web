@@ -156,11 +156,11 @@ class UserController extends ApiController
     public function deleteAddress(Request $request)
     {
         $id = $request->input('id','');
+        $user_info = $this->getUserInfo($request);
         if (empty($id)){
             return $this->error('参数错误');
         }
-        $re = UserAddressService::delete($id);
-
+        $re = UserAddressService::deleteApi($id,$user_info);
         if ($re){
             return $this->success('删除成功');
         } else {

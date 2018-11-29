@@ -49,8 +49,10 @@
                         <dt></dt>
                         <dd class="s-text">确认收货<br>
                             <em class="ftx-03">
-                                @if($orderInfo['confirm_take_time']!=null)
-                                    {{$orderInfo['confirm_take_time']}}
+                                @if($orderInfo['shipping_status']==3)
+                                    已确认
+                                    @else
+                                    未确认
                                 @endif
                             </em>
                         </dd>
@@ -63,59 +65,57 @@
                             <div class="step_title"><i class="ui-step"></i><h3>基本信息</h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>订单号：</dt>
-                                    <dd>{{$orderInfo['order_sn']}}</dd>
-                                    <dt>订单来源：</dt>
-                                    <dd>{{$orderInfo['froms']}}</dd>
+                                    <dt>订单号：<span style="color:#62b3ff">{{$orderInfo['order_sn']}}</span></dt>
+                                    <dt>订单来源：<span style="color:#62b3ff">{{$orderInfo['froms']}}</span></dt>
                                 </dl>
                                 <dl>
-                                    <dt>购货人： <div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
-                                    <dd>{{$user['nick_name']}}</dd>
-                                    <dt>订单状态：</dt>
-                                    <dd>
-                                        <!--审核状态-->
-                                        @if($orderInfo['order_status']==0)已作废
+                                    <dt>购货人：<span style="color:#62b3ff">{{$user['nick_name']}}</span></dt>
+                                    <dt>订单状态：<span style="color:#62b3ff">@if($orderInfo['order_status']==0)已作废
                                         @elseif($orderInfo['order_status']==1)待企业审核
                                         @elseif($orderInfo['order_status']==2)待商家确认
-                                        @else已确认
-                                        @endif
-                                        <!--付款状态-->
-                                        @if($orderInfo['pay_status']==0)待付款
-                                        @elseif($orderInfo['pay_status']==1)已付款
-                                        @else部分付款
-                                        @endif
-                                        <!--发货状态-->
-                                        @if($orderInfo['shipping_status']==0)待发货
-                                        @elseif($orderInfo['shipping_status']==1)已发货
-                                        @elseif($orderInfo['shipping_status']==2)部分发货
-                                        @endif
-                                    </dd>
+                                        @elseif($orderInfo['order_status']==3)已确认
+                                        @elseif($orderInfo['order_status']==4)已完成
+                                        @elseif($orderInfo['order_status']==5)待开票
+                                            @endif</span>
+                                    </dt>
+
+
                                 </dl>
 
                                 <dl>
-                                    <dt>下单时间：</dt>
-                                    <dd>{{$orderInfo['add_time']}}</dd>
-                                    <dt>付款时间：</dt>
-                                    <dd>@if(empty($orderInfo['pay_time']))未付款@else {{$orderInfo['pay_time']}} @endif</dd>
+                                    <dt>店铺：<span style="color:#62b3ff">{{$orderInfo['shop_name']}}</span></dt>
+                                    <dt>下单时间：<span style="color:#62b3ff">{{$orderInfo['add_time']}}</span></dt>
                                 </dl>
                                 <dl>
-                                    <dt>店铺：</dt>
-                                    <dd>{{$orderInfo['shop_name']}}</dd>
-                                    <dt>发货时间：</dt>
-                                    <dd>@if(empty($orderInfo['shipping_time']))未发货@else {{$orderInfo['shipping_time']}} @endif</dd>
+                                    <dt>付款状态：<span style="color:#62b3ff">@if($orderInfo['pay_status']==0)待付款
+                                            @elseif($orderInfo['pay_status']==1)已付款
+                                            @else部分付款
+                                            @endif
+                                        </span>
+                                    </dt>
+                                    <dt>付款时间：<span style="color:#62b3ff">@if(empty($orderInfo['pay_time']))待付款@else {{$orderInfo['pay_time']}} @endif</span></dt>
+                                </dl>
+                                <dl>
+                                    <dt>发货状态：<span style="color:#62b3ff">@if($orderInfo['shipping_status']==0)待发货
+                                            @elseif($orderInfo['shipping_status']==1)已发货
+                                            @elseif($orderInfo['shipping_status']==2)部分发货
+                                            @else已确认收货
+                                            @endif</span>
+                                    </dt>
+                                    <dt>发货时间：<span style="color:#62b3ff">@if(empty($orderInfo['shipping_time']))待发货@else {{$orderInfo['shipping_time']}} @endif</span></dt>
+                                </dl>
+                            </div>
+                            <div class="section">
 
-                                </dl>
                                 <dl>
-                                    <dt>自动确认收货时间：</dt>
-                                    <dd>
-                                        <div class="editSpanInput" ectype="editSpanInput">
+                                    <dt><span style="float:left;">自动确认收货时间：</span>
+                                        <span style="color:#62b3ff"><div class="editSpanInput" ectype="editSpanInput">
                                             <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/modify2')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
                                             <i class="icon icon-edit"></i>
                                         </div>
-                                    </dd>
-                                    <dt>&nbsp;</dt>
-                                    <dd>&nbsp;</dd>
+                                        </span>
+                                    </dt>
                                 </dl>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                                 </dl>
 
                                 <dl>
-                                    <dt>卖家留言：</dt>
+                                    <dt>卖家留言：<div class="div_a"><span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></div></dt>
                                     <dd>@if(empty($orderInfo['to_buyer'])) 无 @else {{$orderInfo['to_buyer']}} @endif</dd>
                                     <dt>买家留言：</dt>
                                     <dd>@if(empty($orderInfo['postscript'])) 无 @else {{$orderInfo['postscript']}} @endif</dd>
