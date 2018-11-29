@@ -28,7 +28,6 @@ class OrderInfoController extends Controller
             }else{
                 $condition['order_status'] = $order_status;
             }
-
         }
         if($order_sn!=""){
             $condition['order_sn'] = "%".$order_sn."%";

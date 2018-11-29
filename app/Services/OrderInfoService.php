@@ -426,6 +426,9 @@ class OrderInfoService
     public static function getOrderInfoById($id)
     {
         $order_info = OrderInfoRepo::getInfo($id);
+        if(empty($order_info)){
+            return false;
+        }
         $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street'],$order_info['district']);
         return $order_info;
     }
@@ -808,7 +811,7 @@ class OrderInfoService
 
 
     //创建订单 type为cart 购物车下单    promote限时抢购
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type)
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$token="")
     {
         $addTime = Carbon::now();
         //生成的随机数
@@ -875,6 +878,7 @@ class OrderInfoService
                 'extension_id' => $extension_id,
                 'deposit_status' => $deposit_status,
                 'deposit' => $deposit,
+                'froms' => empty($token)?"pc":"weichat",
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 
@@ -1022,6 +1026,15 @@ class OrderInfoService
     //付款凭证提交
     public static function payVoucherSave($orderSn,$payVoucher){
         $orderSn = decrypt($orderSn);
+        $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
+        if(empty($orderInfo)){
+            self::throwBizError('订单信息不存在');
+        }
+        return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+    }
+
+    //付款凭证提交
+    public static function payVoucherSaveApi($orderSn,$payVoucher){
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
             self::throwBizError('订单信息不存在');

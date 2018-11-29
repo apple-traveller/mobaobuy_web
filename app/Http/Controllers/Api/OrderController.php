@@ -238,6 +238,7 @@ class OrderController extends ApiController
     //生成订单
     public function createOrder(Request $request)
     {
+        $token = $request->input('token');
         $info = $this->getDeputyUserInfo($request);
         $userInfo = $this->getUserInfo($request);
         $userIds = [];
@@ -278,7 +279,7 @@ class OrderController extends ApiController
         //限时抢购下单
         if ($cartSession['from'] == 'promote') {
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userInfo['id']);
                     return $this->success($re,'订单提交成功');
@@ -290,7 +291,7 @@ class OrderController extends ApiController
             }
         } elseif ($cartSession['from'] == 'wholesale') {
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userInfo['id']);
                     return $this->success($re,'订单提交成功');
@@ -321,7 +322,7 @@ class OrderController extends ApiController
             try {
                 $re = [];
                 foreach ($shop_data as $k4 => $v4) {
-                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
                 }
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userInfo['id']);
