@@ -547,6 +547,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/order/updatePayType', 'ShopOrderController@updatePayType'); // 更改付款方式
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
+        Route::post('/order/updateDeliveryPeriod', 'ShopOrderController@updateDeliveryPeriod'); // 修改商家留言
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
         Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作
@@ -688,6 +689,10 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/order/egis','OrderController@egis');//企业用户审核订单
             Route::post('/order/wait_confirm','OrderController@waitConfirm');//企业用户审核订单
 
+            Route::post('/order/to_pay','FlowController@toPay');//去下单
+            Route::post('/order/to_pay_deposit','FlowController@toPayDeposit');//去支付定金
+            Route::post('/order/pay_voucher_save','FlowController@payVoucherSave');//上传凭证
+
             Route::post('/invoice/my_invoice',  'InvoiceController@myInvoice'); // 我的开票列表接口
             Route::post('/invoice/get_status_count',  'InvoiceController@getStatusCount'); // 各状态数量
             Route::post('/invoice/detail',  'InvoiceController@invoiceDetail'); // 开票详情
@@ -710,7 +715,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/firmstock/add_stock_out','FirmStockController@addFirmSotckOut');//新增出库记录
             Route::post('/firmstock/info','FirmStockController@stockInfo');//获取单条可出库数据
             Route::post('/firmstock/can_stock_out','FirmStockController@canStockOut');//可出库库存
-            Route::post('/firmstock/cur_stock_save','FirmStockController@cur_stock_save');//出库更新保存
+            Route::post('/firmstock/cur_stock_save','FirmStockController@curStockSave');//出库更新保存
 
             Route::post('/stock/list','FirmStockController@stockList');//实时库存
             Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存流水

@@ -32,11 +32,15 @@ class ShopStoreController extends Controller
         ]);
     }
 
-    public function storeList()
+    public function storeList(Request $request)
     {
-        $shop_id = session('_seller_id')['shop_id'];
+        $shop_id = $request->get('shop_id','');
+        $store_name = $request->get('store_name','');
+
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
+        $condition['store_name']= '%'.$store_name.'%';
+
         $storeList = ShopStoreService::getShopStoreList([],$condition);
         if($storeList){
             return $this->success('获取成功','',$storeList['list']);
@@ -47,13 +51,14 @@ class ShopStoreController extends Controller
 
     public function add()
     {
-        return $this->display('seller.shopStore.add');
+        return $this->display('admin.shopStore.add');
     }
 
     public function save(Request $request)
     {
-        $shop_id = session('_seller_id')['shop_id'];
+        $shop_id = $request->get('shop_id','');
         $store_name = $request->get('store_name','');
+        $id = $request->get('id','');
 
         $data = [
             'shop_id'=>$shop_id,
@@ -65,13 +70,22 @@ class ShopStoreController extends Controller
             if($validate_res){
                 return $this->error('该店铺已经存在');
             }
+            if(!empty($id)){
+                $exist_res = ShopStoreService::getShopStoreById($id);
+                if(empty($exist_res)){
+                    return $this->error('该店铺信息不存在');
+                }
+                $data['id'] = $id;
+                $res = ShopStoreService::modify($data);
+            }else{
+                $data['add_time'] = date('Y-m-d H:i:s');
+                $data['is_delete'] = 0;
 
-            $data['add_time'] = date('Y-m-d H:i:s');
-            $data['is_delete'] = 0;
+                $res = ShopStoreService::create($data);
+            }
 
-            $res = ShopStoreService::create($data);
             if($res){
-               return $this->success('保存成功！','/seller/store');
+               return $this->success('保存成功！','/admin/shop/store');
             }else{
                 return $this->error('保存失败！');
             }
@@ -87,7 +101,7 @@ class ShopStoreController extends Controller
 
         $storeInfo = ShopStoreService::getShopStoreById($id);
 
-        return $this->display('seller.shopStore.edit',compact('storeInfo','currentPage'));
+        return $this->display('admin.shopStore.edit',compact('storeInfo','currentPage'));
     }
 
     /**

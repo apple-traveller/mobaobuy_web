@@ -100,10 +100,15 @@
 
                                 </dl>
                                 <dl>
-                                    <dt>交货时间：{{ $orderInfo['delivery_period'] }}</dt>
+                                    <dt>交货时间：
+                                        <div class="" ectype="editSpanInput" style="float: right;margin-right: 10px">
+                                            <span id="deliveryPeriod">{{$orderInfo['delivery_period']}} </span>
+                                            <i class="icon icon-edit" @if($orderInfo==2)onclick="listTable.edit($('#deliveryPeriod')[0],'{{url('/seller/order/updateDeliveryPeriod')}}','{{$orderInfo['id']}}')"@endif></i>
+                                        </div>
+                                    </dt>
 
                                     <dt>自动确认收货时间：
-                                        <div class="" ectype="editSpanInput" style="float: right;margin-right: 95px">
+                                        <div class="" ectype="editSpanInput" style="float: right;margin-right: 10px">
                                             <span id="receive_num">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
                                             <i class="icon icon-edit" onclick="listTable.edit($('#receive_num')[0],'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')"></i>
@@ -256,7 +261,7 @@
                                     <div class="item">
                                         <div class="label">操作备注：</div>
                                         <div class="value">
-                                            {{--<div class="bf100 fl"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>--}}
+                                            <div class="bf100 fl mb5"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
                                             <div class="order_operation_btn" style="margin-top: 0px">
                                                 // 取消的订单没有操作选项
                                                 @if($orderInfo['order_status']!=0)
@@ -371,10 +376,9 @@
                 let to_buyer = $(".to_buyer").val();
                 $.post('/seller/order/toBuyerModify',{'id':id,'to_buyer':to_buyer},function(res){
                     if(res.code==1){
-                        console.log(res.msg);
                         window.location.reload();
                     }else{
-                        alert(res.msg);
+                        layer.alert(res.msg);
                     }
                 },"json");
                 layer.close(index);
@@ -440,14 +444,8 @@
         function conf(id)
         {
             layui.use('layer', function(){
-                let index = parent.layer.getFrameIndex(window.name);
-                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.prompt({
-                    title: '确认订单,并输入交货日期',
-                }, function(value, index, elem){
-
-
+                layer.confirm('确认订单?', {icon: 3, title:'提示'}, function(index){
                     let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
@@ -455,61 +453,116 @@
                             'id':id,
                             'action_note':action_note,
                             'order_status': 3,
-                            'delivery_period':value
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:2000});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
-                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
-
                     layer.close(index);
+                    window.location.reload();
                 });
             });
+            // layui.use('layer', function(){
+            //     let index = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.iframeAuto(index);
+            //     let layer = layui.layer;
+            //     layer.prompt({
+            //         title: '确认订单,并输入交货日期',
+            //     }, function(value, index, elem){
+            //
+            //
+            //         let action_note = $("#action_note").val();
+            //         $.ajax({
+            //             url:'/seller/order/updateOrderStatus',
+            //             data: {
+            //                 'id':id,
+            //                 'action_note':action_note,
+            //                 'order_status': 3,
+            //                 'delivery_period':value
+            //             },
+            //             type: 'post',
+            //             success: function (res) {
+            //                 if (res.code == 1){
+            //                     layer.msg(res.msg, {icon: 1,time:2000});
+            //                 } else {
+            //                     layer.msg(res.msg, {icon: 5,time:2000});
+            //                 }
+            //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+            //             }
+            //         });
+            //
+            //         layer.close(index);
+            //     });
+            // });
         }
 
         //取消订单
         function cancelOne(id)
         {
             layui.use('layer', function(){
-                let index = parent.layer.getFrameIndex(window.name);
-                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.prompt({
-                    title: '确认取消订单,并输入原因',
-                }, function(value, index){
-
+                layer.confirm('确认取消订单?', {icon: 3, title:'提示'}, function(index){
+                    let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
-                            'order_status': 0,
-                            'to_buyer':value
+                            'action_note':action_note,
+                            'order_status': 0
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:2000});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
-                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
-
                     layer.close(index);
+                    window.location.reload();
                 });
             });
+            // layui.use('layer', function(){
+            //     let index = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.iframeAuto(index);
+            //     let layer = layui.layer;
+            //     layer.prompt({
+            //         title: '确认取消订单,并输入原因',
+            //     }, function(value, index){
+            //
+            //         $.ajax({
+            //             url:'/seller/order/updateOrderStatus',
+            //             data: {
+            //                 'id':id,
+            //                 'order_status': 0,
+            //                 'to_buyer':value
+            //             },
+            //             type: 'post',
+            //             success: function (res) {
+            //                 if (res.code == 1){
+            //                     layer.msg(res.msg, {icon: 1,time:2000});
+            //                 } else {
+            //                     layer.msg(res.msg, {icon: 5,time:2000});
+            //                 }
+            //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+            //             }
+            //         });
+            //
+            //         layer.close(index);
+            //     });
+            // });
         }
         // 收款
         function receiveM(id) {
                 layui.use('layer', function(){
                     let index = parent.layer.getFrameIndex(window.name);
+                    let action_note = $("#action_note").val();
                     parent.layer.iframeAuto(index);
                     let layer = layui.layer;
                     layer.prompt({
@@ -517,27 +570,28 @@
                     }, function(value, index, elem){
                         let num = /^\d+(\.{0,1}\d+){0,1}$/;
                         if (!num.test(value)){
-                            layer.msg('请填写正数');
+                            layer.alert('请填写正数');
                             return false;
                         }
                         $.ajax({
                             url:'/seller/order/updateOrderStatus',
                             data: {
                                 'id':id,
-                                'pay_number': value
+                                'pay_number': value,
+                                'action_note':action_note
                             },
                             type: 'post',
                             success: function (res) {
                                 if (res.code == 1){
-                                    layer.msg(res.msg, {icon: 1,time:2000});
+                                    layer.alert(res.msg, {icon: 1,time:2000});
                                 } else {
-                                    layer.msg(res.msg, {icon: 5,time:2000});
+                                    layer.alert(res.msg, {icon: 5,time:2000});
                                 }
                                 setTimeout( window.location.href="/seller/order/list?id="+id,3000);
                             }
                         });
                         layer.close(index);
-
+                        window.location.reload();
                     });
                 });
         }
@@ -545,33 +599,57 @@
         // 确认收到定金
         function receiveDep(id) {
             layui.use('layer', function(){
-                let index = parent.layer.getFrameIndex(window.name);
-                parent.layer.iframeAuto(index);
                 let layer = layui.layer;
-                layer.prompt({
-                    title: '确认收到定金，填写备注',
-                }, function(value, index, elem){
+                layer.confirm('确认收到定金?', {icon: 3, title:'提示'}, function(index){
+                    let action_note = $("#action_note").val();
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
                             'id':id,
                             'deposit_status': 1,
-                            'action_note':value
+                            'action_note':action_note
                         },
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:2000});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
-                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
                     });
-
                     layer.close(index);
+                    window.location.reload();
                 });
             });
+            // layui.use('layer', function(){
+            //     let index = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.iframeAuto(index);
+            //     let layer = layui.layer;
+            //     layer.prompt({
+            //         title: '确认收到定金，填写备注',
+            //     }, function(value, index, elem){
+            //         $.ajax({
+            //             url:'/seller/order/updateOrderStatus',
+            //             data: {
+            //                 'id':id,
+            //                 'deposit_status': 1,
+            //                 'action_note':value
+            //             },
+            //             type: 'post',
+            //             success: function (res) {
+            //                 if (res.code == 1){
+            //                     layer.msg(res.msg, {icon: 1,time:2000});
+            //                 } else {
+            //                     layer.msg(res.msg, {icon: 5,time:2000});
+            //                 }
+            //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+            //             }
+            //         });
+            //
+            //         layer.close(index);
+            //     });
+            // });
         }
 
         //修改支付方式
@@ -587,11 +665,13 @@
                 type:'POST',
                 success:function (res) {
                     if (res.code==1){
-                        layer.msg(res.msg);
+                        layer.alert(res.msg);
                     } else {
-                        layer.msg(res.msg);
+                        layer.alert(res.msg);
                     }
+                    window.location.reload();
                 }
+
             })
         });
     </script>

@@ -106,7 +106,7 @@
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
-                        'url':'/seller/store/delete',
+                        'url':'/admin/shop/store/delete',
                         'data':{
                             'id':id
                         },
