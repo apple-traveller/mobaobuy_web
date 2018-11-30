@@ -124,7 +124,7 @@ class ShopGoodsQuoteRepo
         } else {
             $rs['list'] = $query->get()->toArray();
         }
-        $rs['list'] = \App\Helpers\object_array($rs['list']);
+        $rs['list'] = object_array($rs['list']);
         $rs['page'] = $page;
         $rs['pageSize'] = $page_size;
         $rs['totalPage'] = ceil($rs['total'] / $page_size);
@@ -149,7 +149,7 @@ class ShopGoodsQuoteRepo
             }
         }
         $res = $query->get()->toArray();
-        return \App\Helpers\object_array($res);
+        return object_array($res);
     }
 
     //获取随机报价

@@ -186,11 +186,12 @@ class OrderController extends Controller
     //订单详情
     public function orderDetails($id)
     {
-        if(session('_curr_deputy_user')['is_firm']){
-            $firmId = session('_curr_deputy_user')['firm_id'];
-        }else{
-            $firmId = session('_curr_deputy_user')['firm_id'];
-        }
+//        if(session('_curr_deputy_user')['is_firm']){
+//            $firmId = session('_curr_deputy_user')['firm_id'];
+//        }else{
+//            $firmId = session('_curr_deputy_user')['firm_id'];
+//        }
+        $firmId = session('_curr_deputy_user')['firm_id'];
         try {
             $orderDetailsInfo = OrderInfoService::orderDetails($id,$firmId);
         } catch (\Exception $e) {

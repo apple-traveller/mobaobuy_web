@@ -34,7 +34,7 @@ class IndexService
         //先随机获取几条报价
         $quote = ShopGoodsQuoteRepo::getRandList(10);
         $data = [];
-        foreach (\App\Helpers\object_array($quote) as $k=>$v){
+        foreach (object_array($quote) as $k=>$v){
             //先组装报价信息
             $data[$k]['goods_name'] = $v['goods_name'];
             //生成随机数量

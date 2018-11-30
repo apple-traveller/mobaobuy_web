@@ -449,10 +449,70 @@ class OrderInfoService
     //修改
     public static function modify($data)
     {
-        return OrderInfoRepo::modify($data['id'], $data);
+        return OrderInfoRepo::modify($data['id'],$data);
     }
 
-    //修改，添加日志信息
+    //修改支付状态
+    public static function modifyPayStatus($data)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
+            //修改订单的已付款金额为商品总金额
+            OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改支付状态为已付款',
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改订单状态
+    public static function modifyOrderStatus($data,$action_note)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], $data);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>$action_note,
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改自动收货天数，添加日志信息
     public static function modifyAutoDeliveryTime($data)
     {
         try{
@@ -476,7 +536,7 @@ class OrderInfoService
             return false;
         }catch(\Exception $e){
             self::rollBack();
-            self::beginTransaction($e->getMessage());
+            self::throwBizError($e->getMessage());
         }
     }
 
@@ -517,6 +577,53 @@ class OrderInfoService
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
+    }
+
+    //修改order_goods表的单价和数量,修改order_info订单总金额和商品总金额
+    //{id: "456", goods_price: "300.00", goods_number: "120", order_id: "414"}
+    public static function modifyOrderGoods($data)
+    {
+        try{
+            self::beginTransaction();
+            $order_goods_data = [
+                'id'=>$data['id'],
+                'goods_price'=>$data['goods_price'],
+                'goods_number'=>$data['goods_number'],
+            ];
+            //修改order_goods表的单价和购买数量
+            $order_goods = OrderGoodsRepo::modify($order_goods_data['id'], $order_goods_data);
+            //修改order_info表的商品总金额
+            $orderInfo = OrderInfoRepo::getInfo($data['order_id']);
+            $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);//查询该订单的所有的商品
+            $sum = 0;
+            foreach ($orderGoods as $k => $v) {
+                $sum += $v['goods_price'] * $v['goods_number'];
+            }
+            $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
+            $flag_order_info = OrderInfoRepo::modify($data['order_id'], ['goods_amount' => $sum,'order_amount'=>$order_amount]);
+
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'商品'.$order_goods['goods_name'].'单价修改为'.$data['goods_price'].',数量修改为'.$data['goods_number'],
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$data['order_id'],
+                'order_status'=>$orderInfo['order_status'],
+                'shipping_status'=>$orderInfo['shipping_status'],
+                'pay_status'=>$orderInfo['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!$order_goods || !$flag_order_info || !$flag_order_log){
+                return false;
+            }
+            self::commit();
+            return true;
+
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //获取订单商品信息
@@ -587,52 +694,7 @@ class OrderInfoService
         return UserInvoicesRepo::getInfo($id);
     }
 
-    //修改order_goods表的单价和数量,修改order_info订单总金额和商品总金额
-    //{id: "456", goods_price: "300.00", goods_number: "120", order_id: "414"}
-    public static function modifyOrderGoods($data)
-    {
-        try{
-            self::beginTransaction();
-            $order_goods_data = [
-                'id'=>$data['id'],
-                'goods_price'=>$data['goods_price'],
-                'goods_number'=>$data['goods_number'],
-            ];
-            //修改order_goods表的单价和购买数量
-            $order_goods = OrderGoodsRepo::modify($order_goods_data['id'], $order_goods_data);
-            //修改order_info表的商品总金额
-            $orderInfo = OrderInfoRepo::getInfo($data['order_id']);
-            $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);//查询该订单的所有的商品
-            $sum = 0;
-            foreach ($orderGoods as $k => $v) {
-                $sum += $v['goods_price'] * $v['goods_number'];
-            }
-            $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
-            $flag_order_info = OrderInfoRepo::modify($data['order_id'], ['goods_amount' => $sum,'order_amount'=>$order_amount]);
 
-            //给管理员操作添加一条数据
-            $logData = [
-                'action_note'=>'商品'.$order_goods['goods_name'].'单价修改为'.$data['goods_price'].',数量修改为'.$data['goods_number'],
-                'action_user'=>session()->get('_admin_user_info')['real_name'],
-                'order_id'=>$data['order_id'],
-                'order_status'=>$orderInfo['order_status'],
-                'shipping_status'=>$orderInfo['shipping_status'],
-                'pay_status'=>$orderInfo['pay_status'],
-                'log_time'=>Carbon::now()
-            ];
-            $flag_order_log = OrderActionLogRepo::create($logData);
-            if(!$order_goods || !$flag_order_info || !$flag_order_log){
-                return false;
-            }
-            self::commit();
-            return true;
-
-        }catch(\Exception $e){
-            self::rollBack();
-            self::throwBizError($e->getMessage());
-        }
-
-    }
 
     //查询所有的快递信息
     public static function getShippingList()
@@ -667,9 +729,9 @@ class OrderInfoService
     }
 
     //查询操作日志信息
-    public static function getOrderLogsByOrderid($id)
+    public static function getOrderLogsByOrderid($pager,$condition)
     {
-        return OrderActionLogRepo::getList(['log_time'=>'desc'],['order_id'=>$id]);
+        return OrderActionLogRepo::getListBySearch($pager,$condition);
     }
 
     //保存发货单相关信息

@@ -1,21 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Repositories\CartRepo;
-use App\Services\CartService;
 use App\Services\GoodsService;
-use App\Services\UserAddressService;
-use App\Services\UserInvoicesService;
-use App\Services\UserRealService;
-use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\ShopGoodsQuoteService;
-use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
-use function App\Helpers\createPage;
+
 class GoodsController extends Controller
 {
     /**
