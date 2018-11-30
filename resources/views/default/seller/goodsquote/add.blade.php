@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
+                                <div class="label">&nbsp;QQ：</div>
                                 <div class="label_value">
                                     <input type="text" name="QQ" id="QQ" value="{{old('QQ')}}" class=" text" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
@@ -183,9 +183,6 @@
                         required:true,
                     },
                     contact_info:{
-                        required:true,
-                    },
-                    QQ:{
                         required:true,
                     },
                     store_name:{
