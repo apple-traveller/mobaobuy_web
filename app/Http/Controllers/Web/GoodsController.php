@@ -1,21 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-use App\Repositories\CartRepo;
-use App\Services\CartService;
 use App\Services\GoodsService;
-use App\Services\UserAddressService;
-use App\Services\UserInvoicesService;
-use App\Services\UserRealService;
-use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\ShopGoodsQuoteService;
-use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
-use function App\Helpers\createPage;
+
 class GoodsController extends Controller
 {
     /**
@@ -27,7 +20,7 @@ class GoodsController extends Controller
 
     }
 
-    //产品列表
+    //商品列表
     public function goodsList(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -60,11 +53,11 @@ class GoodsController extends Controller
         $pageSize = 10;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
-        //产品报价列表
+        //商品报价列表
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>[$order[0]=>$order[1]]],$condition);
-        //产品分类
+        //商品分类
         $cate = GoodsCategoryService::getCatesByGoodsList($goodsList['list']);
-        //产品品牌
+        //商品品牌
         $brand = BrandService::getBrandsByGoodsList($goodsList['list']);
         //发货地
         $delivery_place = RegionService::getRegionsByGoodsList($goodsList['list']);
@@ -85,7 +78,7 @@ class GoodsController extends Controller
         ]);
     }
 
-    //根据条件范围收索产品(ajax)
+    //根据条件范围收索商品(ajax)
     public function goodsListByCondition(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -113,7 +106,7 @@ class GoodsController extends Controller
         }
     }
 
-    //产品详情
+    //商品详情
     public function goodsDetail(Request $request)
     {
         $id = $request->input("id");
@@ -176,20 +169,32 @@ class GoodsController extends Controller
 
     //物性表详情
     public function goodsAttributeDetails(Request $request,$id){
-       $page = $request->input('page',0);
-       $page_size = $request->input('length',6);
+        $page = $request->input('page',0);
+        $page_size = $request->input('length',6);
         $url = '/goodsAttributeDetails/'.$id .'?page=%d';
-       try{
-           $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
-           if(!empty($shopGoodsInfo['list'])){
-               $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
-           }else{
-               $linker = createPage($url, 1, 1);
-           }
-           return $this->display('web.goods.goodsAttributeDetails',['goodsInfo'=>$shopGoodsInfo['goodsInfo'],'list'=>$shopGoodsInfo['list'],'linker'=>$linker]);
-       }catch (\Exception $e){
-           return $this->error($e->getMessage());
-       }
+        try{
+            $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+            $goods_attr = [];
+            if(!empty($shopGoodsInfo['goodsInfo'])){
+                $attr = explode(';', $shopGoodsInfo['goodsInfo']['goods_attr']);
+                foreach ($attr as $k=>$v){
+                    $goods_attr[$k] = explode(':',$v);
+                }
+            }
+            if(!empty($shopGoodsInfo['list'])){
+                $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
+            }else{
+                $linker = createPage($url, 1, 1);
+            }
+            return $this->display('web.goods.goodsAttributeDetails',[
+                'goodsInfo'=>$shopGoodsInfo['goodsInfo'],
+                'list'=>$shopGoodsInfo['list'],
+                'linker'=>$linker,
+                'goods_attr'=>$goods_attr,
+            ]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     //商品走势图

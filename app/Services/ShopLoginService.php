@@ -27,14 +27,13 @@ class ShopLoginService
     public static function Register($data)
     {
         try {
-            if (self::checkShopNameExists($data['shop_name'])){
-                self::throwBizError('该店铺已注册');
+            $checkShop = self::checkShopExists($data['company_name']);
+            if ($checkShop['status']==3){
+                self::throwBizError($checkShop['msg']);
             }
-            if (self::checkCompanyExists($data['company_name'])){
-                self::throwBizError('该企业已注册');
-            }
-            if (self::checkUserExists($data['user_name'])){
-                self::throwBizError('该用户已注册');
+            $checkUser = self::checkUserExists($data['user_name']);
+            if ($checkUser['status']==4){
+                self::throwBizError($checkUser['msg']);
             }
 
             $data['password'] = bcrypt($data['password']);
@@ -68,7 +67,7 @@ class ShopLoginService
             }
         } catch (\Exception $e) {
             self::rollBack();
-            self::throwBizError($e);
+            self::throwBizError($e->getMessage());
         }
     }
 
@@ -138,38 +137,58 @@ class ShopLoginService
     /**
      * 检查店铺名是否存在
      * @param $ShopName
-     * @return bool
+     * @return array
      */
-    public static function checkShopNameExists($ShopName)
+    public static function checkShopExists($ShopName)
     {
-       if (ShopRepo::getTotalCount(['shop_name'=>$ShopName])){
-           return true;
+        $re = ShopRepo::getInfoByFields(['company_name'=>$ShopName]);
+       if (!empty($re)){
+           if ($re['is_validated']==0){
+                return [
+                    'status'=>4,
+                    'msg'=>'该店铺已提交申请，请等待审核'
+                ];
+           } else {
+               return [
+                   'status'=>4,
+                   'msg'=>'该店铺已注册'
+               ];
+           }
        }
-       return false;
-    }
-
-    /**
-     * 检查企业是否已经注册
-     * @param $company_name
-     * @return bool
-     */
-    public static function checkCompanyExists($company_name)
-    {
-        if (ShopRepo::getTotalCount(['company_name'=>$company_name])){
-            return true;
-        }
-        return false;
+       return [
+           'status'=>1,
+           'msg'=>''
+       ];
     }
 
     /**
      * 检查用户是否已经存在
      * @param $user_name
-     * @return bool
+     * @return array|bool
      */
     public static function checkUserExists($user_name)
     {
-        if (ShopUserRepo::getTotalCount(['user_name'=>$user_name])){
-            return true;
+        $re = ShopUserRepo::getInfoByFields(['user_name'=>$user_name]);
+        if (!empty($re)){
+            $shop = ShopRepo::getInfo($re['shop_id']);
+            if (!empty($shop)){
+                if ($shop['is_validated']==0){
+                    return [
+                        'status'=>4,
+                        'msg'=>'该店铺已提交申请，请等待审核'
+                    ];
+                } else {
+                    return [
+                        'status'=>4,
+                        'msg'=>'该用户已注册店铺'
+                    ];
+                }
+            } else {
+                return [
+                    'status'=>4,
+                    'msg'=>'该用户已存在'
+                ];
+            }
         }
         return false;
     }

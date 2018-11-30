@@ -186,6 +186,7 @@ class InvoiceController extends ApiController
     public function confirm(Request $request)
     {
         $dupty_user = $this->getDeputyUserInfo($request);
+        //dd($dupty_user);
         if (isset($dupty_user['can_invoice']) && $dupty_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
@@ -196,6 +197,11 @@ class InvoiceController extends ApiController
             return $this->error('请选择订单');
         }
         $order_ids = explode(',',$order_ids);
+        //判断order_id是不是属于该user_id的
+        $flag = OrderInfoService::verifyOrderIds($order_ids,$user_info['id']);
+        if(!$flag){
+            return $this->error("订单id有误");
+        }
         $invoiceInfo = UserRealService::getInfoByUserId($user_info['id']);
         if (empty($invoiceInfo)){
             return $this->error('您还没有实名认证，不能申请发票');
@@ -269,7 +275,7 @@ class InvoiceController extends ApiController
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['address_id'] = $address_id;
         Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
-        return $this->success('选择成功');
+        return $this->success('','success');
     }
     /**
      * 选择开票类型
@@ -303,6 +309,9 @@ class InvoiceController extends ApiController
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        if(empty($invoiceSession['goods_list'])){
+            return $this->error('请先选择订单');
+        }
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){

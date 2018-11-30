@@ -63,7 +63,7 @@
 @section('content')
 	<div class="clearfix" style="background-color: #FFF;">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">产品列表</a>
+		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">报价列表</a>
             <div class="condition">
                 <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
                     <i style="cursor: pointer" class="mode_close close_brand"></i>
@@ -79,7 +79,7 @@
                 @endif
             </div>
 			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关产品</div>
+			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
         </div>
 
 
@@ -132,7 +132,7 @@
 		{{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
 	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">产品列表</h1>
+		<h1 class="product_title">报价列表</h1>
 		<div class="scr">
 			<div class="width1200">
 				<div class="sequence-bar" style="padding:0;padding-right:10px;">
@@ -163,27 +163,25 @@
 		<ul class="Self-product-list">
 
 			<li class="table_title">
-                <span class="num_bg1" style="width:9%">店铺</span>
-                <!-- <span  style="width:8%;">品牌</span> -->
+                <span class="num_bg1" style="width:18%">店铺</span>
                 <span style="width:8%;">种类</span>
                 <span style="width:18%">商品名称</span>
-                <span style="width:9%;">数量（kg）</span>
-                <span>单价（元/kg）</span>
-                <span style="widows:8%;">发货地址</span>
-                <span style="width:18%;">联系人</span>
+                <span style="width:7%;">数量（kg）</span>
+                <span style="width:7%;">单价（元/kg）</span>
+                <span style="width:12%;">发货地址</span>
+                <span style="width:16%;">联系人</span>
                 <span style="width: 9%;">操作</span>
             </li>
             @if(!empty($search_data['list']))
                 @foreach($search_data['list'] as $vo)
                     <li>
-                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                        <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
+                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:18%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                         <span title="{{$vo['cat_name']}}" class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
                         <span title="{{$vo['goods_full_name']}}" style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                        <span style="width:9%">{{$vo['goods_number']}}</span>
-                        <span>{{$vo['shop_price']}}</span>
-                        <span>{{$vo['delivery_place']}}</span>
-                        <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                        <span style="width:7%">{{$vo['goods_number']}}</span>
+                        <span style="width:7%;">{{$vo['shop_price']}}</span>
+                        <span style="width:12%;">{{$vo['delivery_place']}}</span>
+                        <span style="width:16%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                         <span style="width:9%">
                             @if($vo['goods_number'])
                                 <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
@@ -194,7 +192,7 @@
                     </li>
                 @endforeach
             @else
-                <li style="color:red;text-align: center">无相关数据</li>
+                <li class="nodata">无相关数据</li>
             @endif
 		</ul>
 		<!--页码-->
@@ -329,6 +327,7 @@
     }
     //请求ajax获取列表数据
     function getInfo(currpage){
+        let _keyword = $('.search-input').val();
         var _cate_id = $('#cate_tag').attr('cate_id');
         var _brand_id = $('#brand_tag').attr('brand_id');
         var region_ids = [];
@@ -378,11 +377,15 @@
                 'sort_goods_number':_goods_number,//数量排序
                 'sort_shop_price':_shop_price,//价格排序
                 'sort_add_time':_add_time,//时间排序
+                'keyword':_keyword,//时间排序
                 't':_t //时间排序
             },
             dataType: "json",
             success: function(res){
-                changeURL();
+                if(_keyword != ''){
+                    changeURL();
+                }
+
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;

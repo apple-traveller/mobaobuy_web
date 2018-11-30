@@ -8,6 +8,9 @@ class FirmStockController extends ApiController
     //入库记录列表
     public function firmStockIn(Request $request){
         $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_self'] == 0 && !$deputy_user['can_stock_in']){
+            return $this->error('无权访问');
+        }
         if($deputy_user['is_firm']) {
             try{
                 $page = $request->input('currpage', 1);
@@ -34,7 +37,7 @@ class FirmStockController extends ApiController
                     'recordsFiltered' => 0, //数据总行数
                     'data' => []
                 ];
-                return $this->success( $data,'success');
+                return $this->error( $data,'success');
             }
         }
         return $this->error('非法访问');
@@ -43,6 +46,9 @@ class FirmStockController extends ApiController
     //出库记录列表
     public function firmStockOut(Request $request,$goodsName='',$beginTime='',$endTime=''){
         $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_self'] == 0 && !$deputy_user['can_stock_out']){
+            return $this->error('无权访问');
+        }
         if($deputy_user['is_firm']) {
             $page = $request->input('currpage', 1);
             $page_size = $request->input('pagesize', 10);
@@ -98,7 +104,11 @@ class FirmStockController extends ApiController
         }
         try{
             $goodsInfo = FirmStockService::searchGoodsName($goodsName);
-            return $this->success($goodsInfo,'success');
+            $result = [];
+            foreach($goodsInfo as $val){
+                $result[] = $val['goods_name'];
+            }
+            return $this->success($result,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -139,6 +149,15 @@ class FirmStockController extends ApiController
             'goods_id' => $goods_id
         ];
         $rs_list = FirmStockService::stockFlowList($params, $page, $page_size);
+        foreach($rs_list['list'] as $k=>$v){
+            if($v['flow_type']==1){
+                $rs_list['list'][$k]['flow_type'] = '平台采购入库';
+            }elseif($v['flow_type']==2){
+                $rs_list['list'][$k]['flow_type'] = '其他入库';
+            }else{
+                $rs_list['list'][$k]['flow_type'] = '销售出库';
+            }
+        }
 
         $data = [
             'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
@@ -190,6 +209,7 @@ class FirmStockController extends ApiController
         }
         return $this->error('非法访问');
     }
+
 
     //获取单条可出库数据
     public function stockInfo(Request $request){

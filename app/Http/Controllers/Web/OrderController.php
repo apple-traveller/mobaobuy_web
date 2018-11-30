@@ -36,8 +36,8 @@ class OrderController extends Controller
         if ($request->isMethod('get')) {
             return $this->display('web.user.order.list', compact('tab_code'));
         } else {
-            $page = $request->input('start', 0) / $request->input('length', 10) + 1;
-            $page_size = $request->input('length', 10);
+            $page = $request->input('start', 0) / $request->input('length', 5) + 1;
+            $page_size = $request->input('length', 5);
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $currUser = session('_curr_deputy_user');
             $order_no = $request->input('order_no');
@@ -186,12 +186,22 @@ class OrderController extends Controller
     //订单详情
     public function orderDetails($id)
     {
+//        if(session('_curr_deputy_user')['is_firm']){
+//            $firmId = session('_curr_deputy_user')['firm_id'];
+//        }else{
+//            $firmId = session('_curr_deputy_user')['firm_id'];
+//        }
+        $firmId = session('_curr_deputy_user')['firm_id'];
         try {
-            $orderDetailsInfo = OrderInfoService::orderDetails($id);
+            $orderDetailsInfo = OrderInfoService::orderDetails($id,$firmId);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
-        return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
+        if($orderDetailsInfo){
+            return $this->display('web.user.order.orderDetails', compact('orderDetailsInfo'));
+        }else{
+            return $this->redirect('/order/list');
+        }
     }
 
     //审核通过
@@ -222,9 +232,21 @@ class OrderController extends Controller
     //确认收货
     public function orderConfirmTake(Request $request)
     {
+        $firmUser = session('_curr_deputy_user');
+//        if(!$firmUser['is_firm']){
+//            return $this->error('当前没有权限操作');
+//        }
+
+        if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
+            $userId = $firmUser['user_id'];
+        }else{
+            $userId = $firmUser['firm_id'];
+        }
+
         $id = $request->input('id');
         try {
-            OrderInfoService::orderConfirmTake($id);
+            OrderInfoService::orderConfirmTake($id,$firmUser['firm_id'],$userId);
+            return $this->success();
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -320,7 +342,7 @@ class OrderController extends Controller
                     $goodsList[$k3]['account'] = number_format($v3['shop_price'] * $v3['goods_number'], 2);
                     $goods_amount += $v3['shop_price'] * $v3['goods_number'];
                 }
-                $goods_amount = number_format($goods_amount, 2);
+//                $goods_amount = number_format($goods_amount, 2);
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }

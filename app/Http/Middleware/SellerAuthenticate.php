@@ -11,7 +11,10 @@ class SellerAuthenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if(empty(session('_seller_id'))){
-            return redirect(route('seller_login'));
+            return response()->stream(function(){
+                echo "<script>window.parent.location.href='".route('seller_login')."'</script>";
+            });
+//            return redirect(route('seller_login'));
         }
 
         //缓存用户的基本信息

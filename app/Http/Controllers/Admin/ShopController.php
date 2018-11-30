@@ -213,4 +213,24 @@ class ShopController extends Controller
         }
     }
 
+    //ajax获取商家列表,模糊查询
+    public function getShopList(Request $request)
+    {
+        $company_name = $request->input('company_name');
+        $condition = [
+            'is_validated' => 1,
+            'is_freeze' => 0,
+        ];
+        if(!empty($company_name)){
+            $condition['company_name'] = "%".$company_name."%";
+        }
+        $res = ShopService::getList([],$condition);
+        if($res){
+            return $this->success('成功！','',$res);
+        }
+        return $this->error();
+    }
+
+
+
 }

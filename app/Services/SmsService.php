@@ -17,6 +17,13 @@ class SmsService
     use CommonService;
 
 
+    /**
+     * @param $phoneNumbers
+     * @param $type
+     * @param $params
+     * @param int $outId
+     * @throws \Exception
+     */
     public static function sendSms($phoneNumbers, $type, $params, $outId = 0)
     {
         if (empty($phoneNumbers)){
@@ -44,6 +51,7 @@ class SmsService
             'supplier_id'=>$smsSupplier['id'],
             'type_code'=> $type
         ];
+
         $tempInfo = SmsTempRepo::getInfoByFields($where);
         if (empty($tempInfo)){
             self::throwBizError('没有模板信息');
@@ -64,10 +72,10 @@ class SmsService
 
     /**
      * @param $phoneNumbers
-     * @param $temp_id
-     * @param $signName
-     * @param $templateParam
-     * @return \Aliyun\Core\Http\HttpResponse|mixed|\stdClass|string
+     * @param $type
+     * @param $params
+     * @return \Aliyun\Core\Http\HttpResponse|false|mixed|\stdClass|string
+     * @throws \Exception
      */
     public static function sendBatchSms($phoneNumbers, $type, $params)
     {

@@ -86,8 +86,9 @@ class ShopGoodsQuoteController extends Controller
     public function save(Request $request)
     {
         $request->flash();
-        $shop_id = session('_seller_id')['shop_id'];
-        $company_name = session('_seller')['shop_info']['company_name'];
+        $shopInfo = session('_seller');
+        $shop_id = $shopInfo['shop_info']['id'];
+        $company_name = $shopInfo['shop_info']['company_name'];
         $id = $request->input('id','');
         $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
@@ -117,6 +118,8 @@ class ShopGoodsQuoteController extends Controller
         }else{
             if(empty($type)){
                 $type = 2;
+            }else{
+                $store_name = $company_name;
             }
         }
         if(!$delivery_place){
@@ -147,13 +150,14 @@ class ShopGoodsQuoteController extends Controller
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
+            'store_name' => $store_name,
             'shop_id' => $shop_id,
+            'shop_name' => $company_name,
             'goods_id' => $goods_id,
             'delivery_place' => $delivery_place,
             'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
-            'total_number' => $goods_number,
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],
@@ -162,17 +166,9 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
+            'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
 
-        if ($store_id==0){
-            $data['is_self_run'] = 1;
-            $data['type'] = 1;
-            $data['store_name'] = $company_name;
-        } else {
-            $data['is_self_run'] = 0;
-            $data['type'] = 2;
-            $data['store_name'] = $store_name;
-        }
         try{
             if($id){
                 $data['id'] = $id;
@@ -187,6 +183,7 @@ class ShopGoodsQuoteController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
+                $data['total_number'] = $goods_number;
                 $data['shop_user_id'] = session('_seller_id')['user_id'];
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){

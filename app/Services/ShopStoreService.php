@@ -10,7 +10,12 @@ class ShopStoreService
     //分页
     public static function getShopStoreList($pager,$condition)
     {
-        return ShopStoreRepo::getListBySearch($pager,$condition);
+        $store_list = ShopStoreRepo::getListBySearch($pager,$condition);
+        foreach ($store_list['list'] as $k=>$v){
+            $shop_info = ShopService::getShopById($v['shop_id']);
+            $store_list['list'][$k]['company_name'] = $shop_info['company_name'];
+        }
+        return $store_list;
     }
 
     //删除
@@ -22,7 +27,13 @@ class ShopStoreService
     //查找一条数据
     public static function getShopStoreById($id)
     {
-        return ShopStoreRepo::getInfo($id);
+        $store_info = ShopStoreRepo::getInfo($id);
+        if(!$store_info){
+            return [];
+        }
+        $shop_info = ShopService::getShopById($store_info['shop_id']);
+        $store_info['company_name'] = $shop_info['company_name'];
+        return $store_info;
     }
 
     //验证唯一性

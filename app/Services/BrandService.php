@@ -27,8 +27,10 @@ class BrandService
     //唯一性验证
     public static function uniqueValidate($brand_name)
     {
-        $flag = BrandRepo::getInfoByFields(['brand_name'=>$brand_name,'is_delete'=>1]);
-        if($flag){
+        $condition['brand_name'] = $brand_name;
+        $condition['is_delete|<>'] = 1;
+        $flag = BrandRepo::getListBySearch([],$condition);
+        if($flag['list']){
             self::throwBizError('该品牌名称已经存在');
         }
     }
@@ -42,10 +44,18 @@ class BrandService
     //删除
     public static function delete($id)
     {
-        return BrandRepo::delete($id);
+        //先验证是否存在商品
+        $res = GoodsRepo::getTotalCount(['brand_id'=>$id]);
+        if(!$res){
+            self::throwBizError('该品牌存在商品，无法删除');
+            return false;
+        }
+
+        $flag = BrandService::modify(['id'=>$id,'is_delete'=>1]);
+        return $flag;
     }
 
-    //产品列表页品牌列表
+    //商品列表页品牌列表
     public static function getBrandsByGoodsList($goodsList)
     {
         $brands = [];

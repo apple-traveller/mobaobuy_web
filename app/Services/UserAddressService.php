@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Repositories\UserAddressRepo;
 use App\Repositories\RegionRepo;
+use League\Flysystem\Exception;
+
 class UserAddressService
 {
     use CommonService;
@@ -17,7 +19,11 @@ class UserAddressService
             $user_address[$k]['province'] = RegionRepo::getInfo($vo['province'])['region_name'];
             $user_address[$k]['country'] = RegionRepo::getInfo($vo['country'])['region_name'];
             $user_address[$k]['city'] = RegionRepo::getInfo($vo['city'])['region_name'];
-            $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            if(!empty(RegionRepo::getInfo($vo['district']))){
+                $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            }else{
+                $user_address[$k]['district'] = "";
+            }
             if(!empty($user_address[$k]['street'])){
                 $user_address[$k]['street'] = RegionRepo::getInfo($vo['street'])['region_name'];
             }
@@ -29,7 +35,7 @@ class UserAddressService
     public static function getAddressInfo($address_id)
     {
         $info = UserAddressRepo::getInfo($address_id);
-        $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'] );
+        $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'],$info['address']);
         $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
         $info['address_names'] = $address_names;
         $info['str_address'] = $str_address;
@@ -38,7 +44,47 @@ class UserAddressService
 
     public static function delete($id)
     {
-        return UserAddressRepo::delete($id);
+        $user_info = session('_web_user');
+        //先判断是否是默认地址
+        try{
+            self::beginTransaction();
+            if($id == $user_info['address_id']){//是默认地址 清空user表的默认地址字段
+                UserService::modify($user_info['id'],['address_id'=>0]);
+            }
+            $res = UserAddressRepo::delete($id);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
+    }
+
+    public static function deleteApi($id,$user_info)
+    {
+        //先判断是否是默认地址
+        try{
+            self::beginTransaction();
+            if($id == $user_info['address_id']){//是默认地址 清空user表的默认地址字段
+                UserService::modify($user_info['id'],['address_id'=>0]);
+            }
+            $res = UserAddressRepo::delete($id);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //确认订单页 获取选中地址 有默认则为默认 没有默认任意选择一条

@@ -294,7 +294,7 @@
 			}
 		}
 
-		//去结算
+		//去结算  先判断用户是否实名通过.
 		function toBalance(){
 			 var userId = "{{session('_web_user_id')}}";
 			 if(userId > 0){
@@ -342,7 +342,7 @@
 					},
 					type: "POST",
 					success: function (data) {
-					    console.log(data);
+					    // console.log(data);
 						if(data.code){
 							window.location.href='/confirmOrder';
 						}else{
@@ -354,11 +354,6 @@
                 $.msg.error('请选择商品');return;
 			}
           }
-		    
-            
-		
-
-		
     </script>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -382,7 +377,9 @@
 		<div class="w1200 whitebg" style="margin-top: 20px;">
 			<ul class="shop_title">
 				<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
-				<li class="shop_good">商品</li><li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
+				<li class="shop_good">商品</li>
+				<!-- <li class="">品牌</li> -->
+				<li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
 				<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
 			</ul>
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
@@ -392,6 +389,7 @@
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
 					</span>
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
+					<!-- <span class="">{{$v['brand_name']}}</span> -->
 					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元</span>
 					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
 					<div class="shop_num_t fl">
@@ -410,7 +408,11 @@
 			@endforeach
 		</div>
 		<div class="sumbit_cart whitebg ovh mb30">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span><span class="fl ml40 cp"><a href="/goodsList">继续购买</a></span><span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
+			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span>
+			<span class="fl ml40 cp">
+				<a href="/goodsList">继续购买</a>
+			</span>
+			<span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
 			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
 		</div>
 	@else

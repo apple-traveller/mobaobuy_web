@@ -84,7 +84,7 @@
         <div class="w1200">
                 <ul class="account_infor_list">
                     <input type="hidden" name="id" value="{{$userInfo['id']}}">
-                    <li><span class="infor_title">昵称：</span><span class="ml10"><input name="nick_name" type="text" class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
+                    <li><span class="infor_title">昵称：</span><span class="ml10"><input name="nick_name" type="text" @if(session('_web_user')['is_firm']) readonly="readonly" @endif class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
                   <!--   @if($userInfo['real_name'] == '') @else<li style="margin-top:20px;"><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else真实姓名：@endif</span><span class="ml10"><input name="real_name" type="text" @if($userInfo['is_firm']==1) disabled="disabled" @endif class="infor_input nick_name" value="{{$userInfo['real_name']}}"></span></li>@endif -->
                     <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="text" value="{{$userInfo['email']}}" class="infor_input"></span></li>
                     @if($userInfo['is_firm']==1)

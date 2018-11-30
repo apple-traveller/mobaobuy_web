@@ -28,7 +28,6 @@ class OrderInfoController extends Controller
             }else{
                 $condition['order_status'] = $order_status;
             }
-
         }
         if($order_sn!=""){
             $condition['order_sn'] = "%".$order_sn."%";
@@ -80,11 +79,10 @@ class OrderInfoController extends Controller
         $order_status = $request->input("order_status");
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
-        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district']);
-        //$user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
+        $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district'],$orderInfo['address']);
         $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
-        $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
+        $orderLogs = OrderInfoService::getOrderLogsByOrderid(['pageSize'=>10,'page'=>1,'orderType'=>['log_time'=>'desc']],['order_id'=>$id]);
         return $this->display('admin.orderinfo.detail',[
             'currpage'=>$currpage,
             'orderInfo'=>$orderInfo,
@@ -92,9 +90,20 @@ class OrderInfoController extends Controller
             'region'=>$region,
             'order_goods'=>$order_goods,
             'user_real'=>$user_real,
-            'orderLogs'=>$orderLogs,
+            'orderLogs'=>$orderLogs['list'],
             'order_status'=>$order_status
         ]);
+    }
+
+    //操作日志分页
+    public function getOrderLog(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage',1);
+        $pagesize = $request->input('pagesize',10);
+        $condition = ['order_id'=>$id];
+        $orderLogs = OrderInfoService::getOrderLogsByOrderid(['pageSize'=>$pagesize,'page'=>$currpage,'orderType'=>['log_time'=>'desc']],$condition);
+        return $this->result($orderLogs['list'],200,'success');
     }
 
     //ajax修改
@@ -110,15 +119,33 @@ class OrderInfoController extends Controller
     }
 
     //修改自动确认收获的天数
-    public function modify2(Request $request)
+    public function modifyAutoDeliveryTime(Request $request)
     {
         $data = [
             'id'=>$request->input('id'),
             'auto_delivery_time'=>$request->input('val'),
         ];
         try{
-            $flag = OrderInfoService::modify($data);
-            return $this->result($flag['auto_delivery_time'],200,'修改成功');
+            $flag = OrderInfoService::modifyAutoDeliveryTime($data);
+            if($flag){
+                return $this->result($flag['auto_delivery_time'],200,'修改成功');
+            }
+            return $this->error('失败');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    //修改支付状态
+    public function modifyPayStatus(Request $request)
+    {
+        $data = $request->all();
+        try{
+            $flag = OrderInfoService::modifyPayStatus($data);
+            if($flag){
+                return $this->result('',200,'修改成功');
+            }
+            return $this->result('',400,'修改失败');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -126,7 +153,7 @@ class OrderInfoController extends Controller
 
 
     //修改订单状态
-    public function modifyStatus(Request $request)
+    public function modifyOrderStatus(Request $request)
     {
         $data = $request->all();
         $action_note = $data['action_note'];
@@ -139,19 +166,11 @@ class OrderInfoController extends Controller
         }
         unset($data['action_note']);
         try{
-            $flag = OrderInfoService::modify($data);
-            //存储日志信息
-            $logData = [
-                'action_note'=>$action_note,
-                'action_user'=>session()->get('_admin_user_info')['real_name'],
-                'order_id'=>$data['id'],
-                'order_status'=>$flag['order_status'],
-                'shipping_status'=>$flag['shipping_status'],
-                'pay_status'=>$flag['pay_status'],
-                'log_time'=>Carbon::now()
-            ];
-            OrderInfoService::createLog($logData);
-            return $this->result('',200,'修改成功');
+            $flag = OrderInfoService::modifyOrderStatus($data,$action_note);
+            if($flag){
+                return $this->result('',200,'修改成功');
+            }
+            return $this->result('',400,'修改失败');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -204,16 +223,15 @@ class OrderInfoController extends Controller
     public function saveOrderGoods(Request $request)
     {
         $data = $request->all();
-        $order_id = $data['order_id'];
-        unset($data['order_id']);
+        //{id: "456", goods_price: "300.00", goods_number: "120", order_id: "414"}
         try{
-            $info = OrderInfoService::modifyOrderGoods($data);//修改单价和数量
-            OrderInfoService::modifyGoodsAmount($order_id);//修改订单总金额和商品总金额
-            $goods_amount = OrderInfoService::getOrderInfoById($order_id)['goods_amount'];
-            if(!$info){
-                return $this->error('更新失败');
+            //修改order_goods表的单价和数量,修改order_info订单总金额和商品总金额
+            $flag = OrderInfoService::modifyOrderGoods($data);
+            $goods_amount = OrderInfoService::getOrderInfoById($data['order_id'])['goods_amount'];
+            if($flag){
+                return $this->result($goods_amount,200,'更新成功');
             }
-            return $this->result($goods_amount,200,'更新成功');
+            return $this->result('',400,'更新失败');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
@@ -226,7 +244,6 @@ class OrderInfoController extends Controller
         $currpage = $request->input('currpage');
         $order_status = $request->input("order_status");
         $feeInfo = OrderInfoService::getFeeInfo($id);
-        //dd($feeInfo);
         return $this->display('admin.orderinfo.fee',[
             'feeInfo'=>$feeInfo,
             'currpage'=>$currpage,
@@ -244,8 +261,9 @@ class OrderInfoController extends Controller
         $order_status = $data['order_status'];
         unset($data['currpage']);
         unset($data['order_status']);
+
         try{
-            $info = OrderInfoService::modify($data);
+            $info = OrderInfoService::modifyFee($data);
             OrderInfoService::modifyGoodsAmount($id);
             if(!$info){
                 return $this->error('更新失败');
@@ -367,7 +385,7 @@ class OrderInfoController extends Controller
         $currpage = $request->input('currpage');
         $delivery = OrderInfoService::getDeliveryInfo($id);
         //地区信息
-        $region = RegionService::getRegion($delivery['country'],$delivery['province'],$delivery['city'],$delivery['district']);
+        $region = RegionService::getRegion($delivery['country'],$delivery['province'],$delivery['city'],$delivery['district'],"");
         //商品信息
         $delivery_goods = OrderInfoService::getDeliveryGoods($id);
         //dd($delivery_goods);

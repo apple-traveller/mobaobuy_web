@@ -14,10 +14,7 @@ class UserController extends ApiController
     //账号信息
     public function detail(Request $request)
     {
-        $id = $request->input('id');
-        if(empty($id)){
-            return $this->error('请传入用户id');
-        }
+        $id = $this->getUserID($request);
         //查询用户信息和实名信息
         $user = UserService::getApiUserInfo($id);
         return $this->success($user,'success');
@@ -65,6 +62,7 @@ class UserController extends ApiController
     public function addressList(Request $request)
     {
         $user_info = $this->getUserInfo($request);
+        //$deputy_user = $this->getDeputyUserInfo($request);
         $condition = [];
         $condition['user_id'] = $user_info['id'];
         $addressList = UserService::shopAddressList($condition);
@@ -104,9 +102,9 @@ class UserController extends ApiController
         if (empty($address)){
             return $this->error('请输入详细地址');
         }
-        if (empty($zipcode)){
+       /* if (empty($zipcode)){
             return $this->error('请输入邮政编码');
-        }
+        }*/
         if (empty($consignee)){
             return $this->error('请填写收货人');
         }
@@ -152,6 +150,22 @@ class UserController extends ApiController
             }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
+        }
+    }
+
+    //删除收货地址
+    public function deleteAddress(Request $request)
+    {
+        $id = $request->input('id','');
+        $user_info = $this->getUserInfo($request);
+        if (empty($id)){
+            return $this->error('参数错误');
+        }
+        $re = UserAddressService::deleteApi($id,$user_info);
+        if ($re){
+            return $this->success('删除成功');
+        } else {
+            return $this->error('删除失败');
         }
     }
 

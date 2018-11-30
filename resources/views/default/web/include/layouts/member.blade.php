@@ -40,9 +40,12 @@
                     </ul>
                 </div>
                 @endif
-                @if((session('_curr_deputy_user.is_self') && ((session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed')) || (!session('_curr_deputy_user.is_firm') && !getConfig('individual_trade_closed')))) ||
-                  (!session('_curr_deputy_user.is_self') && session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed')))
 
+                @if(
+                (session('_curr_deputy_user.is_self') && ((session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed')) || (!session('_curr_deputy_user.is_firm') && !getConfig('individual_trade_closed'))))
+                || (!session('_curr_deputy_user.is_self') && session('_curr_deputy_user.is_firm') && !getConfig('firm_trade_closed'))
+                  )
+                        {{--|| (!session('_curr_deputy_user.is_firm') && session('_curr_deputy_user.is_self') && !getConfig('individual_trade_closed'))--}}
                 {{-- 代表自己，如果是企业且平台开启了企业交易 或 如果是个人且平台开启了个人交易
                      代表公司，如果用户有平台开启了企业交易
                   --}}
@@ -53,8 +56,13 @@
                             <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
                         @endif
                         <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">我的订单</a></li>
-                        <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">我的发票</a></li>
-                        <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+
+                        {{--<li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>--}}
+                            @if(session('_curr_deputy_user.is_self') == 0 && session('_curr_deputy_user.can_invoice') == 0)
+                            @else
+                                <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">我的发票</a></li>
+                                <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+                            @endif
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>

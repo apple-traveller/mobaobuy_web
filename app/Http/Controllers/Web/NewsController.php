@@ -7,7 +7,6 @@
  */
 namespace App\Http\Controllers\Web;
 
-use function App\Helpers\createPage;
 use App\Http\Controllers\Controller;
 use App\Services\ArticleCatService;
 use App\Services\ArticleService;

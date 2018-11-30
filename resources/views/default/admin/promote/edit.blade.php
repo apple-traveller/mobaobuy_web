@@ -1,6 +1,11 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
     <div class="warpper">
         <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}" class="s-back">返回</a>优惠活动 - 编辑优惠活动</div>
         <div class="content">
@@ -54,14 +59,11 @@
                                 <div class="item">
                                     <div class="label">&nbsp;选择商品分类：</div>
                                     <div class="label_value">
-                                        <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                        <input type="hidden" name="cat_id" id="cat_id" value="{{$goods_info['cat_id']}}"/>
+                                        <input type="text" name="cat_id_LABELS" value="{{$goods_info['cat_name']}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                        <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 180px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
-
-                                        </ul>
                                     </div>
                                 </div>
-
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                     <div class="label_value">
@@ -70,7 +72,7 @@
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                         </ul>
-                                        <div style="margin-left: 10px;" class="notic">产品规格{{$goods_info['packing_spec']}}</div>
+                                        <div style="margin-left: 10px;" class="notic">商品规格{{$goods_info['packing_spec']}}</div>
                                     </div>
                                 </div>
 
@@ -89,6 +91,14 @@
                                         <input type="text" name="num" value="{{$promote['num']}}" autocomplete="off" id="num" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                         <div style="margin-left: 10px;" class="notic">数量为规格的整数倍</div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>当前可售数量：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="available_quantity" value="{{$promote['available_quantity']}}" autocomplete="off" id="num" size="40"  class="text">
+                                        <div class="form_prompt"></div>
                                     </div>
                                 </div>
 
@@ -140,61 +150,22 @@
             var shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
         });
-
-        //商品分类获取焦点请求所有的分类数据
+        //获取树形分类
         $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==200){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
-
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-        });
-
-        //根据分类里面输入的文字实时查询分类数据
-        $("#cat_name").bind("input propertychange",function(res){
-            var cat_name = $(this).val();
-            $(".query_cat_name").children().filter("li").remove();
-            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==200){
-                    $(".query_cat_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;">'+data[i].cat_name+'</li>');
-                    }
-                }
-            },"json");
+            showWinZtreeSelector(this);
         });
 
         //商品获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",
                 data:{"cat_id":cat_id},
                 type:"POST",
                 success:function(res){
-                    if(res.code==200){
+                    if(res.code==1){
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
@@ -229,11 +200,11 @@
 
         //根据分类里面输入的文字实时查询商品数据
         $("#goods_name").bind("input propertychange",function(res){
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             var goods_name = $("#goods_name").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{"cat_id":cat_id,"goods_name":goods_name},function(res){
-                if(res.code==200){
+                if(res.code==1){
                     $(".query_goods_name").show();
                     var data = res.data;
                     for(var i=0;i<data.length;i++){

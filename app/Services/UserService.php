@@ -158,16 +158,25 @@ class UserService
     }
 
     //用户登录
-    public static function loginValidate($username, $psw, $other_params = [])
+    public static function loginValidate($username, $psw, $other_params = [],$params = [])
     {
         //查用户表
         $info = UserRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
             self::throwBizError('用户名或密码不正确！');
         }
-
-        if(!Hash::check($psw, $info['password'])){
-            self::throwBizError('用户名或密码不正确！');
+        if(isset($params['mobile_code'])){
+//            if(!Hash::check($psw, $params['mobile_code'])){
+//                dd(1);
+//                self::throwBizError('用户名或密码不正确！');
+//            }
+            if($params['mobile_code'] != $psw){
+                self::throwBizError('用户名或密码不正确');
+            }
+        }else{
+            if(!Hash::check($psw, $info['password'])){
+                self::throwBizError('用户名或密码不正确！');
+            }
         }
 
         if ($info['is_freeze']) {
@@ -219,6 +228,10 @@ class UserService
 
         if(!Hash::check($psw, $info['password'])){
             self::throwBizError('旧密码不正确！');
+        }
+
+        if($psw==$new_pwd){
+            self::throwBizError('旧密码不能和新密码相同！');
         }
 
         if ($info['is_freeze']) {
@@ -548,6 +561,15 @@ class UserService
         return 0;
     }
 
+    //是否收藏
+    public static function checkUserIsCollectApi($userId,$goodsId){
+        $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
+        if(!empty($collectGoodsInfo)){
+            return $collectGoodsInfo['id'];
+        }
+        return 0;
+    }
+
     //添加企业会员，验证手机号是否存在
     public static function getUserInfoByUserName($mobile){
         return UserRepo::getInfoByFields(['user_name'=>$mobile]);
@@ -626,6 +648,14 @@ class UserService
             if(!$app_res){
                 self::throwBizError('绑定失败！');
             }
+            //如果是企业用户不能修改昵称
+            $userInfo = self::getInfo($user_id);
+            if($userInfo['is_firm']==1){
+                $user_res = self::modify($user_id,['avatar'=>$avatar]);
+                if(!$user_res){
+                    self::throwBizError('用户信息更新失败！');
+                }
+            }
             #更新用户信息
             $user_res = self::modify($user_id,['nick_name'=>$nick_name,'avatar'=>$avatar]);
             if(!$user_res){
@@ -661,5 +691,23 @@ class UserService
             self::rollBack();
             self::throwBizError($e);
         }
+    }
+
+    //解绑
+    public static function deleteThird($openid)
+    {
+        try{
+            $condition = [
+                'open_id' => $openid,
+            ];
+            $flag = AppUsersRepo::getInfoByFields($condition);
+            if(empty($flag)){
+                self::throwBizError('参数有误');
+            }
+            return AppUsersRepo::deleteByFields($condition);
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
     }
 }

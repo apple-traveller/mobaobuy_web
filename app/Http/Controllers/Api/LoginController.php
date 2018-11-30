@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Services\UserService;
@@ -16,7 +15,6 @@ class LoginController extends ApiController
         }
         #判断是否是新qq用户
         $res = UserService::getAppUserInfo(['open_id'=>$openid]);
-
         if($res){
             #获取用户信息
             $userInfo = UserService::getInfo($res['user_id']);
@@ -50,13 +48,19 @@ class LoginController extends ApiController
         if(empty($username)){
             return $this->error('用户名不能为空');
         }
+
         if(empty($password)){
             return $this->error('密码不能为空');
+        }
+
+        if(empty($openid)){
+            return $this->error('openid不能为空');
         }
 
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
+
         try{
             //验证会员是否已经存在
             $flag = UserService::checkNameExists($username);
@@ -132,6 +136,27 @@ class LoginController extends ApiController
         }
     }
 
+    //解绑操作
+    public function untying(Request $request)
+    {
+        $openid = $request->input('openid');
+        $uuid = $request->input('token');
+        $userid = $this->getUserID($request);
+        if(empty($openid)){
+            return $this->error('缺少参数，openid');
+        }
+        //删除app_user表里面的一条数据
+        try{
+            Cache::forget($uuid);
+            Cache::forget('_api_user_'.$userid);
+            Cache::forget('_api_deputy_user_'.$userid);
+            UserService::deleteThird($openid);
+            return $this->success([],'success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //忘记密码
     public function updatePass(Request $request)
     {
@@ -159,7 +184,7 @@ class LoginController extends ApiController
     public function resetPass(Request $request)
     {
         $accountName = $request->input('mobile', '');
-        $psw = $request->input('repsaaword');
+        $psw = $request->input('repassword');
         $password = $request->input('password', '');
         $messCode = $request->input('messCode', '');
         $type = 'sms_find_signin';

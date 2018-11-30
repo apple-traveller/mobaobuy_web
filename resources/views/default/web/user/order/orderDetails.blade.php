@@ -14,8 +14,15 @@
 			},function(){
 				$('.acount_tab').removeClass('whitebg');
 				$('.acount_select').hide()
-			})
-		})
+			});
+
+			//请求快递物流信息
+			getLogisticsInfo();
+		});
+		function getLogisticsInfo(){
+			let _delivery_id = $('#delivery_id').data('delivery_id');
+
+		}
 	</script>
 	<style>
 		/*订单状态*/
@@ -64,17 +71,16 @@
 				<span class="Order_number">订单来源：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
 				@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
 					<span class="tac db fs24 fwb red mt30">已作废</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
 					<span class="tac db fs24 fwb red mt30">待企业审核</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 2)
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 2)
 					<span class="tac db fs24 fwb red mt30">待商家确认</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
 					<span class="tac db fs24 fwb red mt30">已确认</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
 					<span class="tac db fs24 fwb red mt30">已完成</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
 					<span class="tac db fs24 fwb red mt30">待开票</span>
-					
 				@endif
 			</div>
 			<div class="order_pro_jd fl">
@@ -119,7 +125,14 @@
 		<div class="whitebg br1 mt20 ovh">
 			<div class="order_pro_stute">
 				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-				<span class="ml30 db mt20">物流单号：暂无</span>
+				<span class="ml30 db mt20">
+					物流单号：
+					@if(!empty($orderDetailsInfo['delivery_info']))
+						<span id="delivery_id" data-delivery_id="{{$orderDetailsInfo['delivery_info']['id']}}">{{$orderDetailsInfo['delivery_info']['shipping_billno']}}</span>
+					@else
+						<span id="delivery_id" data-delivery_id="0">暂无</span>
+					@endif
+				</span>
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
@@ -128,7 +141,6 @@
 						您提交了订单，请等待系统确认
 						<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>
 					</li>
-
 				</ul>
 			</div>
 		</div>

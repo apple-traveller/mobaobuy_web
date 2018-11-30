@@ -40,7 +40,7 @@
 					<div  class="phy_serach_Name gray">
 						<h1 class="fs16 black fwb">{{$v['goods_full_name']}}</h1>
 						<div class="db mt5">
-							<span> 品       牌 : {{$v['brand_name']}}</span>
+							<span> 品牌 : {{$v['brand_name']}}</span>
 							<span class="ml20"> 含量：{{$v['goods_content']}}</span>
 							<span class="ml20">包装单位 :<font class="blue">{{$v['packing_unit']}}</font></span>
 							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}</font></span>
@@ -52,7 +52,7 @@
 				</li>
 				@endforeach
 			@else
-			无产品
+			无商品
 			@endif
 		</table>
 	</ul>

@@ -30,7 +30,6 @@ class IndexController extends Controller
     protected $redirectTo = '/';
 
     public function  index(Request $request){
-
         $now = Carbon::now();
         //获取顶部广告
         $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]);
@@ -71,7 +70,7 @@ class IndexController extends Controller
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
 
         //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
@@ -110,7 +109,6 @@ class IndexController extends Controller
                     $firm['is_firm'] = 1;
                     $firm['firm_id'] = $user_id;
                     $firm['name'] = $firm['firm_name'];
-                    $firm['address_id'] = $firm['address_id'];
                     session()->put('_curr_deputy_user', $firm);
                     if(!empty(session('cartSession'))){
                         session()->forget('cartSession');

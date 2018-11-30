@@ -142,13 +142,8 @@ class InvoiceController extends Controller
         ];
 
         if(session('_curr_deputy_user')['is_firm']){
-            if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] ){
-                $condition['user_id'] = session('_curr_deputy_user')['user_id'];
+//                $condition['user_id'] = $firm_id;
                 $condition['firm_id'] = $firm_id;
-            }else{
-                $condition['user_id'] = $firm_id;
-                $condition['firm_id'] = $firm_id;
-            }
         }else{
             $condition['user_id'] = $firm_id;
             $condition['firm_id'] = 0;
@@ -297,11 +292,10 @@ class InvoiceController extends Controller
 
     /**
      * 申请开票
-     * @param Request $request
      * @return InvoiceController|\Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function applyInvoice(Request $request)
+    public function applyInvoice()
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
             return $this->error('您没有申请开票的权限');

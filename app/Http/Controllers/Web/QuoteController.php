@@ -86,7 +86,13 @@ class QuoteController extends Controller
             $orderBy[$type[0]] = $type[1];
         }
         $pageSize = 10;
-        //产品报价列表
+        if(empty($t)){
+            $condition['b.type'] = '1|2';
+        }
+
+        $condition['b.is_self_run'] = 1;
+        $condition['b.is_delete'] = 0;
+        //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
 
         #热门推荐
@@ -145,6 +151,7 @@ class QuoteController extends Controller
         $brand_id = $request->input("brand_id", "");
         $cate_id = $request->input('cate_id', "");
         $place_id = $request->input('place_id', "");
+        $keyword = $request->input('keyword', "");
         $t = $request->input('t', "");
         $condition = [];
 
@@ -194,6 +201,12 @@ class QuoteController extends Controller
         if (!empty($place_id)) {
             $condition['place_id'] = $place_id;
         }
+        if (!empty($keyword)) {
+            $con['opt'] = 'OR';
+            $con['b.goods_name'] = '%' . $keyword . '%';
+            $con['cat.cat_name'] = '%' . $keyword . '%';
+            $condition[] = $con;
+        }
         $pageSize = 10;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
         if (empty($goodsList['list'])) {
@@ -226,7 +239,7 @@ class QuoteController extends Controller
             'shop_id' => $shop_id,
             'goods_id' => $goods_id
         ];
-        $pageSize = 10;
+        $pageSize = 4;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);

@@ -30,7 +30,7 @@ class ActivityConsignController extends Controller
         $condition['type'] = '3';
         $pageSize =5;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
-        return $this->display('admin.activity.consign',[
+        return $this->display('admin.activityconsign.consign',[
             'total'=>$consign_info['total'],
             'consign_list'=>$consign_info['list'],
             'currentPage'=>$currentPage,
@@ -41,7 +41,7 @@ class ActivityConsignController extends Controller
 
     public function add(Request $request)
     {
-        return $this->display('admin.activity.add_consign');
+        return $this->display('admin.activityconsign.add_consign');
     }
 
     public function edit(Request $request)
@@ -51,7 +51,7 @@ class ActivityConsignController extends Controller
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
-        return $this->display('admin.activity.edit_consign',[
+        return $this->display('admin.activityconsign.edit_consign',[
             'consign_info'=>$consign_info,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
@@ -59,10 +59,24 @@ class ActivityConsignController extends Controller
         ]);
     }
 
+    public function detail(Request $request)
+    {
+        $id = $request->input('id');
+        $currpage = $request->input('currpage');
+        $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        //dd($consign_info);
+        return $this->display('admin.activityconsign.detail_consign',[
+            'consign_info'=>$consign_info,
+            'currpage'=>$currpage
+        ]);
+    }
+
     //保存
     public function save(Request $request)
     {
         $data = $request->all();
+        unset($data['cat_id']);
+        unset($data['cat_id_LABELS']);
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';
@@ -70,9 +84,6 @@ class ActivityConsignController extends Controller
         if($data['delivery_place']==""){
             $errorMsg[] = '发货地不能为空';
         }
-//        if($data['shop_id']==0||empty($data['shop_id'])){
-//            $errorMsg[] = '店铺不能为空';
-//        }
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
@@ -109,6 +120,7 @@ class ActivityConsignController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
+                $data['total_number'] = $data['goods_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
                 $flag = ShopGoodsQuoteService::create($data);

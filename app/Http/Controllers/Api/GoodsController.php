@@ -9,9 +9,10 @@ use App\Services\UserRealService;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserAddressService;
+use App\Services\UserService;
 class GoodsController extends ApiController
 {
-    //报价列表
+    //自营报价列表
     public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -26,7 +27,8 @@ class GoodsController extends ApiController
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
         $goods_name = $request->input('goods_name','');
-        $condition = [];
+        $is_self_run = $request->input('is_self_run',0);
+        $condition =[];
 
         $orderBy = [];
 
@@ -45,6 +47,10 @@ class GoodsController extends ApiController
         }
         if(empty($lowest)&&empty($highest)){
             $condition = [];
+        }
+
+        if(!empty($is_self_run)){
+            $condition['b.is_self_run'] = 1;
         }
 
         if(!empty($goods_name)){
@@ -126,14 +132,17 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品报价id');
         }
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        //判断该商品是否被收藏
+        $user_id = $this->getUserID($request);
+        $flag = UserService::checkUserIsCollectApi($user_id,$good_info['goods_id']);
+        $good_info['is_collect'] = $flag;
         $goods_id = $good_info['goods_id'];
         $shop_id = $good_info['shop_id'];
         $condition = [
-            'goods_id'=>$good_info['goods_id'],
-            'shop_id'=>$good_info['shop_id']
+            'goods_id'=>$goods_id,
+            'shop_id'=>$shop_id
         ];
         $goods_quote_list = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($goods_quote_list['list']);
         return $this->success(['good_info'=>$good_info,'goods_quote_list'=>$goods_quote_list['list'],],'success');
     }
 
@@ -198,6 +207,11 @@ class GoodsController extends ApiController
     public function getCartList(Request $request)
     {
         $userId = $this->getUserID($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        //dd($deputy_user);
+        if($deputy_user['is_firm']){
+            $userId = $deputy_user['firm_id'];
+        }
         try{
             $cartInfo = GoodsService::cart($userId);
             foreach($cartInfo['cartInfo'] as $k=>$v){
@@ -206,7 +220,6 @@ class GoodsController extends ApiController
                 $cartInfo['cartInfo'][$k]['delivery_place'] = $cartInfo['quoteInfo'][$k]['delivery_place'];
                 $cartInfo['cartInfo'][$k]['packing_spec'] = $cartInfo['goodsInfo'][$k]['packing_spec'];
             }
-            //dd($cartInfo['cartInfo']);
             return $this->success($cartInfo['cartInfo']);
 
         }catch(\Exception $e){
@@ -242,7 +255,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //递加产品数量
+    //递加商品数量
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');//购物车id
         try{
@@ -253,7 +266,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //递减产品数量
+    //递减商品数量
     public function reduceCartGoodsNum(Request $request){
         $id = $request->input('id');//购物车id
         try{
@@ -296,7 +309,7 @@ class GoodsController extends ApiController
         }
     }
 
-    //获取购物车产品数量
+    //获取购物车商品数量
     public function getCartNum(Request $request)
     {   $user_id = $this->getUserID($request);
         $num = 0;
@@ -331,9 +344,9 @@ class GoodsController extends ApiController
             $cartCache = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $address_id,
-                'from'=>'cart'
+                'from'=>'cart',
             ];
-            Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);
+            Cache::put('cartSession'.$dupty_user['firm_id'], $cartCache, 60*24*1);
             return $this->success($cartCache,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -390,6 +403,7 @@ class GoodsController extends ApiController
         }
         try{
             $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
+            //dd($shopGoodsInfo);
             return $this->success($shopGoodsInfo['list'],'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());

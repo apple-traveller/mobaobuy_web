@@ -27,8 +27,6 @@ class WebClosed extends Controller
 
                 //用户不切换生效权限,is_logout存的是企业的id
                 if($user_info['is_logout']){
-//                    session()->flush();
-//                    return $this->error('权限已被更改，请重新登陆','/login');
 
                     if($user_info['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 0){
                         //获取用户所代表的公司
@@ -39,9 +37,7 @@ class WebClosed extends Controller
                                 //修改代表信息
                                 $firm['is_self'] = 0;
                                 $firm['is_firm'] = 1;
-                                $firm['firm_id'] = $firm['firm_id'];
                                 $firm['name'] = $firm['firm_name'];
-                                $firm['address_id'] = $firm['address_id'];
                                 session()->put('_curr_deputy_user', $firm);
 
                             }
@@ -54,6 +50,7 @@ class WebClosed extends Controller
                 }
 
                 session()->put('_web_user', $user_info);
+
 //            }
 
             if(!session()->has('_curr_deputy_user')){
@@ -67,6 +64,7 @@ class WebClosed extends Controller
 
                 session()->put('_curr_deputy_user', $info);
             }
+
 
             //缓存模板信息
             if(!session()->has('web_theme')){

@@ -16,7 +16,7 @@ class FlowController extends Controller
         $userId = session('_web_user_id');
         $order_id = $request->input('order_id');
         $order_info = OrderInfoService::getOrderInfoById($order_id);
-        $sellerInfo  = UserRealService::getUserRealInfoByUserId($userId);
+        $sellerInfo = OrderInfoService::getShopInfoByShopId($order_info['shop_id']);
         return $this->display('web.flow.payment', compact('order_info','sellerInfo'));
     }
 
@@ -24,7 +24,8 @@ class FlowController extends Controller
         $userId = session('_web_user_id');
         $order_id = $request->input('order_id');
         $order_info = OrderInfoService::getOrderInfoById($order_id);
-        $sellerInfo  = UserRealService::getUserRealInfoByUserId($userId);
+        //商家信息
+        $sellerInfo = OrderInfoService::getShopInfoByShopId($order_info['shop_id']);
         return $this->display('web.flow.paydeposit', compact('order_info','sellerInfo'));
     }
 
@@ -32,8 +33,10 @@ class FlowController extends Controller
     public function payVoucherSave(Request $request){
         $orderSn = $request->input('orderSn');
         $payVoucher = $request->input('payVoucher');
+        //$deposit 1 为支付定金 0为支付款
+        $deposit = $request->input('deposit');
         try{
-            OrderInfoService::payVoucherSave($orderSn,$payVoucher);
+            OrderInfoService::payVoucherSave($orderSn,$payVoucher,$deposit);
             return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());

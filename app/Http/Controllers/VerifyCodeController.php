@@ -21,8 +21,8 @@ class VerifyCodeController extends Controller
 
         $builder = new CaptchaBuilder($code, $phrase);
         // 设置背景颜色
-        $builder->setBackgroundColor(220, 210, 230);
-        $builder->setMaxAngle(25);
+        $builder->setBackgroundColor(240, 246, 254);
+        $builder->setMaxAngle(8);
         $builder->setMaxBehindLines(0);
         $builder->setMaxFrontLines(0);
         //可以设置图片宽高及字体

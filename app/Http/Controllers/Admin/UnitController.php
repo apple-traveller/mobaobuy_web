@@ -65,6 +65,9 @@ class UnitController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
         try{
             $flag = UnitService::delete($id);
             if(!$flag){

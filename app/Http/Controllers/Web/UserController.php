@@ -20,6 +20,7 @@ use App\Services\SmsService;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserAccountLogService;
 use Monolog\Handler\IFTTTHandler;
+use League\Flysystem\Exception;
 
 class UserController extends Controller
 {
@@ -207,7 +208,7 @@ class UserController extends Controller
         return $this->success('退出登录成功！',  route('login'), '', 0);
     }
 
-    //获取用户购物车产品数
+    //获取用户购物车商品数
     public function getCartNum()
     {
 
@@ -375,13 +376,18 @@ class UserController extends Controller
         if (empty($id)){
             return $this->error('参数错误');
         }
-        $re = UserAddressService::delete($id);
+        try{
+            $re = UserAddressService::delete($id);
 
-        if ($re){
-            return $this->success('删除成功');
-        } else {
-            return $this->error('删除失败');
+            if ($re){
+                return $this->success('删除成功');
+            } else {
+                return $this->error('删除失败');
+            }
+        }catch (Exception $e){
+            return $this->error($e->getMessage());
         }
+
     }
 
     /**
@@ -633,6 +639,28 @@ class UserController extends Controller
     }
 
 
+    //手机验证码登陆获取手机验证码
+    public function sendMessLoginSms(Request $request){
+        $accountName = $request->input('user_name');
+        if(!UserService::checkNameExists($accountName)){
+            return $this->error('账号不存在');
+        }
+        $type = 'sms_signin';
+        if (Cache::has(session()->getId().$type.$accountName)) {
+            //
+            Cache::forget(session()->getId().$type.$accountName);
+        }
+        //生成的随机数
+        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
+
+        createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
+
+        return $this->success();
+    }
+
+
 
     public function empList(Request $request){
         return $this->display('web.user.emp.list');
@@ -732,6 +760,7 @@ class UserController extends Controller
                 //企业
                 $data['need_approval'] = $params['need_approval'];
             }
+
             $flag = UserService::modify($userId,$data);
 
             if(!$flag['is_firm']){
@@ -1000,7 +1029,6 @@ class UserController extends Controller
             return $this->display('web.user.account.userSale');
         }else{
             try{
-                dd($saleData);
                 UserService::sale($saleData);
                 return $this->success();
             }catch (\Exception $e){

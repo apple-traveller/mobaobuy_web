@@ -15,7 +15,16 @@ class GoodsCategoryService
             $condition['is_show'] = 1;
         }
         $all_list = GoodsCategoryRepo::getList('',$condition);
-        return make_treeTable($all_list, 'id', 'parent_id');
+        return make_treeTable($all_list, 'id', 'parent_id','_child');
+    }
+    //获取所有分类的树型数据
+    public static function getCategoryTreeAdmin($only_show = 1){
+        $condition = [];
+        if($only_show){
+            $condition['is_show'] = 1;
+        }
+        $all_list = GoodsCategoryRepo::getList('',$condition,['*','cat_name as name']);
+        return make_treeTable($all_list, 'id', 'parent_id','children');
     }
 
     public static function GoodsCategoryInfo($where=[]){
@@ -153,20 +162,17 @@ class GoodsCategoryService
     }
 
     //删除
-    public static function delete($ids)
+    public static function delete($id)
     {
-        //dd($ids);
-        foreach($ids as $k=>$v){
-            $good = GoodsRepo::getInfoByFields(['cat_id'=>$v]);
-            if(!empty($good)){
-                self::throwBizError('该分类下有商品不能删除');
-                return false;
-            }
+        $good = GoodsRepo::getInfoByFields(['cat_id'=>$id]);
+        if(!empty($good)){
+            self::throwBizError('该分类下有商品不能删除');
+            return false;
         }
-        return GoodsCategoryRepo::delete($ids);
+        return GoodsCategoryRepo::modify($id,['is_delete'=>1]);
     }
 
-    //产品报价页面
+    //商品报价页面
     public static function getCatesByGoodsList($goodList)
     {
         $cates = [];

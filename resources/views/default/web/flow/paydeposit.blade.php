@@ -25,9 +25,13 @@
             //付款凭证
              var orderSn = $('input[type=hidden]').val();
              var payVoucher = $('input[name=pay_voucher]').val();
+             if(orderSn == '' || payVoucher == ''){
+                $.msg.alert('上传凭证不能为空');
+                return;
+             }
              $.ajax({
                 url:'/payVoucherSave',
-                data:{'orderSn':orderSn,'payVoucher':payVoucher},
+                data:{'orderSn':orderSn,'payVoucher':payVoucher,'deposit':1},
                 type:'POST',
                 dataType:'json',
                 success:function(res){
@@ -43,7 +47,7 @@
     </script>
     <style type="text/css">
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 30%;}
+        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 300px;}
         .whitebg{background: #FFFFFF;}
         .pay_title{height: 50px;line-height: 50px;}
         .f4bg{background-color: #f4f4f4;}
@@ -116,9 +120,9 @@
         <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['real_name']}}</div>
-                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['bank_of_deposit']}}</div>
-                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['bank_account']}}</div>
+                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['company_name']}}</div>
+                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['settlement_bank_account_number']}}</div>
                 <div class="ovh mt10"><span>上传付款凭证:</span></div>
                 
             </li>

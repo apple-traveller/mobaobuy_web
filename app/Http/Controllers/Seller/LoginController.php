@@ -22,6 +22,9 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->isMethod('get')){
+            if (!empty(session('_seller_id'))){
+                return $this->redirect('/seller');
+            }
             return $this->display('seller.login');
         } else {
             $type = $request->input('type');
@@ -71,9 +74,9 @@ class LoginController extends Controller
         if (!$checkShopName){
             return $this->error('参数为空');
         }
-        $re = ShopLoginService::checkShopNameExists($checkShopName);
-        if ($re){
-            return $this->error('店铺已存在');
+        $re = ShopLoginService::checkShopExists($checkShopName);
+        if ($re['status']==4){
+            return $this->error($re['msg']);
         }
         return $this->success('');
     }
@@ -223,5 +226,10 @@ class LoginController extends Controller
     public function checkSession()
     {
         return $this->result(session('_seller_id'),'200','');
+    }
+
+    public function waitForExamine()
+    {
+        return $this->display('seller.waitForExamine');
     }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
+use App\Repositories\ActivityWholesaleRepo;
+use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -56,7 +58,31 @@ class GoodsService
     //获取一条商品
     public static function getGoodInfo($id)
     {
-        return GoodsRepo::getInfo($id);
+        $goods_info = GoodsRepo::getInfo($id);
+        $cat_info = GoodsCategoryRepo::getInfo($goods_info['cat_id']);
+        $goods_info['cat_name'] = $cat_info['cat_name'];
+        return $goods_info;
+    }
+
+    /**
+     * 检测商品是否存在对应的信息
+     * checkGoodsExistOtherInfo
+     * @param $id
+     * @return bool
+     */
+    public static function checkGoodsExistOtherInfo($id)
+    {
+        //检测报价列表
+        $quote_res = ShopGoodsQuoteRepo::getTotalCount(['goods_id'=>$id]);
+        //检测限时抢购活动
+        $promote_res = ActivityPromoteRepo::getTotalCount(['goods_id'=>$id]);
+        //检测集采拼团活动
+        $wholesale_res = ActivityWholesaleRepo::getTotalCount(['goods_id'=>$id]);
+        if($quote_res > 0 || $promote_res > 0 || $wholesale_res > 0){
+            return false;
+        }
+        return true;
+
     }
 
     //保存关键词
@@ -133,13 +159,16 @@ class GoodsService
         foreach($cartInfo as $k=>$v){
             $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
             if(empty($shopGoodsQuoteInfo)){
-                self::throwBizError('购物车产品不存在');
+                self::throwBizError('购物车商品不存在');
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
-            $quoteInfo[$k]['account'] =$v['goods_number'] * $v['goods_price'];
+            $quoteInfo[$k]['account'] =number_format($v['goods_number'] * $v['goods_price'],2,".","");
             //取goods表的规格
-            $goodsInfo[] = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
+            $goodsData = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
+            $goodsInfo[] = $goodsData;
+
+            $cartInfo[$k]['brand_name'] = $goodsData['brand_name'] ? $goodsData['brand_name'] : '';
         }
         return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo,'goodsInfo'=>$goodsInfo];
     }
@@ -157,7 +186,7 @@ class GoodsService
         }
         $goodsInfo = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('产品信息不存在！');
+            self::throwBizError('商品信息不存在！');
         }
         //规格判断处理
         if($number % $goodsInfo['packing_spec'] == 0){
@@ -253,7 +282,7 @@ class GoodsService
             if(empty($goodsInfo)){
                 self::throwBizError('商品信息不存在');
             }
-            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2);
+            $account =  number_format(round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2),2,".","");
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
             return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
@@ -323,11 +352,11 @@ class GoodsService
         }
 
         if($id<0){
-            self::throwBizError('产品信息有误');
+            self::throwBizError('商品信息有误');
         }
         $goodsInfo = GoodsRepo::getInfo($id);
         if(empty($goodsInfo)){
-            self::throwBizError('产品信息不存在');
+            self::throwBizError('商品信息不存在');
         }
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
         $shopGoodsInfo['goodsInfo'] = $goodsInfo;
@@ -377,7 +406,7 @@ class GoodsService
     public static function productTrend($goodsId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         if(empty($goodsInfo)){
-            self::throwBizError('产品信息有误');
+            self::throwBizError('商品信息有误');
         }
 
         $goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
@@ -398,7 +427,7 @@ class GoodsService
     public static function productTrendApi($goodsId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         if(empty($goodsInfo)){
-            self::throwBizError('产品信息有误');
+            self::throwBizError('商品信息有误');
         }
         //$goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
         $goodsList = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>7, 'page'=>1, 'orderType'=>['id'=>'desc']],['goods_id'=>$goodsId]);

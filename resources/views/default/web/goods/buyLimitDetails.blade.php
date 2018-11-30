@@ -216,8 +216,14 @@
                  })
                  
              }else{
-                $.msg.error('用户信息有误');
-                window.location.href='/login';
+                 layer.confirm('您还没有登陆。', {
+                    btn: ['去登陆','再看看'] //按钮
+                     }, function(){
+                    window.location.href='/login';
+                    }, function(){
+
+                });
+                return;
              }
          }
         function toBalances(goodsId,activityId){
@@ -253,7 +259,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="/goodslist">商品列表</a> &gt; <a href="javascript:">商品详情</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodslist">秒杀列表</a> &gt; <a href="javascript:">秒杀详情</a> &gt;<span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势
@@ -313,7 +319,7 @@
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
 				</div>
 				<div class="pro_detail">
-					<!-- <span class="ml15 pro_detail_title fl">产品含量</span><span  class="pro_value">50%</span> -->
+					<!-- <span class="ml15 pro_detail_title fl">商品含量</span><span  class="pro_value">50%</span> -->
 				</div>
 				<div class="pro_detail bd1"></div>
 				<div class="pro_detail">

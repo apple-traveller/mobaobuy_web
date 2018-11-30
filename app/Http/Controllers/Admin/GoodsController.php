@@ -99,9 +99,9 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '商品名称不能为空';
         }
-        if(empty($data['original_img'])){
-            $errorMsg[] = '商品原图不能为空';
-        }
+//        if(empty($data['original_img'])){
+//            $errorMsg[] = '商品原图不能为空';
+//        }
         if(empty($data['keywords'])){
             $errorMsg[] = '商品关键字不能为空';
         }
@@ -117,6 +117,9 @@ class GoodsController extends Controller
         if(empty($data['market_price'])){
             $errorMsg[] = '市场价不能为空';
         }
+        if(empty($data['goods_content'])){
+            $errorMsg[] = '含量不能为空';
+        }
 //        if(empty($data['goods_weight'])){
 //            $errorMsg[] = '商品重量不能为空';
 //        }
@@ -129,18 +132,23 @@ class GoodsController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
+        if(!empty($data['original_img'])){
+            $data['goods_img'] = $data['original_img'];
+            $data['goods_thumb'] = $data['original_img'];
+        }
 
-        $data['goods_img'] = $data['original_img'];
-        $data['goods_thumb'] = $data['original_img'];
         $data['goods_full_name'] = $data['brand_name']." ".$data['goods_name']." ".$data['goods_content'];
 
         try{
             if(!key_exists('id',$data)){
-                GoodsService::uniqueValidate($data['goods_name']);
+//                GoodsService::uniqueValidate($data['goods_name']);
                 $data['add_time']=Carbon::now();
                 $data['last_update']=Carbon::now();
-                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
-                $data['goods_attr_ids']=$goods_attr_ids;
+                if(!empty($data['goods_attr'])){
+                    $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                    $data['goods_attr_ids']=$goods_attr_ids;
+                }
+
                 $data['goods_weight'] = 1;
                 $info = GoodsService::create($data);
                 if(empty($info)){
@@ -151,8 +159,10 @@ class GoodsController extends Controller
                 return $this->success('添加成功',url('/admin/goods/list'));
             }else{
                 $data['last_update']=Carbon::now();
-                $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
-                $data['goods_attr_ids']=$goods_attr_ids;
+                if(!empty($data['goods_attr'])){
+                    $goods_attr_ids = $this->saveAttrbute($data['goods_attr']);
+                    $data['goods_attr_ids']=$goods_attr_ids;
+                }
                 $info = GoodsService::modify($data);
                 if(empty($info)){
                     return $this->error('修改失败');
@@ -173,6 +183,12 @@ class GoodsController extends Controller
         $data['id']=$id;
         $data['is_delete']=1;
         try{
+            #删除之前检测该商品是否存在对应的报价单或者活动
+            $is_exist_res = GoodsService::checkGoodsExistOtherInfo($id);
+            if(!$is_exist_res){
+                return $this->error('存在对应的报价信息或者活动信息，不能删除');
+            }
+
             $flag = GoodsService::modify($data);
             if(empty($flag)){
                 return $this->error('删除失败');

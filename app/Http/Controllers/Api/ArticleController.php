@@ -43,6 +43,7 @@ class ArticleController extends ApiController
         $goodsList= ArticleService::getArticleLists(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         foreach($goodsList['list'] as $k=>$v){
             $goodsList['list'][$k]['image'] = getFileUrl($goodsList['list'][$k]['image']);
+            $goodsList['list'][$k]['content'] = stripslashes($goodsList['list'][$k]['content']);
         }
 
         return $this->success([

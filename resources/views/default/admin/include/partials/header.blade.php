@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/perfect-scrollbar/perfect-scrollbar.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'js/calendar/calendar.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
 
 
 <script src="{{asset(themePath('/').'js/jquery-1.9.1.min.js')}}" ></script>
@@ -33,4 +34,6 @@
 <script src="{{asset(themePath('/').'js/jquery.bgColorSelector.js')}}" ></script>
 <script src="{{asset('/plugs/layer/layer.js')}}" ></script>
 <script src="{{asset(themePath('/').'plugs/layui/layui.js')}}" ></script>
+<script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+<script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
 

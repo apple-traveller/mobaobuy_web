@@ -13,7 +13,9 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>带星号的为必填项。</li>
+                    <li>请注意选择文章分类；请严谨描述文章内容。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>输入关键字时请用逗号隔开。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -61,17 +63,17 @@
                             </div>
                             <!--  -->
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>文章作者：</div>
+                                <div class="label">文章作者：</div>
                                 <div class="label_value"><input type="text" name="author" class="text" autocomplete="off" value="{{$article['author']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>关键字：</div>
+                                <div class="label">关键字：</div>
                                 <div class="label_value"><input type="text" name="keywords" class="text" autocomplete="off" value="{{$article['keywords']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>网页描述：</div>
+                                <div class="label">网页描述：</div>
                                 <div class="label_value">
                                     <textarea name="description" class="textarea">{{$article['description']}}</textarea>
                                     <div class="form_prompt"></div>
@@ -177,12 +179,7 @@
                     content :{
                         required : true,
                     },
-                    author :{
-                        required : true,
-                    },
-                    keywords :{
-                        required : true,
-                    },
+
 
 
                 },
@@ -193,12 +190,7 @@
                     content:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'文章内容不能为空'
                     },
-                    author:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章作者不能为空'
-                    },
-                    keywords:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'关键字不能为空'
-                    },
+
 
                 }
             });

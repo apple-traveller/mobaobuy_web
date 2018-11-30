@@ -3,11 +3,14 @@ namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\CartRepo;
+use App\Repositories\FirmStockFlowRepo;
+use App\Repositories\FirmStockRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\RegionRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\GoodsRepo;
+use App\Repositories\ShopRepo;
 use App\Repositories\UserAddressRepo;
 use App\Repositories\UserInvoicesRepo;
 use App\Repositories\OrderActionLogRepo;
@@ -34,7 +37,7 @@ class OrderInfoService
     }
 
     //获取分页订单列表
-    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=10){
+    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=5){
         $condition['is_delete'] = 0;
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
         unset($condition['status']);
@@ -51,13 +54,16 @@ class OrderInfoService
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
 
+
         //企业会员权限
         if($currUser['is_firm']){
+            $needApproval = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
             if($condition['firm_id'] && $currUser['is_self'] == 0){
                 $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$currUser['user_id']);
-                $currUserAuth[0]['need_approval'] = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
+                $currUserAuth[0]['need_approval'] = $needApproval;
             }
         }
+
 
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
@@ -80,11 +86,14 @@ class OrderInfoService
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
                 }
                 if($item['order_status'] == 1){
-                    $orderList['list'][$k]['auth'][] = 'can_approval';
+                    if($needApproval){
+                        $orderList['list'][$k]['auth'][] = 'can_approval';
+                        $orderList['list'][$k]['auth_desc'][] = '审批';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
+                    }
+
                     $orderList['list'][$k]['auth'][] = 'can_cancel';
-                    $orderList['list'][$k]['auth_desc'][] = '审批';
                     $orderList['list'][$k]['auth_desc'][] = '取消';
-                    $orderList['list'][$k]['auth_html'][] = 'onclick="orderApproval('.$item['id'].')"';
                     $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                 }
                 if ($item['order_status'] == 2) {
@@ -93,12 +102,15 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'][] = 'wait_Confirm';
                         $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_desc'][] = '待商家确认';
-                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
-                        $orderList['list'][$k]['auth_html'][] = '';
+                        $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc"';
                     } elseif ($item['deposit_status'] == 0) {
                         $orderList['list'][$k]['auth'][] = 'can_pay';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+                        $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                     }
 
                 }
@@ -111,10 +123,22 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
                         $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
-                    }elseif($item['pay_status'] == 1){
+                    }
+//                    elseif($item['pay_status'] == 1){
+//                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+//                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
+//                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+//                    }
+                    //未发货
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
-                        $orderList['list'][$k]['auth_desc'][] = '确认收货';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
+                        $orderList['list'][$k]['auth_desc'][] = '待卖家发货';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    }
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
+                            $orderList['list'][$k]['auth'][] = 'can_confirm';
+                            $orderList['list'][$k]['auth_desc'][] = '确认收货';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
             }
@@ -129,8 +153,6 @@ class OrderInfoService
 //                        $orderList['list'][$k]['auth_desc'][] = '删除';
 //                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderDel('.$item['id'].')"';
 //                    }
-
-
 
                     //待企业审核订单
                     if($item['order_status'] == 1){
@@ -164,20 +186,25 @@ class OrderInfoService
                             $orderList['list'][$k]['auth_desc'][] = '待商家确认';
                             $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
                         } elseif ($item['deposit_status'] == 0) {
-                            $orderList['list'][$k]['auth'][] = 'can_pay';
-                            $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            if($currUserAuth[0]['can_pay']){
+                                $orderList['list'][$k]['auth'][] = 'can_pay';
+//                                $orderList['list'][$k]['auth'][] = 'can_cancel';
+                                $orderList['list'][$k]['auth_desc'][] = '支付订金';
+//                                $orderList['list'][$k]['auth_desc'][] = '取消';
+                                $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+//                                $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
+                            }
+
                         }
                     }
                     //已确认
                     if($item['order_status'] == 3){
                         if($item['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
 //                            $orderList['list'][$k]['auth'][] = 'can_cancel';
-//                            $orderList['list'][$k]['auth_desc'][] = '取消';
-//                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].')"';
-
                             $orderList['list'][$k]['auth'][] = 'can_pay';
+//                            $orderList['list'][$k]['auth_desc'][] = '取消';
                             $orderList['list'][$k]['auth_desc'][] = '去支付';
+//                            $orderList['list'][$k]['auth_html'][] = 'style="" onclick="orderCancel(' . $item['id'] . ',' . $waitAffirm . ')"';
                             $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
 
                         }
@@ -189,7 +216,7 @@ class OrderInfoService
                         }elseif($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                             if($currUserAuth[0]['can_confirm']){
                                 $orderList['list'][$k]['auth'][] = 'can_confirm';
-                                $orderList['list'][$k]['auth_desc'][] = '待确认发货';
+                                $orderList['list'][$k]['auth_desc'][] = '确认收货';
                                 $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                             }
                         }
@@ -216,8 +243,11 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                     } elseif ($item['deposit_status'] == 0){
                         $orderList['list'][$k]['auth'][] = 'can_pay';
+                        $orderList['list'][$k]['auth'][] = 'can_cancel';
                         $orderList['list'][$k]['auth_desc'][] = '支付订金';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        $orderList['list'][$k]['auth_desc'][] = '取消';
+                        $orderList['list'][$k]['auth_html'][] = 'href="http://' . $_SERVER['SERVER_NAME'] . '/toPayDeposit?order_id=' . $item['id'] . '"';
+                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
                     }
                 }
 
@@ -229,7 +259,15 @@ class OrderInfoService
                         $orderList['list'][$k]['auth_desc'][] = '取消';
                         $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
-                    } elseif ($item['pay_status'] == 1){
+                    }
+
+                    //未发货
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 0){
+                        $orderList['list'][$k]['auth'][] = 'can_confirm';
+                        $orderList['list'][$k]['auth_desc'][] = '待卖家发货';
+                        $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
+                    }
+                    if($item['pay_status'] == 1 && $item['shipping_status'] == 1){
                         $orderList['list'][$k]['auth'][] = 'can_confirm';
                         $orderList['list'][$k]['auth_desc'][] = '确认收货';
                         $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
@@ -364,7 +402,7 @@ class OrderInfoService
         ];
 
         //待付定金
-        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));  
+        $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
         $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
 
         //待审批数量
@@ -400,14 +438,192 @@ class OrderInfoService
     public static function getOrderInfoById($id)
     {
         $order_info = OrderInfoRepo::getInfo($id);
-        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['street'],$order_info['district']);
+
+        if(empty($order_info)){
+            return false;
+        }
+        $order_info['region'] = RegionService::getRegion($order_info['country'],$order_info['province'],$order_info['city'],$order_info['district'],$order_info['address']);
         return $order_info;
     }
 
     //修改
     public static function modify($data)
     {
-        return OrderInfoRepo::modify($data['id'], $data);
+        return OrderInfoRepo::modify($data['id'],$data);
+    }
+
+    //修改支付状态
+    public static function modifyPayStatus($data)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
+            //修改订单的已付款金额为商品总金额
+            OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改支付状态为已付款',
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改订单状态
+    public static function modifyOrderStatus($data,$action_note)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], $data);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>$action_note,
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改自动收货天数，添加日志信息
+    public static function modifyAutoDeliveryTime($data)
+    {
+        try{
+            self::beginTransaction();
+            $order_flag = OrderInfoRepo::modify($data['id'], $data);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改自动收货天数为'.$order_flag['auto_delivery_time'].'天',
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_flag['id'],
+                'order_status'=>$order_flag['order_status'],
+                'shipping_status'=>$order_flag['shipping_status'],
+                'pay_status'=>$order_flag['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_flag) && !empty($flag_order_log)){
+                self::commit();
+                return $order_flag;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改费用信息
+    public static function modifyFee($data)
+    {
+        try{
+            self::beginTransaction();
+            //修改费用信息
+            $order_Info = OrderInfoRepo::modify($data['id'], $data);
+            //更新商品总金额
+            $orderInfo = OrderInfoRepo::getInfo($order_Info['id']);
+            $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);//查询该订单的所有的商品
+            $sum = 0;
+            foreach ($orderGoods as $k => $v) {
+                $sum += $v['goods_price'] * $v['goods_number'];
+            }
+            $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
+            $flag_order_info = OrderInfoRepo::modify($order_Info['id'], ['goods_amount' => $sum,'order_amount'=>$order_amount]);
+
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改运费为'.$order_Info['shipping_fee'].',修改折扣费用为'.$order_Info['discount'],
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_Info['id'],
+                'order_status'=>$order_Info['order_status'],
+                'shipping_status'=>$order_Info['shipping_status'],
+                'pay_status'=>$order_Info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_Info) && !empty($flag_order_log) && !empty($flag_order_info)){
+                self::commit();
+                return $order_Info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //修改order_goods表的单价和数量,修改order_info订单总金额和商品总金额
+    //{id: "456", goods_price: "300.00", goods_number: "120", order_id: "414"}
+    public static function modifyOrderGoods($data)
+    {
+        try{
+            self::beginTransaction();
+            $order_goods_data = [
+                'id'=>$data['id'],
+                'goods_price'=>$data['goods_price'],
+                'goods_number'=>$data['goods_number'],
+            ];
+            //修改order_goods表的单价和购买数量
+            $order_goods = OrderGoodsRepo::modify($order_goods_data['id'], $order_goods_data);
+            //修改order_info表的商品总金额
+            $orderInfo = OrderInfoRepo::getInfo($data['order_id']);
+            $orderGoods = OrderGoodsRepo::getList([], ['order_id' => $orderInfo['id']]);//查询该订单的所有的商品
+            $sum = 0;
+            foreach ($orderGoods as $k => $v) {
+                $sum += $v['goods_price'] * $v['goods_number'];
+            }
+            $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
+            $flag_order_info = OrderInfoRepo::modify($data['order_id'], ['goods_amount' => $sum,'order_amount'=>$order_amount]);
+
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'商品'.$order_goods['goods_name'].'单价修改为'.$data['goods_price'].',数量修改为'.$data['goods_number'],
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$data['order_id'],
+                'order_status'=>$orderInfo['order_status'],
+                'shipping_status'=>$orderInfo['shipping_status'],
+                'pay_status'=>$orderInfo['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!$order_goods || !$flag_order_info || !$flag_order_log){
+                return false;
+            }
+            self::commit();
+            return true;
+
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //获取订单商品信息
@@ -417,6 +633,7 @@ class OrderInfoService
         foreach ($order_goods as $k => $vo) {
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
+            $order_goods[$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
     }
@@ -430,8 +647,21 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
+            $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
         }
         return $order_goods;
+    }
+
+    //判断orderid是否是user_id的
+    public static function verifyOrderIds($order_ids,$user_id)
+    {
+        foreach ($order_ids as $k=>$v){
+            $order_info = OrderInfoRepo::getList([],['id'=>$v,'user_id'=>$user_id]);
+            if(empty($order_info)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static function getOrderGoods($params=[], $page = 1 ,$pageSize=10){
@@ -464,11 +694,7 @@ class OrderInfoService
         return UserInvoicesRepo::getInfo($id);
     }
 
-    //修改商品信息
-    public static function modifyOrderGoods($data)
-    {
-        return OrderGoodsRepo::modify($data['id'], $data);
-    }
+
 
     //查询所有的快递信息
     public static function getShippingList()
@@ -503,9 +729,9 @@ class OrderInfoService
     }
 
     //查询操作日志信息
-    public static function getOrderLogsByOrderid($id)
+    public static function getOrderLogsByOrderid($pager,$condition)
     {
-        return OrderActionLogRepo::getList(['log_time'=>'desc'],['order_id'=>$id]);
+        return OrderActionLogRepo::getListBySearch($pager,$condition);
     }
 
     //保存发货单相关信息
@@ -531,9 +757,9 @@ class OrderInfoService
                 }
             }
             if($flag==false){
-                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2]);//部分发货
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>2,'shipping_time'=>Carbon::now()]);//部分发货
             }else{
-                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1]);//全部发货
+                OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
             self::commit();
             return $orderDelivery;
@@ -631,14 +857,25 @@ class OrderInfoService
     }
 
     // 订单详情
-    public static function orderDetails($id){
+    public static function orderDetails($id,$firmId){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        if($orderInfo['firm_id'] && $orderInfo['user_id']){
+            if($firmId != $orderInfo['firm_id']){
+                return '';
+            }
+        }else if($orderInfo['firm_id'] == 0 && $orderInfo['user_id']){
+            if($firmId != $orderInfo['user_id']){
+                return '';
+            }
+        }
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
 
         $country = RegionRepo::getInfo($orderInfo['country']);
         $province = RegionRepo::getInfo($orderInfo['province']);
         $city = RegionRepo::getInfo($orderInfo['city']);
         $district = RegionRepo::getInfo($orderInfo['district']);
+
+        $delivery_info = OrderDeliveryRepo::getInfoByFields(['order_id'=>$orderInfo['id']]);
 
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];
@@ -647,13 +884,32 @@ class OrderInfoService
         }
         //获取会员发票信息
         $userInvoceInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
-        return ['orderInfo'=>$orderInfo,'userInvoceInfo'=>$userInvoceInfo,'goodsInfo'=>$goodsInfo,'country'=>$country['region_name'],'province'=>$province['region_name'],'city'=>$city['region_name'],'district'=>$district['region_name']];
+        return [
+            'orderInfo'=>$orderInfo,
+            'userInvoceInfo'=>$userInvoceInfo,
+            'goodsInfo'=>$goodsInfo,
+            'country'=>$country['region_name'],
+            'province'=>$province['region_name'],
+            'city'=>$city['region_name'],
+            'district'=>$district['region_name'],
+            'delivery_info'=>$delivery_info,
+        ];
     }
 
     //企业订单审核通过操作
     public static function egis($id){
         return OrderInfoRepo::modify($id,['order_status'=>2]);
     }
+
+    //根据shopid获取用户商家信息
+    public static function getShopInfoByShopId($shopId){
+        $shopInfo = ShopRepo::getInfo($shopId);
+        if(empty($shopInfo) || $shopId <=0){
+            self::throwBizError('商家信息不存在');
+        }
+        return $shopInfo;
+    }
+
 
     //订单取消
     public static function orderCancel($id,$type){
@@ -672,11 +928,17 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团
-
-                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖
-
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
+                    foreach ($orderGoodsInfo as $k=>$v){
+                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                    }
                 }else{//购物车下单
+
                     foreach ($orderGoodsInfo as $k=>$v){
                         $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
@@ -685,7 +947,6 @@ class OrderInfoService
                 }
 
             }
-
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
             return true;
@@ -696,13 +957,57 @@ class OrderInfoService
     }
 
     //订单确认收货
-    public static function orderConfirmTake($id){
+    public static function orderConfirmTake($id,$firmId,$userId){
+        $flow_time = Carbon::now();
         $orderInfo = OrderInfoRepo::getInfo($id);
         if (empty($orderInfo)){
             self::throwBizError('订单信息不存在');
         }
+        $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+        if(empty($orderGoodsInfo)){
+            self::throwBizError('商品信息有误');
+        }
+
+        //企业存库表
+        //企业库存流水
         if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status'] == 1){
-            return OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
+            try{
+                self::beginTransaction();
+                foreach($orderGoodsInfo as $v){
+                    $firmStockInfo = FirmStockRepo::getInfoByFields(['firm_id'=>$firmId,'goods_id'=>$v['goods_id']]);
+                    $firmStockData = [];
+                    $firmStockData['firm_id'] = $firmId;
+                    $firmStockData['goods_id'] = $v['goods_id'];
+                    $firmStockData['goods_name'] = $v['goods_name'];
+                    $firmStockData['number'] = $v['goods_number'];
+                    $firmStockData['flow_time'] = $flow_time;
+                    $firmStockData['order_sn'] = $orderInfo['order_sn'];
+                    $firmStockData['created_by'] = $userId;
+                    $firmStockData['price'] = $v['goods_price'];
+                    FirmStockFlowRepo::create($firmStockData);
+                    if(!empty($firmStockInfo)){
+                        FirmStockRepo::modify($firmStockInfo['id'],['number'=>$v['goods_number'] + $firmStockInfo['number']]);
+                    }else{
+//                $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+//                if(empty($goodsInfo)){
+//                    self::throwBizError('商品信息不存在');
+//                }
+                        $firmStockData = [];
+                        $firmStockData['firm_id'] = $firmId;
+                        $firmStockData['goods_id'] = $v['goods_id'];
+                        $firmStockData['goods_name'] = $v['goods_name'];
+                        $firmStockData['number'] = $v['goods_number'];
+                        FirmStockRepo::create($firmStockData);
+                    }
+                }
+                 OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
+                 self::commit();
+                 return true;
+            }catch (\Exception $e){
+                self::rollBack();
+                throw $e;
+            }
+
         }
         self::throwBizError('订单状态有误!');
     }
@@ -715,7 +1020,7 @@ class OrderInfoService
 
 
     //创建订单 type为cart 购物车下单    promote限时抢购
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type)
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$token="")
     {
         $addTime = Carbon::now();
         //生成的随机数
@@ -782,6 +1087,7 @@ class OrderInfoService
                 'extension_id' => $extension_id,
                 'deposit_status' => $deposit_status,
                 'deposit' => $deposit,
+                'froms' => empty($token)?"pc":"weichat",
             ];
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 
@@ -927,8 +1233,22 @@ class OrderInfoService
 
 
     //付款凭证提交
-    public static function payVoucherSave($orderSn,$payVoucher){
+    public static function payVoucherSave($orderSn,$payVoucher,$deposit){
         $orderSn = decrypt($orderSn);
+        $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
+        if(empty($orderInfo)){
+            self::throwBizError('订单信息不存在');
+        }
+        if($deposit){
+            return OrderInfoRepo::modify($orderInfo['id'],['deposit_pay_voucher'=>$payVoucher]);
+        }else{
+            return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+        }
+
+    }
+
+    //付款凭证提交
+    public static function payVoucherSaveApi($orderSn,$payVoucher){
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
             self::throwBizError('订单信息不存在');

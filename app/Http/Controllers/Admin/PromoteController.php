@@ -106,6 +106,9 @@ class PromoteController extends Controller
         try{
             if(!key_exists('id',$data)){
                 $data['add_time'] = Carbon::now();
+                if($data['available_quantity']>$data['num']){
+                    return $this->error('当前可售数量不能大于总数量');
+                }
                 $flag = ActivityService::create($data);
                 if(empty($flag)){
                     return $this->error("添加失败");
@@ -113,6 +116,7 @@ class PromoteController extends Controller
                 return $this->success("添加成功",url("/admin/promote/list"));
             }else{
                 $currpage = $data['currpage'];
+                $data['available_quantity'] = $data['num'];
                 unset($data['currpage']);
                 $flag = ActivityService::updateById($data['id'],$data);
                 if(empty($flag)){
@@ -185,37 +189,39 @@ class PromoteController extends Controller
             $condition['cat_name'] = "%".$cat_name."%";
         }
         $cates = GoodsCategoryService::getCatesByCondition($condition);
-        return $this->result($cates,200,'获取数据成功');
+        return $this->success('success','',$cates);
     }
 
     //ajax获取商品值
     public function getGood(Request $request)
     {
-        $cat_id = $request->input('cat_id');
+        $cat_id = trim($request->input('cat_id'));
         $goods_name = $request->input('goods_name');
         $condition = [];
-        if($cat_id!="" || $cat_id!=0){
+        if($cat_id!="" && $cat_id!=0){
             $condition['cat_id'] = $cat_id;
         }
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
         }
+        $condition['is_delete'] = 0;
         $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit']);
         if(!empty($goods)){
-            return $this->result($goods,200,'获取数据成功');
+            return $this->success('success','',$goods);
         }else{
-            return $this->result([],400,'没有查询到数据');
+            return $this->error('error');
         }
 
     }
 
     //ajax获取商家列表
-    public function getShopList()
+    public function getShopList(Request $request)
     {
         $condition = [
             'is_validated' => 1,
             'is_freeze' => 0,
         ];
+
         $res = ShopService::getList([],$condition);
         if($res){
             return $this->success('成功！','',$res);

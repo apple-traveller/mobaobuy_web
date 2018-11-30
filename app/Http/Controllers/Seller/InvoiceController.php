@@ -116,7 +116,7 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 作废开票申请
+     * 取消开票
      * @param Request $request
      * @return InvoiceController|\Illuminate\Http\RedirectResponse
      */
