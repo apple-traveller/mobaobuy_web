@@ -87,8 +87,8 @@ class ShopGoodsQuoteController extends Controller
     {
         $request->flash();
         $shopInfo = session('_seller');
-        $shop_id = $shopInfo['id'];
-        $company_name = session('_seller')['shop_info']['company_name'];
+        $shop_id = $shopInfo['shop_info']['id'];
+        $company_name = $shopInfo['shop_info']['company_name'];
         $id = $request->input('id','');
         $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
@@ -166,18 +166,9 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
-            'is_self_run' => $shopInfo['is_self_run'],
+            'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
 
-//        if ($store_id==0){
-//            $data['is_self_run'] = 1;
-//            $data['type'] = 1;
-//            $data['store_name'] = $company_name;
-//        } else {
-//            $data['is_self_run'] = 0;
-//            $data['type'] = 2;
-//            $data['store_name'] = $store_name;
-//        }
         try{
             if($id){
                 $data['id'] = $id;
