@@ -9,9 +9,10 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
-use Illuminate\Filesystem\Cache;
+//use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
 {
@@ -29,12 +30,14 @@ class LoginController extends Controller
     {
         $username = $request->input('user_name');
         $password = base64_decode($request->input('password'));
-        if(1){
+        $flag = $request->input('flag');
+        $params = [];
+        if($flag == 'messageLogin'){
             $type = 'sms_signin';
-            $a = Cache::get(session()->getId().$type.$username);
-            dump($a);
+            $mobile_code = Cache::get(session()->getId().$type.$username);
+            $params['mobile_code'] = $mobile_code ? $mobile_code : '';
         }
-
+        $params['flag'] = $flag;
         if(empty($username)){
             return $this->error('用户名不能为空');
         }
@@ -46,7 +49,7 @@ class LoginController extends Controller
             'ip'  => $request->getClientIp()
         ];
         try{
-            $user_id = UserService::loginValidate($username, $password, $other_params);
+            $user_id = UserService::loginValidate($username, $password, $other_params,$params);
             session()->put('_web_user_id', $user_id);
             return $this->success('登录成功，正在进入系统...');
         }catch (\Exception $e){

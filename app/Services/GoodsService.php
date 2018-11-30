@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Repositories\ActivityPromoteRepo;
 use App\Repositories\ActivityWholesaleRepo;
+use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
@@ -57,7 +58,10 @@ class GoodsService
     //获取一条商品
     public static function getGoodInfo($id)
     {
-        return GoodsRepo::getInfo($id);
+        $goods_info = GoodsRepo::getInfo($id);
+        $cat_info = GoodsCategoryRepo::getInfo($goods_info['cat_id']);
+        $goods_info['cat_name'] = $cat_info['cat_name'];
+        return $goods_info;
     }
 
     /**

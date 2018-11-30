@@ -646,11 +646,15 @@ class UserController extends Controller
             return $this->error('账号不存在');
         }
         $type = 'sms_signin';
+        if (Cache::has(session()->getId().$type.$accountName)) {
+            //
+            Cache::forget(session()->getId().$type.$accountName);
+        }
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
         Cache::add(session()->getId().$type.$accountName, $mobile_code, 5);
-       
+
         createEvent('sendSms', ['phoneNumbers'=>$accountName, 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);
 
         return $this->success();

@@ -52,6 +52,7 @@
                                 <div class="label_value">
                                     <input type="hidden" name="cat_id" id="cat_id" value="{{$consign_info['cat_id']}}"/>
                                     <input type="text" name="cat_id_LABELS"  autocomplete="off" value="{{$consign_info['cat_name']}}" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
 
@@ -252,7 +253,7 @@
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",
@@ -276,7 +277,7 @@
         //根据company里面输入的文字实时查询分类数据
         $("#goods_name").bind("input propertychange",function(res){
             var goods_name = $(this).val();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
                 if(res.code==1){

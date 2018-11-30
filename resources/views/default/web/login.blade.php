@@ -55,8 +55,8 @@
             <div class="login-box">
                 <div style="padding: 30px;">
                     <div class="login-title">短信登陆 <a class="login" style="float:right;">会员登陆</a></div>
-                    <div class="login-item"><input type="text" id="account" name="user_name" class="login_input" placeholder="输入您的账户名111"/></div>
-                    <div class="login-item"><input type="password" id="apassword" name="password" class="login_input" placeholder="输入您的短信验证码" style="width:66%;" /><input type="button" value="点击获取验证码" style="height:42px;" id="messCode_but"></div>
+                    <div class="login-item"><input type="text" id="account" name="user_name" class="login_input" placeholder="输入您的手机号"/></div>
+                    <div class="login-item"><input type="password" id="apassword" name="password" class="login_input" placeholder="输入您的短信验证码" style="width:66%;" /><input type="button" value="获取验证码" style="height:42px;width:102px;" id="messCode_but"></div>
                     <div class="login-item"><button class="login_btn fs16" onclick="messLogin()">登录</button></div>
                     <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
                     <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
@@ -111,6 +111,7 @@
             data = {
                 user_name: $("#user_name").val(),
                 password: $.base64.btoa($("#password").val()),
+                flag:'login'
             };
 
             Ajax.call("{{url('login')}}", data , function(result) {
@@ -132,6 +133,7 @@
             data = {
                 user_name: $("#account").val(),
                 password: $.base64.btoa($("#apassword").val()),
+                flag : 'messageLogin'
             };
 
             Ajax.call("{{url('login')}}", data , function(result) {
@@ -160,11 +162,15 @@
                 user_name:user_name
             };
             Ajax.call("{{url('/sendMessLoginSms')}}", params, function (result){
-
+                console.log(result);
                 if (result.code == 1) {
                     Settime (type);
                 }else{
-                    $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>"+result.msg);
+                    // $.msg.alert(result.msg);
+                    $("#password").val('');
+                    $('.error-content').text(result.msg);
+                    $('.login-error').show();
+                     
                 }
             }, "GET", "JSON");
         }

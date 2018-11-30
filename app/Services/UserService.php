@@ -158,16 +158,25 @@ class UserService
     }
 
     //用户登录
-    public static function loginValidate($username, $psw, $other_params = [])
+    public static function loginValidate($username, $psw, $other_params = [],$params = [])
     {
         //查用户表
         $info = UserRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
             self::throwBizError('用户名或密码不正确！');
         }
-
-        if(!Hash::check($psw, $info['password'])){
-            self::throwBizError('用户名或密码不正确！');
+        if(isset($params['mobile_code'])){
+//            if(!Hash::check($psw, $params['mobile_code'])){
+//                dd(1);
+//                self::throwBizError('用户名或密码不正确！');
+//            }
+            if($params['mobile_code'] != $psw){
+                self::throwBizError('用户名或密码不正确');
+            }
+        }else{
+            if(!Hash::check($psw, $info['password'])){
+                self::throwBizError('用户名或密码不正确！');
+            }
         }
 
         if ($info['is_freeze']) {
@@ -219,6 +228,10 @@ class UserService
 
         if(!Hash::check($psw, $info['password'])){
             self::throwBizError('旧密码不正确！');
+        }
+
+        if($psw==$new_pwd){
+            self::throwBizError('旧密码不能和新密码相同！');
         }
 
         if ($info['is_freeze']) {
