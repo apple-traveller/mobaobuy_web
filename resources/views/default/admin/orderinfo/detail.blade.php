@@ -205,7 +205,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @if($orderInfo['shipping_status']==0)
+                                        @if($orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
                                         <tr>
                                             <td colspan="6">
                                                 <div class="order_total_fr">
@@ -346,7 +346,12 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                    <!--页码-->
+                                    <div style="text-align: center;" class="news_pages">
+                                        <ul id="page" class="pagination">
 
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,6 +361,24 @@
         </div>
     </div>
     <script>
+        paginate();
+        function paginate(){
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
+                laypage.render({
+                    elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                    , count: "{{$orderLogsTotal}}" //数据总数，从服务端得到
+                    , limit: "10"   //每页显示的条数
+                    , curr: "{{$orderLogsCurrpage}}"  //当前页
+                    , theme: "#62b3ff" //样式
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            window.location.href="/admin/orderinfo/detail?orderlog_currpage="+obj.curr+"&id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}";
+                        }
+                    }
+                });
+            });
+        }
 
         layui.use(['layer'], function() {
             var layer = layui.layer;
@@ -465,7 +488,7 @@
 
                    $(this).children("a").attr('href',"#");
                 }
-            })
+            });
 
 
         });

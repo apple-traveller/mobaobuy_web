@@ -77,12 +77,13 @@ class OrderInfoController extends Controller
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
         $order_status = $request->input("order_status");
+        $orderlog_currpage = $request->input('orderlog_currpage',1);
         $orderInfo = OrderInfoService::getOrderInfoById($id);
         $user = UserService::getInfo($orderInfo['user_id']);
         $region = RegionService::getRegion($orderInfo['country'],$orderInfo['province'],$orderInfo['city'],$orderInfo['district'],$orderInfo['address']);
         $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
-        $orderLogs = OrderInfoService::getOrderLogsByOrderid(['pageSize'=>10,'page'=>1,'orderType'=>['log_time'=>'desc']],['order_id'=>$id]);
+        $orderLogs = OrderInfoService::getOrderLogsByOrderidPagenate(['pageSize'=>10,'page'=>$orderlog_currpage,'orderType'=>['log_time'=>'desc']],['order_id'=>$id]);
         return $this->display('admin.orderinfo.detail',[
             'currpage'=>$currpage,
             'orderInfo'=>$orderInfo,
@@ -91,20 +92,12 @@ class OrderInfoController extends Controller
             'order_goods'=>$order_goods,
             'user_real'=>$user_real,
             'orderLogs'=>$orderLogs['list'],
+            'orderLogsTotal'=>$orderLogs['total'],
+            'orderLogsCurrpage'=>$orderlog_currpage,
             'order_status'=>$order_status
         ]);
     }
 
-    //操作日志分页
-    public function getOrderLog(Request $request)
-    {
-        $id = $request->input('id');
-        $currpage = $request->input('currpage',1);
-        $pagesize = $request->input('pagesize',10);
-        $condition = ['order_id'=>$id];
-        $orderLogs = OrderInfoService::getOrderLogsByOrderid(['pageSize'=>$pagesize,'page'=>$currpage,'orderType'=>['log_time'=>'desc']],$condition);
-        return $this->result($orderLogs['list'],200,'success');
-    }
 
     //ajax修改
     public function modify(Request $request)
@@ -308,10 +301,11 @@ class OrderInfoController extends Controller
         $order_id = $request->input('order_id');
         unset($data['layTableCheckbox']);
         $orderDeliveryGoodsData = json_decode($data['send_number_delivery'],true);
+        //dd($data);
         $order_delivery_goods_data = []; //发货单商品信息
         foreach($orderDeliveryGoodsData as $k=>$v){
             $order_delivery_goods_data[$k]['order_goods_id'] = $v['id'];
-            $order_delivery_goods_data[$k]['shop_goods_id'] = $v['shop_goods_id'];
+            //$order_delivery_goods_data[$k]['shop_goods_id'] = $v['shop_goods_id'];
             $order_delivery_goods_data[$k]['shop_goods_quote_id'] = $v['shop_goods_quote_id'];
             $order_delivery_goods_data[$k]['goods_id'] = $v['goods_id'];
             $order_delivery_goods_data[$k]['goods_name'] = $v['goods_name'];
@@ -321,7 +315,7 @@ class OrderInfoController extends Controller
             }
             $order_delivery_goods_data[$k]['send_number'] = empty($v['send_number_delivery'])?0:$v['send_number_delivery'];
         }
-        $order_delivery = [];//发货单信息
+        //发货单信息
         $orderInfo = OrderInfoService::getOrderInfoById($order_id);
         $order_delivery_data['delivery_sn'] = $this->microtime_float()['mi'];
         $order_delivery_data['order_id'] = $order_id;
