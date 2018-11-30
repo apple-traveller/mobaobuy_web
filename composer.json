@@ -33,9 +33,7 @@
             "App\\": "app/"
         },
         "files": [
-            "app/functions.php",
-            "app/Helpers/helper.php",
-            "app/WeiXin.php"
+            "app/functions.php"
         ]
     },
     "autoload-dev": {
