@@ -32,6 +32,7 @@
         var tbl;
         $(function () {
             tbl = $('#data-table').dataTable({
+                "iDisplayLength" : 5, //默认显示的记录数
                 "ajax": {
                     url: "{{url('order/list')}}",
                     type: "post",
@@ -40,11 +41,11 @@
                         d.tab_code = '{{$tab_code}}',
                         d.order_no = $('#order_no').val(),
                         d.begin_time = $('#begin_time').val(),
-                        d.end_time = $('#end_time').val(),
-                        d.length = 5
+                        d.end_time = $('#end_time').val()
+//                        d.length = 5
                     },
                     dataSrc:
-                        function (json) {
+                        function (json) {console.log(json.data);
                             json.draw = json.data.draw;
                             if (json.data.recordsTotal == null) {
                                 json.recordsTotal = 0;
