@@ -318,6 +318,7 @@
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
+                                        @if(!empty($orderLogs))
                                         @foreach($orderLogs as $vo)
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -345,6 +346,8 @@
                                                 <td>{{$vo['action_note']}}</td>
                                             </tr>
                                         @endforeach
+                                            @else
+                                            @endif
                                         </tbody>
                                     </table>
 

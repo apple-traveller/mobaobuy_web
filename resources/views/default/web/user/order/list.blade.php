@@ -42,7 +42,6 @@
                         d.order_no = $('#order_no').val(),
                         d.begin_time = $('#begin_time').val(),
                         d.end_time = $('#end_time').val()
-//                        d.length = 5
                     },
                     dataSrc:
                         function (json) {console.log(json.data);
