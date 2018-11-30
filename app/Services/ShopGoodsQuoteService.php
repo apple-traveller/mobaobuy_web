@@ -19,7 +19,7 @@ class ShopGoodsQuoteService
 
     public static function getQuoteByWebSearch($pager, $condition)
     {
-        $condition['is_self_run'] = 1;
+
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
 
         foreach ($result['list'] as $k => $vo) {

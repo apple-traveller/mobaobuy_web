@@ -169,7 +169,7 @@
                 <span style="width:18%">商品名称</span>
                 <span style="width:9%;">数量（kg）</span>
                 <span>单价（元/kg）</span>
-                <span style="width:8%;">发货地址</span>
+                <span style="width:12%;">发货地址</span>
                 <span style="width:18%;">联系人</span>
                 <span style="width: 9%;">操作</span>
             </li>
