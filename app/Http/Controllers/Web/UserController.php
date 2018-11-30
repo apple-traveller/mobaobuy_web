@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\RegionRepo;
 use App\Services\CartService;
+use App\Services\OrderInfoService;
 use App\Services\UserAddressService;
 
 use App\Repositories\UserRepo;
@@ -759,7 +760,16 @@ class UserController extends Controller
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
+                //1是  0否
+                if(!$data['need_approval']){
+                    $approvalStatus =  OrderInfoService::checkApprovalByOrderCount(session('_web_user_id'));
+                    if($approvalStatus){
+                        return $this->error('请先处理未审批的订单');
+                    }
+                }
+
             }
+
 
             $flag = UserService::modify($userId,$data);
 
