@@ -731,9 +731,11 @@ class OrderInfoService
     }
 
     //查询操作日志信息
+
     public static function getOrderLogsByOrderidPagenate($pager,$condition)
+
     {
-        return OrderActionLogRepo::getListBySearch($pager,$condition);
+        return OrderActionLogRepo::getList([],['order_id'=>$order_id])  ;
     }
 
     //查询操作日志信息
