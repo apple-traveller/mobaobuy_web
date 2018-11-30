@@ -217,7 +217,9 @@ class ShopOrderController extends Controller
                     }
                     $data['order_status'] = 3;
                     $data['pay_time'] = Carbon::now();
-                    $data['deposit_status'] = $deposit_status;
+                    $data['deposit_status'] = $deposit_status?$deposit_status:1;
+                    $data['money_paid'] = $orderInfo['money_paid']+$orderInfo['deposit'];
+
                     if (empty($action_note)) {
                         $action_note = "确认收到定金";
                     }
