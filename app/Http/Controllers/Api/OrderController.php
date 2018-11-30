@@ -70,9 +70,10 @@ class OrderController extends ApiController
 
     //订单详情
     public function orderDetails(Request $request){
+        $deputy_user = $this->getDeputyUserInfo($request);
         $order_sn = $request->input('order_sn');
         try{
-            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn);
+            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn,$deputy_user['firm_id']);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
