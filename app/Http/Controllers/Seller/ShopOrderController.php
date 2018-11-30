@@ -210,14 +210,15 @@ class ShopOrderController extends Controller
                     $data['pay_time'] = Carbon::now();
                     $action_note = "商家确认收款";
                 }
-                // 收定金 订单状态已确认
+                // 收定金
                 if (!empty($deposit_status)){
                     if ($orderInfo['order_status'] != 2) {
                         return $this->error('订单状态不符合执行该操作的条件');
                     }
-                    $data['order_status'] = 3;
                     $data['pay_time'] = Carbon::now();
-                    $data['deposit_status'] = $deposit_status;
+                    $data['deposit_status'] = $deposit_status?$deposit_status:1;
+                    $data['money_paid'] = $orderInfo['money_paid']+$orderInfo['deposit'];
+
                     if (empty($action_note)) {
                         $action_note = "确认收到定金";
                     }

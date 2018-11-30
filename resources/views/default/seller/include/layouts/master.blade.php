@@ -9,9 +9,11 @@
 
     @yield('content')
     <script>
-        layui.use('element', function(){
-            var element = layui.element;
-        });
+       $(function () {
+           layui.use('element', function(){
+               let element = layui.element;
+           });
+       });
     </script>
 </body>
 @yield('script')

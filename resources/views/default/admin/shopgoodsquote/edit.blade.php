@@ -43,10 +43,16 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">
-                                    <input type="hidden" name="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" id="store_name_val" />
-                                    <input type="hidden" name="shop_store_id" value="{{$goodsQuote['shop_store_id']}}" id="store_id" />
-                                    <ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_store_id" id="store_id" value="{{$goodsQuote['shop_store_id']}}">
+                                        <option value="0">自售</option>
+                                    </select>
+                                    <input type="hidden" name="store_name" id="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
+
+                                    {{--<input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">--}}
+                                    {{--<input type="hidden" name="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" id="store_name_val" />--}}
+                                    {{--<input type="hidden" name="shop_store_id" value="{{$goodsQuote['shop_store_id']}}" id="store_id" />--}}
+                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">--}}
                                     </ul>
                                 </div>
                             </div>
@@ -68,7 +74,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ号：</div>
+                                <div class="label">&nbsp;QQ号：</div>
                                 <div class="label_value">
                                     <input type="text" name="QQ" class="text" value="{{$goodsQuote['QQ']}}" maxlength="40" autocomplete="off" id="QQ">
                                     <div class="form_prompt"></div>
@@ -124,13 +130,13 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
-                                <div class="label_value">
-                                    <input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
 
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
@@ -195,13 +201,13 @@
         });
         $(function(){
             getShopList('{{$goodsQuote['shop_id'] or 0}}');
+            getStoreList('{{$goodsQuote['shop_id'] or 0}}','{{$goodsQuote['shop_store_id'] or 0}}');
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
                     $("#article_form").submit();
                 }
             });
-
 
             $('#article_form').validate({
                 errorPlacement:function(error, element){
@@ -227,12 +233,12 @@
                     delivery_place:{
                         required:true,
                     },
-                    expiry_time:{
-                        required:true,
-                    },
-                    QQ:{
-                        required:true,
-                    }
+//                    expiry_time:{
+//                        required:true,
+//                    },
+//                    QQ:{
+//                        required:true,
+//                    }
                 },
                 messages:{
                     shop_id :{
@@ -251,18 +257,18 @@
                     delivery_place :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    expiry_time :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    QQ:{
-                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    expiry_time :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
+//                    QQ:{
+//                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
                 }
             });
+
             document.onclick=function(event){
                 $(".query_store_name").hide();
                 $(".query_goods_name").hide();
-                $(".query_cat_name").hide();
             }
 
             //选择商家
@@ -273,32 +279,40 @@
                 $("#store_name").val('');
                 $("#store_name_val").val('');
                 $("#store_id").val('');
+                $("#store_id").empty();
+                $("#store_id").append('<option value="0">自售</option>');
+                getStoreList(0,0);
+            });
+            //选择店铺
+            $("#store_id").change(function(){
+                var store_name = $(this).find("option:selected").text();
+                $("#store_name").val(store_name);
             });
             // 店铺 获取焦点请求所有的店铺数据
-            $("#store_name").focus(function(){
-                let _shop_id = $('#shop_id').val();
-                if(_shop_id == ''){
-                    layer.alert('选择店铺之前请先选择商家');return;
-                }
-                $(".query_store_name").children().filter("li").remove();
-                $.ajax({
-                    url: "/admin/shop/store/list",
-                    dataType: "json",
-                    data:{shop_id:_shop_id},
-                    type:"POST",
-                    success:function(res){
-                        if(res.code==1){
-                            $(".query_store_name").show();
-                            let data = res.data;
-                            let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-                            for(let i=0;i<data.length;i++){
-                                _html += '<li data-store-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-                            }
-                            $(".query_store_name").append(_html);
-                        }
-                    }
-                })
-            });
+//            $("#store_name").focus(function(){
+//                let _shop_id = $('#shop_id').val();
+//                if(_shop_id == ''){
+//                    layer.alert('选择店铺之前请先选择商家');return;
+//                }
+//                $(".query_store_name").children().filter("li").remove();
+//                $.ajax({
+//                    url: "/admin/shop/store/list",
+//                    dataType: "json",
+//                    data:{shop_id:_shop_id},
+//                    type:"POST",
+//                    success:function(res){
+//                        if(res.code==1){
+//                            $(".query_store_name").show();
+//                            let data = res.data;
+//                            let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
+//                            for(let i=0;i<data.length;i++){
+//                                _html += '<li data-store-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
+//                            }
+//                            $(".query_store_name").append(_html);
+//                        }
+//                    }
+//                })
+//            });
 
             //店铺 点击将li标签里面的值填入input框内
             $(document).delegate(".created_store_name","click",function(){
@@ -311,46 +325,46 @@
                 $(".query_store_name").hide();
             });
 
-            //根据company里面输入的文字实时查询分类数据
-            $("#company_name").bind("input propertychange",function(res){
-                var company_name = $(this).val();
-                $(".query_company_name").children().filter("li").remove();
-                $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
-                    if(res.code==1){
-                        $(".query_company_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-                        }
-                    }
-                },"json");
-            });
-
-            //根据店铺里面输入的文字实时查询分类数据
-            $("#store_name").bind("input propertychange",function(res){
-                let _shop_id = $('#shop_id').val();
-                if(_shop_id == ''){
-                    layer.alert('选择店铺之前请先选择商家');return;
-                }
-                let store_name = $(this).val();
-                $(".query_store_name").children().filter("li").remove();
-                $.post('/admin/shop/store/list',{'shop_id':_shop_id,'store_name':store_name},function(res){
-                    if(res.code==1){
-                        $(".query_store_name").show();
-                        let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-                        let data = res.data;
-                        for(let i=0;i<data.length;i++){
-                            _html += '<li data-shop-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-                        }
-                        $(".query_store_name").append(_html);
-                    }
-                },"json");
-            });
-
-            $("#store_name").blur(function(){
-                let _name = $("#store_name_val").val();
-                $(this).val(_name);
-            });
+//            //根据company里面输入的文字实时查询分类数据
+//            $("#company_name").bind("input propertychange",function(res){
+//                var company_name = $(this).val();
+//                $(".query_company_name").children().filter("li").remove();
+//                $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
+//                    if(res.code==1){
+//                        $(".query_company_name").show();
+//                        var data = res.data;
+//                        for(var i=0;i<data.length;i++){
+//                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+//                        }
+//                    }
+//                },"json");
+//            });
+//
+//            //根据店铺里面输入的文字实时查询分类数据
+//            $("#store_name").bind("input propertychange",function(res){
+//                let _shop_id = $('#shop_id').val();
+//                if(_shop_id == ''){
+//                    layer.alert('选择店铺之前请先选择商家');return;
+//                }
+//                let store_name = $(this).val();
+//                $(".query_store_name").children().filter("li").remove();
+//                $.post('/admin/shop/store/list',{'shop_id':_shop_id,'store_name':store_name},function(res){
+//                    if(res.code==1){
+//                        $(".query_store_name").show();
+//                        let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
+//                        let data = res.data;
+//                        for(let i=0;i<data.length;i++){
+//                            _html += '<li data-shop-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
+//                        }
+//                        $(".query_store_name").append(_html);
+//                    }
+//                },"json");
+//            });
+//
+//            $("#store_name").blur(function(){
+//                let _name = $("#store_name_val").val();
+//                $(this).val(_name);
+//            });
 
             //获取树形分类
             $("#cat_name").focus(function(){
@@ -435,6 +449,31 @@
                                 $("#shop_id").append('<option value="'+data[i].id+'" selected>'+data[i].company_name+'</option>');
                             }else{
                                 $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
+                            }
+
+                        }
+                    }
+                }
+            })
+        }
+        // 店铺 请求所有的店铺数据
+        function getStoreList(_shop_id,_id){
+            if(_shop_id == 0){
+                _shop_id = $('#shop_id').val();
+            }
+            $.ajax({
+                url: "/admin/shop/store/list",
+                dataType: "json",
+                data:{shop_id:_shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            if(_id == data[i].id){
+                                $("#store_id").append('<option value="'+data[i].id+'" selected>'+data[i].store_name+'</option>');
+                            }else{
+                                $("#store_id").append('<option value="'+data[i].id+'">'+data[i].store_name+'</option>');
                             }
 
                         }

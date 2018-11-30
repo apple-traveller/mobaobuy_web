@@ -468,7 +468,9 @@ class OrderInfoService
             //修改支付状态
             $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
             //修改订单的已付款金额为商品总金额
-            OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            if(empty($order_info['deposit_pay_voucher'])){
+                OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            }
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'修改支付状态为已付款',
@@ -737,9 +739,17 @@ class OrderInfoService
     }
 
     //查询操作日志信息
-    public static function getOrderLogsByOrderid($pager,$condition)
+
+    public static function getOrderLogsByOrderidPagenate($pager,$condition)
+
     {
-        return OrderActionLogRepo::getListBySearch($pager,$condition);
+        return OrderActionLogRepo::getList([],['order_id'=>$order_id])  ;
+    }
+
+    //查询操作日志信息
+    public static function getOrderLogsByOrderid($order_id)
+    {
+        return OrderActionLogRepo::getList(['log_time'=>'desc'],['order_id'=>$order_id]);
     }
 
     //保存发货单相关信息
@@ -769,6 +779,18 @@ class OrderInfoService
             }else{
                 OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
+            $order_Info = OrderInfoRepo::getInfo($orderDelivery['order_id']);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'生成发货单:'.$orderDelivery['delivery_sn'],
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_Info['id'],
+                'order_status'=>$order_Info['order_status'],
+                'shipping_status'=>$order_Info['shipping_status'],
+                'pay_status'=>$order_Info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            OrderActionLogRepo::create($logData);
             self::commit();
             return $orderDelivery;
         }catch(\Exception $e){

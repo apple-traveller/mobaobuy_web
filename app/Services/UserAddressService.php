@@ -35,6 +35,9 @@ class UserAddressService
     public static function getAddressInfo($address_id)
     {
         $info = UserAddressRepo::getInfo($address_id);
+        if(empty($info)){
+            return false;
+        }
         $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'],$info['address']);
         $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
         $info['address_names'] = $address_names;
