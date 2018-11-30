@@ -107,7 +107,7 @@
                                 <dl>
                                     <dt><span style="float:left;">自动确认收货时间：</span>
                                         <span style="color:#62b3ff"><div class="editSpanInput" ectype="editSpanInput">
-                                            <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/modify2')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
+                                            <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/modifyAutoDeliveryTime')}}','{{$orderInfo['id']}}')">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
                                             <i class="icon icon-edit"></i>
                                         </div>
@@ -224,7 +224,7 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a class="11edit-order-goods" href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a class="edit-order-goods" href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
 
                                 <dl>
@@ -257,11 +257,21 @@
                             <div class="section">
 
                                 <dl>
-                                    <dt style="width:200px;">商品总金额:<span style="color:#62b3ff"><em>¥</em>{{number_format($orderInfo['goods_amount'],2,".","")}}</span></dt>
+                                    <dt style="width:300px;">付款凭证:<span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div></span></dt>
                                 </dl>
 
                                 <dl style="margin-left: 20px;">
-                                    <dt style="width:200px;">配送费用:<span style="color:#62b3ff">+ <em>¥</em>{{$orderInfo['shipping_fee']}}</span></dt>
+                                    <dt style="width:300px;">定金付款凭证:<span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['deposit_pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div></span></dt>
+                                </dl>
+
+                                <dl style="margin-left: 20px;">
+                                    <dt style="width:400px;">确认付款:
+                                        @if($orderInfo['pay_status']==1)
+                                            已付款
+                                        @else
+                                            <input  style="margin-left:10px;"   class="btn btn25 red_btn pay_status"   type="button" data-id="1" value="确认付款" > <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                        @endif
+                                    </dt>
                                 </dl>
 
                             </div>
@@ -291,15 +301,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="item">
-                                        <div class="label">支付状态：</div>
-                                        <div class="value">
-                                              <input @if($orderInfo['pay_status']==0) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="0" value="待付款" >
-                                              <input @if($orderInfo['pay_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="1" value="已付款" >
-                                              <input @if($orderInfo['pay_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="2" value="部分付款" >
-                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="operation_record">
                                     <table cellpadding="0" cellspacing="0">
@@ -371,7 +372,35 @@
                 });
             });
 
-            //编辑商品信息
+            //查看付款凭证
+            $(".viewImg").click(function(){
+                var content = $(this).attr('content');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['700px', '500px'],
+                    content: '<img src="'+content+'">'
+                });
+            });
+
+            //修改支付状态
+            $(".pay_status").click(function(){
+                var pay_status = $(this).attr("data-id");
+                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
+            });
+
+            //编辑商品信息判断
             $(".edit-order-goods").click(function(){
                 let pay_status ="{{$orderInfo['pay_status']}}";
                 if(pay_status==1){
@@ -408,7 +437,7 @@
                 }
                 var order_status = $(this).attr("data-id");
                 var action_note = $(".action_note").val();
-                $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
+                $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
                     if(res.code==200){
                         layer.msg(res.msg, {
                             icon: 6,
@@ -424,32 +453,7 @@
             });
 
 
-            //修改支付状态
-            $(".pay_status").click(function(){
-                var content = $("#action_note").val();
-                if(content==""){
-                    layer.msg("备注不能为空", {
-                        icon: 6,
-                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                    });
-                    return ;
-                }
-                var pay_status = $(this).attr("data-id");
-                var action_note = $(".action_note").val();
-                $.post('/admin/orderinfo/modifyStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'pay_status':pay_status},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {
-                            icon: 6,
-                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function(){
-                            window.location.reload();
-                        });
 
-                    }else{
-                        alert(res.msg);
-                    }
-                },"json");
-            });
 
             $(".order_delivery").click(function(){
                 var shipping_status = $(this).attr('data-status');
