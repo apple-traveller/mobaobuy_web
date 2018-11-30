@@ -69,6 +69,8 @@ class ShopGoodsQuoteController extends Controller
     public function save(Request $request)
     {
         $data = $request->all();
+        unset($data['cat_id']);
+        unset($data['cat_id_LABELS']);
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';
