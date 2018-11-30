@@ -55,9 +55,9 @@
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
                                     <td>
-                                        <div class="tDiv">
+                                        <div class="tDiv a3">
+                                            <a href="/seller/activity/consign/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_trash"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                            <a href="/seller/activity/consign/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>
                                     </td>
                                 </tr>

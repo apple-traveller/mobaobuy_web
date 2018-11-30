@@ -79,7 +79,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/goodscategory/editForm', 'GoodsCategoryController@editForm');//商品分类编辑
         Route::post('/goodscategory/sort', 'GoodsCategoryController@sort');//商品分类排序
         Route::post('/goodscategory/upload', 'GoodsCategoryController@upload');//上传自定义图标
-        Route::post('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//上传自定义图标
+        Route::post('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//分类树
 
         Route::get('/sysconfig/index', 'SysConfigController@index');//平台配置首页
         Route::post('/sysconfig/modify', 'SysConfigController@modify');//平台配置修改
@@ -187,13 +187,15 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
         Route::post('/orderinfo/save', 'OrderInfoController@save');//保存
         Route::post('/orderinfo/modify', 'OrderInfoController@modify');//修改
-        Route::post('/orderinfo/modify2', 'OrderInfoController@modify2');//修改自动收货时间
-        Route::post('/orderinfo/modifyStatus', 'OrderInfoController@modifyStatus');//修改订单状态
+        Route::post('/orderinfo/modifyAutoDeliveryTime', 'OrderInfoController@modifyAutoDeliveryTime');//修改自动收货时间
+        Route::post('/orderinfo/modifyPayStatus', 'OrderInfoController@modifyPayStatus');//修改支付状态
+        Route::post('/orderinfo/modifyOrderStatus', 'OrderInfoController@modifyOrderStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
         Route::post('/orderinfo/saveFee', 'OrderInfoController@saveFee');//保存费用修改信息
+        Route::post('/orderinfo/getOrderLog', 'OrderInfoController@getOrderLog');//操作日志分页
         Route::get('/orderinfo/delivery', 'OrderInfoController@delivery');//发货单
         Route::post('/orderinfo/saveDelivery', 'OrderInfoController@saveDelivery');//保存发货单
         Route::post('/orderinfo/GoodsForm', 'OrderInfoController@GoodsForm');//发货单商品table(渲染表格数据)
@@ -606,6 +608,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
         Route::post('/send_findpass_sms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
         Route::post('/bind_third', 'LoginController@bindThird');//有账号直接和微信绑定
         Route::post('/create_third', 'LoginController@createThird');//没有账号和微信先绑定再注册
+
+        Route::post('/uploadImg', 'UploadController@uploadImg');//文件上传
 
         Route::get('/index/banner', 'IndexController@getBannerAd');//首页轮播
         Route::get('/index/tran_list', 'IndexController@getTransList');//首页成交动态
