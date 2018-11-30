@@ -146,8 +146,6 @@
     @else
         <div class="w1200 whitebg" style="height: 100px;vertical-align:center;padding-top: 60px">
         <div style="align-content:center;width: auto " align="center">暂时没有符合条件的订单<a type="button" href="/order/list" style="height: 20px;background-color: #75b335;color:#fff;"  align="center">订单列表</a></div>
-
-
         </div>
     @endif
 </div>

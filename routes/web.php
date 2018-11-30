@@ -79,6 +79,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/goodscategory/editForm', 'GoodsCategoryController@editForm');//商品分类编辑
         Route::post('/goodscategory/sort', 'GoodsCategoryController@sort');//商品分类排序
         Route::post('/goodscategory/upload', 'GoodsCategoryController@upload');//上传自定义图标
+        Route::post('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//上传自定义图标
 
         Route::get('/sysconfig/index', 'SysConfigController@index');//平台配置首页
         Route::post('/sysconfig/modify', 'SysConfigController@modify');//平台配置修改
@@ -301,6 +302,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/findPwd','UserController@userFindPwd');
     Route::get('/findPwd/sendSms','UserController@sendFindPwdSms');//忘记密码获取验证码
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
+
+    Route::get('/sendMessLoginSms','UserController@sendMessLoginSms');//短信验证码登陆
 
 
     Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
