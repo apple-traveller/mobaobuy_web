@@ -156,7 +156,7 @@
                                     <a href="javascript:void(0)">
                                         <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
                                     </a>
-                                     @else 
+                                     @else
                                     <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
                                         <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
                                     </a>
@@ -216,7 +216,7 @@
                     <li>
                        <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
                         <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;">{{$vo['cat_name']}}</span>
-                        <span style="width:18%;"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span style="width:18%;"><i class="space_hidden"style="width:100%;"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
                         <span style="width:12%;">{{$vo['goods_number']}}</span>
                         <span style="width:12%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
                         <span style="width:12%;">{{$vo['delivery_place']}}</span>
