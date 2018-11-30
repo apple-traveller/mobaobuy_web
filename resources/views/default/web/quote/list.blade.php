@@ -163,28 +163,26 @@
 		<ul class="Self-product-list">
 
 			<li class="table_title">
-                <span class="num_bg1" style="width:9%">店铺</span>
-                <!-- <span  style="width:8%;">品牌</span> -->
+                <span style="width:18%" class="num_bg1">店铺</span>
                 <span style="width:8%;">种类</span>
                 <span style="width:18%">商品名称</span>
-                <span style="width:9%;">数量（kg）</span>
-                <span>单价（元/kg）</span>
-                <span style="width:8%;">发货地址</span>
+                <span style="width:8%;">数量（kg）</span>
+                <span style="width:8%;">单价（元/kg）</span>
+                <span style="width:12%;">发货地址</span>
                 <span style="width:18%;">联系人</span>
-                <span style="width: 9%;">操作</span>
+                <span style="width:10%;">操作</span>
             </li>
             @if(!empty($search_data['list']))
                 @foreach($search_data['list'] as $vo)
                     <li>
-                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                        <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
-                        <span title="{{$vo['cat_name']}}" class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                        <span title="{{$vo['goods_full_name']}}" style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                        <span style="width:9%">{{$vo['goods_number']}}</span>
-                        <span>{{$vo['shop_price']}}</span>
-                        <span>{{$vo['delivery_place']}}</span>
+                        <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                        <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
+                        <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                        <span style="width:8%">{{$vo['goods_number']}}</span>
+                        <span style="width:8%;">{{$vo['shop_price']}}</span>
+                        <span style="width:12%;">{{$vo['delivery_place']}}</span>
                         <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
-                        <span style="width:9%">
+                        <span style="width:10%">
                             @if($vo['goods_number'])
                                 <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                             @else
@@ -194,7 +192,7 @@
                     </li>
                 @endforeach
             @else
-                <li style="color:red;text-align: center">无相关数据</li>
+                <li class="nodata">无相关数据</li>
             @endif
 		</ul>
 		<!--页码-->

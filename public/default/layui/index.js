@@ -82,12 +82,13 @@ layui.use(['element','jquery','form', 'layedit'],function(){
         // addTab(elem[0].innerText,elem[0].attributes[1].nodeValue,elem[0].id);
         addTab(elem[0].innerText,elem[0].attributes[1].value,elem[0].attributes[2].value);
     });
-    // 头部下拉框点击
-    element.on('nav(layui-header)',function (elem) {
-        addTab(elem[0].innerText,elem[0].attributes[1].value,elem[0].attributes[2].value);
-    });
+    // // 头部下拉框点击
+    // element.on('nav(layui-header)',function (elem) {
+    //     addTab(elem[0].innerText,elem[0].attributes[1].value,elem[0].attributes[2].value);
+    // });
     //监听tab选项卡切换
     element.on('tab(tab-switch)', function(data){
+        console.log(data);
         if(data.elem.context.attributes != undefined){
             var id = data.elem.context.attributes[0].nodeValue;
             layui.each($(".layui-nav-child"), function () {
@@ -151,7 +152,6 @@ function addTab(tabTitle,tabUrl,tabId){
 $(function () {
     $("#firstT").click(function () {
         $.cookie('anchor','',-1);
-        console.log($.cookie('anchor'));
     });
 
    // $('#flyOwn').children().find('a').click(function () {

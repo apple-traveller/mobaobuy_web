@@ -66,9 +66,8 @@ class IndexController extends Controller
         $monthly_orders = OrderInfoService::getMonthlyOrders();
         return $this->result($monthly_orders,200,'');
     }
-
-
+    //不能清除小程序用户信息 只用于数据即时显示 功能即时生效
     public function clear(){
-        Cache::flush();
+//        Cache::flush();
     }
 }

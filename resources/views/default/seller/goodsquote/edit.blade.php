@@ -120,7 +120,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
+                                <div class="label">&nbsp;QQ：</div>
                                 <div class="label_value">
                                     <input type="text" name="QQ" id="qq" class=" text" value="{{ $goodsQuote['QQ'] }}" maxlength="40" autocomplete="off" >
                                     <div class="form_prompt"></div>
@@ -193,9 +193,6 @@
                     contact_info:{
                         required:true,
                     },
-                    qq:{
-                        required:true,
-                    },
                     store_name:{
                         required:true,
                     },
@@ -223,9 +220,7 @@
                     contact_info :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    qq :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+
                     store_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },

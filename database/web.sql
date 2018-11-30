@@ -212,8 +212,8 @@ CREATE TABLE `firm_user` (
 
 DROP TABLE IF EXISTS `region`;
 CREATE TABLE `region` (
-  `region_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `parent_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID',
+  `region_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID',
   `region_name` varchar(120) NOT NULL DEFAULT '' COMMENT '名称',
   `region_type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '层级 0为国家级',
   PRIMARY KEY (`region_id`),

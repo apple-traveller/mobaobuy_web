@@ -51,7 +51,7 @@ class ShopStoreController extends Controller
 
     public function add()
     {
-        return $this->display('admin.shopStore.add');
+        return $this->display('admin.shopstore.add');
     }
 
     public function save(Request $request)
@@ -101,7 +101,7 @@ class ShopStoreController extends Controller
 
         $storeInfo = ShopStoreService::getShopStoreById($id);
 
-        return $this->display('admin.shopStore.edit',compact('storeInfo','currentPage'));
+        return $this->display('admin.shopstore.edit',compact('storeInfo','currentPage'));
     }
 
     /**
