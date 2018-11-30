@@ -46,15 +46,11 @@
                             </em>
                         </dd>
                     </dl>
-                    <dl @if($orderInfo['confirm_take_time']!=null) class="cur" @endif class="last ">
+                    <dl @if($orderInfo['shipping_status']==3) class="cur" @endif class="last ">
                         <dt></dt>
                         <dd class="s-text">确认收货<br>
                             <em class="ftx-03">
-                                @if($orderInfo['shipping_status']==3)
-                                    已确认
-                                    @else
-                                    未确认
-                                @endif
+                               {{$orderInfo['confirm_take_time']}}
                             </em>
                         </dd>
                     </dl>
@@ -176,29 +172,29 @@
 
                         <!--商品信息-->
                         <div class="step">
-                            <div class="step_title"><i class="ui-step"></i><h3>商品信息<a href="/admin/orderinfo/modifyOrderGoods?id={{$orderInfo['id']}}&currpage={{$currpage}}&shop_name={{$orderInfo['shop_name']}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>商品信息<a class="edit-order-goods" href="/admin/orderinfo/modifyOrderGoods?id={{$orderInfo['id']}}&currpage={{$currpage}}&shop_name={{$orderInfo['shop_name']}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="step_info">
                                 <div class="order_goods_fr">
                                     <table class="table" border="0" cellpadding="0" cellspacing="0">
                                         <thead>
-                                        <tr>
-                                            <th width="15%" class="first">商品名称 [ 品牌 ]</th>
-                                            <th width="10%">商品编码</th>
-                                            <th width="15%">店铺</th>
-                                            <th width="10%">价格</th>
-                                            <th width="10%">购买数量</th>
-                                            <th width="10%">已发货数量</th>
+                                        <tr >
+                                            <th style="text-align: center;" width="15%" class="first">商品名称 [ 品牌 ]</th>
+                                            <th style="text-align: center;" width="10%">商品编码</th>
+                                            <th style="text-align: center;" width="15%">店铺</th>
+                                            <th style="text-align: center;" width="10%">价格</th>
+                                            <th style="text-align: center;" width="10%">购买数量</th>
+                                            <th style="text-align: center;" width="10%">已发货数量</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($order_goods as $vo)
                                         <tr>
-                                            <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
-                                            <td>{{$vo['goods_sn']}}</td>
-                                            <td>{{$orderInfo['shop_name']}}</td>
-                                            <td>{{$vo['goods_price']}}</td>
-                                            <td>{{$vo['goods_number']}}</td>
-                                            <td>{{$vo['send_number']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_name']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_sn']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$orderInfo['shop_name']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_price']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_number']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['send_number']}}</td>
                                         </tr>
                                         @endforeach
                                         <tr>
@@ -209,6 +205,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @if($orderInfo['shipping_status']==0)
                                         <tr>
                                             <td colspan="6">
                                                 <div class="order_total_fr">
@@ -216,6 +213,9 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @else
+
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -224,36 +224,46 @@
 
                         <!--费用信息-->
                         <div class="step order_total">
-                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title"><i class="ui-step"></i><h3>费用信息<a class="11edit-order-goods" href="/admin/orderinfo/modifyFee?id={{$orderInfo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"><i class="icon icon-edit"></i></a></h3></div>
                             <div class="section">
+
                                 <dl>
-                                    <dt>商品总金额：</dt>
-                                    <dd><em>¥</em>{{$orderInfo['goods_amount']}}</dd>
+                                    <dt style="width:200px;">商品总金额:<span style="color:#62b3ff"><em>¥</em>{{number_format($orderInfo['goods_amount'],2,".","")}}</span></dt>
+                                </dl>
+
+                                <dl style="margin-left: 20px;">
+                                    <dt style="width:200px;">配送费用:<span style="color:#62b3ff">+ <em>¥</em>{{$orderInfo['shipping_fee']}}</span></dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>配送费用：</dt>
-                                    <dd>+ <em>¥</em>{{$orderInfo['shipping_fee']}}</dd>
+                                    <dt style="width:200px;">折扣:<span style="color:#62b3ff">- <em>¥</em>{{$orderInfo['discount']}}</span></dt>
                                 </dl>
 
                                 <dl>
-                                    <dt>折扣：</dt>
-                                    <dd>- <em>¥</em>{{$orderInfo['discount']}}</dd>
-                                    <dt></dt>
-                                    <dd></dd>
+                                    <dt style="width:200px;">已付款金额:<span style="color:#62b3ff">- <em>¥</em>{{$orderInfo['money_paid']}}</span></dt>
                                 </dl>
+
                                 <dl>
-                                    <dt>已付款金额：</dt>
-                                    <dd>- <em>¥</em>{{$orderInfo['money_paid']}}</dd>
-                                    <dt></dt>
-                                    <dd></dd>
+                                    <dt style="width:200px;">应付款金额:<span style="color:red;"><em>¥</em>{{number_format($orderInfo['order_amount']-$orderInfo['money_paid'],2,".","")}}</span></dt>
+                                    <dt style="width:200px;">订单总金额:<span style="color:red;"><em>¥</em>{{$orderInfo['order_amount']}}</span></dt>
                                 </dl>
+
+                            </div>
+                        </div>
+
+                        <!--支付信息-->
+                        <div class="step order_total">
+                            <div class="step_title"><i class="ui-step"></i><h3>用户支付凭证信息</h3></div>
+                            <div class="section">
+
                                 <dl>
-                                    <dt>订单总金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['order_amount']}}</dd>
-                                    <dt>应付款金额：</dt>
-                                    <dd class="red"><em>¥</em>{{$orderInfo['order_amount']-$orderInfo['money_paid']}}</dd>
+                                    <dt style="width:200px;">商品总金额:<span style="color:#62b3ff"><em>¥</em>{{number_format($orderInfo['goods_amount'],2,".","")}}</span></dt>
                                 </dl>
+
+                                <dl style="margin-left: 20px;">
+                                    <dt style="width:200px;">配送费用:<span style="color:#62b3ff">+ <em>¥</em>{{$orderInfo['shipping_fee']}}</span></dt>
+                                </dl>
+
                             </div>
                         </div>
 
@@ -312,7 +322,9 @@
                                                 @if($vo['order_status']==0)已作废
                                                 @elseif($vo['order_status']==1)待企业审核
                                                 @elseif($vo['order_status']==2)待商家确认
-                                                @else已确认
+                                                @elseif($vo['order_status']==3)已确认
+                                                @elseif($vo['order_status']==4)已完成
+                                                @else待开票
                                                 @endif
                                             </td>
                                             <td>
@@ -325,6 +337,7 @@
                                                 @if($orderInfo['shipping_status']==0)待发货
                                                 @elseif($orderInfo['shipping_status']==1)已发货
                                                 @elseif($orderInfo['shipping_status']==2)部分发货
+                                                @else已确认收货
                                                 @endif
                                             </td>
                                             <td>{{$vo['action_note']}}</td>
@@ -356,6 +369,18 @@
                     '<textarea style="margin: 10px;" name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+"{{$orderInfo['to_buyer']}}"+'</textarea>' +
                     '<button style="margin-left:150px;" class="button messageButton">确定</button></div>'
                 });
+            });
+
+            //编辑商品信息
+            $(".edit-order-goods").click(function(){
+                let pay_status ="{{$orderInfo['pay_status']}}";
+                if(pay_status==1){
+                    layer.msg("订单已付款不能修改", {
+                        icon: 6,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return false;
+                }
             });
 
             $(document).delegate(".messageButton","click",function(){
@@ -438,11 +463,7 @@
                 }
             })
 
-            //查看开票详情信息，跳转
-            /*$(".viewInvoiceInfo").click(function(){
-                var url = $(this).attr("data-url");
-                window.location.href=url;
-            });*/
+
         });
     </script>
 @stop

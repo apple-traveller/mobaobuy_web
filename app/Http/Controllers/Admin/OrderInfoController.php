@@ -115,8 +115,11 @@ class OrderInfoController extends Controller
             'auto_delivery_time'=>$request->input('val'),
         ];
         try{
-            $flag = OrderInfoService::modify($data);
-            return $this->result($flag['auto_delivery_time'],200,'修改成功');
+            $flag = OrderInfoService::modifyAutoDeliveryTime($data);
+            if($flag){
+                return $this->result($flag['auto_delivery_time'],200,'修改成功');
+            }
+            return $this->error('失败');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -202,16 +205,15 @@ class OrderInfoController extends Controller
     public function saveOrderGoods(Request $request)
     {
         $data = $request->all();
-        $order_id = $data['order_id'];
-        unset($data['order_id']);
+        //{id: "456", goods_price: "300.00", goods_number: "120", order_id: "414"}
         try{
-            $info = OrderInfoService::modifyOrderGoods($data);//修改单价和数量
-            OrderInfoService::modifyGoodsAmount($order_id);//修改订单总金额和商品总金额
-            $goods_amount = OrderInfoService::getOrderInfoById($order_id)['goods_amount'];
-            if(!$info){
-                return $this->error('更新失败');
+            //修改order_goods表的单价和数量,修改order_info订单总金额和商品总金额
+            $flag = OrderInfoService::modifyOrderGoods($data);
+            $goods_amount = OrderInfoService::getOrderInfoById($data['order_id'])['goods_amount'];
+            if($flag){
+                return $this->result($goods_amount,200,'更新成功');
             }
-            return $this->result($goods_amount,200,'更新成功');
+            return $this->result('',400,'更新失败');
         }catch(\Exception $e){
             return $this->result('',400,$e->getMessage());
         }
@@ -224,7 +226,6 @@ class OrderInfoController extends Controller
         $currpage = $request->input('currpage');
         $order_status = $request->input("order_status");
         $feeInfo = OrderInfoService::getFeeInfo($id);
-        //dd($feeInfo);
         return $this->display('admin.orderinfo.fee',[
             'feeInfo'=>$feeInfo,
             'currpage'=>$currpage,
@@ -242,8 +243,9 @@ class OrderInfoController extends Controller
         $order_status = $data['order_status'];
         unset($data['currpage']);
         unset($data['order_status']);
+
         try{
-            $info = OrderInfoService::modify($data);
+            $info = OrderInfoService::modifyFee($data);
             OrderInfoService::modifyGoodsAmount($id);
             if(!$info){
                 return $this->error('更新失败');
