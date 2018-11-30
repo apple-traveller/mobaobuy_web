@@ -103,3 +103,6 @@
 .Cooperative_brand{width: 1200px; margin-top: 15px;overflow:hidden;box-shadow: 0px 0px 6px #ccc;}
 .Cooperative_brand li{box-sizing:border-box;float:left;width: 200px;height: 140px;background-color: #fff;}
 .Cooperative_brand li div{width: 200px;height: 140px;display: table-cell;text-align: center;vertical-align: middle;}
+
+.quote_list li{clear:both;}
+.space_hidden{float:left;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;height:60px;line-height:60px;overflow: hidden;}

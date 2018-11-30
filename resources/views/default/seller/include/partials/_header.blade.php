@@ -20,7 +20,7 @@
             {{--{{ session('_seller')['shop_info'] }}--}}
         </dl>
     </li>
-    <li class="layui-nav-item">
+    <li class="layui-nav-item" style="z-index: 12;width: 160px;overflow: hidden">
         <a href="/seller/logout">
             login out
         </a>
