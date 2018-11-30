@@ -249,6 +249,7 @@ class OrderController extends ApiController
     //生成订单
     public function createOrder(Request $request)
     {
+
         $token = $request->input('token');
         $info = $this->getDeputyUserInfo($request);
         $userIds = [];
@@ -280,11 +281,19 @@ class OrderController extends ApiController
             return $this->error('无地址信息请前去维护');
         }
 
+
         $cartSession = Cache::get("cartSession".$userIds['user_id']);
         $carList = $cartSession['goods_list'];
-
-        if ($cartSession['address_id'] == '') {
+        if (!$cartSession['address_id']) {
             return $this->error('请选择收货地址');
+        }
+        //小程序解决删除地址又重新添加的问题
+        if($info['is_self']==1){
+            $address_flag = UserAddressService::getAddressInfo($cartSession['address_id']);
+            $user_info = $this->getUserInfo($request);
+            if(empty($address_flag)){
+                $cartSession['address_id'] = $user_info['address_id'];
+            }
         }
 
         //限时抢购下单

@@ -12,7 +12,7 @@ class UploadController extends Controller
     public function uploadImg(Request $request)
     {
         $fileCharater = $request->file('file');
-        //return $this->error('test');
+        return $this->result($fileCharater,200,'success');
         if ($fileCharater->isValid()) {
             //括号里面的是必须加的哦
             //如果括号里面的不加上的话，下面的方法也无法调用的
