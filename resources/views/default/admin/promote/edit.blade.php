@@ -92,6 +92,14 @@
                                     </div>
                                 </div>
 
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>当前可售数量：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="available_quantity" value="{{$promote['available_quantity']}}" autocomplete="off" id="num" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
 
 
                                 <div class="item">

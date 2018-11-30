@@ -221,6 +221,10 @@ class UserService
             self::throwBizError('旧密码不正确！');
         }
 
+        if($psw==$new_pwd){
+            self::throwBizError('旧密码不能和新密码相同！');
+        }
+
         if ($info['is_freeze']) {
             self::throwBizError('用户名已被冻结！');
         }

@@ -53,6 +53,10 @@ class LoginController extends ApiController
             return $this->error('密码不能为空');
         }
 
+        if(empty($openid)){
+            return $this->error('openid不能为空');
+        }
+
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
@@ -180,7 +184,7 @@ class LoginController extends ApiController
     public function resetPass(Request $request)
     {
         $accountName = $request->input('mobile', '');
-        $psw = $request->input('repsaaword');
+        $psw = $request->input('repassword');
         $password = $request->input('password', '');
         $messCode = $request->input('messCode', '');
         $type = 'sms_find_signin';

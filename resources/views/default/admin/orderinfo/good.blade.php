@@ -37,8 +37,8 @@
                                             <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
                                             <td>{{$shop_name}}</td>
                                             <td>{{$vo['goods_sn']}}</td>
-                                            <td class="goods_price"><input class="text"  style="width:50px;margin-left: 30px;" type="text" value="{{$vo['goods_price']}}" ></td>
-                                            <td class="goods_number"><input class="text"  style="width:50px;margin-left: 30px;" type="text" value="{{$vo['goods_number']}}" ></td>
+                                            <td class="goods_price"><input class="text"  style="width:50px;margin-left: 40px;" type="text" value="{{$vo['goods_price']}}" ></td>
+                                            <td class="goods_number"><input class="text"  style="width:50px;margin-left: 40px;" type="text" value="{{$vo['goods_number']}}" ></td>
                                             <td>{{$vo['send_number']}}</td>
                                             <td><input  type="button" data-id="{{$vo['id']}}" class="btn btn35 blue_btn changGoods" value="确定修改" id="submitBtn"></td>
                                         </tr>
@@ -67,7 +67,6 @@
             var layer = layui.layer;
             var index = 0;
             $(".changGoods").click(function () {
-
                 var goods_price = $(this).parent('td').siblings('.goods_price').children('input').val();
                 var goods_number = $(this).parent('td').siblings('.goods_number').children('input').val();
                 var id = $(this).attr('data-id');
@@ -77,7 +76,6 @@
                     'goods_number': goods_number,
                     'order_id': "{{$id}}"
                 }
-
                 var url = "/admin/orderinfo/saveOrderGoods";
                 $.post(url, postData, function (res) {
                     console.log(res.data);
