@@ -16,6 +16,7 @@ use App\Services\UserInvoicesService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\DeclareDeclare;
 
 class ShopOrderController extends Controller
 {
@@ -481,6 +482,7 @@ class ShopOrderController extends Controller
      */
     public function saveDelivery(Request $request)
     {
+        $action_name = session('_seller')['user_name'];
         $data = $request->all();
         $order_id = $request->input('order_id');
         $orderInfo = OrderInfoService::getOrderInfoById($order_id);
@@ -531,7 +533,7 @@ class ShopOrderController extends Controller
         $order_delivery_data['status'] = 1; // 默认已发货
         //dd($order_delivery_data);
         try{
-            $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
+            $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data,$action_name);
             if(!empty($orderDelivery)){
                 return $this->success('生成发货单成功',url('/seller/order/list?tab_code=waitSend'));
             }
