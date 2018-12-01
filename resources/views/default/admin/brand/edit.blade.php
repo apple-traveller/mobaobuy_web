@@ -36,7 +36,7 @@
                                 <div style="margin-top:10px;" class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;品牌Logo：</div>
                                     <div class="label_value">
-                                        <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="brand" >上传图片</button>
+                                        <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="brand" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                         <input type="text" value="{{$brand['brand_logo']}}" class="text"  name="brand_logo" style="display:none;">
                                         <img  @if(empty($brand['brand_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;margin-left:10px;margin-top:-10px;" src="{{getFileUrl($brand['brand_logo'])}}"  @endif    class="layui-upload-img"><br/>
                                         <div style="float: left;" style="float: left;margin-left: 10px;line-height: 36px;" class="form_prompt brand_logo"></div>
