@@ -49,21 +49,20 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;性别：</div>
                                     <div class="label_value font14">
-                                        @if($info['sex']==0) 保密
-                                        @elseif($info['sex']==1)男
-                                        @elseif($info['sex']==2)女
-                                        @endif
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="sex" id="sex">
+                                            <option @if($info['sex']==0) selected @endif value="0">保密</option>
+                                            <option @if($info['sex']==1) selected @endif value="1">男</option>
+                                            <option @if($info['sex']==2) selected @endif value="2">女</option>
+                                        </select>
+                                        <div style="margin-left: 10px;float: left;" class="notice">下拉框切换自动修改</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;生日：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['birthday']))
-                                            {{$info['birthday']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="birthday" class="text" value="{{$info['birthday']}}" maxlength="40" autocomplete="off" id="birthday">
+                                        <div class="notice">光标离开自动修改</div>
                                     </div>
                                 </div>
 
@@ -219,6 +218,49 @@
                     area: ['700px', '500px'],
                     content: '<img src="'+content+'">'
                 });
+            });
+            $("#sex").change(function(){
+                var sex = $(this).val();
+                var  postData = {
+                    "user_id": "{{$info['user_id']}}",
+                    "is_firm":"{{$info['is_firm']}}",
+                    "sex":sex,
+                };
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        //console.log(res.data);return false;
+                        layer.msg("修改成功",{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            var sex = res.data.sex;
+                            $(this).val(sex);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
+            });
+            $("#birthday").blur(function(){
+                var birthday = $(this).val();
+                var  postData = {
+                    "user_id": "{{$info['user_id']}}",
+                    "is_firm":"{{$info['is_firm']}}",
+                    "birthday":birthday,
+                };
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        //console.log(res.data);return false;
+                        layer.msg("修改成功",{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            $(this).val(res.data.birthday);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
             });
 
             $(".review_status_1").click(function(){
