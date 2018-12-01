@@ -87,12 +87,13 @@
                     </div>
                 @endif
             </div>
-			<div class="pro_Open pro_Open_up"></div>
-            @if(empty($search_data['list']))
+
+            @if(!empty($search_data['list']))
+                <div class="pro_Open pro_Open_up"></div>
 			    <div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
             @endif
         </div>
-        @if(empty($search_data['list']))
+        @if(!empty($search_data['list']))
             <div class="pro_screen">
                 @if(!empty($search_data['filter']['brands']))
                 <div class="pro_brand">
@@ -142,84 +143,82 @@
         @endif
             {{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
-    @if(empty($search_data['list']))
-        <div class="w1200 mt20 " style="margin-top: 20px;">
-            <h1 class="product_title">报价列表</h1>
-            <div class="scr">
-                <div class="width1200">
-                    <div class="sequence-bar" style="padding:0;padding-right:10px;">
-                        <div class="fl">
-                            <a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
-                        </div>
-                        <div class="fl">
-                            <ul id="sort" sort_name="" class="chooselist">
-                                <li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
-                                <li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
-                                <li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
-                            </ul>
-                        </div>
-                        <div class="fr">
+        @if(!empty($search_data['list']))
+            <div class="w1200 mt20 " style="margin-top: 20px;">
+                <h1 class="product_title">报价列表</h1>
+                <div class="scr">
+                    <div class="width1200">
+                        <div class="sequence-bar" style="padding:0;padding-right:10px;">
+                            <div class="fl">
+                                <a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
+                            </div>
+                            <div class="fl">
+                                <ul id="sort" sort_name="" class="chooselist">
+                                    <li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
+                                    <li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
+                                    <li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
+                                </ul>
+                            </div>
+                            <div class="fr">
 
 
+                            </div>
+                            <form class="fl" id="formid">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
+                                <span class="line">-</span>
+                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
+                                <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
+                            </form>
                         </div>
-                        <form class="fl" id="formid">
-                            <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
-                            <span class="line">-</span>
-                            <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
-                            <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
-                        </form>
                     </div>
                 </div>
-            </div>
-            <input type="hidden" id="t" value="{{$t}}" />
-            <ul class="Self-product-list">
+                <input type="hidden" id="t" value="{{$t}}" />
+                <ul class="Self-product-list">
 
-                <li class="table_title">
-                    <span style="width:18%" class="num_bg1">店铺</span>
-                    <span style="width:8%;">种类</span>
-                    <span style="width:18%">商品名称</span>
-                    <span style="width:8%;">数量（kg）</span>
-                    <span style="width:8%;">单价（元/kg）</span>
-                    <span style="width:12%;">发货地址</span>
-                    <span style="width:18%;">联系人</span>
-                    <span style="width:10%;">操作</span>
-                </li>
-                @if(!empty($search_data['list']))
-                    @foreach($search_data['list'] as $vo)
-                        <li>
-                            <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                            <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
-                            <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                            <span style="width:8%">{{$vo['goods_number']}}</span>
-                            <span style="width:8%;">{{$vo['shop_price']}}</span>
-                            <span style="width:12%;">{{$vo['delivery_place']}}</span>
-                            <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
-                            <span style="width:10%">
-                                @if($vo['goods_number'])
-                                    <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
-                                @else
-                                    已售完
-                                @endif
-                            </span>
-                        </li>
-                    @endforeach
-                @else
-                    <li class="nodata1">无相关数据</li>
-                @endif
-            </ul>
-            <!--页码-->
-            <div class="news_pages" style="margin-top: 20px;text-align: center;">
-                <ul id="page" class="pagination"></ul>
+                    <li class="table_title">
+                        <span style="width:18%" class="num_bg1">店铺</span>
+                        <span style="width:8%;">种类</span>
+                        <span style="width:18%">商品名称</span>
+                        <span style="width:8%;">数量（kg）</span>
+                        <span style="width:8%;">单价（元/kg）</span>
+                        <span style="width:12%;">发货地址</span>
+                        <span style="width:18%;">联系人</span>
+                        <span style="width:10%;">操作</span>
+                    </li>
+                    @if(!empty($search_data['list']))
+                        @foreach($search_data['list'] as $vo)
+                            <li>
+                                <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                                <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
+                                <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                                <span style="width:8%">{{$vo['goods_number']}}</span>
+                                <span style="width:8%;">{{$vo['shop_price']}}</span>
+                                <span style="width:12%;">{{$vo['delivery_place']}}</span>
+                                <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                                <span style="width:10%">
+                                    @if($vo['goods_number'])
+                                        <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                                    @else
+                                        已售完
+                                    @endif
+                                </span>
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
+                <!--页码-->
+                <div class="news_pages" style="margin-top: 20px;text-align: center;">
+                    <ul id="page" class="pagination"></ul>
+                </div>
             </div>
-        </div>
-        </div>
-    @else
-        @if($t == 2)
-            <li class="nodata1">近期上市 敬请期待</li>
         @else
-            <li class="nodata">无相关数据</li>
+            @if($t == 2)
+                <li class="nodata1">近期上市 敬请期待</li>
+            @else
+                <li class="nodata">无相关数据</li>
+            @endif
         @endif
-    @endif
+    </div>
 @endsection
 
 @section('bottom_js')
