@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\RegionRepo;
 use App\Services\CartService;
-use App\Services\FirmUserService;
 use App\Services\OrderInfoService;
 use App\Services\UserAddressService;
 
@@ -15,7 +14,6 @@ use App\Services\UserInvoicesService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
 use App\Services\UserRealService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -360,7 +358,7 @@ class UserController extends Controller
         $id = $request->input('id','');
         $is_default = $request->input('is_default','');
         if ($id){
-            $address_info = UserAddressService::getAddressInfo($id);
+            $address_info = UserAddressService::getAddressInfo($id,1);
         } else {
             $address_info = [];
         }
@@ -1033,14 +1031,13 @@ class UserController extends Controller
 
     //会员卖货
     public function sale(Request $request){
-        $userInfo = session('_web_user');
-        $saleData = $request->all();
-        $saleData['user_id'] = $userInfo['id'];
-        $saleData['add_time'] = Carbon::now();
-        $saleData['user_name'] = $userInfo['user_name'];
         if($request->isMethod('get')){
             return $this->display('web.user.account.userSale');
         }else{
+            $userInfo = session('_web_user');
+            $saleData = $request->all();
+            $saleData['user_id'] = $userInfo['id'];
+            $saleData['user_name'] = $userInfo['user_name'];
             try{
                 UserService::sale($saleData);
                 return $this->success();
@@ -1060,10 +1057,7 @@ class UserController extends Controller
         //已经实名认证的企业用户不能注销账号
         if($realInfo && $realInfo['review_status'] == 1 && $realInfo['is_firm'] == 1){
             return $this->error('已经实名认证的企业用户不能注销账号');
-        }elseif ($realInfo &&  $realInfo['review_status'] == 1 && $realInfo['is_firm'] == 0){
-            FirmUserService::delFirmUserByFields(['user_id'=>$userInfo['id']]);
         }
-
         $user_data = [
             'user_name'=>$userInfo['user_name'].'_'.time().'_logout',
             'is_freeze'=>1

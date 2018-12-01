@@ -39,9 +39,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品编码：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_sn" class="text" value="{{$good['goods_sn']}}" maxlength="40" autocomplete="off" id="goods_sn">
+                                    <input type="text" disabled name="goods_sn" class="text" value="{{$good['goods_sn']}}" maxlength="40" autocomplete="off" id="goods_sn">
                                     <div class="form_prompt"></div>
-                                    <div class="notic"></div>
+                                    <div class="notic">不可编辑</div>
                                 </div>
                             </div>
 

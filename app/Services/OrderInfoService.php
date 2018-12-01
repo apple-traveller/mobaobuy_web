@@ -785,7 +785,7 @@ class OrderInfoService
     }
 
     //保存发货单相关信息
-    public static function createDelivery($order_delivery_goods_data,$order_delivery_data)
+    public static function createDelivery($order_delivery_goods_data,$order_delivery_data,$action_name='')
     {
         try{
             self::beginTransaction();
@@ -817,7 +817,7 @@ class OrderInfoService
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'生成发货单:'.$orderDelivery['delivery_sn'],
-                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'action_user'=>$action_name?$action_name:session()->get('_admin_user_info')['real_name'],
                 'order_id'=>$order_Info['id'],
                 'order_status'=>$order_Info['order_status'],
                 'shipping_status'=>$order_Info['shipping_status'],
