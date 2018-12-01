@@ -194,3 +194,4 @@ input[type='checkbox'] {width: 20px;height: 20px;background-color: #fff;-webkit-
 input[type=checkbox]:checked {background: url(/images/interface-tickdone.png)no-repeat center;}
 
 .nodata{font-size:16px;color:#999;background:#fff;padding:20px 0; text-align:center;}
+.nodata1{font-size:60px;color:#cccccc;padding:20px 0; text-align:center;background:#f8f8f8;}

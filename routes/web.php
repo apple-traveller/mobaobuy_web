@@ -191,6 +191,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/modifyPayStatus', 'OrderInfoController@modifyPayStatus');//修改支付状态
         Route::post('/orderinfo/modifyOrderStatus', 'OrderInfoController@modifyOrderStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
+        Route::post('/orderinfo/saveConsignee', 'OrderInfoController@saveConsignee');//保存发货人信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
@@ -282,6 +283,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
 
+
+Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/', 'IndexController@index'); //首页
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
@@ -344,7 +348,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
 
-        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+//        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
 

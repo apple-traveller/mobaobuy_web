@@ -192,6 +192,30 @@ class OrderInfoController extends Controller
         ]);
     }
 
+    //保存收货地址
+    public function saveConsignee(Request $request)
+    {
+        $data = $request->all();
+        $currpage = $data['currpage'];
+        $order_status = $data['order_status'];
+        $id = $data['id'];
+        unset($data['currpage']);
+        unset($data['order_status']);
+
+        try{
+            if(key_exists('id',$data)){
+                $order = OrderInfoService::modifyConsignee($data);
+                if(!empty($order)){
+                    return $this->success('修改成功',url('/admin/orderinfo/detail')."?id=".$id."&currpage=".$currpage."&order_status=".$order_status);
+                }else{
+                    return $this->error('修改失败');
+                }
+            }
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
 
     //编辑商品信息
     public function modifyOrderGoods(Request $request)
@@ -278,7 +302,6 @@ class OrderInfoController extends Controller
         $orderGoods = OrderInfoService::getOrderGoodsByOrderId($order_id);
 
         return $this->display('admin.orderinfo.delivery',[
-
             'shippings'=>$shippings,
             'currpage'=>$currpage,
             'orderGoods'=>$orderGoods,
@@ -299,9 +322,11 @@ class OrderInfoController extends Controller
     {
         $data = $request->all();
         $order_id = $request->input('order_id');
+        if(empty($data['layTableCheckbox'])){
+            return $this->error('没有选择发货商品');
+        }
         unset($data['layTableCheckbox']);
         $orderDeliveryGoodsData = json_decode($data['send_number_delivery'],true);
-        //dd($data);
         $order_delivery_goods_data = []; //发货单商品信息
         foreach($orderDeliveryGoodsData as $k=>$v){
             $order_delivery_goods_data[$k]['order_goods_id'] = $v['id'];
@@ -312,6 +337,9 @@ class OrderInfoController extends Controller
             $order_delivery_goods_data[$k]['goods_sn'] = $v['goods_sn'];
             if(!empty($v['send_number_delivery']) && $v['send_number_delivery']>$v['goods_number']-$v['send_number']){
                 return $this->error('发货数量不能大于剩余商品数量');
+            }
+            if(empty($v['send_number_delivery'])){
+                return $this->error('发货数量不能为空');
             }
             $order_delivery_goods_data[$k]['send_number'] = empty($v['send_number_delivery'])?0:$v['send_number_delivery'];
         }
@@ -337,7 +365,7 @@ class OrderInfoController extends Controller
         $order_delivery_data['district'] = $orderInfo['district'];
         $order_delivery_data['street'] = $orderInfo['street'];
         $order_delivery_data['zipcode'] = $orderInfo['zipcode'];
-        $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];
+        $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];//买家留言
         $order_delivery_data['postscript'] = $orderInfo['postscript'];
         $order_delivery_data['update_time'] = Carbon::now();
         $order_delivery_data['status'] = 0;

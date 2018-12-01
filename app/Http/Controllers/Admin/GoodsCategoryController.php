@@ -97,6 +97,7 @@ class GoodsCategoryController extends Controller
             'is_top_show'=>$request->input('is_top_show'),
             'cat_icon'=>$this->requestGetNotNull('cat_icon')
         ];
+        //dd($data);
 
         if(empty($data['cat_name'])){
             $errorMsg[] = '分类名称不能为空';

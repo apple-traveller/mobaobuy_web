@@ -122,6 +122,8 @@ class UserRealService
                 if($data['is_firm']==1 && $data['review_status']==1){
                     //如果企业用户实名认证通过，user表里面的is_firm字段也要改
                     $user = UserRepo::modify($user_real['user_id'],['is_firm'=>1]);
+                    //如果企业用户实名认证通过，user表里面的nick_name字段也要改
+                    UserRepo::modify($user_real['user_id'],['nick_name'=>$user_real['company_name']]);
                 }
                 self::commit();
                 return $user_real;

@@ -257,22 +257,42 @@
                             <div class="section">
 
                                 <dl>
-                                    <dt style="width:300px;">付款凭证:<span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div></span></dt>
-                                </dl>
-
-                                <dl style="margin-left: 20px;">
-                                    <dt style="width:300px;">定金付款凭证:<span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['deposit_pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div></span></dt>
-                                </dl>
-
-                                <dl style="margin-left: 20px;">
-                                    <dt style="width:400px;">确认付款:
-                                        @if($orderInfo['pay_status']==1)
-                                            已付款
+                                    <dt style="width:300px;">付款凭证:
+                                        @if(!empty($orderInfo['pay_voucher']))
+                                        <span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"    content="{{getFileUrl($orderInfo['pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div>
+                                        </span>
                                         @else
-                                            <input  style="margin-left:10px;"   class="btn btn25 red_btn pay_status"   type="button" data-id="1" value="确认付款" > <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                            未上传
                                         @endif
                                     </dt>
+                                    <dl style="width:300px;margin-left: 20px;">确认收款:
+                                        @if($orderInfo['pay_status']==1)
+                                            已收款
+                                        @else
+                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status" type="button" content="{{$orderInfo['pay_voucher']}}" data-id="1"  value="确认收款" >
+                                        @endif
+                                    </dl>
                                 </dl>
+
+                                <dl style="margin-left: 20px;">
+                                    <dt style="width:300px;">定金付款凭证:
+                                        @if(!empty($orderInfo['deposit_pay_voucher']))
+                                        <span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['deposit_pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div>
+                                        </span>
+                                        @else
+                                            未上传
+                                        @endif
+                                    </dt>
+                                    <dl style="width:300px;margin-left: 20px;">确认收款:
+                                        @if($orderInfo['deposit_status']==1)
+                                            已收款
+                                        @else
+                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status_deposit" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1"  value="确认收款" >
+                                        @endif
+                                    </dl>
+                                </dl>
+
+
 
                             </div>
                         </div>
@@ -398,7 +418,15 @@
             //查看付款凭证
             $(".viewImg").click(function(){
                 var content = $(this).attr('content');
-                index = layer.open({
+
+                if(content==""){
+                    layer.msg('未上传', {
+                        icon: 6,
+                        time: 2000
+                    });
+                    return false;
+                }
+                layer.open({
                     type: 1,
                     title: '详情',
                     area: ['700px', '500px'],
@@ -409,7 +437,62 @@
             //修改支付状态
             $(".pay_status").click(function(){
                 var pay_status = $(this).attr("data-id");
+                var content = $(this).attr("content");
+                if(content==""){
+                    layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                }, function(){
+                                    window.location.reload();
+                                });
+                            }else{
+                                alert(res.msg);
+                            }
+                        },"json");
+                    });
+
+                    return false;
+                }
                 $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
+            });
+
+            //修改定金状态
+            $(".pay_status_deposit").click(function(){
+                var deposit_status = $(this).attr("data-id");
+                var content = $(this).attr("content");
+                if(content==""){
+                    layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                }, function(){
+                                    window.location.reload();
+                                });
+                            }else{
+                                alert(res.msg);
+                            }
+                        },"json");
+                    });
+
+                    return false;
+                }
+                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
                     if(res.code==200){
                         layer.msg(res.msg, {
                             icon: 6,

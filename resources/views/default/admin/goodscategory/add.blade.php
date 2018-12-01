@@ -141,23 +141,9 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
-                                                自定义：
-
-                                                <button type="button" class="layui-btn upload-file" data-type="" data-path="goodscategory" >上传图片</button>
-                                                <input type="text" value="" class="text"  name="cat_icon" style="display:none;">
-                                                <img  style="width:60px;height:60px;display:none;"    class="layui-upload-img"><br/>
-                                                <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
                                     </div>
                                 </div>
-
-                                {{--<div class="item">--}}
-                                    {{--<div class="label"><span class="require-field">*</span>&nbsp;栏目链接：</div>--}}
-                                    {{--<div class="label_value">--}}
-                                        {{--<input type="text" name="category_links" class="text" id="category_links" maxlength="20" value="" size="27">--}}
-                                        {{--<div class="form_prompt"></div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
 
 
 

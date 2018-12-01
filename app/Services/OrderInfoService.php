@@ -460,16 +460,48 @@ class OrderInfoService
         return OrderInfoRepo::modify($data['id'],$data);
     }
 
+    //修改收货地址
+    public static function modifyConsignee($data)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], $data);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改收货地址',
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
     //修改支付状态
     public static function modifyPayStatus($data)
     {
         try{
             self::beginTransaction();
-            //修改支付状态
-            $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
-            //修改订单的已付款金额为商品总金额
-            if(empty($order_info['deposit_pay_voucher'])){
+            //修改支付状态，和已付款金额字段
+            if(isset($data['pay_status'])){
+                $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
                 OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            }
+            //修改订金状态
+            if(isset($data['deposit_status'])){
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
             }
             //给管理员操作添加一条数据
             $logData = [
@@ -743,7 +775,7 @@ class OrderInfoService
     public static function getOrderLogsByOrderidPagenate($pager,$condition)
 
     {
-        return OrderActionLogRepo::getList([],['order_id'=>$order_id])  ;
+        return OrderActionLogRepo::getListBySearch($pager,$condition);
     }
 
     //查询操作日志信息
@@ -780,6 +812,8 @@ class OrderInfoService
                 OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
             $order_Info = OrderInfoRepo::getInfo($orderDelivery['order_id']);
+            //修改order_delivery的发货状态
+            OrderDeliveryRepo::modify($orderDelivery['id'],['status'=>1]);
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'生成发货单:'.$orderDelivery['delivery_sn'],

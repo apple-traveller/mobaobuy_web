@@ -66,6 +66,7 @@ class IndexController extends Controller
                 Cache::add($cache_name,$trans_false_list,1440);
             }
         }
+
         //成交动态 真实数据
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
 
@@ -77,7 +78,6 @@ class IndexController extends Controller
         $article_list = ArticleService::getTopClick(1,7)['list'];
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
-
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$trans_list['list'], 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'trans_false_list'=>$trans_false_list,'top_ad'=>$top_ad]);
     }
