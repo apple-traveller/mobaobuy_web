@@ -24,13 +24,13 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;店铺：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" value="{{old('shop_id')}}">
                                             <option value="">请选择店铺</option>
                                             @foreach($shops as $vo)
                                             <option value="{{$vo['id']}}">{{$vo['company_name']}}</option>
                                             @endforeach
                                         </select>
-                                        <input type="hidden" name="shop_name" id="shop_name">
+                                        <input type="hidden" name="shop_name" id="shop_name" value="{{old('shop_name')}}">
                                         <div style="margin-left: 10px;" class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -38,7 +38,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="begin_time" autocomplete="off" value="" id="begin_time" size="40"  class="text">
+                                        <input type="text" name="begin_time" autocomplete="off" id="begin_time" size="40"  class="text" value="{{old('begin_time')}}">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -47,7 +47,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 结束时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="end_time" autocomplete="off" value="" id="end_time" size="40"  class="text">
+                                        <input type="text" name="end_time" autocomplete="off" value="" id="end_time" size="40"  class="text" value="{{old('end_time')}}">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -55,8 +55,8 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品分类：</div>
                                     <div class="label_value">
-                                        <input type="hidden" name="cat_id" id="cat_id"/>
-                                        <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                        <input type="hidden" name="cat_id" id="cat_id" value="{{old('cat_id')}}"/>
+                                        <input type="text" name="cat_id_LABELS"  value="{{old('cat_id_LABELS')}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品：</div>
                                     <div class="label_value">
-                                        <input type="text" data-packing-spac="0"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
+                                        <input type="text" data-packing-spac="0"  autocomplete="off" value="{{old('goods_name')}}" name="goods_name" id="goods_name" size="40"  class="text">
                                         <input type="hidden" name="goods_id"  id="goods_id">
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
@@ -75,7 +75,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 促销价格：</div>
                                     <div class="label_value">
-                                        <input type="text" name="price"  autocomplete="off" value="" id="price" size="40"  class="text">
+                                        <input type="text" name="price"  autocomplete="off" value="{{old('price')}}" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 促销总数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="num"  autocomplete="off" value="" id="num" size="40"  class="text">
+                                        <input type="text" name="num"  autocomplete="off" id="num" size="40" value="{{old('num')}}" class="text">
                                         <div class="form_prompt"></div>
                                         <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
                                     </div>
@@ -93,7 +93,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="min_limit"  autocomplete="off" value="" id="min_limit" size="40"  class="text">
+                                        <input type="text" name="min_limit"  autocomplete="off" value="{{old('min_limit')}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 最大限购数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="max_limit"  autocomplete="off" value="" id="max_limit" size="40"  class="text">
+                                        <input type="text" name="max_limit"  autocomplete="off"  value="{{old('max_limit')}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                         <div class="notic">0-不限</div>
                                     </div>

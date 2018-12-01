@@ -283,6 +283,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
 
+
+Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/', 'IndexController@index'); //首页
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
@@ -345,7 +348,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
 
-        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+//        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
 

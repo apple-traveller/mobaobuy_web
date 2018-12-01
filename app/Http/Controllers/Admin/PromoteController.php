@@ -72,7 +72,10 @@ class PromoteController extends Controller
     //保存优惠活动
     public function save(Request $request)
     {
+        $request->flash();
         $data = $request->all();
+        unset($data['cat_id']);
+        unset($data['cat_id_LABELS']);
         $errorMsg=[];
         if(empty($data['shop_id'])){
             $errorMsg[] = "商家不能为空";

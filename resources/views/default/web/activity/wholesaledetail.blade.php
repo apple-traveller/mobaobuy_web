@@ -142,7 +142,7 @@
                     _self.val(min_num);
                 }
             });
-        })
+        });
 
         function collectGoods(obj){
             var userId = "{{session('_web_user_id')}}";
