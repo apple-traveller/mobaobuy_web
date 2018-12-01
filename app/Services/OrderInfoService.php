@@ -494,11 +494,14 @@ class OrderInfoService
     {
         try{
             self::beginTransaction();
-            //修改支付状态
-            $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
-            //修改订单的已付款金额为商品总金额
-            if($data['deposit']==0){
+            //修改支付状态，和已付款金额字段
+            if(isset($data['pay_status'])){
+                $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
                 OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            }
+            //修改订金状态
+            if(isset($data['deposit_status'])){
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
             }
             //给管理员操作添加一条数据
             $logData = [
@@ -809,6 +812,8 @@ class OrderInfoService
                 OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
             $order_Info = OrderInfoRepo::getInfo($orderDelivery['order_id']);
+            //修改order_delivery的发货状态
+            OrderDeliveryRepo::modify($orderDelivery['id'],['status'=>1]);
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'生成发货单:'.$orderDelivery['delivery_sn'],

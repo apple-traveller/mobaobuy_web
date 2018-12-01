@@ -269,7 +269,7 @@
                                         @if($orderInfo['pay_status']==1)
                                             已收款
                                         @else
-                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status" type="button" content="{{$orderInfo['pay_voucher']}}" data-id="1" data-deposit="0" value="确认收款" >
+                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status" type="button" content="{{$orderInfo['pay_voucher']}}" data-id="1"  value="确认收款" >
                                         @endif
                                     </dl>
                                 </dl>
@@ -284,10 +284,10 @@
                                         @endif
                                     </dt>
                                     <dl style="width:300px;margin-left: 20px;">确认收款:
-                                        @if($orderInfo['pay_status']==1)
+                                        @if($orderInfo['deposit_status']==1)
                                             已收款
                                         @else
-                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1" data-deposit="1" value="确认收款" >
+                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status_deposit" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1"  value="确认收款" >
                                         @endif
                                     </dl>
                                 </dl>
@@ -437,11 +437,10 @@
             //修改支付状态
             $(".pay_status").click(function(){
                 var pay_status = $(this).attr("data-id");
-                var deposit = $(this).attr("data-deposit");
                 var content = $(this).attr("content");
                 if(content==""){
                     layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
-                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status,'deposit':deposit},function(res){
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
                             if(res.code==200){
                                 layer.msg(res.msg, {
                                     icon: 6,
@@ -457,7 +456,43 @@
 
                     return false;
                 }
-                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status,'deposit':deposit},function(res){
+                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                    if(res.code==200){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function(){
+                            window.location.reload();
+                        });
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
+            });
+
+            //修改定金状态
+            $(".pay_status_deposit").click(function(){
+                var deposit_status = $(this).attr("data-id");
+                var content = $(this).attr("content");
+                if(content==""){
+                    layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                }, function(){
+                                    window.location.reload();
+                                });
+                            }else{
+                                alert(res.msg);
+                            }
+                        },"json");
+                    });
+
+                    return false;
+                }
+                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
                     if(res.code==200){
                         layer.msg(res.msg, {
                             icon: 6,
