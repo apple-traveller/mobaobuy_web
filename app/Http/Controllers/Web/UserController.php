@@ -358,7 +358,7 @@ class UserController extends Controller
         $id = $request->input('id','');
         $is_default = $request->input('is_default','');
         if ($id){
-            $address_info = UserAddressService::getAddressInfo($id);
+            $address_info = UserAddressService::getAddressInfo($id,1);
         } else {
             $address_info = [];
         }

@@ -46,7 +46,7 @@ class UserController extends Controller
         $id = $request->input("id");
         $is_freeze = $request->input("val", 0);
         try{
-            UserService::modify(['id'=>$id,'is_freeze' => $is_freeze]);
+            UserService::modify($id,['is_freeze' => $is_freeze]);
             return $this->success("修改成功");
         }catch(\Exception $e){
             return  $this->error($e->getMessage());
