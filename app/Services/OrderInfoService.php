@@ -36,8 +36,17 @@ class OrderInfoService
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
+    //企业修改订单是否审批 订单检测
+    public static function checkApprovalByOrderCount($userId){
+        $orderStatus = OrderInfoRepo::getTotalCount(['firm_id'=>$userId,'order_status'=>1]);
+        if($orderStatus > 0){
+            return true;
+        }
+        return false;
+    }
+
     //获取分页订单列表
-    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=5){
+    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=10){
         $condition['is_delete'] = 0;
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
         unset($condition['status']);
@@ -53,8 +62,6 @@ class OrderInfoService
 
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
-
-
         //企业会员权限
         if($currUser['is_firm']){
             $needApproval = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
@@ -63,7 +70,6 @@ class OrderInfoService
                 $currUserAuth[0]['need_approval'] = $needApproval;
             }
         }
-
 
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
@@ -376,15 +382,16 @@ class OrderInfoService
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
 
         $condition['is_delete'] = 0;
+
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
         if($user_id == ''){
             unset($condition['user_id']);
         }
-        if ($firm_id!=''){
+
             $condition['firm_id'] = $firm_id;
-        }
+
 
         // 商户后台
         if ($seller_id>0){
@@ -430,6 +437,7 @@ class OrderInfoService
         $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
         unset($condition['pay_status']);
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
+
         return $status;
     }
 
