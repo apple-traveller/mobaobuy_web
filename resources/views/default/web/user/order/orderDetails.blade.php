@@ -32,7 +32,7 @@
 		.order_pay_btn{padding:0 48px;margin-left:75px;margin-right: 75px;margin-top:20px;display:inline-block;font-size:18px;height: 40px;line-height: 40px;border: 1px solid #ED1E2D;border-radius: 2px;}
 		.order_jd_bg{width: 771px;height: 30px;margin-left: 70px;margin-top: 80px;}
 		.order_jd_bg1{background: url(/default/img/order_icon01.png)no-repeat 0px 0px;}
-		.order_jd_text{margin-left: 20px;}.order_jd_text li{float:left;width: 109px;text-align: center;margin-top: 10px;color: #999;}
+		.order_jd_text{margin-left: 20px;}.order_jd_text li{float:left;width: 109px;text-align: center;margin-top: 10px;color: #999;margin-left: 5%;}
 		.order_jd_text li:first-child{margin-left: 0px;}
 		.jd_text_con{padding-left: 10px; padding-right: 10px;}
 		.jd_text_date{color: #999;}
@@ -99,6 +99,11 @@
 					@endif
 
 					@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon022.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">付款时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
@@ -106,13 +111,35 @@
 					@endif
 
 					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon05.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">发货时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
 					</li>
 					@endif
 
+					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon04.png)no-repeat 0px 0px;
+						}
+					</style>
+					<li>
+						<span class="jd_text_con black">运输中</span>
+						<span class="jd_text_date"></span>
+					</li>
+					@endif
+
 					@if(!empty($orderDetailsInfo['orderInfo']['confirm_take_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon05.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">确认收货时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>

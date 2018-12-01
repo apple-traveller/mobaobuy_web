@@ -74,7 +74,6 @@ class OrderController extends Controller
     public function orderStatusCount()
     {
         $deputy_user = session('_curr_deputy_user');
-//        dump($deputy_user);
         if ($deputy_user['is_firm']) {
             $status = OrderInfoService::getOrderStatusCount('', $deputy_user['firm_id']);
         } else {
@@ -186,11 +185,6 @@ class OrderController extends Controller
     //订单详情
     public function orderDetails($id)
     {
-//        if(session('_curr_deputy_user')['is_firm']){
-//            $firmId = session('_curr_deputy_user')['firm_id'];
-//        }else{
-//            $firmId = session('_curr_deputy_user')['firm_id'];
-//        }
         $firmId = session('_curr_deputy_user')['firm_id'];
         try {
             $orderDetailsInfo = OrderInfoService::orderDetails($id,$firmId);
@@ -233,9 +227,6 @@ class OrderController extends Controller
     public function orderConfirmTake(Request $request)
     {
         $firmUser = session('_curr_deputy_user');
-//        if(!$firmUser['is_firm']){
-//            return $this->error('当前没有权限操作');
-//        }
 
         if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
             $userId = $firmUser['user_id'];

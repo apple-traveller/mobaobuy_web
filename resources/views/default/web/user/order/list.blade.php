@@ -262,10 +262,8 @@
 		<ul class="order_list_state">
 			<li @if(empty($tab_code)) class="curr" @endif><a href="/order/list">所有</a></li>
             <li @if($tab_code == 'waitDeposit') class="curr" @endif><a href="/order/list?tab_code=waitDeposit">待付定金<em id="waitDeposit"></em></a></li>
-            @if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1)
+            @if(session('_curr_deputy_user')['is_firm'] == 1)
                 <li @if($tab_code == 'waitApproval') class="curr" @endif><a href="/order/list?tab_code=waitApproval">待审核<em id="waitApproval"></em></a></li>
-            @else
-            
             @endif
 
 			<li @if($tab_code == 'waitAffirm') class="curr" @endif><a href="/order/list?tab_code=waitAffirm">待确认<em id="waitAffirm"></em></a></li>
