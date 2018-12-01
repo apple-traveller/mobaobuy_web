@@ -100,7 +100,10 @@
                     @endif
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
-            <button class="account_layout_btn redbg fs18 white">注销账号</button>
+            {{--未实名认证和 个人认证的时候可以注销账号 注销个人认证的账号要注意清除与企业的关联信息--}}
+            @if($userInfo['is_firm']!=1)
+                <button class="account_layout_btn redbg fs18 white">注销账号</button>
+            @endif
         </div>
         </form>
     </div>

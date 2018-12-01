@@ -19,6 +19,7 @@ class OrderInfoController extends Controller
         $order_status = $request->input('order_status',-1);
         $order_sn = $request->input('order_sn');
         $condition = [];
+        $condition['is_delete'] = 0;
         $pageSize = 10;
         if($order_status!=-1){
             if($order_status==-3){

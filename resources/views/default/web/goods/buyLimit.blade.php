@@ -31,10 +31,11 @@
 		
 		
 		<div class="w1200 ovh">
-		<ul class="ms_list">
+		
 			@if(empty($promoteInfo))
-				无抢购活动
+				<li class="nodata">无相关数据</li>
 			@else
+			<ul class="ms_list">
 				@foreach($promoteInfo as $v)
 				<li>
 					<div class="ms_list_center">
