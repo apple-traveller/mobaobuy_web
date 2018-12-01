@@ -19,9 +19,37 @@
 			//请求快递物流信息
 			getLogisticsInfo();
 		});
+		//
 		function getLogisticsInfo(){
 			let _delivery_id = $('#delivery_id').data('delivery_id');
-
+            $.ajax({
+                url: "/logistics/detail",
+                dataType: "json",
+                data:{
+                    'delivery_id': _delivery_id
+                },
+                type:"get",
+                success:function(data){
+                    if(data.code == 1){
+                        let _list = data.data.Traces;
+                        let _length = data.data.Traces.length;
+                        let _html = '';
+                        console.log(_list);
+                        console.log(_length);
+                        for(let i=0; i<_length; i++){
+//                            console.log(_list[i])
+							_html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+						}
+						console.log(_html);
+						if(_html == ''){
+						    _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
+						}
+						$('.wlxx').append(_html);
+                    }else{
+                        $.msg.alert(data.msg);
+                    }
+                }
+            })
 		}
 	</script>
 	<style>
@@ -136,11 +164,16 @@
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>
-					</li>
+					{{--<li>--}}
+						{{--<i class="external-cir"></i>--}}
+						{{--您提交了订单，请等待系统确认--}}
+						{{--<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>--}}
+					{{--</li>--}}
+					{{--<li>--}}
+						{{--<i class="external-cir"></i>--}}
+						{{--您提交了订单，请等待系统确认--}}
+						{{--<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>--}}
+					{{--</li>--}}
 				</ul>
 			</div>
 		</div>
