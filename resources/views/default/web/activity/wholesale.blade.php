@@ -62,7 +62,7 @@
 			<div class="w1200 ovh">
 				<ul class="ms_list">
 					@if(empty($wholesaleInfo))
-						无集采拼图活动
+					<div class="nodata"><li>无相关数据</li></div>
 					@else
 						@foreach($wholesaleInfo as $v)
 							<li>

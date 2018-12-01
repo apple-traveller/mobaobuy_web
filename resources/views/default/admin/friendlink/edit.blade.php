@@ -35,14 +35,14 @@
                                 <input name="sort_order" value="{{$link['sort_order']}}" class="text" autocomplete="off" type="text">
                             </div>
                         </div>
-                        <div class="item shop_logo">
+                        <div style="margin-top: 10px;" class="item shop_logo">
                             <div class="label"><span class="require-field">*</span>链接LOGO：</div>
                             <div class="label_value">
                                 <div class="type-file-box" style="width:600px;">
-                                    <button type="button" class="layui-btn upload-file" data-type="friend_link" data-path="friend_link">上传图片</button>
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="friend_link" data-path="friend_link"><i class="layui-icon">&#xe681;</i> 上传图片</button>
                                     <input type="text"  class="text" id="link_logo" name="link_logo" style="display:none;" @if(!starts_with($link['link_logo'],'http://') && !starts_with($link['link_logo'],'https://'))value="{{$link['link_logo']}}" @endif>
-                                    <img @if(empty($link['link_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($link['link_logo'])}}"  @endif  class="layui-upload-img" id="demo1" ><br/>
-                                    <div class="form_prompt"></div>
+                                    <img @if(empty($link['link_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;margin-left:10px;margin-top:-10px;" src="{{getFileUrl($link['link_logo'])}}"  @endif  class="layui-upload-img" id="demo1" >
+                                    <div style="margin-left: 10px;line-height: 36px;" class="form_prompt"></div>
                                 </div>
                             </div>
                         </div>

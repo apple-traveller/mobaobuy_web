@@ -39,7 +39,6 @@
                                     <th width="21%"><div class="tDiv"><a href="#">品牌名称</a></div></th>
                                     <th width="8%"><div class="tDiv"><a href="#">品牌首字母</a></div></th>
                                     <th width="10%"><div class="tDiv"><a href="#">品牌logo</a></div></th>
-                                    <th width="8%"><div class="tDiv"><a href="#">品牌描述</a></div></th>
                                     <th width="8%"><div class="tDiv"><a href="#">排序</a></div></th>
                                     <th width="10%"><div class="tDiv"><a href="#">是否推荐</a></div></th>
                                     <th width="20%" class="handle">操作</th>
@@ -56,14 +55,13 @@
                                            <img src="{{getFileUrl($vo['brand_logo'])}}" style="width:50px;height:50px;">
                                         </div>
                                     </td>
-                                    <td><div class="tDiv">{{$vo['brand_desc']}}</div></td>
                                     <td>
                                         <div class="tDiv changeInput">
-                                            <input type="text" name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" >
+                                            <input style="margin-left: 35px;" type="text" name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" >
                                         </div>
                                     </td>
                                     <td><div class="tDiv">
-                                            <div class="switch @if($vo['is_recommend']) active @endif" title="@if($vo['is_recommend']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isRemmond')}}','{{$vo['id']}}')">
+                                            <div style="margin-left: 35px;" class="switch @if($vo['is_recommend']) active @endif" title="@if($vo['is_recommend']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/brand/change/isRemmond')}}','{{$vo['id']}}')">
                                                 <div class="circle"></div>
                                             </div>
                                             <input type="hidden" value="0" name="">
