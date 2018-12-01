@@ -191,6 +191,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/modifyPayStatus', 'OrderInfoController@modifyPayStatus');//修改支付状态
         Route::post('/orderinfo/modifyOrderStatus', 'OrderInfoController@modifyOrderStatus');//修改订单状态
         Route::get('/orderinfo/modifyConsignee', 'OrderInfoController@modifyConsignee');//编辑收货人信息
+        Route::post('/orderinfo/saveConsignee', 'OrderInfoController@saveConsignee');//保存发货人信息
         Route::get('/orderinfo/modifyOrderGoods', 'OrderInfoController@modifyOrderGoods');//编辑商品信息
         Route::post('/orderinfo/saveOrderGoods', 'OrderInfoController@saveOrderGoods');//保存商品修改信息
         Route::get('/orderinfo/modifyFee', 'OrderInfoController@modifyFee');//编辑费用信息
