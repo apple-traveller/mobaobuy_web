@@ -192,6 +192,30 @@ class OrderInfoController extends Controller
         ]);
     }
 
+    //保存收货地址
+    public function saveConsignee(Request $request)
+    {
+        $data = $request->all();
+        $currpage = $data['currpage'];
+        $order_status = $data['order_status'];
+        $id = $data['id'];
+        unset($data['currpage']);
+        unset($data['order_status']);
+
+        try{
+            if(key_exists('id',$data)){
+                $order = OrderInfoService::modifyConsignee($data);
+                if(!empty($order)){
+                    return $this->success('修改成功',url('/admin/orderinfo/detail')."?id=".$id."&currpage=".$currpage."&order_status=".$order_status);
+                }else{
+                    return $this->error('修改失败');
+                }
+            }
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
 
     //编辑商品信息
     public function modifyOrderGoods(Request $request)
@@ -337,7 +361,7 @@ class OrderInfoController extends Controller
         $order_delivery_data['district'] = $orderInfo['district'];
         $order_delivery_data['street'] = $orderInfo['street'];
         $order_delivery_data['zipcode'] = $orderInfo['zipcode'];
-        $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];
+        $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];//买家留言
         $order_delivery_data['postscript'] = $orderInfo['postscript'];
         $order_delivery_data['update_time'] = Carbon::now();
         $order_delivery_data['status'] = 0;
