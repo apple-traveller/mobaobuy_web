@@ -32,13 +32,17 @@ class UserAddressService
         return $user_address;
     }
 
-    public static function getAddressInfo($address_id)
+    public static function getAddressInfo($address_id,$type='')
     {
         $info = UserAddressRepo::getInfo($address_id);
         if(empty($info)){
             return false;
         }
-        $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'],$info['address']);
+        if ($type){
+            $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district']);
+        } else {
+            $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'],$info['address']);
+        }
         $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
         $info['address_names'] = $address_names;
         $info['str_address'] = $str_address;

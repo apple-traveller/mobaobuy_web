@@ -380,7 +380,7 @@ class UserService
 
     //我要卖货提交
     public static function sale($data){
-        $data['add_time'] = Carbon::now();
+
         return UserSaleRepo::create($data);
     }
 

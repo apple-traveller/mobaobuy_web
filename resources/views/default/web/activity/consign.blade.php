@@ -39,10 +39,11 @@
 		<div class="ClearSale_main">
 			<div class="ClearSale_title"></div>
 			<div class="ClearSale_seize"><img src="/default/img/seize.png"/></div>
-			<ul class="ms_list">
-				@if(empty($consignInfo))
-					无清仓特卖活动
+			@if(empty($consignInfo))
+					<li class="nodata" style=" background:#eae5e5">无相关数据</li>
 				@else
+			<ul class="ms_list">
+				
 					@foreach($consignInfo as $v)
 						<li>
 							<div class="ms_list_center">
