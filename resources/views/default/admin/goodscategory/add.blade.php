@@ -133,12 +133,14 @@
                                                 <div class="img_item" style="height: 125px;display:none;overflow: hidden;">
                                                     {{--<div class="img_item_label" >请选择：</div>--}}
                                                     <div class="label_value" style="width: 100%">
-                                                        @foreach($icons as $vo)
-                                                            <div style="float:left;margin-right:10px;height:50px;" >
-                                                                <input type="radio" class="iconButton" name="cat_icon" value="/default/icon/{{$vo}}" >
-                                                                <img  style="width:20px;height:20px;" src="/default/icon/{{$vo}}">
-                                                            </div>
-                                                        @endforeach
+                                                        @if(is_array($icons) && !empty($icons))
+                                                            @foreach($icons as $vo)
+                                                                <div style="float:left;margin-right:10px;height:50px;" >
+                                                                    <input type="radio" class="iconButton" name="cat_icon" value="/default/icon/{{$vo}}" >
+                                                                    <img  style="width:20px;height:20px;" src="/default/icon/{{$vo}}">
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
