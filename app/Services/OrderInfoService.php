@@ -1064,7 +1064,7 @@ class OrderInfoService
                         FirmStockRepo::create($firmStockData);
                     }
                 }
-                 OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
+                 OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5,'confirm_take_time'=>$flow_time]);
                  self::commit();
                  return true;
             }catch (\Exception $e){
