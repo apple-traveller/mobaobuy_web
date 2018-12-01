@@ -70,7 +70,7 @@
                                         {{status($vo['is_show'])}}
                                     </div>
                                 </td>
-                                <td><div class="tDiv changeInput"><input type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
+                                <td><div class="tDiv changeInput"><input style="margin-left: 20px;"  type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="/admin/goodscategory/editForm?id={{$vo['id']}}" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>

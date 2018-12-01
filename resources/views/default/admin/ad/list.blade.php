@@ -67,7 +67,7 @@
                                 <td><div class="tDiv">{{$vo['click_count']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        <div class="switch @if($vo['enabled']) active @endif" title="@if($vo['enabled']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/ad/change/enabled')}}', '{{$vo['id']}}')">
+                                        <div style="margin-left: 20px;" class="switch @if($vo['enabled']) active @endif" title="@if($vo['enabled']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/ad/change/enabled')}}', '{{$vo['id']}}')">
                                             <div class="circle"></div>
                                         </div>
                                         <input type="hidden" value="0" name="">

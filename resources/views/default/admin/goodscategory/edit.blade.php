@@ -106,7 +106,7 @@
                                             <div class="img_label_value" >
                                                 <div style="cursor: pointer;" id="iconBtn">
                                                     <i class="layui-icon layui-icon-picture" style="font-size: 30px; "></i>点击查看图标库&nbsp;&nbsp;
-                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{getFileUrl($cate['cat_icon'])}}"></span>
+                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{$cate['cat_icon']}}"></span>
                                                 </div>
                                                 <style>
                                                     .img_item{width: 100%;
@@ -138,11 +138,6 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
-                                                自定义：
-                                                <button type="button" class="layui-btn upload-file" data-type="" data-path="goodscategory" >上传图片</button>
-                                                <input type="text" value="{{$cate['cat_icon']}}" class="text"  name="cat_icon" style="display:none;">
-                                                <img  style="width:60px;height:60px;display:none;"    class="layui-upload-img"><br/>
-                                                <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
                                     </div>
                                 </div>

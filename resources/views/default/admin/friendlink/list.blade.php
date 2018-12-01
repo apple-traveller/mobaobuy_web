@@ -47,7 +47,7 @@
                                 </td>
                                 <td>
                                     <div class="tDiv changeInput">
-                                        <input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text">
+                                        <input style="margin-left: 20px;" name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text">
                                     </div>
                                 </td>
                                 <td class="handle">

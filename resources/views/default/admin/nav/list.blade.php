@@ -37,7 +37,7 @@
                                 <td><div class="tDiv">{{$nav['name']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        <div class="switch @if($nav['is_show']) active @endif" title="@if($nav['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/isShow')}}', '{{$nav['id']}}')">
+                                        <div style="margin-left: 40px;" class="switch @if($nav['is_show']) active @endif" title="@if($nav['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/isShow')}}', '{{$nav['id']}}')">
                                             <div class="circle"></div>
                                         </div>
                                         <input type="hidden" value="0" name="">
@@ -45,7 +45,7 @@
                                 </td>
                                 <td>
                                     <div class="tDiv">
-                                        <div class="switch @if($nav['opennew']) active @endif" title="@if($nav['opennew']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/openNew')}}', '{{$nav['id']}}')">
+                                        <div style="margin-left: 40px;" class="switch @if($nav['opennew']) active @endif" title="@if($nav['opennew']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/openNew')}}', '{{$nav['id']}}')">
                                             <div class="circle"></div>
                                         </div>
                                         <input type="hidden" value="0" name="">
@@ -54,7 +54,7 @@
                                 <td><div class="tDiv">{{$nav['url']}}</div></td>
                                 <td><div class="tDiv">{{$nav['type']}}</div></td>
                                 <td><div class="tDiv changeInput">
-                                        <input type="text" name="sort_order" class="text w40 " data-id="{{$nav['id']}}" value="{{$nav['sort_order']}}" >
+                                        <input style="margin-left: 45px;"  type="text" name="sort_order" class="text w40 " data-id="{{$nav['id']}}" value="{{$nav['sort_order']}}" >
                                     </div></td>
 
                                 <td class="handle">

@@ -69,13 +69,13 @@
                                 </div>
                             </div>
 
-                            <div class="item">
+                            <div style="margin-top:10px;" class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;上传图片：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="advertisement" >上传图片</button>
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="advertisement" ><i class="layui-icon">&#xe681;</i> 上传图片</button>
                                     <input type="text" id="ad_img" value="{{$ad['ad_img']}}" class="text"  name="ad_img" style="display:none;">
-                                    <img @if(!empty($ad['ad_img'])) style="width:60px;height:60px;" src="{{getFileUrl($ad['ad_img'])}}" @else style="width:60px;height:60px;display:none;" @endif  class="layui-upload-img"><br/>
-                                    <div class="form_prompt"></div>
+                                    <img @if(!empty($ad['ad_img'])) style="width:60px;height:60px;margin-left:10px;margin-top: -10px;" src="{{getFileUrl($ad['ad_img'])}}" @else style="width:60px;height:60px;display:none;" @endif  class="layui-upload-img"><br/>
+                                    <div style="margin-left: 10px;line-height: 36px;" class="form_prompt"></div>
                                 </div>
                             </div>
 
