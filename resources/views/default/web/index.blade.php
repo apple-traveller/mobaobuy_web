@@ -219,7 +219,7 @@
                             <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;">{{$vo['cat_name']}}</span>
                             <span style="width:18%;"><i class="space_hidden"style="width:100%;"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
                             <span style="width:12%;">{{$vo['goods_number']}}</span>
-                            <span style="width:12%;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                            <span style="width:12%;" class="red">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
                             <span style="width:12%;">{{$vo['delivery_place']}}</span>
                             <span style="width:12%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
                             <span style="width:6%;">
@@ -338,9 +338,9 @@
                                     <li>
                                         <span style="width:14%;">{{$quote['cat_name']}}</span>
                                         {{--<span>{{$quote['goods_full_name']}}</span>--}}
-                                        <span style="width:20%;" class="ovh"><a class="green" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
+                                        <span style="width:20%;" class="ovh"><a class="blue" href="/goodsDetail?id={{$quote['id']}}&shop_id={{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
                                         <span style="width:14%;">{{$quote['goods_number']}}</span>
-                                        <span style="width:14%;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
+                                        <span style="width:14%;" class="lcolor fwb red">{{amount_format($quote['shop_price'],2)}}</span>
                                         <span style="width:14%;">{{$quote['delivery_place']}}</span>
                                         {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                         <span style="width:10%;">

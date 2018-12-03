@@ -26,12 +26,12 @@ class ShopGoodsQuoteService
         }
         //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
         $con['b.is_self_run'] = 1;
+        $con['b.is_delete'] = 0;
         if (!isset($condition['b.type'])) {
             $con['b.type'] = '1|2';
         }else{
             $con['b.type'] = $condition['b.type'];
         }
-
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
         if (!empty($cates)) {
@@ -50,6 +50,7 @@ class ShopGoodsQuoteService
         //3、获取发货地
         $con_region['is_self_run'] = $con['b.is_self_run'];
         $con_region['type'] = $con['b.type'];
+        $con_region['is_delete'] = $con['b.is_delete'];
         $cities = ShopGoodsQuoteRepo::getQuoteCity($con_region);
         if (!empty($cities)) {
             $city_list = RegionService::getList([], ['region_id' => implode('|', $cities)]);
