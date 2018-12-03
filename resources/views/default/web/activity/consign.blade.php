@@ -39,50 +39,62 @@
 		<div class="ClearSale_main">
 			<div class="ClearSale_title"></div>
 			<div class="ClearSale_seize"><img src="/default/img/seize.png"/></div>
-			@if(empty($consignInfo))
-					<li class="nodata" style=" background:#eae5e5">无相关数据</li>
-				@else
-			<ul class="ms_list">
-				
-					@foreach($consignInfo as $v)
-						<li>
-							<div class="ms_list_center">
-								<div class="ovh">
-									<h1 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h1>
-								</div>
-								<div class="ovh mt10">
-									<div class="bq__addr fl">{{$v['shop_name']}}</div>
-								</div>
-								<div class="ovh mt10 ">
-									<div class="mx_progress">
-										@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
-											<div class="bq__progress_com" style="width: 0%;"></div>
-										@else
-											<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
-										@endif
+			@if(!empty($consignInfo))
+				<ul class="ms_list">
 
+						@foreach($consignInfo as $v)
+							<li>
+								<div class="ms_list_center">
+									<div class="ovh">
+										<h1 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h1>
 									</div>
-									@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
-										<span class="fl fs16 gray">已售0%</span>
-									@else
-										<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
-									@endif
+									<div class="ovh mt10">
+										<div class="bq__addr fl">{{$v['shop_name']}}</div>
+									</div>
+									<div class="ovh mt10 ">
+										<div class="mx_progress">
+											@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
+												<div class="bq__progress_com" style="width: 0%;"></div>
+											@else
+												<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
+											@endif
+
+										</div>
+										@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
+											<span class="fl fs16 gray">已售0%</span>
+										@else
+											<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
+										@endif
+									</div>
+									<div class="tac mt30 ovh" style="text-align: left !important;">
+										<span class="addr_dw">{{$v['delivery_place']}}</span>
+										<span class="fr ovh di gray">可售 {{$v['goods_number']}}kg</span>
+									</div>
+									<div class="bq_price">
+										<font class="gray">单价</font>
+										<font class="orange fs24">￥{{$v['shop_price']}}</font>/kg
+									</div>
+									<a href="/consign/detail/{{encrypt($v['id'])}}">
+										<div class="mx_btn">立即抢购</div>
+									</a>
 								</div>
-								<div class="tac mt30 ovh" style="text-align: left !important;">
-									<span class="addr_dw">{{$v['delivery_place']}}</span>
-									<span class="fr ovh di gray">可售 {{$v['goods_number']}}kg</span>
-								</div>
-								<div class="bq_price">
-									<font class="gray">单价</font>
-									<font class="orange fs24">￥{{$v['shop_price']}}</font>/kg
-								</div>
-								<a href="/consign/detail/{{encrypt($v['id'])}}">
-									<div class="mx_btn">立即抢购</div>
-								</a>
-							</div>
-						</li>
-					@endforeach
+							</li>
+						@endforeach
+					</ul>
+				@else
+					<ul>
+						<li class="nodata">无相关数据</li>
+					</ul>
 				@endif
+
+		</div>
+		<div class="w1200 collect_active_bg ovh" style="margin-bottom: 30px;">
+
+			<div class="Rules_activity">活动规则</div>
+			<ul class="Rules_text">
+				<li>1.本活动对所有会员开放</li>
+				<li>2.集采火拼活动订单需要在30分钟内完成支付，逾期未付款，系统将自动取消订单</li>
+				<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：400-100-1234</li>
 			</ul>
 		</div>
 	</div>

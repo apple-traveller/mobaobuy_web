@@ -57,6 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if(!empty($ads))
                             @foreach($ads as $vo)
                             <tr class="">
                                 <td><div style="cursor: pointer;color:green;" data-pic="{{getFileUrl($vo['ad_img'])}}" class="tDiv viwAdPicture">{{$vo['ad_name']}}</div></td>
@@ -82,6 +83,9 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>

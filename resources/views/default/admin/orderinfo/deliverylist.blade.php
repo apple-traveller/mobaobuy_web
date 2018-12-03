@@ -51,6 +51,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @if(!empty($deliverys))
                                 @foreach($deliverys as $vo)
                                     <tr class="">
                                         <td><div class="tDiv">{{$vo['delivery_sn']}}</div></td>
@@ -84,6 +85,9 @@
 
                                     </tr>
                                 @endforeach
+                                @else
+                                    <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                                @endif
                                 </tbody>
                                 <tfoot>
                                 <tr>

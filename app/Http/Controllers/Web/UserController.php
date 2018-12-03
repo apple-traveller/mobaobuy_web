@@ -14,6 +14,7 @@ use App\Services\UserInvoicesService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
 use App\Services\UserRealService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -1040,6 +1041,7 @@ class UserController extends Controller
             $saleData = $request->all();
             $saleData['user_id'] = $userInfo['id'];
             $saleData['user_name'] = $userInfo['user_name'];
+            $saleData['add_time'] = Carbon::now();
             try{
                 UserService::sale($saleData);
                 return $this->success();

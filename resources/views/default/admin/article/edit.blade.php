@@ -90,7 +90,7 @@
                             <div class="item">
                                 <div class="label">上传图片：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="article" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="article" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     <input type="text" value="{{$article['image']}}" class="text"  name="image" style="display:none;">
                                     <img @if(empty($article['image'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($article['image'])}}"  @endif   class="layui-upload-img"><br/>
                                     <div class="form_prompt"></div>

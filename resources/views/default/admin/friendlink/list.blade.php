@@ -32,6 +32,7 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @if(!empty($links))
                             @foreach($links as $vo)
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['link_name']}}</div></td>
@@ -58,6 +59,9 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>

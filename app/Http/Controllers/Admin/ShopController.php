@@ -186,6 +186,22 @@ class ShopController extends Controller
         }
     }
 
+    //修改字段（ajax）
+    public function modifyAjax(Request $request)
+    {
+        $data = $request->all();
+        try{
+            $flag = ShopService::modify($data);
+            if(!empty($flag)){
+                return $this->result($flag,200,'success');
+            }else{
+                return  $this->result('','400',"修改成功");
+            }
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
+    }
+
     public function getUsers(Request $request)
     {
         $nick_name = $request->input('nick_name');
@@ -217,12 +233,16 @@ class ShopController extends Controller
     public function getShopList(Request $request)
     {
         $company_name = $request->input('company_name');
+        $is_self_run = $request->input('is_self_run');
         $condition = [
             'is_validated' => 1,
             'is_freeze' => 0,
         ];
         if(!empty($company_name)){
             $condition['company_name'] = "%".$company_name."%";
+        }
+        if(!empty($is_self_run)){
+            $condition['is_self_run'] = $is_self_run;
         }
         $res = ShopService::getList([],$condition);
         if($res){

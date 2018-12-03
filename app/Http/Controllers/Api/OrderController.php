@@ -34,26 +34,19 @@ class OrderController extends ApiController
         $firm_id = $this->getDeputyUserInfo($request)['firm_id'];
         $currUser  = $this->getDeputyUserInfo($request);
 
-
         $condition['status'] = $tab_code;
         $condition['begin_time'] = $request->input('begin_time');
         $condition['end_time'] = $request->input('end_time');
 
-        if($this->getDeputyUserInfo($request)['is_firm']){
-            if($this->getDeputyUserInfo($request)['is_self'] == 0 && $this->getDeputyUserInfo($request)['is_firm'] ){
-                $condition['user_id'] = $this->getDeputyUserInfo($request)['user_id'];
-                $condition['firm_id'] = $firm_id;
-            }else{
-                $condition['user_id'] = $firm_id;
-                $condition['firm_id'] = $firm_id;
-            }
-        }else{
+        if ($this->getDeputyUserInfo($request)['is_firm']) {
+            $condition['firm_id'] = $firm_id;
+        } else {
             $condition['user_id'] = $firm_id;
             $condition['firm_id'] = 0;
         }
 
-        if(!empty($order_no)){
-            $condition['order_sn'] = '%'.$order_no.'%';
+        if (!empty($order_no)) {
+            $condition['order_sn'] = '%' . $order_no . '%';
         }
 
         $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);

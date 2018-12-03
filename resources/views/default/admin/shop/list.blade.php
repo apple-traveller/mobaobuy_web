@@ -70,7 +70,15 @@
                                             <input type="hidden" value="0" name="">
                                         </div>
                                     </td>
-                                    <td><div class="tDiv">{{status($vo['is_self_run'])}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            @if($vo['is_self_run']==1)
+                                            是
+                                            @else
+                                            否
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>

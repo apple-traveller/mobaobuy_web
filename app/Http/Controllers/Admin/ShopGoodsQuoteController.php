@@ -109,7 +109,6 @@ class ShopGoodsQuoteController extends Controller
         $data['goods_name'] = $goods['goods_name'];
         $currpage = $request->input('currpage');
         unset($data['currpage']);
-
         if(empty($data['shop_store_id']) && $data['store_name'] == '自售'){
             $data['store_name'] = $data['shop_name'];
             $data['type'] = 1;
