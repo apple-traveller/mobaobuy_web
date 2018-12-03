@@ -208,7 +208,7 @@ class PromoteController extends Controller
             $condition['goods_name'] = "%".$goods_name."%";
         }
         $condition['is_delete'] = 0;
-        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit']);
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit','unit_name']);
         if(!empty($goods)){
             return $this->success('success','',$goods);
         }else{
