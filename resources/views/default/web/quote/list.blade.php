@@ -308,6 +308,8 @@
             getInfo(1);
         });
         $(document).delegate('.close_cate','click',function(){
+//            var _href = window.location.href;
+//            _href = _href.match(/&cat_name(\S*)/)[1];
             $('#cate_tag').hide();
             $('#cate_tag').empty();
             $('#cate_tag').attr('cate_id','');
