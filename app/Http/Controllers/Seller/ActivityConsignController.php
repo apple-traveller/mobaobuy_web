@@ -29,6 +29,7 @@ class ActivityConsignController extends Controller
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
         $condition['type'] = '3';
+        $condition['is_delete'] = 0;
         $pageSize =5;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.activityconsign.consign',[
