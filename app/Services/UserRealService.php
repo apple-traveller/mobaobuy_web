@@ -59,6 +59,9 @@ class UserRealService
                 $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
                 $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
                 $userRealArr['add_time'] = Carbon::now();
+                $userRealArr['is_firm'] = 0;
+                $userRealArr['review_status'] = 0;
+
             }else{
                 $userRealArr['user_id'] = $user_id;
                 $userRealArr['real_name'] = $data['real_name_firm'];
@@ -72,6 +75,8 @@ class UserRealService
 //                $userRealArr['company_address'] = $data['company_address'];
 //                $userRealArr['company_telephone'] = $data['company_telephone'];
                 $userRealArr['add_time'] = Carbon::now();
+                $userRealArr['is_firm'] = 1;
+                $userRealArr['review_status'] = 0;
             }
             return UserRealRepo::modify($userRealInfo['user_id'],$userRealArr);
         }else{
@@ -84,6 +89,7 @@ class UserRealService
                 $userRealArr['front_of_id_card'] = $data['front_of_id_card'];
                 $userRealArr['reverse_of_id_card'] = $data['reverse_of_id_card'];
                 $userRealArr['add_time'] = Carbon::now();
+                $userRealArr['is_firm'] = 0;
             }else{
                 $userRealArr['is_firm'] = 1;
                 $userRealArr['user_id'] = $user_id;

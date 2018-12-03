@@ -177,9 +177,9 @@
             var layer = layui.layer;
 
             $("#goods_number").blur(function(){
-                var goods_number = $(this).val();
-                var packing_spec = $('#goods_name').data("packing-spec");
-                var goods_id = $("#goods_id").val();
+                var goods_number = Number($(this).val());
+                var packing_spec = Number($('#goods_name').attr("data-packing-spec"));
+                var goods_id = Number($("#goods_id").val());
 
                 console.log(goods_number);
                 console.log(packing_spec);
@@ -428,6 +428,8 @@
                 $("#num").val(packing_spec);
                 $("#num").attr("disabled",false);
                 $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spec+packing_unit+'</div>');
+
+                $('#goods_number').val(packing_spec);
             });
 
             $("#goods_name").blur(function(){

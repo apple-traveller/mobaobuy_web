@@ -289,7 +289,7 @@
                     <th width="20%">订单编号</th>
                     <th width="">商品名称</th>
                     <th width="15%">入库数量(kg)</th>
-                    <th width="15%">入库单价</th>
+                    <th width="15%">入库单价(元)</th>
                 </tr>
                 </thead>
             </table>

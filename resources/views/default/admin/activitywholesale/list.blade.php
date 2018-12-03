@@ -54,6 +54,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @if(!empty($list))
                                 @foreach($list as $k=>$v)
                                     <tr class="">
                                         <td><div class="tDiv">{{$v["id"]}}</div></td>
@@ -85,6 +86,9 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @else
+                                    <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                                @endif
                                 </tbody>
                                 <tfoot>
                                 <tr>

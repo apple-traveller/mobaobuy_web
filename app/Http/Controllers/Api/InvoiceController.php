@@ -211,10 +211,12 @@ class InvoiceController extends ApiController
         }
         // 判断默认地址 和当前选择地址
         $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
+        //dd($invoiceSession);
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
+        //dd($addressList);
         foreach ($addressList as $k =>  $v){
-            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
             if ($v['id'] == $invoiceSession['address_id']){
                 $addressList[$k]['is_select'] = 1;
             } else {
@@ -242,9 +244,6 @@ class InvoiceController extends ApiController
             }
         }
         $goodsList = OrderInfoService::getOrderGoodsList($order_id);
-        foreach ($goodsList as $k=>$v){
-
-        }
         //重新封装session 加入商品信息
         $invoiceSession['goods_list'] = $goodsList['list'];
         $invoiceSession['total_amount'] = $total_amount;
@@ -268,14 +267,14 @@ class InvoiceController extends ApiController
         if(!$address_id){
             return $this->error('缺少地址ID！');
         }
-        $address_info = UserAddressService::getAddressInfo($address_id);
+        $address_info = UserAddressService::getAddressInfoApi($address_id);
         if(!$address_info){
             return $this->error('地址信息不存在！');
         }
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['address_id'] = $address_id;
         Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
-        return $this->success('','success');
+        return $this->success(Cache::get('invoiceSession'.$this->getUserID($request)),'success');
     }
     /**
      * 选择开票类型
@@ -292,7 +291,7 @@ class InvoiceController extends ApiController
         $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
         $invoiceSession['invoice_type'] = $invoice_type;
         Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
-        return $this->success('选择成功');
+        return $this->success(Cache::get('invoiceSession'.$this->getUserID($request)),'success');
     }
 
     /**

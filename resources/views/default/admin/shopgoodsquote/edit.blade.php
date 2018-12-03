@@ -53,7 +53,7 @@
                                     {{--<input type="hidden" name="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" id="store_name_val" />--}}
                                     {{--<input type="hidden" name="shop_store_id" value="{{$goodsQuote['shop_store_id']}}" id="store_id" />--}}
                                     {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">--}}
-                                    </ul>
+                                    {{--</ul>--}}
                                 </div>
                             </div>
 
@@ -89,7 +89,6 @@
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
@@ -385,7 +384,7 @@
                             $(".query_goods_name").show();
                             var data = res.data;
                             for(var i=0;i<data.length;i++){
-                                $(".query_goods_name").append('<li data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                                $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                             }
                         }else{
                             $(".query_goods_name").show();
@@ -406,7 +405,7 @@
                         var data = res.data;
                         console.log(data);
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }
                 },"json");
@@ -419,6 +418,7 @@
                 var goods_id = $(this).attr("data-goods-id");
                 var packing_spec = $(this).attr("data-packing-spec");
                 let packing_unit = $(this).attr('data-packing-unit');
+                let unit_name = $(this).attr('data-unit-name');
                 $("#goods_name").val(goods_name);
                 $("#goods_id").val(goods_id);
                 $("#goods_name").attr("data-packing-spec",packing_spec);
@@ -427,6 +427,8 @@
                 $("#num").val(packing_spec);
                 $("#num").attr("disabled",false);
                 $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spec+unit_name+'/'+packing_unit+'</div>');
+
+                $('#goods_number').val(packing_spec)
             });
 
             $("#goods_name").blur(function(){

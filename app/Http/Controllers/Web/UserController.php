@@ -819,8 +819,15 @@ class UserController extends Controller
         $user_name = session()->get("_web_user")['user_name'];
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
-
-        if($user_real){
+        if(empty($user_real) || $user_real['review_status'] == 2){
+            return $this->display("web.user.account.realName",[
+                'user_name'=>$user_name,
+                'is_firm'=>$is_firm,
+                'user_real'=>$user_real,
+                'user_id'=>$user_id
+            ]);
+        }
+        if($user_real['review_status'] == 1 || $user_real['review_status'] == 0){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,
                 'is_firm'=>$is_firm,
@@ -828,12 +835,7 @@ class UserController extends Controller
                 'user_id'=>$user_id
             ]);
         }
-        return $this->display("web.user.account.realName",[
-            'user_name'=>$user_name,
-            'is_firm'=>$is_firm,
-            'user_real'=>$user_real,
-            'user_id'=>$user_id
-        ]);
+
     }
 
     //保存实名

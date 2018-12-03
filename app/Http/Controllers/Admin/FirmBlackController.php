@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\FirmBlacklistService;
 use App\Http\Controllers\ExcelController;
-class FirmBlacklistController extends Controller
+class FirmBlackController extends Controller
 {
     //企业黑名单列表
     public function getList(Request $request)

@@ -21,13 +21,18 @@
         .Self-product-list li:first-child span{
             height:40px;
         }
+
+        .supply_quote_list li{height: 89px;overflow: initial;}
+
 	</style>
 @endsection
 @section('js')
     <script src="{{asset('plugs/layui/layui.all.js')}}"></script>
+    <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
     <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script>
         $(function(){
+            //$(".nav-div .nav-cate .ass_menu").css("display: none");
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
             });
@@ -164,7 +169,7 @@
 
                             </div>
                             <form class="fl" id="formid">
-                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="￥最低价" style="margin-left: 5px">
                                 <span class="line">-</span>
                                 <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
@@ -190,11 +195,32 @@
                             <li>
                                 <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                                 <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
-                                <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                                <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                                 <span style="width:8%">{{$vo['goods_number']}}</span>
-                                <span style="width:8%;">{{$vo['shop_price']}}</span>
+                                <span style="width:8%;color:red">{{$vo['shop_price']}}</span>
                                 <span style="width:12%;">{{$vo['delivery_place']}}</span>
-                                <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                                <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}
+                                    <img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
+                                </span>
+                                {{--<span style="width:14%;">--}}
+                                {{--<div class="custom_service">--}}
+                                    {{--<p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>--}}
+                                    {{--<div class="custom_service_popup" style="display: none;">--}}
+                                        {{--<p class="custom_service_popup_p">联系方式</p>--}}
+                                        {{--<div class="custom_service_popup_text">--}}
+                                            {{--<p>--}}
+                                                {{--<span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>--}}
+                                            {{--<p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">--}}
+                                                {{--<span style="width:60px;text-align: right">--}}
+                                                    {{--<img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
+                                                {{--</span>--}}
+                                                {{--&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}--}}
+                                            {{--</p>--}}
+                                        {{--</div>--}}
+                                        {{--<i></i>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</span>--}}
                                 <span style="width:10%">
                                     @if($vo['goods_number'])
                                         <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
@@ -212,7 +238,7 @@
                 </div>
             </div>
         @else
-            @if($t == 2)
+            @if(!empty($t))
                 <li class="nodata1">近期上市 敬请期待</li>
             @else
                 <li class="nodata">无相关数据</li>
@@ -282,6 +308,8 @@
             getInfo(1);
         });
         $(document).delegate('.close_cate','click',function(){
+//            var _href = window.location.href;
+//            _href = _href.match(/&cat_name(\S*)/)[1];
             $('#cate_tag').hide();
             $('#cate_tag').empty();
             $('#cate_tag').attr('cate_id','');
@@ -400,10 +428,10 @@
             },
             dataType: "json",
             success: function(res){
-                if(_keyword != ''){
-                    changeURL();
-                }
-
+//                if(_keyword != ''){
+//                    changeURL();
+//                }
+                changeURL();
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;
@@ -414,6 +442,8 @@
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
                     let _html = '';
+                    let imgUrlLeft = '<img onclick="javascript:window.open(';
+                    let imgUrlRight = '&site=qq&menu=yes\')';
                     for (let i=0;i<list.length;i++)
                     {
                         let _store_name = '无';
@@ -422,15 +452,17 @@
                         }
 
                         _html += '<li>' +
-                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:9%;">'+_store_name+'</span>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:18%;">'+_store_name+'</span>' +
                             '<span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:18%;"><a class="green" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
-                            '<span style="width:9%;">'+list[i].goods_number+'</span>' +
-                            '<span>'+list[i].shop_price+'</span>' +
-                            '<span>'+list[i].delivery_place+'</span>' +
-                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
+                            '<span  style="width:18%;"><a class="blue" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
+                            '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
+                            '<span style="width:12%;">'+list[i].delivery_place+'</span>' +
+                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
                             '<span style="width:9%;"><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
                             '</li>';
+
+                    {{--<img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
                     }
                     $(".table_title").after(_html);
                     $(".news_pages").append('<ul id="page" class="pagination"></ul>');

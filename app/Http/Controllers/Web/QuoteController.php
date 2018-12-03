@@ -61,9 +61,6 @@ class QuoteController extends Controller
         if (!empty($brand_id)) {
             $condition['g.brand_id'] = $brand_id;
         }
-        if (!empty($t)) {
-            $condition['b.type'] = $t;
-        }
         if (!empty($cate_id)) {
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
@@ -88,6 +85,8 @@ class QuoteController extends Controller
         $pageSize = 10;
         if(empty($t)){
             $condition['b.type'] = '1|2';
+        }else{
+            $condition['b.type'] = $t;
         }
 
         $condition['b.is_self_run'] = 1;
@@ -208,6 +207,8 @@ class QuoteController extends Controller
             $condition[] = $con;
         }
         $pageSize = 10;
+        $condition['b.is_delete'] = 0;
+        $condition['b.is_self_run'] = 1;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');

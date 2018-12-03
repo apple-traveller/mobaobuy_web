@@ -24,6 +24,7 @@ class OrderController extends ApiController
         }
     }
 
+
     //我的订单
     public function orderList(Request $request)
     {
@@ -34,26 +35,19 @@ class OrderController extends ApiController
         $firm_id = $this->getDeputyUserInfo($request)['firm_id'];
         $currUser  = $this->getDeputyUserInfo($request);
 
-
         $condition['status'] = $tab_code;
         $condition['begin_time'] = $request->input('begin_time');
         $condition['end_time'] = $request->input('end_time');
 
-        if($this->getDeputyUserInfo($request)['is_firm']){
-            if($this->getDeputyUserInfo($request)['is_self'] == 0 && $this->getDeputyUserInfo($request)['is_firm'] ){
-                $condition['user_id'] = $this->getDeputyUserInfo($request)['user_id'];
-                $condition['firm_id'] = $firm_id;
-            }else{
-                $condition['user_id'] = $firm_id;
-                $condition['firm_id'] = $firm_id;
-            }
-        }else{
+        if ($this->getDeputyUserInfo($request)['is_firm']) {
+            $condition['firm_id'] = $firm_id;
+        } else {
             $condition['user_id'] = $firm_id;
             $condition['firm_id'] = 0;
         }
 
-        if(!empty($order_no)){
-            $condition['order_sn'] = '%'.$order_no.'%';
+        if (!empty($order_no)) {
+            $condition['order_sn'] = '%' . $order_no . '%';
         }
 
         $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);
@@ -105,21 +99,19 @@ class OrderController extends ApiController
 
     //确认收货
     public function orderConfirmTake(Request $request){
+
+
         $id = $request->input('id');
         $firmUser = $this->getDeputyUserInfo($request);
-        if(!$firmUser['is_firm']){
-            return $this->error('当前没有权限操作');
-        }
-        if($firmUser['is_firm'] && $firmUser['is_self']){
-            $userId = $firmUser['firm_id'];
-        }
         if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
             $userId = $firmUser['user_id'];
+        }else{
+            $userId = $firmUser['firm_id'];
         }
 
         try {
             OrderInfoService::orderConfirmTake($id,$firmUser['firm_id'],$userId);
-            return $this->success();
+            return $this->success('','success');
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -149,6 +141,7 @@ class OrderController extends ApiController
         //dd($info);
         $userInfo = $this->getUserInfo($request);
         $cartSession = Cache::get("cartSession".$info['firm_id']);
+        //dd($cartSession);
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 
@@ -175,6 +168,7 @@ class OrderController extends ApiController
         }
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($u_id);
+        //dd($addressList);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);

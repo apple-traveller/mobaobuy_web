@@ -26,7 +26,7 @@
                 url: "/logistics/detail",
                 dataType: "json",
                 data:{
-                    'delivery_id': _delivery_id
+                    'id': _delivery_id
                 },
                 type:"get",
                 success:function(data){
@@ -34,10 +34,8 @@
                         let _list = data.data.Traces;
                         let _length = data.data.Traces.length;
                         let _html = '';
-                        console.log(_list);
-                        console.log(_length);
-                        for(let i=0; i<_length; i++){
-//                            console.log(_list[i])
+
+                        for(let i=(_length-1); i>=0; i--){
 							_html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
 						}
 						console.log(_html);
@@ -76,7 +74,7 @@
 		/*订单列表*/
 		.order-list-brand li:first-child{background-color: #f4f4f4;height: 32px;line-height: 32px;border-bottom: none;}
 		.order-list-brand li{height: 65px; line-height: 65px;border-bottom: 1px solid #DEDEDE;}
-		.order-list-brand li span{width: 20%;display: inline-block;text-align: center;}
+		.order-list-brand li span{display: inline-block;text-align: center;}
 		/*商品总额*/
 		.Amount_money{float: right;margin-right: 75px;margin-top: 30px;margin-bottom: 30px;}
 	</style>
@@ -191,16 +189,7 @@
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
-					{{--<li>--}}
-						{{--<i class="external-cir"></i>--}}
-						{{--您提交了订单，请等待系统确认--}}
-						{{--<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>--}}
-					{{--</li>--}}
-					{{--<li>--}}
-						{{--<i class="external-cir"></i>--}}
-						{{--您提交了订单，请等待系统确认--}}
-						{{--<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>--}}
-					{{--</li>--}}
+
 				</ul>
 			</div>
 		</div>
@@ -269,19 +258,19 @@
 		<div class="whitebg br1 mt20 ovh">
 			<ul class="order-list-brand">
 				<li>
-					<span>商品名称</span>
-					<span>单价</span>
-					<span>数量</span>
-					<span>金额</span>
+					<span style="width:29%">商品名称</span>
+					<span style="width:20%">单价</span>
+					<span style="width:20%">数量</span>
+					<span style="width:29%">金额</span>
 					<!-- <span>操作</span> -->
 				</li>
 				@foreach($orderDetailsInfo['goodsInfo'] as $v)
 					<li>
-						<span>{{$v['goods_name']}}</span>
-						<span>￥{{$v['goods_price']}} </span>
-						<span>{{$v['goods_number']}}kg</span>
-						<span>￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
-						<span></span>
+						<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
+						<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
+						<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+						<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
+						{{--<span></span>--}}
 					</li>
 				@endforeach
 			</ul>

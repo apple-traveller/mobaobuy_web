@@ -49,6 +49,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @if(!empty($promotes))
                                 @foreach($promotes as $vo)
                                 <tr>
                                     <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
@@ -84,6 +85,9 @@
                                     </td>
                                 </tr>
                                 @endforeach
+                                @else
+                                    <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                                @endif
                                 </tbody>
                                 <tfoot>
                                 <tr>

@@ -41,7 +41,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
                                     {{--<input type="text" autocomplete="off" size="40" id="store_name" value="{{old('store_name')}}" class="text" />--}}
-                                    <select class="query_store_name" id="store_name" style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;">
+                                    <select class="query_store_name" id="store_name" style="height:30px;border:1px solid #dbdbdb;line-height:30px;float: left;padding-right:10px;">
 
                                     </select>
                                     <input type="hidden" value="@if(old('store_name')){{old('store_name')}}@else自售@endif" name="store_name"  id="store_name_val"  />
@@ -58,7 +58,7 @@
                                 <div class="label_value">
                                     <input type="hidden" name="cat_id" id="cat_id"/>
                                     <input type="text" name="cat_id_LABELS"  autocomplete="off" value="{{old('cat_name')}}" treeId="" id="cat_name" treeDataUrl="/seller/goods/getGoodsCat" size="40"  class="text" title="">
-                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                    <div style="margin-left: 0px;" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
 

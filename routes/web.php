@@ -59,12 +59,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
 
 
-        Route::any('/blacklist/list', 'FirmBlacklistController@getList');//黑名单企业
-        Route::get('/blacklist/addForm', 'FirmBlacklistController@addForm');//黑名单添加（表单）
-        Route::post('/blacklist/save', 'FirmBlacklistController@save');//黑名单添加
-        Route::get('/blacklist/delete', 'FirmBlacklistController@delete');//黑名单删除
-        Route::post('/blacklist/deleteall', 'FirmBlacklistController@deleteAll');//黑名单批量删除
-        Route::get('/blacklist/export', 'FirmBlacklistController@export');//黑名单导出excel
+        Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
+        Route::get('/blacklist/addForm', 'FirmBlackController@addForm');//黑名单添加（表单）
+        Route::post('/blacklist/save', 'FirmBlackController@save');//黑名单添加
+        Route::get('/blacklist/delete', 'FirmBlackController@delete');//黑名单删除
+        Route::post('/blacklist/deleteall', 'FirmBlackController@deleteAll');//黑名单批量删除
+        Route::get('/blacklist/export', 'FirmBlackController@export');//黑名单导出excel
 
         Route::get('/region/list', 'RegionController@getList');//地区列表
         Route::post('/region/save', 'RegionController@save');//地区添加
@@ -149,6 +149,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shop/save', 'ShopController@save');//保存
         Route::post('/shop/change/isFreeze', 'ShopController@isFreeze');//修改状态
         Route::post('/shop/change/isValidated', 'ShopController@isValidated');//修改状态
+        Route::post('/shop/change/modifyAjax', 'ShopController@modifyAjax');//修改状态
         Route::get('/shop/detail', 'ShopController@detail');//详情
         Route::get('/shop/logList', 'ShopController@logList');//日志信息
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
@@ -236,7 +237,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/activity/wholesale/save', 'ActivityWholesaleController@save');//保存
         Route::get('/activity/wholesale/delete', 'ActivityWholesaleController@delete');//删除
         Route::get('/activity/wholesale/detail', 'ActivityWholesaleController@detail');//详情
-        Route::post('/activity/wholesale/modifyStatus', 'ActivityWholesaleController@modifyStatus');//详情
+        Route::post('/activity/wholesale/modifyStatus', 'ActivityWholesaleController@modifyStatus');//审核
 
         Route::get('/activity/consign', 'ActivityConsignController@index');//清仓特卖申请列表
         Route::get('/activity/consign/add', 'ActivityConsignController@add');//添加
@@ -244,6 +245,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/activity/consign/save', 'ActivityConsignController@save');//保存
         Route::post('/activity/consign/delete', 'ActivityConsignController@delete');//删除
         Route::get('/activity/consign/detail', 'ActivityConsignController@detail');//详情
+        Route::post('/activity/consign/modifyStatus', 'ActivityConsignController@modifyStatus');//审核
 
 
 
@@ -604,7 +606,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
     });
 });
 //小程序接口
-Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed'],function() {
+Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed'],function() {
         Route::post('/register', 'LoginController@register');//注册
         Route::post('/send_register_sms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
         Route::post('/login', 'LoginController@login');//登录
@@ -665,6 +667,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'web.closed
             Route::post('/user/logout','LoginController@logout');//退出登录
             Route::post('/user/sale','UserController@sale');// 我要卖货
             Route::post('/user/untying','LoginController@untying');// 解绑微信
+            Route::post('/user/needApproval','UserController@needApproval');//订单是否需要审核
 
             Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 

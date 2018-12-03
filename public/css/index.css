@@ -143,7 +143,7 @@
 .time_stute_borderbg{color:#666;border: 2px solid #DEDEDE; }
 .End_time{font-size: 18px;text-align: center;margin-top: 10px;margin-bottom: 20px;}
 
-.ms_list{width: 1200px;margin: 0 auto;margin-left: -10px;margin-bottom: 20px;overflow: hidden;}
+.ms_list{width: 1200px;margin: 0 auto;margin-left: -5px;margin-bottom: 20px;overflow: hidden;}
 .ms_list li{float:left;margin-left:10px;margin-top:15px;width: 290px;background-color: #fff;overflow: hidden;padding-bottom: 10px;}
 .ms_list_center{width: 250px;margin: 0 auto;margin-top: 35px;}
 .ms_list_center .mx_addr{height: 32px;line-height:30px;border: 1px solid #c9e1b1;color:#75b335;background-color:#f6fbf1;box-sizing: border-box;text-align: center;}

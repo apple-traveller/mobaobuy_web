@@ -32,18 +32,18 @@
                 <ul class="ass_menu">
                     @foreach(getCategoryTree() as $k=>$level1_item)
                         @if($k<=5)
-                            <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
+                            <li><span class="ass_title" title="{{$level1_item['cat_name']}}">{{$level1_item['cat_name']}}</span>
                                 <i class="iconfont icon-right fr mr20"></i>
                                 <div class="ass_fn whitebg">
                                     <ul class="ass_fn_list">
                                         @if(isset($level1_item['_child']))
                                             @foreach($level1_item['_child'] as  $level2_item)
                                                 <li>
-                                                    <h1 class="fn_title fl"><a href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h1>
+                                                    <h1 class="fn_title fl"><i class="iconfont fr icon-right fr mr20"></i><a class="fr" href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}" title="{{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h1>
                                                     @if(isset($level2_item['_child']))
-                                                        <div class="ass_fn_list_that ml35 ovh fl">
+                                                        <div class="ass_fn_list_that ovh fl">
                                                             @foreach($level2_item['_child'] as $level3_item)
-                                                                <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
+                                                                <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}" title="{{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
                                                             @endforeach
                                                         </div>
                                                     @endif
