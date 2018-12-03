@@ -13,7 +13,7 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
-                    <li>促销总数量必须为商品规格的整数倍。</li>
+                    <li>促销总数量、最小起售数量、最大限购数量必须为商品规格的整数倍。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -86,7 +86,7 @@
                                     <div class="label_value">
                                         <input type="text" name="num"  autocomplete="off" id="num" size="40" value="{{old('num')}}" class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
@@ -96,6 +96,7 @@
                                     <div class="label_value">
                                         <input type="text" name="min_limit"  autocomplete="off" value="{{old('min_limit')}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
@@ -104,7 +105,7 @@
                                     <div class="label_value">
                                         <input type="text" name="max_limit"  autocomplete="off"  value="{{old('max_limit')}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div class="notic">0-不限</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。0-不限</div>
                                     </div>
                                 </div>
 
@@ -131,19 +132,18 @@
                 $(".query_goods_name").hide();
             }
         });
+
         //选择店铺
         $("#shop_id").change(function(){
-            var shop_name = $(this).find("option:selected").text();
+            let shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
         });
+
         //获取树形分类
         $("#cat_name").focus(function(){
             showWinZtreeSelector(this);
         });
-        $("#cat_name").blur(function(){
-            let cat_name = $(this).attr('data-catename');
-            $(this).val(cat_name);
-        });
+
         //商品获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
