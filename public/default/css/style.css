@@ -70,8 +70,8 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .ass_menu .ass_fn {display: none;width: 900px;position: absolute;top: 0;left: 224px;}
 .ass_fn .ass_fn_list {margin-left: 20px;margin-top:15px;margin-bottom:20px;}
 .ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;}
-.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px dotted #DEDEDE;font-size: 14px;color: #999;}
-.ass_fn .ass_fn_list .ass_fn_list_that span { float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:30px; overflow:hidden;}
+.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;font-size: 14px;color: #999;}
+.ass_fn .ass_fn_list .ass_fn_list_that span { border-left: 1px dashed #DEDEDE;float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:30px; overflow:hidden;}
 
 .fn_title{width:70px;}
 

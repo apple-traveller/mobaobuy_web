@@ -24,7 +24,6 @@ class WebClosed extends Controller
             //缓存用户的基本信息
 //            if(!session()->has('_web_user')){
                 $user_info = UserService::getInfo(session('_web_user_id'));
-
                 //用户不切换生效权限,is_logout存的是企业的id
                 if($user_info['is_logout']){
 
