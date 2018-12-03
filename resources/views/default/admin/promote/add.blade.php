@@ -13,6 +13,7 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>促销总数量必须为商品规格的整数倍。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -56,7 +57,7 @@
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品分类：</div>
                                     <div class="label_value">
                                         <input type="hidden" name="cat_id" id="cat_id" value="{{old('cat_id')}}"/>
-                                        <input type="text" name="cat_id_LABELS"  value="{{old('cat_id_LABELS')}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                        <input type="text" data-catename="" name="cat_id_LABELS"  value="{{old('cat_id_LABELS')}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                     </div>
                                 </div>
@@ -138,6 +139,10 @@
         //获取树形分类
         $("#cat_name").focus(function(){
             showWinZtreeSelector(this);
+        });
+        $("#cat_name").blur(function(){
+            let cat_name = $(this).attr('data-catename');
+            $(this).val(cat_name);
         });
         //商品获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){

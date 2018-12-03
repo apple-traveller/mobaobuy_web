@@ -49,6 +49,21 @@ class UserAddressService
         return $info;
     }
 
+    public static function getAddressInfoApi($address_id,$type='')
+    {
+        $info = UserAddressRepo::getInfo($address_id);
+        if(empty($info)){
+            return false;
+        }
+
+        $address_names = RegionService::getRegionApi($info['country'], $info['province'], $info['city'], $info['district']);
+
+        $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
+        $info['address_names'] = $address_names;
+        $info['str_address'] = $str_address;
+        return $info;
+    }
+
     public static function delete($id)
     {
         $user_info = session('_web_user');
