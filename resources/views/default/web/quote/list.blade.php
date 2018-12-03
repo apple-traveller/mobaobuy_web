@@ -169,7 +169,7 @@
 
                             </div>
                             <form class="fl" id="formid">
-                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="￥最低价" style="margin-left: 5px">
                                 <span class="line">-</span>
                                 <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
@@ -426,10 +426,10 @@
             },
             dataType: "json",
             success: function(res){
-                if(_keyword != ''){
-                    changeURL();
-                }
-
+//                if(_keyword != ''){
+//                    changeURL();
+//                }
+                changeURL();
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;
