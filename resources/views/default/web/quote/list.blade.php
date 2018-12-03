@@ -28,6 +28,7 @@
     <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script>
         $(function(){
+            //$(".nav-div .nav-cate .ass_menu").css("display: none");
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
             });
