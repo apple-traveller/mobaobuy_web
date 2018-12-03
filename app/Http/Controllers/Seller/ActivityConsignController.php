@@ -23,13 +23,13 @@ class ActivityConsignController extends Controller
         $goods_name = $request->input('goods_name','');
         $condition = [];
         if(!empty($shop_id)){
-            $condition['shop_id']= $shop_id;
+            $condition['b.shop_id']= $shop_id;
         }
         if ($goods_name){
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
-        $condition['type'] = '3';
-        $condition['is_delete'] = 0;
+        $condition['b.type'] = '3';
+        $condition['b.is_delete'] = 0;
         $pageSize =5;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.activityconsign.consign',[
