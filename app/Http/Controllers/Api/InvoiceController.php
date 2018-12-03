@@ -213,8 +213,9 @@ class InvoiceController extends ApiController
         $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
+        //dd($addressList);
         foreach ($addressList as $k =>  $v){
-            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
             if ($v['id'] == $invoiceSession['address_id']){
                 $addressList[$k]['is_select'] = 1;
             } else {
