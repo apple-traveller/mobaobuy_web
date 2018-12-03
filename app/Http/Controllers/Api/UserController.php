@@ -40,11 +40,19 @@ class UserController extends ApiController
             return $this->error('参数错误');
         }
         $userInfo  = $this->getUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        $user_id = $userInfo['id'];
+        if($deputy_user['is_self']==0){
+            $user_id = $deputy_user['firm_id'];
+        }
+
         $data = [
-            'id'=>$userInfo['id'],
+            'id'=>$user_id,
             'address_id' =>$address_id
         ];
+        //dd($this->getDeputyUserInfo($request));
         $user_address = UserAddressService::getInfoByConditions(['id'=>$address_id,'user_id'=>$this->getDeputyUserInfo($request)['firm_id']]);
+        //dd($user_address);
         if(empty($user_address)){
             return $this->error('该地址不存在');
         }
@@ -62,7 +70,8 @@ class UserController extends ApiController
     public function addressList(Request $request)
     {
         $user_info = $this->getUserInfo($request);
-        //$deputy_user = $this->getDeputyUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        //dd($deputy_user);
         $condition = [];
         $condition['user_id'] = $user_info['id'];
         $addressList = UserService::shopAddressList($condition);
