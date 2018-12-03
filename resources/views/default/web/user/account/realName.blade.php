@@ -162,10 +162,7 @@
                     </ul>
                     </li>
                 
-                <!-- @elseif($user_real['review_status'] == 2 && $user_real['is_firm'] == 1) -->
-                   
-
-                 <!-- 企业账户 -->
+           
                     <li style="display: none;">
                         <ul class="account_infor_list">
                         <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
@@ -197,7 +194,7 @@
                                 @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif
-                                  <!--   @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent -->
+                                 
                             </span>
                         </li>
 
@@ -317,9 +314,7 @@
                     @elseif($user_real['review_status'] == 2 && $user_real['is_firm'] == 1)
                    
 
-                        <!-- 企业账户 -->
-                           <!-- <li style="display: none;"> -->
-                            <li>
+                    <li>
                         <ul class="account_infor_list">
                         <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
                             <span class="ml10">
@@ -351,7 +346,6 @@
                                 @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif
-                                  <!--   @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent -->
                              </span>
                         </li>
                         <li class="mt25">
@@ -376,7 +370,6 @@
                                 @else
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                 @endif
-                                <!-- @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent -->
                             </span>
                         </li>
 
@@ -395,14 +388,13 @@
                                 @else
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                                  @endif
-                               <!--  @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent -->
                             </span>
                         </li>
                   
                         <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button> 
                         </ul>
-                </li>
-                 @endif
+                    </li>
+                     @endif
                  @endif
              </ul>
         </form>
