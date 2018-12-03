@@ -206,10 +206,11 @@ class GoodsController extends ApiController
     //购物车列表
     public function getCartList(Request $request)
     {
+        
         $userId = $this->getUserID($request);
         $deputy_user = $this->getDeputyUserInfo($request);
         //dd($deputy_user);
-        if($deputy_user['is_firm']){
+        if($deputy_user['is_firm'] && $deputy_user['is_self']==0){
             $userId = $deputy_user['firm_id'];
         }
         try{
