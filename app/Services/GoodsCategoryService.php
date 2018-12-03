@@ -82,7 +82,7 @@ class GoodsCategoryService
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = GoodsCategoryRepo::getInfoByFields(['cat_name'=>$cat_name]);
+        $info = GoodsCategoryRepo::getList([],['cat_name'=>$cat_name,['is_delete'=>0]]);
         if(!empty($info)){
             self::throwBizError('分类名称已经存在！');
         }

@@ -31,6 +31,7 @@
                             </thead>
                             <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                             <tbody>
+                            @if(!empty($navs))
                             @foreach($navs as $nav)
                             <tr class="">
                                 <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
@@ -65,6 +66,9 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>

@@ -67,7 +67,7 @@ class UserController extends ApiController
         $condition['user_id'] = $user_info['id'];
         $addressList = UserService::shopAddressList($condition);
         foreach ($addressList as $k=>$v){
-            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
             if ($v['id'] == $user_info['address_id']){
                 $addressList[$k]['is_default'] =1;
                 $first_one[$k] = $addressList[$k];

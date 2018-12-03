@@ -186,6 +186,22 @@ class ShopController extends Controller
         }
     }
 
+    //修改字段（ajax）
+    public function modifyAjax(Request $request)
+    {
+        $data = $request->all();
+        try{
+            $flag = ShopService::modify($data);
+            if(!empty($flag)){
+                return $this->result($flag,200,'success');
+            }else{
+                return  $this->result('','400',"修改成功");
+            }
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
+    }
+
     public function getUsers(Request $request)
     {
         $nick_name = $request->input('nick_name');
