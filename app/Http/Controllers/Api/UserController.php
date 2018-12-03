@@ -336,7 +336,7 @@ class UserController extends ApiController
         try{
             $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
             if($flag){
-                return $this->success("","保存成功");
+                return $this->success($flag,"保存成功");
             }
             return $this->error("保存失败");
         }catch(\Exception $e){
