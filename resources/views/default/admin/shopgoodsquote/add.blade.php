@@ -46,7 +46,7 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_store_id" id="store_id" >
                                         <option value="0">自售</option>
                                     </select>
-                                    <input type="hidden" name="store_name" id="store_name">
+                                    <input type="hidden" name="store_name" id="store_name" value="自售">
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
 
                                     {{--<input type="text"  store-id="" value="" autocomplete="off" id="store_name" size="40"  class="text">--}}
@@ -291,8 +291,8 @@
                 var shop_name = $(this).find("option:selected").text();
                 $("#shop_name").val(shop_name);
 
-                $("#store_name").val('');
-                $("#store_name_val").val('');
+                $("#store_name").val('自售');
+//                $("#store_name_val").val('');
                 $("#store_id").val('');
                 $("#store_id").empty();
                 $("#store_id").append('<option value="0">自售</option>');

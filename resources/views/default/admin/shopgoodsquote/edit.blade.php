@@ -276,8 +276,8 @@
                 var shop_name = $(this).find("option:selected").text();
                 $("#shop_name").val(shop_name);
 
-                $("#store_name").val('');
-                $("#store_name_val").val('');
+                $("#store_name").val('自售');
+//                $("#store_name_val").val('');
                 $("#store_id").val('');
                 $("#store_id").empty();
                 $("#store_id").append('<option value="0">自售</option>');
@@ -320,7 +320,7 @@
                 var store_name = $(this).text();
                 var store_id = $(this).attr("data-store-id");
                 $("#store_name").val(store_name);
-                $("#store_name_val").val(store_name);
+//                $("#store_name_val").val(store_name);
                 $("#store_id").val(store_id);
                 $(".query_store_name").hide();
             });

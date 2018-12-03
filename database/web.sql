@@ -696,7 +696,7 @@ CREATE TABLE `shop_goods_quote` (
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
   `salesman` varchar(10) NOT NULL DEFAULT '' COMMENT '业务员名称',
   `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
-  `QQ` varchar(15) NOT NULL DEFAULT '' COMMENT '联系QQ',
+  `QQ` varchar(15) DEFAULT '' COMMENT '联系QQ',
   `production_date` varchar(50) NOT NULL COMMENT '生产日期',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
@@ -1257,6 +1257,7 @@ CREATE TABLE `shop_store` (
   `shop_id` int(11) DEFAULT NULL COMMENT '商家ID',
   `store_name` varchar(255) NOT NULL COMMENT '店铺名称',
   `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
 
