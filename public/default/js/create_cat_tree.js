@@ -2,7 +2,7 @@
  * Created by Administrator on 2018\11\29 0029.
  */
 function showZtreeSelect(treeId, x, y){
-    $("#"+treeId).parent().css({"top":y+"px", "left":x+"px","z-index":"999","position":"fixed", "visibility":"visible"}).slideDown("fast");
+    $("#"+treeId).parent().css({"top":y+"px", "left":x+"px","z-index":"999","position":"absolute", "visibility":"visible"}).slideDown("fast");
     $("body").bind("mousedown", function(){
         if (!(event.target.id == treeId || $(event.target).parents("#"+treeId).length>0)) {
             hideZtreeSelect(treeId);

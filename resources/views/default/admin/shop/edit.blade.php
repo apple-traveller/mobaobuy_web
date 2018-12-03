@@ -54,7 +54,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>授权委托书电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     <input type="text" value="{{$shop['attorney_letter_fileImg']}}" class="text"  name="attorney_letter_fileImg" style="display:none;">
                                     <img @if(!empty($shop['attorney_letter_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['attorney_letter_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img"  >
                                     <div class="form_prompt"></div>
@@ -64,7 +64,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file" style="float:left;" data-type="" data-path="shop" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     <input type="text" value="{{$shop['license_fileImg']}}" class="text"  name="license_fileImg" style="display:none;">
                                     <img @if(!empty($shop['license_fileImg'])) style="width:50px;height:50px;float:left;margin-left:10px;margin-top:-5px;" src="{{getFileUrl($shop['license_fileImg'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;float: left;" @endif class="layui-upload-img" id="demo_license_fileImg" >
 
@@ -262,7 +262,6 @@
                     },
                     taxpayer_id:{
                         required : true,
-                        number:true,
                     },
                     settlement_bank_account_name:{
                         required : true,
@@ -298,7 +297,6 @@
                     },
                     taxpayer_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
                     settlement_bank_account_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',

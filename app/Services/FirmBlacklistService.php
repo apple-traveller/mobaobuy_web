@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Repositories\FirmBlacklistRepo;
+use App\Repositories\UserRepo;
+use App\Repositories\ShopRepo;
 class FirmBlacklistService
 {
     use CommonService;
@@ -22,8 +24,24 @@ class FirmBlacklistService
     //添加
     public static function create($data)
     {
-        $flag = FirmBlacklistRepo::create($data);
-        return $flag;
+        try{
+            self::beginTransaction();
+            //查询用户
+            $user = UserRepo::getList([],['nick_name'=>$data['firm_name'],'is_firm'=>1]);
+            if(!empty($user)){
+                UserRepo::modify($user[0]['id'],['is_freeze'=>1]);
+            }
+            //查询店铺
+            $shop = ShopRepo::getList([],['company_name'=>$data['firm_name'],'is_validated'=>1]);
+            if(!empty($shop)){
+                UserRepo::modify($shop[0]['id'],['is_freeze'=>1]);
+            }
+            $flag = FirmBlacklistRepo::create($data);
+            self::commit();
+            return $flag;
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
     }
 
 
