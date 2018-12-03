@@ -30,28 +30,6 @@
             <div class="nav-cate">
                 <div class="cate_title"><span class="ml30">原料分类</span><i class="iconfont icon-menu mr20 fr fs22"></i></div>
                 <ul class="ass_menu">
-<<<<<<< HEAD
-                    @foreach(getCategoryTree() as $level1_item)
-                        <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
-                            <i class="iconfont icon-right fr mr20"></i>
-                            <div class="ass_fn whitebg">
-                                <ul class="ass_fn_list">
-                                    @foreach($level1_item['_child'] as $level2_item)
-                                        <li>
-                                            <h1 class="fn_title fl"><a href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h1>
-                                            @if(isset($level2_item['_child']))
-                                                <div class="ass_fn_list_that ovh fl">
-                                                    @foreach($level2_item['_child'] as $level3_item)
-                                                        <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </li>
-=======
                     @foreach(getCategoryTree() as $k=>$level1_item)
                         @if($k<=5)
                             <li><span class="ass_title">{{$level1_item['cat_name']}}</span>
@@ -76,7 +54,6 @@
                                 </div>
                             </li>
                         @endif
->>>>>>> 86a7375d099366f4a78a2fe37154b0259f8eaec9
                     @endforeach
                 </ul>
             </div>
