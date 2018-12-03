@@ -124,7 +124,7 @@ class BrandController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        if(!empty($id)){
+        if(empty($id)){
             return $this->error('无法获取参数ID');
         }
         try{
