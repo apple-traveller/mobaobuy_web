@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use Illuminate\Http\Request;
 use Logistics\Client;
@@ -10,8 +11,22 @@ class KuaidiController extends Controller
 {
     public function searchWaybill(Request $request){
         require_once app_path('Plugins/Logistics/autoload.php');
-        $delivery_id = $request->input('delivery_id');
-        $delivery_info = OrderInfoService::getDeliveryInfo($delivery_id);
+        $id = $request->input('id');
+        $search_type = $request->input('search_type','order');
+
+        switch ($search_type){
+            case 'order':
+                $delivery_info = OrderInfoService::getDeliveryInfo($id);
+                break;
+            case 'invoice':
+                $delivery_info = InvoiceService::getInfoById($id);
+                break;
+            default:
+                $delivery_info = [];
+        }
+        if(empty($delivery_info)){
+            return $this->error('获取物流信息失败');
+        }
         $type = 'kdniao';
         try {
             switch ($type){
@@ -42,7 +57,6 @@ class KuaidiController extends Controller
                 default:
                     $json = '{}';
             }
-
             return $this->success('', '', \GuzzleHttp\json_decode($json));
         } catch (\Exception $e) {
             echo $e->errorMessage();
