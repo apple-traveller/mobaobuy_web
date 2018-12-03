@@ -71,7 +71,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .ass_fn .ass_fn_list {margin-left: 20px;margin-top:15px;margin-bottom:20px;}
 .ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;}
 .ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px dotted #DEDEDE;font-size: 14px;color: #999;}
-.ass_fn .ass_fn_list .ass_fn_list_that span { float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:30px; overflow:hidden;}
+.ass_fn .ass_fn_list .ass_fn_list_that span { float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:40px; overflow:hidden;line-height:40px;}
 
 .fn_title{width:70px;}
 
@@ -152,4 +152,4 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .member_right{width: 968px;box-sizing: border-box;min-height: 600px;height: auto;position: relative;border: 1px solid #DEDEDE;background: #FFFFFF;margin-left: 15px;float: left;padding: 25px 30px;}
 
-/**------------------------------------------------------------------------------------------------------------------------------**/
+.nodata{font-size:16px;color:#fff;padding:20px 0;text-align:center;}

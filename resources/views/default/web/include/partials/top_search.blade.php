@@ -39,7 +39,7 @@
                                         <li>
                                             <h1 class="fn_title fl"><a href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h1>
                                             @if(isset($level2_item['_child']))
-                                                <div class="ass_fn_list_that ml35 ovh fl">
+                                                <div class="ass_fn_list_that ovh fl">
                                                     @foreach($level2_item['_child'] as $level3_item)
                                                         <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
                                                     @endforeach
