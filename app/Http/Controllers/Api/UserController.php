@@ -50,9 +50,7 @@ class UserController extends ApiController
             'id'=>$user_id,
             'address_id' =>$address_id
         ];
-        //dd($this->getDeputyUserInfo($request));
         $user_address = UserAddressService::getInfoByConditions(['id'=>$address_id,'user_id'=>$this->getDeputyUserInfo($request)['firm_id']]);
-        //dd($user_address);
         if(empty($user_address)){
             return $this->error('该地址不存在');
         }
