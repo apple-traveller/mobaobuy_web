@@ -429,7 +429,7 @@
                 $("#num").attr("disabled",false);
                 $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spec+packing_unit+'</div>');
 
-                $('#goods_number').val('');
+                $('#goods_number').val(packing_spec);
             });
 
             $("#goods_name").blur(function(){

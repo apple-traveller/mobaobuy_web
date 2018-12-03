@@ -238,7 +238,7 @@
                 </div>
             </div>
         @else
-            @if($t == 2)
+            @if(!empty($t))
                 <li class="nodata1">近期上市 敬请期待</li>
             @else
                 <li class="nodata">无相关数据</li>
