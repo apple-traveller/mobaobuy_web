@@ -1127,7 +1127,11 @@ class OrderInfoService
                     if (!$userId['firm_id']) {
                         $order_status = 2;
                     } else {
-                        $order_status = 1;
+                        if(!$userId['need_approval']){
+                            $order_status = 2;
+                        }else{
+                            $order_status = 1;
+                        }
                     }
             }
             $orderInfo = [

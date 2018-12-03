@@ -116,7 +116,7 @@ class RegionService
         $city = "";
         $province = "";
         $district = "";
-        if($country_id!=0){
+        if($country_id!=0) {
             $country = RegionRepo::getInfo($country_id)['region_name'];
         }
         if($province_id!=0){

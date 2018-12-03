@@ -15,7 +15,40 @@
                 $('.acount_tab').removeClass('whitebg');
                 $('.acount_select').hide()
             })
+
+            //获取物流信息
+            getLogisticsInfo();
         })
+        //
+        function getLogisticsInfo(){
+            let _id = $('.order_pro_stute').attr('data-id');
+            $.ajax({
+                url: "/logistics/detail",
+                dataType: "json",
+                data:{
+                    'id': _id,
+                    'search_type':'invoice'
+                },
+                type:"get",
+                success:function(data){
+                    if(data.code == 1){
+                        let _list = data.data.Traces;
+                        let _length = data.data.Traces.length;
+                        let _html = '';
+                        for(let i=(_length-1); i>=0; i--){
+                            _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+                        }
+                        console.log(_html);
+                        if(_html == ''){
+                            _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
+                        }
+                        $('.wlxx').append(_html);
+                    }else{
+                        $.msg.alert(data.msg);
+                    }
+                }
+            })
+        }
     </script>
     <style>
         /*订单状态*/
@@ -66,36 +99,13 @@
         </div>
         <!--物流信息-->
         <div class="whitebg br1 mt20 ovh">
-            <div class="order_pro_stute">
-                <span class="ml30 db mt20">物流单号：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else 暂无运单号 @endif </span>
+            <div class="order_pro_stute" @if(!empty($invoiceInfo['id'])) data-id="{{$invoiceInfo['id']}}" @else data-id="0" @endif>
+                <span class="ml30 db mt20">物流公司：@if(!empty($invoiceInfo['shipping_name'])) {{ $invoiceInfo['shipping_name'] }} @else 暂无物流公司 @endif </span>
+                <span class="ml30 db mt20">物流单号：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else 暂无物流单号 @endif </span>
             </div>
             <div class="fl wlgz_text">
                 <ul class="wlxx">
-                    <li>
-                        <i class="external-cir"></i>
-                        您提交了订单，请等待系统确认
-                        <div class="gray">2018-09-22   12:00:00</div>
-                    </li>
-                    <li>
-                        <i class="external-cir"></i>
-                        您提交了订单，请等待系统确认
-                        <div class="gray">2018-09-22   12:00:00</div>
-                    </li>
-                    <li>
-                        <i class="external-cir"></i>
-                        您提交了订单，请等待系统确认
-                        <div class="gray">2018-09-22   12:00:00</div>
-                    </li>
-                    <li>
-                        <i class="external-cir"></i>
-                        您提交了订单，请等待系统确认
-                        <div class="gray">2018-09-22   12:00:00</div>
-                    </li>
-                    <li>
-                        <i class="external-cir"></i>
-                        您提交了订单，请等待系统确认
-                        <div class="gray">2018-09-22   12:00:00</div>
-                    </li>
+
                 </ul>
             </div>
         </div>
