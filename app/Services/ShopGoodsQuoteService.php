@@ -19,7 +19,6 @@ class ShopGoodsQuoteService
 
     public static function getQuoteByWebSearch($pager, $condition)
     {
-
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
 
         foreach ($result['list'] as $k => $vo) {

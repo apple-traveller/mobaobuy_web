@@ -198,7 +198,7 @@
 						<a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a>
 					</div>
 				</div>
-				<div class="address_info mt5"><span>{{ $v['address_names']}}-{{ $v['address'] }}</span></div>
+				<div class="address_info mt5"><span>{{ $v['address_names']}}</span></div>
 				<div class="address_name mt5"><span>{{ $v['mobile_phone'] }}</span></div>
 				<div class="address_default">
 					<div class="address_default_edit" align="right">

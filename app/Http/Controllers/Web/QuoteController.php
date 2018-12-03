@@ -208,6 +208,8 @@ class QuoteController extends Controller
             $condition[] = $con;
         }
         $pageSize = 10;
+        $condition['b.is_delete'] = 0;
+        $condition['b.is_self_run'] = 1;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');
