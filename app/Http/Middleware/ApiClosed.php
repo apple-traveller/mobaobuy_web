@@ -2,15 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Api\ApiController;
 use App\Services\UserService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Controller;
 
-class ApiClosed
+class ApiClosed extends ApiController
 {
     public function handle(Request $request, Closure $next, $guard = null)
     {
@@ -20,6 +20,7 @@ class ApiClosed
             //缓存用户的基本信息
             $user_info = UserService::getInfo($user_id);
             $deputy_user = Cache::get('_api_deputy_user_'.$user_id);
+            //dd($deputy_user);
             //用户不切换生效权限,is_logout存的是企业的id
             if($user_info['is_logout']){
                 if($user_info['is_firm'] == 0 && $deputy_user['is_self'] == 0){
@@ -54,7 +55,6 @@ class ApiClosed
             }
 
         }
-
         return $next($request);
     }
 }
