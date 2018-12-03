@@ -19,7 +19,11 @@ class UserAddressService
             $user_address[$k]['province'] = RegionRepo::getInfo($vo['province'])['region_name'];
             $user_address[$k]['country'] = RegionRepo::getInfo($vo['country'])['region_name'];
             $user_address[$k]['city'] = RegionRepo::getInfo($vo['city'])['region_name'];
-            $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            if(!empty(RegionRepo::getInfo($vo['district']))){
+                $user_address[$k]['district'] = RegionRepo::getInfo($vo['district'])['region_name'];
+            }else{
+                $user_address[$k]['district'] = "";
+            }
             if(!empty($user_address[$k]['street'])){
                 $user_address[$k]['street'] = RegionRepo::getInfo($vo['street'])['region_name'];
             }
@@ -28,10 +32,32 @@ class UserAddressService
         return $user_address;
     }
 
-    public static function getAddressInfo($address_id)
+    public static function getAddressInfo($address_id,$type='')
     {
         $info = UserAddressRepo::getInfo($address_id);
-        $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'] );
+        if(empty($info)){
+            return false;
+        }
+        if ($type){
+            $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district']);
+        } else {
+            $address_names = RegionService::getRegion($info['country'], $info['province'], $info['city'], $info['district'],$info['address']);
+        }
+        $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
+        $info['address_names'] = $address_names;
+        $info['str_address'] = $str_address;
+        return $info;
+    }
+
+    public static function getAddressInfoApi($address_id,$type='')
+    {
+        $info = UserAddressRepo::getInfo($address_id);
+        if(empty($info)){
+            return false;
+        }
+
+        $address_names = RegionService::getRegionApi($info['country'], $info['province'], $info['city'], $info['district']);
+
         $str_address = $info['country'].'|'.$info['province'].'|'.$info['city'].'|'.$info['district'];
         $info['address_names'] = $address_names;
         $info['str_address'] = $str_address;
@@ -41,6 +67,28 @@ class UserAddressService
     public static function delete($id)
     {
         $user_info = session('_web_user');
+        //先判断是否是默认地址
+        try{
+            self::beginTransaction();
+            if($id == $user_info['address_id']){//是默认地址 清空user表的默认地址字段
+                UserService::modify($user_info['id'],['address_id'=>0]);
+            }
+            $res = UserAddressRepo::delete($id);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败');
+            }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
+    }
+
+    public static function deleteApi($id,$user_info)
+    {
         //先判断是否是默认地址
         try{
             self::beginTransaction();

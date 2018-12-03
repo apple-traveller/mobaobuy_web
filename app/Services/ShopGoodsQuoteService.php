@@ -20,19 +20,27 @@ class ShopGoodsQuoteService
     public static function getQuoteByWebSearch($pager, $condition)
     {
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
+
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
         }
-        //获取筛选过滤信息
+        //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
+        $con['b.is_self_run'] = 1;
+        if (!isset($condition['b.type'])) {
+            $con['b.type'] = '1|2';
+        }else{
+            $con['b.type'] = $condition['b.type'];
+        }
+
         //1、获取分类
-        $cates = ShopGoodsQuoteRepo::getQuoteCategory([]);
+        $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
         if (!empty($cates)) {
             $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates)]);
         } else {
             $filter['cates'] = [];
         }
         //2、获取品牌
-        $brands = ShopGoodsQuoteRepo::getQuoteBrand([]);
+        $brands = ShopGoodsQuoteRepo::getQuoteBrand($con);
         if (!empty($brands)) {
             $brand_list = BrandService::getBrandList([], ['id' => implode('|', $brands)]);
             $filter['brands'] = $brand_list['list'];
@@ -40,7 +48,9 @@ class ShopGoodsQuoteService
             $filter['brands'] = [];
         }
         //3、获取发货地
-        $cities = ShopGoodsQuoteRepo::getQuoteCity([]);
+        $con_region['is_self_run'] = $con['b.is_self_run'];
+        $con_region['type'] = $con['b.type'];
+        $cities = ShopGoodsQuoteRepo::getQuoteCity($con_region);
         if (!empty($cities)) {
             $city_list = RegionService::getList([], ['region_id' => implode('|', $cities)]);
             $filter['city_list'] = $city_list;
@@ -55,7 +65,6 @@ class ShopGoodsQuoteService
     //分页
     public static function getShopGoodsQuoteList($pager, $condition)
     {
-
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
@@ -78,17 +87,34 @@ class ShopGoodsQuoteService
     }
 
     public static function getShopOrderByQuote($top){
-        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
-        $shop_list = [];
-        foreach ($shops as $item) {
-            $shop_info = ShopRepo::getInfo($item['shop_id']);
-            //获取报价
-            $quotes = self::getShopGoodsQuoteList(['pageSize' => 10, 'page' => 1, 'orderType' => ['b.add_time' => 'desc']], ['shop_id' => $item['shop_id']]);
-            $shop_info['quotes'] = $quotes['list'];
-            $shop_list[] = $shop_info;
-        }
+//        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
+////        dump($shops);
+//        $shop_list = [];
+//        foreach ($shops as $item) {
+//            $shop_info = ShopRepo::getInfo($item['shop_id']);
+//            //获取报价
+//            $quotes = self::getShopGoodsQuoteList(['pageSize' => 10, 'page' => 1, 'orderType' => ['b.add_time' => 'desc']], ['shop_id' => $item['shop_id'],'is_self_run'=>0]);
+//            $shop_info['quotes'] = $quotes['list'];
+//            $shop_list[] = $shop_info;
+//        }
+//        dd($shop_list);
+//        return $shop_list;
 
-        return $shop_list;
+        $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0]);
+        foreach($shopInfo['list'] as $k=>$v){
+             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5],['shop_id'=>$v['id'],'is_self_run'=>0]);
+
+                foreach($quotes['list'] as $va=>$value){
+                    $goodsInfo = GoodsRepo::getInfo($value['goods_id']);
+                    $quotes['list'][$va]['brand_name'] = $goodsInfo['brand_name'];
+                    $quotes['list'][$va]['packing_spec'] = $goodsInfo['packing_spec'];
+                    $quotes['list'][$va]['goods_full_name'] = $goodsInfo['goods_full_name'];
+                    $cateInfo =  GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
+                    $quotes['list'][$va]['cat_name'] = $cateInfo['cat_name'];
+                }
+                $shopInfo['list'][$k]['quotes'] = $quotes['list'];
+        }
+        return $shopInfo['list'];
     }
 
     //保存

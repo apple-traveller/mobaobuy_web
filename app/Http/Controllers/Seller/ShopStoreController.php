@@ -20,7 +20,6 @@ class ShopStoreController extends Controller
         $currentPage = $request->input('currentPage',1);
 //        $user_id = session()->get('_seller_id')['user_id'];
         $shop_id = session('_seller_id')['shop_id'];
-
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
         $pageSize =5;
@@ -36,25 +35,34 @@ class ShopStoreController extends Controller
 
     public function storeList()
     {
-        $shop_id = session('_seller_id')['shop_id'];
+        $shopInfo = session('_seller')['shop_info'];
+        $shop_id = $shopInfo['id'];
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
-        $storeList = ShopStoreService::getShopStoreList([],$condition);
-        if($storeList){
-            return $this->success('获取成功','',$storeList['list']);
-        }else{
-            return $this->error('无信息');
+        if ($shopInfo['is_self_run']==0){
+            $storeList = [];
+        } else {
+            $storeList = ShopStoreService::getShopStoreList([],$condition);
         }
+        return $this->success('获取成功','',isset($storeList['list'])?$storeList['list']:[]);
     }
 
     public function add()
     {
+        $shop_info = session('_seller')['shop_info'];
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
+        }
         return $this->display('seller.shopStore.add');
     }
 
     public function save(Request $request)
     {
-        $shop_id = session('_seller_id')['shop_id'];
+        $shop_info = session('_seller')['shop_info'];
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
+        }
+        $shop_id = $shop_info['id'];
         $store_name = $request->get('store_name','');
 
         $data = [
@@ -84,6 +92,10 @@ class ShopStoreController extends Controller
     }
     public function edit(Request $request)
     {
+        $shop_info = session('_seller')['shop_info'];
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
+        }
         $id = $request->get('id',0);
         $currentPage = $request->input('currentPage');
 

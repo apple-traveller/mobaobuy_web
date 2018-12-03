@@ -47,10 +47,39 @@
             </ul>
             <div class="layui-tab-content" >
                 <div class="layui-tab-item layui-show">
-                    <div id="list" style="height: 400px">
-
+                    <div id="list" class="mt25 pt20" style="height: 300px">
+                        <div style="padding: 20px; background-color: #F2F2F2;">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">卡片面板</div>
+                                        <div class="layui-card-body">
+                                            卡片式面板面板通常用于非白色背景色的主体内<br>
+                                            从而映衬出边框投影
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">卡片面板</div>
+                                        <div class="layui-card-body">
+                                            结合 layui 的栅格系统<br>
+                                            轻松实现响应式布局
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">标题</div>
+                                        <div class="layui-card-body">
+                                            内容
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="main">
+                    <div id="main" style="margin: 0 4px">
 
                     </div>
                 </div>
@@ -158,6 +187,9 @@
                 }
             ]
         });
+
+
+
         var bodyWidth = $("body").width();
 
         if(bodyWidth<1380){

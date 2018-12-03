@@ -24,7 +24,7 @@ class ShopDeliveryController extends Controller
     {
         $shop_id = session()->get('_seller_id')['shop_id'];
         $order_sn = $request->input('order_sn');
-        $status = $request->input('status',0);
+        $status = $request->input('status',1);
         $currentPage = $request->input('currentPage', 1);
         $pageSize = 10;
         $condition = [];
@@ -112,8 +112,7 @@ class ShopDeliveryController extends Controller
         $status = $request->input('status','');
         $data = [
             'id'=> $id,
-            'status'=>$status,
-            'shipping_time'=>Carbon::now()
+            'status'=>$status
         ];
         try{
             //修改订单表的发货状态

@@ -63,7 +63,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>授权委托书电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     <input type="text" value="" class="text"  name="attorney_letter_fileImg" style="display:none;">
                                     <img  style="width:50px;height:50px;display:none;margin-right:10px;" class="layui-upload-img"><br/>
                                     <div  class="form_prompt"></div>
@@ -73,7 +73,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file"  data-type="" data-path="shop" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     <input type="text" value="" class="text"  name="license_fileImg" style="display:none;">
                                     <img  style="width:50px;height:50px;display:none;margin-right:10px;" class="layui-upload-img"><br/>
                                     <div  class="form_prompt"></div>
@@ -295,7 +295,6 @@
                     },
                     taxpayer_id:{
                         required : true,
-                        number:true,
                     },
                     settlement_bank_account_name:{
                         required : true,
@@ -331,7 +330,6 @@
                     },
                     taxpayer_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
                     settlement_bank_account_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',

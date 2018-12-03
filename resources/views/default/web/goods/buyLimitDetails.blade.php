@@ -131,7 +131,6 @@
 		    	
 		        
 		    });
-
             //数量输入检测
             $('#goodsNum').change(function(){
                 var _self = $(this);
@@ -140,19 +139,24 @@
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
                 var min_num = Number(_self.attr('min-limit'));//起售量
                 var can_num = Number(_self.attr('canSell'));//可售
-                //当前购物车数据id
-                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber<min_num&&goodsNumber>can_num){
-                    let _count = goodsNumber%packing_spec;
-                    if(_count>0){
-                        _self.val(goodsNumber-_count);
+                //当前购物车数据id 检测是否是数字&&
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>min_num){
+                    if(goodsNumber>can_num){
+                        layer.msg('输入的数量不能大于可售数量');
+                        _self.val(can_num);
+                    }else{
+                        let _count = goodsNumber%packing_spec;
+                        if(_count>0){
+                            _self.val(goodsNumber-_count);
+                        }
                     }
                 }else{
-                    layer.msg('输入的数量有误');
+                    layer.msg('输入的数量不能小于起售量');
                     _self.val(packing_spec);
                 }
             });
-        })
-
+        });
+        //收藏
         function collectGoods(obj){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
@@ -185,8 +189,7 @@
                 })
             }
         }
-
-
+        //去结算
         function toBalance(goodsId,activityId){
             var userId = "{{session('_web_user_id')}}";
              if(userId > 0){

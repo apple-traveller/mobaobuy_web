@@ -17,6 +17,13 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
+
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
     <div class="warpper">
         <div class="title"><a href="/seller/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特卖</div>
         <div class="content">
@@ -41,12 +48,11 @@
                             <input type="hidden" value="0" name="store_id"  id="store_id" />
                             <input type="hidden" value="3" name="type"  id="store_id" />
                             <div class="item">
-                                <div class="label">选择商品分类：</div>
+                                <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" data-name="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
+                                    <input type="hidden" name="cat_id" id="cat_id"/>
+                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" value="{{old('cat_name')}}" treeId="" id="cat_name" treeDataUrl="/seller/goods/getGoodsCat" size="40"  class="text" title="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
                                 </div>
                             </div>
 
@@ -56,7 +62,7 @@
                                     <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" data-name="{{$good['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
@@ -245,6 +251,9 @@
 
                 }
             });
+            $("#cat_name").focus(function(){
+                showWinZtreeSelector(this);
+            });
         });
 
         document.onclick=function(event){
@@ -252,66 +261,10 @@
             $(".query_goods_name").hide();
             $(".query_store_name").hide();
         }
-
-        // 种类 获取焦点请求所有的分类数据
-        $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/seller/goods/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==200){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
-
-        $("#cat_name").bind("input propertychange", function () {
-            let input_v = $(this).val();
-            $.ajax({
-                url: "/seller/goods/getGoodsCat",
-                dataType: "json",
-                data:{
-                    'cat_name':input_v
-                },
-                type:"POST",
-                success:function(res){
-                    if(res.code==200){
-                        $(".query_cat_name").children().filter("li").remove();
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
-
-        // 种类 点击将选中的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-            $("#cat_name").attr("data-name",cat_name);
-        });
-
-        $("#cat_name").blur(function () {
-            $(this).val($(this).attr('data-name'));
-        });
-
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/seller/goods/getGood",
                 dataType: "json",
@@ -322,7 +275,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -339,7 +292,7 @@
                 return false;
             }
             // $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/seller/goods/getGood",
                 dataType: "json",

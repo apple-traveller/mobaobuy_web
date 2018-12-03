@@ -124,8 +124,13 @@ class BrandController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
+        if(empty($id)){
+            return $this->error('无法获取参数ID');
+        }
         try{
-            $flag = BrandService::modify(['id'=>$id,'is_delete'=>1]);
+            //检测品牌是否存在对应商品
+            $flag = BrandService::delete($id);
+
             if($flag){
                 return $this->success('删除成功',url('/admin/brand/list'));
             }else{

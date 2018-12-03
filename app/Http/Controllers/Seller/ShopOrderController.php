@@ -16,6 +16,7 @@ use App\Services\UserInvoicesService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\DeclareDeclare;
 
 class ShopOrderController extends Controller
 {
@@ -210,14 +211,15 @@ class ShopOrderController extends Controller
                     $data['pay_time'] = Carbon::now();
                     $action_note = "商家确认收款";
                 }
-                // 收定金 订单状态已确认
+                // 收定金
                 if (!empty($deposit_status)){
                     if ($orderInfo['order_status'] != 2) {
                         return $this->error('订单状态不符合执行该操作的条件');
                     }
-                    $data['order_status'] = 3;
                     $data['pay_time'] = Carbon::now();
-                    $data['deposit_status'] = $deposit_status;
+                    $data['deposit_status'] = $deposit_status?$deposit_status:1;
+                    $data['money_paid'] = $orderInfo['money_paid']+$orderInfo['deposit'];
+
                     if (empty($action_note)) {
                         $action_note = "确认收到定金";
                     }
@@ -480,6 +482,7 @@ class ShopOrderController extends Controller
      */
     public function saveDelivery(Request $request)
     {
+        $action_name = session('_seller')['user_name'];
         $data = $request->all();
         $order_id = $request->input('order_id');
         $orderInfo = OrderInfoService::getOrderInfoById($order_id);
@@ -527,10 +530,10 @@ class ShopOrderController extends Controller
         $order_delivery_data['mobile_phone'] = $orderInfo['mobile_phone'];
         $order_delivery_data['postscript'] = $orderInfo['postscript'];
         $order_delivery_data['update_time'] = Carbon::now();
-        $order_delivery_data['status'] = 0;
+        $order_delivery_data['status'] = 1; // 默认已发货
         //dd($order_delivery_data);
         try{
-            $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data);
+            $orderDelivery = OrderInfoService::createDelivery($order_delivery_goods_data,$order_delivery_data,$action_name);
             if(!empty($orderDelivery)){
                 return $this->success('生成发货单成功',url('/seller/order/list?tab_code=waitSend'));
             }

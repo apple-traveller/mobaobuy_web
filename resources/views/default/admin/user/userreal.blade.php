@@ -19,7 +19,7 @@
                         <form method="post" action="#" name="theForm" id="user_update" novalidate="novalidate">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;
+                                <div class="label">&nbsp;
                                     @if($info['is_firm']==1)
                                         企业名称：
                                     @else
@@ -36,7 +36,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;添加时间：</div>
+                                <div class="label">&nbsp;添加时间：</div>
                                 <div class="label_value font14">
                                     @if(!empty($info['add_time']))
                                         {{$info['add_time']}}
@@ -47,28 +47,27 @@
                             </div>
                         @if($info['is_firm']==0)
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;性别：</div>
+                                    <div class="label">&nbsp;性别：</div>
                                     <div class="label_value font14">
-                                        @if($info['sex']==0) 保密
-                                        @elseif($info['sex']==1)男
-                                        @elseif($info['sex']==2)女
-                                        @endif
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="sex" id="sex">
+                                            <option @if($info['sex']==0) selected @endif value="0">保密</option>
+                                            <option @if($info['sex']==1) selected @endif value="1">男</option>
+                                            <option @if($info['sex']==2) selected @endif value="2">女</option>
+                                        </select>
+                                        <div style="margin-left: 10px;float: left;" class="notice">下拉框切换自动修改</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;生日：</div>
+                                    <div class="label">&nbsp;生日：</div>
                                     <div class="label_value font14">
-                                        @if(!empty($info['birthday']))
-                                            {{$info['birthday']}}
-                                        @else
-                                            无
-                                        @endif
+                                        <input type="text" name="birthday" class="text" value="{{$info['birthday']}}" maxlength="40" autocomplete="off" id="birthday">
+                                        <div class="notice">光标离开自动修改</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;身份证正面：</div>
+                                    <div class="label">&nbsp;身份证正面：</div>
                                     <div class="label_value font14">
                                         @if($info['front_of_id_card']=="")
                                             未上传
@@ -79,7 +78,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;身份证反面：</div>
+                                    <div class="label">&nbsp;身份证反面：</div>
                                     <div class="label_value font14">
                                         @if($info['front_of_id_card']=="")
                                             未上传
@@ -90,7 +89,7 @@
                                 </div>
                         @else
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开票资料电子版：</div>
+                                    <div class="label">&nbsp;开票资料电子版：</div>
                                     <div class="label_value font14">
                                         @if($info['invoice_fileImg']=="") 未上传
                                         @else
@@ -100,7 +99,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;营业执照副本电子版：</div>
+                                    <div class="label">&nbsp;营业执照副本电子版：</div>
                                     <div class="label_value font14">
                                         @if($info['license_fileImg']=="") 未上传
                                         @else
@@ -110,7 +109,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;授权委托书电子版：</div>
+                                    <div class="label">授权委托书电子版：</div>
                                     <div class="label_value font14">
                                         @if($info['attorney_letter_fileImg']=="") 未上传
                                         @else
@@ -120,21 +119,21 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;负责人姓名：</div>
+                                    <div class="label">&nbsp;负责人姓名：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="contactName" id="contactName" class="text" value="{{$info['contactName']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;负责人电话：</div>
+                                    <div class="label">&nbsp;负责人电话：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="contactPhone" id="contactPhone" class="text" value="{{$info['contactPhone']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;是否能开专票：</div>
+                                    <div class="label">是否能开专票：</div>
                                     <div class="label_value font14">
                                         <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
                                             <option @if($info['is_special']==0) selected @endif value="0">否</option>
@@ -144,35 +143,35 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;税号：</div>
+                                    <div class="label">&nbsp;税号：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="tax_id" id="tax_id" class="text" value="{{$info['tax_id']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开户银行：</div>
+                                    <div class="label">&nbsp;开户银行：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="bank_of_deposit" id="bank_of_deposit" class="text" value="{{$info['bank_of_deposit']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;银行账号：</div>
+                                    <div class="label">&nbsp;银行账号：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="bank_account" id="bank_account" class="text" value="{{$info['bank_account']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开票地址：</div>
+                                    <div class="label">&nbsp;开票地址：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="company_address" id="company_address" class="text" value="{{$info['company_address']}}" maxlength="40" autocomplete="off" >
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;开票电话：</div>
+                                    <div class="label">&nbsp;开票电话：</div>
                                     <div class="label_value font14">
                                         <input type="text" name="company_telephone" id="company_telephone" class="text" value="{{$info['company_telephone']}}" maxlength="40" autocomplete="off" >
                                     </div>
@@ -188,17 +187,17 @@
                             </div>
 
 
-
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
-                                <div class="label_value ">
-                                        <div style="float: left;" data-status="0" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==0) @else layui-btn-primary @endif '>待实名</div>
-                                        <div style="float: left;" data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==1) @else layui-btn-primary @endif '>已实名</div>
-                                        <div style="float: left;" data-status="2" class='review_status_1 layui-btn layui-btn-sm layui-btn-radius @if($info['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
-                                        <div style="margin-left: 20px;"  class="notic">点击按钮直接修改状态</div>
+                                <div class="label">审核状态：</div>
+                                <div class="value">
+                                    <input @if($info['review_status']==0) class="review_status_1 btn btn25 blue_btn " @else class="review_status_1 btn btn25 red_btn pay_status" @endif  type="button" data-status="0" value="待实名" >
+                                    <input @if($info['review_status']==1) class="review_status btn btn25 blue_btn " @else class="review_status btn btn25 red_btn pay_status" @endif  type="button" data-status="1" value="通过" >
+                                    <input @if($info['review_status']==2) class="review_status_1 btn btn25 blue_btn " @else class="review_status_1 btn btn25 red_btn pay_status" @endif  type="button" data-status="2" value="不通过" >
+                                    <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                 </div>
-
                             </div>
+
+
 
                         </form>
                     </div>
@@ -219,6 +218,49 @@
                     area: ['700px', '500px'],
                     content: '<img src="'+content+'">'
                 });
+            });
+            $("#sex").change(function(){
+                var sex = $(this).val();
+                var  postData = {
+                    "user_id": "{{$info['user_id']}}",
+                    "is_firm":"{{$info['is_firm']}}",
+                    "sex":sex,
+                };
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        //console.log(res.data);return false;
+                        layer.msg("修改成功",{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            var sex = res.data.sex;
+                            $(this).val(sex);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
+            });
+            $("#birthday").blur(function(){
+                var birthday = $(this).val();
+                var  postData = {
+                    "user_id": "{{$info['user_id']}}",
+                    "is_firm":"{{$info['is_firm']}}",
+                    "birthday":birthday,
+                };
+                $.post('/admin/user/userReal', postData, function (res) {
+                    if (res.code == 1) {
+                        //console.log(res.data);return false;
+                        layer.msg("修改成功",{
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            $(this).val(res.data.birthday);
+                        });
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }, "json");
             });
 
             $(".review_status_1").click(function(){

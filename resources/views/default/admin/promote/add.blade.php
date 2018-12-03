@@ -1,6 +1,11 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
-
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
     <div  class="warpper">
         <div class="title"><a href="/admin/promote/list" class="s-back">返回</a>优惠活动 - 添加活动</div>
         <div class="content">
@@ -8,6 +13,7 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>促销总数量、最小起售数量、最大限购数量必须为商品规格的整数倍。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -19,13 +25,13 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;店铺：</div>
                                     <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" >
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" value="{{old('shop_id')}}">
                                             <option value="">请选择店铺</option>
                                             @foreach($shops as $vo)
                                             <option value="{{$vo['id']}}">{{$vo['company_name']}}</option>
                                             @endforeach
                                         </select>
-                                        <input type="hidden" name="shop_name" id="shop_name">
+                                        <input type="hidden" name="shop_name" id="shop_name" value="{{old('shop_name')}}">
                                         <div style="margin-left: 10px;" class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -33,7 +39,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;开始时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="begin_time" autocomplete="off" value="" id="begin_time" size="40"  class="text">
+                                        <input type="text" name="begin_time" autocomplete="off" id="begin_time" size="40"  class="text" value="{{old('begin_time')}}">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -42,7 +48,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 结束时间：</div>
                                     <div class="label_value">
-                                        <input type="text" name="end_time" autocomplete="off" value="" id="end_time" size="40"  class="text">
+                                        <input type="text" name="end_time" autocomplete="off" value="" id="end_time" size="40"  class="text" value="{{old('end_time')}}">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -50,18 +56,16 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品分类：</div>
                                     <div class="label_value">
-                                        <input type="text" cat-id=""  autocomplete="off" value="" id="cat_name" size="40"  class="text">
+                                        <input type="hidden" name="cat_id" id="cat_id" value="{{old('cat_id')}}"/>
+                                        <input type="text" data-catename="" name="cat_id_LABELS"  value="{{old('cat_id_LABELS')}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                         <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                        <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 180px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
-
-                                        </ul>
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品：</div>
                                     <div class="label_value">
-                                        <input type="text" data-packing-spac="0"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
+                                        <input type="text" data-packing-spac="0"  autocomplete="off" value="{{old('goods_name')}}" name="goods_name" id="goods_name" size="40"  class="text">
                                         <input type="hidden" name="goods_id"  id="goods_id">
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
@@ -72,7 +76,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 促销价格：</div>
                                     <div class="label_value">
-                                        <input type="text" name="price"  autocomplete="off" value="" id="price" size="40"  class="text">
+                                        <input type="text" name="price"  autocomplete="off" value="{{old('price')}}" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -80,9 +84,9 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 促销总数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="num"  autocomplete="off" value="" id="num" size="40"  class="text">
+                                        <input type="text" name="num"  autocomplete="off" id="num" size="40" value="{{old('num')}}" class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
@@ -90,17 +94,18 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="min_limit"  autocomplete="off" value="" id="min_limit" size="40"  class="text">
+                                        <input type="text" name="min_limit"  autocomplete="off" value="{{old('min_limit')}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 最大限购数量：</div>
                                     <div class="label_value">
-                                        <input type="text" name="max_limit"  autocomplete="off" value="" id="max_limit" size="40"  class="text">
+                                        <input type="text" name="max_limit"  autocomplete="off"  value="{{old('max_limit')}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div class="notic">0-不限</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。0-不限</div>
                                     </div>
                                 </div>
 
@@ -124,63 +129,25 @@
             $("#shop_name").val(shop_name);
 
             document.onclick=function(event){
-                $(".query_cat_name").hide();
                 $(".query_goods_name").hide();
             }
         });
+
         //选择店铺
         $("#shop_id").change(function(){
-            var shop_name = $(this).find("option:selected").text();
+            let shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
         });
 
-        //商品分类获取焦点请求所有的分类数据
+        //获取树形分类
         $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
-        });
-
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-        });
-
-        //根据分类里面输入的文字实时查询分类数据
-        $("#cat_name").bind("input propertychange",function(res){
-            var cat_name = $(this).val();
-            $(".query_cat_name").children().filter("li").remove();
-            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==1){
-                    $(".query_cat_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;">'+data[i].cat_name+'</li>');
-                    }
-                }
-            },"json");
+            showWinZtreeSelector(this);
         });
 
         //商品获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",
@@ -222,7 +189,7 @@
 
         //根据分类里面输入的文字实时查询商品数据
         $("#goods_name").bind("input propertychange",function(res){
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             var goods_name = $("#goods_name").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{"cat_id":cat_id,"goods_name":goods_name},function(res){

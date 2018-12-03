@@ -42,7 +42,7 @@
                 let iptsVal=Number(ipts.val());//当前输入值
                 let packing_spec = Number($(this).attr('packing_spec'));//规格
                 let canSell = Number($(this).attr('canSell'));//规格
-                if (iptsVal-packing_spec < 0) {
+                if (iptsVal-packing_spec < packing_spec) {
                     $.msg.error('已经是最低的购买数量了');
                     return;
                 }else{
@@ -116,7 +116,7 @@
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
                 var activity_num = Number(_self.attr('activity_num'));//活动总量
 
-                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=packing_spec){
                     if(goodsNumber > activity_num){
                         _self.val(activity_num);
                     }else{
@@ -156,6 +156,7 @@
                     success:function(data){
                         if(data.code){
                             $.msg.alert('收藏成功');
+                            window.location.reload();
                         }else{
                             $.msg.alert(data.msg);
                         }

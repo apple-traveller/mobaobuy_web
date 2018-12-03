@@ -318,6 +318,7 @@
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
+                                        @if(!empty($orderLogs))
                                         @foreach($orderLogs as $vo)
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -345,6 +346,8 @@
                                                 <td>{{$vo['action_note']}}</td>
                                             </tr>
                                         @endforeach
+                                            @else
+                                            @endif
                                         </tbody>
                                     </table>
 
@@ -376,10 +379,9 @@
                 let to_buyer = $(".to_buyer").val();
                 $.post('/seller/order/toBuyerModify',{'id':id,'to_buyer':to_buyer},function(res){
                     if(res.code==1){
-                        console.log(res.msg);
                         window.location.reload();
                     }else{
-                        alert(res.msg);
+                        layer.alert(res.msg);
                     }
                 },"json");
                 layer.close(index);
@@ -458,13 +460,14 @@
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
                         }
                     });
                     layer.close(index);
+                    window.location.reload();
                 });
             });
             // layui.use('layer', function(){
@@ -518,13 +521,14 @@
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
                         }
                     });
                     layer.close(index);
+                    window.location.reload();
                 });
             });
             // layui.use('layer', function(){
@@ -569,7 +573,7 @@
                     }, function(value, index, elem){
                         let num = /^\d+(\.{0,1}\d+){0,1}$/;
                         if (!num.test(value)){
-                            layer.msg('请填写正数');
+                            layer.alert('请填写正数');
                             return false;
                         }
                         $.ajax({
@@ -582,15 +586,15 @@
                             type: 'post',
                             success: function (res) {
                                 if (res.code == 1){
-                                    layer.msg(res.msg, {icon: 1,time:2000});
+                                    layer.alert(res.msg, {icon: 1,time:2000});
                                 } else {
-                                    layer.msg(res.msg, {icon: 5,time:2000});
+                                    layer.alert(res.msg, {icon: 5,time:2000});
                                 }
                                 setTimeout( window.location.href="/seller/order/list?id="+id,3000);
                             }
                         });
                         layer.close(index);
-
+                        window.location.reload();
                     });
                 });
         }
@@ -611,13 +615,14 @@
                         type: 'post',
                         success: function (res) {
                             if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:600});
+                                layer.alert(res.msg, {icon: 1,time:600});
                             } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
                         }
                     });
                     layer.close(index);
+                    window.location.reload();
                 });
             });
             // layui.use('layer', function(){
@@ -663,11 +668,13 @@
                 type:'POST',
                 success:function (res) {
                     if (res.code==1){
-                        layer.msg(res.msg);
+                        layer.alert(res.msg);
                     } else {
-                        layer.msg(res.msg);
+                        layer.alert(res.msg);
                     }
+                    window.location.reload();
                 }
+
             })
         });
     </script>

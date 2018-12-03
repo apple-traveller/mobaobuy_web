@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>购物车 - @yield('title')</title>
+	<title>确认订单 - @yield('title')</title>
 	@include(themePath('.','web').'web.include.partials.base')
 	@yield('css')
 	<style type="text/css">
@@ -122,7 +122,7 @@
 		.fs14{font-size:14px;}
 		.order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
 		.cart_progress{width: 303px;margin:0 auto;height: 33px;}
-		.cart_progress_02{background: url(default/img/cart_icon02.png)no-repeat;}
+		.cart_progress_02{background: url(/default/img/cart_icon02.png)no-repeat;}
 		.progress_text{color: #999;margin-top: 5px;}
 		.progress_text_curr{color: #75b335;}
 		.my_cart{float: left;margin-left: 5px;}

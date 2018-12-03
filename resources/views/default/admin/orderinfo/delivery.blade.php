@@ -37,26 +37,24 @@
                             <input class="send_number_delivery" type="hidden" name="send_number_delivery">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品信息：</div>
-                                <div class="label_value">
-                                    <div class="list-div" id="listDiv">
 
-                                        <table class="layui-table" lay-data="{ url:'/admin/orderinfo/GoodsForm', page:false, id:'idTest',method:'post',where:{'order_id':'{{$id}}'}}" lay-filter="test">
+                                    <div style="margin-left:50px;width:1000px;" id="listDiv">
+                                        <table  class="layui-table" lay-data="{ url:'/admin/orderinfo/GoodsForm', page:false, id:'idTest',method:'post',where:{'order_id':'{{$id}}'}}" lay-filter="test">
                                             <thead>
-                                            <tr>
+                                            <tr >
                                                 <th lay-data="{type:'checkbox'}"></th>
-                                                <th lay-data="{field:'goods_name'}">商品名称</th>
-                                                <th lay-data="{field:'shop_name'}">所属店铺</th>
-                                                <th lay-data="{field:'goods_sn'}">商品编码</th>
-                                                <th lay-data="{field:'goods_price'}">价格</th>
-                                                <th lay-data="{field:'goods_number'}">购买数量</th>
-                                                <th lay-data="{field:'send_number'}">已发货数量</th>
-                                                <th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.6;'}">编辑发货数量</th>
+                                                <th lay-data="{field:'goods_name',width:150}">商品名称</th>
+                                                <th lay-data="{field:'shop_name',width:200}">所属店铺</th>
+                                                <th lay-data="{field:'goods_sn',width:100}">商品编码</th>
+                                                <th lay-data="{field:'goods_price',width:100}">价格</th>
+                                                <th lay-data="{field:'goods_number',width:100}">购买数量</th>
+                                                <th lay-data="{field:'send_number',width:100}">已发货数量</th>
+                                                <th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.9;'}">编辑发货数量</th>
                                             </tr>
                                             </thead>
                                         </table>
                                     </div>
-                                </div>
+
                             </div>
 
                             <div class="item">
@@ -84,6 +82,7 @@
 
             table.render({
                 id: 'idTest'
+                ,size: 'sm'
             });
 
             var checkStatus = table.checkStatus('idTest'); //test即为基础参数id对应的值

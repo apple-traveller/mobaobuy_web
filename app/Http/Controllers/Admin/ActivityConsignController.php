@@ -75,6 +75,8 @@ class ActivityConsignController extends Controller
     public function save(Request $request)
     {
         $data = $request->all();
+        unset($data['cat_id']);
+        unset($data['cat_id_LABELS']);
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';
@@ -82,9 +84,6 @@ class ActivityConsignController extends Controller
         if($data['delivery_place']==""){
             $errorMsg[] = '发货地不能为空';
         }
-//        if($data['shop_id']==0||empty($data['shop_id'])){
-//            $errorMsg[] = '店铺不能为空';
-//        }
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
@@ -121,6 +120,7 @@ class ActivityConsignController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
+                $data['total_number'] = $data['goods_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
                 $flag = ShopGoodsQuoteService::create($data);
@@ -133,5 +133,17 @@ class ActivityConsignController extends Controller
             return $this->error($e->getMessage());
         }
 
+    }
+
+    public function modifyStatus(Request $request)
+    {
+        $id = $request->input('id');
+        $consign_status = $request->input('consign_status');
+        try{
+            $res = ShopGoodsQuoteService::modify(['id'=>$id,'consign_status'=>$consign_status]);
+            return $this->success('修改审核状态成功');
+        }catch (\Exception $e){
+            return $this->error('修改失败');
+        }
     }
 }

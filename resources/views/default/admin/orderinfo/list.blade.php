@@ -49,7 +49,7 @@
                                     <th width="10%"><div class="tDiv">审核状态</div></th>
                                     <th width="10%"><div class="tDiv">付款状态</div></th>
                                     <th width="10%"><div class="tDiv">发货状态</div></th>
-                                    <th width="5%"><div class="tDiv">运费</div></th>
+                                    <th width="5%"><div class="tDiv">来源</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="10%" class="handle">操作</th>
                                 </tr>
@@ -98,7 +98,19 @@
                                                 @endif
                                             </div>
                                         </td>
-                                        <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
+                                        <td>
+                                            <div class="tDiv">
+                                                @if($vo['extension_code']=="cart")
+                                                    购物车
+                                                @elseif($vo['extension_code']=="wholesale")
+                                                    集采拼团
+                                                @elseif($vo['extension_code']=="consign")
+                                                    清仓特卖
+                                                    @else
+                                                    限时抢购
+                                                @endif
+                                            </div>
+                                        </td>
                                         <td><div class="tDiv">{{$vo['goods_amount']+$vo['shipping_fee']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">

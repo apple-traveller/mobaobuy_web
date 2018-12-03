@@ -3,7 +3,12 @@
     <div class="warpper">
         <div class="title"><a href="/admin/ad/list" class="s-back">返回</a>广告图- 添加广告图</div>
         <div class="content">
-
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>带*号的为必填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/ad/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
@@ -59,13 +64,13 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
-                            <div class="item">
+                            <div style="margin-top:10px;" class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;上传图片：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" data-type="" data-path="advertisement" >上传图片</button>
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="advertisement" ><i class="layui-icon">&#xe681;</i> 上传图片</button>
                                     <input type="text" id="ad_img" value="" class="text"  name="ad_img" style="display:none;">
-                                    <img  style="width:60px;height:60px;display:none;" class="layui-upload-img"><br/>
-                                    <div class="form_prompt"></div>
+                                    <img  style="width:60px;height:60px;margin-left:10px;margin-top: -10px;display:none;" class="layui-upload-img">
+                                    <div style="margin-left: 10px;line-height: 36px;" class="form_prompt"></div>
                                 </div>
                             </div>
                             <div class="item">

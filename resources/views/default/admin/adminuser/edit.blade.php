@@ -64,7 +64,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>头像：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="" data-type="" data-path="adminuser" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file" style="" data-type="" data-path="adminuser" ><i class="layui-icon">&#xe681;</i> 上传图片</button>
                                     <input type="text" value="{{$adminUser['avatar']}}" class="text"  name="avatar" style="display:none;">
                                     <img @if(!empty($adminUser['avatar'])) style="width:30px;height:30px;margin-right:10px;" src="{{getFileUrl($adminUser['avatar'])}}" @else style="width:30px;height:30px;display:none;margin-right:10px;"  @endif   class="layui-upload-img"><br/>
                                     <div class="form_prompt"></div>

@@ -21,13 +21,18 @@
         .Self-product-list li:first-child span{
             height:40px;
         }
+
+        .supply_quote_list li{height: 89px;overflow: initial;}
+
 	</style>
 @endsection
 @section('js')
     <script src="{{asset('plugs/layui/layui.all.js')}}"></script>
+    <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
     <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script>
         $(function(){
+            //$(".nav-div .nav-cate .ass_menu").css("display: none");
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
             });
@@ -63,7 +68,16 @@
 @section('content')
 	<div class="clearfix" style="background-color: #FFF;">
 	<div class="w1200 pr">
-		<div class="crumbs mt5 mb5"><span class="fl">当前位置：</span><a class="fl" href="/">报价列表</a>
+		<div class="crumbs mt5 mb5">
+            <span class="fl">当前位置：</span>
+            @if($t == 1)
+                <a class="fl" href="/goodsList?t=1">自营报价</a>
+            @elseif($t == 2)
+                <a class="fl" href="/goodsList?t=2">品牌直售</a>
+            @else
+                <a class="fl" href="/goodsList">报价列表</a>
+            @endif
+
             <div class="condition">
                 <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
                     <i style="cursor: pointer" class="mode_close close_brand"></i>
@@ -78,130 +92,158 @@
                     </div>
                 @endif
             </div>
-			<div class="pro_Open pro_Open_up"></div>
-			<div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
-        </div>
 
-
-		<div class="pro_screen">
-            @if(!empty($search_data['filter']['brands']))
-			<div class="pro_brand">
-				<dl class="fl filter_item">
-					<dt class="fl">品牌:</dt>
-					<dd class="pro_brand_list ml30">
-						@foreach($search_data['filter']['brands'] as $vo)
-							<a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{$vo['brand_name']}}</a>
-						@endforeach
-					</dd>
-					{{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
-					{{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
-				</dl>
-			</div>
-            @endif
-            @if(!empty($search_data['filter']['cates']))
-			<div class="pro_brand">
-				<dl class="fl filter_item">
-					<dt class="fl">种类:</dt>
-					<dd class="pro_brand_list ml30">
-						@foreach($search_data['filter']['cates'] as $vo)
-						    <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{$vo['cat_name']}}</a>
-						@endforeach
-					</dd>
-					{{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
-					{{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
-				</dl>
-			</div>
-            @endif
-            @if(!empty($search_data['filter']['city_list']))
-			<div class="pro_brand" style="border-bottom: none;">
-				<dl class="fl filter_item"><dt class="fl">地区:</dt>
-					<dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
-						@foreach($search_data['filter']['city_list'] as $vo)
-						    <label class=" check_box region">
-                                <input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/>
-                                <span  class="fl">{{$vo['region_name']}}</span>
-                            </label>
-						@endforeach
-					</dd>
-					<div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
-                    <div class="fl pro_brand_btn region_btn ml20 cancel_region">取消</div>
-				</dl>
-			</div>
-            @endif
-		</div>
-		{{--<div class="more_filter_box">更多选项...</div>--}}
-	</div>
-	<div class="w1200 mt20 " style="margin-top: 20px;">
-		<h1 class="product_title">报价列表</h1>
-		<div class="scr">
-			<div class="width1200">
-				<div class="sequence-bar" style="padding:0;padding-right:10px;">
-					<div class="fl">
-						<a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
-					</div>
-					<div class="fl">
-						<ul id="sort" sort_name="" class="chooselist">
-							<li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
-							<li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
-							<li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
-						</ul>
-					</div>
-					<div class="fr">
-
-
-					</div>
-					<form class="fl" id="formid">
-						<input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
-						<span class="line">-</span>
-						<input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
-						<input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
-					</form>
-				</div>
-			</div>
-		</div>
-        <input type="hidden" id="t" value="{{$t}}" />
-		<ul class="Self-product-list">
-
-			<li class="table_title">
-                <span class="num_bg1" style="width:9%">店铺</span>
-                <!-- <span  style="width:8%;">品牌</span> -->
-                <span style="width:8%;">种类</span>
-                <span style="width:18%">商品名称</span>
-                <span style="width:9%;">数量（kg）</span>
-                <span>单价（元/kg）</span>
-                <span style="width:8%;">发货地址</span>
-                <span style="width:18%;">联系人</span>
-                <span style="width: 9%;">操作</span>
-            </li>
             @if(!empty($search_data['list']))
-                @foreach($search_data['list'] as $vo)
-                    <li>
-                        <span title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:9%">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                        <!-- <span style="width:8%;">{{$vo['brand_name']}}</span> -->
-                        <span title="{{$vo['cat_name']}}" class="ovh" style="width:8%;">{{$vo['cat_name']}}</span>
-                        <span title="{{$vo['goods_full_name']}}" style="width: 18%"><a class="green" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                        <span style="width:9%">{{$vo['goods_number']}}</span>
-                        <span>{{$vo['shop_price']}}</span>
-                        <span>{{$vo['delivery_place']}}</span>
-                        <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
-                        <span style="width:9%">
-                            @if($vo['goods_number'])
-                                <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
-                            @else
-                                已售完
-                            @endif
-                        </span>
-                    </li>
-                @endforeach
-            @else
-                <li style="color:red;text-align: center">无相关数据</li>
+                <div class="pro_Open pro_Open_up"></div>
+			    <div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
             @endif
-		</ul>
-		<!--页码-->
-		<div class="news_pages" style="margin-top: 20px;text-align: center;">
-			<ul id="page" class="pagination"></ul>
-		</div>
+        </div>
+        @if(!empty($search_data['list']))
+            <div class="pro_screen">
+                @if(!empty($search_data['filter']['brands']))
+                <div class="pro_brand">
+                    <dl class="fl filter_item">
+                        <dt class="fl">品牌:</dt>
+                        <dd class="pro_brand_list ml30">
+                            @foreach($search_data['filter']['brands'] as $vo)
+                                <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{$vo['brand_name']}}</a>
+                            @endforeach
+                        </dd>
+                        {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+                        {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
+                    </dl>
+                </div>
+                @endif
+                @if(!empty($search_data['filter']['cates']))
+                <div class="pro_brand">
+                    <dl class="fl filter_item">
+                        <dt class="fl">种类:</dt>
+                        <dd class="pro_brand_list ml30">
+                            @foreach($search_data['filter']['cates'] as $vo)
+                                <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{$vo['cat_name']}}</a>
+                            @endforeach
+                        </dd>
+                        {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+                        {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
+                    </dl>
+                </div>
+                @endif
+                @if(!empty($search_data['filter']['city_list']))
+                <div class="pro_brand" style="border-bottom: none;">
+                    <dl class="fl filter_item"><dt class="fl">地区:</dt>
+                        <dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
+                            @foreach($search_data['filter']['city_list'] as $vo)
+                                <label class=" check_box region">
+                                    <input  class="check_box mr5 check_all fl mt10" name="region_box" type="checkbox" data-id="{{$vo['region_id']}}" value="{{$vo['region_name']}}"/>
+                                    <span  class="fl">{{$vo['region_name']}}</span>
+                                </label>
+                            @endforeach
+                        </dd>
+                        <div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
+                        <div class="fl pro_brand_btn region_btn ml20 cancel_region">取消</div>
+                    </dl>
+                </div>
+                @endif
+            </div>
+        @endif
+            {{--<div class="more_filter_box">更多选项...</div>--}}
 	</div>
+        @if(!empty($search_data['list']))
+            <div class="w1200 mt20 " style="margin-top: 20px;">
+                <h1 class="product_title">报价列表</h1>
+                <div class="scr">
+                    <div class="width1200">
+                        <div class="sequence-bar" style="padding:0;padding-right:10px;">
+                            <div class="fl">
+                                <a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
+                            </div>
+                            <div class="fl">
+                                <ul id="sort" sort_name="" class="chooselist">
+                                    <li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
+                                    <li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
+                                    <li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
+                                </ul>
+                            </div>
+                            <div class="fr">
+
+
+                            </div>
+                            <form class="fl" id="formid">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif value="" placeholder="￥最低价" style="margin-left: 5px">
+                                <span class="line">-</span>
+                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
+                                <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="t" value="{{$t}}" />
+                <ul class="Self-product-list">
+
+                    <li class="table_title">
+                        <span style="width:18%" class="num_bg1">店铺</span>
+                        <span style="width:8%;">种类</span>
+                        <span style="width:18%">商品名称</span>
+                        <span style="width:8%;">数量（kg）</span>
+                        <span style="width:8%;">单价（元/kg）</span>
+                        <span style="width:12%;">发货地址</span>
+                        <span style="width:18%;">联系人</span>
+                        <span style="width:10%;">操作</span>
+                    </li>
+                    @if(!empty($search_data['list']))
+                        @foreach($search_data['list'] as $vo)
+                            <li>
+                                <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                                <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
+                                <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                                <span style="width:8%">{{$vo['goods_number']}}</span>
+                                <span style="width:8%;color:red">{{$vo['shop_price']}}</span>
+                                <span style="width:12%;">{{$vo['delivery_place']}}</span>
+                                <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}
+                                    <img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
+                                </span>
+                                {{--<span style="width:14%;">--}}
+                                {{--<div class="custom_service">--}}
+                                    {{--<p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>--}}
+                                    {{--<div class="custom_service_popup" style="display: none;">--}}
+                                        {{--<p class="custom_service_popup_p">联系方式</p>--}}
+                                        {{--<div class="custom_service_popup_text">--}}
+                                            {{--<p>--}}
+                                                {{--<span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>--}}
+                                            {{--<p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">--}}
+                                                {{--<span style="width:60px;text-align: right">--}}
+                                                    {{--<img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
+                                                {{--</span>--}}
+                                                {{--&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}--}}
+                                            {{--</p>--}}
+                                        {{--</div>--}}
+                                        {{--<i></i>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</span>--}}
+                                <span style="width:10%">
+                                    @if($vo['goods_number'])
+                                        <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                                    @else
+                                        已售完
+                                    @endif
+                                </span>
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
+                <!--页码-->
+                <div class="news_pages" style="margin-top: 20px;text-align: center;">
+                    <ul id="page" class="pagination"></ul>
+                </div>
+            </div>
+        @else
+            @if(!empty($t))
+                <li class="nodata1">近期上市 敬请期待</li>
+            @else
+                <li class="nodata">无相关数据</li>
+            @endif
+        @endif
     </div>
 @endsection
 
@@ -398,6 +440,8 @@
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
                     let _html = '';
+                    let imgUrlLeft = '<img onclick="javascript:window.open(';
+                    let imgUrlRight = '&site=qq&menu=yes\')';
                     for (let i=0;i<list.length;i++)
                     {
                         let _store_name = '无';
@@ -406,15 +450,17 @@
                         }
 
                         _html += '<li>' +
-                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:9%;">'+_store_name+'</span>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:18%;">'+_store_name+'</span>' +
                             '<span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:18%;"><a class="green" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
-                            '<span style="width:9%;">'+list[i].goods_number+'</span>' +
-                            '<span>'+list[i].shop_price+'</span>' +
-                            '<span>'+list[i].delivery_place+'</span>' +
-                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+'</span>' +
+                            '<span  style="width:18%;"><a class="blue" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
+                            '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
+                            '<span style="width:12%;">'+list[i].delivery_place+'</span>' +
+                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
                             '<span style="width:9%;"><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
                             '</li>';
+
+                    {{--<img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
                     }
                     $(".table_title").after(_html);
                     $(".news_pages").append('<ul id="page" class="pagination"></ul>');

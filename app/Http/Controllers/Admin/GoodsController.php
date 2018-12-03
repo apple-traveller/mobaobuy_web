@@ -183,6 +183,12 @@ class GoodsController extends Controller
         $data['id']=$id;
         $data['is_delete']=1;
         try{
+            #删除之前检测该商品是否存在对应的报价单或者活动
+            $is_exist_res = GoodsService::checkGoodsExistOtherInfo($id);
+            if(!$is_exist_res){
+                return $this->error('存在对应的报价信息或者活动信息，不能删除');
+            }
+
             $flag = GoodsService::modify($data);
             if(empty($flag)){
                 return $this->error('删除失败');

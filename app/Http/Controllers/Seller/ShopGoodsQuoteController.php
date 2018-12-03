@@ -86,8 +86,9 @@ class ShopGoodsQuoteController extends Controller
     public function save(Request $request)
     {
         $request->flash();
-        $shop_id = session('_seller_id')['shop_id'];
-        $company_name = session('_seller')['shop_info']['company_name'];
+        $shopInfo = session('_seller');
+        $shop_id = $shopInfo['shop_info']['id'];
+        $company_name = $shopInfo['shop_info']['company_name'];
         $id = $request->input('id','');
         $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
@@ -103,7 +104,8 @@ class ShopGoodsQuoteController extends Controller
         $type = $request->input('type','');
 
         $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
-        $place_id = substr($place_id,strripos($place_id,'|')+1);
+
+        $place_id = substr($place_id,-6);
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -111,10 +113,8 @@ class ShopGoodsQuoteController extends Controller
         if(!$store_name && !$store_id){
             return $this->error('店铺不能为空');
         }
-        $is_self_run = 0;
         if($store_id == 0 && $store_name == '自售' && empty($type)){
             $store_name = $company_name;
-            $is_self_run = 1;
             $type = 1;
         }else{
             if(empty($type)){
@@ -167,18 +167,9 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
-            'is_self_run' => $is_self_run,
+            'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
 
-//        if ($store_id==0){
-//            $data['is_self_run'] = 1;
-//            $data['type'] = 1;
-//            $data['store_name'] = $company_name;
-//        } else {
-//            $data['is_self_run'] = 0;
-//            $data['type'] = 2;
-//            $data['store_name'] = $store_name;
-//        }
         try{
             if($id){
                 $data['id'] = $id;

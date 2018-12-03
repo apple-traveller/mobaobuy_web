@@ -66,12 +66,14 @@
                                 <div class="label_value font14"><div class="label_value font14">{{$promote['click_count']}}</div>
                             </div>
 
+
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
-                                <div class="label_value font14">
-                                    <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($promote['review_status']==1) @else layui-btn-primary @endif '>待审核</div>
-                                    <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($promote['review_status']==2) @else layui-btn-primary @endif '>不通过</div>
-                                    <div data-status="3" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($promote['review_status']==3) @else layui-btn-primary @endif '>已审核</div>
+                                <div class="label">审核状态：</div>
+                                <div class="value">
+                                    <input @if($promote['review_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="待审核" >
+                                    <input @if($promote['review_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="2" value="不通过" >
+                                    <input @if($promote['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="3" value="已审核" >
+                                    <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                 </div>
                             </div>
 

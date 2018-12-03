@@ -89,7 +89,7 @@
 						</li>
 					@endforeach
 				@else
-					无此商品供应商信息
+					 <li class="nodata">无相关数据</li>
 				@endif
 			</ul>
 			{!! $linker !!}

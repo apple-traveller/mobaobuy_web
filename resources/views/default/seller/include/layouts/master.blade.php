@@ -4,14 +4,16 @@
     @include(themePath('.').'seller.include.partials.css_js')
     @yield('styles')
 </head>
-<body class="">
+<body style="min-width: 0px">
     @yield('body')
 
     @yield('content')
     <script>
-        layui.use('element', function(){
-            var element = layui.element;
-        });
+       $(function () {
+           layui.use('element', function(){
+               let element = layui.element;
+           });
+       });
     </script>
 </body>
 @yield('script')

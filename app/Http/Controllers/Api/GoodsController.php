@@ -12,7 +12,7 @@ use App\Services\UserAddressService;
 use App\Services\UserService;
 class GoodsController extends ApiController
 {
-    //报价列表
+    //自营报价列表
     public function getList(Request $request)
     {
         $currpage = $request->input("currpage",1);
@@ -27,7 +27,8 @@ class GoodsController extends ApiController
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
         $goods_name = $request->input('goods_name','');
-        $condition = [];
+        $is_self_run = $request->input('is_self_run',0);
+        $condition =[];
 
         $orderBy = [];
 
@@ -46,6 +47,10 @@ class GoodsController extends ApiController
         }
         if(empty($lowest)&&empty($highest)){
             $condition = [];
+        }
+
+        if(!empty($is_self_run)){
+            $condition['b.is_self_run'] = 1;
         }
 
         if(!empty($goods_name)){
@@ -202,6 +207,11 @@ class GoodsController extends ApiController
     public function getCartList(Request $request)
     {
         $userId = $this->getUserID($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        //dd($deputy_user);
+        if($deputy_user['is_firm']){
+            $userId = $deputy_user['firm_id'];
+        }
         try{
             $cartInfo = GoodsService::cart($userId);
             foreach($cartInfo['cartInfo'] as $k=>$v){
@@ -210,7 +220,6 @@ class GoodsController extends ApiController
                 $cartInfo['cartInfo'][$k]['delivery_place'] = $cartInfo['quoteInfo'][$k]['delivery_place'];
                 $cartInfo['cartInfo'][$k]['packing_spec'] = $cartInfo['goodsInfo'][$k]['packing_spec'];
             }
-            //dd($cartInfo['cartInfo']);
             return $this->success($cartInfo['cartInfo']);
 
         }catch(\Exception $e){
@@ -335,9 +344,9 @@ class GoodsController extends ApiController
             $cartCache = [
                 'goods_list'=>$goods_list,
                 'address_id'=> $address_id,
-                'from'=>'cart'
+                'from'=>'cart',
             ];
-            Cache::put('cartSession'.$userInfo['id'], $cartCache, 60*24*1);
+            Cache::put('cartSession'.$dupty_user['firm_id'], $cartCache, 60*24*1);
             return $this->success($cartCache,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());

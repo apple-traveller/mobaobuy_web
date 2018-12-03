@@ -7,6 +7,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
+
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
+
     <div class="warpper">
         <div class="title"><a href="/admin/shopgoodsquote/list?currpage={{$currpage}}" class="s-back">返回</a>店铺 - 修改商品报价</div>
         <div class="content">
@@ -14,23 +22,38 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>库存数量必须是商品规格的整数倍,如果输入值非整数倍则自动向上取整。</li>
                 </ul>
             </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/shopgoodsquote/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id" value="{{$goodsQuote['shop_id']}}">
+                                        <option value="">请选择商家</option>
+                                    </select>
+                                    <input type="hidden" name="shop_name" id="shop_name" value="{{$goodsQuote['shop_name']}}">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择店铺：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_id" id="shop_id">
-                                        <option value="">请选择店铺</option>
-                                        @foreach($shops as $vo)
-                                        <option @if($goodsQuote['shop_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['shop_name']}}</option>
-                                        @endforeach
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_store_id" id="store_id" value="{{$goodsQuote['shop_store_id']}}">
+                                        <option value="0">自售</option>
                                     </select>
-                                    <div style="margin-left: 10px" class="form_prompt"></div>
+                                    <input type="hidden" name="store_name" id="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
+
+                                    {{--<input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">--}}
+                                    {{--<input type="hidden" name="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" id="store_name_val" />--}}
+                                    {{--<input type="hidden" name="shop_store_id" value="{{$goodsQuote['shop_store_id']}}" id="store_id" />--}}
+                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">--}}
+                                    {{--</ul>--}}
                                 </div>
                             </div>
 
@@ -51,7 +74,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ号：</div>
+                                <div class="label">&nbsp;QQ号：</div>
                                 <div class="label_value">
                                     <input type="text" name="QQ" class="text" value="{{$goodsQuote['QQ']}}" maxlength="40" autocomplete="off" id="QQ">
                                     <div class="form_prompt"></div>
@@ -59,36 +82,30 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品分类：</div>
+                                <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="cat_id" >
-                                        <option value="0">请选择分类</option>
-                                        @foreach($goodsCatTree as $vo)
-                                            <option @if($good['cat_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
-                                        @endforeach
-                                    </select>
-                                    <div class="form_prompt"></div>
-                                    <div style="margin-left: 10px" class="notic">分类用于辅助选择商品</div>
+                                    <input type="hidden" name="cat_id" id="cat_id" value="{{$goodsQuote['cat_id']}}"/>
+                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" value="{{$goodsQuote['cat_name']}}" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" class="goods_id" name="goods_id" id="goods_id">
-                                        <option value="">请选择商品</option>
-                                        @foreach($goods as $vo)
-                                            <option data-extra="{{$vo['packing_spec']}}" @if($goodsQuote['goods_id']==$vo['id']) selected @endif  value="{{$vo['id']}}">{{$vo['goods_name']}}</option>
-                                        @endforeach
-                                    </select>
-                                    <div style="margin-left: 10px" class="form_prompt"></div>
+                                    <input type="text" data-goodsname="" data-packing-spec="0" value="{{$goodsQuote['goods_name']}}"  autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <div style="margin-left: 10px;color:red;" class="notic">包装规格为：{{$goodsQuote['packing_spec'].$goodsQuote['unit_name'].'/'.$goodsQuote['packing_unit'] }}</div>
+                                    <input type="hidden" value="{{$goodsQuote['goods_id']}}" name="goods_id"  id="goods_id">
+                                    <div class="form_prompt"></div>
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 302px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    </ul>
                                 </div>
                             </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -112,13 +129,13 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>
-                                <div class="label_value">
-                                    <input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
 
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
@@ -160,39 +177,16 @@
             });
         });
 
-        $(".cat_id").change(function(){
-            $(".goods_id").children('option').remove();
-            var cat_id = $(this).val();
-            $.post('/admin/shopgoodsquote/getGoods',{'cat_id':cat_id},function(res){
-                if(res.code==200){
-                    var data = res.data;
-                    $(".goods_id").append('<option value="">请选择商品</option>');
-                    for(var i=0;i<data.length;i++){
-                        $(".goods_id").append('<option data-extra="'+data[i]['packing_spec']+'" value="'+data[i]['id' ]+'">'+data[i]['goods_name']+'</option>');
-                    }
-                }else{
-                    $(".goods_id").append('<option value="">该分类下没有商品</option>');
-                }
-            },"json");
-        });
-
-        $("#goods_id").change(function(){
-            var packing_spec = $(this).find("option:selected").attr("data-extra");
-            $(this).siblings("span").remove();
-            $(this).after('<span id="packing_spec" data="'+packing_spec+'" style="margin-left: 20px;color:red;">商品规格为：'+packing_spec+'</span>');
-            $("#goods_number").after('<span style="margin-left: 10px;color:red;">库存数量只能是商品规格的整数倍</span>');
-        });
-
         layui.use(['layer'], function(){
             var layer = layui.layer;
 
             $("#goods_number").blur(function(){
                 var goods_number = $(this).val();
-                var packing_spec = $("#packing_spec").attr("data");
+                var packing_spec = $(this).data("packing_spec");
                 var goods_id = $("#goods_id").val();
                 console.log(goods_id);
                 if(!goods_id){
-                    alert("请先选择商品");
+                    layer.alert("请先选择商品");
                     $(this).val("");
                     return ;
                 }
@@ -205,13 +199,14 @@
 
         });
         $(function(){
+            getShopList('{{$goodsQuote['shop_id'] or 0}}');
+            getStoreList('{{$goodsQuote['shop_id'] or 0}}','{{$goodsQuote['shop_store_id'] or 0}}');
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
                     $("#article_form").submit();
                 }
             });
-
 
             $('#article_form').validate({
                 errorPlacement:function(error, element){
@@ -237,12 +232,12 @@
                     delivery_place:{
                         required:true,
                     },
-                    expiry_time:{
-                        required:true,
-                    },
-                    QQ:{
-                        required:true,
-                    }
+//                    expiry_time:{
+//                        required:true,
+//                    },
+//                    QQ:{
+//                        required:true,
+//                    }
                 },
                 messages:{
                     shop_id :{
@@ -261,15 +256,233 @@
                     delivery_place :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    expiry_time :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    QQ:{
-                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
+//                    expiry_time :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
+//                    QQ:{
+//                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
                 }
             });
+
+            document.onclick=function(event){
+                $(".query_store_name").hide();
+                $(".query_goods_name").hide();
+            }
+
+            //选择商家
+            $("#shop_id").change(function(){
+                var shop_name = $(this).find("option:selected").text();
+                $("#shop_name").val(shop_name);
+
+                $("#store_name").val('自售');
+//                $("#store_name_val").val('');
+                $("#store_id").val('');
+                $("#store_id").empty();
+                $("#store_id").append('<option value="0">自售</option>');
+                getStoreList(0,0);
+            });
+            //选择店铺
+            $("#store_id").change(function(){
+                var store_name = $(this).find("option:selected").text();
+                $("#store_name").val(store_name);
+            });
+            // 店铺 获取焦点请求所有的店铺数据
+//            $("#store_name").focus(function(){
+//                let _shop_id = $('#shop_id').val();
+//                if(_shop_id == ''){
+//                    layer.alert('选择店铺之前请先选择商家');return;
+//                }
+//                $(".query_store_name").children().filter("li").remove();
+//                $.ajax({
+//                    url: "/admin/shop/store/list",
+//                    dataType: "json",
+//                    data:{shop_id:_shop_id},
+//                    type:"POST",
+//                    success:function(res){
+//                        if(res.code==1){
+//                            $(".query_store_name").show();
+//                            let data = res.data;
+//                            let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
+//                            for(let i=0;i<data.length;i++){
+//                                _html += '<li data-store-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
+//                            }
+//                            $(".query_store_name").append(_html);
+//                        }
+//                    }
+//                })
+//            });
+
+            //店铺 点击将li标签里面的值填入input框内
+            $(document).delegate(".created_store_name","click",function(){
+                //$("#company_name").siblings("div").filter(".notic").remove();
+                var store_name = $(this).text();
+                var store_id = $(this).attr("data-store-id");
+                $("#store_name").val(store_name);
+//                $("#store_name_val").val(store_name);
+                $("#store_id").val(store_id);
+                $(".query_store_name").hide();
+            });
+
+//            //根据company里面输入的文字实时查询分类数据
+//            $("#company_name").bind("input propertychange",function(res){
+//                var company_name = $(this).val();
+//                $(".query_company_name").children().filter("li").remove();
+//                $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
+//                    if(res.code==1){
+//                        $(".query_company_name").show();
+//                        var data = res.data;
+//                        for(var i=0;i<data.length;i++){
+//                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
+//                        }
+//                    }
+//                },"json");
+//            });
+//
+//            //根据店铺里面输入的文字实时查询分类数据
+//            $("#store_name").bind("input propertychange",function(res){
+//                let _shop_id = $('#shop_id').val();
+//                if(_shop_id == ''){
+//                    layer.alert('选择店铺之前请先选择商家');return;
+//                }
+//                let store_name = $(this).val();
+//                $(".query_store_name").children().filter("li").remove();
+//                $.post('/admin/shop/store/list',{'shop_id':_shop_id,'store_name':store_name},function(res){
+//                    if(res.code==1){
+//                        $(".query_store_name").show();
+//                        let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
+//                        let data = res.data;
+//                        for(let i=0;i<data.length;i++){
+//                            _html += '<li data-shop-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
+//                        }
+//                        $(".query_store_name").append(_html);
+//                    }
+//                },"json");
+//            });
+//
+//            $("#store_name").blur(function(){
+//                let _name = $("#store_name_val").val();
+//                $(this).val(_name);
+//            });
+
+            //获取树形分类
+            $("#cat_name").focus(function(){
+                showWinZtreeSelector(this);
+            });
+
+            // 商品 获取焦点请求所有的商品数据
+            $("#goods_name").focus(function(){
+                $(".query_goods_name").children().filter("li").remove();
+                var cat_id = $("#cat_id").val();
+                $.ajax({
+                    url: "/admin/promote/getGood",
+                    dataType: "json",
+                    data:{"cat_id":cat_id},
+                    type:"POST",
+                    success:function(res){
+                        if(res.code==1){
+                            $(".query_goods_name").show();
+                            var data = res.data;
+                            for(var i=0;i<data.length;i++){
+                                $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            }
+                        }else{
+                            $(".query_goods_name").show();
+                            $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
+                        }
+                    }
+                })
+            });
+
+            //根据company里面输入的文字实时查询分类数据
+            $("#goods_name").bind("input propertychange",function(res){
+                var goods_name = $(this).val();
+                var cat_id = $("#cat_id").val();
+                $(".query_goods_name").children().filter("li").remove();
+                $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
+                    if(res.code==1){
+                        $(".query_goods_name").show();
+                        var data = res.data;
+                        console.log(data);
+                        for(var i=0;i<data.length;i++){
+                            $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                        }
+                    }
+                },"json");
+            });
+
+            //点击将li标签里面的值填入input框内
+            $(document).delegate(".created_goods_name","click",function(){
+                $("#goods_name").siblings("div").filter(".notic").remove();
+                var goods_name = $(this).text();
+                var goods_id = $(this).attr("data-goods-id");
+                var packing_spec = $(this).attr("data-packing-spec");
+                let packing_unit = $(this).attr('data-packing-unit');
+                let unit_name = $(this).attr('data-unit-name');
+                $("#goods_name").val(goods_name);
+                $("#goods_id").val(goods_id);
+                $("#goods_name").attr("data-packing-spec",packing_spec);
+                $("#goods_name").attr("data-goodsname",goods_name);
+                $("#min_limit").val(packing_spec);
+                $("#num").val(packing_spec);
+                $("#num").attr("disabled",false);
+                $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spec+unit_name+'/'+packing_unit+'</div>');
+
+                $('#goods_number').val(packing_spec)
+            });
+
+            $("#goods_name").blur(function(){
+                let _goods_name = $(this).attr("data-goodsname");
+                $(this).val(_goods_name);
+            });
         });
+        // 商家 请求所有的商家数据
+        function getShopList(_id){
+            $.ajax({
+                url: "/admin/shop/ajax_list",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            if(_id == data[i].id){
+                                $("#shop_id").append('<option value="'+data[i].id+'" selected>'+data[i].company_name+'</option>');
+                            }else{
+                                $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
+                            }
+
+                        }
+                    }
+                }
+            })
+        }
+        // 店铺 请求所有的店铺数据
+        function getStoreList(_shop_id,_id){
+            if(_shop_id == 0){
+                _shop_id = $('#shop_id').val();
+            }
+            $.ajax({
+                url: "/admin/shop/store/list",
+                dataType: "json",
+                data:{shop_id:_shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            if(_id == data[i].id){
+                                $("#store_id").append('<option value="'+data[i].id+'" selected>'+data[i].store_name+'</option>');
+                            }else{
+                                $("#store_id").append('<option value="'+data[i].id+'">'+data[i].store_name+'</option>');
+                            }
+
+                        }
+                    }
+                }
+            })
+        }
     </script>
 
 

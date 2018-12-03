@@ -51,7 +51,7 @@
                                         {{$vo['cat_name']}}
                                     </div>
                                 </td>
-                                <td><div class="tDiv changeInput"><input type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
+                                <td><div class="tDiv changeInput"><input style="margin-left: 50px;" type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         @if(!in_array($vo['id'], [ 1 , 2]) )

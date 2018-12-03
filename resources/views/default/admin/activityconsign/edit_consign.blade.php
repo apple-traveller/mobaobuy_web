@@ -17,6 +17,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
     <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
+
+    <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
+    <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
+
     <div class="warpper">
         <div class="title"><a href="/admin/activity/consign?currentPage={{$currentPage}}" class="s-back">返回</a>修改清仓特卖</div>
         <div class="content">
@@ -29,11 +37,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商家：</div>
                                 <div class="label_value">
-                                    <input type="text"  shop-id="{{$consign_info['shop_store_id']}}" autocomplete="off" id="company_name" size="40"  class="text" value="{{$consign_info['shop_name']}}">
-                                    <input type="hidden" name="shop_name" id="company_name_val" value="{{$consign_info['shop_name']}}"/>
-                                    <input type="hidden" name="shop_id" id="shop_id" value="{{$consign_info['shop_id']}}"/>
-                                    <ul class="query_company_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 62px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" value="{{$consign_info['shop_id']}}" name="shop_id" id="shop_id" >
+                                        <option value="">请选择商家</option>
+                                    </select>
+                                    <input type="hidden" name="shop_name" id="shop_name" value="{{$consign_info['shop_name']}}">
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
                                 </div>
                             </div>
                             {{--<input type="hidden" value="自售" name="store_name"  id="store_name_val"  />--}}
@@ -42,10 +50,9 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品分类：</div>
                                 <div class="label_value">
-                                    <input type="text" data-catname="{{$consign_info['cat_name']}}" cat-id="{{$consign_info['cat_id']}}"  autocomplete="off" value="{{$consign_info['cat_name']}}" id="cat_name" size="40"  class="text">
+                                    <input type="hidden" name="cat_id" id="cat_id" value="{{$consign_info['cat_id']}}"/>
+                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" value="{{$consign_info['cat_name']}}" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
-                                    <ul class="query_cat_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 300px; box-shadow: 0px -1px 1px 2px #dedede;">
-                                    </ul>
                                 </div>
                             </div>
 
@@ -148,6 +155,8 @@
 
 
         $(function(){
+            //获取商家信息
+            getShopList('{{$consign_info['shop_id']}}');
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#consign_form").valid()){
@@ -228,117 +237,23 @@
         });
 
         document.onclick=function(event){
-            $(".query_company_name").hide();
             $(".query_goods_name").hide();
             $(".query_cat_name").hide();
         }
 
-        // 商家 获取焦点请求所有的商家数据
-        $("#company_name").focus(function(){
-            $(".query_company_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/shop/ajax_list",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_company_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-                        }
-                    }
-                }
-            })
+        //选择商家
+        $("#shop_id").change(function(){
+            var shop_name = $(this).find("option:selected").text();
+            $("#shop_name").val(shop_name);
         });
-
-
-        //点击将li标签里面的值填入input框内
-        $(document).delegate(".created_company_name","click",function(){
-            //$("#company_name").siblings("div").filter(".notic").remove();
-            var company_name = $(this).text();
-            var shop_id = $(this).attr("data-shop-id");
-            $("#company_name").val(company_name);
-            $("#company_name_val").val(company_name);
-            $("#shop_id").val(shop_id);
-            $(".query_company_name").hide();
-        });
-
-        //根据company里面输入的文字实时查询分类数据
-        $("#company_name").bind("input propertychange",function(res){
-            var company_name = $(this).val();
-            $(".query_company_name").children().filter("li").remove();
-            $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
-                if(res.code==1){
-                    $(".query_company_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-                    }
-                }
-            },"json");
-        });
-
-        $("#company_name").blur(function(){
-            let _name = $("#company_name_val").val();
-            $(this).val(_name);
-        });
-
-        // 种类 获取焦点请求所有的分类数据
         $("#cat_name").focus(function(){
-            $(".query_cat_name").children().filter("li").remove();
-            $.ajax({
-                url: "/admin/promote/getGoodsCat",
-                dataType: "json",
-                data:{},
-                type:"POST",
-                success:function(res){
-                    if(res.code==1){
-                        $(".query_cat_name").show();
-                        var data = res.data;
-                        for(var i=0;i<data.length;i++){
-                            $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                        }
-                    }
-                }
-            })
+            showWinZtreeSelector(this);
         });
-
-        // 种类 点击将选中的值填入input框内
-        $(document).delegate(".created_cat_name","click",function(){
-            var cat_name = $(this).text();
-            var cat_id = $(this).attr("data-cat-id");
-            $("#cat_name").attr('data-catname',cat_name);
-            $("#cat_name").val(cat_name);
-            $("#cat_name").attr("cat-id",cat_id);
-        });
-
-        //根据company里面输入的文字实时查询分类数据
-        $("#cat_name").bind("input propertychange",function(res){
-            var cat_name = $(this).val();
-            $(".query_cat_name").children().filter("li").remove();
-            $.post('/admin/promote/getGoodsCat',{'cat_name':cat_name},function(res){
-                if(res.code==1){
-                    $(".query_cat_name").show();
-                    var data = res.data;
-                    for(var i=0;i<data.length;i++){
-                        $(".query_cat_name").append('<li data-cat-id="'+data[i].id+'" class="created_cat_name" style="cursor:pointer;margin-left: 4px">'+data[i].cat_name+'</li>');
-                    }
-                }
-            },"json");
-        });
-
-        $("#cat_name").blur(function(){
-            let _name = $(this).attr("data-catname");
-            $(this).val(_name);
-        });
-
 
         // 商品 获取焦点请求所有的商品数据
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",
@@ -362,7 +277,7 @@
         //根据company里面输入的文字实时查询分类数据
         $("#goods_name").bind("input propertychange",function(res){
             var goods_name = $(this).val();
-            var cat_id = $("#cat_name").attr("cat-id");
+            var cat_id = $("#cat_id").val();
             $(".query_goods_name").children().filter("li").remove();
             $.post('/admin/promote/getGood',{'cat_id':cat_id,'goods_name':goods_name},function(res){
                 if(res.code==1){
@@ -413,6 +328,28 @@
                 $(this).val(Math.ceil(goods_number/spac) * spac);
             });
         });
+        // 商家 请求所有的商家数据
+        function getShopList(_id){
+            $.ajax({
+                url: "/admin/shop/ajax_list",
+                dataType: "json",
+                data:{},
+                type:"POST",
+                success:function(res){
+                    if(res.code==1){
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            if(_id == data[i].id){
+                                $("#shop_id").append('<option value="'+data[i].id+'" selected>'+data[i].company_name+'</option>');
+                            }else{
+                                $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
+                            }
+
+                        }
+                    }
+                }
+            })
+        }
     </script>
 
 

@@ -13,21 +13,22 @@
             </div>
             <div class="flexilist">
                 <div class="mian-info">
-                    <form name="theForm" action="/admin/orderinfo/save" method="post" id="consignee" novalidate="novalidate">
+                    <form name="theForm" action="/admin/orderinfo/saveConsignee" method="post" id="consignee" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
+
                             <div class="step_title pb5">
                                 <i class="ui-step"></i>
                                 <h3 class="fl">请填写收货信息</h3>
                             </div>
 
 
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>收货人：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="consignee" value="{{$consigneeInfo['consignee']}}" id="consignee" class="text" autocomplete="off">
-                                        <div class="form_prompt"></div>
-                                    </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>收货人：</div>
+                                <div class="label_value">
+                                    <input type="text" name="consignee" value="{{$consigneeInfo['consignee']}}" id="consignee" class="text" autocomplete="off">
+                                    <div class="form_prompt"></div>
                                 </div>
+                            </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>所在地区：</div>
@@ -73,31 +74,32 @@
                                         <div class="notic">请按从左到右的顺序添加</div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="id" value="{{$id}}">
-                                 <input type="hidden" name="currpage" value="{{$currpage}}">
+
+                            <input type="hidden" name="id" value="{{$id}}">
+                            <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="order_status" value="{{$order_status}}">
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>详细地址：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="address" id="address" value="{{$consigneeInfo['address']}}" class="text" autocomplete="off">
-                                        <div class="form_prompt"></div>
-                                    </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>详细地址：</div>
+                                <div class="label_value">
+                                    <input type="text" name="address" id="address" value="{{$consigneeInfo['address']}}" class="text" autocomplete="off">
+                                    <div class="form_prompt"></div>
                                 </div>
+                            </div>
 
-                                <div class="item">
-                                    <div class="label">邮政编码：</div>
-                                    <div class="label_value"><input type="text" name="zipcode" id="zipcode" value="{{$consigneeInfo['zipcode']}}" class="text" autocomplete="off"></div>
+                            <div class="item">
+                                <div class="label">邮政编码：</div>
+                                <div class="label_value"><input type="text" name="zipcode" id="zipcode" value="{{$consigneeInfo['zipcode']}}" class="text" autocomplete="off"></div>
+                            </div>
+
+
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>手机号码：</div>
+                                <div class="label_value">
+                                    <input type="text" name="mobile_phone" id="mobile" value="{{$consigneeInfo['mobile_phone']}}" class="text" autocomplete="off">
+                                    <div class="form_prompt"></div>
                                 </div>
-
-
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>手机号码：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="mobile_phone" id="mobile" value="{{$consigneeInfo['mobile_phone']}}" class="text" autocomplete="off">
-                                        <div class="form_prompt"></div>
-                                    </div>
-                                </div>
+                            </div>
 
 
                             </div>
@@ -194,8 +196,6 @@
                     city :{
                         required : true,
                     },
-
-
                 },
                 messages:{
                     mobile_phone:{
