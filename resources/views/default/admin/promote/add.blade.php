@@ -148,7 +148,6 @@
         $("#goods_name").focus(function(){
             $(".query_goods_name").children().filter("li").remove();
             var cat_id = $("#cat_id").val();
-            console.log(cat_id);
             $.ajax({
                 url: "/admin/promote/getGood",
                 dataType: "json",

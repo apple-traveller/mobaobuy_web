@@ -370,6 +370,20 @@ class UserController extends ApiController
         }
     }
 
+    //订单是否需要审核
+    public function needApproval(Request $request)
+    {
+        $need_approval = $request->input("need_approval");
+        $user_id = $this->getUserID($request);
+        try{
+            $user = UserService::modify($user_id,['need_approval'=>$need_approval]);
+            return $this->success($user,'success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+
 
 
 }
