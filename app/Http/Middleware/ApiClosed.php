@@ -18,7 +18,7 @@ class ApiClosed extends ApiController
         $user_id = Cache::get($uuid, 0);
         if(!empty($user_id)){
             //缓存用户的基本信息
-            $user_info = UserService::getInfo($user_id);
+            $user_info = $this->getUserInfo($request);
             $deputy_user = Cache::get('_api_deputy_user_'.$user_id);
             //dd($deputy_user);
             //用户不切换生效权限,is_logout存的是企业的id
@@ -43,7 +43,7 @@ class ApiClosed extends ApiController
                 $user_info['firms'] = UserService::getUserFirms($user_id);
             }
 
-            if(Cache::has('_api_deputy_user_'.$user_id)){
+            if(!Cache::has('_api_deputy_user_'.$user_id)){
                 $info = [
                     'is_self' => 1,
                     'is_firm' => Cache::get('_api_user_'.$user_id)['is_firm'],
@@ -55,6 +55,8 @@ class ApiClosed extends ApiController
             }
 
         }
+
+        //dd($deputy_user);
         return $next($request);
     }
 }
