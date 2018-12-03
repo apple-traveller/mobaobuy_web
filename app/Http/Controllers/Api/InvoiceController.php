@@ -244,9 +244,6 @@ class InvoiceController extends ApiController
             }
         }
         $goodsList = OrderInfoService::getOrderGoodsList($order_id);
-        foreach ($goodsList as $k=>$v){
-
-        }
         //重新封装session 加入商品信息
         $invoiceSession['goods_list'] = $goodsList['list'];
         $invoiceSession['total_amount'] = $total_amount;

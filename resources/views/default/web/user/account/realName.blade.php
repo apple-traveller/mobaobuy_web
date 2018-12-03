@@ -164,7 +164,6 @@
                         </ul>
                     </li>
 
-                 <!-- 企业账户 -->
                     <li style="display: none;">
                         <ul class="account_infor_list">
                             <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
@@ -218,6 +217,7 @@
                                             <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                         @endif
+
                                     @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                     @endif
@@ -313,6 +313,7 @@
                     @elseif($user_real['review_status'] == 2 && $user_real['is_firm'] == 1)
                    
 
+
                         <!-- 企业账户 -->
                         <li>
                             <ul class="account_infor_list">
@@ -322,7 +323,6 @@
                                 </span>
                             </li>
                             <input type="hidden" name="user_id"  value="{{$user_id}}" >
-
 
                             <li class="mt25">
                                  <span class="infor_title">企业全称：</span>
@@ -368,10 +368,11 @@
                                             <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                         @endif
+
                                     @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                     @endif
-                                    <!-- @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent -->
+
                                 </span>
                             </li>
 
@@ -390,7 +391,7 @@
                                     @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                                      @endif
-                                   <!--  @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent -->
+
                                 </span>
                             </li>
 
