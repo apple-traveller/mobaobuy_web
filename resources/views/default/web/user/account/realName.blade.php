@@ -159,7 +159,11 @@
                                     @endif
                                 </span>
                             </li>
-                 
+                            <li class="mt25"><span class="infor_title">注意：</span>
+                                <span class="fl">
+                                上传的身份证正反面照为jpg或png.
+                                </span>
+                            </li>
                         <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
                         </ul>
                     </li>
@@ -201,7 +205,7 @@
                             <li class="mt25">
                                  <span class="infor_title">授权委托书模板下载：</span>
                                 <span class=" fl" style="width:60px;height: 40px;">
-                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("storage/user/letterFile/授权委托书电子档.docx")}}')" value="点击下载">
+                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="点击下载">
                                 </span>
                             </li>
 
@@ -239,6 +243,11 @@
                                     @else
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                                     @endif
+                                </span>
+                            </li>
+                            <li class="mt25"><span class="infor_title">注意：</span>
+                                <span class="fl">
+                                上传的文件为pdf或docx.
                                 </span>
                             </li>
                             <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
@@ -297,16 +306,12 @@
                                 @endif
                             </span>
                         </li>
-                        @if(!empty($user_real))
-                            @if($user_real['review_status'] == '0')
-                                
-                            @else
-                            <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
-
-                            @endif
-                        @else
-                            <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
-                        @endif
+                        <li class="mt25"><span class="infor_title">注意：</span>
+                            <span class="fl">
+                            上传的身份证正反面照为jpg或png.
+                            </span>
+                        </li>
+                        <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
                         </ul>
                         </li>
                 
@@ -317,8 +322,8 @@
                         <!-- 企业账户 -->
                         <li>
                             <ul class="account_infor_list">
-                            <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
-                                <span class="ml10">
+                            <li class="mt25"><span class="infor_title">账号：</span>
+                                <span class="fl">
                                     {{$user_name}}
                                 </span>
                             </li>
@@ -352,7 +357,8 @@
                             <li class="mt25">
                                 <span class="infor_title">授权委托书模板下载：</span>
                                 <span class=" fl" style="width:60px;height: 40px;">
-                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("storage/user/letterFile/授权委托书电子档.docx")}}')" value="点击下载">
+                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="点击下载">
+
                                 </span>
                             </li>
 
@@ -394,12 +400,17 @@
 
                                 </span>
                             </li>
-
+                            <li class="mt25"><span class="infor_title">注意：</span>
+                                <span class="fl">
+                                上传的文件为pdf或docx.
+                                </span>
+                            </li>
                             <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
                             </ul>
                         </li>
                     @endif
                 @endif
+
              </ul>
         </form>
     </div>

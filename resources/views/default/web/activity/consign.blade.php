@@ -95,7 +95,7 @@
 					</ul>
 				@else
 					<ul>
-						<li class="nodata">无相关数据</li>
+						<li class="nodata">暂无活动 敬请期待</li>
 					</ul>
 				@endif
 
