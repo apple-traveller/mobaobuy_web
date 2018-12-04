@@ -12,11 +12,9 @@ use App\Services\FirmUserService;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
-use App\Services\UserInvoicesService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\DeclareDeclare;
 
 class ShopOrderController extends Controller
 {
@@ -90,14 +88,6 @@ class ShopOrderController extends Controller
         $region = RegionService::getRegion($orderInfo['country'], $orderInfo['province'], $orderInfo['city'], $orderInfo['district']);
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
-        if (!empty($orderInfo)) {
-            $user_invoices = UserInvoicesService::getInvoice($orderInfo['invoice_id']);//发票信息
-            if (empty($user_invoices)) {
-                $user_invoices = [];
-            }
-        } else {
-            $user_invoices = [];
-        }
         $user = UserService::getInfo($orderInfo['user_id']);
         if (empty($user)) {
             $user = FirmUserService::getFirmInfo($orderInfo['firm_id']);
@@ -108,7 +98,6 @@ class ShopOrderController extends Controller
             'user' => $user,
             'region' => $region,
             'order_goods' => $order_goods,
-            'user_invoices' => $user_invoices,
             'orderLogs' => $orderLogs
         ]);
     }
@@ -124,7 +113,7 @@ class ShopOrderController extends Controller
         $id = $request->input('id', '');
         $order_status = $request->input('order_status', '');
         $to_buyer = $request->input('to_buyer', '');
-//        $pay_status = $request->input('pay_status', '');
+        $pay_status = $request->input('pay_status', '');
         $pay_number = $request->input('pay_number','');
         $deposit_status = $request->input('deposit_status','');
         $action_note = $request->input('action_note', '');
@@ -176,38 +165,42 @@ class ShopOrderController extends Controller
                 }
                 $pay_error = '';
                 // 付款
+                if (!empty($pay_status) && $pay_status>0)
                 if (!empty($pay_number)&&$pay_number>0) {
-                    // 剩余应付金额
-                    $paid = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'];
-                    if ($orderInfo['deposit_status']==1){
-                        $paid = $paid + $orderInfo['deposit'];
-                    }
-                    if ($paid<=0){
-                        return $this->error('款已收齐，请不要重复操作');
-                    }
-                    // 部分付款
-                    if ($pay_number<$paid){
-                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
-                        $data['pay_status'] = 2;
-                    // 全款
-                    } else if ($pay_number==$paid){
-                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
-                        $data['pay_status'] = 1;
-                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
-                        if ($orderInfo['shipping_status'] == 3) {
-                            $data['order_status'] = 5;
-                        }
-                    // 当付款金额大于订单金额时 为商家准备
-                    } else if ($pay_number>$paid){
-                        $data['money_paid'] = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'];// 订单总金额
-                        $data['pay_status'] = 1;
-                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
-                        if ($orderInfo['shipping_status'] == 3) {
-                            $data['order_status'] = 5;
-                        }
-                        $pay_error = "填写的金额超过订单总金额，已自动调整";
-                    }
-                    // 已收款&&已收货 变更订单 待开票
+                    if ($orderInfo['shipping_status']==3){
+                        $data['order_status'] = 4;
+
+                    }//                    // 剩余应付金额
+//                    $paid = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'];
+//                    if ($orderInfo['deposit_status']==1){
+//                        $paid = $paid + $orderInfo['deposit'];
+//                    }
+//                    if ($paid<=0){
+//                        return $this->error('款已收齐，请不要重复操作');
+//                    }
+//                    // 部分付款
+//                    if ($pay_number<$paid){
+//                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
+//                        $data['pay_status'] = 2;
+//                    // 全款
+//                    } else if ($pay_number==$paid){
+//                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
+//                        $data['pay_status'] = 1;
+//                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
+//                        if ($orderInfo['shipping_status'] == 3) {
+//                            $data['order_status'] = 5;
+//                        }
+//                    // 当付款金额大于订单金额时 为商家准备
+//                    } else if ($pay_number>$paid){
+//                        $data['money_paid'] = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'];// 订单总金额
+//                        $data['pay_status'] = 1;
+//                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
+//                        if ($orderInfo['shipping_status'] == 3) {
+//                            $data['order_status'] = 5;
+//                        }
+//                        $pay_error = "填写的金额超过订单总金额，已自动调整";
+//                    }
+//                    // 已收款&&已收货 变更订单 待开票
                     $data['pay_time'] = Carbon::now();
                     $action_note = "商家确认收款";
                 }

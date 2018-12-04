@@ -676,20 +676,22 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
             $order_goods[$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods[$k]['goods_full_name'] = $good['goods_full_name'];
         }
         return $order_goods;
     }
 
     //获取商品信息(带总条数)
-    public static function getOrderGoodsList($orderid)
+    public static function getOrderGoodsList($order_id)
     {
-        $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $orderid]);
-        $order_info = OrderInfoRepo::getInfo($orderid);
+        $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $order_id]);
+        $order_info = OrderInfoRepo::getInfo($order_id);
         foreach ($order_goods['list'] as $k => $vo){
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
         }
         return $order_goods;
     }
@@ -872,10 +874,11 @@ class OrderInfoService
         $deliveryGoods = OrderDeliveryGoodsRepo::getList([],['delivery_id'=>$delivery_id]);
         foreach($deliveryGoods as $k=>$v){
             //查询所属店铺
-            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+//            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
             //查询所属订单的商品信息
             $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
             $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
+            $deliveryGoods[$k]['goods_full_name'] = $order_good['goods_name']?$order_good['goods_name']:'';
         }
         return $deliveryGoods;
     }
@@ -1383,5 +1386,24 @@ class OrderInfoService
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * 获取时间段内订单数和成交金额
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public static function getSalesVolumeOfTme($start,$end)
+    {
+        $condition = [
+            'is_delete'=>0,
+            'order_status'=>4
+        ];
+       $re = OrderInfoRepo::getCountAndSumPrice($start,$end,$condition);
+       if (!empty($re)){
+           return $re;
+       }
     }
 }

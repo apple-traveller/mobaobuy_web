@@ -61,7 +61,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_name']}}" data-name="{{$goodsQuote['goods_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_full_name']}}" data-name="{{$goodsQuote['goods_full_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -352,13 +352,13 @@
         });
 
         $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
-            let goods_number = $(this).val();
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
+            let goods_number = Number($(this).val());
             if (Number(spac) > Number(goods_number)){
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
+                    $(this).val(goods_number-goods_number%spac+spac);
                 } else {
                     $(this).val(goods_number);
                 }

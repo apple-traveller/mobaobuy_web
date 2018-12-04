@@ -46,7 +46,7 @@
                                 <tr class="">
                                     <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
                                     <td><div class="tDiv">{{$vo['shop_price']}}</div></td>
                                     <td><div class="tDiv">{{$vo['salesman']}}</div></td>

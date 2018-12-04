@@ -12,6 +12,7 @@ use App\Services\OrderInfoService;
 use App\Services\ShopService;
 use App\Services\ShopUserService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -27,7 +28,11 @@ class IndexController extends Controller
             'last_log'=>$info['shop_info']['last_time'],
             'is_self_run'=>$info['shop_info']['is_self_run']
         ];
-        return $this->display('seller.index',compact('data'));
+        $yearSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfYear(),Carbon::now());
+        $monthSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfMonth(),Carbon::now());
+        $dateSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfDay(),Carbon::now());
+
+        return $this->display('seller.index',compact('data','yearSalesVolume','monthSalesVolume','dateSalesVolume'));
     }
 
     public function home()

@@ -57,4 +57,24 @@ class OrderInfoRepo
         }
         return [];
     }
+
+    /**
+     * 获取时间段内订单数和成交金额
+     * @param $start
+     * @param $end
+     * @param $condition
+     * @return mixed
+     */
+    public static function getCountAndSumPrice($start,$end,$condition)
+    {
+        $model = self::getBaseModel();
+        $query = $model::query();
+        $re = $query->select(DB::raw('sum(money_paid) as paid,count(1) as num'))
+            ->where('add_time','>',$start)
+            ->where('add_time','<',$end)
+            ->where($condition)
+            ->first()
+            ->toArray();
+        return $re;
+    }
 }

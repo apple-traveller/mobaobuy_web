@@ -33,7 +33,7 @@
                                     <tbody>
                                     @foreach($orderGoods as $vo)
                                         <tr>
-                                            <td>{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
+                                            <td>{{$vo['goods_full_name']}}</td>
                                             <td>{{$vo['goods_sn']}}123 </td>
                                             <td class="goods_price" ><input  class="text"  style="min-width:50px;" type="text" value="{{$vo['goods_price']}}" ></td>
                                             <td class="goods_number" ><input  class="text"  style="min-width:50px;" type="text" value="{{$vo['goods_number']}}" ></td>

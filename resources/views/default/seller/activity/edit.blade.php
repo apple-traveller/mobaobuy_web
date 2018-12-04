@@ -50,7 +50,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
                                     <input type="text" data-packing-spac="@if(!empty($good)){{$good['packing_spec']}}@endif" data-name="@if(!empty($promote_info)){{$promote_info['goods_name']}}@endif" value="@if(!empty($promote_info)){{$promote_info['goods_name']}}@endif"  autocomplete="off"  id="goods_name" size="40"  class="text">
-                                    <input type="hidden" value="" name="goods_id"  id="goods_id">
+                                    <input type="hidden" value="@if(!empty($promote_info)){{$promote_info['goods_id']}}@endif" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
@@ -224,7 +224,6 @@
                 let spec = Number($("#goods_name").attr("data-packing-spac"));
                 let num = Number($(this).val());
                 let b_num = num % spec;
-                console.log(spec)
                 if (spec==0|| spec==''){
                     layer.msg('请先选择商品');
                     $("#num").val(0);
@@ -234,7 +233,7 @@
                     $(this).val(spec);
                 } else {
                     if (b_num >0){
-                        $(this).val(num-b_num);
+                        $(this).val(num-b_num+spec);
                     } else {
                         $(this).val(num);
                     }
@@ -255,7 +254,6 @@
                     return false;
                 }
                 if(id == 'min_limit' && min_num-spec>max_num && max_num!=0){
-                    console.log(max_num);
                     $(this).siblings('.pur_num').val(max_num);
                     $.msg.alert('不能大于最大限购量');
                 }else if(id == 'max_limit' && min_num>max_num-spec){
@@ -337,7 +335,7 @@
                     }else{
                         let _count = min_num%spac;
                         if(_count > 0){
-                            $(this).val(min_num - _count);
+                            $(this).val(min_num - _count+spac);
                         }else{
                             $(this).val(min_num);
                         }
@@ -350,8 +348,8 @@
 
         // 控制最大值直接输入
         $("#max_limit").change(function () {
-            let max_val =  $(this).val();
-            let min_val = $("#min_limit").val();
+            let max_val =  Number($(this).val());
+            let min_val = Number($("#min_limit").val());
             let spac = Number($("#goods_name").attr("data-packing-spac"));
             let tota_num = Number($("#num").val());
             if (max_val==0){
@@ -366,7 +364,7 @@
                 }else{
                     let _count = max_val%spac;
                     if(_count > 0){
-                        $(this).val(max_val - _count);
+                        $(this).val(max_val - _count+spac);
                     }else{
                         $(this).val(max_val);
                     }
@@ -375,7 +373,7 @@
             }
         });
 
-        document.onclick=function(event){
+        document.onclick=function(){
             $(".query_cat_name").hide();
             $(".query_goods_name").hide();
         }
@@ -455,20 +453,6 @@
         $("#goods_name").blur(function () {
             let goods_name = $(this).attr('data-name');
             $(this).val(goods_name);
-        });
-
-        $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
-            let goods_number = $(this).val();
-            if (spac >goods_number){
-                $(this).val(spac);
-            } else {
-                if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
-                } else {
-                    $(this).val(goods_number);
-                }
-            }
         });
     </script>
 @stop

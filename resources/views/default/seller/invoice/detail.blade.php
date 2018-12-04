@@ -105,7 +105,7 @@
                             <div class="order_operation order_operation100">
                                 <div class="item">
                                     <div class="label">当前可执行操作：</div>
-                                    <div class="order_operation_btn">
+                                    <div class="order_operation_btn" style="margin-top: 0px">
                                         @if($invoiceInfo['status'] == 1)
                                             <input name="pay" type="button" value="审核并填写快递信息" class="btn btn25 red_btn" onclick="conf({{ $invoiceInfo['id'] }})">
                                             <input name="cancel" type="button" value="取消" class="btn btn25 red_btn" onclick="cancelOne( {{ $invoiceInfo['id'] }})">
@@ -162,7 +162,6 @@
                     title: "审核",
                     id: "link",
                     shade: 0,
-                    offset: 'b',
                     resize: false,
                     area: ['600px', '300px'],
                     maxmin: true,

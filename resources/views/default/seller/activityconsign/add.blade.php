@@ -298,13 +298,13 @@
         });
 
         $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
-            let goods_number = $(this).val();
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
+            let goods_number = Number($(this).val());
             if (Number(spac) > Number(goods_number)){
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
+                    $(this).val(goods_number-goods_number%spac+spac);
                 } else {
                     $(this).val(goods_number);
                 }
