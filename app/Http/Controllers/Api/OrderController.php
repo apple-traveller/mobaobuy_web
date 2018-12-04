@@ -253,6 +253,7 @@ class OrderController extends ApiController
             $userInfo = $info;
             $userIds['user_id'] = $this->getUserID($request);
             $userIds['firm_id'] = $info['firm_id'];
+            $userIds['need_approval'] = $this->getUserInfo($request)['need_approval'];
             $u_id = $info['firm_id'];
         } else {
             //个人
