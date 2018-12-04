@@ -306,10 +306,9 @@ class UserController extends ApiController
     public function saveUserReal(Request $request)
     {
         $user_id = $this->getUserID($request);
-        $data = $request->all();
+        $dataArr = $request->all();
         //is_self 1是个人提交  2是企业
         $is_self = $request->input('is_self');
-        $dataArr = $data['jsonData'];
         if($is_self == 1){
             if(empty($dataArr['real_name'])){
                 return $this->error('请输入真实姓名');

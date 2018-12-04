@@ -35,6 +35,7 @@ class KuaidiController extends ApiController
                         'LogisticCode'    => $delivery_info['shipping_billno'],
                         'IsHandleInfo' => 0
                     ];
+
                     $json = Client::run(\Logistics\Config::KDNIAO_WL, $config, $request_data);
                     break;
                 default:
