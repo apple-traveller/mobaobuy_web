@@ -945,7 +945,7 @@ class OrderInfoService
         $city = RegionRepo::getInfo($orderInfo['city']);
         $district = RegionRepo::getInfo($orderInfo['district']);
 
-        $delivery_info = OrderDeliveryRepo::getInfoByFields(['order_id'=>$orderInfo['id']]);
+        $delivery_info = OrderDeliveryRepo::getList([],['order_id'=>$orderInfo['id']]);
 
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];
