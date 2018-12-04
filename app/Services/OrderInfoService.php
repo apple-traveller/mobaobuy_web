@@ -1123,7 +1123,7 @@ class OrderInfoService
                     break;
                 default://正常下单
                     $from = 'cart';
-                    $extension_id = '';
+                    $extension_id = 0;
                     $deposit_status = 1;
                     $deposit = 0;
 //                    $pay_type = $payType;
@@ -1137,6 +1137,7 @@ class OrderInfoService
                         }
                     }
             }
+           
             $orderInfo = [
                 'order_sn' => $order_no,
                 'user_id' => $userId['user_id'],
@@ -1160,6 +1161,7 @@ class OrderInfoService
                 'deposit' => $deposit,
                 'froms' => empty($token)?"pc":"weichat",
             ];
+
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 
             //订单总金额

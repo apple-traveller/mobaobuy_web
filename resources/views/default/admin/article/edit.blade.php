@@ -36,7 +36,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;文章分类：</div>
                                 <div class="label_value">
 
-                                    <select style="float:left;height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
+                                    <select style="float:left;height:30px;border:1px solid #dbdbdb;" name="cat_id" id="cat_id">
 
                                         @foreach($cateTrees as $vo)
                                             <option @if(isset($vo['hasChild'])) disabled="disabled"  @endif @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>

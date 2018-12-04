@@ -41,6 +41,7 @@ class PromoteController extends Controller
             'is_validated' => 1,
             'is_freeze' => 0,
         ];
+
         $shops = ShopService::getList([],$condition);
 
         return $this->display('admin.promote.add',[
