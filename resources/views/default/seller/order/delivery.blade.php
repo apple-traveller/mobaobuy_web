@@ -57,7 +57,7 @@
                                             <thead>
                                             <tr>
                                                 <th lay-data="{type:'checkbox',LAY_CHECKED:true}"></th>
-                                                <th lay-data="{field:'goods_name'}">商品名称</th>
+                                                <th lay-data="{field:'goods_full_name'}">商品名称</th>
                                                 <th lay-data="{field:'goods_sn'}">商品编码</th>
                                                 <th lay-data="{field:'packing_spec'}">商品规格</th>
                                                 <th lay-data="{field:'goods_price'}">价格</th>

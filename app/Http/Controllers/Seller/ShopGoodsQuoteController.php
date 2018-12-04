@@ -167,6 +167,7 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
+            'consign_status'=>1,
             'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
 

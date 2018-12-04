@@ -11,6 +11,7 @@ use App\Repositories\InvoiceGoodsRepo;
 use App\Repositories\InvoiceRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\OrderInfoRepo;
+use App\Repositories\UserRepo;
 use Illuminate\Support\Carbon;
 use phpDocumentor\Reflection\Types\Self_;
 
@@ -37,7 +38,9 @@ class InvoiceService
     public static function getInfoById($id)
     {
         $info =  InvoiceRepo::getInfo($id);
+        $user_info = UserRepo::getInfo($info['user_id']);
         $info['address_str'] = RegionService::getRegion($info['country'],$info['province'],$info['city'],$info['district']);
+        $info['is_firm'] = $user_info['is_firm'];
         return $info;
     }
 

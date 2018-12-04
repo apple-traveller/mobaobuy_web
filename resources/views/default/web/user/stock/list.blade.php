@@ -36,8 +36,8 @@
     }
 
     .check_box input[type=checkbox]:checked {
-    background: url(/images/interface-tickdone.png)no-repeat center;
-}
+        background: url(/images/interface-tickdone.png)no-repeat center;
+    }
 
 
 </style>
@@ -131,10 +131,10 @@
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th>分类名称</th>
-                    <th width="50%">名称</th>
+                    <th width="20%">分类名称</th>
+                    <th width="40%">名称</th>
                     <th width="25%">库存剩余数量(kg)</th>
-                    <th>操作</th>
+                    <th width="15%">操作</th>
                 </tr>
                 </thead>
 

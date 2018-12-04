@@ -275,7 +275,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-unit_name= "'+data[i].unit_name+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -307,7 +307,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-unit_name= "'+data[i].unit_name+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -348,12 +348,13 @@
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).data('packing_unit');
+            let unit_name = $(this).data('unit_name');
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
             $("#goods_name").attr("data-name",goods_name);
             $("#num").attr("disabled",false);
-            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
         });
 
         //点击将li标签里面的值填入input框内
@@ -372,13 +373,13 @@
         });
 
         $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
             let goods_number = $(this).val();
             if (Number(spac) > Number(goods_number)){
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
+                    $(this).val(goods_number-goods_number%spac+spac);
                 } else {
                     $(this).val(goods_number);
                 }

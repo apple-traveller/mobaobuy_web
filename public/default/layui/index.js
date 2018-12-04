@@ -88,7 +88,6 @@ layui.use(['element','jquery','form', 'layedit'],function(){
     // });
     //监听tab选项卡切换
     element.on('tab(tab-switch)', function(data){
-        console.log(data);
         if(data.elem.context.attributes != undefined){
             var id = data.elem.context.attributes[0].nodeValue;
             layui.each($(".layui-nav-child"), function () {

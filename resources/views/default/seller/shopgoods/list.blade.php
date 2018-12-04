@@ -40,7 +40,7 @@
                                     <tr class="">
                                         <td><div class="tDiv">{{$vo['id']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
                                         <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
                                         <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_model']}}</div></td>

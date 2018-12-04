@@ -5,13 +5,16 @@
         <div class="title"><a href="/admin/invoice/list?currpage={{$currpage}}&status={{$status}}" class="s-back">返回</a>发票 - 发票详情详情</div>
         <div class="content">
             <div class="explanation" id="explanation">
+
                 <div class="ex_tit">
                     <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
                 </div>
+
                 <ul>
                     <li>该页面展示发票申请。</li>
                     <li>审核通过后填写快递信息邮寄给用户。</li>
                 </ul>
+
             </div>
             <div class="flexilist order_info">
                 <form method="post" action="order.php?act=operate" name="listForm" onsubmit="return check()">
@@ -20,37 +23,29 @@
                         <div class="step">
                             <div class="step_title"><i class="ui-step"></i><h3>基本信息</h3></div>
                             <div class="section">
+
                                 <dl>
-                                    <dt>发票类型：</dt>
-                                    @if($invoiceInfo['invoice_type'] == 1)
-                                        <dd>普票</dd>
-                                    @elseif($invoiceInfo['invoice_type'] == 2)
-                                        <dd>专票</dd>
-                                    @endif
-                                    <dt></dt>
-                                    <dd></dd>
+                                    <dt>发票类型:<span style="color:#62b3ff">
+                                        @if($invoiceInfo['is_firm'] == 0)
+                                            个人
+                                        @elseif($invoiceInfo['invoice_type'] == 1)
+                                            普票
+                                        @else
+                                            专票
+                                        @endif</span></dt>
+                                </dl>
+
+                                <dl>
+                                    <dt style="width:300px;">公司抬头:<span style="color:#62b3ff">{{$invoiceInfo['company_name']}}</span></dt>
+                                    <dt>税号:<span style="color:#62b3ff">{{$invoiceInfo['tax_id']}}</span></dt>
+                                </dl>
+                                <dl style="margin-left: 20px;">
+                                    <dt>开户银行:<span style="color:#62b3ff">{{$invoiceInfo['bank_of_deposit']}}</span></dt>
+                                    <dt>银行账号:<span style="color:#62b3ff">{{$invoiceInfo['bank_account']}}</span></dt>
                                 </dl>
                                 <dl>
-                                    <dt>公司抬头：</dt>
-                                    <dd>{{$invoiceInfo['company_name']}}</dd>
-                                    <dt>税号：</dt>
-                                    <dd>{{$invoiceInfo['tax_id']}}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>开户银行：</dt>
-                                    <dd>{{$invoiceInfo['bank_of_deposit']}}</dd>
-                                    <dt>银行账号：</dt>
-                                    <dd>{{$invoiceInfo['bank_account']}}</dd>
-                                </dl>
-                                <dl>
-                                    <dt>开票地址：</dt>
-                                    <dd>
-                                        {{$invoiceInfo['company_address']}}
-                                    </dd>
-                                    <dt>开票电话：</dt>
-                                    <dd>
-                                        {{$invoiceInfo['company_telephone']}}
-                                    </dd>
+                                    <dt>开票地址:<span style="color:#62b3ff">{{$invoiceInfo['company_address']}}</span></dt>
+                                    <dt>开票电话:<span style="color:#62b3ff">{{$invoiceInfo['company_telephone']}}</span></dt>
                                 </dl>
                             </div>
                         </div>
@@ -60,17 +55,13 @@
                             <div class="step_title"><i class="ui-step"></i><h3>收货人信息</h3></div>
                             <div class="section">
                                 <dl>
-                                    <dt>收货人：</dt>
-                                    <dd>{{$invoiceInfo['consignee']}}</dd>
-                                    <dt>手机号码：</dt>
-                                    <dd>{{$invoiceInfo['mobile_phone']}}</dd>
+                                    <dt>收货人:<span style="color:#62b3ff">{{$invoiceInfo['consignee']}}</span></dt>
+                                    <dt>手机号码:<span style="color:#62b3ff">{{$invoiceInfo['mobile_phone']}}</span></dt>
                                 </dl>
 
                                 <dl style="width:40%">
-                                    <dt>收货地址：</dt>
-                                    <dd>{{$invoiceInfo['address_str']}} 详细地址：@if(empty($invoiceInfo['address'])) 无 @else {{$invoiceInfo['address']}} @endif</dd>
-                                    <dt>邮政编码：</dt>
-                                    <dd>{{$invoiceInfo['zipcode']}}</dd>
+                                    <dt>收货地址:<span style="color:#62b3ff">{{$invoiceInfo['address_str']}}详细地址：@if(empty($invoiceInfo['address'])) 无 @else {{$invoiceInfo['address']}} @endif</span></dt>
+                                    <dt>邮政编码:<span style="color:#62b3ff">{{$invoiceInfo['zipcode']}}</span></dt>
                                 </dl>
                             </div>
                         </div>
@@ -94,10 +85,10 @@
                                         @if(!empty($orderInfo))
                                             @foreach($orderInfo as $v)
                                                 <tr>
-                                                    <td>{{$v['order_sn']}}</td>
-                                                    <td>{{$v['goods_name']}}</td>
-                                                    <td>{{$v['goods_price']}}</td>
-                                                    <td>{{$v['invoice_num']}}</td>
+                                                    <td><span style="color:#62b3ff">{{$v['order_sn']}}</span></td>
+                                                    <td><span style="color:#62b3ff">{{$v['goods_name']}}</span></td>
+                                                    <td><span style="color:#62b3ff">{{$v['goods_price']}}</span></td>
+                                                    <td><span style="color:#62b3ff">{{$v['invoice_num']}}</span></td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -109,7 +100,6 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
 
                         <!--操作信息-->
@@ -141,7 +131,7 @@
                                         <div class="label_value font14">
                                             <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==0) @else layui-btn-primary @endif '>已取消</div>
                                             <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==1) @else layui-btn-primary @endif '>待开票</div>
-                                            <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==2) @else layui-btn-primary @endif '>已开票</div>
+                                            <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==2) @else layui-btn-primary @endif '>开票</div>
                                         </div>
                                     </div>
                                 </div>

@@ -667,10 +667,11 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
             Route::post('/user/logout','LoginController@logout');//退出登录
             Route::post('/user/sale','UserController@sale');// 我要卖货
             Route::post('/user/untying','LoginController@untying');// 解绑微信
+            Route::post('/user/needApproval','UserController@needApproval');//订单是否需要审核
 
             Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 
-            Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+            Route::post('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
             Route::post('/firmuser/list','FirmUserController@getList');//企业用户列表
             Route::post('/firmuser/detail','FirmUserController@getDetail');//企业用户详情
