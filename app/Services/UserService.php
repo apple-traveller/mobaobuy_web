@@ -219,19 +219,11 @@ class UserService
     }
 
     //重置密码
-    public static function resetPwd($username, $psw,$new_pwd){
+    public static function resetPwd($username, $new_pwd){
         $newData = [];
         $info = UserRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
             self::throwBizError('用户名不正确！');
-        }
-
-        if(!Hash::check($psw, $info['password'])){
-            self::throwBizError('旧密码不正确！');
-        }
-
-        if($psw==$new_pwd){
-            self::throwBizError('旧密码不能和新密码相同！');
         }
 
         if ($info['is_freeze']) {

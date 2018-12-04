@@ -184,7 +184,6 @@ class LoginController extends ApiController
     public function resetPass(Request $request)
     {
         $accountName = $request->input('mobile', '');
-        $psw = $request->input('repassword');
         $password = $request->input('password', '');
         $messCode = $request->input('messCode', '');
         $uuid = $request->input('token');
@@ -197,7 +196,7 @@ class LoginController extends ApiController
         }
 
         try{
-            UserService::resetPwd($accountName, $psw,$password);
+            UserService::resetPwd($accountName, $password);
             Cache::forget($uuid);
             Cache::forget('_api_user_'.$userid);
             Cache::forget('_api_deputy_user_'.$userid);
