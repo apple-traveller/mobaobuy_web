@@ -10,7 +10,7 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 4 || $orderInfo['order_status'] == 0) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 4 || $orderInfo['order_status'] == 5 || $orderInfo['order_status'] == 0) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
@@ -207,7 +207,7 @@
 
                         <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><h3>订单物流信息</h3></div>
-                            <div class="section">
+                            <div class="section" style="height: 100px;">
                                 @if(empty($delivery_list))
                                     <dl>
                                         <dt style="width: 528%">暂无信息</dt>
