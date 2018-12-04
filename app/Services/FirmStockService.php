@@ -16,7 +16,7 @@ class FirmStockService
         if(empty($goodsInfo)){
             self::throwBizError('商品信息有误');
         }
-        $data['goods_name']  = $goodsInfo['goods_name'];
+        $data['goods_name']  = $goodsInfo['goods_full_name'];
         $data['flow_time'] = Carbon::now();
         $insertData = [];
         $insertData['firm_id'] = $data['firm_id'];
@@ -39,7 +39,7 @@ class FirmStockService
             $stockData = [];
             $stockData['firm_id'] = $data['firm_id'];
             $stockData['goods_id'] = $data['goods_id'];
-            $stockData['goods_name'] = $goodsInfo['goods_name'];
+            $stockData['goods_name'] = $goodsInfo['goods_full_name'];
             $stockData['number'] = $data['number'];
             try{
                 self::beginTransaction();

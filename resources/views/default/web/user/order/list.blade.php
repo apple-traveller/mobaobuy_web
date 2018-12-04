@@ -23,6 +23,9 @@
     border: 0px;
     color: #fff;display: inline-block;float: none;margin-top: 10px;
 }
+        a:hover{
+            color:#666 !important;
+        }
 	</style>
 @endsection
 
