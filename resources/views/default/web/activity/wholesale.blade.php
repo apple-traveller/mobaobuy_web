@@ -2,8 +2,11 @@
 @section('title', '集采拼团')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
-	<link rel="stylesheet" href="css/index.css" />
+
 	<style>
+		.Rules_activity{margin-left:48px;margin-top:40px;width: 134px;height: 44px;line-height: 44px;background-color: #f8e509;border-radius:20px;text-align: center;font-size: 20px;color: #c42809;font-weight: bold;}
+		.Rules_text{margin-left:48px;margin-top: 20px;margin-bottom: 40px;}
+		.Rules_text li{margin-top: 10px;color: #fff;font-size: 18px;}
 		.nav-div .nav-cate .ass_menu {display: none;}
 		.top-search-div .search-div .logo{background:none;margin-top: 0}
 		.bottom_time{width: 154px;color: #666;float: left;text-align: left;}
@@ -60,11 +63,11 @@
 		<div class="collect_main">
 			<div class="collect_title">集采火拼</div>
 			<div class="w1200 ovh">
-				<li class="nodata">无相关数据</li>
-				<ul class="ms_list">
+
 					@if(empty($wholesaleInfo))
-					
+						<ul><li class="nodata">无相关数据</li></ul>
 					@else
+					<ul class="ms_list">
 						@foreach($wholesaleInfo as $v)
 							<li>
 								@if($v['is_over'])

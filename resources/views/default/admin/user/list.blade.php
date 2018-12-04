@@ -21,6 +21,7 @@
                     <a href="/admin/user/list?is_firm=0" @if($is_firm==0&&$is_firm!="") class="current" @endif>个人@if($is_firm==0&&$is_firm!="") <em>({{$userCount}})</em> @endif</a>
                     <a href="/admin/user/list?is_firm=1" @if($is_firm==1) class="current" @endif>企业@if($is_firm==1) <em>({{$userCount}})</em> @endif</a>
                     <a href="/admin/user/list?is_firm=-1" @if($is_firm==-1) class="current" @endif>待审核@if($is_firm==-1) <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?is_firm=-2" @if($is_firm==-2) class="current" @endif>未提交实名信息@if($is_firm==-2) <em>({{$userCount}})</em> @endif </a>
                    {{-- <a href="/admin/orderinfo/list?order_status=0">企业 <em>(20)</em></a>
                     <a href="/admin/orderinfo/list?order_status=0">个人 <em>(20)</em></a>--}}
                 </div>
@@ -107,8 +108,16 @@
                                     <div class="tDiv a2">
                                         <a href="{{url('/admin/user/detail')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
                                         <a href="{{url('/admin/user/log')}}?id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>日志</a>
-                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>实名审核</a>
+                                        <a href="{{url('/admin/user/userRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>
+                                            @if($user['review_status']==1)
+                                            查看实名
+                                            @else
+                                            实名审核
+                                            @endif
+                                        </a>
+                                        @if($user['review_status']==-1)
                                         <a href="{{url('/admin/user/addUserRealForm')}}?id={{$user['id']}}&currpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>添加认证</a>
+                                        @endif
                                         <a @if($user['is_firm']==1 && $user['review_status']==1)  @else style="display:none;" @endif href="{{url('/admin/user/firmStock')}}?firm_id={{$user['id']}}&pcurrpage={{$currpage}}&is_firm={{$is_firm}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>企业库存</a>
                                     </div>
                                 </td>

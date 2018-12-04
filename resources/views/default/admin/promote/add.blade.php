@@ -65,7 +65,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 选择商品：</div>
                                     <div class="label_value">
-                                        <input type="text" data-packing-spac="0"  autocomplete="off" value="{{old('goods_name')}}" name="goods_name" id="goods_name" size="40"  class="text">
+                                        <input type="text" data-goods-name="" data-packing-spac="0"  autocomplete="off" value="{{old('goods_name')}}" name="goods_name" id="goods_name" size="40"  class="text">
                                         <input type="hidden" name="goods_id"  id="goods_id">
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
@@ -89,7 +89,6 @@
                                         <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
-
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量：</div>
@@ -116,6 +115,7 @@
                                         <input type="reset"  class="button button_reset" value=" 重置 " >
                                     </div>
                                 </div>
+
                             </div>
                         </form>
                     </div>
@@ -180,10 +180,12 @@
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#goods_name").attr("data-goods-name",goods_name);
             $("#price").val("");
             $("#num").val("");
             $("#min_limit").val("");
             $("#max_limit").val("");
+            $("#num").attr("disabled",false);
             $("#goods_name").after(`<div style="margin-left: 10px;color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
         });
 
@@ -202,15 +204,18 @@
                     }
                 }else{
                     $(".query_goods_name").show();
-                    $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
                 }
             },"json");
+        });
+
+        $("#goods_name").blur(function(){
+            let goods_name = $(this).attr("data-goods-name");
+            $(this).val(goods_name);
         });
 
         layui.use(['laydate','layer'], function() {
             var laydate = layui.laydate;
             var layer = layui.layer;
-            var index;
 
             laydate.render({
                 elem: '#begin_time' //指定元素
@@ -242,10 +247,10 @@
                         if(num<=packing_spec){
                             $(this).val(packing_spec);
                         }else{
-                            $(this).val(Math.ceil(num/packing_spec)*packing_spec);
+                            $(this).val(Math.floor(num/packing_spec)*packing_spec);
                         }
                     }else{
-                        $(this).val(Math.ceil(num/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(num/packing_spec)*packing_spec);
                     }
                     $("#min_limit").attr("disabled",false);//取消最小数量的限制
                 });
@@ -273,7 +278,7 @@
                         layer.msg("不能大于促销总数量", {icon: 5,time:1000});
                         $(this).val(packing_spec);
                     }else{
-                        $(this).val(Math.ceil(min_limit/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
                     }
                     $("#max_limit").attr("disabled",false);//取消最大限购数量的限制
                 });
@@ -300,7 +305,7 @@
                         layer.msg("不能大于促销总数量", {icon: 5,time:1000});
                         $(this).val(min_limit);
                     }else{
-                        $(this).val(Math.ceil(max_limit/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
                     }
                 });
             });

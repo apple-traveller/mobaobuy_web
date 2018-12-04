@@ -16,6 +16,7 @@
                     <li>请注意选择文章分类；请严谨描述文章内容。</li>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
                     <li>输入关键字时请用逗号隔开。</li>
+                    <li>新闻中心上传图片尺寸：200像素×114像素。不按比例上传有可能出现图片显示不全或者变形</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -35,7 +36,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;文章分类：</div>
                                 <div class="label_value">
 
-                                    <select style="float:left;height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
+                                    <select style="float:left;height:30px;border:1px solid #dbdbdb;" name="cat_id" id="cat_id">
 
                                         @foreach($cateTrees as $vo)
                                             <option @if(isset($vo['hasChild'])) disabled="disabled"  @endif @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
