@@ -106,8 +106,11 @@
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';
                             html += '<tr  class="tal"><td colspan="4">';
                             html += '<p><span class="pl10 fl" style="width:30%">开票流水号：<a>' + full.invoice_numbers +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.created_at +'</span></p></td></tr>';
-
-                            html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：' + full.shipping_billno + '</span></p></div></td>';
+                            if (full.shipping_billno){
+                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：' + full.shipping_billno + '</span></p></div></td>';
+                            } else {
+                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：暂无</span></p></div></td>';
+                            }
 
                             html += '<td width="20%"><p>发票总金额:￥'+ full.invoice_amount +'</p></td>';
                             html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">订单详情</a></span></p></td>';
@@ -152,99 +155,6 @@
 
             });
         });
-
-        //审批通过
-        function orderApproval(id){
-            var flag = confirm('是否确认审批通过');
-            if(flag === true){
-                $.ajax({
-                    url: "/egis",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            console.log(data.code);
-                            alert('出错,请重试')
-                        }
-                    }
-                })
-            }
-
-        }
-
-        //订单取消
-        function orderCancel(id){
-            var flag = confirm('是否确认取消');
-            if(flag === true){
-                $.ajax({
-                    url: "/orderCancel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-//                            $.msg.alert();
-                            $.msg.tips('取消成功');
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
-                        }
-                    }
-                })
-            }
-        }
-
-        //订单删除
-        function orderDel(id){
-            var flag = confirm('是否确认删除?');
-            if(flag === true){
-                $.ajax({
-                    url: "/orderDel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
-                        }
-                    }
-                })
-            }
-        }
-
-        //确认收货
-        function confirmTake(id){
-            var flag = confirm('是否确认删除?');
-            if(flag === true){
-                $.ajax({
-                    url: "/orderDel",
-                    dataType: "json",
-                    data: {
-                        'id':id
-                    },
-                    type: "POST",
-                    success: function (data) {
-                        if(data.code){
-                            window.location.reload();
-                        }else{
-                            alert('出错,请重试')
-                        }
-                    }
-                })
-            }
-        }
-
         //
     </script>
 

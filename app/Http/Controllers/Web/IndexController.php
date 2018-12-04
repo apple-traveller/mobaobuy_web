@@ -98,6 +98,9 @@ class IndexController extends Controller
             if(!empty(session('cartSession'))){
                 session()->forget('cartSession');
             }
+            if (!empty(session('invoiceSession'))){
+                session()->forget('invoiceSession');
+            }
             return $this->success();
         }else{
             //获取用户所代表的公司
@@ -112,6 +115,9 @@ class IndexController extends Controller
                     session()->put('_curr_deputy_user', $firm);
                     if(!empty(session('cartSession'))){
                         session()->forget('cartSession');
+                    }
+                    if (!empty(session('invoiceSession'))){
+                        session()->forget('invoiceSession');
                     }
                     return $this->success();
                 }

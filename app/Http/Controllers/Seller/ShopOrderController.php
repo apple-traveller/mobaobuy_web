@@ -165,12 +165,17 @@ class ShopOrderController extends Controller
                 }
                 $pay_error = '';
                 // 付款
-                if (!empty($pay_status) && $pay_status>0)
-                if (!empty($pay_number)&&$pay_number>0) {
+                if (!empty($pay_status) && $pay_status>0){
                     if ($orderInfo['shipping_status']==3){
                         $data['order_status'] = 4;
+                    }
+                    $data['pay_status'] = $pay_status;
+                    if ($pay_status==1){
+                        $data['money_paid'] = $orderInfo['order_amount'];
+                    }
 
-                    }//                    // 剩余应付金额
+//                if (!empty($pay_number)&&$pay_number>0) {
+//                    // 剩余应付金额
 //                    $paid = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'];
 //                    if ($orderInfo['deposit_status']==1){
 //                        $paid = $paid + $orderInfo['deposit'];
