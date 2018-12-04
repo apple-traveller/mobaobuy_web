@@ -396,6 +396,7 @@ class OrderInfoService
         // 商户后台
         if ($seller_id>0){
             $condition['shop_id'] = $seller_id;
+            unset($condition['firm_id']);
         }
 //       dump($condition);
         $status = [
@@ -737,8 +738,6 @@ class OrderInfoService
     {
         return UserInvoicesRepo::getInfo($id);
     }
-
-
 
     //查询所有的快递信息
     public static function getShippingList()
@@ -1166,7 +1165,6 @@ class OrderInfoService
             ];
 
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
-
             //订单总金额
             $goods_amount = 0;
             foreach ($cartInfo_session as $v) {
@@ -1256,14 +1254,15 @@ class OrderInfoService
                 }
             }
             //更新订单总金额
+            $orderInfo_s = self::getOrderInfoById($orderInfoResult['id']);
             OrderInfoRepo::modify(
                 $orderInfoResult['id'],
                 [
                     'goods_amount' => $goods_amount,
-                    'order_amount' => $goods_amount+$orderInfoResult['shipping_fee'] // 商品金额 运费
-                                      +$orderInfoResult['insure_fee']+$orderInfoResult['pack_fee'] // 保费金额 包装费
-                                      -$orderInfoResult['integral_money']-$orderInfoResult['bonus'] // 积分抵扣金额 红包抵扣金额
-                                      -$orderInfoResult['bonus']-$orderInfoResult['discount'] // 红包抵扣金额 // 折扣金额
+                    'order_amount' => $goods_amount+$orderInfo_s['shipping_fee'] // 商品金额 运费
+                                      +$orderInfo_s['insure_fee']+$orderInfo_s['pack_fee'] // 保费金额 包装费
+                                      -$orderInfo_s['integral_money']-$orderInfo_s['bonus'] // 积分抵扣金额 红包抵扣金额
+                                      -$orderInfo_s['bonus']-$orderInfo_s['discount'] // 红包抵扣金额 // 折扣金额
 
 //                    'shop_name'=>$cartInfo['shop_name']
                 ]
@@ -1359,7 +1358,7 @@ class OrderInfoService
 
         //已完成
         $finished = array_merge($condition, self::setStatueCondition('finish'));
-        $data['finished'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$waitSend);
+        $data['finished'] = OrderInfoRepo::getCurrYearEveryMonth($b,$e,$finished);
         return $data;
     }
 
@@ -1402,13 +1401,15 @@ class OrderInfoService
      * 获取时间段内订单数和成交金额
      * @param $start
      * @param $end
+     * @param $shop_id
      * @return mixed
      */
-    public static function getSalesVolumeOfTme($start,$end)
+    public static function getSalesVolumeOfTme($start,$end,$shop_id)
     {
         $condition = [
             'is_delete'=>0,
-            'order_status'=>4
+            'order_status'=>4,
+            'shop_id'=>$shop_id
         ];
        $re = OrderInfoRepo::getCountAndSumPrice($start,$end,$condition);
        if (!empty($re)){

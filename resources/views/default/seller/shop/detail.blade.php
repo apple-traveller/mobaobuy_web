@@ -110,7 +110,7 @@
                 index = layer.open({
                     type: 1,
                     title: '大图',
-                    // area: ['700px', '600px'],
+                    area: ['700px', '600px'],
                     content: '<img src="'+src+'">'
                 });
             });

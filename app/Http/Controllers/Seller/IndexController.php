@@ -28,9 +28,9 @@ class IndexController extends Controller
             'last_log'=>$info['shop_info']['last_time'],
             'is_self_run'=>$info['shop_info']['is_self_run']
         ];
-        $yearSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfYear(),Carbon::now());
-        $monthSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfMonth(),Carbon::now());
-        $dateSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfDay(),Carbon::now());
+        $yearSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfYear(),Carbon::now(),$info['shop_info']['id']);
+        $monthSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfMonth(),Carbon::now(),$info['shop_info']['id']);
+        $dateSalesVolume = OrderInfoService::getSalesVolumeOfTme(Carbon::now()->startOfDay(),Carbon::now(),$info['shop_info']['id']);
 
         return $this->display('seller.index',compact('data','yearSalesVolume','monthSalesVolume','dateSalesVolume'));
     }

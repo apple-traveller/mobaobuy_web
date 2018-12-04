@@ -379,7 +379,7 @@
                 $(this).val(spac);
             } else {
                 if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac+spac);
+                    $(this).val(goods_number-goods_number%spac);
                 } else {
                     $(this).val(goods_number);
                 }

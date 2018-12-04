@@ -335,7 +335,7 @@
                     }else{
                         let _count = min_num%spac;
                         if(_count > 0){
-                            $(this).val(min_num - _count+spac);
+                            $(this).val(min_num - _count);
                         }else{
                             $(this).val(min_num);
                         }
@@ -364,7 +364,7 @@
                 }else{
                     let _count = max_val%spac;
                     if(_count > 0){
-                        $(this).val(max_val - _count+spac);
+                        $(this).val(max_val - _count);
                     }else{
                         $(this).val(max_val);
                     }

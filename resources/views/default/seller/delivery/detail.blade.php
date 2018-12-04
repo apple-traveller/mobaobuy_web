@@ -40,8 +40,12 @@
                                     <dt>快递单号：</dt>
                                     <dd>
                                         <div class="editSpanInput" ectype="editSpanInput">
-                                            <span onclick="listTable.edit(this,'{{url('/seller/delivery/modifyShippingBillno')}}','{{$delivery['id']}}')">{{$delivery['shipping_billno']}}</span>
-                                            <i class="icon icon-edit"></i>
+                                            @if($delivery['status']!=1)
+                                                <span>{{$delivery['shipping_billno']}}</span>
+                                            @else
+                                                <span onclick="listTable.edit(this,'{{url('/seller/delivery/modifyShippingBillno')}}','{{$delivery['id']}}') " >{{$delivery['shipping_billno']}}</span>
+                                                <i class="icon icon-edit"></i>
+                                            @endif
                                         </div>
 
                                     </dd>
