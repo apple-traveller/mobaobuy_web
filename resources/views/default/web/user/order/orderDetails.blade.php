@@ -8,14 +8,6 @@
 	<link rel="stylesheet" href="/default/css/index.css" />
 	<script type="text/javascript">
 		$(function(){
-			$('.acount_tab').hover(function(){
-				$('.acount_tab').addClass('whitebg');
-				$('.acount_select').show();
-			},function(){
-				$('.acount_tab').removeClass('whitebg');
-				$('.acount_select').hide()
-			});
-
 			//请求快递物流信息
 			getLogisticsInfo();
 		});
@@ -179,9 +171,11 @@
 			<div class="order_pro_stute">
 				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
 				<span class="ml30 db mt20">
-					物流单号：
 					@if(!empty($orderDetailsInfo['delivery_info']))
-						<span id="delivery_id" data-delivery_id="{{$orderDetailsInfo['delivery_info']['id']}}">{{$orderDetailsInfo['delivery_info']['shipping_billno']}}</span>
+						@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
+							物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
+							物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
+						@endforeach
 					@else
 						<span id="delivery_id" data-delivery_id="0">暂无</span>
 					@endif

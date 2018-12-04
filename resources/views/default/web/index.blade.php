@@ -203,9 +203,9 @@
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
-                    <span style="width:12%;">种类</span>
-                    <span style="width:18%;">商品名称</span>
-                    <span style="width:12%;">剩余数量（kg）</span>
+                    <span style="width:12%;">品种</span>
+                    <span style="width:18%;">规格&nbsp;&nbsp;&nbsp;厂商</span>
+                    <span style="width:12%;">可售数量（kg）</span>
                     <span style="width:12%;">单价（元/kg）</span>
                     <span style="width:12%;">发货地</span>
                     <span style="width:12%;">更新时间</span>

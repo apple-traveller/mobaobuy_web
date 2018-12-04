@@ -3,14 +3,7 @@
     <div class="warpper">
         <div class="title">订单 - 订单列表</div>
         <div class="content">
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>商城所有的订单列表。</li>
-                    <li>点击订单号即可进入详情页面对订单进行操作。</li>
-                </ul>
-            </div>
-            <div class="flexilist mt30" id="listDiv">
+            <div class="flexilist" id="listDiv">
                 <div class="common-head order-coomon-head">
                     <div class="order_state_tab">
                         <a href="/seller/order/list" @if(empty($tab_code)) class="current" @endif>全部订单@if(empty($tab_code)) <em>({{$total}})</em> @endif</a>
@@ -91,6 +84,7 @@
                                                 @if($vo['shipping_status']==0)待发货
                                                 @elseif($vo['shipping_status']==1)已发货
                                                 @elseif($vo['shipping_status']==2)部分发货
+                                                @elseif($vo['shipping_status']==3)已收货
                                                 @endif
                                             </div>
                                         </td>

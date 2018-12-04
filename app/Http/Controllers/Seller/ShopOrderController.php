@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Services\FirmUserService;
+use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
@@ -89,6 +90,12 @@ class ShopOrderController extends Controller
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderid($id);
         $user = UserService::getInfo($orderInfo['user_id']);
+        $delivery_list = OrderInfoService::getDeliveryList([],['order_id'=>$id]);
+        if (!empty($delivery_list['list'])){
+            $delivery_list = $delivery_list['list'];
+        } else {
+            $delivery_list = [];
+        }
         if (empty($user)) {
             $user = FirmUserService::getFirmInfo($orderInfo['firm_id']);
         }
@@ -98,7 +105,8 @@ class ShopOrderController extends Controller
             'user' => $user,
             'region' => $region,
             'order_goods' => $order_goods,
-            'orderLogs' => $orderLogs
+            'orderLogs' => $orderLogs,
+            'delivery_list'=>$delivery_list
         ]);
     }
 
