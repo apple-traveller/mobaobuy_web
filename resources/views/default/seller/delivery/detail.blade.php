@@ -94,7 +94,7 @@
                                         @if(!empty($delivery_goods))
                                         @foreach($delivery_goods as $vo)
                                         <tr>
-                                            <td class="first ml-20">{{$vo['goods_name']}}</td>
+                                            <td class="first ml-20">{{$vo['goods_full_name']}}</td>
                                             <td>{{$vo['goods_sn']}}</td>
                                             <td>{{$vo['goods_price']}}</td>
                                             <td>{{$vo['send_number']}}</td>
