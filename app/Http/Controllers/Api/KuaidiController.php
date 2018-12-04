@@ -24,7 +24,6 @@ class KuaidiController extends ApiController
                         '5' => \Logistics\Config::KDN_CHANNEL_YZPY
                     ];
                     $ShipperCode = $kdniao_tr[$delivery_info['shipping_id']] ?? '';
-//                    $ShipperCode = $kdniao_tr['3'] ?? '';
                     if(!isset($ShipperCode) || empty($ShipperCode) || empty($delivery_info['shipping_billno'])){
                         return $this->error('异常运单号'.$ShipperCode.'--'.$delivery_info['shipping_billno']);
                     }
@@ -36,7 +35,6 @@ class KuaidiController extends ApiController
                         'LogisticCode'    => $delivery_info['shipping_billno'],
                         'IsHandleInfo' => 0
                     ];
-//                    $request_data['LogisticCode'] = '75111968305523';
                     $json = Client::run(\Logistics\Config::KDNIAO_WL, $config, $request_data);
                     break;
                 default:
