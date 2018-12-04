@@ -6,7 +6,7 @@
 .input-tip .error{color: #f42424;}
 .input-tip .iconfont{font-size: 14px;margin-right: 6px;vertical-align: middle;position: relative;top: 0;left: 0;height: auto;width: auto;line-height: normal;}
 h1{font-size: 16px;}
-a:hover {color: #75b335;}
+a:hover {color: #75b335 !important;}
 .opt-btn{width: 100px;height: 38px;line-height: 38px;background-color: #75b335;cursor: pointer;border: 0px;color: #fff;float: left;}
 .back_btn {background-color: #ff6f17;border-radius: 2px;cursor: pointer;padding: 4px 20px;color: #fff;font-size: 14px;}
 .member_right_title_icon {width:60px;background: url(/img/member_title_icon.png)no-repeat 0px 6px;}

@@ -398,7 +398,9 @@
                     @if(!empty($article))
                         <a href="detail/{{$article['id']}}.html">
                             <li>
-                                <div class="Quotate-img"><img src="{{getFileUrl($article['image'])}}" /></div>
+                                <div class="Quotate-img" >
+                                    <img width="100%" src="{{getFileUrl($article['image'])}}" />
+                                </div>
                                 <div class="Quotate_text">{{$article['title']}}</div>
                             </li>
                         </a>
