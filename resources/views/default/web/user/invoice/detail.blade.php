@@ -31,15 +31,14 @@
                 },
                 type:"get",
                 success:function(data){
-                    if(data.code == 1){
+                    if(data.code === 1){
                         let _list = data.data.Traces;
                         let _length = data.data.Traces.length;
                         let _html = '';
                         for(let i=(_length-1); i>=0; i--){
                             _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
                         }
-                        console.log(_html);
-                        if(_html == ''){
+                        if(_html === ''){
                             _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
                         }
                         $('.wlxx').append(_html);
@@ -115,7 +114,7 @@
             <div class="consignee bbright">
                 <h1>收票人信息</h1>
                 <span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$invoiceInfo['consignee']}}</span></span>
-                <span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr">{{$invoiceInfo['address']}}</span></span>
+                <span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr">{{$invoiceInfo['address_str']}}</span></span>
                 <span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$invoiceInfo['mobile_phone']}}</span></span>
             </div>
             <!--商家信息-->
@@ -133,9 +132,9 @@
         <!--订单列表-->
         <div class="whitebg br1 mt20 ovh">
             <ul class="order-list-brand">
-                <li><span>订单流水号</span><span>商品名称</span><span>单价</span><span>数量</span></li>
+                <li><span>订单流水号</span><span>商品名称</span><span >单价</span><span>数量</span></li>
                 @foreach($invoiceGoods as $v)
-                    <li><span>{{$v['order_sn']}}</span><span>{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['invoice_num']}}kg</span><span></span><span></span></li>
+                    <li><span>{{$v['order_sn']}}</span><span class="ovhwp" style="height: 40px;">{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['invoice_num']}}kg</span><span></span><span></span></li>
                 @endforeach
             </ul>
             <div class="Amount_money">

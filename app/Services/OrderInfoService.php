@@ -756,7 +756,10 @@ class OrderInfoService
         foreach ($orderGoods as $k => $v) {
             $sum += $v['goods_price'] * $v['goods_number'];
         }
-        $order_amount = $sum+$orderInfo['shipping_fee']-$orderInfo['discount'];
+        $order_amount = $sum+$orderInfo['shipping_fee'] // 商品金额 运费
+            +$orderInfo['insure_fee']+$orderInfo['pack_fee'] // 保费金额 包装费
+            -$orderInfo['integral_money']-$orderInfo['bonus'] // 积分抵扣金额 红包抵扣金额
+            -$orderInfo['bonus']-$orderInfo['discount']; // 红包抵扣金额 // 折扣金额
         return OrderInfoRepo::modify($id, ['goods_amount' => $sum,'order_amount'=>$order_amount]);
     }
 
@@ -1137,7 +1140,7 @@ class OrderInfoService
                         }
                     }
             }
-           
+
             $orderInfo = [
                 'order_sn' => $order_no,
                 'user_id' => $userId['user_id'],
@@ -1257,7 +1260,11 @@ class OrderInfoService
                 $orderInfoResult['id'],
                 [
                     'goods_amount' => $goods_amount,
-                    'order_amount' => $goods_amount,
+                    'order_amount' => $goods_amount+$orderInfoResult['shipping_fee'] // 商品金额 运费
+                                      +$orderInfoResult['insure_fee']+$orderInfoResult['pack_fee'] // 保费金额 包装费
+                                      -$orderInfoResult['integral_money']-$orderInfoResult['bonus'] // 积分抵扣金额 红包抵扣金额
+                                      -$orderInfoResult['bonus']-$orderInfoResult['discount'] // 红包抵扣金额 // 折扣金额
+
 //                    'shop_name'=>$cartInfo['shop_name']
                 ]
             );

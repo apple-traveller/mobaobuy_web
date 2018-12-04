@@ -188,10 +188,16 @@ class InvoiceController extends Controller
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
+        $invoiceSession = session('invoiceSession');
+
+        if (empty($invoiceSession)){
+            return $this->redirect('/invoice');
+        }
         $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
 
         $order_ids = $request->input('order_id','');
         $total_amount = $request->input('total_amount','');
+
         if (empty($order_ids)){
             return $this->error('请选择订单');
         }
@@ -205,7 +211,6 @@ class InvoiceController extends Controller
             return $this->error('您的实名认证还未通过，不能申请发票');
         }
         // 判断默认地址 和当前选择地址
-        $invoiceSession = session('invoiceSession');
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
         foreach ($addressList as $k =>  $v){

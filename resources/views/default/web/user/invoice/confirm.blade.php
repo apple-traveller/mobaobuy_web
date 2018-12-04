@@ -219,7 +219,7 @@
 			@foreach($addressList as $k=>$v)
 			<li class="address_list @if($v['is_select'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
 				<div class="mt20 ml20 ovh"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
-				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
+				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}</span>
 				<div class="address_default">
 					<div class="address_default_edit">
 						@if($v['is_default'] == 1)
