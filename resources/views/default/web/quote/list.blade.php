@@ -251,7 +251,6 @@
 <script>
     paginate();
 
-
     //取消地区选择
     $('.cancel_region').click(function(){
         $("input[name='region_box']").each(function(){
@@ -340,9 +339,11 @@
 
 
 	//无刷新改变url地址
-    function changeURL(){
-        window.history.pushState({},0,'http://'+window.location.host+'/goodsList');
-    }
+//    function changeURL(){
+//        window.history.pushState({},0,'https://'+window.location.host+'/goodsList');
+//    }
+
+
     //分页
     function paginate(){
         layui.use(['laypage'], function() {
@@ -443,7 +444,7 @@
 //                if(_keyword != ''){
 //                    changeURL();
 //                }
-                changeURL();
+//                changeURL();
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;
