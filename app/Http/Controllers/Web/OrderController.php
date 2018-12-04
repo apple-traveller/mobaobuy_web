@@ -363,7 +363,7 @@ class OrderController extends Controller
         if ($info['is_firm']) {
             //企业用户，企业
             $userInfo = $info;
-            $userIds['user_id'] = session('_web_user');
+            $userIds['user_id'] = session('_web_user')['id'];
             $userIds['firm_id'] = $info['firm_id'];
             $userIds['need_approval'] = session('_web_user')['need_approval'];
             $u_id = $info['firm_id'];

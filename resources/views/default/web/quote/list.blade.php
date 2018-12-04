@@ -305,7 +305,13 @@
             $('#brand_tag').hide();
             $('#brand_tag').empty();
             $('#brand_tag').attr('brand_id','');
-            getInfo(1);
+            let _t = $('#t').val();
+            if(_t == 1 || _t == 2){
+                getInfo(1);
+            }else{
+                window.location.href = '/goodsList'
+            }
+
         });
         $(document).delegate('.close_cate','click',function(){
 //            var _href = window.location.href;
@@ -313,7 +319,13 @@
             $('#cate_tag').hide();
             $('#cate_tag').empty();
             $('#cate_tag').attr('cate_id','');
-            getInfo(1);
+
+            let _t = $('#t').val();
+            if(_t == 1 || _t == 2){
+                getInfo(1);
+            }else{
+                window.location.href = '/goodsList'
+            }
         });
 
         //公司名称
