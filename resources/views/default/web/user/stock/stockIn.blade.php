@@ -138,7 +138,7 @@
                         $('#appendGoodsName ul').remove();
                         var str = '';
                         for(var i = 0;i<data['data'].length;i++){
-                            str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['goods_name']+'</li>';
+                            str += '<li id="'+data['data'][i]['id']+'">'+data['data'][i]['goods_full_name']+'</li>';
                         }
                         var strHtml = '<ul id="pointUl"  class="pro_select" >'+str+'</ul>';
                         $('#appendGoodsName').append(strHtml);

@@ -2,8 +2,20 @@
 @section('title', '清仓特卖')
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
-	<link rel="stylesheet" href="css/index.css" />
+	
 	<style>
+		.Rules_activity{margin-left:48px;margin-top:40px;width: 134px;height: 44px;line-height: 44px;background-color: #f8e509;border-radius:20px;text-align: center;font-size: 20px;color: #c42809;font-weight: bold;}
+.Rules_text{margin-left:48px;margin-top: 20px;margin-bottom: 40px;}
+.Rules_text li{margin-top: 10px;color: #fff;font-size: 18px;}
+.ms_list{width: 1200px;margin: 0 auto;margin-left: -5px;margin-bottom: 20px;overflow: hidden;}
+.ms_list li{float:left;margin-left:10px;margin-top:15px;width: 290px;background-color: #fff;overflow: hidden;padding-bottom: 10px;}
+.ms_list_center{width: 250px;margin: 0 auto;margin-top: 35px;}
+.ms_list_center .mx_addr{height: 32px;line-height:30px;border: 1px solid #c9e1b1;color:#75b335;background-color:#f6fbf1;box-sizing: border-box;text-align: center;}
+.mx_progress{width: 172px;height:10px;background-color: #eeeeee;float: left;margin-top: 8px;margin-right: 50px;}
+.mx_progress_com{width: 62px;height:10px;background-color: #75b335;}
+.addr_dw{background: url(/images/dwzb.png)no-repeat 0px 2px;padding-left: 20px;color: #666;}
+.mx_price{width: 250px; height: 65px;line-height: 65px;margin-top:15px;margin-bottom:10px;text-align: center;background-color: #f6fbf1;font-size: 16px;}
+.mx_btn{width: 252px;height: 58px;line-height:58px;margin-bottom:25px;color:#fff;text-align:center;background: #f42424 url(/images/xs_ms.png)no-repeat 63px 21px;border-radius:3px;font-size: 22px;}
 		.nav-div .nav-cate .ass_menu {display: none;}
 		.top-search-div .search-div .logo{background:none;margin-top: 0}
 		.bottom_time{width: 154px;color: #666;float: left;text-align: left;}
