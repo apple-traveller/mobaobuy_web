@@ -45,7 +45,7 @@ class BrandService
     public static function delete($id)
     {
         //先验证是否存在商品
-        $res = GoodsRepo::getTotalCount(['brand_id'=>$id]);
+        $res = GoodsRepo::getInfoByFields(['brand_id'=>$id]);
         if(!$res){
             self::throwBizError('该品牌存在商品，无法删除');
             return false;

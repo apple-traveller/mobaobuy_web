@@ -291,7 +291,7 @@ class UserController extends ApiController
         $is_firm = $this->getUserInfo($request)['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
         if(empty($user_real)){
-            return $this->error('没有实名信息');
+            return $this->success('','没有实名信息');
         }else{
             return $this->success([
                 'user_name'=>$user_name,
