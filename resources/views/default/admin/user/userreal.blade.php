@@ -215,7 +215,7 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['700px', '500px'],
+                    area: ['900px', '600px'],
                     content: '<img src="'+content+'">'
                 });
             });

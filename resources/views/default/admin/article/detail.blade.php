@@ -29,7 +29,7 @@
                                 <div class="label">&nbsp;文章分类：</div>
                                 <div class="label_value">
 
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
 
                                         @foreach($cateTrees as $vo)
                                             <option @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
@@ -115,7 +115,7 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['700px', '500px'],
+                    area: ['1000px', '600px'],
                     content: content
                 });
             });
@@ -125,7 +125,7 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['700px', '500px'],
+                    area: ['800px', '600px'],
                     content: '<img src="'+content+'">'
                 });
             });

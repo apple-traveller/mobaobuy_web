@@ -56,7 +56,7 @@
         <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
-                <div class="fl mb15" style="width: 200px;height: 128px"><a href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 128px"/></a></div>
+                <div class="fl mb15" style="width: 200px;height: 114px"><a href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 114px"/></a></div>
                 <div class="fl ml20">
                     <h1 class="fs18 mt10"><a href="/detail/{{ $v['id'] }}.html">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
