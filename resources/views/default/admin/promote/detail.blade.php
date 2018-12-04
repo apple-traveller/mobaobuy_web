@@ -70,10 +70,14 @@
                             <div class="item">
                                 <div class="label">审核状态：</div>
                                 <div class="value">
-                                    <input @if($promote['review_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="待审核" >
-                                    <input @if($promote['review_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="2" value="不通过" >
-                                    <input @if($promote['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="3" value="已审核" >
-                                    <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                    @if($promote['review_status']==3)
+                                        已通过审核
+                                    @else
+                                        <input @if($promote['review_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="待审核" >
+                                        <input @if($promote['review_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="2" value="不通过" >
+                                        <input @if($promote['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="3" value="已审核" >
+                                        <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                    @endif
                                 </div>
                             </div>
 

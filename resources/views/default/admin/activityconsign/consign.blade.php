@@ -47,6 +47,7 @@
                                     <th width="10%"><div class="tDiv">交货地</div></th>
                                     <th width="10%"><div class="tDiv">添加时间</div></th>
                                     <th width="10%"><div class="tDiv">生产日期</div></th>
+                                    <th width="10%"><div class="tDiv">审核状态</div></th>
                                     <th width="10%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
@@ -64,6 +65,17 @@
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            @if($vo['consign_status']==0)
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                            @elseif($vo['consign_status']==2)
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>不通过</div>
+                                            @elseif($vo['consign_status']==1)
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius '>审核通过</div>
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/admin/activity/consign/detail?id={{$vo['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
