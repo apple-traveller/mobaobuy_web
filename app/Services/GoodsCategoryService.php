@@ -14,7 +14,7 @@ class GoodsCategoryService
         if($only_show){
             $condition['is_show'] = 1;
         }
-        $all_list = GoodsCategoryRepo::getList('',$condition);
+        $all_list = GoodsCategoryRepo::getList(['sort_order'=>'asc'],$condition);
         return make_treeTable($all_list, 'id', 'parent_id','_child');
     }
     //获取所有分类的树型数据
