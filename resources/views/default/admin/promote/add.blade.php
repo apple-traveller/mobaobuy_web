@@ -185,6 +185,7 @@
             $("#num").val("");
             $("#min_limit").val("");
             $("#max_limit").val("");
+            $("#num").attr("disabled",false);
             $("#goods_name").after(`<div style="margin-left: 10px;color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
         });
 
@@ -231,7 +232,7 @@
                 var packing_spec = $("#goods_name").attr("data-packing-spac");
                 if(packing_spec==0){
                     layer.msg("请先选择商品", {icon: 5,time:1000});
-                    return false;
+                    $(this).attr("disabled","disabled");
                 }
 
                 $("#num").blur(function(){
@@ -239,16 +240,17 @@
                     var num = parseInt($(this).val());
                     if(!num){
                         $(this).val(packing_spec);
-                        return false;//取消最小数量的限制
+                        $("#min_limit").attr("disabled",false);//取消最小数量的限制
+                        return ;
                     }
                     if(num%packing_spec!=0){
                         if(num<=packing_spec){
                             $(this).val(packing_spec);
                         }else{
-                            $(this).val(Math.ceil(num/packing_spec)*packing_spec);
+                            $(this).val(Math.floor(num/packing_spec)*packing_spec);
                         }
                     }else{
-                        $(this).val(Math.ceil(num/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(num/packing_spec)*packing_spec);
                     }
                     $("#min_limit").attr("disabled",false);//取消最小数量的限制
                 });
@@ -276,7 +278,7 @@
                         layer.msg("不能大于促销总数量", {icon: 5,time:1000});
                         $(this).val(packing_spec);
                     }else{
-                        $(this).val(Math.ceil(min_limit/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
                     }
                     $("#max_limit").attr("disabled",false);//取消最大限购数量的限制
                 });
@@ -303,7 +305,7 @@
                         layer.msg("不能大于促销总数量", {icon: 5,time:1000});
                         $(this).val(min_limit);
                     }else{
-                        $(this).val(Math.ceil(max_limit/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
                     }
                 });
             });
