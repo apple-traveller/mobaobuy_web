@@ -29,6 +29,22 @@ class UserRealService
         return UserRealRepo::modify($data['user_id'],$data);
     }
 
+    //修改昵称(后台方法)
+    public static function modifyNickname($data)
+    {
+        try{
+            self::beginTransaction();
+            $user_real = UserRealRepo::modify($data['user_id'],$data);
+            $user = UserRepo::modify($user_real['user_id'],['nick_name'=>$user_real['real_name']]);
+            self::commit();
+            return $user;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
+    }
+
     //实名认证保存
     public static function saveUserReal($data,$is_self,$user_id)
     {

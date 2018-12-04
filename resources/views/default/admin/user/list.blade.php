@@ -97,10 +97,14 @@
 
                                 <td>
                                     <div class="tDiv">
+                                        @if(substr($user['user_name'],-6)=="logout")
+                                            已注销
+                                        @else
                                         <div style="margin-left: 10px;" class="switch @if($user['is_freeze']) active @endif" title="@if($user['is_freeze']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('admin/user/change/active')}}', '{{$user['id']}}')">
                                             <div class="circle"></div>
                                         </div>
                                         <input type="hidden" value="0" name="">
+                                        @endif
                                     </div>
                                 </td>
 

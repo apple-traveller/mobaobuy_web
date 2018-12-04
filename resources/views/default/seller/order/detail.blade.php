@@ -10,7 +10,7 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==5 ||$orderInfo['order_status']==3 || $orderInfo['order_status'] == 2 || $orderInfo['order_status'] == 0) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 4 || $orderInfo['order_status'] == 0) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
@@ -111,28 +111,63 @@
                                         <div class="" ectype="editSpanInput" style="float: right;margin-right: 10px">
                                             <span id="receive_num">{{$orderInfo['auto_delivery_time']}}</span>
                                             <span>天</span>
-                                            <i class="icon icon-edit" onclick="listTable.edit($('#receive_num')[0],'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')"></i>
+                                            <i class="icon icon-edit" @if($orderInfo!=4)onclick="listTable.edit($('#receive_num')[0],'{{url('/seller/order/modifyReceiveDate')}}','{{$orderInfo['id']}}')" @endif></i>
                                         </div>
                                     </dt>
                                 </dl>
+                                <dl>
+
+
+                                    <dt>
+                                        <div style="height: 40px;">
+                                            定金凭证:
+                                            @if(!empty($orderInfo['deposit_pay_voucher']))
+                                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3">查看</button>
+                                            @else
+                                                <span>暂无</span>
+                                            @endif
+                                        </div>
+                                    </dt>
+
+                                    <dt>
+                                        <div style="height: 40px;">
+                                            付款凭证:
+                                            @if(!empty($orderInfo['pay_voucher']))
+                                                <button type="button" onclick="payImg('{{ getFileUrl($orderInfo['pay_voucher']) }}')" class="layui-btn mt3">查看</button>
+                                            @else
+                                                <span>暂无</span>
+                                            @endif
+                                        </div>
+                                    </dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
                             </div>
                         </div>
-                        <div style="margin-left: 40px;height: 40px;">
-                            定金凭证:
-                            @if(!empty($orderInfo['deposit_pay_voucher']))
-                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3">查看</button>
-                            @else
-                                <span>暂无</span>
-                            @endif
-                        </div>
-                        <div style="margin-left: 40px;height: 40px;">
-                            付款凭证:
-                            @if(!empty($orderInfo['pay_voucher']))
-                                <button type="button" onclick="payImg('{{ getFileUrl($orderInfo['pay_voucher']) }}')" class="layui-btn mt3">查看</button>
-                            @else
-                                <span>暂无</span>
-                            @endif
-                        </div>
+
 
                         <!--收货人信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
@@ -144,19 +179,80 @@
                                     <dt>手机号码：{{$orderInfo['mobile_phone']}}</dt>
 
                                 </dl>
-                                <dl style="width:50%">
+                                <dl>
                                     <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
 
                                     <dt>邮政编码：{{$orderInfo['zipcode']}}</dt>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
 
                                 </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="step" style="background: #fff;padding: 10px 20px;">
+                            <div class="step_title"><h3>订单物流信息</h3></div>
+                            <div class="section">
+                                @if(empty($delivery_list))
+                                    <dl>
+                                        <dt style="width: 528%">暂无信息</dt>
+                                    </dl>
+                                @else
+                                @foreach($delivery_list as $v)
+                                    <dl>
+                                        <dt>物流公司：{{$v['shipping_name']}}</dt>
+
+                                        <dt>物流单号：{{$v['shipping_billno']}}</dt>
+
+                                    </dl>
+                                    @endforeach
+
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+
+                                    <dt></dt>
+
+                                </dl>
+                                    @endif
                             </div>
                         </div>
                         <!-- 门店信息 -->
                         <!--订单其他信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><i class="ui-step"></i><h3>其他信息</h3></div>
-                            {{--<div class="section">--}}
+                            <div class="section">
                                 {{--<dl>--}}
                                     {{--<dt>发票抬头：--}}{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}{{--</dt>--}}
                                     {{--<dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>--}}
@@ -182,15 +278,27 @@
                                 {{--</dl>--}}
 
                                 <dl style="width:30.6%">
-                                    <dt style="width: 252%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></dt>
-                                    <dt style="width: 252%">买家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dt>
+                                    <dt style="width: 320%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></dt>
+                                    <dt style="width: 320%">买家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['postscript']}} @endif</dt>
                                 </dl>
                             </div>
                         </div>
+                    </div>
 
                         <!--商品信息-->
                         <div class="step" style="background: #fff;padding: 10px 20px;">
-                            <div class="step_title"><i class="ui-step"></i><h3>商品信息<a href="/seller/order/modifyGoodsInfo?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
+                            <div class="step_title">
+                                <i class="ui-step">
+
+                                </i>
+                                <h3>商品信息 @if($orderInfo['order_status']==2)
+                                    <a href="/seller/order/modifyGoodsInfo?id={{$orderInfo['id']}}&currentPage={{$currentPage}}">
+                                        <i class="icon icon-edit"></i>
+                                    </a>
+                                             @else
+                                    @endif
+                                </h3>
+                            </div>
                             <div class="step_info">
                                 <div class="order_goods_fr">
                                     <table class="table" border="0" cellpadding="0" cellspacing="0">
@@ -222,7 +330,15 @@
                         <!--费用信息-->
                         <div class="step order_total">
                             <div class="step_title"><i class="ui-step"></i>
-                                <h3>费用信息<a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}"><i class="icon icon-edit"></i></a></h3></div>
+                                <h3>费用信息 @if($orderInfo['order_status']==2)
+                                    <a href="/seller/order/modifyFree?id={{$orderInfo['id']}}&currentPage={{$currentPage}}">
+                                        <i class="icon icon-edit">
+                                        </i>
+                                    </a>
+                                         @else
+                                    @endif
+                                </h3>
+                            </div>
                             <div class="section">
                                 <dl>
                                     <dt>商品总金额：<em>¥</em>{{$orderInfo['goods_amount']}}</dt>
