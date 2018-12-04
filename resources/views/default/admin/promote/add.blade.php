@@ -186,7 +186,7 @@
             $("#min_limit").val("");
             $("#max_limit").val("");
             $("#num").attr("disabled",false);
-            $("#goods_name").after(`<div style="margin-left: 10px;color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
+            $("#goods_name").after(`<div style="color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
         });
 
 
@@ -232,87 +232,123 @@
                 var packing_spec = $("#goods_name").attr("data-packing-spac");
                 if(packing_spec==0){
                     layer.msg("请先选择商品", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
+                    $(this).val("");
+                    return false;
                 }
 
-                $("#num").blur(function(){
-                    var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
-                    var num = parseInt($(this).val());
-                    if(!num){
-                        $(this).val(packing_spec);
-                        $("#min_limit").attr("disabled",false);//取消最小数量的限制
-                        return ;
+            });
+
+            $("#num").blur(function(){
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                if(packing_spec==0 && $(this).val().length==0){
+                    $(this).val("");
+                    return false;
+                }
+                if(packing_spec==0){
+                    layer.msg("请先选择商品", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                var num = parseInt($(this).val());
+                if(!num){
+                    $(this).val(packing_spec);
+                    if($(this).val()==packing_spec){
+                        $("#min_limit").val("");//
+                        $("#max_limit").val("");//
                     }
-                    if(num%packing_spec!=0){
-                        if(num<=packing_spec){
-                            $(this).val(packing_spec);
-                        }else{
-                            $(this).val(Math.floor(num/packing_spec)*packing_spec);
-                        }
+                    return ;
+                }
+                if(num%packing_spec!=0){
+                    if(num<=packing_spec){
+                        $(this).val(packing_spec);
                     }else{
                         $(this).val(Math.floor(num/packing_spec)*packing_spec);
                     }
-                    $("#min_limit").attr("disabled",false);//取消最小数量的限制
-                });
+                }else{
+                    $(this).val(Math.floor(num/packing_spec)*packing_spec);
+                }
+                if($(this).val()==packing_spec){
+                    $("#min_limit").val("");//
+                    $("#max_limit").val("");//
+                }
 
             });
 
             //最小起售数量
             $("#min_limit").focus(function(){
-                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
                 var num = parseInt($("#num").val());
                 if(!num){
                     layer.msg("请先填写促销总数量", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
+                    $(this).val("");
                     return ;
                 }
-
-                $("#min_limit").blur(function(){
-                    var min_limit = parseInt($(this).val());
-                    if(!min_limit){
-                        $(this).val(packing_spec);
-                        return ;
-                    }
-                    console.log(min_limit+":"+num);
-                    if(min_limit>num){
-                        layer.msg("不能大于促销总数量", {icon: 5,time:1000});
-                        $(this).val(packing_spec);
-                    }else{
-                        $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
-                    }
-                    $("#max_limit").attr("disabled",false);//取消最大限购数量的限制
-                });
+            });
+            $("#min_limit").blur(function(){
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                var min_limit = parseInt($(this).val());
+                var num = parseInt($("#num").val());
+                if(!num && $(this).val().length==0){
+                    $(this).val("");
+                    return ;
+                }
+                if(!num){
+                    layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                if(!min_limit){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                console.log("促销总数量:"+num);
+                if(min_limit>num){
+                    layer.msg("不能大于促销总数量", {icon: 5,time:1000});
+                    $(this).val(packing_spec);
+                    return false;
+                }else{
+                    $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
+                    return false;
+                }
             });
 
             //最大限购数量
             $("#max_limit").focus(function(){
                 var min_limit = parseInt($("#min_limit").val());
-                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
-                var num = parseInt($("#num").val());
                 if(!min_limit){
                     layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
-                    return ;
+                    $(this).val();
+                    return false;
                 }
-
-                $("#max_limit").blur(function(){
-                    var max_limit = parseInt($(this).val());
-                    if(!max_limit){
-                        $(this).val(min_limit);
-                        return ;
-                    }
-                    if(max_limit>num){
-                        layer.msg("不能大于促销总数量", {icon: 5,time:1000});
-                        $(this).val(min_limit);
-                    }else if(max_limit<min_limit){
-                        layer.msg("必须大于最小起售数量", {icon: 5,time:1000});
-                        $(this).val(min_limit);
-                    }else{
-                        $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
-                    }
-                });
             });
 
+            $("#max_limit").blur(function(){
+                var max_limit = parseInt($(this).val());
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                var min_limit = parseInt($("#min_limit").val());
+                var num = parseInt($("#num").val());
+                if(!min_limit && $(this).val().length==0){
+                    $(this).val("");
+                    return false;
+                }
+                if(!min_limit){
+                    layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                if(!max_limit){
+                    $(this).val(min_limit);
+                    return ;
+                }
+                if(max_limit>num){
+                    layer.msg("不能大于促销总数量", {icon: 5,time:1000});
+                    $(this).val(min_limit);
+                }else if(max_limit<min_limit){
+                    layer.msg("必须大于最小起售数量", {icon: 5,time:1000});
+                    $(this).val(min_limit);
+                }else{
+                    $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
+                }
+            });
 
 
         });

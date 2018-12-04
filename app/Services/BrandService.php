@@ -46,7 +46,7 @@ class BrandService
     {
         //先验证是否存在商品
         $res = GoodsRepo::getInfoByFields(['brand_id'=>$id]);
-        if(!$res){
+        if(!empty($res)){
             self::throwBizError('该品牌存在商品，无法删除');
             return false;
         }
