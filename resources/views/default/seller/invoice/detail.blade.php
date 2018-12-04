@@ -11,36 +11,35 @@
                         <div class="step_title"><i class="ui-step"></i><h3>基本信息</h3></div>
                         <div class="section">
                             <dl>
-                                <dt>发票类型：</dt>
+                                <dt>发票类型：
                                 @if($invoiceInfo['invoice_type'] == 1)
                                     <dd>普票</dd>
                                 @elseif($invoiceInfo['invoice_type'] == 2)
                                     <dd>专票</dd>
-                                @endif
+                                    @endif
+                                    </dt>
+                            </dl>
+                            <dl>
+                                <dt>公司抬头：{{$invoiceInfo['company_name']}}</dt>
+
+                                <dt>税号：{{$invoiceInfo['tax_id']}}</dt>
+
+                            </dl>
+                            <dl>
+                                <dt>开户银行：{{$invoiceInfo['bank_of_deposit']}}</dt>
+
+                                <dt>银行账号：{{$invoiceInfo['bank_account']}}</dt>
+
+                            </dl>
+                            <dl>
+                                <dt>开票地址：{{$invoiceInfo['company_address']}}</dt>
+
+                                <dt>开票电话：{{$invoiceInfo['company_telephone']}}</dt>
+                            </dl>
+                            <dl>
                                 <dt></dt>
-                                <dd></dd>
-                            </dl>
-                            <dl>
-                                <dt>公司抬头：</dt>
-                                <dd>{{$invoiceInfo['company_name']}}</dd>
-                                <dt>税号：</dt>
-                                <dd>{{$invoiceInfo['tax_id']}}</dd>
-                            </dl>
-                            <dl>
-                                <dt>开户银行：</dt>
-                                <dd>{{$invoiceInfo['bank_of_deposit']}}</dd>
-                                <dt>银行账号：</dt>
-                                <dd>{{$invoiceInfo['bank_account']}}</dd>
-                            </dl>
-                            <dl>
-                                <dt>开票地址：</dt>
-                                <dd>
-                                    {{$invoiceInfo['company_address']}}
-                                </dd>
-                                <dt>开票电话：</dt>
-                                <dd>
-                                   {{$invoiceInfo['company_telephone']}}
-                                </dd>
+
+                                <dt></dt>
                             </dl>
                         </div>
                     </div>
@@ -50,20 +49,59 @@
                         <div class="step_title"><i class="ui-step"></i><h3>收货人信息</h3></div>
                         <div class="section">
                             <dl>
-                                <dt>收货人：</dt>
-                                <dd>{{$invoiceInfo['consignee']}}</dd>
-                                <dt>手机号码：</dt>
-                                <dd>{{$invoiceInfo['mobile_phone']}}</dd>
+                                <dt>收货人：{{$invoiceInfo['consignee']}}</dt>
+
+                                <dt>手机号码：{{$invoiceInfo['mobile_phone']}}</dt>
+
                             </dl>
 
-                            <dl style="width:25%">
-                                <dt>收货地址：</dt>
-                                <dd>[{{$invoiceInfo['address_str']}}] 地址：{{$invoiceInfo['address']}}</dd>
-                                <dt>邮政编码：</dt>
-                                <dd>{{$invoiceInfo['zipcode']}}</dd>
+                            <dl>
+                                <dt>收货地址：{{$invoiceInfo['address_str']}}</dt>
+
+                                <dt>邮政编码：{{$invoiceInfo['zipcode']}}</dt>
+                            </dl>
+                            <dl>
+                                <dt></dt>
+                                <dt></dt>
+                            </dl>
+                            <dl>
+                                <dt></dt>
+                                <dt></dt>
+                            </dl>
+                            <dl>
+                                <dt></dt>
+                                <dt></dt>
                             </dl>
                         </div>
                     </div>
+                    <div class="step" style="background: #fff;padding: 10px 20px;">
+                        <div class="step_title"><h3>订单物流</h3></div>
+                        <div class="section" style="height: 100px;">
+                                <dl>
+                                    <dt>物流公司：{{$invoiceInfo['shipping_name']}}</dt>
+
+                                    <dt>物流单号：{{$invoiceInfo['shipping_billno']}}</dt>
+
+                                </dl>
+
+                                <dl>
+                                    <dt></dt>
+                                    <dt></dt>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dt></dt>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dt></dt>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dt></dt>
+                                </dl>
+
+                        </div>
 
                     <!--商品信息-->
                     <div class="step">
