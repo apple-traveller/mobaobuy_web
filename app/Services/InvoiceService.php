@@ -203,4 +203,14 @@ class InvoiceService
 
         return $status;
     }
+
+    /**
+     * 发票列
+     * @param $condition
+     * @return mixed
+     */
+    public static function getList($condition)
+    {
+        return InvoiceRepo::getList([],$condition);
+    }
 }

@@ -64,6 +64,7 @@
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
+                                    <div style="color:red;" class="notic">商品规格:{{$good['packing_spec']}}&nbsp;&nbsp;{{$good['unit_name']}}/{{$good['packing_unit']}}</div>
                                 </div>
                             </div>
 
@@ -73,6 +74,7 @@
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                 </div>
                             </div>
 
@@ -264,7 +266,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -285,7 +287,7 @@
                     var data = res.data;
                     console.log(data);
                     for(var i=0;i<data.length;i++){
-                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                        $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
                     }
                 }
             },"json");
@@ -297,7 +299,8 @@
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
-            let packing_unit = $(this).attr('data-packing-unit');
+            var packing_unit = $(this).attr("data-packing-unit");
+            var unit_name = $(this).attr("data-unit-name");
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
@@ -305,19 +308,32 @@
             $("#min_limit").val(packing_spac);
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
-            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+            $("#goods_name").after(`<div style="color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
         });
-
         $("#goods_name").blur(function(){
             let _goods_name = $(this).attr("data-goodsname");
             $(this).val(_goods_name);
         });
         layui.use(['layer'], function() {
+            $("#goods_number").focus(function(){
+                let spac = parseInt($("#goods_name").attr("data-packing-spac"));
+                if (spac == 0) {
+                    layer.msg("请先选择商品", {icon: 5, time: 1000});
+                    $(this).val("");
+                    return false;
+                }
+            });
+
             $("#goods_number").blur(function () {
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
                 let goods_number = $(this).val();
+                if (spac == 0 && goods_number.length==0) {
+                    $(this).val("");
+                    return false;
+                }
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
+                    $(this).val("");
                     return false;
                 }
                 if (goods_number =="" || goods_number ==0) {
@@ -325,11 +341,12 @@
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.ceil(goods_number/spac) * spac);
+                $(this).val(Math.floor(goods_number/spac) * spac);
             });
         });
+
         // 商家 请求所有的商家数据
-        function getShopList(_id){
+        function getShopList(){
             $.ajax({
                 url: "/admin/shop/ajax_list",
                 dataType: "json",
@@ -339,12 +356,7 @@
                     if(res.code==1){
                         let data = res.data;
                         for(let i=0;i<data.length;i++){
-                            if(_id == data[i].id){
-                                $("#shop_id").append('<option value="'+data[i].id+'" selected>'+data[i].company_name+'</option>');
-                            }else{
-                                $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
-                            }
-
+                            $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
                         }
                     }
                 }

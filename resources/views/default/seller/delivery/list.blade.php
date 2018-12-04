@@ -3,18 +3,7 @@
     <div class="warpper">
         <div class="title">发货单 - 发货单列表</div>
         <div class="content">
-
-
-            <div class="explanation" id="explanation">
-                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
-                <ul>
-                    <li>商城和平台所有已发货的订单列表管理。</li>
-                    <li>可通过订单号进行查询，侧边栏进行高级搜索。</li>
-                    <li>可进入查看取消发货。</li>
-
-                </ul>
-            </div>
-            <div class="flexilist mt30" id="listDiv">
+            <div class="flexilist" id="listDiv">
                 <div class="common-head order-coomon-head">
                     <div class="order_state_tab">
                         {{--<a href="/seller/delivery/list?status=0" @if($status==0) class="current" @endif>待发货@if($status==0) <em>({{$total}})</em> @endif</a>--}}
