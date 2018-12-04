@@ -297,6 +297,9 @@ class ShopGoodsQuoteService
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ShopGoodsQuoteRepo::getInfo($activityId);
+        if($activityInfo['goods_number'] <= 0){
+            self::throwBizError('可售数量为0,无法下单');
+        }
 
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
