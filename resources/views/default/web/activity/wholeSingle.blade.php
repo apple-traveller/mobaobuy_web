@@ -177,6 +177,7 @@
 				if (res.code == 1) {
                     $.msg.alert('提交成功,请等待客服与您联系！');
                     $('textarea[name=content]').val('');
+                    $('input[name=bill_file]').val('');
                 } else {
                     $.msg.alert(res.msg);
 

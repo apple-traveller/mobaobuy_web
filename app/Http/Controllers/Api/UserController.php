@@ -40,11 +40,17 @@ class UserController extends ApiController
             return $this->error('参数错误');
         }
         $userInfo  = $this->getUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        $user_id = $userInfo['id'];
+        if($deputy_user['is_self']==0){
+            $user_id = $deputy_user['firm_id'];
+        }
+
         $data = [
-            'id'=>$userInfo['id'],
+            'id'=>$user_id,
             'address_id' =>$address_id
         ];
-        $user_address = UserAddressService::getInfoByConditions(['id'=>$address_id,'user_id'=>$userInfo['id']]);
+        $user_address = UserAddressService::getInfoByConditions(['id'=>$address_id,'user_id'=>$this->getDeputyUserInfo($request)['firm_id']]);
         if(empty($user_address)){
             return $this->error('该地址不存在');
         }
@@ -62,12 +68,13 @@ class UserController extends ApiController
     public function addressList(Request $request)
     {
         $user_info = $this->getUserInfo($request);
-        //$deputy_user = $this->getDeputyUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
+        //dd($deputy_user);
         $condition = [];
         $condition['user_id'] = $user_info['id'];
         $addressList = UserService::shopAddressList($condition);
         foreach ($addressList as $k=>$v){
-            $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+            $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
             if ($v['id'] == $user_info['address_id']){
                 $addressList[$k]['is_default'] =1;
                 $first_one[$k] = $addressList[$k];
@@ -336,7 +343,7 @@ class UserController extends ApiController
         try{
             $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
             if($flag){
-                return $this->success("","保存成功");
+                return $this->success($flag,"保存成功");
             }
             return $this->error("保存失败");
         }catch(\Exception $e){
@@ -362,6 +369,20 @@ class UserController extends ApiController
             return $this->error($e->getMessage());
         }
     }
+
+    //订单是否需要审核
+    public function needApproval(Request $request)
+    {
+        $need_approval = $request->input("need_approval");
+        $user_id = $this->getUserID($request);
+        try{
+            $user = UserService::modify($user_id,['need_approval'=>$need_approval]);
+            return $this->success($user,'success');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
 
 
 

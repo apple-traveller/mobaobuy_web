@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
@@ -11,8 +12,7 @@ class UploadController extends Controller
     //上传图片
     public function uploadImg(Request $request)
     {
-        $fileCharater = $request->file('file');
-        //return $this->error('test');
+        $fileCharater = $request->file('image');
         if ($fileCharater->isValid()) {
             //括号里面的是必须加的哦
             //如果括号里面的不加上的话，下面的方法也无法调用的

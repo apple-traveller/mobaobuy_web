@@ -104,7 +104,8 @@ class ShopGoodsQuoteController extends Controller
         $type = $request->input('type','');
 
         $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
-        $place_id = substr($place_id,strripos($place_id,'|')+1);
+
+        $place_id = substr($place_id,-6);
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -166,6 +167,7 @@ class ShopGoodsQuoteController extends Controller
             'contact_info' => $contact_info,
             'QQ' => $qq,
             'type' => $type,
+            'consign_status'=>1,
             'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
 

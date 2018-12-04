@@ -20,6 +20,11 @@ class FirmUserService
         return FirmUserRepo::delete($id);
     }
 
+    public static function delFirmUserByFields($where)
+    {
+        return FirmUserRepo::deleteByFields($where);
+    }
+
     //增加企业用户
     public static function addFirmUser($firmId,$phone,$permi,$userName,$isEdit){
         //查询此手机号是否存在，

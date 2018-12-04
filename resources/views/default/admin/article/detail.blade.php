@@ -17,7 +17,7 @@
                     <form action="/admin/article/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;文章标题：</div>
+                                <div class="label">文章标题：</div>
                                 <div class="label_value">
                                     <input type="text" name="title" class="text" value="{{$article['title']}}" maxlength="40" autocomplete="off" id="title">
                                     <div class="form_prompt"></div>
@@ -26,10 +26,10 @@
                             <input type="hidden" name="id" value="{{$article['id']}}">
                             <!--  -->
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;文章分类：</div>
+                                <div class="label">&nbsp;文章分类：</div>
                                 <div class="label_value">
 
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:40%;" name="cat_id" id="cat_id">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="cat_id" id="cat_id">
 
                                         @foreach($cateTrees as $vo)
                                             <option @if($vo['id']==$article['cat_id']) selected  @endif value="{{$vo['id']}}">|<?php echo str_repeat('-->',$vo['level']).$vo['cat_name'];?></option>
@@ -56,17 +56,17 @@
                             </div>
                             <!--  -->
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>文章作者：</div>
+                                <div class="label">文章作者：</div>
                                 <div class="label_value"><input type="text" name="author" class="text" autocomplete="off" value="{{$article['author']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>关键字：</div>
+                                <div class="label">关键字：</div>
                                 <div class="label_value"><input type="text" name="keywords" class="text" autocomplete="off" value="{{$article['keywords']}}"><div class="form_prompt"></div></div>
 
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>网页描述：</div>
+                                <div class="label">网页描述：</div>
                                 <div class="label_value">
                                     <textarea name="description" class="textarea">{{$article['description']}}</textarea>
                                     <div class="form_prompt"></div>
@@ -83,7 +83,11 @@
                             <div class="item">
                                 <div class="label">上传图片：</div>
                                 <div class="label_value">
-                                    <div  content="{{getFileUrl($article['image'])}}" class="layui-btn viewImg">点击查看</div>
+                                    @if(empty($article['image']))
+                                        未上传
+                                    @else
+                                        <div  content="{{getFileUrl($article['image'])}}" class="layui-btn viewImg">点击查看</div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="item">
@@ -111,7 +115,7 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['700px', '500px'],
+                    area: ['1000px', '600px'],
                     content: content
                 });
             });
@@ -121,7 +125,7 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['700px', '500px'],
+                    area: ['800px', '600px'],
                     content: '<img src="'+content+'">'
                 });
             });

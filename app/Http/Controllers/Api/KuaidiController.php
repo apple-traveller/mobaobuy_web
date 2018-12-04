@@ -1,32 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Services\InvoiceService;
 use App\Services\OrderInfoService;
 use Illuminate\Http\Request;
 use Logistics\Client;
 
-class KuaidiController extends Controller
+class KuaidiController extends ApiController
 {
     public function searchWaybill(Request $request){
         require_once app_path('Plugins/Logistics/autoload.php');
-        $id = $request->input('id');
-        $search_type = $request->input('search_type','order');
-
-        switch ($search_type){
-            case 'order':
-                $delivery_info = OrderInfoService::getDeliveryInfo($id);
-                break;
-            case 'invoice':
-                $delivery_info = InvoiceService::getInfoById($id);
-                break;
-            default:
-                $delivery_info = [];
-        }
-        if(empty($delivery_info)){
-            return $this->error('获取物流信息失败');
-        }
+        $delivery_id = $request->input('delivery_id');
+        $delivery_info = OrderInfoService::getDeliveryInfo($delivery_id);
         $type = 'kdniao';
         try {
             switch ($type){
@@ -39,7 +24,6 @@ class KuaidiController extends Controller
                         '5' => \Logistics\Config::KDN_CHANNEL_YZPY
                     ];
                     $ShipperCode = $kdniao_tr[$delivery_info['shipping_id']] ?? '';
-//                    $ShipperCode = $kdniao_tr['3'] ?? '';
                     if(!isset($ShipperCode) || empty($ShipperCode) || empty($delivery_info['shipping_billno'])){
                         return $this->error('异常运单号'.$ShipperCode.'--'.$delivery_info['shipping_billno']);
                     }
@@ -51,15 +35,15 @@ class KuaidiController extends Controller
                         'LogisticCode'    => $delivery_info['shipping_billno'],
                         'IsHandleInfo' => 0
                     ];
-//                    $request_data['LogisticCode'] = '75111968305523';
                     $json = Client::run(\Logistics\Config::KDNIAO_WL, $config, $request_data);
                     break;
                 default:
                     $json = '{}';
             }
-            return $this->success('', '', \GuzzleHttp\json_decode($json));
+
+            return $this->success(\GuzzleHttp\json_decode($json),'success');
         } catch (\Exception $e) {
-            echo $e->errorMessage();
+            return $this->error($e->getMessage());
             exit;
         }
     }

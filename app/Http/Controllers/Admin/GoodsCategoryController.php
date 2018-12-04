@@ -51,6 +51,7 @@ class GoodsCategoryController extends Controller
         $goodsCategory = GoodsCategoryService::getInfo($parent_id);//根据id获取信息
         //获取图标库文件
         $icons = GoodsCategoryService::getIcons();
+
         //获取所有的栏目
         $cates = GoodsCategoryService::getCates();
         //获取所有的栏目(无限极分类)
@@ -97,6 +98,7 @@ class GoodsCategoryController extends Controller
             'is_top_show'=>$request->input('is_top_show'),
             'cat_icon'=>$this->requestGetNotNull('cat_icon')
         ];
+        //dd($data);
 
         if(empty($data['cat_name'])){
             $errorMsg[] = '分类名称不能为空';

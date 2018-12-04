@@ -52,27 +52,27 @@
                             <div class="layui-row layui-col-space15">
                                 <div class="layui-col-md6">
                                     <div class="layui-card">
-                                        <div class="layui-card-header">卡片面板</div>
+                                        <div class="layui-card-header">本年度</div>
                                         <div class="layui-card-body">
-                                            卡片式面板面板通常用于非白色背景色的主体内<br>
-                                            从而映衬出边框投影
+                                            成交订单:<i class="red">{{$yearSalesVolume['num']}}</i>份<br>
+                                            成交金额:<i class="red">{{number_format($yearSalesVolume['paid'])}}</i>元
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-md6">
                                     <div class="layui-card">
-                                        <div class="layui-card-header">卡片面板</div>
+                                        <div class="layui-card-header">本月</div>
                                         <div class="layui-card-body">
-                                            结合 layui 的栅格系统<br>
-                                            轻松实现响应式布局
+                                            成交订单:<i class="red">{{$monthSalesVolume['num']}}</i>份<br>
+                                            成交金额:<i class="red">{{number_format($monthSalesVolume['paid'])}}</i>元
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-col-md12">
                                     <div class="layui-card">
-                                        <div class="layui-card-header">标题</div>
                                         <div class="layui-card-body">
-                                            内容
+                                            今日已成交订单: <i class="red">{{$dateSalesVolume['num']}}</i>份
+                                            今日已成交金额: <i class="red">{{number_format($dateSalesVolume['paid'])}}</i>元
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
             </div>
         </div>
     </div>
-    <div class="layui-footer">
+    <div class="layui-footer" style="text-align: center;" >
     @include(themePath('.')."seller.include.partials._footer")
     </div>
 </div>

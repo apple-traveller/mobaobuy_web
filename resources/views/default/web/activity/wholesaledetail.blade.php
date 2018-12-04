@@ -132,17 +132,17 @@
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
                 var min_num = Number(_self.attr('min-limit'));//规格
 
-                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>min_num){
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=min_num){
                     let _count = goodsNumber%packing_spec;
                     if(_count > 0){
                         _self.val(goodsNumber-_count);
                     }
                 }else{
                     layer.msg('输入的数量有误');
-                    _self.val(packing_spec);
+                    _self.val(min_num);
                 }
             });
-        })
+        });
 
         function collectGoods(obj){
             var userId = "{{session('_web_user_id')}}";

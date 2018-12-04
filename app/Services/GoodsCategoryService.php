@@ -58,7 +58,7 @@ class GoodsCategoryService
     //获取列表
     public static function getList($parent_id)
     {
-        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
+        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id,['is_delete'=>0]]);
         return $res;
     }
 
@@ -67,14 +67,13 @@ class GoodsCategoryService
     {
         $path = $_SERVER['DOCUMENT_ROOT'].'/default/icon';
         $filedata = array();
-        if(!is_dir($path)) return false;
+        if(!is_dir($path)) return [];
         $handle = opendir($path);
         if($handle){
             while(($fl = readdir($handle)) !== false){
                 if($fl!="."&&$fl!=".."){
                     $filedata[]=$fl;
                 }
-
             }
         }
         return $filedata;
@@ -83,7 +82,7 @@ class GoodsCategoryService
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {
-        $info = GoodsCategoryRepo::getInfoByFields(['cat_name'=>$cat_name]);
+        $info = GoodsCategoryRepo::getList([],['cat_name'=>$cat_name,['is_delete'=>0]]);
         if(!empty($info)){
             self::throwBizError('分类名称已经存在！');
         }

@@ -17,12 +17,13 @@ class AdminUserController extends Controller
         $pageSize = 10;
         $condition = [];
         $admins = AdminService::getAdminList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['updated_at'=>'asc']],$condition);
-        //dd($admins['list']);
+        $curr_adminid = $request->session()->get('_admin_user_id');
         return $this->display('admin.adminuser.list',[
             'admins'=>$admins['list'],
             'total'=>$admins['total'],
             'pageSize'=>$pageSize,
-            'currpage'=>$currpage
+            'currpage'=>$currpage,
+            'curr_adminid'=>$curr_adminid
         ]);
     }
 

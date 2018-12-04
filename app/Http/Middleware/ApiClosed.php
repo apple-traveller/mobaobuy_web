@@ -2,15 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\Api\ApiController;
 use App\Services\UserService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Controller;
 
-class ApiClosed
+class ApiClosed extends ApiController
 {
     public function handle(Request $request, Closure $next, $guard = null)
     {
@@ -18,8 +18,9 @@ class ApiClosed
         $user_id = Cache::get($uuid, 0);
         if(!empty($user_id)){
             //缓存用户的基本信息
-            $user_info = UserService::getInfo($user_id);
+            $user_info = $this->getUserInfo($request);
             $deputy_user = Cache::get('_api_deputy_user_'.$user_id);
+            //dd($deputy_user);
             //用户不切换生效权限,is_logout存的是企业的id
             if($user_info['is_logout']){
                 if($user_info['is_firm'] == 0 && $deputy_user['is_self'] == 0){
@@ -42,7 +43,7 @@ class ApiClosed
                 $user_info['firms'] = UserService::getUserFirms($user_id);
             }
 
-            if(Cache::has('_api_deputy_user_'.$user_id)){
+            if(!Cache::has('_api_deputy_user_'.$user_id)){
                 $info = [
                     'is_self' => 1,
                     'is_firm' => Cache::get('_api_user_'.$user_id)['is_firm'],
@@ -55,6 +56,7 @@ class ApiClosed
 
         }
 
+        //dd($deputy_user);
         return $next($request);
     }
 }

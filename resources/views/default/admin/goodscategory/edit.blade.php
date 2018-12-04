@@ -35,7 +35,7 @@
                                     <div class="label">上级分类：</div>
                                     <div class="label_value">
 
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;width:30%;" name="parent_id" id="parent_id">
+                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="parent_id" id="parent_id">
                                                 <option value="0">顶级分类</option>
                                                 @foreach($catesTree as $cates)
                                                 <option @if($cates['id']==$cate['parent_id']) selected @endif value="{{$cates['id']}}">|<?php echo str_repeat('-->',$cates['level']).$cates['cat_name'];?></option>
@@ -106,7 +106,7 @@
                                             <div class="img_label_value" >
                                                 <div style="cursor: pointer;" id="iconBtn">
                                                     <i class="layui-icon layui-icon-picture" style="font-size: 30px; "></i>点击查看图标库&nbsp;&nbsp;
-                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{getFileUrl($cate['cat_icon'])}}"></span>
+                                                    <span><img id="iconImg" @if(!empty($cate['cat_icon'])) style="width:20px;height:20px;" @else style="width:20px;height:20px;display:none;" @endif src="{{$cate['cat_icon']}}"></span>
                                                 </div>
                                                 <style>
                                                     .img_item{width: 100%;
@@ -130,19 +130,16 @@
                                                 <div class="img_item" style="height: 125px;display:none;overflow: hidden;">
                                                     {{--<div class="img_item_label" >请选择：</div>--}}
                                                     <div class="label_value" style="width: 100%">
-                                                        @foreach($icons as $vo)
-                                                            <div style="float:left;margin-right:10px;height:50px;" >
-                                                                <input type="radio" @if($cate['cat_icon']=="/default/icon/".$vo) checked @endif class="iconButton" name="cat_icon" value="/default/icon/{{$vo}}" >
-                                                                <img  style="width:20px;height:20px;"  src="/default/icon/{{$vo}}">
-                                                            </div>
-                                                        @endforeach
+                                                        @if(is_array($icons) && !empty($icons))
+                                                            @foreach($icons as $vo)
+                                                                <div style="float:left;margin-right:10px;height:50px;" >
+                                                                    <input type="radio" @if($cate['cat_icon']=="/default/icon/".$vo) checked @endif class="iconButton" name="cat_icon" value="/default/icon/{{$vo}}" >
+                                                                    <img  style="width:20px;height:20px;"  src="/default/icon/{{$vo}}">
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                     </div>
                                                 </div>
-                                                自定义：
-                                                <button type="button" class="layui-btn upload-file" data-type="" data-path="goodscategory" >上传图片</button>
-                                                <input type="text" value="{{$cate['cat_icon']}}" class="text"  name="cat_icon" style="display:none;">
-                                                <img  style="width:60px;height:60px;display:none;"    class="layui-upload-img"><br/>
-                                                <div class="notic">（注：图标大小不能大于1M，格式为png和jpg）</div>
                                             </div>
                                     </div>
                                 </div>

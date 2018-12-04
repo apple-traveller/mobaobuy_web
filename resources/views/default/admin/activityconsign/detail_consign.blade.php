@@ -64,15 +64,15 @@
                             </div>
 
 
-                            {{--<div class="item">
+                            <div class="item">
                                 <div class="label">审核状态：</div>
                                 <div class="value">
-                                    <input @if($consign_info['review_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="1" value="待审核" >
-                                    <input @if($consign_info['review_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="2" value="审核不通过" >
-                                    <input @if($consign_info['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="3" value="已审核" >
+                                    <input @if($consign_info['consign_status']==0) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="0" value="待审核" >
+                                    <input @if($consign_info['consign_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="2" value="审核不通过" >
+                                    <input @if($consign_info['consign_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn pay_status" @endif  type="button" data-id="1" value="已审核" >
                                     <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                 </div>
-                            </div>--}}
+                            </div>
 
                         </form>
                     </div>
@@ -82,6 +82,27 @@
     </div>
 
     <script>
+        layui.use(['upload','layer'], function() {
+            var layer = layui.layer;
 
+            $(".pay_status").click(function(){
+
+                var review_status = $(this).attr("data-id");
+                $.post('/admin/activity/consign/modifyStatus',{'id':"{{$result['id']}}",'review_status':review_status},function(res){
+                    if(res.code==1){
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            window.location.reload();
+                        });
+
+                    }else{
+                        alert(res.msg);
+                    }
+                },"json");
+            });
+
+        });
     </script>
 @stop

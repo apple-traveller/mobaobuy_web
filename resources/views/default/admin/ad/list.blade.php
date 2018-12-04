@@ -57,6 +57,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if(!empty($ads))
                             @foreach($ads as $vo)
                             <tr class="">
                                 <td><div style="cursor: pointer;color:green;" data-pic="{{getFileUrl($vo['ad_img'])}}" class="tDiv viwAdPicture">{{$vo['ad_name']}}</div></td>
@@ -67,7 +68,7 @@
                                 <td><div class="tDiv">{{$vo['click_count']}}</div></td>
                                 <td>
                                     <div class="tDiv">
-                                        <div class="switch @if($vo['enabled']) active @endif" title="@if($vo['enabled']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/ad/change/enabled')}}', '{{$vo['id']}}')">
+                                        <div style="margin-left: 20px;" class="switch @if($vo['enabled']) active @endif" title="@if($vo['enabled']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/ad/change/enabled')}}', '{{$vo['id']}}')">
                                             <div class="circle"></div>
                                         </div>
                                         <input type="hidden" value="0" name="">
@@ -82,6 +83,9 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>

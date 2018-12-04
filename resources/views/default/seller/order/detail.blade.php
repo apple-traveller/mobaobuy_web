@@ -33,12 +33,12 @@
                             </em>
                         </dd>
                     </dl>
-                    <dl @if($orderInfo['shipping_status']==1) class="cur" @endif>
+                    <dl @if($orderInfo['shipping_status']==3) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">商家发货<br>
                             <em class="ftx-03">
                                 @if($orderInfo['shipping_status']==0)待发货
-                                @elseif($orderInfo['shipping_status']==1)已发货
+                                @elseif($orderInfo['shipping_status']==3)已发货
                                 @elseif($orderInfo['shipping_status']==2)部分发货
                                 @endif
                             </em>
@@ -206,7 +206,7 @@
                                         <tbody>
                                         @foreach($order_goods as $vo)
                                             <tr style="height: 45px">
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_name']}}[{{$vo['brand_name']}}]</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_full_name']}}</td>
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_sn']}}</td>
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_price']}}</td>
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}</td>
@@ -257,6 +257,7 @@
                         <div class="step order_total">
                             <div class="step_title"><i class="ui-step"></i><h3>操作信息</h3></div>
                             <div class="step_info">
+                                @if($orderInfo['order_status']==4)
                                 <div class="order_operation order_operation100">
                                     <div class="item">
                                         <div class="label">操作备注：</div>
@@ -306,6 +307,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="operation_record">
                                     <table cellpadding="0" cellspacing="0">
                                         <thead>
@@ -318,6 +320,7 @@
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
+                                        @if(!empty($orderLogs))
                                         @foreach($orderLogs as $vo)
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -345,6 +348,8 @@
                                                 <td>{{$vo['action_note']}}</td>
                                             </tr>
                                         @endforeach
+                                            @else
+                                            @endif
                                         </tbody>
                                     </table>
 
@@ -464,7 +469,7 @@
                         }
                     });
                     layer.close(index);
-                    window.location.reload();
+                    parent.location.reload();
                 });
             });
             // layui.use('layer', function(){
@@ -525,7 +530,7 @@
                         }
                     });
                     layer.close(index);
-                    window.location.reload();
+                    parent.location.reload();
                 });
             });
             // layui.use('layer', function(){
@@ -560,40 +565,64 @@
         }
         // 收款
         function receiveM(id) {
-                layui.use('layer', function(){
-                    let index = parent.layer.getFrameIndex(window.name);
+            layui.use('layer', function(){
+                let layer = layui.layer;
+                layer.confirm('确认收到付款?', {icon: 3, title:'提示'}, function(index){
                     let action_note = $("#action_note").val();
-                    parent.layer.iframeAuto(index);
-                    let layer = layui.layer;
-                    layer.prompt({
-                        title: '确认收到付款?，请填写金额',
-                    }, function(value, index, elem){
-                        let num = /^\d+(\.{0,1}\d+){0,1}$/;
-                        if (!num.test(value)){
-                            layer.alert('请填写正数');
-                            return false;
-                        }
-                        $.ajax({
-                            url:'/seller/order/updateOrderStatus',
-                            data: {
-                                'id':id,
-                                'pay_number': value,
-                                'action_note':action_note
-                            },
-                            type: 'post',
-                            success: function (res) {
-                                if (res.code == 1){
-                                    layer.alert(res.msg, {icon: 1,time:2000});
-                                } else {
-                                    layer.alert(res.msg, {icon: 5,time:2000});
-                                }
-                                setTimeout( window.location.href="/seller/order/list?id="+id,3000);
+                    $.ajax({
+                        url:'/seller/order/updateOrderStatus',
+                        data: {
+                            'id':id,
+                            'pay_status': 1,
+                            'action_note':action_note
+                        },
+                        type: 'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.alert(res.msg, {icon: 1,time:600});
+                            } else {
+                                layer.alert(res.msg, {icon: 5,time:2000});
                             }
-                        });
-                        layer.close(index);
-                        window.location.reload();
+                        }
                     });
+                    layer.close(index);
+                    parent.location.reload();
                 });
+            });
+                // layui.use('layer', function(){
+                //     let index = parent.layer.getFrameIndex(window.name);
+                //     let action_note = $("#action_note").val();
+                //     parent.layer.iframeAuto(index);
+                //     let layer = layui.layer;
+                //     layer.prompt({
+                //         title: '确认收到付款?，请填写金额',
+                //     }, function(value, index, elem){
+                //         let num = /^\d+(\.{0,1}\d+){0,1}$/;
+                //         if (!num.test(value)){
+                //             layer.alert('请填写正数');
+                //             return false;
+                //         }
+                //         $.ajax({
+                //             url:'/seller/order/updateOrderStatus',
+                //             data: {
+                //                 'id':id,
+                //                 'pay_number': value,
+                //                 'action_note':action_note
+                //             },
+                //             type: 'post',
+                //             success: function (res) {
+                //                 if (res.code == 1){
+                //                     layer.alert(res.msg, {icon: 1,time:2000});
+                //                 } else {
+                //                     layer.alert(res.msg, {icon: 5,time:2000});
+                //                 }
+                //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000);
+                //             }
+                //         });
+                //         layer.close(index);
+                //         parent.location.reload();
+                //     });
+                // });
         }
 
         // 确认收到定金
@@ -619,37 +648,9 @@
                         }
                     });
                     layer.close(index);
-                    window.location.reload();
+                    parent.location.reload();
                 });
             });
-            // layui.use('layer', function(){
-            //     let index = parent.layer.getFrameIndex(window.name);
-            //     parent.layer.iframeAuto(index);
-            //     let layer = layui.layer;
-            //     layer.prompt({
-            //         title: '确认收到定金，填写备注',
-            //     }, function(value, index, elem){
-            //         $.ajax({
-            //             url:'/seller/order/updateOrderStatus',
-            //             data: {
-            //                 'id':id,
-            //                 'deposit_status': 1,
-            //                 'action_note':value
-            //             },
-            //             type: 'post',
-            //             success: function (res) {
-            //                 if (res.code == 1){
-            //                     layer.msg(res.msg, {icon: 1,time:2000});
-            //                 } else {
-            //                     layer.msg(res.msg, {icon: 5,time:2000});
-            //                 }
-            //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000)
-            //             }
-            //         });
-            //
-            //         layer.close(index);
-            //     });
-            // });
         }
 
         //修改支付方式

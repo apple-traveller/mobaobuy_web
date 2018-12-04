@@ -47,9 +47,10 @@
                                         @endforeach
                                         @endif
                                     </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
                                     <input class="brand_name" type="hidden" name="brand_name" value="">
                                 </div>
-                                <div class="form_prompt"></div>
+
                             </div>
 
                             <div class="item">
@@ -63,8 +64,8 @@
                                         @endforeach
                                         @endif
                                     </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
                                 </div>
-                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
@@ -76,9 +77,9 @@
                                             <option  value="{{$v['id']}}">{{$v['unit_name']}}</option>
                                         @endforeach
                                     </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
                                     <input class="unit_name" type="hidden" name="unit_name" value="{{$units[0]['unit_name']}}">
                                 </div>
-                                <div class="form_prompt"></div>
                             </div>
 
                             <div class="item">
@@ -140,6 +141,7 @@
                                     <div style="margin-left: 10px;line-height:40px;" class="form_prompt"></div>
                                 </div>
                             </div>
+
 
 
                             <div class="item">

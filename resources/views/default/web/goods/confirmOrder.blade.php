@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>购物车 - @yield('title')</title>
+	<title>确认订单 - @yield('title')</title>
 	@include(themePath('.','web').'web.include.partials.base')
 	@yield('css')
 	<style type="text/css">
@@ -122,7 +122,7 @@
 		.fs14{font-size:14px;}
 		.order_progress{width: 351px;margin-top: 45px;margin-bottom: 45px;}
 		.cart_progress{width: 303px;margin:0 auto;height: 33px;}
-		.cart_progress_02{background: url(default/img/cart_icon02.png)no-repeat;}
+		.cart_progress_02{background: url(/default/img/cart_icon02.png)no-repeat;}
 		.progress_text{color: #999;margin-top: 5px;}
 		.progress_text_curr{color: #75b335;}
 		.my_cart{float: left;margin-left: 5px;}
@@ -222,7 +222,7 @@
 			@foreach($addressList as $k=>$v)
 			<li class="address_list @if($v['is_select'] == 1) mrxs-curr @else check_address @endif" data-id="{{ $v['id'] }}">
 				<div class="mt20 ml20 ovh @if($v['is_default'] == 1) mrxs-curr @endif"><span class="fl">{{ $v['consignee'] }}</span><span class="fr mr20 gray">{{ $v['mobile_phone'] }}</span></div>
-				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}{{ $v['address'] }}</span>
+				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}</span>
 				<div class="address_default">
 					<div class="address_default_edit">
 						@if($v['is_default'] == 1)
@@ -268,7 +268,7 @@
 				<span>商品</span>
 				<span>单价（元）</span>
 				<span>数量（kg）</span>
-				<span>发货地</span>
+				<!-- <span>发货地</span> -->
 				<span></span>
 				<span>小计</span>
 			</li>
@@ -277,7 +277,7 @@
 				<span class="ovhwp">{{ $v['goods_name'] }}</span>
 				<span class="green">¥{{ $v['goods_price'] }}</span>
 				<span>{{ $v['goods_number'] }}</span>
-				<span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span>
+				<!-- <span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span> -->
 				<span></span>
 				<span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ number_format($v['account_money'],2) }} @endif</span>
 			</li>

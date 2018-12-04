@@ -19,22 +19,28 @@ class ShopGoodsQuoteService
 
     public static function getQuoteByWebSearch($pager, $condition)
     {
-
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
 
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
         }
-        //获取筛选过滤信息
+        //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
+        $con['b.is_self_run'] = 1;
+        $con['b.is_delete'] = 0;
+        if (!isset($condition['b.type'])) {
+            $con['b.type'] = '1|2';
+        }else{
+            $con['b.type'] = $condition['b.type'];
+        }
         //1、获取分类
-        $cates = ShopGoodsQuoteRepo::getQuoteCategory([]);
+        $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
         if (!empty($cates)) {
             $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates)]);
         } else {
             $filter['cates'] = [];
         }
         //2、获取品牌
-        $brands = ShopGoodsQuoteRepo::getQuoteBrand([]);
+        $brands = ShopGoodsQuoteRepo::getQuoteBrand($con);
         if (!empty($brands)) {
             $brand_list = BrandService::getBrandList([], ['id' => implode('|', $brands)]);
             $filter['brands'] = $brand_list['list'];
@@ -42,7 +48,10 @@ class ShopGoodsQuoteService
             $filter['brands'] = [];
         }
         //3、获取发货地
-        $cities = ShopGoodsQuoteRepo::getQuoteCity([]);
+        $con_region['is_self_run'] = $con['b.is_self_run'];
+        $con_region['type'] = $con['b.type'];
+        $con_region['is_delete'] = $con['b.is_delete'];
+        $cities = ShopGoodsQuoteRepo::getQuoteCity($con_region);
         if (!empty($cities)) {
             $city_list = RegionService::getList([], ['region_id' => implode('|', $cities)]);
             $filter['city_list'] = $city_list;
@@ -289,6 +298,9 @@ class ShopGoodsQuoteService
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ShopGoodsQuoteRepo::getInfo($activityId);
+        if($activityInfo['goods_number'] <= 0){
+            self::throwBizError('可售数量为0,无法下单');
+        }
 
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;

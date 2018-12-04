@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\RegionRepo;
 use App\Services\CartService;
+use App\Services\OrderInfoService;
 use App\Services\UserAddressService;
 
 use App\Repositories\UserRepo;
@@ -13,6 +14,7 @@ use App\Services\UserInvoicesService;
 use App\Services\UserLoginService;
 use App\Services\UserService;
 use App\Services\UserRealService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -357,7 +359,7 @@ class UserController extends Controller
         $id = $request->input('id','');
         $is_default = $request->input('is_default','');
         if ($id){
-            $address_info = UserAddressService::getAddressInfo($id);
+            $address_info = UserAddressService::getAddressInfo($id,1);
         } else {
             $address_info = [];
         }
@@ -759,7 +761,16 @@ class UserController extends Controller
             if(session('_web_user.is_firm')){
                 //企业
                 $data['need_approval'] = $params['need_approval'];
+                //1是  0否
+                if(!$data['need_approval']){
+                    $approvalStatus =  OrderInfoService::checkApprovalByOrderCount(session('_web_user_id'));
+                    if($approvalStatus){
+                        return $this->error('请先处理未审批的订单');
+                    }
+                }
+
             }
+
 
             $flag = UserService::modify($userId,$data);
 
@@ -808,8 +819,15 @@ class UserController extends Controller
         $user_name = session()->get("_web_user")['user_name'];
         $is_firm = session()->get("_web_user")['is_firm'];
         $user_real = UserRealService::getInfoByUserId($user_id);
-
-        if($user_real){
+        if(empty($user_real) || $user_real['review_status'] == 2){
+            return $this->display("web.user.account.realName",[
+                'user_name'=>$user_name,
+                'is_firm'=>$is_firm,
+                'user_real'=>$user_real,
+                'user_id'=>$user_id
+            ]);
+        }
+        if($user_real['review_status'] == 1 || $user_real['review_status'] == 0){
             return $this->display("web.user.account.realNamePass",[
                 'user_name'=>$user_name,
                 'is_firm'=>$is_firm,
@@ -817,12 +835,7 @@ class UserController extends Controller
                 'user_id'=>$user_id
             ]);
         }
-        return $this->display("web.user.account.realName",[
-            'user_name'=>$user_name,
-            'is_firm'=>$is_firm,
-            'user_real'=>$user_real,
-            'user_id'=>$user_id
-        ]);
+
     }
 
     //保存实名
@@ -1021,13 +1034,14 @@ class UserController extends Controller
 
     //会员卖货
     public function sale(Request $request){
-        $userInfo = session('_web_user');
-        $saleData = $request->all();
-        $saleData['user_id'] = $userInfo['id'];
-        $saleData['user_name'] = $userInfo['user_name'];
         if($request->isMethod('get')){
             return $this->display('web.user.account.userSale');
         }else{
+            $userInfo = session('_web_user');
+            $saleData = $request->all();
+            $saleData['user_id'] = $userInfo['id'];
+            $saleData['user_name'] = $userInfo['user_name'];
+            $saleData['add_time'] = Carbon::now();
             try{
                 UserService::sale($saleData);
                 return $this->success();

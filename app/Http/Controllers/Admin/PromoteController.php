@@ -41,6 +41,7 @@ class PromoteController extends Controller
             'is_validated' => 1,
             'is_freeze' => 0,
         ];
+
         $shops = ShopService::getList([],$condition);
 
         return $this->display('admin.promote.add',[
@@ -72,7 +73,10 @@ class PromoteController extends Controller
     //保存优惠活动
     public function save(Request $request)
     {
+        $request->flash();
         $data = $request->all();
+        unset($data['cat_id']);
+        unset($data['cat_id_LABELS']);
         $errorMsg=[];
         if(empty($data['shop_id'])){
             $errorMsg[] = "商家不能为空";
@@ -106,9 +110,7 @@ class PromoteController extends Controller
         try{
             if(!key_exists('id',$data)){
                 $data['add_time'] = Carbon::now();
-                if($data['available_quantity']>$data['num']){
-                    return $this->error('当前可售数量不能大于总数量');
-                }
+                $data['available_quantity'] = $data['num'];
                 $flag = ActivityService::create($data);
                 if(empty($flag)){
                     return $this->error("添加失败");
@@ -116,7 +118,9 @@ class PromoteController extends Controller
                 return $this->success("添加成功",url("/admin/promote/list"));
             }else{
                 $currpage = $data['currpage'];
-                $data['available_quantity'] = $data['num'];
+                if($data['available_quantity']>$data['num']){
+                    return $this->error('当前可售数量不能大于总数量');
+                }
                 unset($data['currpage']);
                 $flag = ActivityService::updateById($data['id'],$data);
                 if(empty($flag)){
@@ -205,7 +209,7 @@ class PromoteController extends Controller
             $condition['goods_name'] = "%".$goods_name."%";
         }
         $condition['is_delete'] = 0;
-        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit']);
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit','unit_name']);
         if(!empty($goods)){
             return $this->success('success','',$goods);
         }else{

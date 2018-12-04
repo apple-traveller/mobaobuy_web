@@ -60,9 +60,10 @@
 		<div class="collect_main">
 			<div class="collect_title">集采火拼</div>
 			<div class="w1200 ovh">
+				<li class="nodata">无相关数据</li>
 				<ul class="ms_list">
 					@if(empty($wholesaleInfo))
-						无集采拼图活动
+					
 					@else
 						@foreach($wholesaleInfo as $v)
 							<li>

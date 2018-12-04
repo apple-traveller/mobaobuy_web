@@ -36,8 +36,17 @@ class OrderInfoService
         return OrderInfoRepo::getListBySearch($pager, $condition);
     }
 
+    //企业修改订单是否审批 订单检测
+    public static function checkApprovalByOrderCount($userId){
+        $orderStatus = OrderInfoRepo::getTotalCount(['firm_id'=>$userId,'order_status'=>1]);
+        if($orderStatus > 0){
+            return true;
+        }
+        return false;
+    }
+
     //获取分页订单列表
-    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=5){
+    public static function getWebOrderList($currUser,$condition, $page = 1 ,$pageSize=10){
         $condition['is_delete'] = 0;
         $condition = array_merge($condition, self::setStatueCondition($condition['status']));
         unset($condition['status']);
@@ -53,8 +62,6 @@ class OrderInfoService
 
         $orderList = OrderInfoRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
 
-
-
         //企业会员权限
         if($currUser['is_firm']){
             $needApproval = UserRepo::getInfo($currUser['firm_id'])['need_approval'];
@@ -63,7 +70,6 @@ class OrderInfoService
                 $currUserAuth[0]['need_approval'] = $needApproval;
             }
         }
-
 
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
@@ -376,15 +382,16 @@ class OrderInfoService
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
 
         $condition['is_delete'] = 0;
+
         if($user_id > 0){
             $condition['user_id'] = $user_id;
         }
         if($user_id == ''){
             unset($condition['user_id']);
         }
-        if ($firm_id!=''){
+
             $condition['firm_id'] = $firm_id;
-        }
+
 
         // 商户后台
         if ($seller_id>0){
@@ -430,6 +437,7 @@ class OrderInfoService
         $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
         unset($condition['pay_status']);
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
+
         return $status;
     }
 
@@ -452,15 +460,49 @@ class OrderInfoService
         return OrderInfoRepo::modify($data['id'],$data);
     }
 
+    //修改收货地址
+    public static function modifyConsignee($data)
+    {
+        try{
+            self::beginTransaction();
+            //修改支付状态
+            $order_info = OrderInfoRepo::modify($data['id'], $data);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'修改收货地址',
+                'action_user'=>session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_info['id'],
+                'order_status'=>$order_info['order_status'],
+                'shipping_status'=>$order_info['shipping_status'],
+                'pay_status'=>$order_info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            $flag_order_log = OrderActionLogRepo::create($logData);
+            if(!empty($order_info) && !empty($flag_order_log)){
+                self::commit();
+                return $order_info;
+            }
+            return false;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
     //修改支付状态
     public static function modifyPayStatus($data)
     {
         try{
             self::beginTransaction();
-            //修改支付状态
-            $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
-            //修改订单的已付款金额为商品总金额
-            OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            //修改支付状态，和已付款金额字段
+            if(isset($data['pay_status'])){
+                $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
+                OrderInfoRepo::modify($data['id'], ['money_paid'=>$order_info['order_amount']]);
+            }
+            //修改订金状态
+            if(isset($data['deposit_status'])){
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
+            }
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'修改支付状态为已付款',
@@ -634,20 +676,22 @@ class OrderInfoService
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods[$k]['brand_name'] = $good['brand_name'];
             $order_goods[$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods[$k]['goods_full_name'] = $good['goods_full_name'];
         }
         return $order_goods;
     }
 
     //获取商品信息(带总条数)
-    public static function getOrderGoodsList($orderid)
+    public static function getOrderGoodsList($order_id)
     {
-        $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $orderid]);
-        $order_info = OrderInfoRepo::getInfo($orderid);
+        $order_goods =  OrderGoodsRepo::getListBySearch([], ['order_id' => $order_id]);
+        $order_info = OrderInfoRepo::getInfo($order_id);
         foreach ($order_goods['list'] as $k => $vo){
             $good = GoodsRepo::getInfo($vo['goods_id']);
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
         }
         return $order_goods;
     }
@@ -729,13 +773,21 @@ class OrderInfoService
     }
 
     //查询操作日志信息
-    public static function getOrderLogsByOrderid($pager,$condition)
+
+    public static function getOrderLogsByOrderidPagenate($pager,$condition)
+
     {
         return OrderActionLogRepo::getListBySearch($pager,$condition);
     }
 
+    //查询操作日志信息
+    public static function getOrderLogsByOrderid($order_id)
+    {
+        return OrderActionLogRepo::getList(['log_time'=>'desc'],['order_id'=>$order_id]);
+    }
+
     //保存发货单相关信息
-    public static function createDelivery($order_delivery_goods_data,$order_delivery_data)
+    public static function createDelivery($order_delivery_goods_data,$order_delivery_data,$action_name='')
     {
         try{
             self::beginTransaction();
@@ -761,6 +813,20 @@ class OrderInfoService
             }else{
                 OrderInfoRepo::modify($orderDelivery['order_id'],['shipping_status'=>1,'shipping_time'=>Carbon::now()]);//全部发货
             }
+            $order_Info = OrderInfoRepo::getInfo($orderDelivery['order_id']);
+            //修改order_delivery的发货状态
+            OrderDeliveryRepo::modify($orderDelivery['id'],['status'=>1]);
+            //给管理员操作添加一条数据
+            $logData = [
+                'action_note'=>'生成发货单:'.$orderDelivery['delivery_sn'],
+                'action_user'=>$action_name?$action_name:session()->get('_admin_user_info')['real_name'],
+                'order_id'=>$order_Info['id'],
+                'order_status'=>$order_Info['order_status'],
+                'shipping_status'=>$order_Info['shipping_status'],
+                'pay_status'=>$order_Info['pay_status'],
+                'log_time'=>Carbon::now()
+            ];
+            OrderActionLogRepo::create($logData);
             self::commit();
             return $orderDelivery;
         }catch(\Exception $e){
@@ -808,10 +874,11 @@ class OrderInfoService
         $deliveryGoods = OrderDeliveryGoodsRepo::getList([],['delivery_id'=>$delivery_id]);
         foreach($deliveryGoods as $k=>$v){
             //查询所属店铺
-            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+//            $shop_goods_quote = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
             //查询所属订单的商品信息
             $order_good = OrderGoodsRepo::getInfo($v['order_goods_id']);
             $deliveryGoods[$k]['goods_price'] = $order_good['goods_price']?$order_good['goods_price']:'';
+            $deliveryGoods[$k]['goods_full_name'] = $order_good['goods_name']?$order_good['goods_name']:'';
         }
         return $deliveryGoods;
     }
@@ -1000,7 +1067,7 @@ class OrderInfoService
                         FirmStockRepo::create($firmStockData);
                     }
                 }
-                 OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5]);
+                 OrderInfoRepo::modify($id,['shipping_status'=>3,'order_status'=>5,'confirm_take_time'=>$flow_time]);
                  self::commit();
                  return true;
             }catch (\Exception $e){
@@ -1056,16 +1123,21 @@ class OrderInfoService
                     break;
                 default://正常下单
                     $from = 'cart';
-                    $extension_id = '';
+                    $extension_id = 0;
                     $deposit_status = 1;
                     $deposit = 0;
 //                    $pay_type = $payType;
                     if (!$userId['firm_id']) {
                         $order_status = 2;
                     } else {
-                        $order_status = 1;
+                        if(!$userId['need_approval']){
+                            $order_status = 2;
+                        }else{
+                            $order_status = 1;
+                        }
                     }
             }
+           
             $orderInfo = [
                 'order_sn' => $order_no,
                 'user_id' => $userId['user_id'],
@@ -1089,6 +1161,7 @@ class OrderInfoService
                 'deposit' => $deposit,
                 'froms' => empty($token)?"pc":"weichat",
             ];
+
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
 
             //订单总金额
@@ -1315,5 +1388,24 @@ class OrderInfoService
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * 获取时间段内订单数和成交金额
+     * @param $start
+     * @param $end
+     * @return mixed
+     */
+    public static function getSalesVolumeOfTme($start,$end)
+    {
+        $condition = [
+            'is_delete'=>0,
+            'order_status'=>4
+        ];
+       $re = OrderInfoRepo::getCountAndSumPrice($start,$end,$condition);
+       if (!empty($re)){
+           return $re;
+       }
     }
 }

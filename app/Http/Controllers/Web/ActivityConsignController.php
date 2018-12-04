@@ -44,6 +44,7 @@ class ActivityConsignController extends Controller
         $goodsNum = $request->input('goodsNum');
         $userInfo = session('_web_user');
 
+
         try{
             $activityInfo = ShopGoodsQuoteService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条

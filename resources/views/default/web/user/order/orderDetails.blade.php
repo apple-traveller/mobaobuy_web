@@ -19,9 +19,35 @@
 			//请求快递物流信息
 			getLogisticsInfo();
 		});
+		//
 		function getLogisticsInfo(){
 			let _delivery_id = $('#delivery_id').data('delivery_id');
+            $.ajax({
+                url: "/logistics/detail",
+                dataType: "json",
+                data:{
+                    'id': _delivery_id
+                },
+                type:"get",
+                success:function(data){
+                    if(data.code == 1){
+                        let _list = data.data.Traces;
+                        let _length = data.data.Traces.length;
+                        let _html = '';
 
+                        for(let i=(_length-1); i>=0; i--){
+							_html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+						}
+						console.log(_html);
+						if(_html == ''){
+						    _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
+						}
+						$('.wlxx').append(_html);
+                    }else{
+                        $.msg.alert(data.msg);
+                    }
+                }
+            })
 		}
 	</script>
 	<style>
@@ -32,7 +58,7 @@
 		.order_pay_btn{padding:0 48px;margin-left:75px;margin-right: 75px;margin-top:20px;display:inline-block;font-size:18px;height: 40px;line-height: 40px;border: 1px solid #ED1E2D;border-radius: 2px;}
 		.order_jd_bg{width: 771px;height: 30px;margin-left: 70px;margin-top: 80px;}
 		.order_jd_bg1{background: url(/default/img/order_icon01.png)no-repeat 0px 0px;}
-		.order_jd_text{margin-left: 20px;}.order_jd_text li{float:left;width: 109px;text-align: center;margin-top: 10px;color: #999;}
+		.order_jd_text{margin-left: 20px;}.order_jd_text li{float:left;width: 109px;text-align: center;margin-top: 10px;color: #999;margin-left: 5%;}
 		.order_jd_text li:first-child{margin-left: 0px;}
 		.jd_text_con{padding-left: 10px; padding-right: 10px;}
 		.jd_text_date{color: #999;}
@@ -48,7 +74,7 @@
 		/*订单列表*/
 		.order-list-brand li:first-child{background-color: #f4f4f4;height: 32px;line-height: 32px;border-bottom: none;}
 		.order-list-brand li{height: 65px; line-height: 65px;border-bottom: 1px solid #DEDEDE;}
-		.order-list-brand li span{width: 20%;display: inline-block;text-align: center;}
+		.order-list-brand li span{display: inline-block;text-align: center;}
 		/*商品总额*/
 		.Amount_money{float: right;margin-right: 75px;margin-top: 30px;margin-bottom: 30px;}
 	</style>
@@ -99,6 +125,11 @@
 					@endif
 
 					@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon022.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">付款时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
@@ -106,13 +137,35 @@
 					@endif
 
 					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon05.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">发货时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
 					</li>
 					@endif
 
+					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon04.png)no-repeat 0px 0px;
+						}
+					</style>
+					<li>
+						<span class="jd_text_con black">运输中</span>
+						<span class="jd_text_date"></span>
+					</li>
+					@endif
+
 					@if(!empty($orderDetailsInfo['orderInfo']['confirm_take_time']))
+					<style>
+						.order_jd_bg1 {
+   							 background: url(/default/img/order_icon05.png)no-repeat 0px 0px;
+						}
+					</style>
 					<li>
 						<span class="jd_text_con black">确认收货时间</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>
@@ -136,11 +189,7 @@
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
-					<li>
-						<i class="external-cir"></i>
-						您提交了订单，请等待系统确认
-						<div class="gray">{{$orderDetailsInfo['orderInfo']['add_time']}}</div>
-					</li>
+
 				</ul>
 			</div>
 		</div>
@@ -209,19 +258,19 @@
 		<div class="whitebg br1 mt20 ovh">
 			<ul class="order-list-brand">
 				<li>
-					<span>商品名称</span>
-					<span>单价</span>
-					<span>数量</span>
-					<span>金额</span>
+					<span style="width:29%">商品名称</span>
+					<span style="width:20%">单价</span>
+					<span style="width:20%">数量</span>
+					<span style="width:29%">金额</span>
 					<!-- <span>操作</span> -->
 				</li>
 				@foreach($orderDetailsInfo['goodsInfo'] as $v)
 					<li>
-						<span>{{$v['goods_name']}}</span>
-						<span>￥{{$v['goods_price']}} </span>
-						<span>{{$v['goods_number']}}kg</span>
-						<span>￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
-						<span></span>
+						<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
+						<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
+						<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+						<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
+						{{--<span></span>--}}
 					</li>
 				@endforeach
 			</ul>

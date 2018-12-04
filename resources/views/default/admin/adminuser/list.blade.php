@@ -61,7 +61,7 @@
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a @if($vo['is_super']==1) style="display:none;" @endif href="/admin/adminuser/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
-                                            <a @if($vo['is_super']==1) style="display:none;" @endif href="/admin/adminuser/delete?id={{$vo['id']}}" title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>
+                                            <a @if($vo['is_super']==1) style="display:none;" @endif @if($vo['id']==$curr_adminid) style="display:none;" @endif href="/admin/adminuser/delete?id={{$vo['id']}}" title="删除" class="btn_see"><i class="icon icon-trash"></i>删除</a>
                                             <a @if($vo['is_super']==1) style="display:none;" @endif href="/admin/adminuser/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="/admin/adminuser/log?id={{$vo['id']}}&pcurrpage={{$currpage}}" title="日志" class="btn_edit"><i class="sc_icon sc_icon_see"></i>日志</a>
                                         </div>

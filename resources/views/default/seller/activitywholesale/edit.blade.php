@@ -49,7 +49,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-packing-spac="0" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" data-name="{{$wholesale_info['goods_name']}}" @else value="" data-name="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
+                                    <input type="text" data-packing-spac="@if(!empty($good)){{$good['packing_spec']}}@endif" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" data-name="{{$wholesale_info['goods_name']}}" @else value="" data-name="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
                                     <input type="hidden" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_id']}}" @endif name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 100px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -243,7 +243,7 @@
                     $(this).val(spec);
                 } else {
                     if (b_num >0){
-                        $(this).val(num-b_num);
+                        $(this).val(num-b_num+spec);
                     } else {
                         $(this).val(num);
                     }
@@ -347,7 +347,7 @@
                     }else{
                         let _count = min_num%spac;
                         if(_count > 0){
-                            $(this).val(min_num - _count);
+                            $(this).val(min_num - _count+spac);
                         }else{
                             $(this).val(min_num);
                         }
@@ -360,8 +360,8 @@
 
         // 控制最大值直接输入
         $("#max_limit").change(function () {
-           let max_val =  $(this).val();
-           let min_val = $("#min_limit").val();
+            let max_val =  Number($(this).val());
+            let min_val = Number($("#min_limit").val());
            let spac = Number($("#goods_name").attr("data-packing-spac"));
            let tota_num = Number($("#num").val());
            if (max_val==0){
@@ -376,7 +376,7 @@
                }else{
                    let _count = max_val%spac;
                    if(_count > 0){
-                       $(this).val(max_val - _count);
+                       $(this).val(max_val - _count+spac);
                    }else{
                        $(this).val(max_val);
                    }
@@ -403,7 +403,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-unit_name= "'+data[i].unit_name+'" data-packing_unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -435,7 +435,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-unit_name= "'+data[i].unit_name+'" data-packing_unit= "'+data[i].packing_unit+'"data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -452,6 +452,7 @@
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).data('packing_unit');
+            let unit_name = $(this).data('unit_name');
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
@@ -459,26 +460,12 @@
             $("#min_limit").val(packing_spac);
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
-            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+packing_unit+'</div>');
+            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
         });
 
         $("#goods_name").blur(function () {
             let goods_name = $(this).attr('data-name');
             $(this).val(goods_name);
-        });
-
-        $("#goods_number").change(function () {
-            let spac = $("#goods_name").attr("data-packing-spac");
-            let goods_number = $(this).val();
-            if (spac >goods_number){
-                $(this).val(spac);
-            } else {
-                if (goods_number%spac>0){
-                    $(this).val(goods_number-goods_number%spac);
-                } else {
-                    $(this).val(goods_number);
-                }
-            }
         });
     </script>
 @stop

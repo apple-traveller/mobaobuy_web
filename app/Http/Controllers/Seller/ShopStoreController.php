@@ -39,7 +39,7 @@ class ShopStoreController extends Controller
         $shop_id = $shopInfo['id'];
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
-        if ($shopInfo['is_self_run']==1){
+        if ($shopInfo['is_self_run']==0){
             $storeList = [];
         } else {
             $storeList = ShopStoreService::getShopStoreList([],$condition);
@@ -50,8 +50,8 @@ class ShopStoreController extends Controller
     public function add()
     {
         $shop_info = session('_seller')['shop_info'];
-        if ($shop_info['is_self_run']==1){
-            return $this->error('自营商家无法添加店铺');
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
         }
         return $this->display('seller.shopStore.add');
     }
@@ -59,8 +59,8 @@ class ShopStoreController extends Controller
     public function save(Request $request)
     {
         $shop_info = session('_seller')['shop_info'];
-        if ($shop_info['is_self_run']==1){
-            return $this->error('自营商家无法添加店铺');
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
         }
         $shop_id = $shop_info['id'];
         $store_name = $request->get('store_name','');
@@ -93,8 +93,8 @@ class ShopStoreController extends Controller
     public function edit(Request $request)
     {
         $shop_info = session('_seller')['shop_info'];
-        if ($shop_info['is_self_run']==1){
-            return $this->error('自营商家无法添加店铺');
+        if ($shop_info['is_self_run']!=1){
+            return $this->error('非自营商家无法添加店铺');
         }
         $id = $request->get('id',0);
         $currentPage = $request->input('currentPage');

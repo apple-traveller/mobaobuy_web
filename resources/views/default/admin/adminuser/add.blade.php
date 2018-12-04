@@ -60,7 +60,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>头像：</div>
                                 <div class="label_value">
-                                    <button type="button" class="layui-btn upload-file" style="" data-type="" data-path="adminuser" >上传图片</button>
+                                    <button type="button" class="layui-btn upload-file" style="" data-type="" data-path="adminuser" ><i class="layui-icon">&#xe681;</i> 上传图片</button>
                                     <input type="text" value="" class="text"  name="avatar" style="display:none;">
                                     <img  style="width:30px;height:30px;display:none;margin-right:10px;" class="layui-upload-img"><br/>
                                     <div class="form_prompt"></div>

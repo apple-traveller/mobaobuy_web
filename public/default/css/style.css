@@ -65,15 +65,17 @@ table.dataTable.no-footer {border-bottom: 0px;}
 
 .nav-div .nav-cate{width: 224px;position: relative;z-index: 4; height: 38px;line-height: 38px;float: left;}
 .nav-div .nav-cate .cate_title{background-color:#75b335; width: 100%;height: 100%;line-height: 38px;color: #fff;position: absolute;font-size: 16px;}
-.nav-div .nav-cate .ass_menu {position: absolute;left: 0;top: 40px;width: 224px;height: 330px;z-index: 1;background-color: #282828;}
+.nav-div .nav-cate .ass_menu {position: absolute;left: 0;top:38px;width: 224px;height: 330px;z-index: 1;background-color: #282828;}
 .ass_menu li {height: 50px;line-height: 50px;font-size: 16px;color: #fff;padding-left: 20px;}
 .ass_menu .ass_fn {display: none;width: 900px;position: absolute;top: 0;left: 224px;}
 .ass_fn .ass_fn_list {margin-left: 20px;margin-top:15px;margin-bottom:20px;}
-.ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;}
-.ass_fn .ass_fn_list .ass_fn_list_that {width: 755px;border-bottom: 1px dotted #DEDEDE;font-size: 14px;color: #999;}
-.ass_fn .ass_fn_list .ass_fn_list_that span { float:left; white-space:nowrap;width:120px;text-overflow:ellipsis;overflow:hidden;height:30px; overflow:hidden;}
+.ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;padding-bottom:10px;}
+.ass_fn .ass_fn_list .ass_fn_list_that {width: 725px;font-size: 14px;color: #999;}
+.ass_fn .ass_fn_list .ass_fn_list_that span { border-left: 1px solid #e0e0e0;float:left; white-space:nowrap;width:120px;line-height:18px;height:18px;text-overflow:ellipsis;overflow:hidden;overflow:hidden;padding-left:10px;margin-top:5px;color:#666;font-size:12px;}
 
-.fn_title{width:70px;}
+.fn_title{width:100px;line-height:24px;height:30px;text-align: right;font-size:12px;}
+.fn_title a.fr{font-weight:bold;color:#666;width:60px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.fn_title .icon-right{font-size:12px;font-weight:bold;margin-top:1px;margin-left:5px;}
 
 
 

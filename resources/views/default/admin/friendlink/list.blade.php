@@ -32,6 +32,7 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @if(!empty($links))
                             @foreach($links as $vo)
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['link_name']}}</div></td>
@@ -47,7 +48,7 @@
                                 </td>
                                 <td>
                                     <div class="tDiv changeInput">
-                                        <input name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text">
+                                        <input style="margin-left: 20px;" name="sort_order" data-id="{{$vo['id']}}" class="text w40" value="{{$vo['sort_order']}}" onkeyup="" type="text">
                                     </div>
                                 </td>
                                 <td class="handle">
@@ -58,6 +59,9 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                                <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                            @endif
                             </tbody>
                             <tfoot>
                             <tr>

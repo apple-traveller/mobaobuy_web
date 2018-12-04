@@ -134,4 +134,16 @@ class ActivityConsignController extends Controller
         }
 
     }
+
+    public function modifyStatus(Request $request)
+    {
+        $id = $request->input('id');
+        $consign_status = $request->input('consign_status');
+        try{
+            $res = ShopGoodsQuoteService::modify(['id'=>$id,'consign_status'=>$consign_status]);
+            return $this->success('修改审核状态成功');
+        }catch (\Exception $e){
+            return $this->error('修改失败');
+        }
+    }
 }
