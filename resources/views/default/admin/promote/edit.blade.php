@@ -13,7 +13,7 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
-                    <li>促销总数量必须为商品规格的整数倍。</li>
+                    <li>促销总数量、最小起售数量、最大限购数量必须为商品规格的整数倍。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -60,19 +60,19 @@
                                     <div class="label_value">
                                         <input type="hidden" name="cat_id" id="cat_id" value="{{$goods_info['cat_id']}}"/>
                                         <input type="text" data-catename="{{$goods_info['cat_name']}}" name="cat_id_LABELS" value="{{$goods_info['cat_name']}}" autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
-                                        <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                        <div style="" class="notic">商品分类用于辅助选择商品</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                     <div class="label_value">
-                                        <input type="text" data-packing-spac="{{$goods_info['packing_spec']}}" value="{{$promote['goods_name']}}"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
+                                        <input type="text" data-goods-name="{{$goods_info['goods_name']}}" data-packing-spac="{{$goods_info['packing_spec']}}" value="{{$promote['goods_name']}}"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
                                         <input type="hidden" value="{{$promote['goods_id']}}" name="goods_id"  id="goods_id">
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
                                         </ul>
-                                        <div style="margin-left: 10px;" class="notic">商品规格{{$goods_info['packing_spec']}}</div>
+                                        <div style="color:red;" class="notic">商品规格:{{$goods_info['packing_spec']}}&nbsp;&nbsp;{{$goods_info['unit_name']}}/{{$goods_info['packing_unit']}}</div>
                                     </div>
                                 </div>
 
@@ -90,7 +90,7 @@
                                     <div class="label_value">
                                         <input type="text" name="num" value="{{$promote['num']}}" autocomplete="off" id="num" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="margin-left: 10px;" class="notic">数量为规格的整数倍</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
@@ -109,6 +109,7 @@
                                     <div class="label_value">
                                         <input type="text" name="min_limit"  autocomplete="off" value="{{$promote['min_limit']}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
                                     </div>
                                 </div>
 
@@ -117,7 +118,7 @@
                                     <div class="label_value">
                                         <input type="text" name="max_limit" autocomplete="off" value="{{$promote['max_limit']}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div class="notic">0-不限</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。0-不限</div>
                                     </div>
                                 </div>
 
@@ -141,22 +142,19 @@
             $("#shop_name").val(shop_name);
 
             document.onclick=function(event){
-                $(".query_cat_name").hide();
                 $(".query_goods_name").hide();
             }
         });
+
         //选择店铺
         $("#shop_id").change(function(){
-            var shop_name = $(this).find("option:selected").text();
+            let shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
         });
+
         //获取树形分类
         $("#cat_name").focus(function(){
             showWinZtreeSelector(this);
-        });
-        $("#cat_name").blur(function(){
-            let cat_name = $(this).attr('data-catename');
-            $(this).val(cat_name);
         });
 
         //商品获取焦点请求所有的商品数据
@@ -173,7 +171,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -190,15 +188,18 @@
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
+            var packing_unit = $(this).attr("data-packing-unit");
+            var unit_name = $(this).attr("data-unit-name");
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
+            $("#goods_name").attr("data-goods-name",goods_name);
             $("#price").val("");
             $("#num").val("");
             $("#min_limit").val("");
             $("#max_limit").val("");
             $("#num").attr("disabled",false);
-            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+'</div>');
+            $("#goods_name").after(`<div style="margin-left: 10px;color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
         });
 
 
@@ -212,19 +213,22 @@
                     $(".query_goods_name").show();
                     var data = res.data;
                     for(var i=0;i<data.length;i++){
-                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                        $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
                     }
                 }else{
                     $(".query_goods_name").show();
-                    $(".query_goods_name").append('<li  style="cursor:pointer;">该分类下没有查询到商品</li>');
                 }
             },"json");
+        });
+
+        $("#goods_name").blur(function(){
+            let goods_name = $(this).attr("data-goods-name");
+            $(this).val(goods_name);
         });
 
         layui.use(['laydate','layer'], function() {
             var laydate = layui.laydate;
             var layer = layui.layer;
-            var index;
 
             laydate.render({
                 elem: '#begin_time' //指定元素
@@ -241,83 +245,123 @@
                 var packing_spec = $("#goods_name").attr("data-packing-spac");
                 if(packing_spec==0){
                     layer.msg("请先选择商品", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
+                    $(this).val("");
+                    return false;
                 }
 
-                $("#num").blur(function(){
-                    var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
-                    var num = parseInt($(this).val());
-                    if(!num){
+            });
+
+            $("#num").blur(function(){
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                if(packing_spec==0 && $(this).val().length==0){
+                    $(this).val("");
+                    return false;
+                }
+                if(packing_spec==0){
+                    layer.msg("请先选择商品", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                var num = parseInt($(this).val());
+                if(!num){
+                    $(this).val(packing_spec);
+                    if($(this).val()==packing_spec){
+                        $("#min_limit").val("");//
+                        $("#max_limit").val("");//
+                    }
+                    return ;
+                }
+                if(num%packing_spec!=0){
+                    if(num<=packing_spec){
                         $(this).val(packing_spec);
-                        $("#min_limit").attr("disabled",false);//取消最小数量的限制
-                        return ;
-                    }
-                    if(num%packing_spec!=0){
-                        if(num<=packing_spec){
-                            $(this).val(packing_spec);
-                        }else{
-                            $(this).val(Math.ceil(num/packing_spec)*packing_spec);
-                        }
                     }else{
-                        $(this).val(Math.ceil(num/packing_spec)*packing_spec);
+                        $(this).val(Math.floor(num/packing_spec)*packing_spec);
                     }
-                    $("#min_limit").attr("disabled",false);//取消最小数量的限制
-                });
+                }else{
+                    $(this).val(Math.floor(num/packing_spec)*packing_spec);
+                }
+                if($(this).val()==packing_spec){
+                    $("#min_limit").val("");//
+                    $("#max_limit").val("");//
+                }
 
             });
 
             //最小起售数量
             $("#min_limit").focus(function(){
-                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
                 var num = parseInt($("#num").val());
                 if(!num){
                     layer.msg("请先填写促销总数量", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
+                    $(this).val("");
                     return ;
                 }
-
-                $("#min_limit").blur(function(){
-                    var min_limit = parseInt($(this).val());
-                    if(!min_limit){
-                        $(this).val(packing_spec);
-                        return ;
-                    }
-                    if(min_limit>num){
-                        layer.msg("不能大于促销总数量", {icon: 5,time:1000});
-                        $(this).val(packing_spec);
-                    }else{
-                        $(this).val(Math.ceil(min_limit/packing_spec)*packing_spec);
-                    }
-                    $("#max_limit").attr("disabled",false);//取消最大限购数量的限制
-                });
+            });
+            $("#min_limit").blur(function(){
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                var min_limit = parseInt($(this).val());
+                var num = parseInt($("#num").val());
+                if(!num && $(this).val().length==0){
+                    $(this).val("");
+                    return ;
+                }
+                if(!num){
+                    layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                if(!min_limit){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                console.log("促销总数量:"+num);
+                if(min_limit>num){
+                    layer.msg("不能大于促销总数量", {icon: 5,time:1000});
+                    $(this).val(packing_spec);
+                    return false;
+                }else{
+                    $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
+                    return false;
+                }
             });
 
             //最大限购数量
             $("#max_limit").focus(function(){
                 var min_limit = parseInt($("#min_limit").val());
-                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
-                var num = parseInt($("#num").val());
                 if(!min_limit){
                     layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
-                    $(this).attr("disabled","disabled");
-                    return ;
+                    $(this).val();
+                    return false;
                 }
-
-                $("#max_limit").blur(function(){
-                    var max_limit = parseInt($(this).val());
-                    if(!max_limit){
-                        $(this).val(min_limit);
-                        return ;
-                    }
-                    if(max_limit>num){
-                        layer.msg("不能大于促销总数量", {icon: 5,time:1000});
-                        $(this).val(min_limit);
-                    }else{
-                        $(this).val(Math.ceil(max_limit/packing_spec)*packing_spec);
-                    }
-                });
             });
 
+            $("#max_limit").blur(function(){
+                var max_limit = parseInt($(this).val());
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                var min_limit = parseInt($("#min_limit").val());
+                var num = parseInt($("#num").val());
+                if(!min_limit && $(this).val().length==0){
+                    $(this).val("");
+                    return false;
+                }
+                if(!min_limit){
+                    layer.msg("请先填写最小起售数量", {icon: 5,time:1000});
+                    $(this).val("");
+                    return false;
+                }
+                if(!max_limit){
+                    $(this).val(min_limit);
+                    return ;
+                }
+                if(max_limit>num){
+                    layer.msg("不能大于促销总数量", {icon: 5,time:1000});
+                    $(this).val(min_limit);
+                }else if(max_limit<min_limit){
+                    layer.msg("必须大于最小起售数量", {icon: 5,time:1000});
+                    $(this).val(min_limit);
+                }else{
+                    $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
+                }
+            });
 
 
         });
