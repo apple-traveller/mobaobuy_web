@@ -207,7 +207,7 @@ class LoginController extends ApiController
     }
 
 
-        //注册新用户获取手机验证码
+    //注册新用户获取手机验证码
     public function sendRegisterSms(Request $request){
         $accountName = $request->input('accountName');
         $t = $request->input('t');

@@ -61,8 +61,8 @@ class UserController extends Controller
             'real_name'=>$request->input('val'),
         ];
         try{
-            $flag = UserRealService::modify($data);
-            return $this->result($flag['real_name'],200,'修改成功');
+            $flag = UserRealService::modifyNickname($data);
+            return $this->result($flag['nick_name'],200,'修改成功');
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
