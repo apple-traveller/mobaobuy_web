@@ -21,6 +21,7 @@
                     <a href="/admin/user/list?is_firm=0" @if($is_firm==0&&$is_firm!="") class="current" @endif>个人@if($is_firm==0&&$is_firm!="") <em>({{$userCount}})</em> @endif</a>
                     <a href="/admin/user/list?is_firm=1" @if($is_firm==1) class="current" @endif>企业@if($is_firm==1) <em>({{$userCount}})</em> @endif</a>
                     <a href="/admin/user/list?is_firm=-1" @if($is_firm==-1) class="current" @endif>待审核@if($is_firm==-1) <em>({{$userCount}})</em> @endif </a>
+                    <a href="/admin/user/list?is_firm=-2" @if($is_firm==-2) class="current" @endif>未提交实名信息@if($is_firm==-2) <em>({{$userCount}})</em> @endif </a>
                    {{-- <a href="/admin/orderinfo/list?order_status=0">企业 <em>(20)</em></a>
                     <a href="/admin/orderinfo/list?order_status=0">个人 <em>(20)</em></a>--}}
                 </div>

@@ -466,21 +466,21 @@ class UserService
     {
         $arr = [];
         if($is_firm==-1){
-            //未提交实名信息的用户或者实名审核没通过的用户
-            $users = UserRepo::getList([],[],['id']);
-            //没提交实名信息
-            foreach($users as $vo){
-                $user = UserRealRepo::getInfoByFields(['user_id'=>$vo['id']]);
-                if(empty($user)){
-                    $arr[] = $vo['id'];
-                }
-            }
-            //实名信息没通过
-            $user_reals = UserRealRepo::getList([],['review_status'=>"0|2"],['id','user_id']);
+            //已经提交实名信息，实名信息审核没通过
+            $user_reals = UserRealRepo::getList([],['review_status'=>"2|0"],['id','user_id']);
             foreach($user_reals as $vo){
-                $user = UserRepo::getInfoByFields(["id"=>$vo['user_id']]);
+                $user = UserRepo::getInfo($vo['user_id']);
                 if(!empty($user)){
                     $arr[] = $vo['user_id'];
+                }
+            }
+        }elseif($is_firm==-2){
+            //没提交实名
+            $users = UserRepo::getList([],[]);
+            foreach($users as $vo){
+                $user_reals = UserRealRepo::getList([],['user_id'=>$vo['id']],['id','user_id']);//所有已经提交实名的
+                if(empty($user_reals)){
+                    $arr[] = $vo['id'];
                 }
             }
         }else{
