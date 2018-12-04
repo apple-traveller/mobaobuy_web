@@ -84,7 +84,13 @@
 
                             <div class="item">
                                 <div class="label">&nbsp;用户头像：</div>
-                                <div class="label_value font14"><img src="{{$info['avatar']}}" style="width:80px;height:80px;"></div>
+                                <div class="label_value font14">
+                                    @if(empty($info['avatar']))
+                                        未上传
+                                    @else
+                                    <img src="{{$info['avatar']}}" style="width:80px;height:80px;">
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="item">

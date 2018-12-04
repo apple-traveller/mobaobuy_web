@@ -178,6 +178,14 @@
                                 </div>
                         @endif
 
+                            @if($info['review_status']==1)
+                                <div class="item">
+                                    <div class="label">审核状态：</div>
+                                    <div class="value">
+                                        已通过审核
+                                    </div>
+                                </div>
+                            @else
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核意见：</div>
                                 <div class="label_value">
@@ -190,14 +198,12 @@
                             <div class="item">
                                 <div class="label">审核状态：</div>
                                 <div class="value">
-                                    <input @if($info['review_status']==0) class="review_status_1 btn btn25 blue_btn " @else class="review_status_1 btn btn25 red_btn pay_status" @endif  type="button" data-status="0" value="待实名" >
                                     <input @if($info['review_status']==1) class="review_status btn btn25 blue_btn " @else class="review_status btn btn25 red_btn pay_status" @endif  type="button" data-status="1" value="通过" >
                                     <input @if($info['review_status']==2) class="review_status_1 btn btn25 blue_btn " @else class="review_status_1 btn btn25 red_btn pay_status" @endif  type="button" data-status="2" value="不通过" >
                                     <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                 </div>
                             </div>
-
-
+                            @endif
 
                         </form>
                     </div>
@@ -215,8 +221,8 @@
                 index = layer.open({
                     type: 1,
                     title: '详情',
-                    area: ['900px', '600px'],
-                    content: '<img src="'+content+'">'
+                    area: ['800px', '600px'],
+                    content: '<img style="height:550px;" src="'+content+'">'
                 });
             });
             $("#sex").change(function(){

@@ -257,7 +257,7 @@
                         <div class="step order_total">
                             <div class="step_title"><i class="ui-step"></i><h3>操作信息</h3></div>
                             <div class="step_info">
-                                @if($orderInfo['order_status']==4)
+                                @if($orderInfo['order_status']!=4)
                                 <div class="order_operation order_operation100">
                                     <div class="item">
                                         <div class="label">操作备注：</div>

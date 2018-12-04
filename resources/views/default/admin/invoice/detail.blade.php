@@ -108,9 +108,9 @@
                             <div class="step_info">
                                 <div class="order_operation order_operation100">
                                     <div class="item">
-                                        <div class="label">选择快递公司：</div>
+                                        <div class="label">快递公司：</div>
                                         <div class="label_value">
-                                            <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-right:10px;" name="shipping_id" id="shipping_id">
+                                            <select @if($invoiceInfo['status']==2) disabled="disabled"  @endif style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;margin-right:10px;" name="shipping_id" id="shipping_id">
                                                 <option value="">请选择快递公司</option>
                                                 @foreach($shippings as $vo)
                                                     <option @if($vo['id']==$invoiceInfo['shipping_id']) selected @endif value="{{$vo['id']}}">{{$vo['shipping_name']}}</option>
@@ -122,16 +122,24 @@
                                     <div class="item">
                                         <div class="label">运单号：</div>
                                         <div class="label_value">
+                                            @if($invoiceInfo['status']==2)
+                                                {{$invoiceInfo['shipping_billno']}}
+                                            @else
                                             <input style="width: 299px;" type="text" id="shipping_billno" name="shipping_billno" class="text" autocomplete="off" value="{{$invoiceInfo['shipping_billno']}}">
+                                            @endif
                                         </div>
                                     </div>
 
                                     <div class="item">
                                         <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
                                         <div class="label_value font14">
+                                            @if($invoiceInfo['status']==2)
+                                                已审核
+                                            @else
                                             <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==0) @else layui-btn-primary @endif '>已取消</div>
                                             <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==1) @else layui-btn-primary @endif '>待开票</div>
                                             <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==2) @else layui-btn-primary @endif '>开票</div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
