@@ -101,7 +101,16 @@
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
                 <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
                 <div class="mt5 pl10 pr10">
-                    <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
+                    <a href="{{route('login')}}">
+                        <div class="login-btn">
+                            登录
+                        </div>
+                    </a>
+                    <a href="{{route('register')}}">
+                        <div class="reg-btn">
+                            注册
+                        </div>
+                    </a>
                 </div>
                 <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
                 <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
@@ -204,7 +213,7 @@
                 <li>
                     <!-- <span>品牌</span> -->
                     <span style="width:12%;">品种</span>
-                    <span style="width:18%;">规格&nbsp;&nbsp;&nbsp;厂商</span>
+                    <span style="width:18%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
                     <span style="width:12%;">可售数量（kg）</span>
                     <span style="width:12%;">单价（元/kg）</span>
                     <span style="width:12%;">发货地</span>
@@ -388,8 +397,14 @@
         </div>
     @endif
     <!--维生素行情-->
-    <div class="w1200" style="margin-top: 30px;">
-        <div class="ovh"><h1 class="Self-support-title">维生素行情</h1><div class="fr mr20"><a class="ml30" href="/news.html">查看更多></a></div></div>
+    @if(!empty($article_list))
+        <div class="w1200" style="margin-top: 30px;">
+        <div class="ovh">
+            <h1 class="Self-support-title">维生素行情</h1>
+            <div class="fr mr20">
+                <a class="ml30" href="/news.html">查看更多></a>
+            </div>
+        </div>
         <div class="whitebg ovh mt10">
 
             <ul class="Quotate">
@@ -421,16 +436,22 @@
             </ul>
         </div>
     </div>
+    @endif
     <!--合作品牌-->
-    <div class="w1200" style="margin:30px auto">
-        <div class="ovh"><h1 class="Self-support-title">合作品牌</h1></div>
-
-        <ul class="Cooperative_brand">
-            @foreach($brand_list as $item)
-            <li @if(($loop->iteration % 6) > 0) class="bb1 bbright" @endif><div><img src="{{getFileUrl($item['brand_logo'])}}"/></div></li>
-            @endforeach
-        </ul>
-    </div>
+    @if(!empty($brand_list))
+        <div class="w1200" style="margin:30px auto">
+            <div class="ovh">
+                <h1 class="Self-support-title">合作品牌</h1>
+            </div>
+            <ul class="Cooperative_brand">
+                @foreach($brand_list as $item)
+                    <li @if(($loop->iteration % 6) > 0) class="bb1 bbright" @endif>
+                        <div><img src="{{getFileUrl($item['brand_logo'])}}"/></div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @section('bottom_js')

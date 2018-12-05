@@ -81,7 +81,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="goods_number">
-                                    <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -283,7 +283,7 @@
                     var data = res.data;
                     console.log(data);
                     for(var i=0;i<data.length;i++){
-                        $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                     }
                 }
             },"json");
@@ -295,8 +295,8 @@
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
-            var packing_unit = $(this).attr("data-packing-unit");
-            var unit_name = $(this).attr("data-unit-name");
+            let packing_unit = $(this).attr('data-packing-unit');
+            let unit_name = $(this).data('unit_name');
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
@@ -304,7 +304,7 @@
             $("#min_limit").val(packing_spac);
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
-            $("#goods_name").after(`<div style="color:red;" class="notic">包装规格为:${packing_spac}&nbsp;&nbsp;${unit_name}/${packing_unit}</div>`);
+            $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
         });
 
         $("#goods_name").blur(function(){
@@ -312,25 +312,11 @@
             $(this).val(_goods_name);
         });
         layui.use(['layer'], function() {
-            $("#goods_number").focus(function(){
-                let spac = parseInt($("#goods_name").attr("data-packing-spac"));
-                if (spac == 0) {
-                    layer.msg("请先选择商品", {icon: 5, time: 1000});
-                    $(this).val("");
-                    return false;
-                }
-            });
-
             $("#goods_number").blur(function () {
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
                 let goods_number = $(this).val();
-                if (spac == 0 && goods_number.length==0) {
-                    $(this).val("");
-                    return false;
-                }
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
-                    $(this).val("");
                     return false;
                 }
                 if (goods_number =="" || goods_number ==0) {
@@ -338,7 +324,7 @@
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.floor(goods_number/spac) * spac);
+                $(this).val(Math.ceil(goods_number/spac) * spac);
             });
         });
 
