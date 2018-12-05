@@ -72,7 +72,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/region/delete', 'RegionController@delete');//地区删除
         Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
-        Route::get('/region/getRegionTree', 'RegionController@getRegionTree');//地区修改
+        Route::any('/region/getRegionTree', 'RegionController@getRegionTree');//地区修改
 
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@getList');//商品分类列表
@@ -330,7 +330,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
     /********************************报价信息*****************************/
-    Route::any('/goodsList', 'QuoteController@goodsList');//商品列表
+    Route::any('/goodsList/{t?}', 'QuoteController@goodsList');//商品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//商品详情
     /********************************************************************/

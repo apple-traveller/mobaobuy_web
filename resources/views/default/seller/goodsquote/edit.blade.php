@@ -98,7 +98,7 @@
                                 <div class="label">&nbsp;选择交货地：</div>
                                 <div class="label_value">
                                     <input type="hidden" name="place_id" id="place_id" value="{{$goodsQuote['place_id']}}"/>
-                                    <input type="text" name="place_id_LABELS"  autocomplete="off" value="{{$goodsQuote['delivery_place']}}" treeId="" id="delivery_place" treeDataUrl="/seller/quote/getAddressTree" size="40"  class="text" title="">
+                                    <input type="text" name="place_id_LABELS" old="{{$goodsQuote['delivery_place']}}" autocomplete="off" value="{{$goodsQuote['delivery_place']}}" treeId="" id="delivery_place" treeDataUrl="/seller/quote/getAddressTree" size="40"  class="text" title="">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -384,6 +384,11 @@
                     $(this).val(goods_number);
                 }
             }
+        });
+
+        $("#delivery_place").change(function(){
+            let _name = $(this).attr('old');
+            $(this).val(_name);
         });
     </script>
 

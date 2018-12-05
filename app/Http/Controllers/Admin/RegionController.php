@@ -108,7 +108,9 @@ class RegionController extends Controller
 
     public function getRegionTree()
     {
-        return RegionService::getRegionTree();
+        $res = RegionService::getRegionTree();
+//        dd($res);
+        return $res;
     }
 
 
