@@ -29,9 +29,16 @@
                                 <div class="label">{{$vo['name']}}：</div>
                                 <div class="label_value">
                                     @if($vo['type']=='text')
-                                        <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
-                                        <div class="form_prompt"></div>
-                                        <div class="notic">{{$vo['config_desc']}}</div>
+                                        @if($vo['code']=='close_quote')
+                                            <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
+                                            <div class="form_prompt"></div>
+                                            <div class="notic">{{$vo['config_desc']}}</div>
+                                        @else
+                                            <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
+                                            <div class="form_prompt"></div>
+                                            <div class="notic">{{$vo['config_desc']}}</div>
+                                        @endif
+
                                     @elseif($vo['type']=='select')
                                         @php
                                         $items = explode(',', $vo['store_range']);
@@ -75,6 +82,11 @@
         layui.use(['upload','layer'], function(){
             var upload = layui.upload;
             var layer = layui.layer;
+
+            laydate.render({
+                elem: '#begin_time' //指定元素
+                , type: 'datetime'
+            });
 
             //文件上传
             upload.render({
