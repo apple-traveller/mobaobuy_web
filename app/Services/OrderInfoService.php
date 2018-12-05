@@ -398,7 +398,8 @@ class OrderInfoService
             $condition['shop_id'] = $seller_id;
             unset($condition['firm_id']);
         }
-//       dump($condition);
+
+
         $status = [
             'waitApproval' => 0,
             'waitAffirm' => 0,
@@ -436,6 +437,42 @@ class OrderInfoService
 
         //待开票
         $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
+        unset($condition['pay_status']);
+        $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
+
+        return $status;
+    }
+
+    //根据状态获取订单数量，用于管理员后台新订单提示
+    public static function getOrderCountByStatus()
+    {
+        //待付定金
+        $condition = self::setStatueCondition('waitDeposit');
+        $status['waitDeposit'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待审批数量
+        $condition = self::setStatueCondition('waitApproval');
+        unset($condition['deposit_status']);
+        $status['waitApproval'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待确认数量
+        $condition = self::setStatueCondition('waitAffirm');
+        $status['waitAffirm'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待付款数量
+        $condition = self::setStatueCondition('waitPay');
+        $status['waitPay'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待发货数量
+        $condition = self::setStatueCondition('waitSend');
+        $status['waitSend'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待收货
+        $condition = self::setStatueCondition('waitConfirm');
+        $status['waitConfirm'] = OrderInfoRepo::getTotalCount($condition);
+
+        //待开票
+        $condition = self::setStatueCondition('waitInvoice');
         unset($condition['pay_status']);
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
@@ -504,6 +541,8 @@ class OrderInfoService
             if(isset($data['deposit_status'])){
                 OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
             }
+            //修改卖家确认时间
+            OrderInfoRepo::modify($data['id'], ['confirm_time'=>Carbon::now()]);
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>'修改支付状态为已付款',
@@ -1053,6 +1092,7 @@ class OrderInfoService
                     $firmStockData['order_sn'] = $orderInfo['order_sn'];
                     $firmStockData['created_by'] = $userId;
                     $firmStockData['price'] = $v['goods_price'];
+                    $firmStockData['partner_name'] = $orderInfo['shop_name'];
                     FirmStockFlowRepo::create($firmStockData);
                     if(!empty($firmStockInfo)){
                         FirmStockRepo::modify($firmStockInfo['id'],['number'=>$v['goods_number'] + $firmStockInfo['number']]);

@@ -241,7 +241,7 @@
             @if(!empty($t))
                 <li class="nodata1">近期上市 敬请期待</li>
             @else
-                <li class="nodata">无相关数据</li>
+                <li class="nodata">暂无最新报价数据。如需订购，请点击联系人工找货</li>
             @endif
         @endif
     </div>
@@ -250,7 +250,6 @@
 @section('bottom_js')
 <script>
     paginate();
-
 
     //取消地区选择
     $('.cancel_region').click(function(){
@@ -340,9 +339,11 @@
 
 
 	//无刷新改变url地址
-    function changeURL(){
-        window.history.pushState({},0,'http://'+window.location.host+'/goodsList');
-    }
+//    function changeURL(){
+//        window.history.pushState({},0,'https://'+window.location.host+'/goodsList');
+//    }
+
+
     //分页
     function paginate(){
         layui.use(['laypage'], function() {
@@ -443,7 +444,7 @@
 //                if(_keyword != ''){
 //                    changeURL();
 //                }
-                changeURL();
+//                changeURL();
                 if(res.code==200){
                     var data = res.data;
                     var currpage = data.currpage;

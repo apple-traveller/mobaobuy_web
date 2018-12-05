@@ -38,9 +38,9 @@
                 <ul class="news_Hot">
                     @foreach(getNewsSidebar()['hot_news'] as $k2=>$v2)
                         @if ($k2+1<4)
-                        <li class="article_id" data_id="{{ $v2['id'] }}"><div class="news_list_num code_greenbg fl mr10" >{{$k2+1}}</div><a class="fl">{{ $v2['title'] }}</a></li>
+                        <li class="article_id" data_id="{{ $v2['id'] }}"><div class="news_list_num code_greenbg fl mr10">{{$k2+1}}</div><a class="fl ovhwp" style="width: 190px;height: 36px;">{{ $v2['title'] }}</a></li>
                         @else
-                        <li class="article_id" data_id="{{ $v2['id'] }}"><div class="news_list_num cdbg fl mr10" >{{$k2+1}}</div><a class="fl">{{ $v2['title'] }}</a></li>
+                        <li class="article_id" data_id="{{ $v2['id'] }}"><div class="news_list_num cdbg fl mr10" >{{$k2+1}}</div><a class="fl ovhwp" style="width: 190px;height: 36px;">{{ $v2['title'] }}</a></li>
                         @endif
                     @endforeach
                 </ul>

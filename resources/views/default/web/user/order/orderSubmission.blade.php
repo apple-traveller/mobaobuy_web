@@ -100,7 +100,7 @@
     </div>
     <div class="w1200 graybg ovh" style="color: #666;">
         <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
-        <div class="mt15 tac fs16">客服 : 王经理   <span class="ml15">电话 : <font class="orange">021-02136452</font></span><span class="ml15">QQ :<font class="orange">321456129</font></span></div>
+        <div class="mt15 tac fs16"><span class="ml15">电话 : <font class="orange">{{getConfig('service_phone')}}</font></span><span class="ml15">QQ :<font class="orange">{{getConfig('service_qq')}}</font></span></div>
         <div class="comfirm ovh">
             <a href="/member">
             <div class="comfirm_btn code_greenbg">
@@ -112,7 +112,6 @@
                     返回首页
                     </div>
                 </a>
-
         </div>
     </div>
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;">
