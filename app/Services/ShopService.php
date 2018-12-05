@@ -83,9 +83,9 @@ class ShopService
     }
 
     //后台首页统计店铺总数量
-    public static function getShopsCount()
+    public static function getShopsCount($condition)
     {
-        return ShopRepo::getTotalCount(['is_freeze'=>0,'is_validated'=>1]);
+        return ShopRepo::getTotalCount($condition);
     }
 
 

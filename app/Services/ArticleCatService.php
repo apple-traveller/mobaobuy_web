@@ -11,6 +11,15 @@ class ArticleCatService
         return ArticleCatRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
     }
 
+
+    //获取列表数据
+    public static function getListApi($parent_id)
+    {
+        return ArticleCatRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id],['id']);
+    }
+
+
+
     //验证唯一性
     public static function uniqueValidate($cat_name)
     {

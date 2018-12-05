@@ -32,14 +32,18 @@
 						}
 						console.log(_html);
 						if(_html == ''){
-						    _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
+						    _html = '<li><i class="external-cir"></i>暂无物流信息<div class="gray"></div></li>'
 						}
 						$('.wlxx').append(_html);
                     }else{
-                    	let _html = '暂无物流信息';
+                    	let _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>';
                     	$('.wlxx').append(_html);
                         // $.msg.alert(data.msg);
                     }
+                },
+                error:function(){
+                	let _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>';
+                    	$('.wlxx').append(_html);
                 }
             })
 		}

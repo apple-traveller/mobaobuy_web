@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Cache;
 use App\Services\ShopService;
 use App\Services\OrderInfoService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\ActivityPromoteService;
+use App\Services\ActivityWholesaleService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
 class IndexController extends Controller
@@ -23,7 +25,7 @@ class IndexController extends Controller
         //mysql版本
         $version = DB::select('SELECT VERSION() AS ver');
         //查询店铺总数量
-        $shopCount = ShopService::getShopsCount();
+        $shopCount = ShopService::getShopsCount(['is_freeze'=>0,'is_validated'=>1]);
         //查询今日订单总数量
         $orderCount = OrderInfoService::getOrdersCount();
         //查询今日销售总额
@@ -69,5 +71,19 @@ class IndexController extends Controller
     //不能清除小程序用户信息 只用于数据即时显示 功能即时生效
     public function clear(){
 //        Cache::flush();
+    }
+
+    //获取各促销活动未审核数量
+    public function getActivityCount(Request $request)
+    {
+        $consign_count = ShopGoodsQuoteService::getConsignCount(['type'=>3,'consign_status'=>"0|2","is_delete"=>0]);
+        $promote_count = ActivityPromoteService::getWaitReview(['review_status'=>"1|2",'is_delete'=>0]);
+        $wholesale_count = ActivityWholesaleService::getWaitReview(['review_status'=>"1|2",'is_delete'=>0]);
+        return $this->result(
+            ['consign_count'=>$consign_count,
+             'promote_count'=>$promote_count,
+             'wholesale_count'=>$wholesale_count],
+            200,
+            'success');
     }
 }

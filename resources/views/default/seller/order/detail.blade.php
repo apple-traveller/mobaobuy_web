@@ -437,31 +437,31 @@
                                         </tr></thead>
                                         <tbody>
                                         @if(!empty($orderLogs))
-                                        @foreach($orderLogs as $vo)
+                                        @foreach($orderLogs as $v)
                                             <tr>
                                                 <td>&nbsp;</td>
-                                                <td>{{$vo['action_user']}}</td>
-                                                <td>{{$vo['log_time']}}</td>
+                                                <td>{{$v['action_user']}}</td>
+                                                <td>{{$v['log_time']}}</td>
                                                 <td>
-                                                    @if($vo['order_status']==0)已取消
-                                                    @elseif($vo['order_status']==1)待企业审核
-                                                    @elseif($vo['order_status']==2)待商家确认
+                                                    @if($v['order_status']==0)已取消
+                                                    @elseif($v['order_status']==1)待企业审核
+                                                    @elseif($v['order_status']==2)待商家确认
                                                     @else已确认
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($vo['pay_status']==0)待付款
-                                                    @elseif($vo['pay_status']==1)已付款
+                                                    @if($v['pay_status']==0)待付款
+                                                    @elseif($v['pay_status']==1)已付款
                                                     @else部分付款
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($orderInfo['shipping_status']==0)待发货
-                                                    @elseif($orderInfo['shipping_status']==1)已发货
-                                                    @elseif($orderInfo['shipping_status']==2)部分发货
+                                                    @if($v['shipping_status']==0)待发货
+                                                    @elseif($v['shipping_status']==1)已发货
+                                                    @elseif($v['shipping_status']==2)部分发货
                                                     @endif
                                                 </td>
-                                                <td>{{$vo['action_note']}}</td>
+                                                <td>{{$v['action_note']}}</td>
                                             </tr>
                                         @endforeach
                                             @else

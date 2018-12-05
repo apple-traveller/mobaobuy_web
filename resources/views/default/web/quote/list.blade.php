@@ -4,6 +4,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
 	<style>
+        .trade-close-btn {
+            border: 1px solid #efefef;
+            background: #efefef;
+            color: #656565;
+            border-radius: 3px;
+            padding: 4px 10px;
+            cursor: default;
+        }
 		.nav-div .nav-cate .ass_menu {display: none;}
         .sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
@@ -221,11 +229,21 @@
                                     {{--</div>--}}
                                 {{--</div>--}}
                             {{--</span>--}}
-                                <span style="width:10%">
-                                    @if($vo['goods_number'])
-                                        <button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
-                                    @else
-                                        已售完
+                                {{--<span style="width:10%">--}}
+                                    {{--@if($vo['goods_number'])--}}
+                                        {{--<button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>--}}
+                                    {{--@else--}}
+                                        {{--已售完--}}
+                                    {{--@endif--}}
+                                {{--</span>--}}
+
+                                <span style="width:10%;">
+                                    @if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00')
+                                            <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                                    @elseif($vo['goods_number'] <= 0)
+                                            <button class="trade-close-btn">已售完</button>
+                                    @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
+                                            <button class="trade-close-btn">已结束</button>
                                     @endif
                                 </span>
                             </li>
@@ -451,6 +469,7 @@
                     var pageSize = data.pageSize;
                     var total = data.total;
                     var list = data.list;
+//                    console.log(list);
                     $('#t').val(res.data.t);
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
@@ -463,6 +482,13 @@
                         if(list[i].store_name){
                             _store_name = list[i].store_name;
                         }
+                        if(list[i].goods_number && list[i].expiry_time > '{{\Carbon\Carbon::now()}}' || list[i].goods_number && list[i].expiry_time === '0000-00-00 00:00:00'){
+                            var _add_cart = '<button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button>';
+                        }else if(list[i].goods_number <= 0){
+                            var _add_cart = '<button class="trade-close-btn">已售完</button>';
+                        }else if(list[i].expiry_time < '{{\Carbon\Carbon::now()}}'){
+                            var _add_cart = '<button class="trade-close-btn">已结束</button>';
+                        }
 
                         _html += '<li>' +
                             '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:18%;">'+_store_name+'</span>' +
@@ -472,10 +498,18 @@
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
                             '<span style="width:12%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
-                            '<span style="width:9%;"><button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button></span>' +
+                            '<span style="width:9%;">'+_add_cart+'</span>' +
                             '</li>';
 
-                    {{--<img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
+                    {{--<span style="width:10%;">--}}
+                            {{--@if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00')--}}
+                        {{--<button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>--}}
+                            {{--@elseif($vo['goods_number'] <= 0)--}}
+                        {{--<button class="trade-close-btn">已售完</button>--}}
+                            {{--@elseif($vo['expiry_time'] < \Carbon\Carbon::now())--}}
+                        {{--<button class="trade-close-btn">已结束</button>--}}
+                            {{--@endif--}}
+                        {{--</span>--}}
                     }
                     $(".table_title").after(_html);
                     $(".news_pages").append('<ul id="page" class="pagination"></ul>');
