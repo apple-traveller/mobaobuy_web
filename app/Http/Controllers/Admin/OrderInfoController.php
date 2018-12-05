@@ -151,15 +151,9 @@ class OrderInfoController extends Controller
     {
         $data = $request->all();
         $action_note = $data['action_note'];
-        if(empty($action_note)){
-            if(key_exists('order_status',$data)){
-                $action_note = "修改订单状态";
-            }else{
-                $action_note = "修改支付状态";
-            }
-        }
         unset($data['action_note']);
         try{
+
             $flag = OrderInfoService::modifyOrderStatus($data,$action_note);
             if($flag){
                 return $this->result('',200,'修改成功');

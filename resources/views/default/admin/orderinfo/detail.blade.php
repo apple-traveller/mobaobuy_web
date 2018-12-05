@@ -311,13 +311,26 @@
                                     <div class="item">
                                         <div class="label">订单状态：</div>
                                         <div class="value">
-                                            <input @if($orderInfo['order_status']==0) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif  type="button" data-id="0" value="已作废" >
-                                            <input @if($orderInfo['order_status']==1) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="1" value="待企业审核" >
-                                            <input @if($orderInfo['order_status']==2) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="2" value="待商家确认" >
-                                            <input @if($orderInfo['order_status']==3) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="3" value="已确认" >
-                                            <input @if($orderInfo['order_status']==4) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="4" value="已完成" >
-                                            <input @if($orderInfo['order_status']==5) class="btn btn25 blue_btn order_status" @else class="btn btn25 red_btn order_status" @endif   type="button" data-id="5" value="待开票" >
-                                            <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                            <input  class="btn btn25 red_btn order_status"   type="button" data-id="0" value="取消" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="2" value="企业审核" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="3" value="确认" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="4" value="收货" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >
+                                            <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">发货状态：</div>
+                                        <div class="value">
+                                            @if($orderInfo['shipping_status']==1)
+                                                已发货
+                                            @elseif($orderInfo['shipping_status']==3)
+                                                已收货
+                                            @elseif($orderInfo['shipping_status']==2)
+                                                <div class="btn btn25 red_btn order_delivery"  data-status="{{$orderInfo['shipping_status']}}" ><a style="color:white;" href="/admin/orderinfo/delivery?order_id={{$orderInfo['id']}}&currpage={{$currpage}}">部分发货，去发货</a></div>
+                                            @else
+                                                <div class="btn btn25 red_btn order_delivery"  data-status="{{$orderInfo['shipping_status']}}" ><a style="color:white;" href="/admin/orderinfo/delivery?order_id={{$orderInfo['id']}}&currpage={{$currpage}}">未发货，去发货</a></div>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -544,6 +557,7 @@
                 var order_status = $(this).attr("data-id");
                 var action_note = $(".action_note").val();
                 $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
+                    //console.log(res.data);return false;
                     if(res.code==200){
                         layer.msg(res.msg, {
                             icon: 6,
@@ -553,7 +567,10 @@
                         });
 
                     }else{
-                        alert(res.msg);
+                        layer.msg(res.msg, {
+                            icon: 6,
+                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                        });
                     }
                 },"json");
             });
@@ -563,6 +580,15 @@
 
             $(".order_delivery").click(function(){
                 var shipping_status = $(this).attr('data-status');
+                var pay_status = "{{$orderInfo['pay_status']}}";
+                if(pay_status!=1){
+                    layer.msg("买家未付款", {
+                        icon: 6,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+
+                    return false;
+                }
                 if(shipping_status==1){
                     layer.msg("已发货", {
                         icon: 6,
