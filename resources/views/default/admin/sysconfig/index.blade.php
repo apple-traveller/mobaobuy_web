@@ -29,16 +29,9 @@
                                 <div class="label">{{$vo['name']}}：</div>
                                 <div class="label_value">
                                     @if($vo['type']=='text')
-                                        @if($vo['code']=='close_quote')
-                                            <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
-                                            <div class="form_prompt"></div>
-                                            <div class="notic">{{$vo['config_desc']}}</div>
-                                        @else
-                                            <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
-                                            <div class="form_prompt"></div>
-                                            <div class="notic">{{$vo['config_desc']}}</div>
-                                        @endif
-
+                                        <input name="{{$vo['code']}}" id="{{$vo['code']}}" class="text" value="{{$vo['value']}}" autocomplete="off" type="text">
+                                        <div class="form_prompt"></div>
+                                        <div class="notic">{{$vo['config_desc']}}</div>
                                     @elseif($vo['type']=='select')
                                         @php
                                         $items = explode(',', $vo['store_range']);
