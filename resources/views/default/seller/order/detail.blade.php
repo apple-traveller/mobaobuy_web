@@ -122,7 +122,7 @@
                                         <div style="height: 40px;">
                                             定金凭证:
                                             @if(!empty($orderInfo['deposit_pay_voucher']))
-                                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3">查看</button>
+                                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
                                             @else
                                                 <span>暂无</span>
                                             @endif
@@ -133,7 +133,7 @@
                                         <div style="height: 40px;">
                                             付款凭证:
                                             @if(!empty($orderInfo['pay_voucher']))
-                                                <button type="button" onclick="payImg('{{ getFileUrl($orderInfo['pay_voucher']) }}')" class="layui-btn mt3">查看</button>
+                                                <button type="button" onclick="payImg('{{ getFileUrl($orderInfo['pay_voucher']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
                                             @else
                                                 <span>暂无</span>
                                             @endif
@@ -410,12 +410,12 @@
 
                                                 @if($orderInfo['pay_type'] == 1)
                                                     @if($orderInfo['order_status'] == 3 && $orderInfo['pay_status']==1 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                                        <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                        <a href="javascript:void(0);" onclick="shipping()"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
                                                     @endif
 
                                                 @elseif($orderInfo['pay_type'] == 2)
                                                     @if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                                        <a href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
+                                                        <a href="javascript:void(0);" onclick="shipping()"> <input type="button" value="生成发货单" class="btn btn25 red_btn"></a>
                                                     @endif
                                                 @endif
                                                     @endif
@@ -437,31 +437,31 @@
                                         </tr></thead>
                                         <tbody>
                                         @if(!empty($orderLogs))
-                                        @foreach($orderLogs as $vo)
+                                        @foreach($orderLogs as $v)
                                             <tr>
                                                 <td>&nbsp;</td>
-                                                <td>{{$vo['action_user']}}</td>
-                                                <td>{{$vo['log_time']}}</td>
+                                                <td>{{$v['action_user']}}</td>
+                                                <td>{{$v['log_time']}}</td>
                                                 <td>
-                                                    @if($vo['order_status']==0)已取消
-                                                    @elseif($vo['order_status']==1)待企业审核
-                                                    @elseif($vo['order_status']==2)待商家确认
+                                                    @if($v['order_status']==0)已取消
+                                                    @elseif($v['order_status']==1)待企业审核
+                                                    @elseif($v['order_status']==2)待商家确认
                                                     @else已确认
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($vo['pay_status']==0)待付款
-                                                    @elseif($vo['pay_status']==1)已付款
+                                                    @if($v['pay_status']==0)待付款
+                                                    @elseif($v['pay_status']==1)已付款
                                                     @else部分付款
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($orderInfo['shipping_status']==0)待发货
-                                                    @elseif($orderInfo['shipping_status']==1)已发货
-                                                    @elseif($orderInfo['shipping_status']==2)部分发货
+                                                    @if($v['shipping_status']==0)待发货
+                                                    @elseif($v['shipping_status']==1)已发货
+                                                    @elseif($v['shipping_status']==2)部分发货
                                                     @endif
                                                 </td>
-                                                <td>{{$vo['action_note']}}</td>
+                                                <td>{{$v['action_note']}}</td>
                                             </tr>
                                         @endforeach
                                             @else
@@ -510,23 +510,20 @@
            layer.open({
                 type: 1
                 ,
-                title: false //不显示标题栏
-                ,
-                closeBtn: false
-                ,
-                area: '300px;'
-                ,
+                title: '凭证', //不显示标题栏
+                // ,
+                // closeBtn: true
+                // ,
                 shade: 0.8
                 ,
+                maxmin:true
+                ,
+                area:['700px','600px'],
                 id: 'PayImg' //设定一个id，防止重复弹出
-                ,
-                btn: ['关闭']
-                ,
-                btnAlign: 'c'
                 ,
                 moveType: 1 //拖拽模式，0或者1
                 ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+pay_img+'" alt=""> </div>'
+                content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+pay_img+'" alt=""> </div>'
                 ,
                 yes: function () {
                     layer.closeAll();
@@ -538,19 +535,16 @@
             layer.open({
                 type: 1
                 ,
-                title: false //不显示标题栏
-                ,
-                closeBtn: false
-                ,
-                area: '300px;'
-                ,
+                title: '凭证', //不显示标题栏
+                // ,
+                // closeBtn: true
+                // ,
                 shade: 0.8
                 ,
+                maxmin:true
+                ,
+                area:['700px','600px'],
                 id: 'PayImg' //设定一个id，防止重复弹出
-                ,
-                btn: ['关闭']
-                ,
-                btnAlign: 'c'
                 ,
                 moveType: 1 //拖拽模式，0或者1
                 ,
@@ -766,6 +760,19 @@
                     layer.close(index);
                     parent.location.reload();
                 });
+            });
+        }
+        function shipping() {
+            let pay_type = "{{$orderInfo['pay_status']}}";
+            layui.use('layer', function(){
+                let layer = layui.layer;
+                if (pay_type!=1){
+                    layer.confirm('没有收到全款，是否发货?', {icon: 3, title:'提示'}, function(index){
+                       window.location.href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}";
+                    });
+                } else {
+                    window.location.href="/seller/order/delivery?order_id={{$orderInfo['id']}}&currentPage={{$currentPage}}";
+                }
             });
         }
 

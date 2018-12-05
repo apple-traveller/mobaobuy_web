@@ -83,7 +83,7 @@
 </div>
 <div class=" clearfix mt5">
     <div class="w1200">
-        <div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt; <a href="/invoice/myInvoice">我的开票</a> &gt;<span class="gray">订单详情</span></div>
+        <div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt; <a href="/invoice/myInvoice">我的开票</a> &gt;<span class="gray">发票详情</span></div>
         <div class="order_pro_progress whitebg mt5">
             <div class="order_pro_">
                 <span class="invoice_number">开票流水号：{{$invoiceInfo['invoice_numbers']}}</span>

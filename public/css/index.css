@@ -50,7 +50,7 @@
 .ys_banner_icon {position: absolute;left: 50%;bottom: 15px;overflow: hidden;margin-left: -80px;}
 .ys_banner_icon li {display: -moz-inline-stack;display: inline-block;}
 .ys_banner_icon span {float: left; margin: 0 5px;border-radius: 25px;background: #fff;cursor: pointer;width: 14px;height: 14px;text-indent: -9999px;}
-.ys_banner_icon span.on {border-radius: 15px;background: #fff;opacity: 0.5;}
+.ys_banner_icon span.on {border-radius: 15px;background: #75b335;}
 /*个人中心*/
 .member_cnt{width: 206px;margin: 10px auto 20px;}
 .member_header{width: 65px;height: 60px;margin: 10px auto;}
