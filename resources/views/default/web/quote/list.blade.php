@@ -241,7 +241,7 @@
             @if(!empty($t))
                 <li class="nodata1">近期上市 敬请期待</li>
             @else
-                <li class="nodata">无相关数据</li>
+                <li class="nodata">暂无最新报价数据。如需订购，请点击联系人工找货</li>
             @endif
         @endif
     </div>

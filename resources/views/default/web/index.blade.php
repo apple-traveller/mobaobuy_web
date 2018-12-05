@@ -131,10 +131,21 @@
                     @if(empty($item))
                         <div class="Time_limit_action whitebg pr  fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div><span class="fr mr15"><font class="green">0</font>次浏览</span></div>
+                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div>
+                                <span class="fr mr15">
+                                    <font class="green">0</font>次浏览
+                                </span>
+                            </div>
                             <div class="mt40">
-                                <div class="fs20 tac"><span>暂无活动 敬请期待</span></div>
-                                <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">￥???</font>/kg</span></div>
+                                <div class="fs20 tac">
+                                    <span>暂无活动 敬请期待</span>
+                                </div>
+                                {{--<div class="fs16 tac">--}}
+                                    {{--<span>价格</span>--}}
+                                    {{--<span class="ml15">--}}
+                                        {{--<font class="fs24 orange">￥???</font>/kg--}}
+                                    {{--</span>--}}
+                                {{--</div>--}}
                             </div>
                             <div class="Time_limit_action_bottom graybg">
                                 <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #75b335;">敬请期待</div>
@@ -162,13 +173,13 @@
                                 <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
                                     <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
                                     @if($item['available_quantity'] == 0)
-                                    <a href="javascript:void(0)">
-                                        <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
-                                    </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
+                                        </a>
                                      @else
-                                    <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
-                                        <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
-                                    </a>
+                                        <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
+                                            <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
+                                        </a>
                                     @endif
                                 </div>
                             @endif
