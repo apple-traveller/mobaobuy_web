@@ -125,18 +125,27 @@
                                 </div>
                             </div>
 
-                            {{--<div class="item">--}}
-                                {{--<div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>--}}
-                                {{--<div class="label_value">--}}
-                                    {{--<input type="text" name="expiry_time" class="text" value="" maxlength="40" autocomplete="off" id="expiry_time">--}}
-                                    {{--<div class="form_prompt"></div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="" maxlength="40" autocomplete="off" id="shop_price">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_method" class="text" value="" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time" class="text" value="" maxlength="40" autocomplete="off" id="delivery_time">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -225,9 +234,6 @@
                     delivery_place:{
                         required:true,
                     },
-//                    expiry_time:{
-//                        required:true,
-//                    },
                     production_date:{
                         required:true,
                     },
@@ -237,9 +243,12 @@
                     salesman:{
                         required:true,
                     },
-//                    QQ:{
-//                        required:true,
-//                    }
+                    delivery_time:{
+                       required:true,
+                    },
+                    delivery_method:{
+                        required:true,
+                    },
 
                 },
                 messages:{
@@ -259,9 +268,6 @@
                     delivery_place :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-//                    expiry_time :{
-//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-//                    },
                     production_date :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -271,9 +277,12 @@
                     salesman:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-//                    QQ:{
-//                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
-//                    },
+                    delivery_time:{
+                       required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_method:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    }
                 }
             });
 

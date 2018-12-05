@@ -27,7 +27,6 @@ class ShopGoodsQuoteController extends Controller
         $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($shopGoodsQuote['list']);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
@@ -50,17 +49,10 @@ class ShopGoodsQuoteController extends Controller
         $currpage = $request->input('currpage',1);
         $id = $request->input('id');
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-//        $shops = ShopService::getShopList([],[]);
-//        $goodsCat = GoodsCategoryService::getCates();
-//        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-//        $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
         return $this->display('admin.shopgoodsquote.edit',[
             'goodsQuote'=>$goodsQuote,
             'currpage'=>$currpage,
-//            'shops'=>$shops['list'],
-//            'goodsCatTree'=>$goodsCatTree,
-//            'goods'=>$goods['list'],
             'good'=>$good
         ]);
     }
