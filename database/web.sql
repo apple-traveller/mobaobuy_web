@@ -304,6 +304,7 @@ insert into sys_config(parent_id,code,type,store_range,store_dir,name,value,conf
 (5, 'firm_path', 'text','','','企业资质路径','firm','',''),
 (1, 'open_trans_flow', 'select', '0|否,1|是', '', '是否开启交易流水', '0', '', ''),
 (1, 'service_qq', 'text', '', '', '客服QQ', '1216765487', '', '');
+(1, 'close_quote', 'select', '17:00|17:00,17:30|17:30,18:00|18:00,18:30|18:30,19:00|19:00', '', '闭市时间', '17:00', '', '');
 
 
 DROP TABLE IF EXISTS `ad_position`;
