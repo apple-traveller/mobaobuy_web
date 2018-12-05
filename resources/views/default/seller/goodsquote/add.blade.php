@@ -98,13 +98,12 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
+                                <div class="label">&nbsp;选择交货地：</div>
                                 <div class="label_value">
-                                    <input type="hidden" id="area1" name="delivery_place" value="{{old('delivery_place')}}"/>
-                                    <input type="hidden" id="area2" name="place_id" value="{{old('place_id')}}" />
-                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;margin-right: 10px" id="test">
-                                    </div>
+                                    <input type="hidden" name="place_id" id="place_id" />
+                                    <input type="text" name="place_id_LABELS"  autocomplete="off" value="{{old('delivery_place')}}" treeId="" id="delivery_place" treeDataUrl="/seller/quote/getAddressTree" size="40"  class="text" title="">
                                     <div class="form_prompt"></div>
+
                                 </div>
                             </div>
 
@@ -189,7 +188,7 @@
                     goods_id:{
                         required : true,
                     },
-                    delivery_place:{
+                    place_id_LABELS:{
                         required:true,
                     },
                     production_date:{
@@ -222,7 +221,7 @@
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    delivery_place :{
+                    place_id_LABELS :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     production_date :{
@@ -249,6 +248,9 @@
                 }
             });
             $("#cat_name").focus(function(){
+                showWinZtreeSelector(this);
+            });
+            $("#delivery_place").focus(function(){
                 showWinZtreeSelector(this);
             });
         });
