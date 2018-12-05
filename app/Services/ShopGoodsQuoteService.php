@@ -332,5 +332,12 @@ class ShopGoodsQuoteService
         }
         return false;
     }
+
+    //获取清仓特卖未审核数量
+    public static function getConsignCount($condition)
+    {
+        $count = ShopGoodsQuoteRepo::getTotalCount($condition);
+        return $count;
+    }
 }
 

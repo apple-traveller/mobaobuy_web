@@ -30,6 +30,8 @@ class ArticleController extends ApiController
         }
         if(!empty($cat_id)){
             $condition['cat_id'] = $cat_id;
+        }else{
+            $condition['cat_id'] = $cat_id;
         }
         if(!empty($title)){
             $con['opt'] = "OR";

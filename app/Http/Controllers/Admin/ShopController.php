@@ -252,9 +252,10 @@ class ShopController extends Controller
     }
 
     //获取待审核商家数量
-    public function getWaitValidate(Request $request)
+    public function getWaitValidateCount(Request $request)
     {
-
+        $shopCount = ShopService::getShopsCount(['is_freeze'=>0,'is_validated'=>0]);
+        return $this->result($shopCount,200,'success');
     }
 
 

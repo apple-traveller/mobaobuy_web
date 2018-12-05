@@ -12,6 +12,7 @@ use App\Services\ShopGoodsQuoteService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\DemandService;
+use App\Services\IndexService;
 class IndexController extends ApiController
 {
     //获取首页大图轮播
@@ -27,7 +28,26 @@ class IndexController extends ApiController
     //获取首页成交动态
     public function getTransList(Request $request)
     {
-        $trans_list = OrderInfoService::getOrderGoods([], 1, 3);
+        //成交动态 假数据 暂时定为$trans_type=1 时为开启创建并显示假数据 暂时创建的是8点到18点之间的数据 缓存有效期一天
+        $trans_type = getConfig('open_trans_flow');
+        $trans_false_list = [];
+        if($trans_type == 1){
+            $day = date('Ymd');
+            $cache_name = $day.'TRANS';
+            if(Cache::has($cache_name)){
+                $trans_false_list = Cache::get($cache_name);
+            }else{//没有缓存 创建假数据
+                $trans_false_list = IndexService::createFalseData();
+                Cache::add($cache_name,$trans_false_list,1440);
+            }
+        }
+
+        //成交动态 真实数据
+        $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
+        foreach($trans_list['list'] as $k=>$v){
+            $trans_list['list'][$k]['add_time'] = substr($trans_list['list'][$k]['add_time'],5);
+        }
+
         return $this->success(['trans_list' => $trans_list['list']]);
     }
 
