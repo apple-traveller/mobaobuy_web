@@ -58,7 +58,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/save', 'UserController@save');//保存
         Route::any('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
-        Route::post('/user/getWaitCertificate', 'UserController@getWaitCertificate');//获取未实名用户数量
 
 
         Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
@@ -159,7 +158,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
         Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
         Route::post('/shop/ajax_list', 'ShopController@getShopList');//ajax获取商家列表
-        Route::post('/shop/getWaitValidateCount', 'ShopController@getWaitValidateCount');//ajax获取待审核商家数量
 
         Route::get('/shop/store', 'ShopStoreController@getList');//店铺列表
         Route::post('/shop/store/list', 'ShopStoreController@storeList');//ajax获取列表
@@ -210,7 +208,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
-        Route::post('/orderinfo/delivery/getOrderStatusCount', 'OrderInfoController@getOrderStatusCount');//获取各个状态的订单的数量
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态

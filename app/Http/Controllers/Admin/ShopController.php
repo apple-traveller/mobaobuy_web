@@ -88,9 +88,7 @@ class ShopController extends Controller
         unset($data['nick_name']);
         unset($data['currpage']);
         $errorMsg = [];
-        if(empty($data['shop_name'])){
-            $errorMsg[] = '店铺名称不能为空';
-        }
+
         if(empty($data['company_name'])){
             $errorMsg[] = '企业全称不能为空';
         }
@@ -251,12 +249,6 @@ class ShopController extends Controller
         return $this->error();
     }
 
-    //获取待审核商家数量
-    public function getWaitValidateCount(Request $request)
-    {
-        $shopCount = ShopService::getShopsCount(['is_freeze'=>0,'is_validated'=>0]);
-        return $this->result($shopCount,200,'success');
-    }
 
 
 
