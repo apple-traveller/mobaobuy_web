@@ -17,7 +17,7 @@ class LoginController extends ApiController
         $res = UserService::getAppUserInfo(['open_id'=>$openid]);
         if($res){
             #获取用户信息
-            $userInfo = UserService::getInfo($res['user_id']);
+            $userInfo = UserService::getUserInfoApi($res['user_id']);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $userInfo['id'], 60*24*7);
             unset($userInfo['id']);
@@ -73,7 +73,7 @@ class LoginController extends ApiController
             UserService::bindThird($user_id,$openid,$nick_name,$avatar);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
-            $userInfo = UserService::getInfo($user_id);
+            $userInfo = UserService::getUserInfoApi($user_id);
             unset($userInfo['id']);
             $userInfo['token']=$uuid;
             $rs = [
@@ -123,7 +123,7 @@ class LoginController extends ApiController
             $user_id = UserService::createThird($openid,$data);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
-            $userInfo = UserService::getInfo($user_id);
+            $userInfo = UserService::getUserInfoApi($user_id);
             unset($userInfo['id']);
             $userInfo['token']=$uuid;
             $rs = [

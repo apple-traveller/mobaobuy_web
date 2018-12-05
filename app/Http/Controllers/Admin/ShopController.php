@@ -251,6 +251,12 @@ class ShopController extends Controller
         return $this->error();
     }
 
+    //获取待审核商家数量
+    public function getWaitValidate(Request $request)
+    {
+
+    }
+
 
 
 }

@@ -428,9 +428,17 @@ class UserService
         return UserRepo::modify($data['id'],['address_id'=>$data['address_id']]);
     }
 
-    public static function getUserInfo($id)
+    public static function getUserInfoApi($id)
     {
-        return UserRepo::getInfo($id);
+        $info = UserRepo::getInfo($id);
+        unset($info['password']);
+        $user_real = UserRealRepo::getInfoByFields(['user_id'=>$info['id']]);
+        if(empty($user_real)){
+            $info['user_real'] = "";
+        }else{
+            $info['user_real'] = $user_real;
+        }
+        return $info;
     }
 
     public static function getInfo($id)
