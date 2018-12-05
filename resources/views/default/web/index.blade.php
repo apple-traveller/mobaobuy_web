@@ -13,11 +13,16 @@
         .custom_service .custom_service_popup .custom_service_popup_text {text-align: left;float: left;width: 100%;padding-left: 10px;padding-top: 5px;}
         .custom_service .custom_service_popup i {background: url('/default/img/custom_service2.png') no-repeat;width: 24px;height: 13px;position: absolute;bottom: -13px;left: 50%;margin-left: -12px;}
         .custom_service .custom_service_popup .custom_service_popup_text .sc_img {float: right;margin-right: 4px;}
+        .ys_banner_icon {position: absolute;left: 50%;bottom: 15px;overflow: hidden;margin-left: -80px;}
+        .ys_banner_icon li {display: -moz-inline-stack;display: inline-block;}
+        .ys_banner_icon span {float: left; margin: 0 5px;border-radius: 25px;background: #fff;cursor: pointer;width: 14px;height: 14px;text-indent: -9999px;}
+        .ys_banner_icon span.on {border-radius: 15px;background: #75b335}
     </style>
 @endsection
 @section('js')
-    <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
-    <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
+    <script type="text/javascript" src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
+    <script type="text/javascript" src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
+    <script type="text/javascript" src="{{asset(themePath('/', 'web').'js/jquery.soChange-min.js')}}"></script>
 
     <script>
         $(function(){
@@ -44,7 +49,19 @@
             },function(){
                 $('.custom_service_popup').hide();
             });
+
+
         })
+    </script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#change_2 .ys_bigimg').soChange({
+                thumbObj:'#change_2 .ys_banner_icon span',
+                thumbNowClass:'on',
+                changeTime:2000,
+            });
+        });
     </script>
 @endsection
 
@@ -62,10 +79,15 @@
     {{--<div style="background:url() no-repeat center top;height:80px;"></div>--}}
 
     <div class="play_banner">
-        <div class="banner-imgs-div">
+        <div class="ys_bigimg01" id="change_2">
             @foreach($banner_ad as $item)
-                <a class="banner-item" target="_blank" href="{{$item['ad_link']}}" style="background: url({{getFileUrl($item['ad_img'])}}) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
+                <a class="ys_bigimg" target="_blank" href="{{$item['ad_link']}}" style="background: url({{getFileUrl($item['ad_img'])}}) no-repeat center top;width: 100%; height: 344px;position: absolute; "></a>
             @endforeach
+            <ul class="ys_banner_icon">
+                @foreach($banner_ad as $item)
+                    <li><span></span></li>
+                @endforeach
+            </ul>
         </div>
 
         @if(session('_web_user_id'))
@@ -197,17 +219,9 @@
                     <ul class="Tran_dynamics_list">
                         @if(!empty($trans_list))
                             @foreach($trans_list as $item)
-                                <li>
-                                    <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
-                                    <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
-                                </li>
-                            @endforeach
-                        @endif
-                        @if(!empty($trans_false_list))
-                            @foreach($trans_false_list as $item)
                                 @if($item['add_time'] <= \Carbon\Carbon::now())
                                     <li>
-                                        <h1 class="ml5 mt5">{{$item['goods_name']}}</h1>
+                                        <h1 class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</h1>
                                         <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
                                     </li>
                                 @endif
