@@ -289,4 +289,11 @@ class ActivityWholesaleService
         return UserWholeSingleRepo::create($demand);
     }
 
+    //获取未审核集采拼团数量
+    public static function getWaitReview($condition)
+    {
+        $count = ActivityWholesaleRepo::getTotalCount($condition);
+        return $count;
+    }
+
 }

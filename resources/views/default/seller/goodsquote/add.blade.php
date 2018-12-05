@@ -82,6 +82,22 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_method" class="text" value="{{old('delivery_method')}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time" class="text" value="{{old('delivery_time')}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
                                     <input type="hidden" id="area1" name="delivery_place" value="{{old('delivery_place')}}"/>
@@ -188,6 +204,12 @@
                     store_name:{
                         required:true,
                     },
+                    delivery_method:{
+                        required:true,
+                    },
+                    delivery_time:{
+                        required:true,
+                    },
                 },
                 messages:{
                     shop_price:{
@@ -216,6 +238,12 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     store_name :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_method :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_time :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                 }

@@ -134,8 +134,9 @@ class FirmStockService
         if(!empty($goods_name)){
             $condition['goods_name'] = '%'.$goods_name.'%';
         }
-
+//        dump($condition);
         $firmStockInfo = FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
+//        dump($firmStockInfo);
         $catInfo = [];
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
@@ -162,13 +163,16 @@ class FirmStockService
                 $firmStockInfo['list'][$k]['cat_name'] =  $goodsCatInfo['cat_name'];
             }
         }
+//        dump($firmStockInfo['list']);
 
         //重置list键名
         $resetArr = [];
         foreach($firmStockInfo['list'] as $v){
             $resetArr[] = $v;
         }
+//        dump($resetArr);
         $firmStockInfo['list'] = $resetArr;
+//        dump($firmStockInfo['list']);
 
         //post返回table数据
         if($method){

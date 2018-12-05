@@ -29,6 +29,18 @@ class ArticleController extends ApiController
             $orderBy[$t[0]] = $t[1];
         }
         if(!empty($cat_id)){
+            $cat_list = ArticleCatService::getListApi($cat_id);
+            $cat_id = '';
+            foreach ($cat_list as $k=>$v){
+                $cat_id .= $v['id'].'|';
+            }
+            $condition['cat_id'] = $cat_id;
+        }else{
+            $cat_list = ArticleCatService::getListApi(2);
+            $cat_id = '';
+            foreach ($cat_list as $k=>$v){
+                $cat_id .= $v['id'].'|';
+            }
             $condition['cat_id'] = $cat_id;
         }
         if(!empty($title)){
