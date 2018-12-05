@@ -12,6 +12,7 @@ use App\Services\ActivityPromoteService;
 use App\Services\ActivityWholesaleService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
+use App\Services\UserRealService;
 class IndexController extends Controller
 {
     public function index(Request $request)
@@ -79,10 +80,17 @@ class IndexController extends Controller
         $consign_count = ShopGoodsQuoteService::getConsignCount(['type'=>3,'consign_status'=>"0|2","is_delete"=>0]);
         $promote_count = ActivityPromoteService::getWaitReview(['review_status'=>"1|2",'is_delete'=>0]);
         $wholesale_count = ActivityWholesaleService::getWaitReview(['review_status'=>"1|2",'is_delete'=>0]);
+        $order_status = OrderInfoService::getOrderCountByStatus();//各订单状态
+        $shop_waitvalidate = ShopService::getShopsCount(['is_freeze'=>0,'is_validated'=>0]);//待审核商家
+        $user_certification = UserRealService::getWaitCertificate(['review_status'=>"0|2"]);//待实名审核用户
         return $this->result(
             ['consign_count'=>$consign_count,
              'promote_count'=>$promote_count,
-             'wholesale_count'=>$wholesale_count],
+             'wholesale_count'=>$wholesale_count,
+             'shop_waitvalidate'=>$shop_waitvalidate,
+             'user_certification'=>$user_certification,
+             'order_status'=>$order_status
+            ],
             200,
             'success');
     }
