@@ -7,6 +7,9 @@ use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\ShopRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use League\Flysystem\Exception;
+
 class ShopGoodsQuoteService
 {
     use CommonService;
@@ -336,6 +339,31 @@ class ShopGoodsQuoteService
         return false;
     }
 
+    //闭市
+    public static function closeQuote($condition,$data)
+    {
+        #先获取符合条件的报价信息
+        $quote_info = ShopGoodsQuoteRepo::getList([], $condition, ['id']);
+        try {
+            self::beginTransaction();
+            foreach ($quote_info as $k => $v) {
+                #改报价截止时间
+                $res = ShopGoodsQuoteRepo::modify($v['id'], $data);
+                if (!$res) {
+                    self::rollBack();
+                    return '改报价截止时间出错';
+                }
+                #清除对应购物车信息
+                CartService::deleteByFields(['shop_goods_quote_id' => $v['id']]);
+
+            }
+            self::commit();
+            return 'success';
+        } catch (Exception $e) {
+            self::rollBack();
+            return $e->getMessage();
+        }
+    }
     //获取清仓特卖未审核数量
     public static function getConsignCount($condition)
     {

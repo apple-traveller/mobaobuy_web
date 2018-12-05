@@ -9945,7 +9945,7 @@ var LocalStorage = UE.LocalStorage = (function () {
 ///import core
 ///plugin 编辑器默认的过滤转换机制
 
-UE.plugins['defaultfilter'] = function () {
+UE.plugins['defaultfilter'] = function () { return false;/*
     var me = this;
     me.setOpt({
         'allowDivTransToP':false,
@@ -9976,7 +9976,7 @@ UE.plugins['defaultfilter'] = function () {
                     return;
                 }
                 switch (node.tagName) {
-                    /*case 'style':
+                    case 'style':
                     case 'script':
                         node.setAttr({
                             cdata_tag: node.tagName,
@@ -9985,7 +9985,7 @@ UE.plugins['defaultfilter'] = function () {
                         });
                         node.tagName = 'div';
                         node.innerHTML('');
-                        break;*/
+                        break;
                     case 'a':
                         if (val = node.getAttr('href')) {
                             node.setAttr('_href', val)
@@ -10168,7 +10168,7 @@ UE.plugins['defaultfilter'] = function () {
         })
 
 
-    });
+    });*/
 };
 
 

@@ -73,6 +73,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/region/delete', 'RegionController@delete');//地区删除
         Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
+        Route::get('/region/getRegionTree', 'RegionController@getRegionTree');//地区修改
+
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@getList');//商品分类列表
         Route::get('/goodscategory/addForm', 'GoodsCategoryController@addForm');//商品分类添加

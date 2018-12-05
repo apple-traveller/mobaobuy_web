@@ -27,4 +27,9 @@ class CartService
     public static function getUserCartNum($user_id){
         return CartRepo::getTotalCount(['user_id'=>$user_id,'is_invalid'=>0]);
     }
+
+    public static function deleteByFields($where)
+    {
+        return CartRepo::deleteByFields($where);
+    }
 }

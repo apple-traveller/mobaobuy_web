@@ -93,6 +93,8 @@ class ShopGoodsQuoteController extends Controller
         $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
         $goods_id = $request->input('goods_id','');
+        $delivery_method = $request->input('delivery_method','');
+        $delivery_time = $request->input('delivery_time','');
         $delivery_place = $request->input('delivery_place');
         $place_id = $request->input('place_id','');
         $production_date = $request->input('production_date','');
@@ -132,6 +134,12 @@ class ShopGoodsQuoteController extends Controller
         if(!$goods_number){
             return $this->error('库存不能为空');
         }
+        if(!$delivery_method){
+            return $this->error('交货方式不能为空');
+        }
+        if(!$delivery_time){
+            return $this->error('交货时间不能为空');
+        }
         if(!$shop_price){
             return $this->error('店铺售价不能为空');
         }
@@ -159,6 +167,8 @@ class ShopGoodsQuoteController extends Controller
             'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
+            'delivery_method' => $delivery_method,
+            'delivery_time' => $delivery_time,
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],

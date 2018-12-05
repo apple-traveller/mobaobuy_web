@@ -48,13 +48,6 @@
                                     </select>
                                     <input type="hidden" name="store_name" id="store_name" value="自售">
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
-
-                                    {{--<input type="text"  store-id="" value="" autocomplete="off" id="store_name" size="40"  class="text">--}}
-                                    {{--<input type="hidden" name="store_name" id="store_name_val" />--}}
-                                    {{--<input type="hidden" name="shop_store_id" id="store_id" />--}}
-                                    {{--<ul class="query_store_name" style="overflow:auto;display:none;height:200px;position: absolute; z-index: 2; top: 102px; background: #fff;width: 320px; box-shadow: 0px -1px 1px 2px #dedede;">--}}
-                                    {{--</ul>--}}
-
                                 </div>
                             </div>
 
@@ -114,6 +107,8 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
+                                    {{--<input type="hidden" name="place_id" id="place_id"/>--}}
+                                    {{--<input type="text" name="place_id_LABELS"  autocomplete="off" treeId="" id="delivery_place" treeDataUrl="/admin/region/getRegionTree" size="40"  class="text" title="">--}}
                                     <input type="text" readonly="readonly" id="area1" name="delivery_place" value="" style="display: none"/>
                                     <input type="text" readonly="readonly" id="area2" name="place_id" value="" style="display: none"/>
                                     <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="" style="width: 321px;height:33px;" id="test">
@@ -370,6 +365,9 @@
 
             //获取树形分类
             $("#cat_name").focus(function(){
+                showWinZtreeSelector(this);
+            });
+            $("#delivery_place").focus(function(){
                 showWinZtreeSelector(this);
             });
             // 商品 获取焦点请求所有的商品数据
