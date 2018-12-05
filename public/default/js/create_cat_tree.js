@@ -77,6 +77,5 @@ function showWinZtreeSelector(combobj){
 
         $.fn.zTree.init($("#"+treeId), treeSetting);
     }
-
     showZtreeSelect(treeId, selectOffset.left, selectOffset.top+$(combobj).outerHeight());
 }
