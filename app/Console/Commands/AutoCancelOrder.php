@@ -47,7 +47,7 @@ class AutoCancelOrder extends Command
         $c['pay_status'] = 0;
         $where[] = $c;
 
-        $c_wholesale = ['opt'];
+        $c_wholesale['opt'] = 'OR';
         $c_wholesale['extension_code'] = 'wholesale';
         $c_wholesale['deposit_status'] = 0;
         $where[] = $c_wholesale;
@@ -59,7 +59,7 @@ class AutoCancelOrder extends Command
         ];
         $info = OrderInfoService::getOrderInfoList($pager,$where);
 //        if(!empty($info)){
-//            Log::info('无【未付款】超过三十分钟的【限时抢购】订单');
+            Log::info('测试自动取消');
 //        }
         try{
             foreach ($info['list'] as $k=>$v){
