@@ -62,13 +62,17 @@
 		/*收货人信息*/
 		.consignee{color:#333;float:left;margin:24px 0;height: 188px;}
 		.consignee h1{margin-top: 15px;margin-left: 20px;}
-		.consignee_addr{margin-left:10px;width: 200px;margin-right: 100px;}
+		.consignee_addr{margin-left:10px;width: 200px;margin-right: 50px;}
 		/*订单列表*/
 		.order-list-brand li:first-child{background-color: #f4f4f4;height: 32px;line-height: 32px;border-bottom: none;}
 		.order-list-brand li{height: 65px; line-height: 65px;border-bottom: 1px solid #DEDEDE;}
 		.order-list-brand li span{display: inline-block;text-align: center;}
 		/*商品总额*/
 		.Amount_money{float: right;margin-right: 75px;margin-top: 30px;margin-bottom: 30px;}
+        /*商家信息*/
+		.bussine_infor{float: left;width: 48%;}
+		/*付款凭证*/
+		.payImg{    width: 210px;margin: 0 20px;}
 	</style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -213,8 +217,10 @@
 			</div>
 			<!--商家信息-->
 			<div class="consignee bbright">
-				<h1 style="font-size:16px;">商家信息</h1>
-				<span class="ml20 db mt20" style="margin-right: 266px;">
+				<!-- 商家信息 -->
+				
+					<h1 style="font-size:16px;">商家信息</h1>
+				<span class="ml20 db mt20" style="width: 320px" >
 					<span class="fl">公司名称 :</span>
 					<span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span>
 				</span>
@@ -222,7 +228,17 @@
 					<span class="fl">卖家留言 :</span>
 					<span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span>
 				</span>
+
+				
 			</div>
+			<!-- 付款凭证 -->
+				<div  class="consignee bbright">
+					<h1 style="font-size:16px;">付款凭证</h1>
+					<div class="payImg">
+						 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="付款凭证">
+					</div>
+
+				</div>
 			<!--发票信息-->
 			<div class="consignee ">
 				<h1 style="font-size:16px;">发票信息</h1>
