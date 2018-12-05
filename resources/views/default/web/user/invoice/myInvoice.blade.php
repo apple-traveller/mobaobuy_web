@@ -113,7 +113,7 @@
                             }
 
                             html += '<td width="20%"><p>发票总金额:￥'+ full.invoice_amount +'</p></td>';
-                            html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">订单详情</a></span></p></td>';
+                            html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">发票详情</a></span></p></td>';
                             html += '<td>';
 
                             if(full.status == 0){

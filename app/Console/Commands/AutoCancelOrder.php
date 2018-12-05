@@ -41,9 +41,17 @@ class AutoCancelOrder extends Command
      */
     public function handle()
     {
-        //自动取消【未付款】超过三十分钟的【限时抢购】订单
-        $where['extension_code'] = 'promote';
-        $where['order_status'] = 3;
+        //自动取消【未付款】超过三十分钟的【限时抢购】或【清仓特卖】订单和 未付订金的集采拼团
+        $c['opt'] = 'OR';
+        $c['extension_code'] = 'promote|consign';
+        $c['pay_status'] = 0;
+        $where[] = $c;
+
+        $c_wholesale = ['opt'];
+        $c_wholesale['extension_code'] = 'wholesale';
+        $c_wholesale['deposit_status'] = 0;
+        $where[] = $c_wholesale;
+
         $where['add_time|<'] = date('Y-m-d H:i:s',strtotime("-30 minute"));
         $pager = [
             'page'=>1,

@@ -155,6 +155,12 @@ class UserRealService
         }
     }
 
+    public static function getWaitCertificate($condition)
+    {
+        $count = UserRealRepo::getTotalCount($condition);
+        return $count;
+    }
+
 
 
 }

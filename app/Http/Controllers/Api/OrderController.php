@@ -11,6 +11,7 @@ use App\Services\OrderInfoService;
 use App\Services\ActivityPromoteService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\ActivityWholesaleService;
+use App\Services\RegionService;
 class OrderController extends ApiController
 {
     //订单删除
@@ -25,7 +26,7 @@ class OrderController extends ApiController
     }
 
 
-    //我的订单
+    //订单列表
     public function orderList(Request $request)
     {
         $tab_code = $request->input('tab_code', '');
@@ -51,11 +52,12 @@ class OrderController extends ApiController
         }
 
         $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);
-
+        foreach($rs_list['list'] as $k=>$v){
+            $rs_list['list'][$k]['address_detail'] = RegionService::getRegionApi($v['country'],$v['province'],$v['city'],$v['district'])." ".$v['address'];
+        }
         $data = [
             'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
             'recordsTotal' => $rs_list['total'], //数据总行数
-            'recordsFiltered' => $rs_list['total'], //数据总行数
             'data' => $rs_list['list']
         ];
 
