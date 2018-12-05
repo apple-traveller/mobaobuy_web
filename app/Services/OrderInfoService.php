@@ -1092,6 +1092,7 @@ class OrderInfoService
                     $firmStockData['order_sn'] = $orderInfo['order_sn'];
                     $firmStockData['created_by'] = $userId;
                     $firmStockData['price'] = $v['goods_price'];
+                    $firmStockData['partner_name'] = $orderInfo['shop_name'];
                     FirmStockFlowRepo::create($firmStockData);
                     if(!empty($firmStockInfo)){
                         FirmStockRepo::modify($firmStockInfo['id'],['number'=>$v['goods_number'] + $firmStockInfo['number']]);

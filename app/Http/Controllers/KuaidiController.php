@@ -60,7 +60,7 @@ class KuaidiController extends Controller
             }
             return $this->success('', '', \GuzzleHttp\json_decode($json));
         } catch (\Exception $e) {
-            echo $e->errorMessage();
+            return $this->error($e->getMessage());
             exit;
         }
     }
