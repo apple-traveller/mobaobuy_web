@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
 use App\Services\OrderInfoService;
+use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\ShopService;
 use Carbon\Carbon;
@@ -93,7 +94,9 @@ class ShopGoodsQuoteController extends Controller
         $store_id = $request->input('store_id',0);
         $store_name = $request->input('store_name','');
         $goods_id = $request->input('goods_id','');
-        $delivery_place = $request->input('delivery_place');
+        $delivery_method = $request->input('delivery_method','');
+        $delivery_time = $request->input('delivery_time','');
+        $delivery_place = $request->input('place_id_LABELS','');
         $place_id = $request->input('place_id','');
         $production_date = $request->input('production_date','');
         $goods_number = $request->input('goods_number','');
@@ -103,9 +106,6 @@ class ShopGoodsQuoteController extends Controller
         $qq = $request->input('QQ','');
         $type = $request->input('type','');
 
-        $delivery_place = substr($delivery_place,strripos($delivery_place,'/')?strripos($delivery_place,'/')+2:strripos($delivery_place,'/'));
-
-        $place_id = substr($place_id,-6);
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -131,6 +131,12 @@ class ShopGoodsQuoteController extends Controller
         }
         if(!$goods_number){
             return $this->error('库存不能为空');
+        }
+        if(!$delivery_method){
+            return $this->error('交货方式不能为空');
+        }
+        if(!$delivery_time){
+            return $this->error('交货时间不能为空');
         }
         if(!$shop_price){
             return $this->error('店铺售价不能为空');
@@ -159,6 +165,8 @@ class ShopGoodsQuoteController extends Controller
             'place_id' => $place_id,
             'production_date' => $production_date,
             'goods_number' => $goods_number,
+            'delivery_method' => $delivery_method,
+            'delivery_time' => $delivery_time,
             'shop_price' => $shop_price,
             'expiry_time' => '0',
             'goods_sn' => $goods['goods_sn'],
@@ -231,6 +239,15 @@ class ShopGoodsQuoteController extends Controller
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * 地址树形列表
+     * @return array
+     */
+    public function getAddressTree()
+    {
+        return RegionService::getRegionTree();
     }
 
 }

@@ -73,6 +73,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/region/delete', 'RegionController@delete');//地区删除
         Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
+        Route::any('/region/getRegionTree', 'RegionController@getRegionTree');//地区修改
+
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@getList');//商品分类列表
         Route::get('/goodscategory/addForm', 'GoodsCategoryController@addForm');//商品分类添加
@@ -552,6 +554,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@getList');// 商户商品报价
+        Route::post('/quote/getAddressTree', 'ShopGoodsQuoteController@getAddressTree');// 商户商品报价地址接口
         Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加
         Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
         Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存

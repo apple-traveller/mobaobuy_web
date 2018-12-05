@@ -89,6 +89,7 @@
                                     <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
@@ -113,11 +114,14 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
-                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{$goodsQuote['delivery_place']}}" style="display: none"/>
-                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{$goodsQuote['place_id']}}" style="display: none"/>
-                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="{{$goodsQuote['delivery_place']}}" style="width: 321px;height:33px;" id="test">
-                                    </div>
-                                    <div class="form_prompt"></div>
+                                    <input type="hidden" name="place_id" id="place_id" value="{{$goodsQuote['place_id']}}"/>
+                                    <input type="text" value="{{$goodsQuote['delivery_place']}}" old="{{$goodsQuote['delivery_place']}}" name="place_id_LABELS"  autocomplete="off" treeId="" id="delivery_place" treeDataUrl="/admin/region/getRegionTree" size="40"  class="text" title="">
+
+                                    {{--<input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{$goodsQuote['delivery_place']}}" style="display: none"/>--}}
+                                    {{--<input type="text" readonly="readonly" id="area2" name="place_id" value="{{$goodsQuote['place_id']}}" style="display: none"/>--}}
+                                    {{--<div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="{{$goodsQuote['delivery_place']}}" style="width: 321px;height:33px;" id="test">--}}
+                                    {{--</div>--}}
+                                    {{--<div class="form_prompt"></div>--}}
                                 </div>
                             </div>
 
@@ -129,17 +133,9 @@
                                 </div>
                             </div>
 
-                            {{--<div class="item">--}}
-                                {{--<div class="label"><span class="require-field">*</span>&nbsp;截止时间：</div>--}}
-                                {{--<div class="label_value">--}}
-                                    {{--<input type="text" name="expiry_time" class="text" value="{{$goodsQuote['expiry_time']}}" maxlength="40" autocomplete="off" id="expiry_time">--}}
-                                    {{--<div class="form_prompt"></div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-
-
-                                <input type="hidden" name="currpage" value="{{$currpage}}">
+                            <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
@@ -148,6 +144,22 @@
                                 </div>
                             </div>
 
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time" class="text" value="{{$goodsQuote['delivery_time']}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -232,12 +244,13 @@
                     delivery_place:{
                         required:true,
                     },
-//                    expiry_time:{
-//                        required:true,
-//                    },
-//                    QQ:{
-//                        required:true,
-//                    }
+                    delivery_time:{
+                        required:true,
+                    },
+                    delivery_method:{
+                        required:true,
+                    },
+
                 },
                 messages:{
                     shop_id :{
@@ -256,12 +269,12 @@
                     delivery_place :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-//                    expiry_time :{
-//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-//                    },
-//                    QQ:{
-//                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
-//                    },
+                    delivery_time:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_method:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    }
                 }
             });
 
@@ -287,31 +300,7 @@
                 var store_name = $(this).find("option:selected").text();
                 $("#store_name").val(store_name);
             });
-            // 店铺 获取焦点请求所有的店铺数据
-//            $("#store_name").focus(function(){
-//                let _shop_id = $('#shop_id').val();
-//                if(_shop_id == ''){
-//                    layer.alert('选择店铺之前请先选择商家');return;
-//                }
-//                $(".query_store_name").children().filter("li").remove();
-//                $.ajax({
-//                    url: "/admin/shop/store/list",
-//                    dataType: "json",
-//                    data:{shop_id:_shop_id},
-//                    type:"POST",
-//                    success:function(res){
-//                        if(res.code==1){
-//                            $(".query_store_name").show();
-//                            let data = res.data;
-//                            let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-//                            for(let i=0;i<data.length;i++){
-//                                _html += '<li data-store-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-//                            }
-//                            $(".query_store_name").append(_html);
-//                        }
-//                    }
-//                })
-//            });
+
 
             //店铺 点击将li标签里面的值填入input框内
             $(document).delegate(".created_store_name","click",function(){
@@ -324,52 +313,18 @@
                 $(".query_store_name").hide();
             });
 
-//            //根据company里面输入的文字实时查询分类数据
-//            $("#company_name").bind("input propertychange",function(res){
-//                var company_name = $(this).val();
-//                $(".query_company_name").children().filter("li").remove();
-//                $.post('/admin/shop/ajax_list',{'company_name':company_name},function(res){
-//                    if(res.code==1){
-//                        $(".query_company_name").show();
-//                        var data = res.data;
-//                        for(var i=0;i<data.length;i++){
-//                            $(".query_company_name").append('<li data-shop-id="'+data[i].id+'" class="created_company_name" style="cursor:pointer;margin-left: 4px">'+data[i].company_name+'</li>');
-//                        }
-//                    }
-//                },"json");
-//            });
-//
-//            //根据店铺里面输入的文字实时查询分类数据
-//            $("#store_name").bind("input propertychange",function(res){
-//                let _shop_id = $('#shop_id').val();
-//                if(_shop_id == ''){
-//                    layer.alert('选择店铺之前请先选择商家');return;
-//                }
-//                let store_name = $(this).val();
-//                $(".query_store_name").children().filter("li").remove();
-//                $.post('/admin/shop/store/list',{'shop_id':_shop_id,'store_name':store_name},function(res){
-//                    if(res.code==1){
-//                        $(".query_store_name").show();
-//                        let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-//                        let data = res.data;
-//                        for(let i=0;i<data.length;i++){
-//                            _html += '<li data-shop-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-//                        }
-//                        $(".query_store_name").append(_html);
-//                    }
-//                },"json");
-//            });
-//
-//            $("#store_name").blur(function(){
-//                let _name = $("#store_name_val").val();
-//                $(this).val(_name);
-//            });
-
             //获取树形分类
             $("#cat_name").focus(function(){
                 showWinZtreeSelector(this);
             });
-
+            $("#delivery_place").focus(function(){
+                showWinZtreeSelector(this);
+            });
+            //
+            $("#delivery_place").change(function(){
+                var _name = $(this).attr('old');
+                $(this).val(_name);
+            });
             // 商品 获取焦点请求所有的商品数据
             $("#goods_name").focus(function(){
                 $(".query_goods_name").children().filter("li").remove();
@@ -436,6 +391,7 @@
                 $(this).val(_goods_name);
             });
         });
+
         // 商家 请求所有的商家数据
         function getShopList(_id){
             $.ajax({
@@ -458,6 +414,7 @@
                 }
             })
         }
+
         // 店铺 请求所有的店铺数据
         function getStoreList(_shop_id,_id){
             if(_shop_id == 0){

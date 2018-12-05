@@ -79,13 +79,30 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
-                                <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{ $goodsQuote['delivery_place'] }}" style="display: none"/>
-                                <input type="text" readonly="readonly" id="area2" name="place_id" value="{{ $goodsQuote['place_id'] }}" style="display: none"/>
-                                <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="{{ $goodsQuote['delivery_place'] }}" style="width: 321px;height:33px;" id="test">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <div class="form_prompt"></div>
                                 </div>
-                                <div class="form_prompt"></div>
                             </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time" class="text" value="{{$goodsQuote['delivery_time']}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label">&nbsp;选择交货地：</div>
+                                <div class="label_value">
+                                    <input type="hidden" name="place_id" id="place_id" value="{{$goodsQuote['place_id']}}"/>
+                                    <input type="text" name="place_id_LABELS" old="{{$goodsQuote['delivery_place']}}" autocomplete="off" value="{{$goodsQuote['delivery_place']}}" treeId="" id="delivery_place" treeDataUrl="/seller/quote/getAddressTree" size="40"  class="text" title="">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;生产日期：</div>
@@ -181,7 +198,7 @@
                     goods_id:{
                         required : true,
                     },
-                    delivery_place:{
+                    place_id_LABELS:{
                         required:true,
                     },
                     production_date:{
@@ -208,7 +225,7 @@
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    delivery_place :{
+                    place_id_LABELS :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     production_date :{
@@ -228,6 +245,9 @@
                 }
             });
             $("#cat_name").focus(function(){
+                showWinZtreeSelector(this);
+            });
+            $("#delivery_place").focus(function(){
                 showWinZtreeSelector(this);
             });
         });
@@ -364,6 +384,11 @@
                     $(this).val(goods_number);
                 }
             }
+        });
+
+        $("#delivery_place").change(function(){
+            let _name = $(this).attr('old');
+            $(this).val(_name);
         });
     </script>
 

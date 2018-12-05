@@ -76,6 +76,11 @@
             var upload = layui.upload;
             var layer = layui.layer;
 
+            laydate.render({
+                elem: '#begin_time' //指定元素
+                , type: 'datetime'
+            });
+
             //文件上传
             upload.render({
                 elem: '.upload-file' //绑定元素

@@ -58,6 +58,7 @@ function showWinZtreeSelector(combobj){
                 onClick: function(event, treeId, treeNode, clickFlag) {
                     if(event.target.tagName=="SPAN"){
                         $(combobj).val(treeNode.name);
+                        $(combobj).attr('old',treeNode.name);
                         $("input[name='"+valueName+"']").val(treeNode.id);
                         if(datarule){
                             $(combobj).trigger("validate");
@@ -77,6 +78,5 @@ function showWinZtreeSelector(combobj){
 
         $.fn.zTree.init($("#"+treeId), treeSetting);
     }
-
     showZtreeSelect(treeId, selectOffset.left, selectOffset.top+$(combobj).outerHeight());
 }

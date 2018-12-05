@@ -27,7 +27,6 @@ class ShopGoodsQuoteController extends Controller
         $pageSize =10;
         $shops = ShopService::getShopList([],[]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($shopGoodsQuote['list']);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
@@ -50,17 +49,10 @@ class ShopGoodsQuoteController extends Controller
         $currpage = $request->input('currpage',1);
         $id = $request->input('id');
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-//        $shops = ShopService::getShopList([],[]);
-//        $goodsCat = GoodsCategoryService::getCates();
-//        $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
-//        $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
         return $this->display('admin.shopgoodsquote.edit',[
             'goodsQuote'=>$goodsQuote,
             'currpage'=>$currpage,
-//            'shops'=>$shops['list'],
-//            'goodsCatTree'=>$goodsCatTree,
-//            'goods'=>$goods['list'],
             'good'=>$good
         ]);
     }
@@ -71,12 +63,11 @@ class ShopGoodsQuoteController extends Controller
         $data = $request->all();
         unset($data['cat_id']);
         unset($data['cat_id_LABELS']);
+        $data['delivery_place'] = $data['place_id_LABELS'];
+        unset($data['place_id_LABELS']);
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';
-        }
-        if($data['delivery_place']==""){
-            $errorMsg[] = '发货地不能为空';
         }
         if($data['shop_id']==0||empty($data['shop_id'])){
             $errorMsg[] = '商家不能为空';
@@ -94,11 +85,11 @@ class ShopGoodsQuoteController extends Controller
             return $this->error(implode('|',$errorMsg));
         }
 
-        $delivery_places = explode('/',$data['delivery_place']);//先转化为数组
-        $data['delivery_place'] = array_pop($delivery_places);//取最后的一个地区
-
-        $place_ids = explode('|',$data['place_id']);//先转化为数组
-        $data['place_id'] = array_pop($place_ids);//取最后的一个地区
+//        $delivery_places = explode('/',$data['delivery_place']);//先转化为数组
+//        $data['delivery_place'] = array_pop($delivery_places);//取最后的一个地区
+//
+//        $place_ids = explode('|',$data['place_id']);//先转化为数组
+//        $data['place_id'] = array_pop($place_ids);//取最后的一个地区
 
         $shop_info = ShopService::getShopById($data['shop_id']);
         $data['shop_name'] = $shop_info['shop_name'];
@@ -142,7 +133,6 @@ class ShopGoodsQuoteController extends Controller
         }
 
     }
-
 
     //删除
     public function delete(Request $request)

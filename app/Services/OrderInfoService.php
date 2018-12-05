@@ -296,6 +296,7 @@ class OrderInfoService
         }
         return $orderList;
     }
+
     //得到对应的权限
     private static function getFirmUserAuth($userId,$auth){
 
@@ -570,16 +571,91 @@ class OrderInfoService
     {
         try{
             self::beginTransaction();
+            //获取订单信息
+            $orderInfo = OrderInfoRepo::getInfo($data['id']);
+            $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+            $order_info = "";
             //修改支付状态
-            $order_info = OrderInfoRepo::modify($data['id'], $data);
+            if($data['order_status']==2){ //企业审核订单通过
+                if($orderInfo['order_status']>=2){
+                    self::throwBizError("企业已审核");
+                }
+                $order_info = OrderInfoRepo::modify($data['id'], $data);
+            }
+            if($data['order_status']==0){//订单取消 waitAffirm
+                //根据来源返回库存
+                if($orderInfo['extension_code'] == 'promote'){//限时抢购
+                    $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
+                    ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
+                    foreach ($orderGoodsInfo as $k=>$v){
+                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                    }
+                }else{//购物车下单
+                    foreach ($orderGoodsInfo as $k=>$v){
+                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                    }
+                }
+                $order_info = OrderInfoRepo::modify($data['id'],['order_status'=>0]);
+            }
+            if($data['order_status']==-1){ //删除订单
+                $order_info = OrderInfoRepo::modify($data['id'], ['is_delete'=>1]);
+            }
+            if($data['order_status']==4){//确认收货
+                //企业存库表
+                //企业库存流水
+                if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status'] == 1){
+                    $firmId = $orderInfo['firm_id'];
+                    if($firmId==0){
+                        $firmId = $orderInfo['user_id'];
+                    }
+                    foreach($orderGoodsInfo as $v){
+                        $firmStockInfo = FirmStockRepo::getInfoByFields(['firm_id'=>$firmId,'goods_id'=>$v['goods_id']]);
+                        $firmStockData = [];
+                        $firmStockData['firm_id'] = $firmId;
+                        $firmStockData['goods_id'] = $v['goods_id'];
+                        $firmStockData['goods_name'] = $v['goods_name'];
+                        $firmStockData['number'] = $v['goods_number'];
+                        $firmStockData['flow_time'] = Carbon::now();
+                        $firmStockData['order_sn'] = $orderInfo['order_sn'];
+                        $firmStockData['created_by'] = $orderInfo['firm_id'];//管理员
+                        $firmStockData['price'] = $v['goods_price'];
+                        $firmStockData['partner_name'] = $orderInfo['shop_name'];
+                        FirmStockFlowRepo::create($firmStockData);
+                        if(!empty($firmStockInfo)){
+                            FirmStockRepo::modify($firmStockInfo['id'],['number'=>$v['goods_number'] + $firmStockInfo['number']]);
+                        }else{
+//
+                            $firmStockData = [];
+                            $firmStockData['firm_id'] = $firmId;
+                            $firmStockData['goods_id'] = $v['goods_id'];
+                            $firmStockData['goods_name'] = $v['goods_name'];
+                            $firmStockData['number'] = $v['goods_number'];
+                            FirmStockRepo::create($firmStockData);
+                        }
+                    }
+                    $order_info = OrderInfoRepo::modify($data['id'],['shipping_status'=>3,'order_status'=>5,'confirm_take_time'=>Carbon::now()]);
+                }else{
+                    self::throwBizError("订单未确认或发货状态有误");
+                }
+            }
+            if($data['order_status']==3){ //商家确认
+                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+            }
             //给管理员操作添加一条数据
             $logData = [
                 'action_note'=>$action_note,
                 'action_user'=>session()->get('_admin_user_info')['real_name'],
-                'order_id'=>$order_info['id'],
-                'order_status'=>$order_info['order_status'],
-                'shipping_status'=>$order_info['shipping_status'],
-                'pay_status'=>$order_info['pay_status'],
+                'order_id'=>$orderInfo['id'],
+                'order_status'=>$orderInfo['order_status'],
+                'shipping_status'=>$orderInfo['shipping_status'],
+                'pay_status'=>$orderInfo['pay_status'],
                 'log_time'=>Carbon::now()
             ];
             $flag_order_log = OrderActionLogRepo::create($logData);
