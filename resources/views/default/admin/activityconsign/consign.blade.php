@@ -78,7 +78,14 @@
                                     </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/activity/consign/detail?id={{$vo['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                            <a href="/admin/activity/consign/detail?id={{$vo['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see">
+                                                <i class="sc_icon sc_icon_see"></i>
+                                                @if($vo['consign_status']==1)
+                                                    查看
+                                                @else
+                                                    审核
+                                                @endif
+                                            </a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                             <a href="/admin/activity/consign/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         </div>

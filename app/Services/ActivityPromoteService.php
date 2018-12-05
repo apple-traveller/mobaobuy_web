@@ -233,8 +233,11 @@ class ActivityPromoteService
             $data['can_buy_num'] = $activityInfo['max_limit'] - $goodsCount;
             return $data;
         }
+    }
 
-
-
+    public static function getWaitReview($condition)
+    {
+        $count = ActivityPromoteRepo::getTotalCount($condition);
+        return $count;
     }
 }

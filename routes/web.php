@@ -31,6 +31,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/home', 'IndexController@home');
         Route::post('/home/getMonthlyOrders', 'IndexController@getMonthlyOrders');
         Route::get('/clear', 'IndexController@clear');
+        Route::post('/getActivityCount', 'IndexController@getActivityCount');
 
         Route::get('/adminuser/list','AdminUserController@getList');//管理员列表
         Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
@@ -57,6 +58,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/save', 'UserController@save');//保存
         Route::any('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
+        Route::post('/user/getWaitCertificate', 'UserController@getWaitCertificate');//获取未实名用户数量
 
 
         Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
@@ -155,6 +157,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shop/getUsers', 'ShopController@getUsers');//查询用户
         Route::post('/shop/GsSearch', 'ShopController@GsSearch');//企查查验证企业名称是否存在
         Route::post('/shop/ajax_list', 'ShopController@getShopList');//ajax获取商家列表
+        Route::post('/shop/getWaitValidateCount', 'ShopController@getWaitValidateCount');//ajax获取待审核商家数量
 
         Route::get('/shop/store', 'ShopStoreController@getList');//店铺列表
         Route::post('/shop/store/list', 'ShopStoreController@storeList');//ajax获取列表

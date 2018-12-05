@@ -132,6 +132,9 @@ class GoodsController extends ApiController
             return $this->error('缺少参数，商品报价id');
         }
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+        if(empty($good_info)){
+            return $this->error("没有该商品");
+        }
         //判断该商品是否被收藏
         $user_id = $this->getUserID($request);
         $flag = UserService::checkUserIsCollectApi($user_id,$good_info['goods_id']);

@@ -705,6 +705,8 @@ CREATE TABLE `shop_goods_quote` (
   `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '报价类型 1自售 2品牌直售 3清仓特卖',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `consign_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '清仓特卖状态 0 待审核 1已审核 2审核不通过',
+  `delivery_method` varchar(10) NOT NULL COMMENT '交货方式',
+  `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`),

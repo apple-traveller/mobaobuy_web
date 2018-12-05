@@ -2,10 +2,8 @@
 
 namespace App\Console;
 
-use App\Console\Commands\AutoCancelOrder;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\AutoCancelOrder::class,
+        \App\Console\Commands\AutoCloseQuote::class,
     ];
 
     /**
@@ -26,8 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('AutoCancelOrder')
-                  ->everyMinute();
+        $schedule->command('AutoCancelOrder')->everyMinute();
+        $schedule->command('AutoCloseQuote')->dailyAt('14:00'); //每天13:00运行任务 ;
     }
 
     /**
