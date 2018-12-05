@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>结算银行开户名：</div>
+                                <div class="label"><span class="require-field">*</span>结算银行：</div>
                                 <div class="label_value">
                                     <input type="text" name="settlement_bank_account_name" class="text" value="{{$shop['settlement_bank_account_name']}}" maxlength="40" autocomplete="off" id="settlement_bank_account_name">
                                     <div class="form_prompt"></div>
