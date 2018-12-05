@@ -577,6 +577,9 @@ class OrderInfoService
             $order_info = "";
             //修改支付状态
             if($data['order_status']==2){ //企业审核订单通过
+                if($orderInfo['order_status']>=2){
+                    self::throwBizError("企业已审核");
+                }
                 $order_info = OrderInfoRepo::modify($data['id'], $data);
             }
             if($data['order_status']==0){//订单取消 waitAffirm
@@ -609,6 +612,9 @@ class OrderInfoService
                 //企业库存流水
                 if($orderInfo['order_status'] == 3 && $orderInfo['shipping_status'] == 1){
                     $firmId = $orderInfo['firm_id'];
+                    if($firmId==0){
+                        $firmId = $orderInfo['user_id'];
+                    }
                     foreach($orderGoodsInfo as $v){
                         $firmStockInfo = FirmStockRepo::getInfoByFields(['firm_id'=>$firmId,'goods_id'=>$v['goods_id']]);
                         $firmStockData = [];
