@@ -333,7 +333,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/helpCenter/sidebar','HelpCenterController@getSidebar');// 帮助中心侧边栏
 
     /********************************报价信息*****************************/
-    Route::any('/goodsList', 'QuoteController@goodsList');//商品列表
+    Route::any('/goodsList/{t?}', 'QuoteController@goodsList');//商品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
     Route::get('/goodsDetail', 'QuoteController@goodsDetail');//商品详情
     /********************************************************************/
