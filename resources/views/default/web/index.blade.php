@@ -224,24 +224,29 @@
                 <li>
                     <!-- <span>品牌</span> -->
                     <span style="width:12%;">品种</span>
-                    <span style="width:18%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
+                    <span style="width:15%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
                     <span style="width:12%;">可售数量（kg）</span>
-                    <span style="width:12%;">单价（元/kg）</span>
-                    <span style="width:12%;">发货地</span>
-                    <span style="width:12%;">更新时间</span>
+                    <span style="width:10%;">单价（元/kg）</span>
+                    <span style="width:7%;">发货地</span>
+                    <span style="width:7%;">交货方式</span>
+                    <span style="width:10%;">交货时间</span>
+                    <span style="width:10%;">更新时间</span>
                     <span style="width:6%;">联系方式</span>
-                    <span style="width:12%;">操作</span>
+                    <span style="width:10%;">操作</span>
                 </li>
                 @if(!empty($goodsList['list']))
+
                     @foreach($goodsList['list'] as $vo)
                         <li>
                            <!--  <span data-id="{{$vo['packing_spec']}}" id="packing_spec">{{$vo['brand_name']}}</span> -->
                             <span class="ovh" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;">{{$vo['cat_name']}}</span>
-                            <span style="width:18%;"><i class="space_hidden"style="width:100%;"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
+                            <span style="width:15%;"><i class="space_hidden"style="width:100%;"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
                             <span style="width:12%;">{{$vo['goods_number']}}</span>
-                            <span style="width:12%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
-                            <span style="width:12%;">{{$vo['delivery_place']}}</span>
-                            <span style="width:12%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
+                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                            <span style="width:7%;">{{$vo['delivery_place']}}</span>
+                             <span style="width:7%;">{{$vo['delivery_method']}}</span>
+                             <span style="width:10%;">{{$vo['delivery_time']}}</span>
+                            <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
                             <span style="width:6%;">
                                 <div class="custom_service">
                                     <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
@@ -261,11 +266,13 @@
                                     </div>
                                 </div>
                             </span>
-                            <span style="width:12%;">
-                                @if($vo['goods_number'])
+                            <span style="width:10%;">
+                                @if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00')
                                     <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
-                                @else
+                                @elseif($vo['goods_number'] <= 0)
                                     <button class="trade-close-btn">已售完</button>
+                                @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
+                                    <button class="trade-close-btn">已结束</button>
                                 @endif
                             </span>
                         </li>
