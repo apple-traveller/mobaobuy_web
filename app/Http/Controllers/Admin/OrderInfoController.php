@@ -458,6 +458,13 @@ class OrderInfoController extends Controller
         return array('ms' => microtime(true) * 10000, 'mi' => sprintf("%.0f", ((float)$usec + (float)$sec) * 100000000),);
     }
 
+    //各个状态的订单数量
+    public function getOrderStatusCount(Request $request)
+    {
+        $status = OrderInfoService::getOrderCountByStatus();
+        return $this->result($status, 200,'success');
+    }
+
 
 
 

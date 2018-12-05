@@ -52,13 +52,20 @@
                 <div id="msg_Container">
                     <div class="item">
                         <h3 class="order_msg" ectype="msg_tit">订单提示<em class="iconfont icon-up"></em></h3><s id="total">0</s>
-                        <div class="msg_content" ectype="orderMsg" style="display:block;"><p><a href="javascript:void(0);" data-url="order.php?act=list&amp;composite_status=106" data-param="menushopping|02_order_list" target="workspace" class="message">您有新订单</a> <span class="tiptool">（<em id="new_orders">0</em>）</span></p><p><a href="javascript:void(0);" data-url="order.php?act=list&amp;composite_status=101&amp;source=start" data-param="menushopping|02_order_list" target="workspace" class="message">待发货订单</a> <span class="tiptool">（<em id="no_paid">0</em>）</span></p><p><a href="javascript:void(0);" data-url="order.php?act=return_list&amp;composite_status=105" data-param="menushopping|12_back_apply" target="workspace" class="message">待处理退换货订单</a> <span class="tiptool">（<em id="no_change">0</em>）</span></p><p><a href="javascript:void(0);" data-url="complaint.php?act=list" data-param="menushopping|13_complaint" target="workspace" class="message">交易纠纷</a> <span class="tiptool">（<em id="no_change">0</em>）</span></p><p><a href="javascript:void(0);" data-url="goods_booking.php?act=list_all" data-param="menushopping|06_undispose_booking" target="workspace" class="message">缺货商品</a> <span class="tiptool">（<em id="no_change">0</em>）</span></p></div>
+                        <div class="msg_content" ectype="orderMsg" style="display:block;">
+                            <p>
+                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;composite_status=106" data-param="menushopping|02_order_list" target="workspace" class="message">您有新订单</a>
+                                <span class="tiptool">（<em id="new_orders">0</em>）</span>
+                            </p>
+                            <p>
+                                <a href="javascript:void(0);" data-url="order.php?act=list&amp;composite_status=101&amp;source=start" data-param="menushopping|02_order_list" target="workspace" class="message">待发货订单</a>
+                                <span class="tiptool">（<em id="no_paid">0</em>）</span>
+                            </p>
+
+                        </div>
                     </div>
 
-                    <div class="item">
-                        <h3 class="goods_msg" ectype="msg_tit">商品提示<em class="iconfont icon-down"></em></h3><s id="total">2</s>
-                        <div class="msg_content" ectype="goodMsg"><p><a href="javascript:void(0);" data-url="goods_report.php?act=list&amp;handle_type=6" data-param="menushopping|goods_report" target="workspace" class="message">商品举报</a> <span class="tiptool">（<em id="goods_report">0</em>）</span></p><p><a href="javascript:void(0);" data-url="sale_notice.php?act=list" data-param="menushopping|sale_notice" target="workspace" class="message">商品降价通知</a> <span class="tiptool">（<em id="goods_report">0</em>）</span></p><p><a href="javascript:void(0);" data-url="goods.php?act=review_status&amp;seller_list=1" data-param="menushopping|01_goods_list" target="workspace" class="message">未审核商家商品</a> <span class="tiptool">（<em id="goods_report">0</em>）</span></p><p><a href="javascript:void(0);" data-url="merchants_brand.php?act=list&amp;audit_status=3" data-param="menushopping|06_goods_brand" target="workspace" class="message">未审核商家品牌</a> <span class="tiptool">（<em id="goods_report">2</em>）</span></p><p><a href="javascript:void(0);" data-url="goods.php?act=list&amp;warn_number=1&amp;seller_list=0" data-param="menushopping|01_goods_list" target="workspace" class="message">自营普通商品库存预警</a> <span class="tiptool">（<em id="goods_report">0</em>）</span></p><p><a href="javascript:void(0);" data-url="goods.php?act=list&amp;warn_number=1&amp;seller_list=1" data-param="menushopping|01_goods_list" target="workspace" class="message">商家普通商品库存预警</a> <span class="tiptool">（<em id="goods_report">0</em>）</span></p></div>
-                    </div>
+
 
                     <div class="item">
                         <h3 class="shop_msg" ectype="msg_tit">商家审核提示<em class="iconfont icon-down"></em></h3><s id="total">15</s>
@@ -94,4 +101,43 @@
     $("#out").click(function(){
         window.location.href="/admin/logout";
     });
+
+    window.onload=function(){
+        let order_waitAffirm = 0; //待商家确认
+        let order_waitSend = 0;//待发货
+        //获取各订单状态的数量
+        $.ajax({
+            url: "/admin/orderinfo/delivery/getOrderStatusCount",
+            dataType: "json",
+            data:{},
+            type:"POST",
+            success:function(res){
+                if(res.code==200){
+                    order_waitAffirm = res.data.waitAffirm;
+                    order_waitSend = res.data.waitSend;
+                    $("#new_orders").text(order_waitAffirm);
+                    $("#no_paid").text(order_waitSend);
+                }else{
+
+                }
+            }
+        });
+        //获取待审核商家的数量
+        $.ajax({
+            url: "/admin/orderinfo/delivery/getOrderStatusCount",
+            dataType: "json",
+            data:{},
+            type:"POST",
+            success:function(res){
+                if(res.code==200){
+                    order_waitAffirm = res.data.waitAffirm;
+                    order_waitSend = res.data.waitSend;
+                    $("#new_orders").text(order_waitAffirm);
+                    $("#no_paid").text(order_waitSend);
+                }else{
+
+                }
+            }
+        });
+    }
 </script>
