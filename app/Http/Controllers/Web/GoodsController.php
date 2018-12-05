@@ -177,8 +177,10 @@ class GoodsController extends Controller
             $goods_attr = [];
             if(!empty($shopGoodsInfo['goodsInfo'])){
                 $attr = explode(';', $shopGoodsInfo['goodsInfo']['goods_attr']);
-                foreach ($attr as $k=>$v){
-                    $goods_attr[$k] = explode(':',$v);
+                if(isset($attr[0]) && !empty($attr[0])){
+                    foreach ($attr as $k=>$v){
+                        $goods_attr[$k] = explode(':',$v);
+                    }
                 }
             }
             if(!empty($shopGoodsInfo['list'])){

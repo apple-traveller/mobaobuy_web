@@ -189,55 +189,33 @@
                 <ul class="Self-product-list">
 
                     <li class="table_title">
-                        <span style="width:18%" class="num_bg1">店铺</span>
-                        <span style="width:8%;">种类</span>
-                        <span style="width:18%">商品名称</span>
+                        <span style="width:12%" class="num_bg1">店铺</span>
+                        <span style="width:11%;">种类</span>
+                        <span style="width:12%">商品名称</span>
                         <span style="width:8%;">数量（kg）</span>
                         <span style="width:8%;">单价（元/kg）</span>
-                        <span style="width:12%;">发货地址</span>
-                        <span style="width:18%;">联系人</span>
-                        <span style="width:10%;">操作</span>
+                        <span style="width:8%;">发货地址</span>
+                        <span style="width:8%;">交货方式</span>
+                        <span style="width:8%;">交货时间</span>
+                        <span style="width:15%;">联系人</span>
+                        <span style="width:10%;float:right;">操作</span>
                     </li>
                     @if(!empty($search_data['list']))
                         @foreach($search_data['list'] as $vo)
                             <li>
-                                <span style="width:18%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                                <span style="width:8%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
-                                <span style="width:18%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                                <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
+                                <span style="width:11%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
+                                <span style="width:12%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                                 <span style="width:8%">{{$vo['goods_number']}}</span>
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}</span>
-                                <span style="width:12%;">{{$vo['delivery_place']}}</span>
-                                <span style="width:18%">{{$vo['salesman']}}/{{$vo['contact_info']}}
+                                <span style="width:8%;">{{$vo['delivery_place']}}</span>
+                                <span style="width:8%;">{{$vo['delivery_method']}}</span>
+                                <span style="width:8%;">{{$vo['delivery_time']}}</span>
+                                <span style="width:15%">{{$vo['salesman']}}/{{$vo['contact_info']}}
                                     <img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
                                 </span>
-                                {{--<span style="width:14%;">--}}
-                                {{--<div class="custom_service">--}}
-                                    {{--<p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>--}}
-                                    {{--<div class="custom_service_popup" style="display: none;">--}}
-                                        {{--<p class="custom_service_popup_p">联系方式</p>--}}
-                                        {{--<div class="custom_service_popup_text">--}}
-                                            {{--<p>--}}
-                                                {{--<span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>--}}
-                                            {{--<p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">--}}
-                                                {{--<span style="width:60px;text-align: right">--}}
-                                                    {{--<img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />--}}
-                                                {{--</span>--}}
-                                                {{--&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}--}}
-                                            {{--</p>--}}
-                                        {{--</div>--}}
-                                        {{--<i></i>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</span>--}}
-                                {{--<span style="width:10%">--}}
-                                    {{--@if($vo['goods_number'])--}}
-                                        {{--<button  data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>--}}
-                                    {{--@else--}}
-                                        {{--已售完--}}
-                                    {{--@endif--}}
-                                {{--</span>--}}
 
-                                <span style="width:10%;">
+                                <span style="width:10%;float:right;">
                                     @if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00')
                                             <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                                     @elseif($vo['goods_number'] <= 0)
@@ -491,25 +469,17 @@
                         }
 
                         _html += '<li>' +
-                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:18%;">'+_store_name+'</span>' +
-                            '<span style="width:8%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:18%;"><a class="blue" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:12%;">'+_store_name+'</span>' +
+                            '<span style="width:11%;" class="ovh">'+list[i].cat_name+'</span>' +
+                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
                             '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
-                            '<span style="width:12%;">'+list[i].delivery_place+'</span>' +
-                            '<span style="width:18%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
-                            '<span style="width:9%;">'+_add_cart+'</span>' +
+                            '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
+                            '<span style="width:8%;">'+list[i].delivery_method+'</span>' +
+                            '<span style="width:8%;">'+list[i].delivery_time+'</span>' +
+                            '<span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
+                            '<span style="width:10%;float:right;">'+_add_cart+'</span>' +
                             '</li>';
-
-                    {{--<span style="width:10%;">--}}
-                            {{--@if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00')--}}
-                        {{--<button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>--}}
-                            {{--@elseif($vo['goods_number'] <= 0)--}}
-                        {{--<button class="trade-close-btn">已售完</button>--}}
-                            {{--@elseif($vo['expiry_time'] < \Carbon\Carbon::now())--}}
-                        {{--<button class="trade-close-btn">已结束</button>--}}
-                            {{--@endif--}}
-                        {{--</span>--}}
                     }
                     $(".table_title").after(_html);
                     $(".news_pages").append('<ul id="page" class="pagination"></ul>');
