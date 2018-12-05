@@ -24,8 +24,14 @@ class OrderInfoController extends Controller
         if($order_status!=-1){
             if($order_status==-3){
                 $condition['shipping_status'] = 3;
-            }elseif($order_status==11){
                 $condition['pay_status'] = 1;
+            }elseif($order_status==11){
+                $condition['pay_status'] = 0;
+                $condition['order_status'] = 3;
+            }elseif($order_status==10){
+                $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
+                $condition['shipping_status'] = '0|2';
             }else{
                 $condition['order_status'] = $order_status;
             }

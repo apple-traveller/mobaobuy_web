@@ -54,11 +54,11 @@
                         <h3 class="order_msg" ectype="msg_tit">订单提示<em class="iconfont icon-up"></em></h3><s id="order_total">0</s>
                         <div class="msg_content" ectype="orderMsg" style="display:block;">
                             <p>
-                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace" class="message">您有新订单</a>
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list?order_status=2" data-param="menushopping|02_order_list" target="workspace" class="message">您有新订单</a>
                                 <span class="tiptool">（<em id="new_orders">0</em>）</span>
                             </p>
                             <p>
-                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace" class="message">待发货订单</a>
+                                <a href="javascript:void(0);" data-url="/admin/orderinfo/list?order_status=10" data-param="menushopping|02_order_list" target="workspace" class="message">待发货订单</a>
                                 <span class="tiptool">（<em id="no_paid">0</em>）</span>
                             </p>
 
