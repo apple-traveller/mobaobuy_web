@@ -36,7 +36,9 @@
 						}
 						$('.wlxx').append(_html);
                     }else{
-                        $.msg.alert(data.msg);
+                    	let _html = '暂无物流信息';
+                    	$('.wlxx').append(_html);
+                        // $.msg.alert(data.msg);
                     }
                 }
             })
@@ -234,10 +236,19 @@
 			<!-- 付款凭证 -->
 				<div  class="consignee bbright">
 					<h1 style="font-size:16px;">付款凭证</h1>
-					<div class="payImg">
-						 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="付款凭证">
+					<div class="payImg" style="margin-top:20px;">
+						<span>支付凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+						 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						@else
+							暂无
+						@endif
 					</div>
-
+					<!-- <span class="ml20 db mt20" style="width: 320px" >
+						<span class="fl">支付凭证 :</span>
+						<span class="ml10"><img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" alt="付款凭证"></span>
+					</span>
+ -->
 				</div>
 			<!--发票信息-->
 			<div class="consignee ">
