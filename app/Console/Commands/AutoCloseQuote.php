@@ -43,11 +43,23 @@ class AutoCloseQuote extends Command
     {
         //自动闭市 报价截止时间变成当天下午5:00 同时检查闭市的报价对应的购物车信息页清除
         $day = date('Y-m-d');
-        $set_time = $day . ' 17:00:00';
+        $set_time = $day . ' ' .getConfig('close_quote');
         $start_time = $day . ' 00:00:00';
         $end_time = $day . ' 23:59:59';
 
-        $res = ShopGoodsQuoteService::closeQuote(['add_time|>=' => $start_time, 'add_time|<=' => $end_time], ['expiry_time' => $set_time]);
+        $res = ShopGoodsQuoteService::closeQuote(
+            [
+                'add_time|>=' => $start_time,
+                'add_time|<=' => $end_time,
+                'is_delete' => 0,
+                'type' => '1|2',
+                'is_self_run' => 1
+
+            ],
+            [
+                'expiry_time' => $set_time
+            ]
+        );
 
         Log::info($res);
 

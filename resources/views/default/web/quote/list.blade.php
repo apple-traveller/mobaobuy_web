@@ -243,7 +243,7 @@
                                     @elseif($vo['goods_number'] <= 0)
                                             <button class="trade-close-btn">已售完</button>
                                     @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
-                                            <button class="trade-close-btn">已结束</button>
+                                            <button class="trade-close-btn">已过期</button>
                                     @endif
                                 </span>
                             </li>

@@ -7,6 +7,7 @@ use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\ShopRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use League\Flysystem\Exception;
 
 class ShopGoodsQuoteService
@@ -350,14 +351,11 @@ class ShopGoodsQuoteService
                 $res = ShopGoodsQuoteRepo::modify($v['id'], $data);
                 if (!$res) {
                     self::rollBack();
-                    self::throwBizError('改报价截止时间出错');
+                    return '改报价截止时间出错';
                 }
                 #清除对应购物车信息
-                $cart_res = CartService::deleteByFields(['shop_goods_quote_id' => $v['id']]);
-                if (!$cart_res) {
-                    self::rollBack();
-                    self::throwBizError('清除对应购物车信息出错');
-                }
+                CartService::deleteByFields(['shop_goods_quote_id' => $v['id']]);
+
             }
             self::commit();
             return 'success';
