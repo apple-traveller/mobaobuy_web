@@ -47,7 +47,7 @@
     </script>
     <style type="text/css">
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 300px;}
+        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;}
         .whitebg{background: #FFFFFF;}
         .pay_title{height: 50px;line-height: 50px;}
         .f4bg{background-color: #f4f4f4;}
@@ -62,6 +62,8 @@
      -moz-transition: All 0.6s ease-in-out;
      -o-transition: All 0.6s ease-in-out;}
       .whitebg{background: #FFFFFF;}
+        .power_list li{font-size: 18px;overflow: hidden;}.til_btn{padding: 7px 39px;border-radius: 3px; color: #fff;}
+        .code_greenbg{background-color: #75b335;}.blackgraybg{background-color: #CCCCCC;}
     </style>
 </head>
 
@@ -106,14 +108,18 @@
         <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['company_name']}}</div>
-                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['settlement_bank_account_name']}}</div>
-                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['settlement_bank_account_number']}}</div>
-                <div class="ovh mt10"><span>上传付款凭证:</span></div>
+                <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">开户银行 : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">银行账户 : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
+                <div class="ovh mt15"><span class="fl mr10">上传付款凭证 : </span>
+                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
+                </div>
                 
             </li>
-            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
-            <li style="clear:both;margin-top:30px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>
+
+            <li style="clear:both;margin-top:30px; margin-bottom: 35px;">
+                <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div>
+                <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">取消</div></li>
         </ul>
     </div>
 

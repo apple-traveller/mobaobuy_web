@@ -101,7 +101,16 @@
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
                 <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
                 <div class="mt5 pl10 pr10">
-                    <div class="login-btn"><a href="{{route('login')}}">登录</a></div><div class="reg-btn"><a href="{{route('register')}}">注册</a></div>
+                    <a href="{{route('login')}}">
+                        <div class="login-btn">
+                            登录
+                        </div>
+                    </a>
+                    <a href="{{route('register')}}">
+                        <div class="reg-btn">
+                            注册
+                        </div>
+                    </a>
                 </div>
                 <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
                 <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
@@ -122,10 +131,21 @@
                     @if(empty($item))
                         <div class="Time_limit_action whitebg pr  fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div><span class="fr mr15"><font class="green">0</font>次浏览</span></div>
+                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div>
+                                <span class="fr mr15">
+                                    <font class="green">0</font>次浏览
+                                </span>
+                            </div>
                             <div class="mt40">
-                                <div class="fs20 tac"><span>暂无活动 敬请期待</span></div>
-                                <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">￥???</font>/kg</span></div>
+                                <div class="fs20 tac">
+                                    <span>暂无活动 敬请期待</span>
+                                </div>
+                                {{--<div class="fs16 tac">--}}
+                                    {{--<span>价格</span>--}}
+                                    {{--<span class="ml15">--}}
+                                        {{--<font class="fs24 orange">￥???</font>/kg--}}
+                                    {{--</span>--}}
+                                {{--</div>--}}
                             </div>
                             <div class="Time_limit_action_bottom graybg">
                                 <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #75b335;">敬请期待</div>
@@ -153,13 +173,13 @@
                                 <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
                                     <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
                                     @if($item['available_quantity'] == 0)
-                                    <a href="javascript:void(0)">
-                                        <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
-                                    </a>
+                                        <a href="javascript:void(0)">
+                                            <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
+                                        </a>
                                      @else
-                                    <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
-                                        <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
-                                    </a>
+                                        <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
+                                            <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
+                                        </a>
                                     @endif
                                 </div>
                             @endif
@@ -388,8 +408,14 @@
         </div>
     @endif
     <!--维生素行情-->
-    <div class="w1200" style="margin-top: 30px;">
-        <div class="ovh"><h1 class="Self-support-title">维生素行情</h1><div class="fr mr20"><a class="ml30" href="/news.html">查看更多></a></div></div>
+    @if(!empty($article_list))
+        <div class="w1200" style="margin-top: 30px;">
+        <div class="ovh">
+            <h1 class="Self-support-title">维生素行情</h1>
+            <div class="fr mr20">
+                <a class="ml30" href="/news.html">查看更多></a>
+            </div>
+        </div>
         <div class="whitebg ovh mt10">
 
             <ul class="Quotate">
@@ -421,16 +447,22 @@
             </ul>
         </div>
     </div>
+    @endif
     <!--合作品牌-->
-    <div class="w1200" style="margin:30px auto">
-        <div class="ovh"><h1 class="Self-support-title">合作品牌</h1></div>
-
-        <ul class="Cooperative_brand">
-            @foreach($brand_list as $item)
-            <li @if(($loop->iteration % 6) > 0) class="bb1 bbright" @endif><div><img src="{{getFileUrl($item['brand_logo'])}}"/></div></li>
-            @endforeach
-        </ul>
-    </div>
+    @if(!empty($brand_list))
+        <div class="w1200" style="margin:30px auto">
+            <div class="ovh">
+                <h1 class="Self-support-title">合作品牌</h1>
+            </div>
+            <ul class="Cooperative_brand">
+                @foreach($brand_list as $item)
+                    <li @if(($loop->iteration % 6) > 0) class="bb1 bbright" @endif>
+                        <div><img src="{{getFileUrl($item['brand_logo'])}}"/></div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 @endsection
 
 @section('bottom_js')
