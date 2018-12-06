@@ -106,6 +106,7 @@ class ShopGoodsQuoteController extends Controller
         }else{
             $data['type'] = 2;
         }
+
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
@@ -121,7 +122,7 @@ class ShopGoodsQuoteController extends Controller
                 $data['total_number'] = $data['goods_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
-                //dd($data);
+                $data['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote");
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shopgoodsquote/list'));

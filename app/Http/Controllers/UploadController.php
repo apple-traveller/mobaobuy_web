@@ -12,12 +12,32 @@ class UploadController extends Controller
     public function uploadImg(Request $request)
     {
         $fileCharater = $request->file('file');
+        $type = $request->input('upload_type');
+        //检测文件大小
+        if(!empty($fileCharater)){
+            if($fileCharater['size']>config('website.common_size'))
+            {
+                return $this->result( '',400,  '文件超过' . config('website.common_size')/(1024*1024) . 'M' );
+            }
+        }
         //return $this->error('test');
         if ($fileCharater->isValid()) {
             //括号里面的是必须加的哦
             //如果括号里面的不加上的话，下面的方法也无法调用的
             //获取文件的扩展名
             $ext = $fileCharater->getClientOriginalExtension();
+            //检测图片格式
+            if($type == 'file'){
+                $allowImgs = config('website.common_file'); //读取系统配置的上传文件配置
+                if(!in_array($ext, $allowImgs)){
+                    return $this->result('',400, '只能上传' . join(',',$allowImgs) . '的文件');
+                }
+            }else{
+                $allowImgs = config('website.common_img'); //读取系统配置的上传图片配置
+                if(!in_array($ext, $allowImgs)){
+                    return $this->result('',400, '只能上传' . join(',',$allowImgs) . '的文件');
+                }
+            }
             //获取文件的绝对路径
             $path = $fileCharater->getRealPath();
             //定义文件名

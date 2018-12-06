@@ -74,7 +74,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp; 促销价格：</div>
+                                    <div class="label"><span class="require-field">*</span>&nbsp; 促销价格(<span style="color:#909090;" >元</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="price"  autocomplete="off" value="{{old('price')}}" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -82,29 +82,29 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp; 促销总数量：</div>
+                                    <div class="label"><span class="require-field">*</span>&nbsp; 促销总数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="num"  autocomplete="off" id="num" size="40" value="{{old('num')}}" class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量：</div>
+                                    <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="min_limit"  autocomplete="off" value="{{old('min_limit')}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp; 最大限购数量：</div>
+                                    <div class="label"><span class="require-field">*</span>&nbsp; 最大限购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="max_limit"  autocomplete="off"  value="{{old('max_limit')}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。0-不限</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。0-不限</div>
                                     </div>
                                 </div>
 
@@ -168,7 +168,6 @@
             })
         });
 
-
         //点击将li标签里面的值填入input框内
         $(document).delegate(".created_goods_name","click",function(){
             $("#goods_name").siblings("div").filter(".notic").remove();
@@ -177,6 +176,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             var packing_unit = $(this).attr("data-packing-unit");
             var unit_name = $(this).attr("data-unit-name");
+            $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);

@@ -313,7 +313,7 @@
                                         <div class="value">
                                             <input  class="btn btn25 red_btn order_status"   type="button" data-id="0" value="取消" >
                                             <input  class="btn btn25 red_btn order_status"    type="button" data-id="2" value="企业审核" >
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="3" value="确认" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="3" value="商家确认" >
                                             <input  class="btn btn25 red_btn order_status"    type="button" data-id="4" value="收货" >
                                             <input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
@@ -451,6 +451,14 @@
             $(".pay_status").click(function(){
                 var pay_status = $(this).attr("data-id");
                 var content = $(this).attr("content");
+                var order_status = "{{$orderInfo['order_status']}}";
+                if(order_status<=2){
+                    layer.msg("商家还未确认", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 if(content==""){
                     layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
                         $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
@@ -547,6 +555,9 @@
             //修改订单状态
             $(".order_status").click(function(){
                 var content = $("#action_note").val();
+                var action_note = $(".action_note").val();
+                var order_status = $(this).attr("data-id");
+                var pay_status = "{{$orderInfo['pay_status']}}";
                 if(content==""){
                     layer.msg("备注不能为空", {
                         icon: 6,
@@ -554,8 +565,11 @@
                     });
                     return ;
                 }
-                var order_status = $(this).attr("data-id");
-                var action_note = $(".action_note").val();
+
+                if(order_status ==3){
+                    //上传合同
+                }
+
                 $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
                     //console.log(res.data);return false;
                     if(res.code==200){

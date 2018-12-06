@@ -133,13 +133,13 @@ $(document).on("change",".type-upload-file",function(){
     formData.append("file", this.files[0]);
     formData.append("upload_path", path);
 
-    Ajax.file("/uploadImg", formData, function (result){
-        if(1 == result.code){
+    Ajax.file('/uploadImg', formData, function (result){
+        if(200 == result.code){
             console.log(file_obj);
             file_obj.siblings('.type-file-text').val(result.data.path);
             file_obj.siblings('span').children(".img-tooltip").show().attr('data-img', result.data.url);
         }else{
-            layer.msg(res.msg, {time:2000});
+            layer.alert(result.msg, {time:2000});
         }
     });
 });

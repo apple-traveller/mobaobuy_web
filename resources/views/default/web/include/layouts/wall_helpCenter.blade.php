@@ -5,7 +5,7 @@
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
     <style>
-        .member_left_list li:last-child {margin-top: 10px;margin-bottom: 20px;}
+        .member_left .member_list_mode:last-child>li:last-child{visibility: hidden}
     </style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -14,14 +14,23 @@
 <div class="clearfix mt25 mb25">
     <div class="w1200">
         <div class="member_left">
+            @foreach(getSidebar() as $k1=>$v1)
+                @if(!empty($v1['_child']))
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-46"></i>帮助中心</h1>
+                    <h1 class=""><i class="iconfont icon-svgorder"></i>{{$v1['cat_name']}}</h1>
                     <ul class="member_left_list">
-                        @foreach(getSidebar() as $k=>$v)
-                            <li class="ovhwp" title="{{$v['title']}}"><a @if($id == $v['id']) class="green" @endif href="/{{$v['id']}}/helpCenter.html">{{$v['title']}}</a></li>
+                        @foreach($v1['_child'] as $k2=>$v2)
+                            <li class="ovhwp" title="{{$v2['title']}}"><a @if($id == $v2['id']) class="green" @endif href="/{{$v2['id']}}/helpCenter.html">{{$v2['title']}}</a></li>
                         @endforeach
+                        <li class="its">
+                            <div class="bottom"></div>
+                            <div class="line"></div>
+                        </li>
                     </ul>
                 </div>
+
+                @endif
+            @endforeach
         </div>
 
         <div class="member_right">
@@ -40,23 +49,10 @@
 @include(themePath('.','web').'web.include.partials.copyright')
 @yield('js')
 <script>
+
     $(function () {
-//        $.ajax({
-//            'url': '/helpCenter/sidebar',
-//            'type':'post',
-//            success:function (res) {
-//                if (res.code==1){
-//                    let cat = '';
-//                    res.data.map(function (item,index) {
-//                        if (Object.keys(item).length>0){
-//                            cat +='<li><a href="/helpCenter.html?id='+item.id+'">'+item.title+'</a></li>';
-//                        }
-//                    });
-//                    $('.member_left_list').append(cat);
-//                }
-//
-//            }
-//        });
+        let its = $(".its").last();
+        its[0].style.visibility='hidden';
     });
 </script>
 </body>
