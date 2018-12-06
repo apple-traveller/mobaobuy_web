@@ -413,8 +413,9 @@
             });
         }
 
-        layui.use(['layer'], function() {
+        layui.use(['upload','layer'], function() {
             var layer = layui.layer;
+            var upload = layui.upload;
             var index = 0;
 
             $(".viewMessage").click(function(){
@@ -552,12 +553,36 @@
                 },"json");
                 layer.close(index);
             });
+
             //修改订单状态
             $(".order_status").click(function(){
                 var content = $("#action_note").val();
                 var action_note = $(".action_note").val();
                 var order_status = $(this).attr("data-id");
                 var pay_status = "{{$orderInfo['pay_status']}}";
+                var shipping_status = "{{$orderInfo['shipping_status']}}";
+                if(shipping_status==3){
+                    layer.msg("买家已收货", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
+                if(pay_status==1 && (order_status==0 || order_status==2 ||order_status==3)){
+                    layer.msg("买家已付款", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
+                if(pay_status!=1 && order_status==4){
+                    layer.msg("买家还未付款", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
+
                 if(content==""){
                     layer.msg("备注不能为空", {
                         icon: 6,
@@ -568,6 +593,34 @@
 
                 if(order_status ==3){
                     //上传合同
+                    index = layer.open({
+                        type: 1,
+                        title: '上传订单合同',
+                        area: ['300px', '150px'],
+                        content: '<div class="label_value item">' +
+                        '<button style="margin-top:25px;margin-left:50px;" type="button" class="layui-btn upload-file" data-type="" data-path="order_contract" ><i class="layui-icon">&#xe681;</i>上传图片</button>' +
+                        '<img  style="width:60px;height:60px;display:none;" class="layui-upload-img"></div>'
+                    });
+
+                    //文件上传
+                    upload.render({
+                        elem: '.upload-file' //绑定元素
+                        ,url: "/uploadImg" //上传接口
+                        ,accept:'file'
+                        ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                            this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                        }
+                        ,done: function(res){
+                            //上传完毕回调
+                            if(1 == res.code){
+                                var item = this.item;
+                                item.siblings('img').show().attr('src', res.data.url);
+                            }else{
+                                layer.msg(res.msg, {time:2000});
+                            }
+                        }
+                    });
+                    return false;
                 }
 
                 $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){

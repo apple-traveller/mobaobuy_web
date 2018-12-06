@@ -20,7 +20,7 @@
                         <a href="/admin/orderinfo/list?order_status=4" @if($order_status==4) class="current" @endif>已完成@if($order_status==4) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=1" @if($order_status==1) class="current" @endif>待审核@if($order_status==1) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=-3" @if($order_status==-3) class="current" @endif>已收货@if($order_status==-3) <em>({{$total}})</em> @endif</a>
-                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>已付款@if($order_status==11) <em>({{$total}})</em> @endif</a>
+                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>待付款@if($order_status==11) <em>({{$total}})</em> @endif</a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)"><i class="icon icon-refresh"></i></div>
