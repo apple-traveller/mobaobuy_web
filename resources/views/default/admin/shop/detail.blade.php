@@ -124,9 +124,14 @@
                             <div class="item">
                                 <div class="label">审核状态：</div>
                                 <div class="value">
-                                    <input @if($shop['is_validated']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="已审核" >
-                                    <input @if($shop['is_validated']==0) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="0" value="未审核" >
-                                    <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                    @if($shop['is_validated']==1)
+                                        已审核
+                                    @else
+                                        <input @if($shop['is_validated']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="已审核" >
+                                        <input @if($shop['is_validated']==0) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="0" value="未审核" >
+                                        <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
+                                    @endif
+
                                 </div>
                             </div>
                         </form>
