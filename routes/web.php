@@ -208,6 +208,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
 
+        Route::post('/contract/list', 'ContractController@index');//合同列表
+
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
         Route::get('/seckill/detail', 'SeckillController@detail');//秒杀活动商品详情
@@ -535,6 +537,13 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //        Route::post('/goods/save', 'ShopGoodsController@save');
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
+
+        /************************业务员********************************/
+        Route::get('/salesman/list', 'ShopSalesmanController@listView');// 业务员
+        Route::get('/salesman/add', 'ShopSalesmanController@edit');// 添加
+        Route::get('/salesman/edit', 'ShopSalesmanController@edit');// 编辑
+        Route::post('/salesman/save', 'ShopSalesmanController@save');// 保存
+        Route::post('/salesman/delete', 'ShopSalesmanController@delete');// 删除
 
         Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品

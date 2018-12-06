@@ -15,6 +15,7 @@ use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\ShopService;
 use Carbon\Carbon;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 
 class ShopGoodsQuoteController extends Controller
@@ -150,7 +151,6 @@ class ShopGoodsQuoteController extends Controller
         if (!$qq){
             return $this->error('qq不能为空');
         }
-
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
@@ -168,7 +168,7 @@ class ShopGoodsQuoteController extends Controller
             'delivery_method' => $delivery_method,
             'delivery_time' => $delivery_time,
             'shop_price' => $shop_price,
-            'expiry_time' => '0',
+            'expiry_time' => date('Y-m-d H:i:s',strtotime(Carbon::now()->toDateString().' '.getConfig('close_quote'))),
             'goods_sn' => $goods['goods_sn'],
             'goods_name' => $goods['goods_full_name'],
             'salesman' => $salesman,
@@ -178,7 +178,6 @@ class ShopGoodsQuoteController extends Controller
             'consign_status'=>1,
             'is_self_run' => $shopInfo['shop_info']['is_self_run'],
         ];
-
         try{
             if($id){
                 $data['id'] = $id;

@@ -291,5 +291,15 @@ if(!function_exists('object_array')) {
         return $array;
     }
 }
+if(!function_exists('getFromInfo')){
+    function getFromInfo($key){
+        $info = [
+            '1'=>'web',
+            '2'=>'seller',
+            '3'=>'admin',
+        ];
+        return $info[$key];
+    }
+}
 
 
