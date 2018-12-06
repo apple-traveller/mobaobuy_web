@@ -182,7 +182,7 @@
                                 <dl>
                                     <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
 
-                                    <dt>邮政编码：{{$orderInfo['zipcode']}}</dt>
+                                    <dt>邮政编码：@if(isset($orderInfo['zipcode'])||!empty($orderInfo['zipcode'])){{$orderInfo['zipcode']}} @else @endif</dt>
                                 </dl>
                                 <dl>
                                     <dt></dt>

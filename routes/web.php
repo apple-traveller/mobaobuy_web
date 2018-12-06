@@ -538,6 +538,13 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //        Route::post('/goods/delete', 'ShopGoodsController@delete');
         Route::get('/goods/GoodsForm', 'ShopGoodsController@GoodsForm');//
 
+        /************************业务员********************************/
+        Route::get('/salesman/list', 'ShopSalesmanController@listView');// 业务员
+        Route::get('/salesman/add', 'ShopSalesmanController@edit');// 添加
+        Route::get('/salesman/edit', 'ShopSalesmanController@edit');// 编辑
+        Route::post('/salesman/save', 'ShopSalesmanController@save');// 保存
+        Route::post('/salesman/delete', 'ShopSalesmanController@delete');// 删除
+
         Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
