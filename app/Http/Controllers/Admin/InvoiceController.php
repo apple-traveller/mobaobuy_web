@@ -63,6 +63,10 @@ class InvoiceController extends Controller
         $invoiceInfo = InvoiceService::getInfoById($id);
         // 开票商品
         $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$id]);
+        $sum = 0;
+        foreach($orderInfo as $k=>$v){
+            $sum +=$v['goods_price']*$v['invoice_num'];
+        }
         //查询所有的快递信息
         $shippings = OrderInfoService::getShippingList();
         return $this->display('admin.invoice.detail',[
@@ -70,7 +74,8 @@ class InvoiceController extends Controller
             'orderInfo'=>$orderInfo,
             'shippings'=>$shippings,
             'currpage'=>$currpage,
-            'status'=>$status
+            'status'=>$status,
+            'sum'=>$sum
         ]);
     }
 
