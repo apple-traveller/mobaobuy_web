@@ -13,6 +13,7 @@ use App\Services\UserService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\DemandService;
 use App\Services\IndexService;
+use Carbon\Carbon;
 class IndexController extends ApiController
 {
     //获取首页大图轮播
@@ -45,7 +46,8 @@ class IndexController extends ApiController
         //成交动态 真实数据
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
         foreach($trans_list['list'] as $k=>$v){
-            $trans_list['list'][$k]['add_time'] = substr($trans_list['list'][$k]['add_time'],5);
+            $trans_list['list'][$k]['add_time'] =  Carbon::parse($trans_list['list'][$k]['add_time'])->diffForHumans();
+            ;
         }
 
         return $this->success(['trans_list' => $trans_list['list']]);

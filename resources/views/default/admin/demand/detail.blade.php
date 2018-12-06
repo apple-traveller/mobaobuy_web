@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/demand/list?currpage={{$currpage}}&action_state={{$action_state}}" class="s-back">返回</a>优惠活动 - 优惠活动详情</div>
+        <div class="title"><a href="/admin/demand/list?currpage={{$currpage}}&action_state={{$action_state}}" class="s-back">返回</a>用户需求 - 用户需求详情</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit">
@@ -66,9 +66,9 @@
                                     <div class="label_value font14">
                                         <?php
                                             $operator = explode(";",$demand['action_log'])[0];
-                                            echo "处理人：".$operator.":<br>";
+                                            echo "处理人：".$operator."<br>";
                                             $time = explode(";",$demand['action_log'])[1];
-                                            echo "处理时间：".$time.":<br>";
+                                            echo "处理时间：".$time."<br>";
                                             $content = explode(";",$demand['action_log'])[2];
                                             echo "备注：".$content
                                         ?>

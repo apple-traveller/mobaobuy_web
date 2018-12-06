@@ -228,12 +228,14 @@ class QuoteController extends Controller
      * 报价详情
      * goodsDetail
      * @param Request $request
+     * @param $id
+     * @param $shop_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function goodsDetail(Request $request)
+    public function goodsDetail(Request $request,$id,$shop_id)
     {
-        $id = $request->input("id");
-        $shop_id = $request->input("shop_id");
+//        $id = $request->input("id");
+//        $shop_id = $request->input("shop_id");
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $currpage = $request->input("currpage", 1);
         $goods_id = $good_info['goods_id'];

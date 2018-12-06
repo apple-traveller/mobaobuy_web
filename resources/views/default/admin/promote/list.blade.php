@@ -41,50 +41,67 @@
                                     <th width="10%"><div class="tDiv">促销商品名</div></th>
                                     <th width="5%"><div class="tDiv">促销价格</div></th>
                                     <th width="5%"><div class="tDiv">促销总数量</div></th>
-                                    <th width="10%"><div class="tDiv">当前可售数量</div></th>
-                                    <th width="10%"><div class="tDiv">最小起售数量</div></th>
-                                    <th width="10%"><div class="tDiv">最大限购数量</div></th>
+                                    <th width="8%"><div class="tDiv">当前可售数量</div></th>
+                                    <th width="8%"><div class="tDiv">最小起售数量</div></th>
+                                    <th width="8%"><div class="tDiv">最大限购数量</div></th>
+                                    <th width="6%"><div class="tDiv">活动状态</div></th>
                                     <th width="5%"><div class="tDiv">审核状态</div></th>
                                     <th width="10%" class="handle">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if(!empty($promotes))
-                                @foreach($promotes as $vo)
-                                <tr>
-                                    <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['price']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['num']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['available_quantity']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['min_limit']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['max_limit']}}</div></td>
-                                    <td>
-                                        <div class="tDiv">
-                                            @if($vo['review_status']==1)
-                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
-                                            @elseif($vo['review_status']==2)
-                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>不通过</div>
-                                            @else
-                                                <div class='layui-btn layui-btn-sm layui-btn-radius '>已审核</div>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td class="handle">
-                                        <div class="tDiv a3">
-                                            <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>
-                                                @if($vo['review_status']==1)
-                                                    审核
+                                    @foreach($promotes as $vo)
+                                    <tr>
+                                        <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['price']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['num']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['available_quantity']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['min_limit']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['max_limit']}}</div></td>
+                                        <td>
+                                            <div class="tDiv">
+                                                {{--
+                                                    待开始（待审核、审核通过但是结束时间大于当前时间）
+                                                    进行中（审核通过并且时间在区间内）
+                                                    已结束（审核不通过或者结束时间小于当前时间）
+                                                --}}
+                                                @if($vo['review_status']==1 && $vo['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待开始</div>
+                                                @elseif($vo['review_status']==3 && $vo['begin_time'] < \Carbon\Carbon::now() &&  $vo['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius '>进行中</div>
                                                 @else
-                                                   查看
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>已结束</div>
                                                 @endif
-                                            </a>
-                                            <a href="/admin/promote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                            <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="tDiv">
+                                                @if($vo['review_status']==1)
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
+                                                @elseif($vo['review_status']==2)
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>不通过</div>
+                                                @else
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius '>已审核</div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="handle">
+                                            <div class="tDiv a3">
+                                                <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>
+                                                    @if($vo['review_status']==1)
+                                                        审核
+                                                    @else
+                                                       查看
+                                                    @endif
+                                                </a>
+                                                <a href="/admin/promote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 @else
                                     <tr class=""> <td style="color:red;">未查询到数据</td></tr>
                                 @endif

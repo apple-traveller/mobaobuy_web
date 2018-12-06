@@ -87,8 +87,8 @@
                     }else{
                         var _count2 = goodsNumber%packing_spec;
                         if(_count2>0){
-                            // $(".pur_num").val(goodsNumber - _count2);
-                             $(".pur_num").val(packing_spec);
+                             $(".pur_num").val(goodsNumber - _count2);
+//                             $(".pur_num").val(packing_spec);
                         }else if(_count2=0){
                         	$(".pur_num").val(goodsNumber);
                         }
@@ -184,7 +184,7 @@
 			</div>
 			<div class="pro_detail">
 				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
-                <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec']}}{{$good_info['packing_unit']}}</span>
+                <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
 			</div>
 
 			<div class="pro_detail">
@@ -298,6 +298,7 @@
             var packing_spec = parseInt("{{$good_info['packing_spec']}}");
             if(number<=packing_spec){
                 $(".pur_num").val(number);
+                $.msg.error('已经是最低的购买数量了');
             }else{
                 $(".pur_num").val(number-packing_spec);
             }
@@ -314,7 +315,7 @@
                 }else{
                     $(".pur_num").val(can_num);
                 }
-
+                $.msg.error('不能大于可售');
             }else{
                 $(".pur_num").val(number+packing_spec);
             }

@@ -41,6 +41,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/adminuser/detail','AdminUserController@detail');//详情
         Route::get('/adminuser/delete','AdminUserController@delete');//删除
         Route::post('/adminuser/change/isFreeze','AdminUserController@isFreeze');//修改状态
+        Route::any('/adminuser/modifyPass','AdminUserController@modifyPass');//修改状态
 
         Route::any('/user/list', 'UserController@getList');//用户列表
         Route::post('/user/change/active', 'UserController@modifyFreeze');//修改用户冻结状态
@@ -332,7 +333,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     /********************************报价信息*****************************/
     Route::any('/goodsList/{t?}', 'QuoteController@goodsList');//商品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
-    Route::get('/goodsDetail', 'QuoteController@goodsDetail');//商品详情
+    Route::get('/goodsDetail/{id}/{shop_id}', 'QuoteController@goodsDetail');//商品详情
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购
