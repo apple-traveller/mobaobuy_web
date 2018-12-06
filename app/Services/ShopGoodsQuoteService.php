@@ -150,7 +150,8 @@ class ShopGoodsQuoteService
         $info['brand_name'] = $goods_detail['brand_name'];//品牌
         $info['goods_sn'] = $goods_detail['goods_sn'];//编号
         $info['unit_name'] = $goods_detail['unit_name']; //单位
-        $info['packing_spec'] = $goods_detail['packing_spec'].$goods_detail['unit_name']."/".$goods_detail['packing_unit'];//包装规格
+        $info['packing_spec'] = $goods_detail['packing_spec'];
+//        .$goods_detail['unit_name']."/".$goods_detail['packing_unit'];//包装规格
         $info['packing_unit'] = $goods_detail['packing_unit'];//包装单位
         $arr = explode(";", $goods_detail['goods_attr']);
         $info['goods_attr'] = $arr;

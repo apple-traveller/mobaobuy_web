@@ -163,6 +163,7 @@ class FirmStockService
                 $firmStockInfo['list'][$k]['cat_name'] =  $goodsCatInfo['cat_name'];
             }
         }
+        dump($catInfo);
 //        dump($firmStockInfo['list']);
 
         //重置list键名
