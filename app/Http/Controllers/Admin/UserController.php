@@ -349,11 +349,5 @@ class UserController extends Controller
         }
     }
 
-    //查询用户待实名认证的用户数量
-    public function getWaitCertificate(Request $request)
-    {
-        $count = UserRealService::getWaitCertificate(['review_status'=>"0|2"]);
-        return $this->result($count,200,'success');
-    }
 
 }
