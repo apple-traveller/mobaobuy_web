@@ -32,27 +32,27 @@
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;促销价格：</div>
+                                <div class="label">&nbsp;促销价格(<span style="color:#909090;" class="unit-name">元</span>)：</div>
                                 <div class="label_value font14">{{$promote['price']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;促销总数量：</div>
+                                <div class="label">&nbsp;促销总数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                 <div class="label_value font14">{{$promote['num']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;当前可售数量：</div>
+                                <div class="label">&nbsp;当前可售数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                 <div class="label_value font14">{{$promote['available_quantity']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;最小起售数量：</div>
+                                <div class="label">&nbsp;最小起售数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                 <div class="label_value font14">{{$promote['min_limit']}}</div>
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;最大限购数量：</div>
+                                <div class="label">&nbsp;最大限购数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                 <div class="label_value font14">{{$promote['max_limit']}}</div>
                             </div>
 

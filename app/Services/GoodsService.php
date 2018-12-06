@@ -285,11 +285,11 @@ class GoodsService
             if(empty($goodsInfo)){
                 self::throwBizError('商品信息不存在');
             }
-            $account =  number_format(round($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2),2,".","");
+            $account =  number_format($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2,".","");
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
             return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
         }catch (\Exception $e){
-            throw $e;
+            self::throwBizError($e->getMessage());
         }
     }
 
@@ -307,11 +307,11 @@ class GoodsService
             if($cartInfo['goods_number']<=$goodsInfo['packing_spec']){
                 self::throwBizError('该商品不能减少了');
             }
-            $account =  round($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2);
+            $account =  number_format($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2,".","");
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
             return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];;
         }catch (\Exception $e){
-            throw $e;
+            self::throwBizError($e->getMessage());
         }
     }
 

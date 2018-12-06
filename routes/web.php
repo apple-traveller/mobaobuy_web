@@ -59,8 +59,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/save', 'UserController@save');//保存
         Route::any('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
-
-
+        
         Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlackController@addForm');//黑名单添加（表单）
         Route::post('/blacklist/save', 'FirmBlackController@save');//黑名单添加
@@ -74,7 +73,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/region/linkage', 'RegionController@linkage');//地区删除
         Route::post('/region/modify', 'RegionController@modify');//地区修改
         Route::any('/region/getRegionTree', 'RegionController@getRegionTree');//地区修改
-
 
         Route::get('/goodscategory/list', 'GoodsCategoryController@getList');//商品分类列表
         Route::get('/goodscategory/addForm', 'GoodsCategoryController@addForm');//商品分类添加
@@ -251,8 +249,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/activity/consign/detail', 'ActivityConsignController@detail');//详情
         Route::post('/activity/consign/modifyStatus', 'ActivityConsignController@modifyStatus');//审核
 
-
-
         Route::any('/demand/list', 'DemandController@getList');//需求提交列表
         Route::get('/demand/detail', 'DemandController@detail');//查看审核需求
         Route::post('/demand/save', 'DemandController@save');//保存
@@ -316,7 +312,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/verifyReg','UserController@verifyReg');//注册等待审核
 
     Route::get('/sendMessLoginSms','UserController@sendMessLoginSms');//短信验证码登陆
-
 
     Route::get('/cart/num','UserController@getCartNum');//获取用户购物车数量
     Route::post('/demand/add','DemandController@addDemand');//获取用户需求信息
@@ -384,7 +379,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/account/accountLogout', 'UserController@accountLogout');//注销账号
         /********************************************************************/
 
-
         /************************发票维护********************************/
 //        Route::get('/invoices','UserController@invoicesList');//会员发票
 //        Route::get('/createInvoices','UserController@createInvoices');//新增会员发票
@@ -404,16 +398,13 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/deleteAddress','UserController@deleteAddress'); // 删除地址
         Route::post('/updateDefaultAddress','UserController@updateDefaultAddress'); // 修改默认地址
 
-
         Route::get('/updatePwd','UserController@userUpdatePwd');//忘记密码界面
         Route::post('/updatePwd','UserController@userUpdatePwd');
         Route::get('/updatePwd/sendSms', 'UserController@sendUpdatePwdSms');//修改密码发送验证码
 
-
         Route::get('/paypwd', 'UserController@setPayPwd');//设置支付密码
         Route::post('/paypwd', 'UserController@setPayPwd');
         Route::post('/paypwdByCode', 'UserController@sendCodeByPay');//支付密码获取验证码
-
 
         Route::get('/canStockOut','FirmStockController@canStockOut');//可出库库存
         Route::post('/canStockOut','FirmStockController@canStockOut');//可出库库存
@@ -486,7 +477,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
         Route::get('/invoiceDetail/{invoice_id}',  'InvoiceController@invoiceDetail'); // 选择开票类型
 
-
         Route::post('/egis','OrderController@egis');//订单审核通过
         Route::post('/orderCancel','OrderController@orderCancel');//订单取消
         Route::get('/orderDetails/{id}','OrderController@orderDetails');//订单详情
@@ -498,7 +488,6 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/collectGoodsList','UserController@userCollectGoodsList');//商品收藏列表
         Route::post('/addCollectGoods','UserController@addCollectGoods');//收藏商品
         Route::post('/delCollectGoods','UserController@delCollectGoods');//删除收藏商品
-
 
         Route::get('/sale','UserController@sale');// 我要卖货
         Route::post('/sale','UserController@sale');// 我要卖货
@@ -532,7 +521,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/store/edit', 'ShopStoreController@edit');// 修改
         Route::post('/store/save', 'ShopStoreController@save');// 保存
         Route::post('/store/delete', 'ShopStoreController@delete');// 删除
-
 
         /************************职员维护********************************/
 //        Route::get('/shopUser', 'ShopUserController@getList');// 商户职员管理
@@ -578,7 +566,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/delivery/detail', 'ShopDeliveryController@detail');// 发货订单详情
         Route::post('/delivery/updateStatus', 'ShopDeliveryController@updateStatus');  // 更改订单状态
         Route::post('/delivery/modifyShippingBillno', 'ShopDeliveryController@modifyShippingBillno'); // 修改订单号
-
 
         /************************秒杀********************************/
 //        Route::get('/seckill/list', 'SeckillController@seckill');// 秒杀
@@ -724,9 +711,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
             Route::post('/invoice/edit_invoice_type',  'InvoiceController@editInvoiceType'); // 选择开票类型
             Route::post('/invoice/apply',  'InvoiceController@applyInvoice'); // 申请开票
 
-
             /*************************************企业库存*****************************************************/
-
 
             Route::post('/firmstock/stock_in','FirmStockController@firmStockIn');//入库记录列表
             Route::post('/firmstock/add_stock_in','FirmStockController@addFirmStock');//新增入库记录
@@ -752,7 +737,6 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         });
 
 });
-
 
 Route::pattern('path','.+');
 Route::any('{path}', 'CommonController@route');

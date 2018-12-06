@@ -140,9 +140,11 @@ class PromoteController extends Controller
         $id = $request->input("id");
         $currpage = $request->input("currpage");
         $promote = ActivityService::getInfoById($id);
+        $goods_info = GoodsService::getGoodInfo($promote['goods_id']);
         return $this->display('admin.promote.detail',[
             'promote'=>$promote,
-            'currpage'=>$currpage
+            'currpage'=>$currpage,
+            'goods_info'=>$goods_info
         ]);
     }
 
@@ -203,7 +205,10 @@ class PromoteController extends Controller
         $goods_name = $request->input('goods_name');
         $condition = [];
         if($cat_id!="" && $cat_id!=0){
-            $condition['cat_id'] = $cat_id;
+            $cates = GoodsCategoryService::getCates();
+            $cate_ids = GoodsCategoryService::getChilds($cates,$cat_id);
+            $cate_ids[] = $cat_id;
+            $condition['cat_id'] = implode('|',$cate_ids);
         }
         if($goods_name!=""){
             $condition['goods_name'] = "%".$goods_name."%";
