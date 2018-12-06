@@ -134,10 +134,9 @@ class FirmStockService
         if(!empty($goods_name)){
             $condition['goods_name'] = '%'.$goods_name.'%';
         }
-//        dump($condition);
         $firmStockInfo = FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
-//        dump($firmStockInfo);
         $catInfo = [];
+        $catName = [];
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
@@ -147,8 +146,10 @@ class FirmStockService
 
             //顶部多选框分类名
             if(!in_array($goodsCatInfo['id'],$catInfo)){
-                $catInfo[$k]['cat_name'] = $goodsCatInfo['cat_name'];
-                $catInfo[$k]['cat_id'] = $goodsCatInfo['id'];
+//                $catInfo[$k]['cat_name'] = $goodsCatInfo['cat_name'];
+//                $catInfo[$k]['cat_id'] = $goodsCatInfo['id'];
+                $catName[] = $goodsCatInfo['cat_name'];
+                $catInfo[] = $goodsCatInfo['id'];
             }
 
             if(!empty($cat_id)){
@@ -163,24 +164,20 @@ class FirmStockService
                 $firmStockInfo['list'][$k]['cat_name'] =  $goodsCatInfo['cat_name'];
             }
         }
-        dump($catInfo);
-//        dump($firmStockInfo['list']);
 
         //重置list键名
         $resetArr = [];
         foreach($firmStockInfo['list'] as $v){
             $resetArr[] = $v;
         }
-//        dump($resetArr);
         $firmStockInfo['list'] = $resetArr;
-//        dump($firmStockInfo['list']);
 
         //post返回table数据
         if($method){
             return $firmStockInfo;
         }
         //get返回分类列表
-        return $catInfo;
+        return ['catName'=>$catName,'catInfo'=>$catInfo];
     }
     //库存商品流水
     public static function stockFlowList($params, $page = 1, $pageSize = 10){
