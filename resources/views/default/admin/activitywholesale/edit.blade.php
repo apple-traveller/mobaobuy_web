@@ -66,7 +66,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;选择商品(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input data-goodsname="" type="text" @if(!empty($good['packing_spec']))  data-packing-spac="{{$good['packing_spec']}}" @else data-packing-spac="" @endif @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_name']}}" @else value="" @endif autocomplete="off"  id="goods_name" size="40"  class="text">
                                     <input type="hidden" @if(!empty($wholesale_info)) value="{{$wholesale_info['goods_id']}}" @endif name="goods_id"  id="goods_id">
@@ -97,7 +97,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;拼团价格：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;拼团价格(<span style="color:#909090;" >元</span>)：</div>
                                 <div class="label_value">
                                     <input type="number" name="price" class="text" value="@if(!empty($wholesale_info)){{$wholesale_info['price']}}@endif" maxlength="10" autocomplete="off" id="price">
                                     <div class="form_prompt"></div>
@@ -569,6 +569,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).attr('data-packing-unit');
             let unit_name = $(this).data('unit_name');
+            $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);

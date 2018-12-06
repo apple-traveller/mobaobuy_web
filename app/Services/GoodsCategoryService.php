@@ -29,7 +29,7 @@ class GoodsCategoryService
     }
 
     public static function GoodsCategoryInfo($where=[]){
-        return GoodsCategoryRepo::search([],$where);
+        return GoodsCategoryRepo::getListBySearch([],$where);
     }
 
     //分类添加

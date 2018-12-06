@@ -212,9 +212,12 @@ class GoodsController extends ApiController
         
         $userId = $this->getUserID($request);
         $deputy_user = $this->getDeputyUserInfo($request);
-        //dd($deputy_user);
         if($deputy_user['is_firm'] && $deputy_user['is_self']==0){
             $userId = $deputy_user['firm_id'];
+        }
+        $user_real = UserRealService::getInfoByUserId($userId);
+        if(empty($user_real)){
+            return $this->error("您还未实名认证");
         }
         try{
             $cartInfo = GoodsService::cart($userId);

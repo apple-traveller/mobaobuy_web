@@ -123,10 +123,10 @@
 					</div>
 				</div>
 				<div class="file">
-					<span class="tip">仅支持格式为jpg,bmp,zip,rar,大小在10M以内的文件。</span>
+					<span class="tip">仅支持格式为zip,doc,docx,xlsx,pdf大小在2M以内的文件。</span>
 					<span class="fs16 fl gray"><i class="reds">*</i> 上传采购清单：</span>
 					<span class="ml10">
-						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSingle/','name'=>'bill_file'])@endcomponent
+						@component('widgets.upload_file',['upload_type'=>'file','upload_path'=>'user/userSingle/','name'=>'bill_file'])@endcomponent
 					</span>
 					<!-- <div class="updownd"><input type="text" class="up_text"/></div> -->
 					<!-- <div class="browse">浏览</div><div class="upload">上传<input type="file" class="filesc"/></div> -->
@@ -141,8 +141,8 @@
 
 	
 
-	<div class="clearfix whitebg ovh mt40" style="font-size: 0;">
-     @include(themePath('.','web').'web.include.partials.footer_service')
+	<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
+	@include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')
 </body>

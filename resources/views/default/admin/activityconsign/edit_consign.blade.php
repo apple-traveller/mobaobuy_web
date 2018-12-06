@@ -73,9 +73,8 @@
                                 </div>
                             </div>
 
-
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
@@ -102,12 +101,13 @@
                                 {{--<input type="hidden" name="currentPage" value="{{$currentPage}}">--}}
                             <input type="hidden" name="id" value="{{$consign_info['id']}}">
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="{{$consign_info['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
                                 <div class="label_value">
@@ -115,6 +115,7 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
                                 <div class="label_value">
@@ -130,6 +131,7 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -305,6 +307,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).attr('data-packing-unit');
             let unit_name = $(this).data('unit_name');
+            $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);

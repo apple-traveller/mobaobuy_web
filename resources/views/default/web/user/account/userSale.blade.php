@@ -80,9 +80,9 @@
                         </p>
                     </li>
                     <li class="mt25">
-                        3.上传货物内容文档：
+                        3.上传货物内容文档(仅支持格式为zip,doc,docx,xlsx,pdf大小在2M以内的文件)：
                         <div style="margin: 10px 0 0 12px;">
-                            <span class="ml10">@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span>
+                            <span class="ml10">@component('widgets.upload_file',['upload_type'=>'file','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span>
                         </div>
                     </li>
 
