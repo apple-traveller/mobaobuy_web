@@ -233,7 +233,7 @@
         </div>
         <!--自营报价-->
         <div class="Self-support mt30">
-            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
+            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList/1">查看更多></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->

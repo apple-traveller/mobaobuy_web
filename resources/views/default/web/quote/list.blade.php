@@ -460,7 +460,7 @@
                         if(list[i].store_name){
                             _store_name = list[i].store_name;
                         }
-                        if(list[i].goods_number && list[i].expiry_time > '{{\Carbon\Carbon::now()}}' || (list[i].goods_number && list[i].expiry_time === '0000-00-00 00:00:00') || (list[i].goods_number && list[i].expiry_time == '')){
+                        if(list[i].goods_number && list[i].expiry_time > '{{\Carbon\Carbon::now()}}' || (list[i].goods_number && list[i].expiry_time == '0000-00-00 00:00:00') || (list[i].goods_number && list[i].expiry_time == null)){
                             var _add_cart = '<button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button>';
                         }else if(list[i].goods_number <= 0){
                             var _add_cart = '<button class="trade-close-btn">已售完</button>';
