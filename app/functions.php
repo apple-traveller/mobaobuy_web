@@ -167,21 +167,20 @@ if(!function_exists('getSidebar')){
     function getSidebar()
     {
         $cat_list = [];
-        $Cates1 = \App\Services\ArticleCatService::getCates();
-        $Cates2 =  \App\Services\ArticleCatService::getCatesTree($Cates1,1);
-        foreach ($Cates2 as $v){
-            if ($v['parent_id']!=1 && $v['parent_id']!=0){
-                $cat_list[] = $v;
+        $Cates1 = \App\Services\ArticleCatService::getList(1);
+
+        foreach ($Cates1 as $k1=>$v1){
+            $cat_list[$k1] = \App\Services\ArticleCatService::getList($v1['id']);
+            if ($k1>0){
+                $cat_list =  array_merge($cat_list[$k1-1],$cat_list[$k1]);
             }
         }
 
-        $cat_id = '';
-        foreach ($cat_list as $k=>$v1){
-            $cat_id .= '|'.$v1['id'];
+        foreach ($cat_list as $k2=>$v2){
+            $cat_list[$k2]['_child'] = \App\Services\ArticleService::getList(['cat_id'=>$v2['id']]);
         }
-        $list = \App\Services\ArticleService::getList(['cat_id'=>$cat_id]);
         if (!empty($cat_list)){
-            return $list;
+            return $cat_list;
         } else {
             return [];
         }

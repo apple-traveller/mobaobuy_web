@@ -161,7 +161,7 @@
                             </li>
                             <li class="mt25"><span class="infor_title">注意：</span>
                                 <span class="fl">
-                                上传的身份证正反面照为jpg或png.
+                                上传的身份证正反面照可以为png,jpg,jpeg,gif,PNG格式
                                 </span>
                             </li>
                         <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
@@ -247,7 +247,7 @@
                             </li>
                             <li class="mt25"><span class="infor_title">注意：</span>
                                 <span class="fl">
-                                上传的文件为pdf或docx.
+                                上传的文件可以为png,jpg,jpeg,gif,PNG格式
                                 </span>
                             </li>
                             <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
@@ -308,7 +308,7 @@
                         </li>
                         <li class="mt25"><span class="infor_title">注意：</span>
                             <span class="fl">
-                            上传的身份证正反面照为jpg或png.
+                                上传的身份证正反面照可以为png,jpg,jpeg,gif,PNG格式
                             </span>
                         </li>
                         <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
@@ -402,7 +402,7 @@
                             </li>
                             <li class="mt25"><span class="infor_title">注意：</span>
                                 <span class="fl">
-                                上传的文件为pdf或docx.
+                                    上传的图片可以为png,jpg,jpeg,gif,PNG格式
                                 </span>
                             </li>
                             <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
