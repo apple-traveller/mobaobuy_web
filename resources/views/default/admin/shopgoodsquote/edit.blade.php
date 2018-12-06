@@ -66,7 +66,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系方式：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系电话：</div>
                                 <div class="label_value">
                                     <input type="text" name="contact_info" class="text" value="{{$goodsQuote['contact_info']}}" maxlength="40" autocomplete="off" id="contact_info">
                                     <div class="form_prompt"></div>
@@ -206,7 +206,11 @@
                     $(this).val(packing_spec);
                     return ;
                 }
-                $(this).val(Math.ceil(goods_number/packing_spec)*packing_spec);
+                if(goods_number<=packing_spec){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                $(this).val(Math.floor(goods_number/packing_spec)*packing_spec);
             });
 
         });
@@ -339,7 +343,7 @@
                             $(".query_goods_name").show();
                             var data = res.data;
                             for(var i=0;i<data.length;i++){
-                                $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                                $(".query_goods_name").append('<li  data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                             }
                         }else{
                             $(".query_goods_name").show();

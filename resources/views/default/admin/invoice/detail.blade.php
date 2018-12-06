@@ -96,6 +96,14 @@
                                                 <td style="margin-left: 20px;color:red;" colspan="4">无商品信息</td>
                                             </tr>
                                         @endif
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="order_total_fr">
+                                                    <strong>发票总金额：</strong>
+                                                    <span class="red"><em>¥</em>{{$sum}}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
