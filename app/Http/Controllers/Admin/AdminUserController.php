@@ -163,4 +163,30 @@ class AdminUserController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    //修改密码
+    public function modifyPass(Request $request)
+    {
+        $admin_id = session()->get('_admin_user_id');
+        $curr_admin = AdminService::getInfo($admin_id);
+        $password = $request->input('password');
+        $data['password'] = Hash::make($password);
+        $data['id'] = $curr_admin['id'];
+        $data['updated_at'] = Carbon::now();
+        $data['created_by'] = $curr_admin['id'];
+        try{
+            $flag = AdminService::modify($data);
+            session()->forget('_admin_user_id');
+            if(!empty($flag)){
+                return $this->success('修改成功',url('/admin/adminuser/list'));
+            }
+            return $this->error('修改失败');
+        }catch(\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+
+
+    }
+
+
 }

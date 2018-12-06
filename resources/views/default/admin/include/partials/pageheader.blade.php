@@ -30,16 +30,13 @@
             <div class="manager-menu">
                 <div class="title">
                     <h4>最后登录</h4>
-                    <a href="privilege.php?act=edit&amp;id=60" target="workspace" class="edit_pwd">修改密码</a>
+                    <div style="margin-left: 80px;cursor: pointer;float:left;" data-href="/admin/adminuser/modifyPass" target="workspace" class="edit_pwd">修改密码</div>
                 </div>
                 <div class="login-date">
                     <strong>{{session('_admin_user_info')['last_time']}}</strong>
                     <span>(IP:{{getNotEmptyValue(session('_admin_user_info'),'last_ip','0.0.0.0')}})</span>
                 </div>
-                <div class="title mt10">
-                    <h4>常用操作</h4>
-                    <a href="javascript:;" class="add_nav">添加菜单</a>
-                </div>
+
                 <div class="quick_link">
                     <ul>
                     </ul>
@@ -123,6 +120,42 @@
     $("#out").click(function(){
         window.location.href="/admin/logout";
     });
+    layui.use(['layer'], function(){
+        var layer = layui.layer;
+        var index = 0;
+        $(".edit_pwd").click(function(){
+            index = layer.open({
+                type: 1,
+                title: '修改密码',
+                area: ['300px', '220px'],
+                content: '<div class="label_value">' +
+                '<div style="margin-top:20px;"><span style="margin-left:10px;" >新密码:</span><input style="width:200px;border: 1px solid #dbdbdb;border-radius: 2px;height: 28px;line-height: 28px;"  type="password" autocomplete="off" name="password" id="password" ></div>' +
+                '<div style="margin-top:10px;"><span style="margin-left:10px;">确 认:</span><input style="width:200px;border: 1px solid #dbdbdb;border-radius: 2px;height: 28px;line-height: 28px;"  autocomplete="off" type="password" name="repassword" id="repassword" ></div>' +
+                '<button style="margin-left:150px;margin-top:10px;" class="button messageButton">确定</button></div>'
+            });
+        });
+
+        $(document).delegate(".messageButton","click",function(){
+            var password = $("#password").val();
+            var repassword = $("#repassword").val();
+            if(password!=repassword){
+                layer.msg('两次输入密码不一致', {icon: 5});
+                return false;
+            }
+            $.post('/admin/adminuser/modifyPass',{'password':password},function(res){
+                if(res.code==1){
+                    layer.msg(res.msg, {icon: 6,time:3000}, function(){
+                        window.location.href="/admin/login";
+                    });
+
+                }else{
+                    layer.msg(res.msg, {icon: 5});
+                }
+            },"json");
+            layer.close(index);
+        });
+    });
+
 
     window.onload=function(){
         let order_waitAffirm = 0; //待商家确认
