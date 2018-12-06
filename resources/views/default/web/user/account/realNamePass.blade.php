@@ -24,15 +24,10 @@
             margin: 0;
             cursor: default;
         }
-
         .account_curr {
             border-bottom: 1px solid #75b335;
             color: #75b335;
         }
-
-      
-
-
     </style>
 @endsection
 @section('js')
