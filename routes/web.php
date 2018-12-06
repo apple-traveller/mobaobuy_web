@@ -208,6 +208,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
 
+        Route::post('/contract/list', 'OrderInfoController@modifyDeliveryStatus');//合同列表
+
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
         Route::get('/seckill/detail', 'SeckillController@detail');//秒杀活动商品详情
