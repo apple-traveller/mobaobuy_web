@@ -142,6 +142,10 @@ class UserController extends Controller
 
             try{
                 UserService::userRegister($data);
+                if(!empty(getConfig('remind_mobile'))){
+                    createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>'']]);
+                }
+
                 if(getConfig('individual_reg_check')) {
                     return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{

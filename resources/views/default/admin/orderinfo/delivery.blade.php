@@ -42,7 +42,7 @@
                                         <table  class="layui-table" lay-data="{ url:'/admin/orderinfo/GoodsForm', page:false, id:'idTest',method:'post',where:{'order_id':'{{$id}}'}}" lay-filter="test">
                                             <thead>
                                             <tr >
-                                                <th lay-data="{type:'checkbox'}"></th>
+                                                <th lay-data="{type:'checkbox',LAY_CHECKED:true}"></th>
                                                 <th lay-data="{field:'goods_name',width:150}">商品名称</th>
                                                 <th lay-data="{field:'shop_name',width:200}">所属店铺</th>
                                                 <th lay-data="{field:'goods_sn',width:100}">商品编码</th>

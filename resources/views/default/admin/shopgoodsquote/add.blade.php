@@ -126,6 +126,7 @@
                             </div>
 
 
+
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
                                 <div class="label_value">
