@@ -222,20 +222,20 @@
 			<div class="mt30" style="margin-left: 115px;">
                 @if(session('_web_user_id'))
                     @if($collectGoods)
-                        @if($good_info['expiry_time'] < \Carbon\Carbon::now())
+                        @if(!empty($good_info['expiry_time']) && $good_info['expiry_time'] < \Carbon\Carbon::now())
                              <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
                         @else
                              <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
                         @endif
                     @else
-                        @if($good_info['expiry_time'] < \Carbon\Carbon::now())
+                        @if(!empty($good_info['expiry_time']) && $good_info['expiry_time'] < \Carbon\Carbon::now())
                                  <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
                         @else
                                 <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
                         @endif
                     @endif
                 @else
-                    @if($good_info['expiry_time'] < \Carbon\Carbon::now())
+                    @if(!empty($good_info['expiry_time']) &&  $good_info['expiry_time'] < \Carbon\Carbon::now())
                          <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
                     @else
                         <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>

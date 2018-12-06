@@ -184,7 +184,10 @@ class GoodsService
         if($shopGoodsQuoteInfo['goods_number'] <= 0){
             self::throwBizError('商品数量为零,无法加入购物车');
         }
-        if(!empty($shopGoodsQuoteInfo['expiry_time']) && $shopGoodsQuoteInfo['expiry_time'] < Carbon::now()){
+        if(!empty($shopGoodsQuoteInfo['expiry_time']) &&  $shopGoodsQuoteInfo['expiry_time'] < Carbon::now()){
+            self::throwBizError('报价已过期');
+        }
+        if($shopGoodsQuoteInfo['expiry_time'] != 0 &&  $shopGoodsQuoteInfo['expiry_time'] < Carbon::now()){
             self::throwBizError('报价已过期');
         }
         $goodsInfo = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);

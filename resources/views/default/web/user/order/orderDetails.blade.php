@@ -87,6 +87,7 @@
 		.bussine_infor{float: left;width: 48%;}
 		/*付款凭证*/
 		.payImg{    width: 210px;margin: 0 20px;}
+		/*.type-file-box .type-file-button{ float:right;}*/
 	</style>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -241,16 +242,32 @@
 					<div class="payImg" style="margin-top:20px;">
 						<span>支付凭证:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-						 <img class="layer-photos-demo" style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;margin-top:-20px;">
+							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+							</div>
 						@else
 							暂无
 						@endif
 					</div>
-					<!-- <span class="ml20 db mt20" style="width: 320px" >
-						<span class="fl">支付凭证 :</span>
-						<span class="ml10"><img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" alt="付款凭证"></span>
-					</span>
- -->
+
+					<div class="payImg" style="margin-top:20px;">
+						<span style="margin-top:2px;">合同:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 </div>
+						  
+						@else
+							暂无
+						@endif
+					</div>
+
+						
+					<div class="payImg" style="margin-top:20px;">
+						<span style="margin-top:2px;">上传合同:</span>
+						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+						<input type="button" name="" value="提交">
+					</div>
 				</div>
 			<!--发票信息-->
 			<div class="consignee ">
