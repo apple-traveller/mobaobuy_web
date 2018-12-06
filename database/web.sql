@@ -1377,3 +1377,31 @@ CREATE TABLE `user_whole_single` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='整单采购需求';
+
+DROP TABLE IF EXISTS `order_contract`;
+CREATE TABLE `order_contract` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `order_id` int(11) NOT NULL COMMENT '订单id',
+  `from_id` int(11) NOT NULL COMMENT '来源id',
+  `from` tinyint(1) NOT NULL DEFAULT '1' COMMENT '来源 1web 2seller 3admin',
+  `contract` varchar(255) NOT NULL COMMENT '合同',
+  `ip` varchar(255) DEFAULT NULL COMMENT 'IP地址',
+  `equipment` varchar(255) DEFAULT NULL COMMENT '上传设备信息',
+  `is_delete` tinyint(1) NOT NULL COMMENT '是否删除 0否 1是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `shop_salesman`;
+CREATE TABLE `shop_salesman` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '添加时间',
+  `name` varchar(255) NOT NULL COMMENT '业务员姓名',
+  `mobile` varchar(20) NOT NULL COMMENT '业务员电话',
+  `qq` varchar(255) DEFAULT NULL,
+  `shop_id` int(11) DEFAULT NULL COMMENT '商家ID',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0否 1是',
+  `is_freeze` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否冻结 0否 1是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

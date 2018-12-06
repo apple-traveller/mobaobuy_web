@@ -10,6 +10,12 @@
 		$(function(){
 			//请求快递物流信息
 			getLogisticsInfo();
+
+			 //调用示例
+            layer.photos({
+                photos: '.layer-photos-demo'
+                ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
 		});
 		//
 		function getLogisticsInfo(){
@@ -235,7 +241,7 @@
 					<div class="payImg" style="margin-top:20px;">
 						<span>支付凭证:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-						 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 <img class="layer-photos-demo" style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 						@else
 							暂无
 						@endif
