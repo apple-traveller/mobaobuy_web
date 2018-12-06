@@ -92,7 +92,7 @@ class ShopGoodsQuoteController extends Controller
 //        $data['place_id'] = array_pop($place_ids);//取最后的一个地区
 
         $shop_info = ShopService::getShopById($data['shop_id']);
-        $data['shop_name'] = $shop_info['shop_name'];
+        $data['shop_name'] = $shop_info['company_name'];
         $data['is_self_run'] = $shop_info['is_self_run'];
 
         $goods = GoodsService::getGoodInfo($data['goods_id']);

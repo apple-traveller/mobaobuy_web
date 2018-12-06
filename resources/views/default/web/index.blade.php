@@ -233,7 +233,7 @@
         </div>
         <!--自营报价-->
         <div class="Self-support mt30">
-            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList">查看更多></a></div></div>
+            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList/1">查看更多></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
@@ -281,7 +281,7 @@
                                 </div>
                             </span>
                             <span style="width:10%;">
-                                @if($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now() || $vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00' || $vo['goods_number'] && $vo['expiry_time'] == '')
+                                @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
                                     <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                                 @elseif($vo['goods_number'] <= 0)
                                     <button class="trade-close-btn">已售完</button>
