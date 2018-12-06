@@ -77,7 +77,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>促销价格：</div>
+                                    <div class="label"><span class="require-field">*</span>促销价格(<span style="color:#909090;" >元</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="price" value="{{$promote['price']}}" autocomplete="off" id="price" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -86,39 +86,40 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>促销总数量：</div>
+                                    <div class="label"><span class="require-field">*</span>促销总数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="num" value="{{$promote['num']}}" autocomplete="off" id="num" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>当前可售数量：</div>
+                                    <div class="label"><span class="require-field">*</span>当前可售数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                     <div class="label_value">
-                                        <input type="text" name="available_quantity" value="{{$promote['available_quantity']}}" autocomplete="off" id="num" size="40"  class="text">
+                                        <input type="text" name="available_quantity" value="{{$promote['available_quantity']}}" autocomplete="off" id="available_quantity" size="40"  class="text">
                                         <div class="form_prompt"></div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     </div>
                                 </div>
 
 
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量：</div>
+                                    <div class="label"><span class="require-field">*</span>&nbsp; 最小起售数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="min_limit"  autocomplete="off" value="{{$promote['min_limit']}}" id="min_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     </div>
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>最大限购数量：</div>
+                                    <div class="label"><span class="require-field">*</span> 最大限购数量(<span style="color:#909090;" class="unit-name">{{$goods_info['unit_name']}}</span>)：</div>
                                     <div class="label_value">
                                         <input type="text" name="max_limit" autocomplete="off" value="{{$promote['max_limit']}}" id="max_limit" size="40"  class="text">
                                         <div class="form_prompt"></div>
-                                        <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向下取整处理。0-不限</div>
+                                        <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。0-不限</div>
                                     </div>
                                 </div>
 
@@ -190,6 +191,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             var packing_unit = $(this).attr("data-packing-unit");
             var unit_name = $(this).attr("data-unit-name");
+            $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);
@@ -283,6 +285,25 @@
                 if($(this).val()==packing_spec){
                     $("#min_limit").val("");//
                     $("#max_limit").val("");//
+                }
+
+            });
+
+            $("#available_quantity").blur(function(){
+                var packing_spec = parseInt($("#goods_name").attr("data-packing-spac"));
+                var available_quantity = $(this).val();
+                var num = parseInt($("#num").val());//促销总数量
+
+                if(available_quantity<=packing_spec){
+                    $(this).val(packing_spec);
+                    return false;
+                }else if(available_quantity>num){
+                    layer.msg("不能大于促销总数量", {icon: 5,time:1000});
+                    $(this).val(packing_spec);
+                    return false;
+                }else{
+                    $(this).val(Math.floor(available_quantity/packing_spec)*packing_spec);
+                    return false;
                 }
 
             });
