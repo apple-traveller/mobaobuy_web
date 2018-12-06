@@ -47,6 +47,14 @@
                     <div class="input-tip"><label id="attorney_letter_error" class="error"></label></div>
                 </div>
                 <div class="item">
+                    <div class="item-libel">授权委托书模板下载</div>
+                    <div class="item-info" style="width: 82px;height: 42px;">
+                        <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:43px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="点击下载">
+                    </div>
+                    <div class="input-tip"><label id="company_error" class="error"></label></div>
+                </div>
+
+                <div class="item">
                     <div class="item-libel">营业执照副本电子版</div>
                     @component('widgets.upload_file',['upload_type'=>'firm_attorney','upload_path'=>'firm/license','name'=>'license_fileImg'])@endcomponent
                     <div class="input-tip"><label id="license_error" class="error"></label></div>

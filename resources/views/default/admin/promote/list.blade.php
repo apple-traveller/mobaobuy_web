@@ -63,16 +63,16 @@
                                         <td>
                                             <div class="tDiv">
                                                 {{--
-                                                    待开始（待审核、审核通过但是开始时间大于当前时间）
+                                                    待开始（待审核、审核通过但是结束时间大于当前时间）
                                                     进行中（审核通过并且时间在区间内）
                                                     已结束（审核不通过或者结束时间小于当前时间）
                                                 --}}
-                                                @if($vo['review_status']==1 && $vo['begin_time'] > \Carbon\Carbon::now())
-                                                    待开始
-                                                @elseif($vo['review_status']==2 && $vo['begin_time'] < \Carbon\Carbon::now() &&  $vo['end_time'] > \Carbon\Carbon::now())
-                                                    进行中
+                                                @if($vo['review_status']==1 && $vo['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待开始</div>
+                                                @elseif($vo['review_status']==3 && $vo['begin_time'] < \Carbon\Carbon::now() &&  $vo['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius '>进行中</div>
                                                 @else
-                                                    已结束
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>已结束</div>
                                                 @endif
                                             </div>
                                         </td>

@@ -205,7 +205,7 @@
                             <li>
                                 <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                                 <span style="width:11%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
-                                <span style="width:12%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail?id={{$vo['id']}}&shop_id={{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
+                                <span style="width:12%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
                                 <span style="width:8%">{{$vo['goods_number']}}</span>
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>

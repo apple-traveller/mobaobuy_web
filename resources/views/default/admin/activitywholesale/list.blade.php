@@ -49,6 +49,7 @@
                                     <th><div class="tDiv">订金比例</div></th>
                                     <th><div class="tDiv">开始时间</div></th>
                                     <th><div class="tDiv">结束时间</div></th>--}}
+                                    <th><div class="tDiv">活动状态</div></th>
                                     <th><div class="tDiv">审核状态</div></th>
                                     <th><div class="tDiv">操作</div></th>
                                 </tr>
@@ -69,6 +70,22 @@
                                         <td><div class="tDiv">{{$v['deposit_ratio']}}</div></td>
                                         <td><div class="tDiv">{{$v['begin_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['end_time']}}</div></td>--}}
+                                        <td>
+                                            <div class="tDiv">
+                                                {{--
+                                                    待开始（待审核、审核通过但是结束时间大于当前时间）
+                                                    进行中（审核通过并且时间在区间内）
+                                                    已结束（审核不通过或者结束时间小于当前时间）
+                                                --}}
+                                                @if($v['review_status']==1 && $v['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待开始</div>
+                                                @elseif($v['review_status']==3 && $v['begin_time'] < \Carbon\Carbon::now() &&  $v['end_time'] > \Carbon\Carbon::now())
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius '>进行中</div>
+                                                @else
+                                                    <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>已结束</div>
+                                                @endif
+                                            </div>
+                                        </td>
                                         <td><div class="tDiv">
                                                 @if($v['review_status']==1)
                                                     <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待审核</div>
