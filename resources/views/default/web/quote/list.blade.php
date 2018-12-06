@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '报价列表')
+@section('title', getSeoInfoByType('goods')['title'])
+@section('keywords', getSeoInfoByType('goods')['keywords'])
+@section('description', getSeoInfoByType('goods')['description'])
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
