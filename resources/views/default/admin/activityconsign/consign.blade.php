@@ -44,11 +44,12 @@
                                     <th width="6%"><div class="tDiv">店铺售价</div></th>
                                     <th width="6%"><div class="tDiv">业务员</div></th>
                                     <th width="6%"><div class="tDiv">联系方式</div></th>
-                                    <th width="10%"><div class="tDiv">交货地</div></th>
-                                    <th width="10%"><div class="tDiv">添加时间</div></th>
-                                    <th width="10%"><div class="tDiv">生产日期</div></th>
-                                    <th width="10%"><div class="tDiv">审核状态</div></th>
-                                    <th width="10%"><div class="tDiv">操作</div></th>
+                                    <th width="9%"><div class="tDiv">交货地</div></th>
+                                    <th width="9%"><div class="tDiv">添加时间</div></th>
+                                    <th width="9%"><div class="tDiv">生产日期</div></th>
+                                    <th width="7%"><div class="tDiv">活动状态</div></th>
+                                    <th width="7%"><div class="tDiv">审核状态</div></th>
+                                    <th width="9%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,6 +66,17 @@
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
                                     <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            @if($vo['consign_status'] == 0 && $vo['expiry_time'] > \Carbon\Carbon::now())
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待开始</div>
+                                            @elseif($vo['consign_status'] == 1 && $vo['expiry_time'] > \Carbon\Carbon::now())
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius '>进行中</div>
+                                            @else
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>已结束</div>
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="tDiv">
                                             @if($vo['consign_status']==0)
@@ -98,7 +110,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <div class="tDiv">
                                             <div class="list-page">
                                                 <ul id="page"></ul>
