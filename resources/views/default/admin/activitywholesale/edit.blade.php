@@ -33,6 +33,13 @@
     <div class="warpper">
         <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
         <div class="content">
+            <div class="explanation" id="explanation">
+                <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>请谨慎填写各项数据。</li>
+                    <li>标识“*”的选项为必填项，其余为选填项。</li>
+                </ul>
+            </div>
             <div class="flexilist">
                 <div class="mian-info">
                     <form action="/admin/activity/wholesale/save" method="post" name="theForm" id="wholesale_form" novalidate="novalidate">

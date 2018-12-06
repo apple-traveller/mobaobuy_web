@@ -111,11 +111,9 @@
                 <dl class="fl filter_item"><dt class="fl">分类:</dt>
                     <dd class="pro_brand_list" style="width: 770px;">
                         @if($catInfo)
-                            @foreach($catInfo as $v)
-                            <label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value="{{$v['cat_id']}}"><span class="fl">{{$v['cat_name']}}</span></label>
+                            @foreach($catInfo['catInfo'] as $k=>$v)
+                                <label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value="{{$v}}"><span class="fl">{{$catInfo['catName'][$k]}}</span></label>
                             @endforeach
-                        @else
-                         库存为空
                         @endif
                     </dd>
                     {{--<div class="fl pro_brand_btn region_btn ml20" id="on-query">确定</div><div class="fl pro_brand_btn region_btn ml20">取消</div>--}}

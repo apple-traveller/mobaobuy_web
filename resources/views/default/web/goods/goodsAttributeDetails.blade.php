@@ -9,6 +9,12 @@
 			background:none;
 		}
 		a:hover {color:green;}
+		.supply_list_phy li{
+			box-sizing: unset;
+		}
+		.supply_list_phy li:hover{
+			box-sizing: unset;
+		}
 	</style>
 @endsection
 @section('js')
@@ -27,7 +33,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200">
-			<div class="crumbs mt5">当前位置：<a href="/goodsAttribute">商品品物性</a> &gt; <a href="javascript:">{{$goodsInfo['goods_name']}}</a><span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="/goodsAttribute">商品物性</a> &gt; <a href="javascript:">{{$goodsInfo['goods_name']}}</a><span class="gray"></span></div>
 			
 			<h1 class="fs20 tac fwb bb1 lh40 ">{{$goodsInfo['goods_name']}}</h1>
 			<div class="Physical_table_title Physical_table_Name">{{$goodsInfo['goods_name']}}</div>
@@ -45,6 +51,7 @@
 					<td>商品型号</td><td>{{$goodsInfo['goods_model']}}</td>
 				</tr>
 				@if(!empty($goods_attr))
+
 					@foreach($goods_attr as $k=>$v)
 						@if($k == 0)
 							<tr>
@@ -58,11 +65,14 @@
 						@endif
 					@endforeach
 						</tr>
+
+				@else
+					<tr>
+					<td class="letW">含  量</td><td>{{$goodsInfo['goods_content']}}</td></tr>
 				@endif
-				{{--<tr>--}}
-					{{--<td class="letW">属  性</td><td class="ovhwp">{{$goodsInfo['goods_attr']}}</td>--}}
-					{{--<td class="letW">含  量</td><td>{{$goodsInfo['goods_content']}}</td>--}}
-				{{--</tr>--}}
+
+				
+				
 				<!-- <tr ><td>用       途</td><td colspan="4">可做纯天然保健品食用，广泛用于营养品、食品添加剂和药品 </td></tr> -->
 			</table>
 			<div class="Physical_table_title Physical_table_supply">{{$goodsInfo['goods_name']}}</div>
@@ -75,7 +85,7 @@
 						<li>
 							<div class="supply_list_frist">
 								<span class="supply_list_frist_com">店铺 : {{$v['shop_name']}}</span> 
-								<span></span> <span class="ml15"></span>
+								<!-- <span></span> <span class="ml15"></span> -->
 								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
 							</div>
 							<div class="fl mb10 mt15 ml20" style="width:585px;">

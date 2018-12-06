@@ -81,7 +81,14 @@
                                     </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
-                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看并审核</a>
+                                            <a href="/admin/shop/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see">
+                                                <i class="sc_icon sc_icon_see"></i>
+                                                @if($vo['is_validated']==1)
+                                                    查看
+                                                @else
+                                                    审核
+                                                @endif
+                                            </a>
                                             <a href="/admin/shop/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="/admin/shop/logList?shop_id={{$vo['id']}}&currpage={{$currpage}}" title="日志" class="btn_edit"><i class="sc_icon sc_icon_see"></i>日志</a>
                                         </div>

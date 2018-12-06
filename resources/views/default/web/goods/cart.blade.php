@@ -67,8 +67,9 @@
     </style>
     <script type="text/javascript">
     	//数字千分位
-    	function formatNum(num){  
-    		var num = num.toFixed(2)+"";//保留两位小数
+    	function formatNum(num){
+			var num = parseFloat(num);
+    		num = num.toFixed(2)+"";//保留两位小数
 			return num.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g,'$1,');
 
 		}  

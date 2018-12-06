@@ -22,9 +22,10 @@ class QuoteController extends Controller
      * 报价列表
      * goodsList
      * @param Request $request
+     * @param $t
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function goodsList(Request $request)
+    public function goodsList(Request $request,$t='')
     {
         $currpage = $request->input("currpage", 1);
         $highest = $request->input("highest");
@@ -35,7 +36,7 @@ class QuoteController extends Controller
         $cat_name = $request->input('cat_name', "");
         $place_id = $request->input('place_id', "");
         $keyword = $request->input('keyword', "");//搜索关键字
-        $t = $request->input('t', "");//搜索关键字
+//        $t = $request->input('t', "");//搜索关键字
         $condition = [];
         if (!empty($orderType)) {
             $order = explode(":", $orderType);
