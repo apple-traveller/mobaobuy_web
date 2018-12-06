@@ -451,6 +451,14 @@
             $(".pay_status").click(function(){
                 var pay_status = $(this).attr("data-id");
                 var content = $(this).attr("content");
+                var order_status = "{{$orderInfo['order_status']}}";
+                if(order_status<=2){
+                    layer.msg("商家还未确认", {
+                        icon: 6,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 if(content==""){
                     layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
                         $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){

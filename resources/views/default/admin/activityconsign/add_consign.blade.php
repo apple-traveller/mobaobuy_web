@@ -85,10 +85,10 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="goods_number">
-                                    <div style="color:red;" class="notic">商品包装规格的整数倍，如填的不为整数倍，按照向上取整处理。</div>
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="{{old('shop_price')}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
@@ -304,6 +304,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).attr('data-packing-unit');
             let unit_name = $(this).data('unit_name');
+            $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
             $("#goods_name").attr("data-packing-spac",packing_spac);

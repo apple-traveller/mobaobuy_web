@@ -64,10 +64,11 @@ class ActivityConsignController extends Controller
         $id = $request->input('id');
         $currpage = $request->input('currpage');
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        //dd($consign_info);
+        $good = GoodsService::getGoodInfo($consign_info['goods_id']);
         return $this->display('admin.activityconsign.detail_consign',[
             'consign_info'=>$consign_info,
-            'currpage'=>$currpage
+            'currpage'=>$currpage,
+            'good'=>$good
         ]);
     }
 
