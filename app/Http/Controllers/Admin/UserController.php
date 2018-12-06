@@ -89,7 +89,7 @@ class UserController extends Controller
         $id = $request->input('id');
         $is_firm = $request->input('is_firm',2); //实名状态
         $currpage = $request->input('currpage',1);
-        $info = UserService::getUserInfo($id);//基本信息
+        $info = UserService::getInfo($id);//基本信息
         $user_address = UserAddressService::getInfoByUserId($id);//收货地址列表
         $user_collect_goods = UserService::getCollectGoods($id);
         $region = RegionService::getList($pager=[],$condition=[]);
