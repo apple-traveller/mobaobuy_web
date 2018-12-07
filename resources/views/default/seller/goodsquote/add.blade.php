@@ -146,7 +146,6 @@
                                     <input type="reset" value="重置" class="button button_reset">
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>
@@ -157,8 +156,29 @@
     <script type="text/javascript">
         $(function(){
             //表单验证
+            let salesman_id = $("<select name='salesman_id'>").val();
+            if (salesman_id===null||salesman_id===''){
+                layer.confirm('没有业务员，是否前去维护?', {icon: 3, title:'提示'}, function(index){
+                    addTab('业务员','/seller/salesman/list','S042');
+                    parent.location.reload();
+                    layer.close(index);
+                },function () {
+                    history.back();
+                });
+            }
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
+                    let salesman_id = $("<select name='salesman_id'>").val();
+                    if (salesman_id===null||salesman_id===''){
+                        layer.confirm('没有业务员，是否前去维护?', {icon: 3, title:'提示'}, function(index){
+                            addTab('业务员','/seller/salesman/list','S042');
+                            parent.location.reload();
+                            layer.close(index);
+                        },function () {
+                            history.back();
+                        });
+                    }
+
                     $("#article_form").submit();
                 }
             });
