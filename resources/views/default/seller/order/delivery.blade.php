@@ -63,6 +63,7 @@
                                                 <th lay-data="{field:'goods_price'}">价格</th>
                                                 <th lay-data="{field:'goods_number'}">购买数量</th>
                                                 <th lay-data="{field:'send_number'}">已发货数量</th>
+                                                {{--<th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.6;'}">编辑发货数量</th>--}}
                                                 <th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.6;'}">编辑发货数量</th>
                                             </tr>
                                             </thead>

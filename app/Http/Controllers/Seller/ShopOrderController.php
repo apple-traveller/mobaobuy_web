@@ -239,15 +239,16 @@ class ShopOrderController extends Controller
                     }
                 }
                 // 确认订单是上传合同
-                if(isset($data['order_status']) && $order_status['order_status']==3){
+                if(array_key_exists('order_status',$data) && !empty($data['order_status']) && $data['order_status']==3){
                     if (empty($contract)){
                         return $this->error('合同不能为空');
                     }
+                    $data['contract']=$contract;
                     $contract_data = [
                         'add_time'=>Carbon::now(),
                         'order_id'=> $id,
                         'from_id'=> $shop_id,
-                        'from'=> 'seller',
+                        'from'=> 2,
                         'contract'=>$contract,
                         'ip'=> $ip,
                         'equipment'=>$userAgent,
@@ -257,7 +258,6 @@ class ShopOrderController extends Controller
                 } else {
                     $re = OrderInfoService::modify($data);
                 }
-
 
                 if (!empty($re)) {
                     if (empty($action_note)) {
@@ -505,6 +505,13 @@ class ShopOrderController extends Controller
     {
         $order_id = $request->input('order_id');
         $orderGoods = OrderInfoService::getOrderGoodsList($order_id);
+        foreach ($orderGoods['list'] as $k=>$v){
+            if ($v['goods_number']-$v['send_number']<=0){
+                unset($orderGoods[$k]);
+            } else {
+                $orderGoods['list'][$k]['send_number_delivery']= $v['goods_number']-$v['send_number'];
+            }
+        }
         return json_encode(['count'=>$orderGoods['total'],'data'=>$orderGoods['list'],'code'=>0,'msg'=>'']);
     }
 
