@@ -34,7 +34,11 @@ class OrderInfoService
             $condition = array_merge($condition,self::setStatueCondition($condition['tab_code']));
             unset($condition['tab_code']);
         }
-        return OrderInfoRepo::getListBySearch($pager, $condition);
+        $re = OrderInfoRepo::getListBySearch($pager, $condition);
+        foreach ($re['list'] as $k=>$v){
+            $re['list'][$k]['_status'] = self::getOrderStatusName($v['order_status'],$v['pay_status'],$v['shipping_status'],$v['deposit_status'],$v['extension_code']);
+        }
+        return $re;
     }
 
     //企业修改订单是否审批 订单检测
@@ -494,6 +498,8 @@ class OrderInfoService
 
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
+        $status['total'] = OrderInfoRepo::getTotalCount([]);
+
         return $status;
     }
 
@@ -513,7 +519,25 @@ class OrderInfoService
     //修改
     public static function modify($data, $contract_data=[])
     {
-        return OrderInfoRepo::modify($data['id'],$data);
+        if (!empty($contract_data)){
+            try{
+                // 如果确认订单上传合同 开启事务
+                self::beginTransaction();
+                $re = OrderContractService::create($contract_data);
+                if ($re){
+                    $rs = OrderInfoRepo::modify($data['id'],$data);
+                    if ($rs){
+                        self::commit();
+                        return $rs;
+                    }
+                }
+            }catch (\Exception $e){
+                self::rollBack();
+                self::throwBizError($e->getMessage());
+            }
+        } else {
+            return OrderInfoRepo::modify($data['id'],$data);
+        }
     }
 
     //修改收货地址
@@ -669,7 +693,7 @@ class OrderInfoService
                 $s_data['contract'] = $data["contract"];
                 $s_data['add_time'] = Carbon::now();
                 $s_data['from_id'] = session('_admin_user_id');
-                $s_data['from'] = 'admin';
+                $s_data['from'] = 3;
                 $s_data['ip'] = $data['ip'];
                 $s_data['equipment'] = $data['equipment'];
                 $s_data['is_delete'] = 0;
@@ -835,6 +859,7 @@ class OrderInfoService
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
             $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
+            $order_goods['list'][$k]['send_number_delivery'] = $vo['goods_number']-$vo['send_number'];
         }
         return $order_goods;
     }

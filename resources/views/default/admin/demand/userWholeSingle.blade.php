@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="search">
-                    <form action="/admin/user/userSale" name="searchForm" >
+                    <form action="/admin/demand/userWholeSingle" name="searchForm" >
                         <div class="input">
                             <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">

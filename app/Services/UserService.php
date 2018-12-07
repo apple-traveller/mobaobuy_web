@@ -390,8 +390,10 @@ class UserService
             $userreal = UserRealRepo::getInfoByFields(['user_id'=>$v['id']]);
             if(!empty($userreal)){
                 $info['list'][$k]['review_status']=$userreal['review_status'];
+                $info['list'][$k]['userreal_is_firm']=$userreal['is_firm'];
             }else{
                 $info['list'][$k]['review_status']=-1;
+                $info['list'][$k]['userreal_is_firm']=-1;
             }
         }
         return $info;

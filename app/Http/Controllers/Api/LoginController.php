@@ -121,6 +121,7 @@ class LoginController extends ApiController
         try{
             #注册并绑定
             $user_id = UserService::createThird($openid,$data);
+            $this->sms_listen_register($username);
             $uuid = \Illuminate\Support\Str::uuid();
             Cache::put($uuid, $user_id, 60*24*7);
             $userInfo = UserService::getUserInfoApi($user_id);
@@ -133,6 +134,12 @@ class LoginController extends ApiController
             return $this->success($rs);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
+        }
+    }
+    //短信通知
+    public function sms_listen_register($accountName){
+        if(!empty(getConfig('remind_mobile'))){
+            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>$accountName]]);
         }
     }
 

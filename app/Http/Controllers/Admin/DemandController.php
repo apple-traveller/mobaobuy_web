@@ -135,7 +135,7 @@ class DemandController extends Controller
         $pageSize = 10;
         $list = DemandService::getUserWholeSingleList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
         return $this->display('admin.demand.userWholeSingle'
-            , [
+            ,[
                 'saleList' => $list['list'],
                 'user_name' => $user_name,
                 'saleCount' => $list['total'],

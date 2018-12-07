@@ -81,7 +81,7 @@ class ActivityWholesaleController extends Controller
         $num = $request->input('num','');
         $deposit_ratio = $request->input('deposit_ratio','');//订金比例
         $min_limit = $request->input('min_limit','');
-        $max_limit = $request->input('max_limit','');
+        $max_limit = $this->requestGetNotNull('max_limit',0);
         $currentPage = $request->input('currentPage',1);
         $goodsInfo = GoodsService::getGoodInfo($goods_id);
 
