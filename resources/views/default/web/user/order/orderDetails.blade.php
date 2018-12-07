@@ -16,6 +16,31 @@
                 photos: '.layer-photos-demo'
                 ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
             });
+
+            $('.payBtn').click(function(){
+            	var contract = $('input[name=contract]').val();
+            	var orderno = '{{$orderDetailsInfo['orderInfo']['id']}}';
+            	if(contract == '' || orderno == ''){
+            		$.msg.alert('请选择合同后提交');
+            		return;
+            	}
+            	$.ajax({
+            		url:'/checkOrderContract',
+            		type:'post',
+            		data:{'contract':contract,'orderno':orderno},
+            		dataType:'json',
+            		success:function(res){
+            			if(res.code){
+            				$.msg.alert(data.msg);
+            			}else{
+            				$.msg.alert(data.msg);
+            			}
+            		},
+            		error:function(){
+            			$.msg.alert('系统繁忙，请重试');
+            		}
+            	})
+            })
 		});
 		//
 		function getLogisticsInfo(){

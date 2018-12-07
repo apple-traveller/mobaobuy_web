@@ -1396,7 +1396,7 @@ class OrderInfoService
     public static function sms_listen_order($user_name,$type,$account)
     {
         if (!empty(getConfig('remind_mobile'))) {
-            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'account'=>$account]]);
+            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'amount'=>$account]]);
         }
     }
 

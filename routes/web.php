@@ -476,6 +476,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
         Route::get('/invoiceDetail/{invoice_id}',  'InvoiceController@invoiceDetail'); // 选择开票类型
+        Route::post('/checkOrderContract',  'OrderContractController@checkOrderContract');
 
         Route::post('/egis','OrderController@egis');//订单审核通过
         Route::post('/orderCancel','OrderController@orderCancel');//订单取消
