@@ -48,9 +48,7 @@
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="10%"><div class="tDiv">收货人</div></th>
-                                    <th width="10%"><div class="tDiv">审核状态</div></th>
-                                    <th width="10%"><div class="tDiv">付款状态</div></th>
-                                    <th width="10%"><div class="tDiv">发货状态</div></th>
+                                    <th width="10%"><div class="tDiv">订单状态</div></th>
                                     <th width="5%"><div class="tDiv">来源</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="10%" class="handle">操作</th>
@@ -72,35 +70,14 @@
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['order_status']==0)已作废
-                                                @elseif($vo['order_status']==1)待企业审核
-                                                @elseif($vo['order_status']==2)待商家确认
-                                                @elseif($vo['order_status']==3)已确认
-                                                @elseif($vo['order_status']==4)已完成
-                                                @else待开票
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['pay_status']==0)待付款
-                                                @elseif($vo['pay_status']==1)已付款
-                                                @else部分付款
-                                                @endif
-                                            </div>
-                                        </td>
 
                                         <td>
                                             <div class="tDiv">
-                                                @if($vo['shipping_status']==0)待发货
-                                                @elseif($vo['shipping_status']==1)已发货
-                                                @elseif($vo['shipping_status']==2)部分发货
-                                                @else 已确认收货
-                                                @endif
+                                               {{$vo['_status']}}
                                             </div>
                                         </td>
+
+
                                         <td>
                                             <div class="tDiv">
                                                 @if($vo['extension_code']=="cart")
