@@ -85,7 +85,7 @@ class IndexController extends Controller
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
-        $article_list = ArticleService::getTopClick(1,7)['list'];
+        $article_list = ArticleService::getTopClick(1,7,['add_time'=>'desc'])['list'];
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],

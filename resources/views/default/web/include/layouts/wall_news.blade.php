@@ -27,7 +27,7 @@
                 <h1 class="today_news_top ovh"><span class="ml10">资讯中心</span></h1>
                 <ul class="news_center cat_list">
                     @foreach(getNewsSidebar()['cat'] as $v1)
-                        <li><a href="/news/list/{{ $v1['id'] }}/page/1.html" data_id = {{ $v1['id'] }}>{{ $v1['cat_name'] }}</a></li>
+                        <li><a href="/news/{{ $v1['id'] }}/1.html" data_id = {{ $v1['id'] }}>{{ $v1['cat_name'] }}</a></li>
                     @endforeach
                 </ul>
             </div>
