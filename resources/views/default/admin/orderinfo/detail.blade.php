@@ -316,7 +316,7 @@
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>2) style="display:none;" @endif  type="button" data-id="2" value="企业审核" >
                                             @else
                                             @endif
-                                            <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>3) style="display:none;" @endif  type="button" data-id="3" value="商家确认" >
+                                            <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>=3) style="display:none;" @endif  type="button" data-id="3" value="商家确认" >
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>=4) style="display:none;" @endif  type="button" data-id="4" value="收货" >
                                             <input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
