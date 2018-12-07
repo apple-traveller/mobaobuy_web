@@ -599,7 +599,7 @@
                         area: ['300px', '150px'],
                         content: '<div class="label_value item">' +
                         '<button style="margin-top:25px;margin-left:50px;" type="button" class="layui-btn upload-file" data-type="" data-path="order_contract" ><i class="layui-icon">&#xe681;</i>上传图片</button>' +
-                        '<img  style="width:60px;height:60px;display:none;" class="layui-upload-img"></div>'
+                        '<img  style="margin-left:10px;margin-top:25px;width:60px;height:60px;display:none;" class="layui-upload-img"></div>'
                     });
 
                     //文件上传
