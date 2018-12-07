@@ -13,7 +13,6 @@
                     <input type="submit" class="opt-btn" value="搜 索"/>
                 </form>
 
-
                 <a rel="nofollow" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');" class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
 
                 @if(!empty(getHotSearch()))
