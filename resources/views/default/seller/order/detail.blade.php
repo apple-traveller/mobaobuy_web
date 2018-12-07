@@ -103,7 +103,7 @@
                                     <dt>交货时间：
                                         <div class="" ectype="editSpanInput" style="float: right;margin-right: 10px">
                                             <span id="deliveryPeriod">{{$orderInfo['delivery_period']}} </span>
-                                            <i class="icon icon-edit" @if($orderInfo==2)onclick="listTable.edit($('#deliveryPeriod')[0],'{{url('/seller/order/updateDeliveryPeriod')}}','{{$orderInfo['id']}}')"@endif></i>
+                                            <i class="icon icon-edit" @if($orderInfo['order_status']==2)onclick="listTable.edit($('#deliveryPeriod')[0],'{{url('/seller/order/updateDeliveryPeriod')}}','{{$orderInfo['id']}}')"@endif></i>
                                         </div>
                                     </dt>
 
@@ -143,27 +143,20 @@
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
 
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                             </div>
                         </div>
@@ -175,36 +168,26 @@
                             <div class="section">
                                 <dl>
                                     <dt>收货人：{{$orderInfo['consignee']}}</dt>
-
                                     <dt>手机号码：{{$orderInfo['mobile_phone']}}</dt>
-
                                 </dl>
                                 <dl>
                                     <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
-
                                     <dt>邮政编码：@if(isset($orderInfo['zipcode'])||!empty($orderInfo['zipcode'])){{$orderInfo['zipcode']}} @else @endif</dt>
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
                                 </dl>
                             </div>
                         </div>
-
                         <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><h3>订单物流信息</h3></div>
                             <div class="section" style="height: 100px;">
@@ -221,29 +204,22 @@
 
                                     </dl>
                                     @endforeach
-
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
-                                    <dt></dt>
-
-                                </dl>
-                                <dl>
-                                    <dt></dt>
-
                                     <dt></dt>
 
                                 </dl>
                                 <dl>
                                     <dt></dt>
-
                                     <dt></dt>
-
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dt></dt>
                                 </dl>
                                     @endif
                             </div>
@@ -343,20 +319,16 @@
                                 <dl>
                                     <dt>商品总金额：<em>¥</em>{{$orderInfo['goods_amount']}}</dt>
                                     <dt>使用余额：- <em>¥</em>0.00</dt>
-
                                 </dl>
 
                                 <dl>
                                     <dt>配送费用：+ <em>¥</em>{{$orderInfo['shipping_fee']}}</dt>
                                     <dt>使用红包：- <em>¥</em>0.00</dt>
-
                                 </dl>
 
                                 <dl>
                                     <dt>折扣：- <em>¥</em>{{$orderInfo['discount']}}</dt>
-
                                     <dt>使用储值卡：- <em>¥</em>0.00</dt>
-
                                 </dl>
                                 <dl>
                                     <dt>定金：+ <em>¥</em>{{$orderInfo['deposit']}}</dt>
