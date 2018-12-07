@@ -497,7 +497,7 @@ class OrderInfoService
     }
 
     //修改
-    public static function modify($data)
+    public static function modify($data, $contract_data=[])
     {
         return OrderInfoRepo::modify($data['id'],$data);
     }

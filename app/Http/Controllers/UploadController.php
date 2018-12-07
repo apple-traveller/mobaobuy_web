@@ -15,7 +15,7 @@ class UploadController extends Controller
         $type = $request->input('upload_type');
         //检测文件大小
         if(!empty($fileCharater)){
-            if($fileCharater->getMaxFilesize() > config('website.common_size'))
+            if($fileCharater->getSize() > config('website.common_size'))
             {
                 return $this->result( '',400,  '文件超过' . config('website.common_size')/(1024*1024) . 'M' );
             }

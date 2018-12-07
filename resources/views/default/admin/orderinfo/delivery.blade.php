@@ -26,7 +26,9 @@
                             </div>
 
                             <div class="item">
+
                                 <div class="label">&nbsp;运单号：</div>
+
                                 <div class="label_value">
                                     <input type="text" name="shipping_billno" class="text" value="" maxlength="40" autocomplete="off" id="shipping_billno">
                                     <div class="form_prompt"></div>
@@ -127,6 +129,8 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
+
+
 
                 }
             });
