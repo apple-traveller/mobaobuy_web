@@ -100,7 +100,7 @@
                 <div class="login_otherAcct">
                     <span class=""></span>
                     <a class="login_QQI" href="javascript:;"></a>
-                    <a class="registerHref" href="{{env('APP_URL').'seller/register.html'}}">立即注册</a>
+                    <a class="registerHref" href="{{env('APP_URL').'/seller/register.html'}}">立即注册</a>
                 </div>
 
             </div>

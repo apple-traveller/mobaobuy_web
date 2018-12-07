@@ -37,7 +37,7 @@ class SmsObj implements SmsInterface
             $temp_content = str_replace('${'.$k.'}', $v ,$temp_content);
         }
 
-        $temp_content .= "【".$signName."】";
+        $temp_content = "【".$signName."】".$temp_content;
 
         return $this->sendContentSms($phoneNumbers,$temp_content);
     }

@@ -134,7 +134,7 @@ $(document).on("change",".type-upload-file",function(){
     formData.append("upload_path", path);
 
     Ajax.file('/uploadImg', formData, function (result){
-        if(200 == result.code){
+        if(1 == result.code){
             console.log(file_obj);
             file_obj.siblings('.type-file-text').val(result.data.path);
             file_obj.siblings('span').children(".img-tooltip").show().attr('data-img', result.data.url);

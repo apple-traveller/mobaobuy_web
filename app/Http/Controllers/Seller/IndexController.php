@@ -73,6 +73,7 @@ class IndexController extends Controller
         $shop_id = session('_seller_id')['shop_id'];
         $cash_name = $request->input('settlement_bank_account_name','');
         $cash_num = $request->input('settlement_bank_account_number','');
+        $shop_name = $request->input('shop_name','');
 
         $data = ['id'=>$shop_id];
         if (!empty($cash_name)){
@@ -81,6 +82,12 @@ class IndexController extends Controller
         if (!empty($cash_num)){
             $data['settlement_bank_account_number']=$cash_num;
         }
+        if (!empty($shop_name)){
+            $data['shop_name']=$shop_name;
+        }else{
+            return $this->error('公司简称不能为空');
+        }
+
         if (!empty($data)){
             $re = ShopService::modify($data);
         } else {

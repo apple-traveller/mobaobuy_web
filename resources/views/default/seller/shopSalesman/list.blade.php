@@ -5,13 +5,6 @@
     <div class="warpper">
         <div class="title">业务员列表</div>
         <div class="content">
-            {{--<div class="explanation" id="explanation">--}}
-                {{--<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>--}}
-                {{--<ul>--}}
-                    {{--<li>xxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>--}}
-                    {{--<li>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx。</li>--}}
-                {{--</ul>--}}
-            {{--</div>--}}
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
@@ -39,46 +32,40 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">ID</div></th>
-                                    <th width="30%"><div class="tDiv">注册时间</div></th>
-                                    <th width="40%"><div class="tDiv">店铺名称</div></th>
+                                    <th width="20%"><div class="tDiv">姓名</div></th>
+                                    <th width="8%"><div class="tDiv">电话</div></th>
+                                    <th width="10%"><div class="tDiv">QQ</div></th>
+                                    <th width="8%"><div class="tDiv">添加时间</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($storeList as $vo)
+                                @foreach($list as $v)
                                     <tr class="">
-                                        <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['store_name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['mobile']}}</div></td>
+                                        <td><div class="tDiv">{{$v['qq']}}</div></td>
+                                        <td><div class="tDiv">{{$v['add_time']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                                <a href="/seller/store/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="/seller/salesman/edit?id={{$v['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
-                                {{--<input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">--}}
                                 <tfoot>
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
-
                                             <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
-
                                                 <ul id="page"></ul>
-
                                                 <style>
                                                     .pagination li{
                                                         float: left;
                                                         width: 30px;
                                                         line-height: 30px;}
                                                 </style>
-
-
                                             </div>
                                         </div>
                                     </td>
@@ -114,37 +101,12 @@
                 , curr: "{{$currentPage}}"  //当前页
                 , jump: function (obj, first) {
                     if (!first) {
-                        window.location.href="/seller/salesman/list?currentPage="+obj.curr+"&shop_name={{$shop_name}}";
+                        window.location.href="/seller/salesman/list?currentPage="+obj.curr+"&name={{$name}}";
                     }
                 }
             });
 
         });
-        //删除
-        function remove(id)
-        {
-            layui.use('layer', function(){
-                let layer = layui.layer;
-                layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    $.ajax({
-                        'url':'/seller/store/delete',
-                        'data':{
-                            'id':id
-                        },
-                        'type':'post',
-                        success: function (res) {
-                            if (res.code === 1){
-                                layer.msg(res.msg, {icon: 1,time:1000});
-                                layer.close(index);
-                                window.location.reload();
-                            } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
-                            }
-                        }
-                    });
-                });
-            });
-        }
 
         $("#submitBtn").click(function () {
             let settlement_bank_account_name = $("input[name='settlement_bank_account_name']").val();

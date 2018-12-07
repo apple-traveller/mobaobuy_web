@@ -13,6 +13,7 @@ use App\Services\GoodsService;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\ShopSalesmanService;
 use App\Services\ShopService;
 use Carbon\Carbon;
 use function GuzzleHttp\Psr7\str;
@@ -57,7 +58,9 @@ class ShopGoodsQuoteController extends Controller
      */
     public function add(Request $request)
     {
-        return $this->display('seller.goodsquote.add');
+        $shop_id = session('_seller_id')['shop_id'];
+        $salesman = ShopSalesmanService::getList([],['shop_id'=>$shop_id]);
+        return $this->display('seller.goodsquote.add',['salesman' => $salesman]);
     }
 
     /**
@@ -69,6 +72,8 @@ class ShopGoodsQuoteController extends Controller
     {
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
+        $shop_id = session('_seller_id')['shop_id'];
+        $salesman = ShopSalesmanService::getList([],['shop_id'=>$shop_id]);
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
@@ -76,6 +81,7 @@ class ShopGoodsQuoteController extends Controller
             'goodsQuote'=>$goodsQuote,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
+            'salesman' => $salesman,
             'good'=>$good
         ]);
     }
@@ -90,6 +96,7 @@ class ShopGoodsQuoteController extends Controller
         $request->flash();
         $shopInfo = session('_seller');
         $shop_id = $shopInfo['shop_info']['id'];
+        $shop_name = $shopInfo['shop_info']['shop_name'];
         $company_name = $shopInfo['shop_info']['company_name'];
         $id = $request->input('id','');
         $store_id = $request->input('store_id',0);
@@ -102,11 +109,8 @@ class ShopGoodsQuoteController extends Controller
         $production_date = $request->input('production_date','');
         $goods_number = $request->input('goods_number','');
         $shop_price = $request->input('shop_price','');
-        $salesman = $request->input('salesman','');
-        $contact_info = $request->input('contact_info','');
-        $qq = $request->input('QQ','');
+        $salesman_id = $request->input('salesman_id','');
         $type = $request->input('type','');
-
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -115,13 +119,13 @@ class ShopGoodsQuoteController extends Controller
             return $this->error('店铺不能为空');
         }
         if($store_id == 0 && $store_name == '自售' && empty($type)){
-            $store_name = $company_name;
+            $store_name = $shop_name;
             $type = 1;
         }else{
             if(empty($type)){
                 $type = 2;
             }else{
-                $store_name = $company_name;
+                $store_name = $shop_name;
             }
         }
         if(!$delivery_place){
@@ -142,15 +146,15 @@ class ShopGoodsQuoteController extends Controller
         if(!$shop_price){
             return $this->error('店铺售价不能为空');
         }
-        if(!$salesman){
+        if(!$salesman_id){
             return $this->error('业务员不能为空');
+        } else {
+            $salesmanInfo = ShopSalesmanService::getInfoByFields(['id'=>$salesman_id]);
+            if (empty($salesmanInfo)){
+                return $this->error('业务员信息错误，请维护');
+            }
         }
-        if(!$contact_info){
-            return $this->error('联系方式不能为空');
-        }
-        if (!$qq){
-            return $this->error('qq不能为空');
-        }
+
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
@@ -171,9 +175,9 @@ class ShopGoodsQuoteController extends Controller
             'expiry_time' => date('Y-m-d H:i:s',strtotime(Carbon::now()->toDateString().' '.getConfig('close_quote'))),
             'goods_sn' => $goods['goods_sn'],
             'goods_name' => $goods['goods_full_name'],
-            'salesman' => $salesman,
-            'contact_info' => $contact_info,
-            'QQ' => $qq,
+            'salesman' => $salesmanInfo['name'],
+            'contact_info' => $salesmanInfo['mobile'],
+            'QQ' => $salesmanInfo['qq'],
             'type' => $type,
             'consign_status'=>1,
             'is_self_run' => $shopInfo['shop_info']['is_self_run'],

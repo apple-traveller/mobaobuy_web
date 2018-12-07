@@ -110,6 +110,10 @@ class UserController extends Controller
         }
 
         $type = 'sms_signup';
+        if (Cache::has(session()->getId().$type.$accountName)) {
+            //
+            Cache::forget(session()->getId().$type.$accountName);
+        }
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
@@ -124,6 +128,7 @@ class UserController extends Controller
         if($request->isMethod('get')){
             return $this->display('web.user.register.user');
         }else{
+//            dd(getConfig('remind_mobile'));
             $accountName = $request->input('accountName', '');
             $password = base64_decode($request->input('password', ''));
             $messCode = $request->input('messCode', '');
@@ -142,10 +147,7 @@ class UserController extends Controller
 
             try{
                 UserService::userRegister($data);
-                if(!empty(getConfig('remind_mobile'))){
-                    createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>'']]);
-                }
-
+                $this->sms_listen_register($accountName);
                 if(getConfig('individual_reg_check')) {
                     return $this->success('提交成功，请等待审核！', url('/verifyReg'));
                 }else{
@@ -154,6 +156,13 @@ class UserController extends Controller
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
+        }
+    }
+
+    //短信通知
+    public function sms_listen_register($accountName){
+        if(!empty(getConfig('remind_mobile'))){
+            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>$accountName]]);
         }
     }
 
@@ -929,11 +938,24 @@ class UserController extends Controller
         try{
                 $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
                 if($flag){
+                    $this->sms_listen_real(session('_web_user')['user_name'],$is_self);
                     return $this->result("",1,"保存成功");
                 }
             return $this->result('',0,"保存失败");
         }catch(\Exception $e){
             return $this->result('',0,$e->getMessage());
+        }
+    }
+
+    //短信通知
+    public function sms_listen_real($user_name,$is_self){
+        if($is_self == 1){
+            $type = '个人会员';
+        }else{
+            $type = '企业会员';
+        }
+        if(!empty(getConfig('remind_mobile'))){
+            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_real', 'tempParams'=>['phone'=>$user_name,'type'=>$type]]);
         }
     }
 

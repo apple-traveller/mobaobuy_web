@@ -22,10 +22,10 @@
                     @endif
 
                 @else
-                    <li class="site-nav-menu"><div><a href="{{url('logout')}}" class="link-login">请登录</a></div></li>
-                    <li class="site-nav-menu"><div><a href="{{route('register')}}">免费注册</a></div></li>
+                    <li class="site-nav-menu"><div><a rel="nofollow" href="{{url('logout')}}" class="link-login">请登录</a></div></li>
+                    <li class="site-nav-menu"><div><a rel="nofollow" href="{{route('register')}}">免费注册</a></div></li>
                 @endif
-                    <a href="">交易时间(工作日) : 9:00-17:00</a>
+                    <a rel="nofollow" href="">交易时间(工作日) : 9:00-17:00</a>
             </ul>
         </div>
         <div class="fr quick-menu">
