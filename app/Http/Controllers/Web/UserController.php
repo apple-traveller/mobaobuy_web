@@ -161,9 +161,8 @@ class UserController extends Controller
 
     //短信通知
     public function sms_listen_register($accountName){
-        $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         if(!empty(getConfig('remind_mobile'))){
-            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>$mobile_code]]);
+            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>$accountName]]);
         }
     }
 
