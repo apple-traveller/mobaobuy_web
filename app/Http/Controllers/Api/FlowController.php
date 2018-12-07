@@ -42,8 +42,11 @@ class FlowController extends ApiController
         $payVoucher = $request->input('payVoucher');
         //dd($payVoucher);
         try{
-            OrderInfoService::payVoucherSaveApi($orderSn,$payVoucher);
-            return $this->success('','success');
+            $flag = OrderInfoService::payVoucherSaveApi($orderSn,$payVoucher);
+            if($flag){
+                return $this->success('','success');
+            }
+            return $this->error('订单信息不存在');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
