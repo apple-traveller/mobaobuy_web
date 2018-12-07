@@ -20,7 +20,7 @@ class ShopSalesmanService
      * @param $columns
      * @return mixed
      */
-    public static function getList($order,$condition,$columns)
+    public static function getList($order,$condition,$columns=['*'])
     {
         return ShopSalesmanRepo::getList($order,$condition,$columns);
     }

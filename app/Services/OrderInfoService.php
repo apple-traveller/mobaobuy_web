@@ -1205,7 +1205,7 @@ class OrderInfoService
 
 
     //创建订单 type为cart 购物车下单    promote限时抢购
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$token="")
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$smsType,$token="")
     {
         $addTime = Carbon::now();
         //生成的随机数
@@ -1371,7 +1371,7 @@ class OrderInfoService
             }
             //更新订单总金额
             $orderInfo_s = self::getOrderInfoById($orderInfoResult['id']);
-            OrderInfoRepo::modify(
+            $saveOrderInfo = OrderInfoRepo::modify(
                 $orderInfoResult['id'],
                 [
                     'goods_amount' => $goods_amount,
@@ -1384,10 +1384,19 @@ class OrderInfoService
                 ]
             );
             self::commit();
+            self::sms_listen_order($userId['user_name'],$smsType,$saveOrderInfo['order_amount']);
             return $order_no;
         } catch (\Exception $e) {
             self::rollBack();
             throw $e;
+        }
+    }
+
+    //短信通知订单
+    public static function sms_listen_order($user_name,$type,$account)
+    {
+        if (!empty(getConfig('remind_mobile'))) {
+            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'account'=>$account]]);
         }
     }
 
@@ -1446,7 +1455,7 @@ class OrderInfoService
     public static function payVoucherSaveApi($orderSn,$payVoucher){
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
-            self::throwBizError('订单信息不存在');
+            return false;
         }
         return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
     }

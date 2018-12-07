@@ -74,8 +74,8 @@
 		.external-cir{position:absolute;top:0px;left:-7px;border-radius:25px;display:inline-block;width: 8px;height: 8px;border: 3px solid #f3a7a9;background-color: #e5383c;}
 		/*收货人信息*/
 		.consignee{color:#333;float:left;margin:24px 0;height: 188px;}
-		.consignee h1{margin-top: 15px;margin-left: 20px;}
-		.consignee_addr{margin-left:10px;width: 200px;margin-right: 50px;}
+         .consignee h1{margin-left:20px;}
+		.consignee_addr{margin-left:10px;width: 230px;margin-right: 50px;}
 		/*订单列表*/
 		.order-list-brand li:first-child{background-color: #f4f4f4;height: 32px;line-height: 32px;border-bottom: none;}
 		.order-list-brand li{height: 65px; line-height: 65px;border-bottom: 1px solid #DEDEDE;}
@@ -86,7 +86,10 @@
         /*商家信息*/
 		.bussine_infor{float: left;width: 48%;}
 		/*付款凭证*/
-		.payImg{    width: 210px;margin: 0 20px;}
+		.payImg{  float: left;  width: 210px; height: 170px; margin: 0 20px;}
+		.type-file-box{width:71%}
+		.payBtn{float:left;margin-top: 10px;margin-left: 20px;}
+		.payImgSubmit{    padding: 9px 75px;border: none;background-color: #75b336;color: #fff;cursor:pointer;}
 		/*.type-file-box .type-file-button{ float:right;}*/
 	</style>
 </head>
@@ -100,7 +103,7 @@
 		</div>
 	</div>
 	<div class=" clearfix mt5">
-		<div class="w1200">
+		<div class="w1200" style="margin-bottom: 40px;">
 			<div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
 		<div class="order_pro_progress whitebg mt5">
 			<div class="order_pro_stute">
@@ -225,7 +228,7 @@
 				<!-- 商家信息 -->
 				
 					<h1 style="font-size:16px;">商家信息</h1>
-				<span class="ml20 db mt20" style="width: 320px" >
+				<span class="ml20 db mt20" style="width: 410px" >
 					<span class="fl">公司名称 :</span>
 					<span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span>
 				</span>
@@ -236,39 +239,7 @@
 
 				
 			</div>
-			<!-- 付款凭证 -->
-				<div  class="consignee bbright">
-					<h1 style="font-size:16px;">付款凭证</h1>
-					<div class="payImg" style="margin-top:20px;">
-						<span>支付凭证:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-							<div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;margin-top:-20px;">
-							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-							</div>
-						@else
-							暂无
-						@endif
-					</div>
-
-					<div class="payImg" style="margin-top:20px;">
-						<span style="margin-top:2px;">合同:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
-						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-						 </div>
-						  
-						@else
-							暂无
-						@endif
-					</div>
-
-						
-					<div class="payImg" style="margin-top:20px;">
-						<span style="margin-top:2px;">上传合同:</span>
-						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-						<input type="button" name="" value="提交">
-					</div>
-				</div>
+			
 			<!--发票信息-->
 			<div class="consignee ">
 				<h1 style="font-size:16px;">发票信息</h1>
@@ -293,6 +264,52 @@
 					</span>
 				@endif
 			</div>
+		</div>
+<!--收货人信息/商家信息/发票信息-->
+		<div class="whitebg br1 mt20 ovh">
+
+<!-- 付款凭证 -->
+				<div  class="consignee "  style="margin-top: 10px;">
+					
+					<div class="payImg bbright" style="margin-top:20px;">
+						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
+						<div class="mt10">
+							<span class="fl">支付凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
+							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+							</div>
+						@else
+							暂无
+						@endif
+						</div>
+						
+					</div>
+<div class="fl mt20">
+		<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
+						<span style="margin-top:2px;">合同:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 </div>
+						  
+						@else
+							暂无
+						@endif
+					</div>
+<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+						<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
+						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+						
+					</div>
+					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+
+</div>
+					
+						
+					
+				</div>
 		</div>
 		<!--订单列表-->
 		<div class="whitebg br1 mt20 ovh">

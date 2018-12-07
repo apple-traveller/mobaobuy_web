@@ -57,17 +57,7 @@ class LoginController extends Controller
         }
     }
 
-    //短信登陆
-    public function messageLogin(Request $request){
-        $username = $request->input('user_name');
-        try{
-            $user_id = UserService::loginByMessage($username);
-            session()->put('_web_user_id', $user_id);
-            return $this->success('登录成功，正在进入系统...');
-        }catch (\Exception $e){
-            return $this->error($e->getMessage());
-        }
-    }
+
     /**
      * 第三方qq登录
      */
