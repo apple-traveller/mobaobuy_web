@@ -51,7 +51,7 @@ class SmsService
             'supplier_id'=>$smsSupplier['id'],
             'type_code'=> $type
         ];
-
+//        dd($where);
         $tempInfo = SmsTempRepo::getInfoByFields($where);
         if (empty($tempInfo)){
             self::throwBizError('没有模板信息');

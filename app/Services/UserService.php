@@ -70,10 +70,7 @@ class UserService
         return true;
     }
 
-    //短信登陆
-    public static function loginByMessage($username,$messageCode){
 
-    }
 
     //用户注册
     public static function userRegister($data)
