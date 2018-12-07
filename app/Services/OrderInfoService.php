@@ -351,7 +351,10 @@ class OrderInfoService
 
     private static function setStatueCondition($status_code){
         $condition = [];
+        $condition['is_delete'] = 0;
         switch ($status_code){
+            case 'allOrder':
+                $condition['order_status|>'] = 0;
             case 'waitDeposit':
                 $condition['order_status'] = 2;
                 $condition['deposit_status'] = 0;break;
@@ -374,6 +377,7 @@ class OrderInfoService
             case 'waitInvoice':
                 $condition['order_status'] = 5;
                 $condition['pay_status'] = 1;
+
 //                $condition['shipping_status'] = 3;
                 break;
             case 'finish':
@@ -386,7 +390,6 @@ class OrderInfoService
 
     // web
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
-
         $condition['is_delete'] = 0;
 
         if($user_id > 0){
@@ -396,7 +399,7 @@ class OrderInfoService
             unset($condition['user_id']);
         }
 
-            $condition['firm_id'] = $firm_id;
+        $condition['firm_id'] = $firm_id;
 
 
         // 商户后台
@@ -407,6 +410,7 @@ class OrderInfoService
 
 
         $status = [
+            'allOrder' => 0,
             'waitApproval' => 0,
             'waitAffirm' => 0,
             'waitPay' => 0,
@@ -415,6 +419,8 @@ class OrderInfoService
             'waitInvoice'=> 0,
             'waitDeposit'=>0
         ];
+
+
 
         //待付定金
         $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
@@ -444,8 +450,17 @@ class OrderInfoService
         //待开票
         $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
         unset($condition['pay_status']);
+        unset($condition['shipping_status']);
+        $condition['shipping_status|>'] =  0;
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
+        //全部订单
+        $condition = array_merge($condition, self::setStatueCondition('allOrder'));
+        unset($condition['order_status']);
+        unset($condition['deposit_status']);
+        unset($condition['shipping_status']);
+        unset($condition['shipping_status|>']);
+        $status['allOrder'] = OrderInfoRepo::getTotalCount($condition);
         return $status;
     }
 
@@ -480,6 +495,7 @@ class OrderInfoService
         //待开票
         $condition = self::setStatueCondition('waitInvoice');
         unset($condition['pay_status']);
+
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
         $status['total'] = OrderInfoRepo::getTotalCount([]);
@@ -1432,7 +1448,7 @@ class OrderInfoService
     public static function sms_listen_order($user_name,$type,$account)
     {
         if (!empty(getConfig('remind_mobile'))) {
-            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'account'=>$account]]);
+            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'amount'=>$account]]);
         }
     }
 
