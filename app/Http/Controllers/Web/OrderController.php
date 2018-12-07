@@ -359,6 +359,7 @@ class OrderController extends Controller
     {
         $info = session('_curr_deputy_user');
         $userIds = [];
+        $userIds['user_name'] = session('_web_user')['user_name'];
         // 判断是否为企业用户
         if ($info['is_firm']) {
             //企业用户，企业
@@ -367,12 +368,18 @@ class OrderController extends Controller
             $userIds['firm_id'] = $info['firm_id'];
             $userIds['need_approval'] = session('_web_user')['need_approval'];
             $u_id = $info['firm_id'];
+
+            //短信 type
+            $smsType = '企业';
         } else {
             //个人
             $userInfo = session('_web_user');
             $userIds['user_id'] = $userInfo['id'];
             $userIds['firm_id'] = '';
             $u_id = $userInfo['id'];
+
+            //短信 type
+            $smsType = '个人';
         }
         $words = $request->input('words', ' ');
         // 判断是否有开票信息 地址可用
@@ -396,8 +403,9 @@ class OrderController extends Controller
         //限时抢购下单
         if ($cartSession['from'] == 'promote') {
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType);
                 if (!empty($re)) {
+
                     Session::forget('cartSession');
                     return $this->success('订单提交成功', '', $re);
                 } else {
@@ -410,7 +418,7 @@ class OrderController extends Controller
         } elseif ($cartSession['from'] == 'wholesale') {
 
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType);
                 if (!empty($re)) {
                     Session::forget('cartSession');
                     return $this->success('订单提交成功', '', $re);
@@ -441,7 +449,7 @@ class OrderController extends Controller
             try {
                 $re = [];
                 foreach ($shop_data as $k4 => $v4) {
-                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from']);
+                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType);
                 }
                 if (!empty($re)) {
                     Session::forget('cartSession');
@@ -456,6 +464,8 @@ class OrderController extends Controller
 
 
     }
+
+
 
     /**
      *

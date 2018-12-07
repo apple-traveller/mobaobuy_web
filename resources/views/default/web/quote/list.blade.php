@@ -1,7 +1,13 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', getSeoInfoByType('goods')['title'])
-@section('keywords', getSeoInfoByType('goods')['keywords'])
-@section('description', getSeoInfoByType('goods')['description'])
+@if(isset($t) && $t==2)
+    @section('title', getSeoInfoByType('brand_quote')['title'])
+    @section('keywords', getSeoInfoByType('brand_quote')['keywords'])
+    @section('description', getSeoInfoByType('brand_quote')['description'])
+@else
+    @section('title', getSeoInfoByType('quote')['title'])
+    @section('keywords', getSeoInfoByType('quote')['keywords'])
+    @section('description', getSeoInfoByType('quote')['description'])
+@endif
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />

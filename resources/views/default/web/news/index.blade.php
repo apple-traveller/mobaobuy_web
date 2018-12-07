@@ -44,7 +44,7 @@
     <div class="crumbs">
         当前位置：<a href="/">首页</a> &gt; <a href="/news.html">资讯中心</a>
         @if($cat['id'] > 0 && $cat['id'] != 2)
-            &gt; <a href="/news/list/{{$cat['id']}}/page/1.html">{{ $cat['cat_name']}}</a>
+            &gt; <a href="/news/{{$cat['id']}}/1.html">{{ $cat['cat_name']}}</a>
         @elseif(!empty($title))
             &gt; {{$title}}
         @endif
@@ -56,7 +56,7 @@
         <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
-                <div class="fl mb15" style="width: 200px;height: 114px"><a href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 114px"/></a></div>
+                <div class="fl mb15" style="width: 200px;height: 114px"><a rel="nofollow" href="/detail/{{ $v['id'] }}.html"><img src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 114px"/></a></div>
                 <div class="fl ml20">
                     <h1 class="fs18 mt10"><a href="/detail/{{ $v['id'] }}.html">{{ $v['title'] }}</a></h1>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>

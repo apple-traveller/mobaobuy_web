@@ -12,11 +12,12 @@
                             @elseif($vo['type']=="article") 文章分类列表
                             @elseif($vo['type']=="article_content") 文章内容
                             @elseif($vo['type']=="goods") 商品
-                            @elseif($vo['type']=="brand_list") 品牌商品列表
-                            @elseif($vo['type']=="brand") 品牌
-                            @elseif($vo['type']=="brand_list") 品牌商品列表
-                            @elseif($vo['type']=="category") 分类
-                            @elseif($vo['type']=="search") 搜索
+                            @elseif($vo['type']=="brand_quote") 品牌直营
+                            @elseif($vo['type']=="quote") 自营报价
+                            @elseif($vo['type']=="wholesale") 集采火拼
+                            @elseif($vo['type']=="consign") 寄售清仓
+                            @elseif($vo['type']=="promote") 限时抢购
+                            @elseif($vo['type']=="wholeSingle") 求购中心
                             @endif
                         </a></li>
                     @endforeach

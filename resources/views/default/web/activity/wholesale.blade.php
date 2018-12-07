@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '集采拼团')
+@section('title', getSeoInfoByType('wholesale')['title'])
+@section('keywords', getSeoInfoByType('wholesale')['keywords'])
+@section('description', getSeoInfoByType('wholesale')['description'])
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 

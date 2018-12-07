@@ -98,11 +98,13 @@ class ArticleService
 
     /**
      * 热门资讯
+     * getTopClick
      * @param int $page
      * @param int $page_size
+     * @param array $orderBy
      * @return mixed
      */
-    public static function getTopClick($page=1,$page_size=6)
+    public static function getTopClick($page=1,$page_size=6,$orderBy=['click'=>'desc','add_time'=>'desc'])
     {
         $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id']);
         $cat_id = '';
@@ -110,7 +112,7 @@ class ArticleService
             $cat_id .= $v['id'].'|';
         }
         $condition['cat_id'] = $cat_id;
-        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>['click'=>'desc','add_time'=>'desc']],$condition);
+        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
     }
 
     /**

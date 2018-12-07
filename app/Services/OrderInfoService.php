@@ -19,6 +19,7 @@ use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
 use App\Repositories\UserRealRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\OrderContractRepo;
 use Carbon\Carbon;
 use League\Flysystem\Exception;
 
@@ -647,6 +648,16 @@ class OrderInfoService
             }
             if($data['order_status']==3){ //商家确认
                 $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+                //保存订单合同
+                $s_data['order_id'] = $data['id'];
+                $s_data['contract'] = $data["contract"];
+                $s_data['add_time'] = Carbon::now();
+                $s_data['from_id'] = session('_admin_user_id');
+                $s_data['from'] = 'admin';
+                $s_data['ip'] = $data['ip'];
+                $s_data['equipment'] = $data['equipment'];
+                $s_data['is_delete'] = 0;
+                OrderContractRepo::create($s_data);
             }
             //给管理员操作添加一条数据
             $logData = [
@@ -1205,7 +1216,7 @@ class OrderInfoService
 
 
     //创建订单 type为cart 购物车下单    promote限时抢购
-    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$token="")
+    public static function createOrder($cartInfo_session,$userId,$userAddressId,$words,$type,$smsType,$token="")
     {
         $addTime = Carbon::now();
         //生成的随机数
@@ -1371,7 +1382,7 @@ class OrderInfoService
             }
             //更新订单总金额
             $orderInfo_s = self::getOrderInfoById($orderInfoResult['id']);
-            OrderInfoRepo::modify(
+            $saveOrderInfo = OrderInfoRepo::modify(
                 $orderInfoResult['id'],
                 [
                     'goods_amount' => $goods_amount,
@@ -1384,10 +1395,19 @@ class OrderInfoService
                 ]
             );
             self::commit();
+            self::sms_listen_order($userId['user_name'],$smsType,$saveOrderInfo['order_amount']);
             return $order_no;
         } catch (\Exception $e) {
             self::rollBack();
             throw $e;
+        }
+    }
+
+    //短信通知订单
+    public static function sms_listen_order($user_name,$type,$account)
+    {
+        if (!empty(getConfig('remind_mobile'))) {
+            createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'account'=>$account]]);
         }
     }
 

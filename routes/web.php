@@ -207,6 +207,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
+       // Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
@@ -318,7 +319,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::get('/article/{id}','IndexController@article');//资讯
     Route::get('/news.html', 'NewsController@index'); // 新闻中心
-    Route::get('/news/list/{cat_id}/page/{page}.html', 'NewsController@index'); // 新闻中心
+    Route::get('/news/{cat_id}/{page}.html', 'NewsController@index'); // 新闻中心
     Route::get('/detail/{id}.html', 'NewsController@detail'); // 详情
     Route::post('/side_bar', 'NewsController@side_bar'); // 详情侧边栏
     Route::get('/{id}/helpCenter.html','HelpCenterController@helpController');// 帮助中心首页
@@ -745,7 +746,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 });
 
 Route::pattern('path','.+');
-Route::any('{path}', 'CommonController@route');
+//Route::any('{path}', 'CommonController@route');
 
 
 
