@@ -33,6 +33,10 @@ class OrderInfoController extends Controller
                 $condition['order_status'] = 3;
                 $condition['pay_status'] = 1;
                 $condition['shipping_status'] = '0|2';
+            }elseif($order_status==12){//待收货
+                $condition['order_status'] = 3;
+                $condition['pay_status'] = 1;
+                $condition['shipping_status'] = 1;
             }else{
                 $condition['order_status'] = $order_status;
             }
@@ -42,6 +46,7 @@ class OrderInfoController extends Controller
         }
         $orders = OrderInfoService::getOrderInfoList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         $users = UserService::getUsersByColumn([],['id','user_name']);
+        $status = OrderInfoService::getOrderCountByStatus();//各订单状态
         return $this->display('admin.orderinfo.list',[
             'orders'=>$orders['list'],
             'total'=>$orders['total'],
@@ -49,7 +54,8 @@ class OrderInfoController extends Controller
             'order_sn'=>$order_sn,
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
-            'order_status'=>$order_status
+            'order_status'=>$order_status,
+            'status'=>$status
         ]);
     }
 
@@ -358,7 +364,7 @@ class OrderInfoController extends Controller
         $order_delivery_data['add_time'] = Carbon::now();
         $order_delivery_data['shipping_id'] = $data['shipping_id'];
         $order_delivery_data['shipping_name'] = $data['shipping_name'];
-        $order_delivery_data['shipping_billno'] = $data['shipping_billno'];
+        $order_delivery_data['shipping_billno'] = $this->requestGetNotNull('');
         $order_delivery_data['user_id'] = $orderInfo['user_id'];
         $order_delivery_data['firm_id'] = $orderInfo['firm_id'];
         $order_delivery_data['shop_id'] = $orderInfo['shop_id'];

@@ -65,7 +65,11 @@ class DemandService
         $list = UserSaleRepo::getListBySearch($pager, $condition);
         foreach ($list['list'] as $k => $v) {
             $userInfo = UserService::getInfo($v['user_id']);
-            $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+            if(!empty($userInfo)){
+                $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+            }else{
+                $list['list'][$k]['nick_name'] = '';
+            }
         }
         unset($userInfo);
         return $list;
@@ -83,7 +87,11 @@ class DemandService
         $list = UserWholeSingleRepo::getListBySearch($pager, $condition);
         foreach ($list['list'] as $k => $v) {
             $userInfo = UserService::getInfo($v['user_id']);
-            $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+            if(!empty($userInfo)){
+                $list['list'][$k]['nick_name'] = $userInfo['nick_name'];
+            }else{
+                $list['list'][$k]['nick_name'] = '';
+            }
         }
         unset($userInfo);
         return $list;

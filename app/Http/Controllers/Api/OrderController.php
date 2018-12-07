@@ -248,7 +248,7 @@ class OrderController extends ApiController
 
         $token = $request->input('token');
         $info = $this->getDeputyUserInfo($request);
-        $userIds = [];
+        $userIds['user_name'] = $this->getUserInfo($request)['user_name'];
         // 判断是否为企业用户
         if ($info['is_firm']) {
             //企业用户，企业
@@ -257,12 +257,14 @@ class OrderController extends ApiController
             $userIds['firm_id'] = $info['firm_id'];
             $userIds['need_approval'] = $this->getUserInfo($request)['need_approval'];
             $u_id = $info['firm_id'];
+            $smsType = '企业';
         } else {
             //个人
             $userInfo = $this->getUserInfo($request);
             $userIds['user_id'] = $userInfo['id'];
             $userIds['firm_id'] = '';
             $u_id = $userInfo['id'];
+            $smsType = '个人';
         }
         $words = $request->input('words', ' ');
         // 判断是否有开票信息 地址可用
@@ -340,7 +342,7 @@ class OrderController extends ApiController
             try {
                 $re = [];
                 foreach ($shop_data as $k4 => $v4) {
-                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
+                    $re[] = OrderInfoService::createOrder($v4, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType,$token);
                 }
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userIds['user_id']);

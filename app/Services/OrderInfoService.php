@@ -482,6 +482,8 @@ class OrderInfoService
         unset($condition['pay_status']);
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
+        $status['total'] = OrderInfoRepo::getTotalCount([]);
+
         return $status;
     }
 
@@ -675,7 +677,7 @@ class OrderInfoService
                 $s_data['contract'] = $data["contract"];
                 $s_data['add_time'] = Carbon::now();
                 $s_data['from_id'] = session('_admin_user_id');
-                $s_data['from'] = 'admin';
+                $s_data['from'] = 3;
                 $s_data['ip'] = $data['ip'];
                 $s_data['equipment'] = $data['equipment'];
                 $s_data['is_delete'] = 0;
@@ -841,6 +843,7 @@ class OrderInfoService
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
             $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
+            $order_goods['list'][$k]['send_number_delivery'] = $vo['goods_number']-$vo['send_number'];
         }
         return $order_goods;
     }

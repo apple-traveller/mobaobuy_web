@@ -207,7 +207,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
-       // Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
+        //Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
@@ -257,7 +257,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/demand/userSale', 'DemandController@userSale');//会员卖货需求
         Route::get('/demand/setRead', 'DemandController@setRead');//会员卖货需求 设为已读
 
-        Route::get('/demand/userWholeSingle', 'DemandController@userWholeSingle');//整单采购需求
+        Route::any('/demand/userWholeSingle', 'DemandController@userWholeSingle');//整单采购需求
         Route::get('/demand/setSingleRead', 'DemandController@setSingleRead');//整单采购需求 设为已读
 
         Route::get('/ad/position/list', 'AdPositionController@getList');//广告位置列表
