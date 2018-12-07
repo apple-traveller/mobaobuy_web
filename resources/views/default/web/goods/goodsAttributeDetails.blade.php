@@ -1,5 +1,11 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '抢购详情')
+@if(empty(getSeoInfoByType('article_content')['title']))
+	@section('title', $good_info['goods_name'])
+@else
+	@section('title', $good_info['goods_name'].'-'.getSeoInfoByType('article_content')['title'])
+@endif
+@section('keywords', getSeoInfoByType('goods')['keywords'])
+@section('description', getSeoInfoByType('goods')['description'])
 @section('css')
 	<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />
 	<link rel="stylesheet" href="/css/index.css" />

@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '抢购详情')
+@section('title', getSeoInfoByType('promote')['title'])
+@section('keywords', getSeoInfoByType('promote')['keywords'])
+@section('description', getSeoInfoByType('promote')['description'])
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />--}}

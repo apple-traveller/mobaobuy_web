@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>整单采购 - @yield('title')</title>
+    <title>整单采购 - {{getSeoInfoByType('wholeSingle')['title']}}</title>
+	<meta name="description" content="{{getSeoInfoByType('wholeSingle')['description']}}" />
+	<meta name="keywords" content="{{getSeoInfoByType('wholeSingle')['keywords']}}" />
     @include(themePath('.','web').'web.include.partials.base')
     <link rel="stylesheet" href="css/global.css" />
 		<script type="text/javascript">
