@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\FirmUserService;
 use App\Services\InvoiceService;
+use App\Services\OrderContractService;
 use App\Services\OrderInfoService;
 use App\Services\RegionService;
 use App\Services\ShopGoodsQuoteService;
@@ -126,6 +127,13 @@ class ShopOrderController extends Controller
         $deposit_status = $request->input('deposit_status','');
         $action_note = $request->input('action_note', '');
         $delivery_period = $request->input('delivery_period', '');
+
+        // 合同
+        $contract = $request->input('contract','');
+        $request->setTrustedProxies(['116.226.54.5','192.168.10.1'],0);
+        $ip = $request->getClientIp();
+        $userAgent = $request->userAgent();
+
         $where = [
             'id' => $id,
             'shop_id' => $shop_id
@@ -230,7 +238,26 @@ class ShopOrderController extends Controller
                         $action_note = "确认收到定金";
                     }
                 }
-                $re = OrderInfoService::modify($data);
+                // 确认订单是上传合同
+                if(isset($data['order_status']) && $order_status['order_status']==3){
+                    if (empty($contract)){
+                        return $this->error('合同不能为空');
+                    }
+                    $contract_data = [
+                        'add_time'=>Carbon::now(),
+                        'order_id'=> $id,
+                        'from_id'=> $shop_id,
+                        'from'=> 'seller',
+                        'contract'=>$contract,
+                        'ip'=> $ip,
+                        'equipment'=>$userAgent,
+                    ];
+                    // 开启事务
+                    $re = OrderInfoService::modify($data, $contract_data);
+                } else {
+                    $re = OrderInfoService::modify($data);
+                }
+
 
                 if (!empty($re)) {
                     if (empty($action_note)) {

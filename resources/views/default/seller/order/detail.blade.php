@@ -172,7 +172,7 @@
                                 </dl>
                                 <dl>
                                     <dt>收货地址：{{$region}} {{$orderInfo['address']}}</dt>
-                                    <dt>邮政编码：@if(isset($orderInfo['zipcode'])||!empty($orderInfo['zipcode'])){{$orderInfo['zipcode']}} @else @endif</dt>
+                                    <dt>邮政编码：@if($orderInfo['zipcode']!="null" && !isset($orderInfo['zipcode']) && !empty($orderInfo['zipcode'])) {{$orderInfo['zipcode']}} @else @endif</dt>
                                 </dl>
                                 <dl>
                                     <dt></dt>
@@ -351,7 +351,7 @@
                                         <div class="label">操作备注：</div>
                                         <div class="value">
                                             <div class="bf100 fl mb5"><textarea name="action_note" class="textarea" id="action_note"></textarea></div>
-                                            <div class="order_operation_btn" style="margin-top: 0px">
+                                            <div class="order_operation_btn" style="margin-top: 0">
                                                 // 取消的订单没有操作选项
                                                 @if($orderInfo['order_status']!=0)
                                                     @if($orderInfo['order_status'] == 2)
@@ -503,14 +503,11 @@
             });
         }
         function depositImg(deposit_img) {
-            //示范一个公告层
             layer.open({
                 type: 1
                 ,
-                title: '凭证', //不显示标题栏
-                // ,
-                // closeBtn: true
-                // ,
+                title: '凭证'
+                ,
                 shade: 0.8
                 ,
                 maxmin:true
@@ -530,29 +527,104 @@
         // 确认订单
         function conf(id)
         {
-            layui.use('layer', function(){
+            layui.use(['layer','upload'], function(){
                 let layer = layui.layer;
-                layer.confirm('确认订单?', {icon: 3, title:'提示'}, function(index){
-                    let action_note = $("#action_note").val();
-                    $.ajax({
-                        url:'/seller/order/updateOrderStatus',
-                        data: {
-                            'id':id,
-                            'action_note':action_note,
-                            'order_status': 3,
-                        },
-                        type: 'post',
-                        success: function (res) {
-                            if (res.code == 1){
-                                layer.alert(res.msg, {icon: 1,time:600});
-                            } else {
-                                layer.alert(res.msg, {icon: 5,time:2000});
+                let upload = layui.upload;
+                index = layer.open({
+                    type: 1,
+                    title: '确认订单',
+                    btn:['确定','取消'],
+                    // area: ['350px', '220px'],
+                    content: '<div class="layui-upload">' +
+                        '<button type="button" class="layui-btn" id="test1" style="margin-left: 129px;margin-top: 9px;">上传合同</button>' +
+                        '  <div class="layui-upload-list">' +
+                        '    <img class="layui-upload-img" id="demo1" data-img="" style="width: 360px;height: 250px">' +
+                        '    <p id="demoText"></p>' +
+                        '  </div>' +
+                        '</div>',
+                    yes: function(index, layero){
+                       let img = $('#demo1').data('img');
+                       let action_note = $("#action_note").val();
+                       if (img===''){
+                           return layer.msg('未上传合同，无法确定');
+                       }
+
+                        $.ajax({
+                            url:'/seller/order/updateOrderStatus',
+                            data: {
+                                'id':id,
+                                'action_note': action_note,
+                                'order_status': 3,
+                                'contract': img
+                            },
+                            type: 'post',
+                            success: function (res) {
+                                if (res.code == 1){
+                                    layer.alert(res.msg, {icon: 1,time:600});
+                                } else {
+                                    layer.alert(res.msg, {icon: 5,time:2000});
+                                }
                             }
-                        }
-                    });
-                    layer.close(index);
-                    parent.location.reload();
+                        });
+
+                    }
+
                 });
+
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    , url: '/uploadImg'
+                    ,data:{
+                        'upload_type':'img',
+                        'upload_path':'order/contract'
+                    }
+                    , before: function (obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function (index, file, result) {
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    , done: function (res) {
+                        //如果上传失败
+                        if (res.code !== 1) {
+                            return layer.msg('上传失败');
+                        } else {  //上传成功
+                            $('#demo1').data('img', res.data.path);
+                        }
+                    }
+                    , error: function () {
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function () {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+
+
+
+                // layer.confirm('确认订单?', {icon: 3, title:'提示'}, function(index){
+                //     let action_note = $("#action_note").val();
+                //     $.ajax({
+                //         url:'/seller/order/updateOrderStatus',
+                //         data: {
+                //             'id':id,
+                //             'action_note':action_note,
+                //             'order_status': 3,
+                //         },
+                //         type: 'post',
+                //         success: function (res) {
+                //             if (res.code == 1){
+                //                 layer.alert(res.msg, {icon: 1,time:600});
+                //             } else {
+                //                 layer.alert(res.msg, {icon: 5,time:2000});
+                //             }
+                //         }
+                //     });
+                //     layer.close(index);
+                //     parent.location.reload();
+                // });
             });
             // layui.use('layer', function(){
             //     let index = parent.layer.getFrameIndex(window.name);
