@@ -80,8 +80,13 @@ class FirmUserController extends ApiController
     public function delFirmUser(Request $request){
         $id = $request->input('id');
         try{
-            FirmUserService::delFirmUser($id);
-            return $this->success();
+            $flag = FirmUserService::delFirmUser($id);
+            if($flag){
+                return $this->success($flag,'success');
+            }else{
+                return $this->error('error');
+            }
+
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }

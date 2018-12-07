@@ -342,11 +342,24 @@ class UserController extends ApiController
         try{
             $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
             if($flag){
+                $this->sms_listen_real($this->getUserInfo($request)['user_name'],$is_self);
                 return $this->success($flag,"保存成功");
             }
             return $this->error("保存失败");
         }catch(\Exception $e){
             return $this->error($e->getMessage());
+        }
+    }
+
+    //短信通知
+    public function sms_listen_real($user_name,$is_self){
+        if($is_self == 1){
+            $type = '个人会员';
+        }else{
+            $type = '企业会员';
+        }
+        if(!empty(getConfig('remind_mobile'))){
+            createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_real', 'tempParams'=>['phone'=>$user_name,'type'=>$type]]);
         }
     }
 
@@ -381,6 +394,8 @@ class UserController extends ApiController
             return $this->error($e->getMessage());
         }
     }
+
+
 
 
 

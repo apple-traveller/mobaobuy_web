@@ -274,6 +274,7 @@
                                     </dl>
                                 </dl>
 
+                                @if($orderInfo['extension_code']=="wholesale")
                                 <dl style="margin-left: 20px;">
                                     <dt style="width:300px;">定金付款凭证:
                                         @if(!empty($orderInfo['deposit_pay_voucher']))
@@ -291,7 +292,7 @@
                                         @endif
                                     </dl>
                                 </dl>
-
+                                @endif
 
 
                             </div>
@@ -712,14 +713,24 @@
             $(".order_delivery").click(function(){
                 var shipping_status = $(this).attr('data-status');
                 var pay_status = "{{$orderInfo['pay_status']}}";
+                var order_status = "{{$orderInfo['order_status']}}";
+
+                if(order_status<3){
+                    layer.msg("商家未确认", {
+                        icon: 5,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return false;
+                }
+
                 if(pay_status!=1){
                     layer.msg("买家未付款", {
                         icon: 5,
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     });
-
                     return false;
                 }
+
                 if(shipping_status==1){
                     layer.msg("已发货", {
                         icon: 6,
