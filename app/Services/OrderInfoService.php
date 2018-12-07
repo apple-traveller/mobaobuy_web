@@ -34,7 +34,11 @@ class OrderInfoService
             $condition = array_merge($condition,self::setStatueCondition($condition['tab_code']));
             unset($condition['tab_code']);
         }
-        return OrderInfoRepo::getListBySearch($pager, $condition);
+        $re = OrderInfoRepo::getListBySearch($pager, $condition);
+        foreach ($re['list'] as $k=>$v){
+            $re['list'][$k]['_status'] = self::getOrderStatusName($v['order_status'],$v['pay_status'],$v['shipping_status'],$v['deposit_status'],$v['extension_code']);
+        }
+        return $re;
     }
 
     //企业修改订单是否审批 订单检测
@@ -499,7 +503,25 @@ class OrderInfoService
     //修改
     public static function modify($data, $contract_data=[])
     {
-        return OrderInfoRepo::modify($data['id'],$data);
+        if (!empty($contract_data)){
+            try{
+                // 如果确认订单上传合同 开启事务
+                self::beginTransaction();
+                $re = OrderContractService::create($contract_data);
+                if ($re){
+                    $rs = OrderInfoRepo::modify($data['id'],$data);
+                    if ($rs){
+                        self::commit();
+                        return $rs;
+                    }
+                }
+            }catch (\Exception $e){
+                self::rollBack();
+                self::throwBizError($e->getMessage());
+            }
+        } else {
+            return OrderInfoRepo::modify($data['id'],$data);
+        }
     }
 
     //修改收货地址
