@@ -20,38 +20,44 @@
 		//
 		function getLogisticsInfo(){
 			let _delivery_id = $('#delivery_id').data('delivery_id');
-            $.ajax({
-                url: "/logistics/detail",
-                dataType: "json",
-                data:{
-                    'id': _delivery_id
-                },
-                type:"get",
-                success:function(data){
-                    if(data.code == 1){
-                        let _list = data.data.Traces;
-                        let _length = data.data.Traces.length;
-                        let _html = '';
+			if(_delivery_id != 0){
+                $.ajax({
+                    url: "/logistics/detail",
+                    dataType: "json",
+                    data:{
+                        'id': _delivery_id
+                    },
+                    type:"get",
+                    success:function(data){
+                        if(data.code == 1){
+                            let _list = data.data.Traces;
+                            let _length = data.data.Traces.length;
+                            let _html = '';
 
-                        for(let i=(_length-1); i>=0; i--){
-							_html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
-						}
-						console.log(_html);
-						if(_html == ''){
-						    _html = '<li><i class="external-cir"></i>暂无物流信息<div class="gray"></div></li>'
-						}
-						$('.wlxx').append(_html);
-                    }else{
-                    	let _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>';
-                    	$('.wlxx').append(_html);
-                        // $.msg.alert(data.msg);
+                            for(let i=(_length-1); i>=0; i--){
+                                _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+                            }
+                            console.log(_html);
+                            if(_html == ''){
+                                _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                            }
+                            $('.wlxx').append(_html);
+                        }else{
+                            let _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                            $('.wlxx').append(_html);
+                            // $.msg.alert(data.msg);
+                        }
+                    },
+                    error:function(){
+                        let _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                        $('.wlxx').append(_html);
                     }
-                },
-                error:function(){
-                	let _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>';
-                    	$('.wlxx').append(_html);
-                }
-            })
+                })
+			}else{
+                let _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+                $('.wlxx').append(_html);
+			}
+
 		}
 	</script>
 	<style>
@@ -181,17 +187,17 @@
 	   <!--物流信息-->
 		<div class="whitebg br1 mt20 ovh">
 			<div class="order_pro_stute">
-				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-				<span class="ml30 db mt20">
-					@if(!empty($orderDetailsInfo['delivery_info']))
+				@if(!empty($orderDetailsInfo['delivery_info']))
+					<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+					<span class="ml30 db mt20">
 						@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
 							物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
 							物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
 						@endforeach
-					@else
-						<span id="delivery_id" data-delivery_id="0">暂无</span>
-					@endif
-				</span>
+					</span>
+				@else
+					<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+				@endif
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
