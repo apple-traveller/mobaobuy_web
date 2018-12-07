@@ -88,7 +88,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;目标数量：</div>
                                 <div class="label_value">
-                                    <input type="number" name="num" class="text" @if(!empty($wholesale_info)) value="{{$wholesale_info['num']}}" @endif maxlength="5"  autocomplete="off" id="num">
+                                    <input type="number" name="num" class="text" @if(!empty($wholesale_info)) value="{{$wholesale_info['num']}}" @endif maxlength="8"  autocomplete="off" id="num">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>

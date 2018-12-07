@@ -209,6 +209,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
         //Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
 
+        Route::any('/logistics/list', 'LogisticsController@getList');//站内物流信息列表
+        Route::post('/logistics/save', 'LogisticsController@save');//保存
+
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
         Route::get('/seckill/detail', 'SeckillController@detail');//秒杀活动商品详情
@@ -477,6 +480,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/invoice/editInvoiceType',  'InvoiceController@editInvoiceType'); // 选择开票类型
         Route::get('/invoice/waitFor.html',  'InvoiceController@waitFor'); // 选择开票类型
         Route::get('/invoiceDetail/{invoice_id}',  'InvoiceController@invoiceDetail'); // 选择开票类型
+        Route::post('/checkOrderContract',  'OrderContractController@checkOrderContract');
 
         Route::post('/egis','OrderController@egis');//订单审核通过
         Route::post('/orderCancel','OrderController@orderCancel');//订单取消

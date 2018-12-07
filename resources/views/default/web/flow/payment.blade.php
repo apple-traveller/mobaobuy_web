@@ -91,13 +91,13 @@
                     <div class="p-mode-item wxpay"></div>
                 </div>
             </div>
-            <div class="payment-list mt20">
-                <div class="p-mode-tit"><h3>在线支付</h3></div>
-                <div class="p-mode-list">
-                    <div class="p-mode-item alipay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=alipay')}}')" /></div>
-                    <div class="p-mode-item wxpay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=wxpay')}}')"/></div>
-                </div>
-            </div>
+            {{--<div class="payment-list mt20">--}}
+                {{--<div class="p-mode-tit"><h3>在线支付</h3></div>--}}
+                {{--<div class="p-mode-list">--}}
+                    {{--<div class="p-mode-item alipay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=alipay')}}')" /></div>--}}
+                    {{--<div class="p-mode-item wxpay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=wxpay')}}')"/></div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
     </div>
 </div>

@@ -116,19 +116,6 @@
                                     </dt>
                                 </dl>
                                 <dl>
-
-
-                                    <dt>
-                                        <div style="height: 40px;">
-                                            定金凭证:
-                                            @if(!empty($orderInfo['deposit_pay_voucher']))
-                                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
-                                            @else
-                                                <span>暂无</span>
-                                            @endif
-                                        </div>
-                                    </dt>
-
                                     <dt>
                                         <div style="height: 40px;">
                                             付款凭证:
@@ -139,23 +126,39 @@
                                             @endif
                                         </div>
                                     </dt>
-
+                                </dl>
+                                <dl>
+                                    @if($orderInfo['extension_code']=='wholesale' && $orderInfo['extension_id']==4)
+                                    <dt>
+                                        <div style="height: 40px;">
+                                            定金凭证:
+                                            @if(!empty($orderInfo['deposit_pay_voucher']))
+                                                <button type="button" onclick="depositImg('{{ getFileUrl($orderInfo['deposit_pay_voucher']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
+                                            @else
+                                                <span>暂无</span>
+                                            @endif
+                                        </div>
+                                    </dt>
+                                        @else
+                                        <dt></dt>
+                                    @endif
+                                </dl>
+                                <dl>
+                                    <dt>
+                                        <div style="height: 40px;">
+                                            合同:
+                                            @if(!empty($orderInfo['contract']))
+                                                <button type="button" onclick="contractImg('{{ getFileUrl($orderInfo['contract']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
+                                            @else
+                                                <span>暂无</span>
+                                            @endif
+                                        </div>
+                                    </dt>
                                 </dl>
                                 <dl>
                                     <dt></dt>
-                                    <dt></dt>
-
                                 </dl>
                                 <dl>
-                                    <dt></dt>
-                                    <dt></dt>
-                                </dl>
-                                <dl>
-                                    <dt></dt>
-                                    <dt></dt>
-                                </dl>
-                                <dl>
-                                    <dt></dt>
                                     <dt></dt>
                                 </dl>
                             </div>
@@ -524,6 +527,29 @@
                 }
             });
         }
+
+        function contractImg(contractImg) {
+            layer.open({
+                type: 1
+                ,
+                title: '凭证'
+                ,
+                shade: 0.8
+                ,
+                maxmin:true
+                ,
+                area:['700px','600px'],
+                id: 'PayImg' //设定一个id，防止重复弹出
+                ,
+                moveType: 1 //拖拽模式，0或者1
+                ,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+contractImg+'" alt=""> </div>'
+                ,
+                yes: function () {
+                    layer.closeAll();
+                }
+            });
+        }
         // 确认订单
         function conf(id)
         {
@@ -547,30 +573,31 @@
                        let action_note = $("#action_note").val();
                        if (img===''){
                            return layer.msg('未上传合同，无法确定');
+                       } else {
+                           layer.close(index);
+                           $.ajax({
+                               url:'/seller/order/updateOrderStatus',
+                               data: {
+                                   'id':id,
+                                   'action_note': action_note,
+                                   'order_status': 3,
+                                   'contract': img
+                               },
+                               type: 'post',
+                               success: function (res) {
+                                   if (res.code === 1){
+                                       layer.alert(res.msg, {icon: 1,time:600});
+                                   } else {
+                                       layer.alert(res.msg, {icon: 5,time:2000});
+                                   }
+                                   window.location.reload();
+                               }
+                           });
+
                        }
-
-                        $.ajax({
-                            url:'/seller/order/updateOrderStatus',
-                            data: {
-                                'id':id,
-                                'action_note': action_note,
-                                'order_status': 3,
-                                'contract': img
-                            },
-                            type: 'post',
-                            success: function (res) {
-                                if (res.code == 1){
-                                    layer.alert(res.msg, {icon: 1,time:600});
-                                } else {
-                                    layer.alert(res.msg, {icon: 5,time:2000});
-                                }
-                            }
-                        });
-
                     }
 
                 });
-
                 var uploadInst = upload.render({
                     elem: '#test1'
                     , url: '/uploadImg'

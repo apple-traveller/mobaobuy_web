@@ -38,9 +38,7 @@
                                     <th width="10%"><div class="tDiv">订单编号</div></th>
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
                                     <th width="10%"><div class="tDiv">收货人</div></th>
-                                    <th width="5%"><div class="tDiv">订单状态</div></th>
-                                    <th width="5%"><div class="tDiv">付款状态</div></th>
-                                    <th width="5%"><div class="tDiv">发货状态</div></th>
+                                    <th width="9%"><div class="tDiv">订单状态</div></th>
                                     <th width="5%"><div class="tDiv">运费</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="5%"><div class="tDiv">付款方式</div></th>
@@ -61,33 +59,7 @@
                                             </div>
                                         </td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['order_status']==0)已作废
-                                                @elseif($vo['order_status']==1)待企业审核
-                                                @elseif($vo['order_status']==2)待商家确认
-                                                @else已确认
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['pay_status']==0)待付款
-                                                @elseif($vo['pay_status']==1)已付款
-                                                @else部分付款
-                                                @endif
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['shipping_status']==0)待发货
-                                                @elseif($vo['shipping_status']==1)已发货
-                                                @elseif($vo['shipping_status']==2)部分发货
-                                                @elseif($vo['shipping_status']==3)已收货
-                                                @endif
-                                            </div>
-                                        </td>
+                                        <td><div class="tDiv">{{$vo['_status']}}</div></td>
                                         <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
                                         <td><div class="tDiv">@if($vo['pay_type']==1) 先款后货 @elseif($vo['pay_type']==2) 货到付款 @endif </div></td>
@@ -221,38 +193,139 @@
         // 确认订单
         function conf(id)
         {
-            layui.use('layer', function(){
-                let index = parent.layer.getFrameIndex(window.name);
-                parent.layer.iframeAuto(index);
+            layui.use(['layer','upload'], function(){
                 let layer = layui.layer;
-                    layer.prompt({
-                        title: '确认订单,并输入交货日期',
-                    }, function(value, index, elem){
+                let upload = layui.upload;
+                layer.open({
+                    type: 1,
+                    title: '确认订单',
+                    btn:['确定','取消'],
+                    // area: ['350px', '220px'],
+                    content: '<div class="layui-upload">' +
+                        '<button type="button" class="layui-btn" id="test1" style="margin-left: 129px;margin-top: 9px;">上传合同</button>' +
+                        '  <div class="layui-upload-list">' +
+                        '    <img class="layui-upload-img" id="demo1" data-img="" style="width: 360px;height: 250px">' +
+                        '    <p id="demoText"></p>' +
+                        '  </div>' +
+                        '</div>',
+                    yes: function(index, layero){
+                        let img = $('#demo1').data('img');
+                        let action_note = $("#action_note").val();
+                        if (img===''){
+                            return layer.msg('未上传合同，无法确定');
+                        } else {
+                            layer.close(index);
+                            $.ajax({
+                                url:'/seller/order/updateOrderStatus',
+                                data: {
+                                    'id':id,
+                                    'action_note': action_note,
+                                    'order_status': 3,
+                                    'contract': img
+                                },
+                                type: 'post',
+                                success: function (res) {
+                                    if (res.code === 1){
+                                        layer.alert(res.msg, {icon: 1,time:600});
+                                    } else {
+                                        layer.alert(res.msg, {icon: 5,time:2000});
+                                    }
+                                    window.location.reload();
+                                }
+                            });
 
-
-                    let action_note = $("#action_note").val();
-                    $.ajax({
-                        url:'/seller/order/updateOrderStatus',
-                        data: {
-                            'id':id,
-                            'action_note':action_note,
-                            'order_status': 3,
-                            'delivery_period':value
-                        },
-                        type: 'post',
-                        success: function (res) {
-                            if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:2000});
-                            } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
-                            }
-                            setTimeout( window.location.href="/seller/order/list?id="+id,3000)
                         }
-                    });
+                    }
 
-                    layer.close(index);
                 });
+
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    , url: '/uploadImg'
+                    ,data:{
+                        'upload_type':'img',
+                        'upload_path':'order/contract'
+                    }
+                    , before: function (obj) {
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function (index, file, result) {
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    , done: function (res) {
+                        //如果上传失败
+                        if (res.code !== 1) {
+                            return layer.msg('上传失败');
+                        } else {  //上传成功
+                            $('#demo1').data('img', res.data.path);
+                        }
+                    }
+                    , error: function () {
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function () {
+                            uploadInst.upload();
+                        });
+                    }
+                });
+
+
+
+                // layer.confirm('确认订单?', {icon: 3, title:'提示'}, function(index){
+                //     let action_note = $("#action_note").val();
+                //     $.ajax({
+                //         url:'/seller/order/updateOrderStatus',
+                //         data: {
+                //             'id':id,
+                //             'action_note':action_note,
+                //             'order_status': 3,
+                //         },
+                //         type: 'post',
+                //         success: function (res) {
+                //             if (res.code == 1){
+                //                 layer.alert(res.msg, {icon: 1,time:600});
+                //             } else {
+                //                 layer.alert(res.msg, {icon: 5,time:2000});
+                //             }
+                //         }
+                //     });
+                //     layer.close(index);
+                //     parent.location.reload();
+                // });
             });
+            // layui.use('layer', function(){
+            //     let index = parent.layer.getFrameIndex(window.name);
+            //     parent.layer.iframeAuto(index);
+            //     let layer = layui.layer;
+            //     layer.prompt({
+            //         title: '确认订单,并输入交货日期',
+            //     }, function(value, index, elem){
+            //
+            //
+            //         let action_note = $("#action_note").val();
+            //         $.ajax({
+            //             url:'/seller/order/updateOrderStatus',
+            //             data: {
+            //                 'id':id,
+            //                 'action_note':action_note,
+            //                 'order_status': 3,
+            //                 'delivery_period':value
+            //             },
+            //             type: 'post',
+            //             success: function (res) {
+            //                 if (res.code == 1){
+            //                     layer.msg(res.msg, {icon: 1,time:2000});
+            //                 } else {
+            //                     layer.msg(res.msg, {icon: 5,time:2000});
+            //                 }
+            //                 setTimeout( window.location.href="/seller/order/list?id="+id,3000)
+            //             }
+            //         });
+            //
+            //         layer.close(index);
+            //     });
+            // });
         }
         // 确认收到定金
         function receiveDep(id) {
