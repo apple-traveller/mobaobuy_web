@@ -1455,7 +1455,7 @@ class OrderInfoService
     public static function payVoucherSaveApi($orderSn,$payVoucher){
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
-            self::throwBizError('订单信息不存在');
+            return false;
         }
         return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
     }
