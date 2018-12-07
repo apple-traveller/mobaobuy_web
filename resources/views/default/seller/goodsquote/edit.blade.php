@@ -81,7 +81,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    {{--<input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">--}}
+                                    <select name="delivery_method" id="" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
+                                        <option value="自提" @if($goodsQuote['delivery_method']=='自提') selected @endif >自提</option>
+                                        <option value="现货" @if($goodsQuote['delivery_method']=='现货') selected @endif >配送</option>
+                                    </select>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -124,25 +128,15 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" id="salesman" class=" text" value="{{ $goodsQuote['salesman'] }}" maxlength="10" autocomplete="off">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
-                                <div class="label_value">
-                                    <input type="text" name="contact_info" id="contact_info"  value="{{ $goodsQuote['contact_info'] }}" class=" text" maxlength="40" autocomplete="off" >
+                                    <select name="salesman_id" id="" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
+                                        @foreach($salesman as $v)
+                                            <option value="{{$v['id']}}" @if($goodsQuote['salesman']==$v['name']) selected @endif >{{$v['name']}}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label">&nbsp;QQ：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" id="qq" class=" text" value="{{ $goodsQuote['QQ'] }}" maxlength="40" autocomplete="off" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">

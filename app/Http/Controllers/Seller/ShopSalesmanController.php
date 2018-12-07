@@ -18,15 +18,16 @@ class ShopSalesmanController extends Controller
     {
         $currentPage = $request->input('currentPage',1);
         $shop_id = session('_seller_id')['shop_id'];
+        $name = $request->input('name','');
         $condition['is_delete']= 0;
         $condition['shop_id']= $shop_id;
         $pageSize =5;
         $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
         return $this->display('seller.shopSalesman.list',[
             'total'=>$list['total'],
-            'storeList'=>$list['list'],
+            'list'=>$list['list'],
             'currentPage'=>$currentPage,
-            'shop_id'=>$shop_id,
+            'name' => $name,
             'pageSize'=>$pageSize
         ]);
     }
@@ -38,12 +39,14 @@ class ShopSalesmanController extends Controller
      */
     public function edit(Request $request)
     {
+        $request->flash();
         $id = $request->input('id','');
+        $currentPage = $request->input('currentPage',1);
         if (!empty($id)){
             $info = ShopSalesmanService::getInfoByFields(['id'=>$id]);
-            return $this->display('seller.salesman.edit',['info'=>$info]);
+            return $this->display('seller.shopSalesman.edit',['info'=>$info,'currentPage'=>$currentPage]);
         } else {
-            return $this->display('seller.salesman.edit');
+            return $this->display('seller.shopSalesman.edit',['currentPage'=>$currentPage]);
         }
     }
 
@@ -59,7 +62,6 @@ class ShopSalesmanController extends Controller
         $name = $request->input('name','');
         $mobile = $request->input('mobile','');
         $qq = $request->input('qq','');
-
         if (empty($name)){
             return $this->error('姓名不能为空');
         }
@@ -75,15 +77,23 @@ class ShopSalesmanController extends Controller
             'shop_id' => $shop_id
         ];
         if (!empty($id)){
+            $info = ShopSalesmanService::getList([],['name'=>$name,'id'=>'!'.$id]);
+            if (!empty($info)){
+                return $this->error('业务员已存在，请重新编辑');
+            }
             $re = ShopSalesmanService::updateById($id,$data);
             if ($re){
-                return $this->success('修改成功');
+                return $this->display('seller.shopSalesman.list');
         }
         } else {
+            $info = ShopSalesmanService::getList([],['name'=>$name]);
+            if (!empty($info)){
+                return $this->error('业务员已存在，请重新添加');
+            }
             $data['add_time'] = Carbon::now();
             $re = ShopSalesmanService::create($data);
             if ($re){
-                return $this->success('添加成功');
+                return $this->display('seller.shopSalesman.list');
         }
         }
 

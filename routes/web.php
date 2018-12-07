@@ -59,7 +59,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/save', 'UserController@save');//保存
         Route::any('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
-        
+
         Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlackController@addForm');//黑名单添加（表单）
         Route::post('/blacklist/save', 'FirmBlackController@save');//黑名单添加
@@ -207,8 +207,6 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
-
-        Route::post('/contract/list', 'OrderInfoController@modifyDeliveryStatus');//合同列表
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
@@ -543,7 +541,6 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/salesman/add', 'ShopSalesmanController@edit');// 添加
         Route::get('/salesman/edit', 'ShopSalesmanController@edit');// 编辑
         Route::post('/salesman/save', 'ShopSalesmanController@save');// 保存
-        Route::post('/salesman/delete', 'ShopSalesmanController@delete');// 删除
 
         Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
