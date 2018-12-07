@@ -13,10 +13,10 @@
                             <dt>公司名称：</dt>
                             <dd><p style="line-height: 33px">{{$shop['company_name']}}</p></dd>
                         </dl>
-                        {{--<dl>--}}
-                            {{--<dt>入驻店铺名称：</dt>--}}
-                            {{--<dd><input type="text" name="shop_name" value="{{$shop['shop_name']}}" disabled="disabled" size="40" class="text text_disabled"></dd>--}}
-                        {{--</dl>--}}
+                        <dl>
+                            <dt>公司简称：</dt>
+                            <dd><input type="text" name="shop_name" value="{{$shop['shop_name']}}" size="40" class="text text_disabled"></dd>
+                        </dl>
                         <dl>
                             <dt>负责人姓名：</dt>
                             <dd><input type="text" name="contactName" readonly value="{{$shop['contactName']}}" class="text"></dd>
@@ -119,12 +119,16 @@
         $("#submitBtn").click(function () {
             let settlement_bank_account_name = $("input[name='settlement_bank_account_name']").val();
             let settlement_bank_account_number = $("input[name='settlement_bank_account_number']").val();
+            let shop_name = $("input[name='shop_name']").val();
             let data = {};
             if (settlement_bank_account_name){
                 data.settlement_bank_account_name = settlement_bank_account_name;
             }
             if (settlement_bank_account_number) {
                 data.settlement_bank_account_number = settlement_bank_account_number;
+            }
+            if (shop_name) {
+                data.shop_name = shop_name;
             }
             if (data.length==0){
                 return false;

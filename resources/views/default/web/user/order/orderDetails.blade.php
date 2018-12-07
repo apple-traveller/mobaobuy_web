@@ -73,7 +73,7 @@
                     }
                 },
                 error:function(){
-                	let _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>';
+                	let _html = '<li><i class="external-cir"></i>该单号暂无物流进展，请稍后再试，或检查公司和单号是否有误<div class="gray"></div></li>';
                     	$('.wlxx').append(_html);
                 }
             })
@@ -206,17 +206,20 @@
 	   <!--物流信息-->
 		<div class="whitebg br1 mt20 ovh">
 			<div class="order_pro_stute">
-				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-				<span class="ml30 db mt20">
+				
 					@if(!empty($orderDetailsInfo['delivery_info']))
-						@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
-							物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
-							物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
-						@endforeach
+					<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+						<span class="ml30 db mt20">
+
+							@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
+								物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
+								物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
+							@endforeach
+						</span>
 					@else
-						<span id="delivery_id" data-delivery_id="0">暂无</span>
+						<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
 					@endif
-				</span>
+				
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx">
@@ -314,7 +317,7 @@
 		<h1 style="font-size:16px;margin-left: 0;">合同</h1>
 <div class="payImg" style="margin-top: 10px; margin-left: 0px;">
 						<span style="margin-top:2px;">合同:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
 						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 						 </div>
@@ -323,10 +326,10 @@
 							暂无
 						@endif
 					</div>
-<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+
+					<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
 						<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
 						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-						
 					</div>
 					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
 

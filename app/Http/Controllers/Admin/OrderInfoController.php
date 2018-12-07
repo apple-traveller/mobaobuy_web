@@ -10,6 +10,7 @@ use App\Services\UserService;
 use App\Services\RegionService;
 use App\Services\UserInvoicesService;
 use App\Services\UserRealService;
+use App\Services\OrderContractService;
 class OrderInfoController extends Controller
 {
     //列表
@@ -91,6 +92,8 @@ class OrderInfoController extends Controller
         $user_real = UserRealService::getInfoByUserId($orderInfo['user_id']);//用户实名信息
         $order_goods = OrderInfoService::getOrderGoodsByOrderId($orderInfo['id']);//订单商品
         $orderLogs = OrderInfoService::getOrderLogsByOrderidPagenate(['pageSize'=>10,'page'=>$orderlog_currpage,'orderType'=>['log_time'=>'desc']],['order_id'=>$id]);
+        //根据order_id获取订单合同
+        $order_contact = OrderContractService::getInfoByOrderId($id);
         return $this->display('admin.orderinfo.detail',[
             'currpage'=>$currpage,
             'orderInfo'=>$orderInfo,
@@ -101,7 +104,8 @@ class OrderInfoController extends Controller
             'orderLogs'=>$orderLogs['list'],
             'orderLogsTotal'=>$orderLogs['total'],
             'orderLogsCurrpage'=>$orderlog_currpage,
-            'order_status'=>$order_status
+            'order_status'=>$order_status,
+            'order_contact'=>$order_contact
         ]);
     }
 
@@ -156,6 +160,8 @@ class OrderInfoController extends Controller
     public function modifyOrderStatus(Request $request)
     {
         $data = $request->all();
+        $data['ip'] = $request->getClientIp();
+        $data['equipment'] = $_SERVER['HTTP_USER_AGENT'];
         $action_note = $data['action_note'];
         unset($data['action_note']);
         try{
@@ -457,10 +463,6 @@ class OrderInfoController extends Controller
         list($usec, $sec) = explode(' ', microtime()); /* 非科学计数法 */
         return array('ms' => microtime(true) * 10000, 'mi' => sprintf("%.0f", ((float)$usec + (float)$sec) * 100000000),);
     }
-
-
-
-
 
 
 

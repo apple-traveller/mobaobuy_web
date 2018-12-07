@@ -34,7 +34,7 @@ class NewsController extends Controller
             // 新闻列表
             $list = ArticleService::getNewsList($cat_id,$title,$page,$page_size);
 
-            $url = '/news/list/'.$cat_id.'/page/%d.html';
+            $url = '/news/'.$cat_id.'/%d.html';
 
             if(!empty($list['list'])){
                 $linker = createPage($url, $page,$list['totalPage']);

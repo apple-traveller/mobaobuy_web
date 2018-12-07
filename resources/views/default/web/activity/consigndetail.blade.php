@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '清仓特卖详情')
+@section('title', getSeoInfoByType('consign')['title'])
+@section('keywords', getSeoInfoByType('consign')['keywords'])
+@section('description', getSeoInfoByType('consign')['description'])
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />--}}

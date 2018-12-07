@@ -96,6 +96,7 @@ class ShopGoodsQuoteController extends Controller
         $request->flash();
         $shopInfo = session('_seller');
         $shop_id = $shopInfo['shop_info']['id'];
+        $shop_name = $shopInfo['shop_info']['shop_name'];
         $company_name = $shopInfo['shop_info']['company_name'];
         $id = $request->input('id','');
         $store_id = $request->input('store_id',0);
@@ -118,13 +119,13 @@ class ShopGoodsQuoteController extends Controller
             return $this->error('店铺不能为空');
         }
         if($store_id == 0 && $store_name == '自售' && empty($type)){
-            $store_name = $company_name;
+            $store_name = $shop_name;
             $type = 1;
         }else{
             if(empty($type)){
                 $type = 2;
             }else{
-                $store_name = $company_name;
+                $store_name = $shop_name;
             }
         }
         if(!$delivery_place){

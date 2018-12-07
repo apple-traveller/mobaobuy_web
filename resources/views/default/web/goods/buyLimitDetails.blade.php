@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '抢购详情')
+@section('title', getSeoInfoByType('promote')['title'])
+@section('keywords', getSeoInfoByType('promote')['keywords'])
+@section('description', getSeoInfoByType('promote')['description'])
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />--}}
@@ -52,7 +54,12 @@
                 let iptsVal= Number(ipts.val());
                 let packing_spec = Number(ipts.attr('packing_spec'));//规格
                 let min_num = Number(ipts.attr('min-limit'));//起售量
+                let max_num = Number(ipts.attr('max-limit'));//起售量
                 let can_num = Number(ipts.attr('canSell'));//可售
+                if(iptsVal+packing_spec > max_num){
+                    $.msg.error('不能大于最大限购量');
+                    return;
+                }
                 if(iptsVal+packing_spec > can_num){
                     $.msg.error('不能大于可售');
                     return;
@@ -139,8 +146,14 @@
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
                 var min_num = Number(_self.attr('min-limit'));//起售量
                 var can_num = Number(_self.attr('canSell'));//可售
+                var max_num = Number(_self.attr('max-limit'));
                 //当前购物车数据id 检测是否是数字&&
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>min_num){
+                    if(goodsNumber > max_num){
+                        layer.msg('不能大于最大限购量');
+                        window.location.reload();
+                        return;
+                    }
                     if(goodsNumber>can_num){
                         layer.msg('输入的数量不能大于可售数量');
                         _self.val(can_num);
@@ -330,7 +343,7 @@
 					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                     <div class="pur_volume ml15">
                         <span class="pur shop_num_reduce">-</span>
-                        <input type="text" cid="{{$goodsInfo['id']}}" min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['available_quantity']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
+                        <input type="text" cid="{{$goodsInfo['id']}}" min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['available_quantity']}}" max-limit="{{$goodsInfo['max_limit']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
                         <span class="pur shop_num_plus" >+</span>
                     </div>
 

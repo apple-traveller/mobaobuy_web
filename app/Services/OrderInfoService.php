@@ -19,6 +19,7 @@ use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
 use App\Repositories\UserRealRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\OrderContractRepo;
 use Carbon\Carbon;
 use League\Flysystem\Exception;
 
@@ -346,7 +347,10 @@ class OrderInfoService
 
     private static function setStatueCondition($status_code){
         $condition = [];
+        $condition['is_delete'] = 0;
         switch ($status_code){
+            case 'allOrder':
+                $condition['order_status|>'] = 0;
             case 'waitDeposit':
                 $condition['order_status'] = 2;
                 $condition['deposit_status'] = 0;break;
@@ -369,6 +373,7 @@ class OrderInfoService
             case 'waitInvoice':
                 $condition['order_status'] = 5;
                 $condition['pay_status'] = 1;
+
 //                $condition['shipping_status'] = 3;
                 break;
             case 'finish':
@@ -381,7 +386,6 @@ class OrderInfoService
 
     // web
     public static function getOrderStatusCount($user_id, $firm_id, $seller_id = 0){
-
         $condition['is_delete'] = 0;
 
         if($user_id > 0){
@@ -391,7 +395,7 @@ class OrderInfoService
             unset($condition['user_id']);
         }
 
-            $condition['firm_id'] = $firm_id;
+        $condition['firm_id'] = $firm_id;
 
 
         // 商户后台
@@ -402,6 +406,7 @@ class OrderInfoService
 
 
         $status = [
+            'allOrder' => 0,
             'waitApproval' => 0,
             'waitAffirm' => 0,
             'waitPay' => 0,
@@ -410,6 +415,8 @@ class OrderInfoService
             'waitInvoice'=> 0,
             'waitDeposit'=>0
         ];
+
+
 
         //待付定金
         $condition = array_merge($condition, self::setStatueCondition('waitDeposit'));
@@ -439,8 +446,17 @@ class OrderInfoService
         //待开票
         $condition = array_merge($condition, self::setStatueCondition('waitInvoice'));
         unset($condition['pay_status']);
+        unset($condition['shipping_status']);
+        $condition['shipping_status|>'] =  0;
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
+        //全部订单
+        $condition = array_merge($condition, self::setStatueCondition('allOrder'));
+        unset($condition['order_status']);
+        unset($condition['deposit_status']);
+        unset($condition['shipping_status']);
+        unset($condition['shipping_status|>']);
+        $status['allOrder'] = OrderInfoRepo::getTotalCount($condition);
         return $status;
     }
 
@@ -475,6 +491,7 @@ class OrderInfoService
         //待开票
         $condition = self::setStatueCondition('waitInvoice');
         unset($condition['pay_status']);
+
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
         return $status;
@@ -494,7 +511,7 @@ class OrderInfoService
     }
 
     //修改
-    public static function modify($data)
+    public static function modify($data, $contract_data=[])
     {
         return OrderInfoRepo::modify($data['id'],$data);
     }
@@ -647,6 +664,16 @@ class OrderInfoService
             }
             if($data['order_status']==3){ //商家确认
                 $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+                //保存订单合同
+                $s_data['order_id'] = $data['id'];
+                $s_data['contract'] = $data["contract"];
+                $s_data['add_time'] = Carbon::now();
+                $s_data['from_id'] = session('_admin_user_id');
+                $s_data['from'] = 'admin';
+                $s_data['ip'] = $data['ip'];
+                $s_data['equipment'] = $data['equipment'];
+                $s_data['is_delete'] = 0;
+                OrderContractRepo::create($s_data);
             }
             //给管理员操作添加一条数据
             $logData = [

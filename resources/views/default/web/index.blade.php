@@ -107,9 +107,9 @@
 
                     <div>
                         <ul class="order-stute">
-                            <a href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span></a>
-                            <a href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span></a>
-                            <a href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span></a>
                         </ul>
                     </div>
                     <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
@@ -123,12 +123,12 @@
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
                 <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
                 <div class="mt5 pl10 pr10">
-                    <a href="{{route('login')}}">
+                    <a rel="nofollow" href="{{route('login')}}">
                         <div class="login-btn">
                             登录
                         </div>
                     </a>
-                    <a href="{{route('register')}}">
+                    <a rel="nofollow" href="{{route('register')}}">
                         <div class="reg-btn">
                             注册
                         </div>
@@ -145,7 +145,7 @@
     <div class="w1200 pr" style="z-index: 1;">
         <div class="mt10 ovh">
             <!--限时秒杀-查看更多-->
-            <div class="index_xs_ms"><a href="/buyLimit" class="See_more tac ovh"><span style="color:#fff">查看更多></span></a></div>
+            <div class="index_xs_ms"><a rel="nofollow" href="/buyLimit" class="See_more tac ovh"><span style="color:#fff">查看更多></span></a></div>
             <!--秒杀进度-->
             <div class="fl pr" style="margin-bottom: 4px;">
                 @for ($i = 0; $i < 2; $i++)
@@ -233,7 +233,7 @@
         </div>
         <!--自营报价-->
         <div class="Self-support mt30">
-            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a class="ml30" href="/goodsList/1">查看更多></a></div></div>
+            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a rel="nofollow" class="ml30" href="/goodsList/1">查看更多></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
@@ -351,7 +351,7 @@
     <!--供应商-->
     @if(!empty($shops))
         <div class="w1200" style="margin-top: 30px;">
-            <div class="ovh"><h1 class="Self-support-title">供应商</h1><div class="fr mr20"><a class="ml30" href="/goodsList">查看更多></a></div></div>
+            <div class="ovh"><h1 class="Self-support-title">供应商</h1><div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList">查看更多></a></div></div>
 
             <ul class="supply_list mt15">
                 <li class="graybg">
@@ -434,7 +434,7 @@
         <div class="ovh">
             <h1 class="Self-support-title">维生素行情</h1>
             <div class="fr mr20">
-                <a class="ml30" href="/news.html">查看更多></a>
+                <a rel="nofollow" class="ml30" href="/news.html">查看更多></a>
             </div>
         </div>
         <div class="whitebg ovh mt10">
@@ -443,7 +443,7 @@
                 @for ($i = 0; $i < 4; $i++)
                     @php $article = $article_list[$i]??[]; @endphp
                     @if(!empty($article))
-                        <a href="detail/{{$article['id']}}.html">
+                        <a rel="nofollow" href="detail/{{$article['id']}}.html">
                             <li>
                                 <div class="Quotate-img" >
                                     <img width="100%" src="{{getFileUrl($article['image'])}}" />

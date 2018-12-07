@@ -73,6 +73,7 @@ class OrderController extends Controller
 
     public function orderStatusCount()
     {
+
         $deputy_user = session('_curr_deputy_user');
         if ($deputy_user['is_firm']) {
             $status = OrderInfoService::getOrderStatusCount('', $deputy_user['firm_id']);

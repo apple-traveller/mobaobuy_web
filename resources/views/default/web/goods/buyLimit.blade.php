@@ -1,5 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@section('title', '限时抢购')
+@section('title', getSeoInfoByType('promote')['title'])
+@section('keywords', getSeoInfoByType('promote')['keywords'])
+@section('description', getSeoInfoByType('promote')['description'])
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 	{{--<link rel="stylesheet" href="css/index.css" />--}}
@@ -95,7 +97,7 @@
 						@elseif($v['is_soon'])
 							<div class="graybg count-down" data-endtime="{{$v['begin_time']}}">
 								<div class="bottom_time"><p>距离开始：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<div class="bottom_btn b1b1b1bg fs16 white cp">敬请期待</div>
+								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">敬请期待</div>
 							</div>
 						@elseif($v['available_quantity'] == 0)
 							<div class="graybg count-down"  data-endtime="{{$v['end_time']}}">
