@@ -19,6 +19,7 @@ use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\OrderDeliveryGoodsRepo;
 use App\Repositories\UserRealRepo;
 use App\Repositories\UserRepo;
+use App\Repositories\OrderContractRepo;
 use Carbon\Carbon;
 use League\Flysystem\Exception;
 
@@ -647,6 +648,16 @@ class OrderInfoService
             }
             if($data['order_status']==3){ //商家确认
                 $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+                //保存订单合同
+                $s_data['order_id'] = $data['id'];
+                $s_data['contract'] = $data["contract"];
+                $s_data['add_time'] = Carbon::now();
+                $s_data['from_id'] = session('_admin_user_id');
+                $s_data['from'] = 'admin';
+                $s_data['ip'] = $data['ip'];
+                $s_data['equipment'] = $data['equipment'];
+                $s_data['is_delete'] = 0;
+                OrderContractRepo::create($s_data);
             }
             //给管理员操作添加一条数据
             $logData = [

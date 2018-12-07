@@ -311,13 +311,27 @@
                                     <div class="item">
                                         <div class="label">订单状态：</div>
                                         <div class="value">
-                                            <input  class="btn btn25 red_btn order_status"   type="button" data-id="0" value="取消" >
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="2" value="企业审核" >
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="3" value="商家确认" >
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="4" value="收货" >
+                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="0" value="取消" >
+                                            @if($orderInfo['firm_id']!=0 &&$orderInfo['order_status']==1)
+                                            <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>2) style="display:none;" @endif  type="button" data-id="2" value="企业审核" >
+                                            @else
+                                            @endif
+                                            <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>3) style="display:none;" @endif  type="button" data-id="3" value="商家确认" >
+                                            <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>=4) style="display:none;" @endif  type="button" data-id="4" value="收货" >
                                             <input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
+                                            <input type="hidden"  name="order_contract" id="order_contract" value="">
                                         </div>
+                                        @if(!empty($order_contact))
+                                    <div class="item">
+                                        <div class="label">订单合同：</div>
+                                        <div >
+                                            <input content="{{getFileUrl($order_contact['contract'])}}"  class="btn btn25 view_order_contract"    type="button" data-id="3" value="查看合同" >
+                                        </div>
+                                    </div>
+                                        @else
+
+                                        @endif
                                     </div>
                                     <div class="item">
                                         <div class="label">发货状态：</div>
@@ -418,6 +432,17 @@
             var upload = layui.upload;
             var index = 0;
 
+            $(".view_order_contract").click(function(){
+                var content = $(this).attr('content');
+                index = layer.open({
+                    type: 1,
+                    title: '详情',
+                    area: ['800px', '600px'],
+                    content: '<img style="height:550px;" src="'+content+'">'
+                });
+            });
+
+            //查看订单合同
             $(".viewMessage").click(function(){
                 index = layer.open({
                     type: 1,
@@ -435,7 +460,7 @@
 
                 if(content==""){
                     layer.msg('未上传', {
-                        icon: 6,
+                        icon: 5,
                         time: 2000
                     });
                     return false;
@@ -455,7 +480,7 @@
                 var order_status = "{{$orderInfo['order_status']}}";
                 if(order_status<=2){
                     layer.msg("商家还未确认", {
-                        icon: 6,
+                        icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return ;
@@ -533,7 +558,7 @@
                 let pay_status ="{{$orderInfo['pay_status']}}";
                 if(pay_status==1){
                     layer.msg("订单已付款不能修改", {
-                        icon: 6,
+                        icon: 5,
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return false;
@@ -559,25 +584,26 @@
                 var content = $("#action_note").val();
                 var action_note = $(".action_note").val();
                 var order_status = $(this).attr("data-id");
+                var old_order_status = "{{$orderInfo['order_status']}}";
                 var pay_status = "{{$orderInfo['pay_status']}}";
                 var shipping_status = "{{$orderInfo['shipping_status']}}";
                 if(shipping_status==3){
                     layer.msg("买家已收货", {
-                        icon: 6,
+                        icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return ;
                 }
                 if(pay_status==1 && (order_status==0 || order_status==2 ||order_status==3)){
                     layer.msg("买家已付款", {
-                        icon: 6,
+                        icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return ;
                 }
                 if(pay_status!=1 && order_status==4){
                     layer.msg("买家还未付款", {
-                        icon: 6,
+                        icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return ;
@@ -585,43 +611,81 @@
 
                 if(content==""){
                     layer.msg("备注不能为空", {
-                        icon: 6,
+                        icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });
                     return ;
                 }
 
-                if(order_status ==3){
-                    //上传合同
-                    index = layer.open({
-                        type: 1,
-                        title: '上传订单合同',
-                        area: ['300px', '150px'],
-                        content: '<div class="label_value item">' +
-                        '<button style="margin-top:25px;margin-left:50px;" type="button" class="layui-btn upload-file" data-type="" data-path="order_contract" ><i class="layui-icon">&#xe681;</i>上传图片</button>' +
-                        '<img  style="margin-left:10px;margin-top:25px;width:60px;height:60px;display:none;" class="layui-upload-img"></div>'
-                    });
+                if(old_order_status == 2){//待商家确认
+                    if(order_status ==3){
+                        //上传合同
+                        index = layer.open({
+                            type: 1,
+                            title: '上传订单合同',
+                            area: ['300px', '200px'],
+                            content: '<div class="label_value item">' +
+                            '<button style="margin-top:25px;margin-left:50px;" type="button" class="layui-btn upload-file" data-type="" data-path="order_contract" ><i class="layui-icon">&#xe681;</i>上传合同</button>' +
+                            '<img  style="margin-left:10px;margin-top:25px;width:60px;height:60px;display:none;" class="layui-upload-img"><br/>'+
+                            '<button style="margin-left:50px;margin-top:10px;" class="button messageButton_ordercontract">确定</button></div>'
+                        });
 
-                    //文件上传
-                    upload.render({
-                        elem: '.upload-file' //绑定元素
-                        ,url: "/uploadImg" //上传接口
-                        ,accept:'file'
-                        ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
-                            this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
-                        }
-                        ,done: function(res){
-                            //上传完毕回调
-                            if(1 == res.code){
-                                var item = this.item;
-                                item.siblings('img').show().attr('src', res.data.url);
-                            }else{
-                                layer.msg(res.msg, {time:2000});
+                        $(document).delegate(".messageButton_ordercontract","click",function(){
+                            var order_id = "{{$orderInfo['id']}}";
+                            var contract = $("#order_contract").val();
+                            if( contract == ""){
+                                layer.msg("请先上传合同", {
+                                    icon: 5,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                                return false;
                             }
-                        }
-                    });
-                    return false;
+
+                            //上传成功，继续修改订单状态
+                            $.post('/admin/orderinfo/modifyOrderStatus',{'id':order_id,'action_note':action_note, 'order_status':order_status, 'contract':contract},function(res){
+                                //console.log(res.data);return false;
+                                if(res.code==200){
+                                    layer.msg(res.msg, {
+                                        icon: 6,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        window.location.reload();
+                                    });
+
+                                }else{
+                                    layer.msg(res.msg, {
+                                        icon: 5,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    });
+                                }
+                            },"json");
+                            layer.close(index);
+
+                        });
+
+                        //文件上传
+                        upload.render({
+                            elem: '.upload-file' //绑定元素
+                            ,url: "/uploadImg" //上传接口
+                            ,accept:'file'
+                            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                                this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                            }
+                            ,done: function(res){
+                                //上传完毕回调
+                                if(1 == res.code){
+                                    var item = this.item;
+                                    item.siblings('img').show().attr('src', res.data.url);
+                                    $("#order_contract").val(res.data.path);
+                                }else{
+                                    layer.msg(res.msg, {time:2000});
+                                }
+                            }
+                        });
+                        return false;
+                    }
                 }
+
 
                 $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
                     //console.log(res.data);return false;
@@ -635,7 +699,7 @@
 
                     }else{
                         layer.msg(res.msg, {
-                            icon: 6,
+                            icon: 5,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         });
                     }
@@ -650,7 +714,7 @@
                 var pay_status = "{{$orderInfo['pay_status']}}";
                 if(pay_status!=1){
                     layer.msg("买家未付款", {
-                        icon: 6,
+                        icon: 5,
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     });
 

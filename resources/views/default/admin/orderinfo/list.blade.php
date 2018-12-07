@@ -14,13 +14,13 @@
                 <div class="common-head order-coomon-head">
                     <div class="order_state_tab">
                         <a href="/admin/orderinfo/list?order_status=-1" @if($order_status==-1) class="current" @endif>全部订单@if($order_status==-1) <em>({{$total}})</em> @endif</a>
+                        <a href="/admin/orderinfo/list?order_status=1" @if($order_status==1) class="current" @endif>待审核@if($order_status==1) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=2" @if($order_status==2) class="current" @endif>待确认@if($order_status==2) <em>({{$total}})</em> @endif</a>
+                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>待付款@if($order_status==11) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=10" @if($order_status==10) class="current" @endif>待发货@if($order_status==10) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=5" @if($order_status==5) class="current" @endif>待开票@if($order_status==5) <em>({{$total}})</em> @endif</a>
                         <a href="/admin/orderinfo/list?order_status=4" @if($order_status==4) class="current" @endif>已完成@if($order_status==4) <em>({{$total}})</em> @endif</a>
-                        <a href="/admin/orderinfo/list?order_status=1" @if($order_status==1) class="current" @endif>待审核@if($order_status==1) <em>({{$total}})</em> @endif</a>
-                        <a href="/admin/orderinfo/list?order_status=-3" @if($order_status==-3) class="current" @endif>已收货@if($order_status==-3) <em>({{$total}})</em> @endif</a>
-                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>待付款@if($order_status==11) <em>({{$total}})</em> @endif</a>
+                        {{--<a href="/admin/orderinfo/list?order_status=-3" @if($order_status==-3) class="current" @endif>已收货@if($order_status==-3) <em>({{$total}})</em> @endif</a>--}}
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据" onclick="javascript:history.go(0)"><i class="icon icon-refresh"></i></div>
