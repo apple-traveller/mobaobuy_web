@@ -746,7 +746,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 });
 
 Route::pattern('path','.+');
-Route::any('{path}', 'CommonController@route');
+//Route::any('{path}', 'CommonController@route');
 
 
 
