@@ -281,9 +281,9 @@
 						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
 						<div class="mt10">
 							<span class="fl">支付凭证:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+							 <img style="width:60px;height: 50px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
 							</div>
 						@else
 							暂无
@@ -297,7 +297,7 @@
 						<span style="margin-top:2px;">合同:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
-						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
 						 </div>
 						  
 						@else
