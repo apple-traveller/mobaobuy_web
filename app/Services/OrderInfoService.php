@@ -696,7 +696,7 @@ class OrderInfoService
                 }
             }
             if($data['order_status']==3){ //商家确认
-                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3, 'contract'=>$data["contract"]]);
                 //保存订单合同
                 $s_data['order_id'] = $data['id'];
                 $s_data['contract'] = $data["contract"];
