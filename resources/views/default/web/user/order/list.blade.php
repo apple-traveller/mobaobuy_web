@@ -70,7 +70,7 @@
                             }
                             html += '</p>';
 
-                            html += '<p><span class="pl10 fl" style="width:30%">订单单号：<a>' + full.order_sn +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.add_time +'</span></p></td></tr>';
+                            html += '<p style="clear: both;"><span class="pl10 fl" style="width:30%">订单单号：<a>' + full.order_sn +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.add_time +'</span></p></td></tr>';
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;">';
                                 html += '<p>'+ full.goods[index].goods_name + '</p><p>';
