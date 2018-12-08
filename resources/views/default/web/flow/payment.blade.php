@@ -18,7 +18,7 @@
         function openFrame(){
             $('#power_edit_frame').show();
             $('.block_bg').show();
-        })
+        }
 
         //提交
         function payVoucherSave(){
