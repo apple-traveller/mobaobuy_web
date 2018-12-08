@@ -64,6 +64,17 @@
       .whitebg{background: #FFFFFF;}
         .power_list li{font-size: 18px;overflow: hidden;}.til_btn{padding: 7px 39px;border-radius: 3px; color: #fff;}
         .code_greenbg{background-color: #75b335;}.blackgraybg{background-color: #CCCCCC;}
+
+        .payment-order-box{padding: 30px;}
+        .payment-box{padding: 30px;}
+        .payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}
+        .payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}
+        .payment-box .p-mode-list {margin-top: 20px;width: calc(100% + 12px);overflow: hidden;}
+        .payment-box .p-mode-item {float: left;width: 178px;height: 88px;border: 1px solid #d2d2d2;text-align: center;position: relative;margin: 0 12px 12px 0;text-align:center}
+        .payment-box .p-mode-item input[type="button"]{border: 0;width: 178px;height: 88px;display: block;font-size: 0;outline: 0;cursor: pointer;}
+        .p-mode-list .alipay input[type="button"] {background: url({{asset(themePath('/','web').'/img/alipay-icon.png')}}) center center no-repeat;}
+        .p-mode-list .wxpay input[type="button"] {background: url({{asset(themePath('/','web').'/img/wxpay-icon.png')}}) center center no-repeat;}
+        .p-mode-list .enterprise_transfer input[type="button"] {background: url({{asset(themePath('/','web').'/img/enterprisepay-icon.jpg')}}) center center no-repeat;}
     </style>
 </head>
 
@@ -90,50 +101,38 @@
                     <div class="p-mode-item enterprise_transfer"></div>
                 </div>
             </div>
-            <div class="payment-list mt20">
+            {{--<div class="payment-list mt20">
                 <div class="p-mode-tit"><h3>在线支付</h3></div>
                 <div class="p-mode-list">
                     <div class="p-mode-item alipay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=alipay')}}')" /></div>
                     <div class="p-mode-item wxpay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=wxpay')}}')"/></div>
                 </div>
-            </div>
+            </div>--}}
         </div>
     </div>
 </div>
 
  <div class="block_bg"></div>
-    <!--编辑框-->
-    <div class="power_edit whitebg" id="power_edit_frame" style="">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
-        <ul class="power_list ml30 mt25">
-            <li>
-                <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
-                <div class="ovh mt15"><span class="mr5">开户银行 : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
-                <div class="ovh mt15"><span class="mr5">银行账户 : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
-                <div class="ovh mt15"><span class="fl mr10">上传付款凭证 : </span>
-                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
-                </div>
-                
-            </li>
+<!--编辑框-->
+<div class="power_edit whitebg" id="power_edit_frame" style="">
+    <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+    <ul class="power_list ml30 mt25">
+        <li>
+            <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
+            <div class="ovh mt15"><span class="mr5">开户银行 : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+            <div class="ovh mt15"><span class="mr5">银行账户 : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
+            <div class="ovh mt15"><span class="fl mr10">上传付款凭证 : </span>
+                @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
+            </div>
 
-            <li style="clear:both;margin-top:30px; margin-bottom: 35px;">
-                <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div>
-                <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">取消</div></li>
-        </ul>
-    </div>
+        </li>
 
-<style>
-    .payment-order-box{padding: 30px;}
+        <li style="clear:both;margin-top:30px; margin-bottom: 35px;">
+            <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div>
+            <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">取消</div></li>
+    </ul>
+</div>
 
-    .payment-box{padding: 30px;}
-    .payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}
-    .payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}
-    .payment-box .p-mode-list {margin-top: 20px;width: calc(100% + 12px);overflow: hidden;}
-    .payment-box .p-mode-item {float: left;width: 178px;height: 88px;border: 1px solid #d2d2d2;text-align: center;position: relative;margin: 0 12px 12px 0;text-align:center}
-    .payment-box .p-mode-item input[type="button"]{border: 0;width: 178px;height: 88px;display: block;font-size: 0;outline: 0;cursor: pointer;}
-    .p-mode-list .alipay input[type="button"] {background: url({{asset(themePath('/','web').'/img/alipay-icon.png')}}) center center no-repeat;}
-    .p-mode-list .wxpay input[type="button"] {background: url({{asset(themePath('/','web').'/img/wxpay-icon.png')}}) center center no-repeat;}
-</style>
 
 @include(themePath('.','web').'web.include.partials.footer_service')
 @include(themePath('.','web').'web.include.partials.footer_new')
