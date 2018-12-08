@@ -296,7 +296,7 @@
 <div class="payImg" style="margin-top: 10px; margin-left: 0px;">
 						<span style="margin-top:2px;">合同:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
-						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
+						 <div style="float:right;margin-left:10px;">
 						 	<img style="width:100px;" onclick="window.open('{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}', '_blank'); " src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
 						 </div>
 						  

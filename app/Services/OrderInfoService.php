@@ -86,6 +86,9 @@ class OrderInfoService
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
+            if(!empty($item['contract'])){
+                $item['contract'] = getFileUrl($item['contract']);
+            }
 
             //区分待确认的订单
             //取消需要返库
