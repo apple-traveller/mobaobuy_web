@@ -12,12 +12,12 @@
 
                      $('#power_edit_frame,.block_bg').remove();
                      window.location.reload();
-                })
+                });
+        });
 
-                $('.accounting_payment').click(function(){
-                    $('#power_edit_frame').show();
-                    $('.block_bg').show();
-                })
+        function openFrame(){
+            $('#power_edit_frame').show();
+            $('.block_bg').show();
         })
 
         //提交
@@ -98,7 +98,7 @@
             <div class="payment-list">
                 <div class="p-mode-tit"><h3>线下支付</h3></div>
                 <div class="p-mode-list">
-                    <div class="p-mode-item enterprise_transfer"></div>
+                    <div class="p-mode-item enterprise_transfer"><input type="button" onclick="openFrame()" /></div>
                 </div>
             </div>
             {{--<div class="payment-list mt20">
