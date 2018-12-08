@@ -61,40 +61,35 @@
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
                                         <td>
                                             <div class="tDiv">
-                                                {{$vo['trade_user']['user_name']}}
-                                            </div>
-                                            <div class="tDiv">
-                                                {{$vo['trade_user']['nick_name']}}
+                                                <div>{{$vo['trade_user']['user_name']}}</div>
+                                                <div>{{$vo['trade_user']['nick_name']}}</div>
                                             </div>
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
-
                                         <td>
                                             <div class="tDiv">
                                                {{$vo['_status']}}
                                             </div>
                                         </td>
-
-
                                         <td>
                                             <div class="tDiv">
-                                                @if($vo['froms']=="pc")
-                                                    PC
-                                                @elseif($vo['froms']=="weichat")
-                                                    小程序
-                                                @endif
-                                            </div>
-                                            <div class="tDiv">
-                                                @if($vo['extension_code']=="cart")
-                                                    购物车
-                                                @elseif($vo['extension_code']=="wholesale")
-                                                    集采拼团
-                                                @elseif($vo['extension_code']=="consign")
-                                                    清仓特卖
-                                                @elseif($vo['extension_code']=="promote")
-                                                    限时抢购
-                                                @endif
+                                                <div>
+                                                    @if($vo['froms']=="pc")
+                                                        PC
+                                                    @elseif($vo['froms']=="weichat")
+                                                        小程序
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    @if($vo['extension_code']=="wholesale")
+                                                        集采拼团
+                                                    @elseif($vo['extension_code']=="consign")
+                                                        清仓特卖
+                                                    @elseif($vo['extension_code']=="promote")
+                                                        限时抢购
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
                                         <td><div class="tDiv">{{$vo['order_amount']}}</div></td>
