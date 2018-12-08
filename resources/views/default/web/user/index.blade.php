@@ -54,7 +54,7 @@
 						<div class="fl ml30"><img src="img/per_logo.png"/></div>
 						<div class="fl ml15 ovh">
 							<span class="mt5 db">{{session('_web_user')['nick_name']}}</span>
-							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业会员 @elseif(empty($memberInfo['userRealInfo'])) <a href="/account/userRealInfo"><style>.member_Name{width:96px;}</style>前去实名认证</a> @elseif($memberInfo['userRealInfo']['review_status'] == 1)个人会员 @elseif($memberInfo['userRealInfo']['review_status'] == 0) 待审核 @elseif($memberInfo['userRealInfo']['review_status'] == 2) 审核不通过 @endif</div>
+							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业会员 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业职员 @elseif(empty($memberInfo['userRealInfo'])) <a href="/account/userRealInfo"><style>.member_Name{width:96px;}</style>前去实名认证</a> @elseif($memberInfo['userRealInfo']['review_status'] == 1)个人会员 @elseif($memberInfo['userRealInfo']['review_status'] == 0) 待审核 @elseif($memberInfo['userRealInfo']['review_status'] == 2) 审核不通过 @endif</div>
 							<span class="mt20 gray db">欢迎来到会员中心！</span>
 						</div>
 					</li>
@@ -99,7 +99,7 @@
 				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;">
 					<span>商品推荐</span>
 					<span class="fr colr_blu mr35">
-						<a href="/goodsList">查看全部报价>></a>
+						<a href="/goodsList/1">查看全部报价>></a>
 					</span>
 				</h1>
 		
@@ -117,7 +117,7 @@
 					<td class="green">￥{{$v['shop_price']}}</td>
 					<td>{{$v['goods_number']}}</td>
 					<td>{{$v['delivery_place']}}</td>
-					<td><a class="or_re_btn" href="/goodsDetail?id={{$v['id']}}"><span style="color: #fff;">查看详情</span></a></td>
+					<td><a class="or_re_btn" href="/goodsDetail/{{$v['id']}}/1"><span style="color: #fff;">查看详情</span></a></td>
 				</tr>
 				@endforeach
 				
