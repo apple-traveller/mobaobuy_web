@@ -56,6 +56,7 @@
                 }
             },'POST','JSON');
         });
+        @if(!$userInfo['is_firm'])
         //注销账号
         $('.account_layout_btn').click(function(){
             $.msg.confirm('注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
@@ -75,6 +76,7 @@
                 }
             )
         });
+        @endif
     </script>
 @endsection
 

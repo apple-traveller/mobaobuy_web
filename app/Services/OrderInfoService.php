@@ -37,6 +37,12 @@ class OrderInfoService
         $re = OrderInfoRepo::getListBySearch($pager, $condition);
         foreach ($re['list'] as $k=>$v){
             $re['list'][$k]['_status'] = self::getOrderStatusName($v['order_status'],$v['pay_status'],$v['shipping_status'],$v['deposit_status'],$v['extension_code']);
+            if($v['user_id'] > 0 && $v['firm_id'] > 0){
+                $real_user_id = $v['firm_id'];
+            }else{
+                $real_user_id = $v['user_id'];
+            }
+            $re['list'][$k]['trade_user'] = UserService::getInfo($real_user_id);
         }
         return $re;
     }
