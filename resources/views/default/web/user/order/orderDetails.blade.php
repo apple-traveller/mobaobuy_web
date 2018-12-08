@@ -283,7 +283,7 @@
 							<span class="fl">支付凭证:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-							 <img style="width:60px;height: 50px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
+							 <img style="width:60px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
 							</div>
 						@else
 							暂无
@@ -297,7 +297,7 @@
 						<span style="margin-top:2px;">合同:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
-						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
+						 	<img style="width:100px;" onclick="window.open('{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}', '_blank'); " src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
 						 </div>
 						  
 						@else
