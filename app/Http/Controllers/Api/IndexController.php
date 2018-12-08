@@ -19,7 +19,7 @@ class IndexController extends ApiController
     //获取首页大图轮播
     public function getBannerAd(Request $request)
     {
-        $banner_ad = AdService::getActiveAdvertListByPosition(4);
+        $banner_ad = AdService::getActiveAdvertListByPosition(3);
         foreach($banner_ad as $k=>$v){
             $banner_ad[$k]['ad_img'] = getFileUrl($banner_ad[$k]['ad_img']);
         }

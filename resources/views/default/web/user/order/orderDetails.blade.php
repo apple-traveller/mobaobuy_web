@@ -297,7 +297,7 @@
 						<span style="margin-top:2px;">合同:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 						 <div style="float:right;margin-left:10px;">
-							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">
+							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载没有
 						 	<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
 							 </a>
 						 </div>
