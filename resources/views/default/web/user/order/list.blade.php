@@ -64,8 +64,13 @@
                         	var html = '<div style="height: 15px;"></div>';
 
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';
-                            html += '<tr  class="tal"><td colspan="4"><p class="pl10 fs16">'+ full.status +'</p>';
-                            html += '<p><span class="pl10 fl" style="width:30%">订单单号：<a>' + full.order_sn +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.add_time +'</span></p></td></tr>';
+                            html += '<tr  class="tal"><td colspan="4"><p class="pl10 fs16"><span class="pl10 fl" style="width:50%">'+ full.status +'</span>';
+                            if(full.contract){
+                                html += '<span class="pr10 fr"><a href="'+full.contract+'" target="_blank">查看合同</a></span></p>';
+                            }
+                            html += '</p>';
+
+                            html += '<p style="clear: both;"><span class="pl10 fl" style="width:30%">订单单号：<a>' + full.order_sn +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.add_time +'</span></p></td></tr>';
                             for(var index in full.goods){
                                 html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 26px;">';
                                 html += '<p>'+ full.goods[index].goods_name + '</p><p>';

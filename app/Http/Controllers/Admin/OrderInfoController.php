@@ -45,17 +45,15 @@ class OrderInfoController extends Controller
             $condition['order_sn'] = "%".$order_sn."%";
         }
         $orders = OrderInfoService::getOrderInfoList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        $users = UserService::getUsersByColumn([],['id','user_name']);
-        $status = OrderInfoService::getOrderCountByStatus();//各订单状态
+        $status = OrderInfoService::getOrderCountByStatus();//各订单状态数量
         return $this->display('admin.orderinfo.list',[
             'orders'=>$orders['list'],
             'total'=>$orders['total'],
-            'users'=>$users,
             'order_sn'=>$order_sn,
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
             'order_status'=>$order_status,
-            'status'=>$status
+            'status' => $status
         ]);
     }
 

@@ -479,7 +479,7 @@
                         _html += '<li>' +
                             '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:12%;">'+_store_name+'</span>' +
                             '<span style="width:11%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail?id='+list[i].id+'&shop_id='+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
+                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
                             '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
