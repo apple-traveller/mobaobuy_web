@@ -56,6 +56,7 @@
                 }
             },'POST','JSON');
         });
+        @if(!$userInfo['is_firm'])
         //注销账号
         $('.account_layout_btn').click(function(){
             $.msg.confirm('注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
@@ -75,6 +76,7 @@
                 }
             )
         });
+        @endif
     </script>
 @endsection
 
@@ -101,7 +103,7 @@
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
             {{--未实名认证和 个人认证的时候可以注销账号 注销个人认证的账号要注意清除与企业的关联信息--}}
-            @if($userInfo['is_firm']!=1)
+            @if(!$userInfo['is_firm'])
                 <button class="account_layout_btn redbg fs18 white">注销账号</button>
             @endif
         </div>

@@ -111,241 +111,246 @@
 	<div class=" clearfix mt5">
 		<div class="w1200" style="margin-bottom: 40px;">
 			<div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
-			<div class="order_pro_progress whitebg mt5">
-				<div class="order_pro_stute">
-					<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
-					<span class="Order_number">订单来源：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
-					@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
-						<span class="tac db fs24 fwb red mt30">已作废</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
-						<span class="tac db fs24 fwb red mt30">待企业审核</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 2)
-						<span class="tac db fs24 fwb red mt30">待商家确认</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
-						<span class="tac db fs24 fwb red mt30">已确认</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
-						<span class="tac db fs24 fwb red mt30">已完成</span>
-					@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
-						<span class="tac db fs24 fwb red mt30">待开票</span>
-					@endif
-				</div>
-				<div class="order_pro_jd fl">
-					<!-- <div class="order_jd_bg order_jd_bg1"></div> -->
-					<ul  class="order_jd_text">
-						<li>
-							<img class="imgInfor" src="{{asset('/img/status_pay00.png')}}">
-
-								<span class="jd_text_con black">提交订单</span>
-							<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
-
-
-						</li>
-
-						@if(!empty($orderDetailsInfo['orderInfo']['confirm_time']))
-						<li>
-							<img  class="imgInfor" src="{{asset('/img/status_pay01.png')}}">
-							<span class="jd_text_con black">卖家确认</span>
-							<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_time']}}</span>
-						</li>
-						@endif
-
-						@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
-						<li>
-							<img class="imgInfor" src="{{asset('/img/status_pay02.png')}}">
-							<span class="jd_text_con black">付款时间</span>
-							<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
-						</li>
-						@endif
-
-						@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
-						<li>
-							<img class="imgInfor" src="{{asset('/img/status_pay03.png')}}">
-							<span class="jd_text_con black">发货时间</span>
-							<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
-						</li>
-						@endif
-
-						@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
-						<li>
-							<img class="imgInfor" src="{{asset('/img/status_pay04.png')}}">
-							<span class="jd_text_con black">运输中</span>
-							<span class="jd_text_date"></span>
-						</li>
-						@endif
-
-						@if(!empty($orderDetailsInfo['orderInfo']['confirm_take_time']))
-
-						<li>
-							<img class="imgInfor" src="{{asset('/img/status_pay05.png')}}">
-							<span class="jd_text_con black">确认收货时间</span>
-							<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>
-						</li>
-						@endif
-					</ul>
-				</div>
+		<div class="order_pro_progress whitebg mt5">
+			<div class="order_pro_stute">
+				<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
+				<span class="Order_number">订单来源：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
+				@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
+					<span class="tac db fs24 fwb red mt30">已作废</span>
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
+					<span class="tac db fs24 fwb red mt30">待企业审核</span>
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 2)
+					<span class="tac db fs24 fwb red mt30">待商家确认</span>
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
+					<span class="tac db fs24 fwb red mt30">已确认</span>
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
+					<span class="tac db fs24 fwb red mt30">已完成</span>
+				@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
+					<span class="tac db fs24 fwb red mt30">待开票</span>
+				@endif
 			</div>
-		   <!--物流信息-->
-			<div class="whitebg br1 mt20 ovh">
-				<div class="order_pro_stute">
-					@if(!empty($orderDetailsInfo['delivery_info']))
-						<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-						<span class="ml30 db mt20">
-							@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
-								物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
-								物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
-							@endforeach
-						</span>
-					@else
-						<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+			<div class="order_pro_jd fl">
+				<!-- <div class="order_jd_bg order_jd_bg1"></div> -->
+				<ul  class="order_jd_text">
+					<li>
+						<img class="imgInfor" src="{{asset('/img/status_pay00.png')}}">
+					
+							<span class="jd_text_con black">提交订单</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
+					
+						
+					</li>
+
+					@if(!empty($orderDetailsInfo['orderInfo']['confirm_time']))
+					<li>
+						<img  class="imgInfor" src="{{asset('/img/status_pay01.png')}}">
+						<span class="jd_text_con black">卖家确认</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_time']}}</span>
+					</li>
 					@endif
-				</div>
-				<div class="fl wlgz_text">
-					<ul class="wlxx">
 
-					</ul>
-				</div>
+					@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
+					<li>
+						<img class="imgInfor" src="{{asset('/img/status_pay02.png')}}">
+						<span class="jd_text_con black">付款时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<li>
+						<img class="imgInfor" src="{{asset('/img/status_pay03.png')}}">
+						<span class="jd_text_con black">发货时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
+					<li>
+						<img class="imgInfor" src="{{asset('/img/status_pay04.png')}}">
+						<span class="jd_text_con black">运输中</span>
+						<span class="jd_text_date"></span>
+					</li>
+					@endif
+
+					@if(!empty($orderDetailsInfo['orderInfo']['confirm_take_time']))
+					
+					<li>
+						<img class="imgInfor" src="{{asset('/img/status_pay05.png')}}">
+						<span class="jd_text_con black">确认收货时间</span>
+						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>
+					</li>
+					@endif
+				</ul>
 			</div>
-			<!--收货人信息/商家信息/发票信息-->
-			<div class="whitebg br1 mt20 ovh">
-				<!--收货人信息-->
-				<div class="consignee bbright">
-					<h1 style="font-size:16px;">收货人信息</h1>
-					<span class="ml20 db mt20">
-						<span class="fl">收  货  人:</span>
-						<span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span>
+		</div>
+	   <!--物流信息-->
+		<div class="whitebg br1 mt20 ovh">
+			<div class="order_pro_stute">
+				@if(!empty($orderDetailsInfo['delivery_info']))
+					<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+					<span class="ml30 db mt20">
+						@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
+							物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
+							物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
+						@endforeach
 					</span>
-					<span class="ml20 db mt5">
-						<span class="fl">手机号码: </span>
-						<span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span>
-					</span>
-					<span class="ml20 ovh db mt5">
-						<span class="fl">收货地址:</span>
-						<span class="fl consignee_addr">
-							{{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}
-						</span>
-					</span>
-					<span class="ml20 db mt5">
-						<span class="fl">买家留言: </span>
-						<span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span>
-					</span>
-				</div>
-				<!--商家信息-->
-				<div class="consignee bbright">
-					<!-- 商家信息 -->
+				@else
+					<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+				@endif
+			</div>
+			<div class="fl wlgz_text">
+				<ul class="wlxx">
 
-						<h1 style="font-size:16px;">商家信息</h1>
-					<span class="ml20 db mt20" style="width: 410px" >
+				</ul>
+			</div>
+		</div>
+		<!--收货人信息/商家信息/发票信息-->
+		<div class="whitebg br1 mt20 ovh">
+			<!--收货人信息-->
+			<div class="consignee bbright">
+				<h1 style="font-size:16px;">收货人信息</h1>
+				<span class="ml20 db mt20">
+					<span class="fl">收  货  人:</span>
+					<span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span>
+				</span>
+				<span class="ml20 db mt5">
+					<span class="fl">手机号码: </span>
+					<span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span>
+				</span>
+				<span class="ml20 ovh db mt5">
+					<span class="fl">收货地址:</span>
+					<span class="fl consignee_addr">
+						{{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}
+					</span>
+				</span>
+				<span class="ml20 db mt5">
+					<span class="fl">买家留言: </span>
+					<span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span>
+				</span>
+			</div>
+			<!--商家信息-->
+			<div class="consignee bbright">
+				<!-- 商家信息 -->
+				
+					<h1 style="font-size:16px;">商家信息</h1>
+				<span class="ml20 db mt20" style="width: 410px" >
+					<span class="fl">公司名称 :</span>
+					<span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span>
+				</span>
+				<span class="ml20 db ">
+					<span class="fl">卖家留言 :</span>
+					<span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span>
+				</span>
+
+				
+			</div>
+			
+			<!--发票信息-->
+			<div class="consignee ">
+				<h1 style="font-size:16px;">发票信息</h1>
+				<span class="ml20 db mt20" >
+					<span class="fl">发票抬头：</span>
+					<span class="ml10">
+						@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
+							企业
+						@else
+							个人
+						@endif
+					</span>
+				</span>
+				@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
+					<span class="ml20 db ">
 						<span class="fl">公司名称 :</span>
-						<span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span>
+						<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['company_name']}}</span>
 					</span>
 					<span class="ml20 db ">
-						<span class="fl">卖家留言 :</span>
-						<span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span>
+						<span class="fl">税号 :</span>
+						<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['tax_id']}}</span>
 					</span>
-
-
-				</div>
-
-				<!--发票信息-->
-				<div class="consignee ">
-					<h1 style="font-size:16px;">发票信息</h1>
-					<span class="ml20 db mt20" >
-						<span class="fl">发票抬头：</span>
-						<span class="ml10">
-							@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
-								企业
-							@else
-								个人
-							@endif
-						</span>
-					</span>
-					@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
-						<span class="ml20 db ">
-							<span class="fl">公司名称 :</span>
-							<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['company_name']}}</span>
-						</span>
-						<span class="ml20 db ">
-							<span class="fl">税号 :</span>
-							<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['tax_id']}}</span>
-						</span>
-					@endif
-				</div>
+				@endif
 			</div>
-			<!--收货人信息/商家信息/发票信息-->
-			<div class="whitebg br1 mt20 ovh">
-				<!-- 付款凭证 -->
+		</div>
+<!--收货人信息/商家信息/发票信息-->
+		<div class="whitebg br1 mt20 ovh">
+
+<!-- 付款凭证 -->
 				<div  class="consignee "  style="margin-top: 10px;">
-
-						<div class="payImg bbright" style="margin-top:20px;">
-							<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
-							<div class="mt10">
-								<span class="fl">支付凭证:</span>
-							@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-								<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-								 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-								</div>
-							@else
-								暂无
-							@endif
+					
+					<div class="payImg bbright" style="margin-top:20px;">
+						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
+						<div class="mt10">
+							<span class="fl">支付凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
+							 <img style="width:60px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
 							</div>
-
+						@else
+							暂无
+						@endif
 						</div>
-					<div class="fl mt20">
-						<h1 style="font-size:16px;margin-left: 0;">合同</h1>
-						<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
-							<span style="margin-top:2px;">合同:</span>
-							@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-							 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
-								<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-							 </div>
-
-							@else
-								暂无
-							@endif
-						</div>
-						<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
-							<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
-							@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-
-						</div>
-						<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
-
+						
 					</div>
+<div class="fl mt20">
+		<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
+						<span style="margin-top:2px;">合同:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
+						 <div style="float:right;margin-left:10px;">
+							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载没有
+						 	<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
+							 </a>
+						 </div>
+						  
+						@else
+							暂无
+						@endif
+					</div>
+<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+						<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
+						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+						
+					</div>
+					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+
+</div>
+					
+						
+					
 				</div>
-			</div>
-			<!--订单列表-->
-			<div class="whitebg br1 mt20 ovh">
-				<ul class="order-list-brand">
+		</div>
+		<!--订单列表-->
+		<div class="whitebg br1 mt20 ovh">
+			<ul class="order-list-brand">
+				<li>
+					<span style="width:29%">商品名称</span>
+					<span style="width:20%">单价</span>
+					<span style="width:20%">数量</span>
+					<span style="width:29%">金额</span>
+					<!-- <span>操作</span> -->
+				</li>
+				@foreach($orderDetailsInfo['goodsInfo'] as $v)
 					<li>
-						<span style="width:29%">商品名称</span>
-						<span style="width:20%">单价</span>
-						<span style="width:20%">数量</span>
-						<span style="width:29%">金额</span>
-						<!-- <span>操作</span> -->
+						<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
+						<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
+						<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+						<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
+						{{--<span></span>--}}
 					</li>
-					@foreach($orderDetailsInfo['goodsInfo'] as $v)
-						<li>
-							<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
-							<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
-							<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
-							<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
-							{{--<span></span>--}}
-						</li>
-					@endforeach
-				</ul>
-				<div class="Amount_money">
-					<div class="db">
-						<span>商品总额：</span>
-						<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span>
-					</div>
-					<div class="db mt15">
-						<span class="di">运       费：</span>
-						<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
-					</div>
-					<div class="db mt20 red">
-						<span class="lh35">应付总额：</span>
-						<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
-					</div>
+				@endforeach
+			</ul>
+			<div class="Amount_money">
+				<div class="db">
+					<span>商品总额：</span>
+					<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span>
+				</div>
+				<div class="db mt15">
+					<span class="di">运       费：</span>
+					<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
+				</div>
+				<div class="db mt20 red">
+					<span class="lh35">应付总额：</span>
+					<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
 				</div>
 			</div>
 		</div>
