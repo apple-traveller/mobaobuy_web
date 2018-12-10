@@ -98,7 +98,7 @@
             <div class="payment-list">
                 <div class="p-mode-tit"><h3>线下支付</h3></div>
                 <div class="p-mode-list">
-                    <div style="width:268px;" class="p-mode-item enterprise_transfer"><input style="width:268px;" type="button" onclick="openFrame()" /></div>
+                    <div style="width:200px;" class="p-mode-item enterprise_transfer"><input style="width:200px;" type="button" onclick="openFrame()" /></div>
                 </div>
             </div>
             {{--<div class="payment-list mt20">
