@@ -194,6 +194,9 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('商品信息不存在！');
         }
+        if($number > $shopGoodsQuoteInfo['goods_number']){
+            self::throwBizError('不能大于库存数量');
+        }
         //规格判断处理
         if($number % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $number;

@@ -211,7 +211,10 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/editOrderContract', 'OrderInfoController@editOrderContract');//订单列表
 
         Route::any('/logistics/list', 'LogisticsController@getList');//站内物流信息列表
+        Route::get('/logistics/add', 'LogisticsController@addForm');//添加
+        Route::get('/logistics/edit', 'LogisticsController@editForm');//编辑
         Route::post('/logistics/save', 'LogisticsController@save');//保存
+        Route::get('/logistics/delete', 'LogisticsController@delete');//删除
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
@@ -760,6 +763,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
             Route::post('/order/createOrder','OrderController@createOrder');//提交订单
 
         });
+        Route::post('/toPay','OrderController@toPay');//去付款
     });
 
 });

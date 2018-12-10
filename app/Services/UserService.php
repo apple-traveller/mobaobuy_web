@@ -631,7 +631,9 @@ class UserService
         #认证成功 绑定qq或微信
         $userInfo = AppUsersRepo::getInfoByFields(['user_id'=>$user_id]);
         if(!empty($userInfo)){
-            return true; //如果用户的绑定信息存在就不走下面绑定过程，直接登录
+            //如果用户的绑定信息存在就不走下面绑定过程，直接修改open_id
+            AppUsersRepo::modify($userInfo['id'],['open_id'=>$openid]);
+            return UserRepo::getInfo($userInfo['user_id']);
         }
         $app_data = [
             'open_id' => $openid,
