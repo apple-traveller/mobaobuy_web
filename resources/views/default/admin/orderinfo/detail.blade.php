@@ -205,17 +205,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        @if($orderInfo['shipping_status']==0 || $orderInfo['shipping_status']==2)
-                                        <tr>
-                                            <td colspan="6">
-                                                <div class="order_total_fr">
-                                                    <div class="layui-btn layui-btn-sm order_delivery" data-status="{{$orderInfo['shipping_status']}}" style="margin-right: 30px;"><a href="/admin/orderinfo/delivery?order_id={{$orderInfo['id']}}&currpage={{$currpage}}">生成发货单</a></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @else
 
-                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
