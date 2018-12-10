@@ -51,7 +51,7 @@
                             @foreach($logistics as $vo)
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                <td><div class="tDiv"><span class="viewShippingContent" content="{{$vo['shipping_content']}}">{{$vo['shipping_billno']}}</span></div></td>
+                                <td><div class="tDiv"><span style="cursor: pointer;color:red;" class="viewShippingContent" content="{{$vo['shipping_content']}}">{{$vo['shipping_billno']}}</span></div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                 <td><div class="tDiv">{{$vo['shipping_company']}}</div></td>
                                 <td class="handle">
