@@ -20,6 +20,19 @@
 		//
 		function getLogisticsInfo(){
 			let _delivery_id = $('#delivery_id').data('delivery_id');
+			
+            $.ajax({
+                url: "/logistics/detail",
+                dataType: "json",
+                data:{
+                    'id': _delivery_id
+                },
+                type:"get",
+                success:function(data){
+                    if(data.code == 1){
+                        let _list = data.data.Traces;
+                        let _length = data.data.Traces.length;
+                        let _html = '';
 			if(_delivery_id != 0){
                 $.ajax({
                     url: "/logistics/detail",
@@ -276,6 +289,13 @@
 
 				<!-- 付款凭证 -->
 				<div  class="consignee "  style="margin-top: 10px;">
+					<div class="payImg bbright" style="margin-top:20px;">
+						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
+						<div class="mt10">
+							<span class="fl">支付凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
+							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 
 						<div class="payImg bbright" style="margin-top:20px;">
 							<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
@@ -291,7 +311,36 @@
 							</div>
 
 						</div>
-					<div class="fl mt20">
+						
+					</div>
+			<div class="fl mt20">
+				<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+				<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
+					<span style="margin-top:2px;">合同:</span>
+					@if(!empty($orderDetailsInfo['orderInfo']['contract']))
+						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 </div>
+
+						<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+							<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
+							@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+						</div>
+						<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+							  
+					@else
+						暂无
+					@endif
+				</div>
+
+				
+
+</div>
+					
+						
+					
+
+					<!-- <div class="fl mt20">
 					<h1 style="font-size:16px;margin-left: 0;">合同</h1>
 					<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
 						<span style="margin-top:2px;">合同:</span>
@@ -310,7 +359,7 @@
 						<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
 						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
 					</div>
-					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div> -->
 				</div>
 				</div>
 			</div>
