@@ -21,6 +21,20 @@ class LoginController extends ApiController
         return $this->success($data);
     }
 
+    public function getNewOpenId(Request $request){
+        $code = $request->input('code');
+        $url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxb936150f08e31321&secret=b329babee031fd2a9f18d0dc8366c1b0&js_code=' . $code . '&grant_type=authorization_code';
+        //yourAppid为开发者appid.appSecret为开发者的appsecret,都可以从微信公众平台获取；
+        $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
+        $json = json_decode($info);//对json数据解码
+        $arr = get_object_vars($json);
+        $data = [
+            'openid' => $arr['openid'],
+            'session_key' => $arr['session_key']
+        ];
+        return $this->success($data);
+    }
+
     public function login(Request $request)
     {
         $openid = $request->input('openid');

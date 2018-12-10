@@ -68,9 +68,9 @@
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
                                     <td>
                                         <div class="tDiv">
-                                            @if($vo['consign_status'] == 0 && $vo['expiry_time'] > \Carbon\Carbon::now())
+                                            @if($vo['consign_status'] == 0 && ($vo['expiry_time'] > \Carbon\Carbon::now() || $vo['expiry_time'] == null))
                                                 <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>待开始</div>
-                                            @elseif($vo['consign_status'] == 1 && $vo['expiry_time'] > \Carbon\Carbon::now())
+                                            @elseif($vo['consign_status'] == 1 && ($vo['expiry_time'] > \Carbon\Carbon::now() || $vo['expiry_time'] == null))
                                                 <div class='layui-btn layui-btn-sm layui-btn-radius '>进行中</div>
                                             @else
                                                 <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-danger'>已结束</div>

@@ -78,6 +78,8 @@ class ActivityConsignController extends Controller
         $data = $request->all();
         unset($data['cat_id']);
         unset($data['cat_id_LABELS']);
+        $data['delivery_place'] = $data['place_id_LABELS'];
+        unset($data['place_id_LABELS']);
         $errorMsg = [];
         if($data['goods_id']==0||empty($data['goods_id'])){
             $errorMsg[] = '商品不能为空';

@@ -96,11 +96,14 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
                                 <div class="label_value">
-                                    <input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{old('delivery_place')}}" style="display: none"/>
-                                    <input type="text" readonly="readonly" id="area2" name="place_id" value="{{old('place_id')}}" style="display: none"/>
-                                    <div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">
-                                    </div>
-                                    <div class="form_prompt"></div>
+                                    <input type="hidden" name="place_id" id="place_id"/>
+                                    <input type="text" name="place_id_LABELS" old="" autocomplete="off" treeId="" id="delivery_place" treeDataUrl="/admin/region/getRegionTree" size="40"  class="text" title="">
+
+                                    {{--<input type="text" readonly="readonly" id="area1" name="delivery_place" value="{{old('delivery_place')}}" style="display: none"/>--}}
+                                    {{--<input type="text" readonly="readonly" id="area2" name="place_id" value="{{old('place_id')}}" style="display: none"/>--}}
+                                    {{--<div class="ui-area fl" data-value-name="area1" data-value-id="area2"  data-init-name="" style="width: 321px;height:33px;" id="test">--}}
+                                    {{--</div>--}}
+                                    {{--<div class="form_prompt"></div>--}}
                                 </div>
                             </div>
 
@@ -240,6 +243,13 @@
 
             $("#cat_name").focus(function(){
                 showWinZtreeSelector(this);
+            });
+            $("#delivery_place").focus(function(){
+                showWinZtreeSelector(this);
+            });
+            $("#delivery_place").change(function(){
+                var _name = $(this).attr('old');
+                $(this).val(_name);
             });
         });
 
