@@ -418,5 +418,15 @@ class OrderController extends ApiController
         return $this->success(['service_phone'=>getConfig('service_phone'),'service_qq'=>getConfig('service_qq')]);
     }
 
+    //去支付
+    public function toPay(Request $request)
+    {
+        $userId = $this->getUserID($request);
+        $order_id = $request->input('order_id');
+        $order_info = OrderInfoService::getOrderInfoById($order_id);
+        $sellerInfo = OrderInfoService::getShopInfoByShopId($order_info['shop_id']);
+        return $this->success(compact('order_info','sellerInfo'),'success');
+    }
+
 
 }
