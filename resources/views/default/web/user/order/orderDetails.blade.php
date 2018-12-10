@@ -16,10 +16,35 @@
                 photos: '.layer-photos-demo'
                 ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
             });
+            $('.payBtn').click(function(){
+                var contract = $('input[name=contract]').val();
+                var orderno = '{{$orderDetailsInfo['orderInfo']['id']}}';
+                if(contract == '' || orderno == ''){
+                    $.msg.alert('请选择合同后提交');
+                    return;
+                }
+                $.ajax({
+                    url:'/checkOrderContract',
+                    type:'post',
+                    data:{'contract':contract,'orderno':orderno},
+                    dataType:'json',
+                    success:function(res){
+                        if(res.code){
+                            $.msg.alert(res.msg);
+                            window.location.reload();
+                        }else{
+                            $.msg.alert(res.msg);
+                        }
+                    },
+                    error:function(){
+                        $.msg.alert('系统繁忙，请重试');
+                    }
+                })
+            })
 		});
 		//
 		function getLogisticsInfo(){
-			let _delivery_id = $('#delivery_id').data('delivery_id');
+			var _delivery_id = $('#delivery_id').data('delivery_id');
 			if(_delivery_id != 0){
                 $.ajax({
                     url: "/logistics/detail",
@@ -30,11 +55,11 @@
                     type:"get",
                     success:function(data){
                         if(data.code == 1){
-                            let _list = data.data.Traces;
-                            let _length = data.data.Traces.length;
-                            let _html = '';
+                            var _list = data.data.Traces;
+                            var _length = data.data.Traces.length;
+                            var _html = '';
 
-                            for(let i=(_length-1); i>=0; i--){
+                            for(var i=(_length-1); i>=0; i--){
                                 _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
                             }
                             console.log(_html);
@@ -43,22 +68,24 @@
                             }
                             $('.wlxx').append(_html);
                         }else{
-                            let _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                            var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
                             $('.wlxx').append(_html);
                             // $.msg.alert(data.msg);
                         }
                     },
                     error:function(){
-                        let _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
                         $('.wlxx').append(_html);
                     }
                 })
 			}else{
-                let _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+                var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
                 $('.wlxx').append(_html);
 			}
 
 		}
+
+
 	</script>
 	<style>
 		/*订单状态*/
@@ -276,14 +303,15 @@
 
 				<!-- 付款凭证 -->
 				<div  class="consignee "  style="margin-top: 10px;">
-						<div class="payImg bbright" style="margin-top:20px;">
-							<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
-							<div class="mt10">
-								<span class="fl">支付凭证:</span>
-							@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-								<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-								 <img style="width:60px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
-								</div>
+
+					<div class="payImg bbright" style="margin-top:20px;">
+						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
+						<div class="mt10">
+							<span class="fl">支付凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
+							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+
 							@else
 								暂无
 							@endif
@@ -291,34 +319,31 @@
 
 						</div>
 					</div>
-<div class="fl mt20">
-		<h1 style="font-size:16px;margin-left: 0;">合同</h1>
-<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
-						<span style="margin-top:2px;">合同:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
-						 <div style="float:right;margin-left:10px;">
-							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载
-						 	<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
-							 </a>
-						 </div>
-
-						@else
-							暂无
-						@endif
+					<div class="fl mt20">
+						<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+						<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
+							<span style="margin-top:2px;">合同:</span>
+							@if(!empty($orderDetailsInfo['orderInfo']['contract']))
+							 <div style="float:right;margin-left:10px;">
+								 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载
+								<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
+								 </a>
+							 </div>
+							@else
+								暂无
+							@endif
+						</div>
+						<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+							<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
+							@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+	
+						</div>
+						<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+	
 					</div>
-<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
-						<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
-						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-
-					</div>
-					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
-
-</div>
 
 
 
-				</div>
-				</div>
 				</div>
 			</div>
 			<!--订单列表-->
@@ -356,7 +381,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 	@include(themePath('.','web').'web.include.partials.footer_service')
