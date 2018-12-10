@@ -257,39 +257,40 @@
 
 
 		</div>
-		<!--订单列表-->
-		<div class="whitebg br1 mt20 ovh">
-			<ul class="order-list-brand">
+
+	</div>
+	<!--订单列表-->
+	<div class="whitebg br1 mt20 ovh">
+		<ul class="order-list-brand">
+			<li>
+				<span style="width:29%">商品名称</span>
+				<span style="width:20%">单价</span>
+				<span style="width:20%">数量</span>
+				<span style="width:29%">金额</span>
+				<!-- <span>操作</span> -->
+			</li>
+			@foreach($orderDetailsInfo['goodsInfo'] as $v)
 				<li>
-					<span style="width:29%">商品名称</span>
-					<span style="width:20%">单价</span>
-					<span style="width:20%">数量</span>
-					<span style="width:29%">金额</span>
-					<!-- <span>操作</span> -->
+					<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
+					<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
+					<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+					<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
+					{{--<span></span>--}}
 				</li>
-				@foreach($orderDetailsInfo['goodsInfo'] as $v)
-					<li>
-						<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
-						<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
-						<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
-						<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
-						{{--<span></span>--}}
-					</li>
-				@endforeach
-			</ul>
-			<div class="Amount_money">
-				<div class="db">
-					<span>商品总额：</span>
-					<span class="fr ml20">{{amount_format($orderDetailsInfo['orderInfo']['goods_amount'],2)}}</span>
-				</div>
-				<div class="db mt15">
-					<span class="di">运       费：</span>
-					<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
-				</div>
-				<div class="db mt20 red">
-					<span class="lh35">应付总额：</span>
-					<span class="fr ml20 fs22">{{amount_format($orderDetailsInfo['orderInfo']['order_amount'],2)}}</span>
-				</div>
+			@endforeach
+		</ul>
+		<div class="Amount_money">
+			<div class="db">
+				<span>商品总额：</span>
+				<span class="fr ml20">{{amount_format($orderDetailsInfo['orderInfo']['goods_amount'],2)}}</span>
+			</div>
+			<div class="db mt15">
+				<span class="di">运       费：</span>
+				<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
+			</div>
+			<div class="db mt20 red">
+				<span class="lh35">应付总额：</span>
+				<span class="fr ml20 fs22">{{amount_format($orderDetailsInfo['orderInfo']['order_amount'],2)}}</span>
 			</div>
 		</div>
 	</div>
