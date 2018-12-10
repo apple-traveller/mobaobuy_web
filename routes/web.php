@@ -19,6 +19,7 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 //省市县
 Route::post('/region/level', 'RegionController@regionLevelList');
 
+
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');

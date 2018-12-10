@@ -26,6 +26,7 @@ class UserController extends Controller
             $user_ids = UserService::getUserIds($is_firm);
             $condition['id'] = implode('|',$user_ids);
         }
+        //dd($condition['id']);
         if(!empty($user_name)){
             $condition['user_name'] = "%".$user_name."%";
         }
