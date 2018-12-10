@@ -34,7 +34,7 @@
                             <div class="item">
                                 <div class="label">&nbsp;描述：</div>
                                 <div class="label_value">
-                                    <input type="text" name="shipping_desc" class="text" @if(isset($shipping_info) && !empty($shipping_info)) value="{{$shipping_info['shipping_desc']}}" @endif maxlength="40" autocomplete="off" id="shipping_desc">
+                                    <textarea name="shipping_desc" style="max-width:299px;min-width:299px;" class="text" @if(isset($shipping_info) && !empty($shipping_info)) value="{{$shipping_info['shipping_desc']}}" @endif maxlength="40" autocomplete="off" id="shipping_desc"></textarea>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -55,7 +55,6 @@
     <script type="text/javascript">
 
         $(function(){
-            getShopList();
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#shipping_form").valid()){
