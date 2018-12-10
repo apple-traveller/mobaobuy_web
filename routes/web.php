@@ -613,6 +613,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //小程序接口
 Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed'],function() {
     Route::post('/getOpenId', 'LoginController@getOpenId');
+    Route::post('/getNewOpenId', 'LoginController@getNewOpenId');
 
     Route::post('/register', 'LoginController@register');//注册
     Route::post('/send_register_sms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码
