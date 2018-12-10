@@ -858,6 +858,7 @@ class OrderInfoService
             $order_goods[$k]['brand_name'] = $good['brand_name'];
             $order_goods[$k]['packing_spec'] = $good['packing_spec'];
             $order_goods[$k]['goods_full_name'] = $good['goods_full_name'];
+            $order_goods[$k]['unit_name'] = $good['unit_name'];
         }
         return $order_goods;
     }

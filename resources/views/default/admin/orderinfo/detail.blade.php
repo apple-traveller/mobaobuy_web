@@ -192,9 +192,9 @@
                                             <td style="color:#62b3ff;text-align: center;">{{$vo['goods_name']}}</td>
                                             <td style="color:#62b3ff;text-align: center;">{{$vo['goods_sn']}}</td>
                                             <td style="color:#62b3ff;text-align: center;">{{$orderInfo['shop_name']}}</td>
-                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_price']}}</td>
-                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_number']}}</td>
-                                            <td style="color:#62b3ff;text-align: center;">{{$vo['send_number']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">￥{{$vo['goods_price']}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['goods_number']}}{{$vo['unit_name'] or ''}}</td>
+                                            <td style="color:#62b3ff;text-align: center;">{{$vo['send_number']}}{{$vo['unit_name'] or ''}}</td>
                                         </tr>
                                         @endforeach
                                         <tr>

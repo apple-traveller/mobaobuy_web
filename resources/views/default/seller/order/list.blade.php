@@ -35,19 +35,21 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">订单编号</div></th>
-                                    <th width="10%"><div class="tDiv">会员账号</div></th>
-                                    <th width="10%"><div class="tDiv">收货人</div></th>
-                                    <th width="9%"><div class="tDiv">订单状态</div></th>
-                                    <th width="5%"><div class="tDiv">运费</div></th>
-                                    <th width="5%"><div class="tDiv">总金额</div></th>
-                                    <th width="5%"><div class="tDiv">付款方式</div></th>
-                                    <th width="20%" class="handle">操作</th>
+                                    <th width="9%"><div class="tDiv">下单日期</div></th>
+                                    <th width="9%"><div class="tDiv">订单编号</div></th>
+                                    <th width="9%"><div class="tDiv">会员账号</div></th>
+                                    <th width="9%"><div class="tDiv">收货人</div></th>
+                                    <th width="7%"><div class="tDiv">订单状态</div></th>
+                                    <th width="6%"><div class="tDiv">运费</div></th>
+                                    <th width="6%"><div class="tDiv">总金额</div></th>
+                                    <th width="6%"><div class="tDiv">付款方式</div></th>
+                                    <th width="13%" class="handle">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($orders as $vo)
                                     <tr class="">
+                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
                                         <td>
                                             <div class="tDiv">

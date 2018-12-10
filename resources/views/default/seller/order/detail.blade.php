@@ -295,9 +295,9 @@
                                             <tr style="height: 45px">
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_full_name']}}</td>
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_sn']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_price']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['send_number']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">￥{{$vo['goods_price']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}{{$vo['unit_name'] or ''}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['send_number']}}{{$vo['unit_name'] or ''}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -338,7 +338,7 @@
                                     <dt>已付款金额：- <em>¥</em>{{$orderInfo['money_paid']}}</dt>
                                 </dl>
                                 <dl>
-                                    <dt class="red">订单总金额: {{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']+$orderInfo['deposit']-$orderInfo['discount'],2)}}</dt>
+                                    <dt class="red">订单总金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']+$orderInfo['deposit']-$orderInfo['discount'],2)}}</dt>
                                     <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']+$orderInfo['deposit']-$orderInfo['money_paid'],2)}}</dt>
                                 </dl>
                             </div>
