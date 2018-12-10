@@ -69,7 +69,7 @@
 			background: #CCCCCC;
 		}
 		.mr30 {
-			margin-right: 30px;
+			margin-right: 40px;
 		}
 		.lh40 {
 			line-height: 40px;
@@ -289,7 +289,7 @@
 			<div class="fr">
 				
 				<div class="ovh"><span class="fl gray">小计:</span><span class="ordprice fl tar orange total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>
-				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">待商家确认</span></div>
+				<div class="mt10 ovh mr30"><span class="fl gray">运费:</span><span class="ordprice fl tar orange">不含运费</span></div>
 				<div class="mt10 ovh"><span class="fl gray lh40">总计:</span><span class="ordprice fl tar orange fs22 total_price">@if(!empty($goods_amount)) {{amount_format($goods_amount)}} @endif</span></div>
 			</div>
 		</div>

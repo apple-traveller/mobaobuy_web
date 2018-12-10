@@ -30,7 +30,7 @@
         <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
     </div>
     <div class="warpper">
-        <div class="title"><a href="/seller/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
+        <div class="title"><a href="/seller/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采火拼</div>
         <div class="content">
             <div class="flexilist">
                 <div class="mian-info">

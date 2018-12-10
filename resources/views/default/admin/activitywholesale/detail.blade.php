@@ -2,13 +2,13 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currpage}}" class="s-back">返回</a>集采拼团详情</div>
+        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currpage}}" class="s-back">返回</a>集采火拼详情</div>
         <div class="content">
 
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-                    <li>该页面展示了集采拼团的详细信息。</li>
+                    <li>该页面展示了集采火拼的详细信息。</li>
                 </ul>
             </div>
 

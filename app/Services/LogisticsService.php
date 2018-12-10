@@ -1,22 +1,31 @@
 <?php
 namespace App\Services;
+
 use App\Repositories\LogisticsRepo;
 use App\Repositories\OrderDeliveryRepo;
+
 class LogisticsService
 {
     use CommonService;
 
-    //分页
+    /**
+     * 分页列表
+     * @param $pager
+     * @param $condition
+     * @return mixed
+     */
     public static function getLogistics($pager,$condition)
     {
         return LogisticsRepo::getListBySearch($pager,$condition);
     }
+
 
     //获取一条数据
     public static function getLogisticInfo($id)
     {
         return LogisticsRepo::getInfo($id);
     }
+
 
     //编辑
     public static function modify($data)
@@ -42,3 +51,6 @@ class LogisticsService
     }
 
 }
+
+
+

@@ -12,6 +12,7 @@ use App\Services\ActivityWholesaleService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\ShopSalesmanService;
 use Illuminate\Http\Request;
 
 class ActivityConsignController extends Controller
@@ -43,13 +44,17 @@ class ActivityConsignController extends Controller
 
     public function add(Request $request)
     {
-        return $this->display('seller.activityconsign.add');
+        $shop_id = session('_seller_id')['shop_id'];
+        $salesman = ShopSalesmanService::getList([],['shop_id'=>$shop_id]);
+        return $this->display('seller.activityconsign.add',['salesman'=>$salesman]);
     }
 
     public function edit(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
+        $shop_id = session('_seller_id')['shop_id'];
+        $salesman = ShopSalesmanService::getList([],['shop_id'=>$shop_id]);
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
@@ -57,6 +62,7 @@ class ActivityConsignController extends Controller
             'consign_info'=>$consign_info,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
+            'salesman'=>$salesman,
             'good'=>$good
         ]);
     }

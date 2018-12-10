@@ -14,12 +14,15 @@ class LogisticsController extends Controller
     {
         $currpage = $request->input("currpage",1);
         $pageSize = $request->input("pagesize",10);
+
         $shipping_billno = $request->input("shipping_billno","");
         $condition['is_delete'] = 0;
         if(!empty($shipping_billno)){
             $condition['shipping_billno'] = "%".$shipping_billno."%";
         }
+
         $logistics = LogisticsService::getLogistics(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+
         return $this->display('admin.logistics.list',[
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,

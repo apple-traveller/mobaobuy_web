@@ -325,6 +325,7 @@ class OrderInfoService
             case 3: $status = '已确认';break;
             case 4: $status = '已完成';break;
             case 5: $status = '待开票';break;
+            case 6: $status = '开票中';break;
         }
 
         if($order_status > 0 && $order_status <> 4){
@@ -349,11 +350,7 @@ class OrderInfoService
                     }
                 }
 
-//                $status = '待确认';
             }
-//            if($order_status == 2 && $deposit_status == 0){
-//                $status = '待确认';
-//            }
         }
         return $status;
     }
@@ -386,8 +383,10 @@ class OrderInfoService
             case 'waitInvoice':
                 $condition['order_status'] = 5;
                 $condition['pay_status'] = 1;
-
-//                $condition['shipping_status'] = 3;
+                break;
+            case 'invoiceIng':
+                $condition['order_status'] = 6;
+                $condition['pay_status'] = 1;
                 break;
             case 'finish':
                 $condition['order_status'] = 4;break;
@@ -426,7 +425,8 @@ class OrderInfoService
             'waitSend' => 0,
             'waitConfirm' => 0,
             'waitInvoice'=> 0,
-            'waitDeposit'=>0
+            'waitDeposit'=>0,
+            'invoiceIng' => 0
         ];
 
 
@@ -463,12 +463,17 @@ class OrderInfoService
         $condition['shipping_status|>'] =  0;
         $status['waitInvoice'] = OrderInfoRepo::getTotalCount($condition);
 
+        //开票中
+        $condition = array_merge($condition, self::setStatueCondition('invoiceIng'));
+        $status['invoiceIng'] = OrderInfoRepo::getTotalCount($condition);
+
         //全部订单
         $condition = array_merge($condition, self::setStatueCondition('allOrder'));
         unset($condition['order_status']);
         unset($condition['deposit_status']);
         unset($condition['shipping_status']);
         unset($condition['shipping_status|>']);
+        unset($condition['pay_status']);
         $status['allOrder'] = OrderInfoRepo::getTotalCount($condition);
         return $status;
     }
@@ -637,7 +642,7 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -858,6 +863,7 @@ class OrderInfoService
             $order_goods[$k]['brand_name'] = $good['brand_name'];
             $order_goods[$k]['packing_spec'] = $good['packing_spec'];
             $order_goods[$k]['goods_full_name'] = $good['goods_full_name'];
+            $order_goods[$k]['unit_name'] = $good['unit_name'];
         }
         return $order_goods;
     }
@@ -872,6 +878,7 @@ class OrderInfoService
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods['list'][$k]['unit_name'] = $good['unit_name'];
             $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
             $order_goods['list'][$k]['send_number_delivery'] = $vo['goods_number']-$vo['send_number'];
         }
@@ -1178,7 +1185,7 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -1289,7 +1296,7 @@ class OrderInfoService
                     $deposit = 0;
 //                    $pay_type =  1;
                     break;
-                case 'wholesale'://集采拼团
+                case 'wholesale'://集采火拼
                     $order_status = 2;
                     $from = 'wholesale';
                     $extension_id = $cartInfo_session[0]['id'];
@@ -1373,7 +1380,7 @@ class OrderInfoService
                     //减去活动库存
                     ActivityPromoteRepo::modify($id, ['available_quantity' => $activityPromoteInfo['available_quantity'] - $v['goods_number']]);
                 } elseif ($type == 'wholesale') {
-                    //集采拼团生产订单
+                    //集采火拼生产订单
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($id);
                     if (empty($activityWholesaleInfo)) {
                         self::throwBizError('商品不存在！');
@@ -1461,7 +1468,7 @@ class OrderInfoService
     //短信通知订单
     public static function sms_listen_order($user_name,$type,$account)
     {
-        if (!empty(getConfig('remind_mobile'))) {
+        if (!empty(getConfig('remind_mobile')) && getConfig('open_user_order')) {
             createEvent('sendSms', ['phoneNumbers' => getConfig('remind_mobile'), 'type' => 'sms_listen_order', 'tempParams' => ['phone' => $user_name, 'type' => $type, 'amount'=>$account]]);
         }
     }

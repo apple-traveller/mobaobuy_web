@@ -746,7 +746,7 @@ CREATE TABLE `order_info` (
   `firm_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '企业会员ID',
   `shop_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '店铺ID',
   `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态 0-已作废 1-待企业审核 2-待商家确认 3-已确认 4-完成 5-待开票',
+  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态 0-已作废 1-待企业审核 2-待商家确认 3-已确认 4-完成 5-待开票 6-开票中',
   `shipping_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '发货状态 0-待发货 1-已发货 2-部分发货 3-已确认收货',
   `consignee` varchar(60) NOT NULL DEFAULT '' COMMENT '收货人',
   `country` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '国家',
@@ -1104,7 +1104,7 @@ CREATE TABLE `activity_wholesale` (
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采火拼表';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
@@ -1296,7 +1296,7 @@ CREATE TABLE `activity_wholesale` (
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='集采火拼表';
 
 DROP TABLE IF EXISTS `user_sale`;
 CREATE TABLE `user_sale` (
@@ -1405,3 +1405,13 @@ CREATE TABLE `shop_salesman` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `logistics`;
+CREATE TABLE `logistics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `shipping_billno` int(20) NOT NULL COMMENT '运单号',
+  `shipping_company` varchar(255) NOT NULL COMMENT '物流公司',
+  `shipping_content` varchar(255) NOT NULL COMMENT '物流信息',
+  `is_delete` tinyint(1) NOT NULL COMMENT '是否删除 0否 1是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站内维护物流信息表';

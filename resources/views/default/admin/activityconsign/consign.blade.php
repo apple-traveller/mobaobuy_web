@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">清仓特卖活动</div>
+        <div class="title">促销 - 清仓特卖活动</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit">

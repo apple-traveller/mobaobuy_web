@@ -96,6 +96,7 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/invoice/list" data-param="menushopping|10_delivery_order" target="workspace">发票申请列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/logistics/list" data-param="menushopping|10_delivery_order" target="workspace">物流信息列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/shipping" data-param="menushopping|12_delivery_order" target="workspace">物流公司列表</a></li>
                     </ul>
                 </div>
             </div>
@@ -105,9 +106,9 @@
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
                         {{--<li><s></s><a href="javascript:void(0);" data-url="/admin/seckill/list" data-param="menushopping|03_seckill_list" target="workspace">秒杀活动</a></li>--}}
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|04_bonustype_list" target="workspace">优惠活动</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/wholesale" data-param="menushopping|05_bonustype_list" target="workspace">集采拼团</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/consign" data-param="menushopping|06_bonustype_list" target="workspace">清仓特卖</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/wholesale" data-param="menushopping|04_bonustype_list" target="workspace">集采火拼</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/activity/consign" data-param="menushopping|05_bonustype_list" target="workspace">寄售清仓</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/promote/list" data-param="menushopping|06_bonustype_list" target="workspace">限时抢购</a></li>
                     </ul>
                 </div>
             </div>

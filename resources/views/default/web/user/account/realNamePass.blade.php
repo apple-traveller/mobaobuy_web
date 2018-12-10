@@ -121,32 +121,20 @@
                             <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" disabled="disabled" @else value="" @endif/>
                         </span>
                     </li>
-                    {{--<li class="mt25">--}}
-                        {{--<span class="infor_title">性别：</span>--}}
-                        {{--<span class="ml10 fl">--}}
-                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==0) checked @endif name="sex" value="0"> 保密--}}
-                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==1) checked @endif name="sex" value="1"> 男--}}
-                            {{--<input type="radio" @if(!empty($user_real)&&$user_real['sex']==2) checked @endif name="sex" value="2"> 女--}}
-                        {{--</span>--}}
-                    {{--</li>--}}
-                    {{--<li class="mt25">--}}
-                        {{--<span class="infor_title">生日：</span>--}}
-                        {{--<span class=" fl">--}}
-                            {{--<input name="birthday" class="infor_input" type="text" @if(!empty($user_real['birthday'])) value="{{$user_real['birthday']}}" disabled="disabled" @else value="" @endif  >--}}
-                        {{--</span>--}}
-                    {{--</li>--}}
+
                     <li class="mt25">
                         <span class="infor_title">身份证正面：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['front_of_id_card']))
                                 @if($user_real['review_status']==1)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">--}}
+                                         <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="身份证正面">
                                         <span style="margin: 0 0 0 10px;">审核已经通过</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="身份证正面">
                                         <span style="margin: 0 0 0 10px;">正在审核中……</span>
                                     </div>
                                 @else
@@ -164,12 +152,14 @@
                             @if(!empty($user_real['reverse_of_id_card']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">--}}
                                         <span style="margin: 0 0 0 10px;">审核已经通过</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">--}}
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="身份证反面">
                                         <span style="margin: 0 0 0 10px;">正在审核中……</span>
                                     </div>
                                 @else
@@ -228,12 +218,14 @@
                             @if(!empty($user_real['attorney_letter_fileImg']))               
                                 @if($user_real['review_status']==1)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">--}}
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
                                         <span style="margin: 0 0 0 10px;">审核已经通过</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">--}}
                                         <span style="margin: 0 0 0 10px;">正在审核中……</span>
                                     </div>
                                 @else
@@ -252,12 +244,13 @@
                              @if(!empty($user_real['invoice_fileImg']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">--}}
                                         <span style="margin: 0 0 0 10px;">审核已经通过</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="开票资料电子版">
                                         <span style="margin: 0 0 0 10px;">正在审核中……</span>
                                     </div>
                                 @else
@@ -275,12 +268,12 @@
                             @if(!empty($user_real['license_fileImg']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="营业执照电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['license_fileImg']) }}" src="{{ getFileUrl($user_real['license_fileImg']) }}" alt="营业执照电子版">
                                         <span style="margin: 0 0 0 10px;">审核已经通过</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['license_fileImg']) }}" alt="营业执照电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['license_fileImg']) }}" src="{{ getFileUrl($user_real['license_fileImg']) }}" alt="营业执照电子版">
                                         <span style="margin: 0 0 0 10px;">正在审核中……</span>
                                     </div>
                                 @else

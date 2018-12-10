@@ -295,9 +295,9 @@
                                             <tr style="height: 45px">
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_full_name']}}</td>
                                                 <td style="padding-left: 9px;height: 45px">{{$vo['goods_sn']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_price']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}</td>
-                                                <td style="padding-left: 9px;height: 45px">{{$vo['send_number']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">￥{{$vo['goods_price']}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['goods_number']}}{{$vo['unit_name'] or ''}}</td>
+                                                <td style="padding-left: 9px;height: 45px">{{$vo['send_number']}}{{$vo['unit_name'] or ''}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -338,7 +338,7 @@
                                     <dt>已付款金额：- <em>¥</em>{{$orderInfo['money_paid']}}</dt>
                                 </dl>
                                 <dl>
-                                    <dt class="red">订单总金额: {{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']+$orderInfo['deposit']-$orderInfo['discount'],2)}}</dt>
+                                    <dt class="red">订单总金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']+$orderInfo['deposit']-$orderInfo['discount'],2)}}</dt>
                                     <dt class="red">应付款金额: <em>¥</em>{{number_format($orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']+$orderInfo['deposit']-$orderInfo['money_paid'],2)}}</dt>
                                 </dl>
                             </div>
@@ -536,14 +536,10 @@
                 ,
                 shade: 0.8
                 ,
-                maxmin:true
-                ,
-                area:['700px','600px'],
+                area:['800px','600px'],
                 id: 'PayImg' //设定一个id，防止重复弹出
                 ,
-                moveType: 1 //拖拽模式，0或者1
-                ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+contractImg+'" alt=""> </div>'
+                content: '<img src="'+contractImg+'" alt="" width="800px" height="100%">'
                 ,
                 yes: function () {
                     layer.closeAll();

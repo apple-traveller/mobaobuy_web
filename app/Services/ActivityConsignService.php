@@ -136,7 +136,7 @@ class ActivityConsignService
 //        return $buyLimitArr;
     }
 
-    //增加集采拼团的点击量
+    //增加集采火拼的点击量
     public static function addClickCount($id)
     {
         $id = decrypt($id);
@@ -177,7 +177,7 @@ class ActivityConsignService
         return $goodsInfo;
     }
 
-    //集采拼团 立即下单
+    //集采火拼 立即下单
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ActivityConsignRepo::getInfo($activityId);
