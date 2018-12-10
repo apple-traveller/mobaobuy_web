@@ -31,6 +31,7 @@
                     success:function(res){
                         if(res.code){
                             $.msg.alert(res.msg);
+                            window.location.reload();
                         }else{
                             $.msg.alert(res.msg);
                         }
@@ -302,6 +303,7 @@
 
 				<!-- 付款凭证 -->
 				<div  class="consignee "  style="margin-top: 10px;">
+
 					<div class="payImg bbright" style="margin-top:20px;">
 						<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
 						<div class="mt10">
@@ -309,13 +311,13 @@
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
 							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+
 							@else
 								暂无
 							@endif
 							</div>
 
 						</div>
-						
 					</div>
 			<div class="fl mt20">
 				<h1 style="font-size:16px;margin-left: 0;">合同</h1>
@@ -332,14 +334,13 @@
 							<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
 						</div>
 
-							  
 					@else
 						暂无
 					@endif
 				</div>
 
 			</div>
-					
+
 				</div>
 				</div>
 			</div>
@@ -377,6 +378,7 @@
 					<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 	@include(themePath('.','web').'web.include.partials.footer_service')

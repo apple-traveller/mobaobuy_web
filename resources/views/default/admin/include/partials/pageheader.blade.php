@@ -150,6 +150,59 @@
         });
     });
 
+    window.onbeforeunload=function(){
+        let order_waitAffirm = 0; //待商家确认
+        let order_waitSend = 0;//待发货
+        let shop_waitvalidate = 0;//待审核商家
+        let user_certification= 0;//待实名审核
+        let activity_promote = 0;//优惠活动
+        let activity_consign = 0;//清仓特卖
+        let activity_wholesale = 0;//集采拼团
+        let order_total = 0;//订单提示总量
+        let shop_total = 0;//商家提示总量
+        let user_total = 0;//会员提示总量
+        let activity_total = 0;//活动提示总量
+        $.ajax({
+            url: "/admin/getActivityCount",
+            dataType: "json",
+            data:{},
+            type:"POST",
+            success:function(res){
+                if(res.code==200){
+                    data = res.data;
+                    activity_promote = data.promote_count;
+                    activity_consign = data.consign_count;
+                    activity_wholesale = data.wholesale_count;
+                    order_waitAffirm = data.order_status.waitAffirm;
+                    order_waitSend = data.order_status.waitSend;
+                    shop_waitvalidate = data.shop_waitvalidate;
+                    user_certification = data.user_certification;
+                    $("#new_orders").text(order_waitAffirm);
+                    $("#no_paid").text(order_waitSend);
+                    $("#order_total").text(order_waitAffirm+order_waitSend);
+                    order_total = order_waitAffirm+order_waitSend;
+
+                    $("#shop_account").text(shop_waitvalidate);
+                    $("#shop_total").text(shop_waitvalidate);
+                    shop_total = shop_waitvalidate;
+
+                    $("#user_account").text(user_certification);
+                    $("#user_total").text(user_certification);
+                    user_total = user_certification;
+
+                    $("#activity_promote").text(activity_promote);
+                    $("#activity_consign").text(activity_consign);
+                    $("#activity_wholesale").text(activity_wholesale);
+                    activity_total = parseInt(activity_promote)+parseInt(activity_consign)+parseInt(activity_wholesale);
+                    $("#activity_total").text(activity_total);
+                    $("#total").text(order_total+shop_total+user_total+activity_total);
+                }else{
+
+                }
+            }
+        });
+    }
+
 
     window.onload=function(){
         let order_waitAffirm = 0; //待商家确认

@@ -475,11 +475,9 @@ class UserService
         if($is_firm==-1){
             //已经提交实名信息，实名信息审核没通过
             $user_reals = UserRealRepo::getList([],['review_status'=>"2|0"],['id','user_id']);
+            //dd($user_reals);
             foreach($user_reals as $vo){
-                $user = UserRepo::getInfo($vo['user_id']);
-                if(!empty($user)){
-                    $arr[] = $vo['user_id'];
-                }
+               $arr[] = $vo['user_id'];
             }
         }elseif($is_firm==-2){
             //没提交实名
