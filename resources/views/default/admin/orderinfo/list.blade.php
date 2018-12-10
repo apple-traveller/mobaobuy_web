@@ -81,7 +81,7 @@
                                                 </div>
                                                 <div>
                                                     @if($vo['extension_code']=="wholesale")
-                                                        集采拼团
+                                                        集采火拼
                                                     @elseif($vo['extension_code']=="consign")
                                                         清仓特卖
                                                     @elseif($vo['extension_code']=="promote")

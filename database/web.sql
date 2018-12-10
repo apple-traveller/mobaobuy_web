@@ -1104,7 +1104,7 @@ CREATE TABLE `activity_wholesale` (
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='集采火拼表';
 
 DROP TABLE IF EXISTS `sms_supplier`;
 CREATE TABLE `sms_supplier` (
@@ -1296,7 +1296,7 @@ CREATE TABLE `activity_wholesale` (
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='集采拼团表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='集采火拼表';
 
 DROP TABLE IF EXISTS `user_sale`;
 CREATE TABLE `user_sale` (

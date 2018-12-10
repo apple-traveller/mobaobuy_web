@@ -12,7 +12,7 @@ use App\Services\ActivityPromoteService;
 
 class ActivityWholesaleController extends Controller
 {
-    //集采拼团
+    //集采火拼
     public function index(){
         $condition['review_status'] = 3;//已审核
         try{
@@ -23,7 +23,7 @@ class ActivityWholesaleController extends Controller
         }
     }
 
-    //集采拼团详情
+    //集采火拼详情
     public function detail($id){
         $userId = session('_web_user_id');
         //进入详情页 增加点击量
@@ -37,7 +37,7 @@ class ActivityWholesaleController extends Controller
 
     }
 
-    //集采拼团 立即下单
+    //集采火拼 立即下单
     public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');

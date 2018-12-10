@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ActivityWholesaleController extends ApiController
 {
-    //集采拼团
+    //集采火拼
     public function index(){
         $condition['review_status'] = 3;//已审核
         try{
@@ -19,7 +19,7 @@ class ActivityWholesaleController extends ApiController
         }
     }
 
-    //集采拼团详情
+    //集采火拼详情
     public function detail(Request $request){
         $userId = 0;
         $uuid = $request->input('token');
@@ -38,7 +38,7 @@ class ActivityWholesaleController extends ApiController
 
     }
 
-    //集采拼团 立即下单
+    //集采火拼 立即下单
     public function toBalance(Request $request){
         $goodsId = $request->input('goodsId');
         $activityId = $request->input('activityId');

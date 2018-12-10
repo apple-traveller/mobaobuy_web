@@ -76,7 +76,7 @@ class GoodsService
         $quote_res = ShopGoodsQuoteRepo::getTotalCount(['goods_id'=>$id]);
         //检测限时抢购活动
         $promote_res = ActivityPromoteRepo::getTotalCount(['goods_id'=>$id]);
-        //检测集采拼团活动
+        //检测集采火拼活动
         $wholesale_res = ActivityWholesaleRepo::getTotalCount(['goods_id'=>$id]);
         if($quote_res > 0 || $promote_res > 0 || $wholesale_res > 0){
             return false;

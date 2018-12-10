@@ -212,7 +212,7 @@ if (!function_exists('getOrderFromText')){
         switch ($code){
             case 'promote' : $res = '限时抢购活动';
                 break;
-            case 'wholesale' : $res = '集采拼团活动';
+            case 'wholesale' : $res = '集采火拼活动';
                 break;
             case 'consign' : $res = '清仓特卖活动';
                 break;
