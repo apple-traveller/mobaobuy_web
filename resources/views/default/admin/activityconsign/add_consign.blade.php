@@ -242,9 +242,11 @@
 
 
             $("#cat_name").focus(function(){
+                $("#delivery_place").attr('treeId','');
                 showWinZtreeSelector(this);
             });
             $("#delivery_place").focus(function(){
+                $("#cat_name").attr('treeId','');
                 showWinZtreeSelector(this);
             });
             $("#delivery_place").change(function(){
