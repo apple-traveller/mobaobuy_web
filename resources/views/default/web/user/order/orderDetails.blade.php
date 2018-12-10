@@ -49,7 +49,7 @@
 @include(themePath('.','web').'web.include.partials.top')
 @component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '会员中心'])@endcomponent
 <div class="w1200" style="margin-bottom: 40px;">
-	<div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
+	<div class="crumbs" style="margin: 15px 0;">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
 	<div class="order_pro_progress whitebg mt5">
 		<div class="order_pro_stute">
 			<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
