@@ -88,19 +88,14 @@
                                 <tr>
                                     <td colspan="12">
                                         <div class="tDiv">
-
                                             <div class="list-page">
-
                                                 <ul id="page"></ul>
-
                                                 <style>
                                                     .pagination li{
                                                         float: left;
                                                         width: 30px;
                                                         line-height: 30px;}
                                                 </style>
-
-
                                             </div>
                                         </div>
                                     </td>
@@ -208,7 +203,7 @@
                         '    <p id="demoText"></p>' +
                         '  </div>' +
                         '</div>',
-                    yes: function(index, layero){
+                    yes: function(index){
                         let img = $('#demo1').data('img');
                         let action_note = $("#action_note").val();
                         if (img===''){
@@ -233,10 +228,8 @@
                                     window.location.reload();
                                 }
                             });
-
                         }
                     }
-
                 });
 
                 var uploadInst = upload.render({
@@ -335,7 +328,7 @@
                 let layer = layui.layer;
                 layer.prompt({
                     title: '确认收到定金，填写备注',
-                }, function(value, index, elem){
+                }, function(value, index){
                     $.ajax({
                         url:'/seller/order/updateOrderStatus',
                         data: {
@@ -374,7 +367,7 @@
                         },
                         type: 'post',
                         success: function (res) {
-                            if (res.code == 1){
+                            if (res.code === 1){
                                 layer.alert(res.msg, {icon: 1,time:600});
                             } else {
                                 layer.alert(res.msg, {icon: 5,time:2000});
