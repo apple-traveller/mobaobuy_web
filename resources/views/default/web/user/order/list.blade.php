@@ -4,7 +4,7 @@
 @section('css')
 	<style>
 		.order_list_state{height: 37px;line-height: 35px;background-color: #F7F7F7;}
-		.order_list_state li{height: 37px;line-height: 35px;width: 85px;text-align: center;float: left;color: #666;cursor: pointer;}
+		.order_list_state li{height: 37px;line-height: 35px;width: 82px;text-align: center;float: left;color: #666;cursor: pointer;}
 		.order_list_state li a em{margin-left: 3px;color: red;}
 		.order_list_state .curr{border-bottom: 2px solid #75b335;color: #75b335;box-sizing: border-box;}
 		.data-table-box table.order-table tbody td{padding: 0px;}
@@ -145,6 +145,9 @@
                     if(status.allOrder > 0){
                         $('#allOrder').html(status.allOrder);
                     }
+                    if(status.invoiceIng > 0){
+                        $('#invoiceIng').html(status.invoiceIng);
+                    }
                 }
             }, "POST", "JSON");
 
@@ -280,6 +283,7 @@
 			<li @if($tab_code == 'waitSend') class="curr" @endif><a href="/order/list?tab_code=waitSend">待发货<em id="waitSend"></em></a></li>
 			<li @if($tab_code == 'waitConfirm') class="curr" @endif><a href="/order/list?tab_code=waitConfirm">待收货<em id="waitConfirm"></em></a></li>
             <li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/order/list?tab_code=waitInvoice">待开票<em id="waitInvoice"></em></a></li>
+            <li @if($tab_code == 'invoiceIng') class="curr" @endif><a href="/order/list?tab_code=invoiceIng">开票中<em id="invoiceIng"></em></a></li>
 			<li @if($tab_code == 'finish') class="curr" @endif><a href="/order/list?tab_code=finish">已完成</a></li>
 			<li @if($tab_code == 'cancel') class="curr" @endif><a href="/order/list?tab_code=cancel">已取消</a></li>
 		</ul>

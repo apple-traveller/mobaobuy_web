@@ -161,7 +161,7 @@ class UserController extends Controller
 
     //短信通知
     public function sms_listen_register($accountName){
-        if(!empty(getConfig('remind_mobile'))){
+        if(!empty(getConfig('remind_mobile')) && getConfig('open_user_register')){
             createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_register', 'tempParams'=>['code'=>$accountName]]);
         }
     }
@@ -954,7 +954,7 @@ class UserController extends Controller
         }else{
             $type = '企业会员';
         }
-        if(!empty(getConfig('remind_mobile'))){
+        if(!empty(getConfig('remind_mobile')) && getConfig('open_user_real')){
             createEvent('sendSms', ['phoneNumbers'=>getConfig('remind_mobile'), 'type'=>'sms_listen_real', 'tempParams'=>['phone'=>$user_name,'type'=>$type]]);
         }
     }
