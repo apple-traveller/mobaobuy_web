@@ -12,13 +12,13 @@
 
                      $('#power_edit_frame,.block_bg').remove();
                      window.location.reload();
-                })
+                });
+        });
 
-                $('.accounting_payment').click(function(){
-                    $('#power_edit_frame').show();
-                    $('.block_bg').show();
-                })
-        })
+        function openFrame(){
+            $('#power_edit_frame').show();
+            $('.block_bg').show();
+        }
 
         //提交
         function payVoucherSave(){
@@ -66,6 +66,18 @@
             margin: 0px 10px;
             float: left;
         }
+
+        .payment-order-box{padding: 30px;}
+
+        .payment-box{padding: 30px;}
+        .payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}
+        .payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}
+        .payment-box .p-mode-list {margin-top: 20px;width: calc(100% + 12px);overflow: hidden;}
+        .payment-box .p-mode-item {float: left;width: 178px;height: 88px;border: 1px solid #d2d2d2;text-align: center;position: relative;margin: 0 12px 12px 0;text-align:center}
+        .payment-box .p-mode-item input[type="button"]{border: 0;width: 178px;height: 88px;display: block;font-size: 0;outline: 0;cursor: pointer;}
+        .p-mode-list .alipay input[type="button"] {background: url({{asset(themePath('/','web').'/img/alipay-icon.png')}}) center center no-repeat;}
+        .p-mode-list .wxpay input[type="button"] {background: url({{asset(themePath('/','web').'/img/wxpay-icon.png')}}) center center no-repeat;}
+        .p-mode-list .enterprise_transfer input[type="button"] {background: url({{asset(themePath('/','web').'/img/enterprisepay-icon.jpg')}}) center center no-repeat;}
     </style>
 </head>
 
@@ -99,17 +111,16 @@
             <div class="payment-list">
                 <div class="p-mode-tit"><h3>线下支付</h3></div>
                 <div class="p-mode-list">
-                    <div class="p-mode-item accounting_payment"></div>
-                    <div class="p-mode-item wxpay"></div>
+                    <div class="p-mode-item enterprise_transfer"><input type="button" onclick="openFrame()" /></div>
                 </div>
             </div>
-            <div class="payment-list mt20">
+            {{--<div class="payment-list mt20">
                 <div class="p-mode-tit"><h3>在线支付</h3></div>
                 <div class="p-mode-list">
                     <div class="p-mode-item alipay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=alipay_deposit')}}')" /></div>
                     <div class="p-mode-item wxpay"><input type="button" onclick="window.open('{{url('/payment/orderPay?order_id='.$order_info['id'].'&pay_type=wxpay_deposit')}}')"/></div>
                 </div>
-            </div>
+            </div>--}}
         </div>
     </div>
 </div>
@@ -132,16 +143,7 @@
     </div>
 
 <style>
-    .payment-order-box{padding: 30px;}
 
-    .payment-box{padding: 30px;}
-    .payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}
-    .payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}
-    .payment-box .p-mode-list {margin-top: 20px;width: calc(100% + 12px);overflow: hidden;}
-    .payment-box .p-mode-item {float: left;width: 178px;height: 88px;border: 1px solid #d2d2d2;text-align: center;position: relative;margin: 0 12px 12px 0;text-align:center}
-    .payment-box .p-mode-item input[type="button"]{border: 0;width: 178px;height: 88px;display: block;font-size: 0;outline: 0;cursor: pointer;}
-    .p-mode-list .alipay input[type="button"] {background: url({{asset(themePath('/','web').'/img/alipay-icon.png')}}) center center no-repeat;}
-    .p-mode-list .wxpay input[type="button"] {background: url({{asset(themePath('/','web').'/img/wxpay-icon.png')}}) center center no-repeat;}
 </style>
 
 @include(themePath('.','web').'web.include.partials.footer_service')

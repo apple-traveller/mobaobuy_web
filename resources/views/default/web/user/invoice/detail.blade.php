@@ -22,31 +22,39 @@
         //
         function getLogisticsInfo(){
             let _id = $('.order_pro_stute').attr('data-id');
-            $.ajax({
-                url: "/logistics/detail",
-                dataType: "json",
-                data:{
-                    'id': _id,
-                    'search_type':'invoice'
-                },
-                type:"get",
-                success:function(data){
-                    if(data.code === 1){
-                        let _list = data.data.Traces;
-                        let _length = data.data.Traces.length;
-                        let _html = '';
-                        for(let i=(_length-1); i>=0; i--){
-                            _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+            if(_id != 0){
+                $.ajax({
+                    url: "/logistics/detail",
+                    dataType: "json",
+                    data:{
+                        'id': _id,
+                        'search_type':'invoice'
+                    },
+                    type:"get",
+                    success:function(data){
+                        if(data.code === 1){
+                            let _list = data.data.Traces;
+                            let _length = data.data.Traces.length;
+                            let _html = '';
+                            for(let i=(_length-1); i>=0; i--){
+                                _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
+                            }
+                            if(_html === ''){
+                                _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                            }
+                            $('.wlxx').append(_html);
+                        }else{
+                            $('.wlxx').append('<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>');
                         }
-                        if(_html === ''){
-                            _html = '<li><i class="external-cir"></i>无物流信息<div class="gray"></div></li>'
-                        }
-                        $('.wlxx').append(_html);
-                    }else{
-                        $.msg.alert(data.msg);
+                    },
+                    error:function(){
+                        $('.wlxx').append('<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>');
                     }
-                }
-            })
+                })
+            }else{
+                $('.wlxx').append('<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>');
+            }
+
         }
     </script>
     <style>
@@ -98,10 +106,16 @@
         </div>
         <!--物流信息-->
         <div class="whitebg br1 mt20 ovh">
-            <div class="order_pro_stute" @if(!empty($invoiceInfo['id'])) data-id="{{$invoiceInfo['id']}}" @else data-id="0" @endif>
-                <span class="ml30 db mt20">物流公司：@if(!empty($invoiceInfo['shipping_name'])) {{ $invoiceInfo['shipping_name'] }} @else 暂无物流公司 @endif </span>
-                <span class="ml30 db mt20">物流单号：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else 暂无物流单号 @endif </span>
-            </div>
+            @if(!empty($invoiceInfo))
+                <div class="order_pro_stute" @if(!empty($invoiceInfo['id'])) data-id="{{$invoiceInfo['id']}}" @else data-id="0" @endif>
+                    <span class="ml30 db mt20">物流公司：@if(!empty($invoiceInfo['shipping_name'])) {{ $invoiceInfo['shipping_name'] }} @else 暂无物流公司 @endif </span>
+                    <span class="ml30 db mt20">物流单号：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else 暂无物流单号 @endif </span>
+                </div>
+            @else
+                <div class="order_pro_stute" data-id="0">
+                    <span class="ml30 db mt20">请等待商家发货</span>
+                </div>
+            @endif
             <div class="fl wlgz_text">
                 <ul class="wlxx">
 

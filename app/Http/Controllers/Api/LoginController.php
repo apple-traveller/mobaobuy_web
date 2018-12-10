@@ -7,6 +7,20 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 class LoginController extends ApiController
 {
+    public function getOpenId(Request $request){
+        $code = $request->input('code');
+        $url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxd4c991d54f0db276&secret=e19401e2fb006a7f4305ade7f6ce026f&js_code=' . $code . '&grant_type=authorization_code';
+        //yourAppid为开发者appid.appSecret为开发者的appsecret,都可以从微信公众平台获取；
+        $info = file_get_contents($url);//发送HTTPs请求并获取返回的数据，推荐使用curl
+        $json = json_decode($info);//对json数据解码
+        $arr = get_object_vars($json);
+        $data = [
+            'openid' => $arr['openid'],
+            'session_key' => $arr['session_key']
+        ];
+        return $this->success($data);
+    }
+
     public function login(Request $request)
     {
         $openid = $request->input('openid');

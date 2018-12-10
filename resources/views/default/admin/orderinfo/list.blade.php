@@ -14,12 +14,12 @@
                 <div class="common-head order-coomon-head">
                     <div class="order_state_tab">
                         <a href="/admin/orderinfo/list?order_status=-1" @if($order_status==-1) class="current" @endif>全部订单<em>({{$status['total']}})</em></a>
-                        <a href="/admin/orderinfo/list?order_status=1" @if($order_status==1) class="current" @endif>待审核<em>({{$status['waitApproval']}})</em></a>
-                        <a href="/admin/orderinfo/list?order_status=2" @if($order_status==2) class="current" @endif>待确认<em>({{$status['waitAffirm']}})</em></a>
-                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>待付款<em>({{$status['waitPay']}})</em></a>
-                        <a href="/admin/orderinfo/list?order_status=10" @if($order_status==10) class="current" @endif>待发货<em>({{$status['waitSend']}})</em></a>
-                        <a href="/admin/orderinfo/list?order_status=5" @if($order_status==5) class="current" @endif>待开票<em>({{$status['waitInvoice']}})</em></a>
+                        <a href="/admin/orderinfo/list?order_status=1" @if($order_status==1) class="current" @endif>待企业审核<em>({{$status['waitApproval']}})</em></a>
+                        <a href="/admin/orderinfo/list?order_status=2" @if($order_status==2) class="current" @endif>待商家确认<em>({{$status['waitAffirm']}})</em></a>
+                        <a href="/admin/orderinfo/list?order_status=11" @if($order_status==11) class="current" @endif>待会员付款<em>({{$status['waitPay']}})</em></a>
+                        <a href="/admin/orderinfo/list?order_status=10" @if($order_status==10) class="current" @endif>待商家发货<em>({{$status['waitSend']}})</em></a>
                         <a href="/admin/orderinfo/list?order_status=12" @if($order_status==12) class="current" @endif>待收货<em>({{$status['waitConfirm']}})</em></a>
+                        <a href="/admin/orderinfo/list?order_status=5" @if($order_status==5) class="current" @endif>待开票<em>({{$status['waitInvoice']}})</em></a>
                         {{--<a href="/admin/orderinfo/list?order_status=-3" @if($order_status==-3) class="current" @endif>已收货@if($order_status==-3) <em>({{$total}})</em> @endif</a>--}}
                     </div>
                     <div class="refresh">
@@ -47,10 +47,8 @@
                                     <th width="10%"><div class="tDiv">订单编号</div></th>
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
-                                    <th width="10%"><div class="tDiv">收货人</div></th>
-                                    <th width="10%"><div class="tDiv">审核状态</div></th>
-                                    <th width="10%"><div class="tDiv">付款状态</div></th>
-                                    <th width="10%"><div class="tDiv">发货状态</div></th>
+                                    <th width="10%"><div class="tDiv">收货信息</div></th>
+                                    <th width="10%"><div class="tDiv">订单状态</div></th>
                                     <th width="5%"><div class="tDiv">来源</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="10%" class="handle">操作</th>
@@ -63,58 +61,38 @@
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
                                         <td>
                                             <div class="tDiv">
-                                                @foreach($users as $v)
-                                                    @if($v['id']==$vo['user_id'])
-                                                        {{$v['user_name']}}
-                                                    @endif
-                                                @endforeach
+                                                <div>{{$vo['trade_user']['user_name']}}</div>
+                                                <div>{{$vo['trade_user']['nick_name']}}</div>
                                             </div>
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
                                         <td>
                                             <div class="tDiv">
-                                                @if($vo['order_status']==0)已作废
-                                                @elseif($vo['order_status']==1)待企业审核
-                                                @elseif($vo['order_status']==2)待商家确认
-                                                @elseif($vo['order_status']==3)已确认
-                                                @elseif($vo['order_status']==4)已完成
-                                                @else待开票
-                                                @endif
+                                               {{$vo['_status']}}
                                             </div>
                                         </td>
                                         <td>
                                             <div class="tDiv">
-                                                @if($vo['pay_status']==0)待付款
-                                                @elseif($vo['pay_status']==1)已付款
-                                                @else部分付款
-                                                @endif
+                                                <div>
+                                                    @if($vo['froms']=="pc")
+                                                        PC
+                                                    @elseif($vo['froms']=="weichat")
+                                                        小程序
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    @if($vo['extension_code']=="wholesale")
+                                                        集采拼团
+                                                    @elseif($vo['extension_code']=="consign")
+                                                        清仓特卖
+                                                    @elseif($vo['extension_code']=="promote")
+                                                        限时抢购
+                                                    @endif
+                                                </div>
                                             </div>
                                         </td>
-
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['shipping_status']==0)待发货
-                                                @elseif($vo['shipping_status']==1)已发货
-                                                @elseif($vo['shipping_status']==2)部分发货
-                                                @else 已确认收货
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="tDiv">
-                                                @if($vo['extension_code']=="cart")
-                                                    购物车
-                                                @elseif($vo['extension_code']=="wholesale")
-                                                    集采拼团
-                                                @elseif($vo['extension_code']=="consign")
-                                                    清仓特卖
-                                                    @else
-                                                    限时抢购
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td><div class="tDiv">{{$vo['goods_amount']+$vo['shipping_fee']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['order_amount']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>

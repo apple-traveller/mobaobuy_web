@@ -37,6 +37,12 @@ class OrderInfoService
         $re = OrderInfoRepo::getListBySearch($pager, $condition);
         foreach ($re['list'] as $k=>$v){
             $re['list'][$k]['_status'] = self::getOrderStatusName($v['order_status'],$v['pay_status'],$v['shipping_status'],$v['deposit_status'],$v['extension_code']);
+            if($v['user_id'] > 0 && $v['firm_id'] > 0){
+                $real_user_id = $v['firm_id'];
+            }else{
+                $real_user_id = $v['user_id'];
+            }
+            $re['list'][$k]['trade_user'] = UserService::getInfo($real_user_id);
         }
         return $re;
     }
@@ -80,6 +86,9 @@ class OrderInfoService
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
             $item['deliveries'] = OrderDeliveryRepo::getList([], ['order_id'=>$item['id'], 'status'=>1], ['id','shipping_name','shipping_billno']);
+            if(!empty($item['contract'])){
+                $item['contract'] = getFileUrl($item['contract']);
+            }
 
             //区分待确认的订单
             //取消需要返库
@@ -687,7 +696,7 @@ class OrderInfoService
                 }
             }
             if($data['order_status']==3){ //商家确认
-                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3]);
+                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>3, 'contract'=>$data["contract"]]);
                 //保存订单合同
                 $s_data['order_id'] = $data['id'];
                 $s_data['contract'] = $data["contract"];
