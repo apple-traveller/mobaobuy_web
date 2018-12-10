@@ -276,7 +276,6 @@
 
 				<!-- 付款凭证 -->
 				<div  class="consignee "  style="margin-top: 10px;">
-
 						<div class="payImg bbright" style="margin-top:20px;">
 							<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
 							<div class="mt10">
@@ -291,26 +290,26 @@
 							</div>
 
 						</div>
-					<div class="fl mt20">
-					<h1 style="font-size:16px;margin-left: 0;">合同</h1>
-					<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
-						<span style="margin-top:2px;">合同:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
-						 <div style="float:right;margin-left:10px;">
-							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载没有
-							<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
-							 </a>
+					</div>
+			<div class="fl mt20">
+				<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+				<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
+					<span style="margin-top:2px;">合同:</span>
+					@if(!empty($orderDetailsInfo['orderInfo']['contract']))
+						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['contract']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['contract']) }}">
 						 </div>
 
-						@else
-							暂无
-						@endif
-					</div>
-					<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
-						<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
-						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-					</div>
-					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+						<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
+							<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
+							@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+							<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+						</div>
+					@else
+						暂无
+					@endif
+				</div>
+				</div>
 				</div>
 				</div>
 			</div>
@@ -349,6 +348,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 	@include(themePath('.','web').'web.include.partials.footer_service')
