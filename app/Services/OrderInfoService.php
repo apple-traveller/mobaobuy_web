@@ -642,7 +642,7 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -1185,7 +1185,7 @@ class OrderInfoService
                 if($orderInfo['extension_code'] == 'promote'){//限时抢购
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                     ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采拼团 这边要减去活动已参与的数量
+                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -1296,7 +1296,7 @@ class OrderInfoService
                     $deposit = 0;
 //                    $pay_type =  1;
                     break;
-                case 'wholesale'://集采拼团
+                case 'wholesale'://集采火拼
                     $order_status = 2;
                     $from = 'wholesale';
                     $extension_id = $cartInfo_session[0]['id'];
@@ -1380,7 +1380,7 @@ class OrderInfoService
                     //减去活动库存
                     ActivityPromoteRepo::modify($id, ['available_quantity' => $activityPromoteInfo['available_quantity'] - $v['goods_number']]);
                 } elseif ($type == 'wholesale') {
-                    //集采拼团生产订单
+                    //集采火拼生产订单
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($id);
                     if (empty($activityWholesaleInfo)) {
                         self::throwBizError('商品不存在！');

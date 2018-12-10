@@ -96,7 +96,7 @@
                     <div class="member_header">
                         <div class="header_img fl"><img src="/images/hd.png"/></div>
                         <div class="header_text">
-                            <span>{{session('_web_user.nick_name')}}</span>
+                            <span class="ovhwp" style="display: block;" title="{{session('_web_user.nick_name')}}">{{session('_web_user.nick_name')}}</span>
                             @if(session('_web_user.is_firm'))
                                 <span class="db">【企业用户】</span>
                             @else

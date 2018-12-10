@@ -203,7 +203,7 @@ class OrderController extends ApiController
             }
             $goods_amount = $goodsList[0]['account_money'];
             return $this->success(compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id'),'success');
-        } elseif ($from == 'wholesale') {//集采拼团
+        } elseif ($from == 'wholesale') {//集采火拼
             try {
                 ActivityWholesaleService::getActivityWholesaleByIdApi($id);
             } catch (\Exception $e) {
