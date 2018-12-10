@@ -16,23 +16,34 @@
                 photos: '.layer-photos-demo'
                 ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
             });
+            $('.payBtn').click(function(){
+                var contract = $('input[name=contract]').val();
+                var orderno = '{{$orderDetailsInfo['orderInfo']['id']}}';
+                if(contract == '' || orderno == ''){
+                    $.msg.alert('请选择合同后提交');
+                    return;
+                }
+                $.ajax({
+                    url:'/checkOrderContract',
+                    type:'post',
+                    data:{'contract':contract,'orderno':orderno},
+                    dataType:'json',
+                    success:function(res){
+                        if(res.code){
+                            $.msg.alert(res.msg);
+                        }else{
+                            $.msg.alert(res.msg);
+                        }
+                    },
+                    error:function(){
+                        $.msg.alert('系统繁忙，请重试');
+                    }
+                })
+            })
 		});
 		//
 		function getLogisticsInfo(){
 			let _delivery_id = $('#delivery_id').data('delivery_id');
-			
-            $.ajax({
-                url: "/logistics/detail",
-                dataType: "json",
-                data:{
-                    'id': _delivery_id
-                },
-                type:"get",
-                success:function(data){
-                    if(data.code == 1){
-                        let _list = data.data.Traces;
-                        let _length = data.data.Traces.length;
-                        let _html = '';
 			if(_delivery_id != 0){
                 $.ajax({
                     url: "/logistics/detail",
@@ -72,6 +83,8 @@
 			}
 
 		}
+
+
 	</script>
 	<style>
 		/*订单状态*/
@@ -296,15 +309,6 @@
 						@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
 							 <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-
-						<div class="payImg bbright" style="margin-top:20px;">
-							<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
-							<div class="mt10">
-								<span class="fl">支付凭证:</span>
-							@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
-								<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-								 <img style="width:60px;" layer-pid="" layer-src=" {{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}" src="{{getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher'])}}">
-								</div>
 							@else
 								暂无
 							@endif
@@ -319,83 +323,58 @@
 					<span style="margin-top:2px;">合同:</span>
 					@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 						 <div id="layer-photos-demo" class="layer-photos-demo" style="float:right;margin-left:10px;">
-						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+						 	<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['contract']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['contract']) }}">
 						 </div>
 
 						<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
 							<span style="margin-top:2px; float: left;width: 25%;">上传合同:</span>
 							@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
+							<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
 						</div>
-						<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+
 							  
 					@else
 						暂无
 					@endif
 				</div>
 
-				
-
-</div>
+			</div>
 					
-						
-					
-
-					<!-- <div class="fl mt20">
-					<h1 style="font-size:16px;margin-left: 0;">合同</h1>
-					<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
-						<span style="margin-top:2px;">合同:</span>
-						@if(!empty($orderDetailsInfo['orderInfo']['contract']))
-						 <div style="float:right;margin-left:10px;">
-							 <a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载没有
-							<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
-							 </a>
-						 </div>
-
-						@else
-							暂无
-						@endif
-					</div>
-					<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
-						<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
-						@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
-					</div>
-					<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div> -->
 				</div>
 				</div>
 			</div>
-			<!--订单列表-->
-			<div class="whitebg br1 mt20 ovh">
-				<ul class="order-list-brand">
+		<!--订单列表-->
+		<div class="whitebg br1 mt20 ovh">
+			<ul class="order-list-brand">
+				<li>
+					<span style="width:29%">商品名称</span>
+					<span style="width:20%">单价</span>
+					<span style="width:20%">数量</span>
+					<span style="width:29%">金额</span>
+					<!-- <span>操作</span> -->
+				</li>
+				@foreach($orderDetailsInfo['goodsInfo'] as $v)
 					<li>
-						<span style="width:29%">商品名称</span>
-						<span style="width:20%">单价</span>
-						<span style="width:20%">数量</span>
-						<span style="width:29%">金额</span>
-						<!-- <span>操作</span> -->
+						<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
+						<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
+						<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+						<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
+						{{--<span></span>--}}
 					</li>
-					@foreach($orderDetailsInfo['goodsInfo'] as $v)
-						<li>
-							<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
-							<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
-							<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
-							<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
-							{{--<span></span>--}}
-						</li>
-					@endforeach
-				</ul>
-				<div class="Amount_money">
-					<div class="db">
-						<span>商品总额：</span>
-						<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span>
-					</div>
-					<div class="db mt15">
-						<span class="di">运       费：</span>
-						<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
-					</div>
-					<div class="db mt20 red">
-						<span class="lh35">应付总额：</span>
-						<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
-					</div>
+				@endforeach
+			</ul>
+			<div class="Amount_money">
+				<div class="db">
+					<span>商品总额：</span>
+					<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span>
+				</div>
+				<div class="db mt15">
+					<span class="di">运       费：</span>
+					<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
+				</div>
+				<div class="db mt20 red">
+					<span class="lh35">应付总额：</span>
+					<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
 				</div>
 			</div>
 		</div>
