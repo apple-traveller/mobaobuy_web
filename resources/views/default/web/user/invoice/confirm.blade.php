@@ -245,10 +245,11 @@
 				<span>商品</span>
 				<span>商品编码</span>
 				<span>单价（元）</span>
-				<span>已发货数量（kg）</span>
+				<span>已发货数量({{$goodsList['list'][0]['unit_name']}})</span>
 				<span></span>
 				<span>小计</span>
 			</li>
+
 			@foreach($goodsList['list'] as $k =>$v)
 			<li class="graybg">
 				<span class="ovhwp">{{ $v['goods_name'] }}</span>

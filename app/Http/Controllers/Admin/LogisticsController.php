@@ -14,7 +14,7 @@ class LogisticsController extends Controller
         $currpage = $request->input("currpage",1);
         $pageSize = $request->input("pagesize",10);
         $condition = [];
-        $logistics = LogisticsService::getLogistics(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        $logistics = LogisticsService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->display('admin.logistics.list',[
             'currpage'=>$currpage,
             'pageSize'=>$pageSize,
