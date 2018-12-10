@@ -208,7 +208,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
-        //Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
+        Route::post('/orderinfo/editOrderContract', 'OrderInfoController@editOrderContract');//订单列表
 
         Route::any('/logistics/list', 'LogisticsController@getList');//站内物流信息列表
         Route::post('/logistics/save', 'LogisticsController@save');//保存

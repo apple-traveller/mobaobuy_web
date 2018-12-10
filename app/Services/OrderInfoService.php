@@ -681,7 +681,6 @@ class OrderInfoService
                         if(!empty($firmStockInfo)){
                             FirmStockRepo::modify($firmStockInfo['id'],['number'=>$v['goods_number'] + $firmStockInfo['number']]);
                         }else{
-//
                             $firmStockData = [];
                             $firmStockData['firm_id'] = $firmId;
                             $firmStockData['goods_id'] = $v['goods_id'];
@@ -728,6 +727,12 @@ class OrderInfoService
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
+    }
+
+    //保存订单合同（编辑覆盖）
+    public static function createOrderContract($data)
+    {
+        return OrderContractRepo::create($data);
     }
 
     //修改自动收货天数，添加日志信息
