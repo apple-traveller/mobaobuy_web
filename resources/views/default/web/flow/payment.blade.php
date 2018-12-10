@@ -6,7 +6,17 @@
 
     <script type="text/javascript">
         $(function(){
-               
+            layer.confirm('您已上传过支付凭证，是否更新？', {
+                btn: ['是','否'] //按钮
+            }, function(){
+                layer.closeAll();
+            }, function(){
+//                layer.msg('也可以这样', {
+//                    time: 20000, //20s后自动关闭
+//                    btn: ['明白了', '知道了']
+//                });
+                window.location.href='/order/list';
+            });
                  //隐藏关闭框
                 $('.cancel,.frame_close').click(function(){
 
@@ -37,7 +47,8 @@
                 success:function(res){
                     if(res.code){
                         $.msg.alert('上传成功');
-                        window.location.reload();
+                        window.location.href = '/order/list';
+//                       window.location.reload();
                     }else{
                         $.msg.alert(res.msg);
                     }
