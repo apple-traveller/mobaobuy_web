@@ -165,31 +165,6 @@
     var total_amount = 0;
     var accountTotal = $('#accountTotal').text();
 
-    // //全选
-    // function check_all(){
-    //     $('#check_all').change(function(){
-    //         check_arr = [];
-    //         total_amount = 0;
-    //         if($(this).is(':checked')){
-    //             $('.shop_list .check_all span label input:checkbox').prop('checked',true);
-    //             $('.shop_list .check_all span label input:checkbox').each(function(){
-    //                 check_arr.push($(this).val());
-    //             })
-    //             $('#checkedSel').html(check_arr.length);
-    //
-    //         }else{
-    //             check_arr = [];
-    //             $('.shop_list .check_all span label input:checkbox').prop('checked',false);
-    //             $('#checkedSel').html(0);
-    //         }
-    //         $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
-    //             total_amount = total_amount + parseInt($(this).text());
-    //             console.log(total_amount);
-    //         });
-    //         $('#total_amount').html(total_amount);
-    //     })
-    // }
-
     // 单选框
 
     $('.shop_list .check_all span label input').change(function(){
@@ -221,7 +196,7 @@
         $('.shop_list .check_all span label input:checked').parent().parent().siblings('.goods_amount').each(function () {
             total_amount = total_amount + parseInt($(this).text());
         });
-        $('#total_amount').html(total_amount);
+        $('#total_amount').html(total_amount.toFixed(2));
 
     });
 
