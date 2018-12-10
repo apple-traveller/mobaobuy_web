@@ -227,12 +227,21 @@ if(!function_exists('getSeoInfoByType')){
     function getSeoInfoByType($type){
         $res = \App\Services\SeoService::getInfoByType($type);
         if($res){
+            if(empty($res['title'])){
+                $res['title'] = getConfig('shop_title');
+            }
+            if(empty($res['keywords'])){
+                $res['keywords'] = getConfig('shop_keywords');
+            }
+            if(empty($res['description'])){
+                $res['description'] = getConfig('shop_desc');
+            }
             return $res;
         }
         return [
-            'title'=>'',
-            'keywords'=>'',
-            'description'=>''
+            'title'=>getConfig('shop_title'),
+            'keywords'=>getConfig('shop_keywords'),
+            'description'=>getConfig('shop_desc')
         ];
     }
 }

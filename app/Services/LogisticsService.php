@@ -23,9 +23,17 @@ class LogisticsService
      * @param $where
      * @return array
      */
-    public static function getDetail($where)
+    public static function getDetailByWhere($where)
     {
         return LogisticsRepo::getInfoByFields($where);
     }
 
+
+    //获取一条数据
+    public static function getLogisticInfo($id)
+    {
+        return LogisticsRepo::getInfo($id);
+    }
+
 }
+

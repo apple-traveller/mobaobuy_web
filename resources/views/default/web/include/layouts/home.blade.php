@@ -4,7 +4,6 @@
     <title>@yield('title')</title>
     <meta name="description" content="@yield('description')" />
     <meta name="keywords" content="@yield('keywords')" />
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
 </head>

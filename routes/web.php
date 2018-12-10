@@ -19,6 +19,7 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 //省市县
 Route::post('/region/level', 'RegionController@regionLevelList');
 
+
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
@@ -207,7 +208,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/orderinfo/delivery/detail', 'OrderInfoController@deliveryDetail');//发货单详情
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
-        //Route::post('/orderinfo/createOrderContract', 'OrderInfoController@createOrderContract');//订单列表
+        Route::post('/orderinfo/editOrderContract', 'OrderInfoController@editOrderContract');//订单列表
 
         Route::any('/logistics/list', 'LogisticsController@getList');//站内物流信息列表
         Route::post('/logistics/save', 'LogisticsController@save');//保存
@@ -612,6 +613,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
 //小程序接口
 Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed'],function() {
     Route::post('/getOpenId', 'LoginController@getOpenId');
+    Route::post('/getNewOpenId', 'LoginController@getNewOpenId');
 
     Route::post('/register', 'LoginController@register');//注册
     Route::post('/send_register_sms', 'LoginController@sendRegisterSms');//注册新用户获取手机验证码

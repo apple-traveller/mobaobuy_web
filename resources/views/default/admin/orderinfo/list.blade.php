@@ -44,6 +44,7 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
+                                    <th width="10%"><div class="tDiv">下单时间</div></th>
                                     <th width="10%"><div class="tDiv">订单编号</div></th>
                                     <th width="10%"><div class="tDiv">会员账号</div></th>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
@@ -58,6 +59,7 @@
                                 @if(!empty($orders))
                                 @foreach($orders as $vo)
                                     <tr class="">
+                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
                                         <td>
                                             <div class="tDiv">
@@ -67,11 +69,7 @@
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
-                                        <td>
-                                            <div class="tDiv">
-                                               {{$vo['_status']}}
-                                            </div>
-                                        </td>
+                                        <td><div class="tDiv">{{$vo['_status']}}</div></td>
                                         <td>
                                             <div class="tDiv">
                                                 <div>
@@ -92,7 +90,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><div class="tDiv">{{$vo['order_amount']}}</div></td>
+                                        <td><div class="tDiv">￥{{$vo['order_amount']}}</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
