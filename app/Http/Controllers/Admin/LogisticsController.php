@@ -8,6 +8,4 @@ use App\Services\LogisticsService;
 class LogisticsController extends Controller
 {
 
-
-
 }
