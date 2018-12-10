@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\OrderInfoRepo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\OrderInfoService;
@@ -466,6 +467,33 @@ class OrderInfoController extends Controller
     { /* 微秒 */
         list($usec, $sec) = explode(' ', microtime()); /* 非科学计数法 */
         return array('ms' => microtime(true) * 10000, 'mi' => sprintf("%.0f", ((float)$usec + (float)$sec) * 100000000),);
+    }
+
+    //编辑订单合同
+    public function editOrderContract(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        $contract = $request->input('contract');
+        $data = [
+            'order_id'=>$order_id,
+            'from'=>3,
+            'from_id'=>session('_admin_user_id'),
+            'ip'=>$request->getClientIp(),
+            'add_time'=>Carbon::now(),
+            'equipment'=>$_SERVER['HTTP_USER_AGENT'],
+            'is_delete'=>0,
+            'contract'=>$contract
+        ];
+        try{
+            $contract = OrderInfoService::createOrderContract($data);
+            if(!empty($contract)){
+                return $this->result($contract,200,'success');
+            }
+            return $this->result('',400,'error');
+        }catch(\Exception $e){
+            return $this->result('',400,$e->getMessage());
+        }
+
     }
 
 

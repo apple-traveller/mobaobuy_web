@@ -49,6 +49,7 @@
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="10%"><div class="tDiv">收货信息</div></th>
                                     <th width="10%"><div class="tDiv">订单状态</div></th>
+                                    <th width="10%"><div class="tDiv">下单时间</div></th>
                                     <th width="5%"><div class="tDiv">来源</div></th>
                                     <th width="5%"><div class="tDiv">总金额</div></th>
                                     <th width="10%" class="handle">操作</th>
@@ -67,11 +68,8 @@
                                         </td>
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
-                                        <td>
-                                            <div class="tDiv">
-                                               {{$vo['_status']}}
-                                            </div>
-                                        </td>
+                                        <td><div class="tDiv">{{$vo['_status']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                         <td>
                                             <div class="tDiv">
                                                 <div>

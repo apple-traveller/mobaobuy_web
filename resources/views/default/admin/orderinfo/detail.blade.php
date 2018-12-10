@@ -327,7 +327,8 @@
                                     <div class="item">
                                         <div class="label">订单合同：</div>
                                         <div >
-                                            <input content="{{getFileUrl($order_contact['contract'])}}"  class="btn btn25 view_order_contract"    type="button" data-id="3" value="查看合同" >
+                                            <input content="{{getFileUrl($order_contact['contract'])}}"  class="btn btn25 view_order_contract"    type="button"  value="查看合同" >
+                                            <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="编辑合同,重新上传" >
                                         </div>
                                     </div>
                                         @else
@@ -433,17 +434,75 @@
             var upload = layui.upload;
             var index = 0;
 
+            //查看订单合同
             $(".view_order_contract").click(function(){
                 var content = $(this).attr('content');
                 index = layer.open({
                     type: 1,
                     title: '详情',
                     area: ['800px', '600px'],
-                    content: '<img style="height:550px;" src="'+content+'">'
+                    content: '<img style="height:550px;width:100%;" src="'+content+'">'
                 });
             });
 
-            //查看订单合同
+            //订单合同重新上传
+            $(".edit_order_contract").click(function(){
+                //上传合同
+                index2 = layer.open({
+                    type: 1,
+                    title: '上传订单合同',
+                    area: ['300px', '200px'],
+                    content: '<div class="label_value item">' +
+                    '<button style="margin-top:25px;margin-left:50px;" type="button" class="layui-btn upload-file" data-type="" data-path="order_contract" ><i class="layui-icon">&#xe681;</i>上传合同</button>' +
+                    '<img  style="margin-left:10px;margin-top:25px;width:60px;height:60px;display:none;" class="layui-upload-img"><br/>'+
+                    '<button style="margin-left:50px;margin-top:10px;" class="button messageButton_ordercontract">确定</button></div>'
+                });
+                $(document).delegate(".messageButton_ordercontract","click",function(){
+                    var order_id = "{{$orderInfo['id']}}";
+                    var contract = $("#order_contract").val();
+
+                    //上传成功，继续修改订单状态
+                    $.post('/admin/orderinfo/editOrderContract',{'order_id':order_id,'contract':contract},function(res){
+                        //console.log(res.data);return false;
+                        if(res.code==200){
+                            layer.msg(res.msg, {
+                                icon: 6,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                window.location.reload();
+                            });
+
+                        }else{
+                            layer.msg(res.msg, {
+                                icon: 5,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                        }
+                    },"json");
+                    layer.close(index2);
+                });
+                //文件上传
+                upload.render({
+                    elem: '.upload-file' //绑定元素
+                    ,url: "/uploadImg" //上传接口
+                    ,accept:'file'
+                    ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                        this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                    }
+                    ,done: function(res){
+                        //上传完毕回调
+                        if(1 == res.code){
+                            var item = this.item;
+                            item.siblings('img').show().attr('src', res.data.url);
+                            $("#order_contract").val(res.data.path);
+                        }else{
+                            layer.msg(res.msg, {time:2000});
+                        }
+                    }
+                });
+            });
+
+            //留言
             $(".viewMessage").click(function(){
                 index = layer.open({
                     type: 1,
@@ -687,24 +746,57 @@
                     }
                 }
 
-
-                $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
-                    //console.log(res.data);return false;
-                    if(res.code==200){
-                        layer.msg(res.msg, {
-                            icon: 6,
-                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function(){
-                            window.location.reload();
-                        });
-
-                    }else{
-                        layer.msg(res.msg, {
-                            icon: 5,
-                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                        });
+                if(order_status==-1 || order_status==0){
+                    let confirm_msg = "";
+                    if(order_status==-1){
+                        confirm_msg = "确认删除？";
                     }
-                },"json");
+                    if(order_status==0){
+                        confirm_msg = "确认取消？";
+                    }
+                    layer.confirm(confirm_msg, {icon: 3, title:'提示'}, function(index3){
+                        //do something
+                        $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
+                            //console.log(res.data);return false;
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    window.location.reload();
+                                });
+
+                            }else{
+                                layer.msg(res.msg, {
+                                    icon: 5,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                });
+                            }
+                        },"json");
+                                console.log('123');
+                        layer.close(index3);
+                        return false;
+                    });
+                }else{
+                    $.post('/admin/orderinfo/modifyOrderStatus',{'id':"{{$orderInfo['id']}}",'action_note':action_note,'order_status':order_status},function(res){
+                        //console.log(res.data);return false;
+                        if(res.code==200){
+                            layer.msg(res.msg, {
+                                icon: 6,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            }, function(){
+                                window.location.reload();
+                            });
+
+                        }else{
+                            layer.msg(res.msg, {
+                                icon: 5,
+                                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                            });
+                        }
+                    },"json");
+                }
+
             });
 
 
