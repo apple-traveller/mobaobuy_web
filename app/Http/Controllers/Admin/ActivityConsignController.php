@@ -126,6 +126,7 @@ class ActivityConsignController extends Controller
                 $data['total_number'] = $data['goods_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
+                $data['consign_status'] = 0;
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/activity/consign'));

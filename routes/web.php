@@ -286,6 +286,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/hotsearch/setShow', 'HotSearchController@setShow');//设置显示状态
         Route::get('/hotsearch/delete', 'HotSearchController@delete');//设置显示状态
 
+        Route::get('/shipping', 'ShippingController@index');// 物流公司列表
+        Route::get('/shipping/add', 'ShippingController@add');// 添加
+        Route::get('/shipping/edit', 'ShippingController@edit');// 编辑
+        Route::post('/shipping/save', 'ShippingController@save');// 保存
+        Route::post('/shipping/setStatus', 'ShippingController@setStatus');// 保存
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
