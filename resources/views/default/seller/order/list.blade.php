@@ -37,6 +37,7 @@
                                 <tr>
                                     <th width="9%"><div class="tDiv">下单日期</div></th>
                                     <th width="9%"><div class="tDiv">订单编号</div></th>
+                                    <th width="9%"><div class="tDiv">创建时间</div></th>
                                     <th width="9%"><div class="tDiv">会员账号</div></th>
                                     <th width="9%"><div class="tDiv">收货人</div></th>
                                     <th width="7%"><div class="tDiv">订单状态</div></th>
@@ -51,6 +52,7 @@
                                     <tr class="">
                                         <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$vo['order_sn']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                         <td>
                                             <div class="tDiv">
                                                 @foreach($users as $v)

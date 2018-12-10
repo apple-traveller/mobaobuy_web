@@ -158,7 +158,7 @@ class InvoiceService
                 if (count($res) == count($goodsList)){
                     foreach ($order_ids as $k2=>$v2){
                         // 更改订单状态已完成
-                        OrderInfoService::modify(['id'=>$v2,'order_status'=>4]);
+                        OrderInfoService::modify(['id'=>$v2,'order_status'=>6]);
                     }
                     self::commit();
                     return $invoice;

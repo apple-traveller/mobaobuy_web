@@ -536,14 +536,10 @@
                 ,
                 shade: 0.8
                 ,
-                maxmin:true
-                ,
-                area:['700px','600px'],
+                area:['800px','600px'],
                 id: 'PayImg' //设定一个id，防止重复弹出
                 ,
-                moveType: 1 //拖拽模式，0或者1
-                ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img src="'+contractImg+'" alt=""> </div>'
+                content: '<img src="'+contractImg+'" alt="" width="800px" height="100%">'
                 ,
                 yes: function () {
                     layer.closeAll();

@@ -15,8 +15,6 @@
     <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/layui/css/layui.css')}}" />
-    <link rel="stylesheet" type="text/css" href="/ui/area/1.0.0/area.css" />
-    <script type="text/javascript" src="/ui/area/1.0.0/area.js"></script>
 
     <script src="{{asset(themePath('/').'plugs/zTree_v3/js/jquery.ztree.core.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/create_cat_tree.js')}}" ></script>
