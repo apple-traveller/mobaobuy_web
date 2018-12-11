@@ -16,6 +16,8 @@ use App\Services\ShopGoodsQuoteService;
 use App\Services\ShopService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\ShopSalesmanService;
+
 
 class ActivityConsignController extends Controller
 {
@@ -28,7 +30,7 @@ class ActivityConsignController extends Controller
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
         $condition['type'] = '3';
-        $pageSize =5;
+        $pageSize =10;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('admin.activityconsign.consign',[
             'total'=>$consign_info['total'],
@@ -51,11 +53,14 @@ class ActivityConsignController extends Controller
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
+        //查询该公司的所有业务员信息
+        $salesmans = ShopSalesmanService::getList([],['shop_id'=>$consign_info['shop_id']]);
         return $this->display('admin.activityconsign.edit_consign',[
             'consign_info'=>$consign_info,
             'currentPage'=>$currentPage,
             'goods'=>$goods['list'],
-            'good'=>$good
+            'good'=>$good,
+            'salesmans'=>$salesmans
         ]);
     }
 
@@ -96,17 +101,17 @@ class ActivityConsignController extends Controller
         if(empty($data['shop_price'])){
             $errorMsg[] = '店铺售价不能为空';
         }
+        if(empty($data['salesman'])){
+            $errorMsg[] = '业务员不能为空';
+        }
+        //根据业务员名称获取联系方式和qq
+        $salesman = ShopSalesmanService::getInfoByFields(['name'=>$data['salesman']]);
+        $data['contact_info'] = $salesman['mobile'];
+        $data['QQ'] = $salesman['qq'];
         if(!empty($errorMsg)){
             return $this->error(implode('|',$errorMsg));
         }
 
-        $delivery_places = explode('/',$data['delivery_place']);//先转化为数组
-        $data['delivery_place'] = array_pop($delivery_places);//取最后的一个地区
-
-        $place_ids = explode('|',$data['place_id']);//先转化为数组
-        $data['place_id'] = array_pop($place_ids);//取最后的一个地区
-
-//        $data['shop_name'] = ShopService::getShopById($data['shop_id'])['shop_name'];
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
         $data['goods_name'] = $goods['goods_name'];
