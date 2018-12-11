@@ -276,7 +276,7 @@
                                     </dt>
                                     <dl style="width:300px;margin-left: 20px;">确认收款:
                                         @if($orderInfo['deposit_status']==1)
-                                            已收款
+                                            已收定金
                                         @else
                                             <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status_deposit" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1"  value="确认收款" >
                                         @endif
@@ -314,7 +314,7 @@
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
                                             <input type="hidden"  name="order_contract" id="order_contract" value="">
                                             @else
-                                            已取消
+                                            已作废
                                             @endif
                                         </div>
                                         @if(!empty($order_contact))
@@ -556,19 +556,23 @@
                     });
 
                     return false;
+                }else{
+                    layer.confirm("确认？",{icon:3,title:'确定'},function(){
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                }, function(){
+                                    window.location.reload();
+                                });
+                            }else{
+                                alert(res.msg);
+                            }
+                        },"json");
+                    })
                 }
-                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {
-                            icon: 6,
-                            time: 2000
-                        }, function(){
-                            window.location.reload();
-                        });
-                    }else{
-                        alert(res.msg);
-                    }
-                },"json");
+                return false;
             });
 
             //修改定金状态

@@ -597,6 +597,10 @@ class OrderInfoService
             //修改订金状态
             if(isset($data['deposit_status'])){
                 OrderInfoRepo::modify($data['id'], ['deposit_status'=>1]);
+                //增加集采的已参与数量
+                $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$order_info['id']]);
+                $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($order_info['extension_id']);
+                ActivityWholesaleRepo::modify($order_info['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $orderGoodsInfo[0]['goods_number']]);
             }
             //修改卖家确认时间
             OrderInfoRepo::modify($data['id'], ['confirm_time'=>Carbon::now()]);
@@ -714,16 +718,12 @@ class OrderInfoService
                 $s_data['is_delete'] = 0;
                 OrderContractRepo::create($s_data);
                 //根据来源,减库存操作
-                if($orderInfo['extension_code'] == 'wholesale'){//集采拼团
-                    //加上已参与数量
-                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
-                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                 }else{//购物车和清仓
-                    foreach ($orderGoodsInfo as $k=>$v){
-                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']-$v['goods_number']]);
-                    }
+                //购物车和清仓
+                foreach ($orderGoodsInfo as $k=>$v){
+                     $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                     ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']-$v['goods_number']]);
                 }
+
 
             }
             //给管理员操作添加一条数据
