@@ -67,7 +67,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                     <div class="label_value">
-                                        <input type="text" data-goods-name="{{$goods_info['goods_name']}}" data-packing-spac="{{$goods_info['packing_spec']}}" value="{{$promote['goods_name']}}"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
+                                        <input type="text" data-goods-name="{{$promote['goods_name']}}" data-packing-spac="{{$goods_info['packing_spec']}}" value="{{$promote['goods_name']}}"  autocomplete="off"  name="goods_name" id="goods_name" size="40"  class="text">
                                         <input type="hidden" value="{{$promote['goods_id']}}" name="goods_id"  id="goods_id">
                                         <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 220px; background: #fff;width: 320px; box-shadow: 1px 1px 1px 1px #dedede;">
 
@@ -172,7 +172,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-unit="'+data[i].packing_unit+'" data-unit-name="'+data[i].unit_name+'" data-packing-spac="'+data[i].packing_spec+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
