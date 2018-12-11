@@ -11,6 +11,7 @@ use App\Services\ShopService;
 use App\Services\ShopGoodsQuoteService;
 use App\Services\GoodsCategoryService;
 use App\Services\GoodsService;
+use App\Services\ShopSalesmanService;
 class ShopGoodsQuoteController extends Controller
 {
     //列表
@@ -25,7 +26,7 @@ class ShopGoodsQuoteController extends Controller
         $condition['b.type'] = '1|2';
         $condition['b.is_delete'] = 0;
         $pageSize =10;
-        $shops = ShopService::getShopList([],[]);
+        $shops = ShopService::getShopList([],['is_freeze'=>0]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
@@ -50,10 +51,14 @@ class ShopGoodsQuoteController extends Controller
         $id = $request->input('id');
         $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $good = GoodsService::getGoodInfo($goodsQuote['goods_id']);
+        //查询该公司的所有业务员信息
+        $salesmans = ShopSalesmanService::getList([],['shop_id'=>$goodsQuote['shop_id']]);
+        //dd($salesmans);
         return $this->display('admin.shopgoodsquote.edit',[
             'goodsQuote'=>$goodsQuote,
             'currpage'=>$currpage,
-            'good'=>$good
+            'good'=>$good,
+            'salesmans'=>$salesmans
         ]);
     }
 
@@ -78,6 +83,13 @@ class ShopGoodsQuoteController extends Controller
         if(empty($data['goods_number'])){
             $errorMsg[] = '库存不能为空';
         }
+        if(empty($data['salesman'])){
+            $errorMsg[] = '业务员不能为空';
+        }
+        //根据业务员名称获取联系方式和qq
+        $salesman = ShopSalesmanService::getInfoByFields(['name'=>$data['salesman']]);
+        $data['contact_info'] = $salesman['mobile'];
+        $data['QQ'] = $salesman['qq'];
         if(empty($data['shop_price'])){
             $errorMsg[] = '店铺售价不能为空';
         }

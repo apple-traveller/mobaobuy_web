@@ -299,6 +299,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/salesman/add', 'SalesmanController@edit');// 添加
         Route::get('/salesman/edit', 'SalesmanController@edit');// 编辑
         Route::post('/salesman/save', 'SalesmanController@save');// 保存
+        Route::post('/salesman/getSalemanByShopId', 'SalesmanController@getSalemanByShopId');// ajax根据shop_id获取数据
 
     });
 });
@@ -766,6 +767,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
         });
         Route::post('/toPay','OrderController@toPay');//去付款
+        Route::post('/getConfigs','IndexController@getConfigs');//返回配置信息
     });
 
 });
