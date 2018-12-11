@@ -1,5 +1,6 @@
 @extends(themePath('.')."admin.include.layouts.master")
-@section('styles')
+
+@section('iframe')
     <style>
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
@@ -13,8 +14,6 @@
         .pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: 1px solid #fff;}
 
     </style>
-@endsection
-@section('body')
     {{--@include('partials.base_header')--}}
     {{--<script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>--}}

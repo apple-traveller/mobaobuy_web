@@ -306,6 +306,7 @@ Route::get('/payment/orderPay','PayController@orderPay');//去付款
 
 
 Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/', 'IndexController@index'); //首页

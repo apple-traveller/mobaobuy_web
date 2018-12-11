@@ -365,6 +365,50 @@
                         }
                         $('.wlxx').append(_html);
                     }else{
+						//物流单第三方查询失败 查询站内维护物流信息
+                        getInstationLogisticsInfo();
+//                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+//                        $('.wlxx').append(_html);
+                        // $.msg.alert(data.msg);
+                    }
+                },
+                error:function(){
+                    var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                    $('.wlxx').append(_html);
+                }
+            })
+        }else{
+            var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+            $('.wlxx').append(_html);
+        }
+
+    }
+    function getInstationLogisticsInfo(){
+        var _delivery_id = $('#delivery_id').data('delivery_id');
+        if(_delivery_id != 0){
+            $.ajax({
+                url: "/logistics/instation",
+                dataType: "json",
+                data:{
+                    'id': _delivery_id
+                },
+                type:"get",
+                success:function(data){
+                    if(data.code == 1){
+                        var _list = data.data;
+                        var _length = data.data.length;
+                        var _html = '';
+
+                        for(var i=0; i<=_length; i++){
+                            _html += '<li><i class="external-cir"></i>'+_list[i].shipping_content+'<div class="gray">'+_list[i].add_time+'</div></li>';
+                        }
+                        console.log(_html);
+                        if(_html == ''){
+                            _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                        }
+                        $('.wlxx').append(_html);
+                    }else{
+                        //物流单第三方查询失败 查询站内维护物流信息
                         var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
                         $('.wlxx').append(_html);
                         // $.msg.alert(data.msg);

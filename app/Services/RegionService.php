@@ -60,7 +60,7 @@ class RegionService
 
     //获取所有地区的树型数据
     public static function getRegionTree(){
-        $all_list = RegionRepo::getList('',[],['*','region_id as id','region_name as name']);
+        $all_list = RegionRepo::getList('',[],['parent_id','region_id as id','region_name as name']);
         return make_treeTable($all_list, 'id', 'parent_id','children');
     }
 
