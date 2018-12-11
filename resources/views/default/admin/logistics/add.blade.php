@@ -68,13 +68,65 @@
                 var shipping_company = $(this).find("option:selected").text();
                 $("#shipping_id").siblings('div').filter(".form_prompt").remove();
                 $("#shipping_company").val(shipping_company);
+                var shipping_billno = $("#shipping_billno").val();
+                if(shipping_billno!=""){
+                    checkShippingNo();
+                }
+
             });
 
+            $("#shipping_billno").focus(function(){
+                let shipping_company = $("#shipping_company").val();
+                if(!shipping_company){
+                    layer.msg('请先选择快递公司', {
+                        icon: 5,
+                        time: 2000
+                    });
+                    $(this).val("");
+                    return false;
+                }
+            });
+
+            $("#shipping_billno").blur(function(){
+                checkShippingNo();
+            })
+
+            function checkShippingNo(){
+                var shipping_company = $("#shipping_company").val();
+                var shipping_billno = $("#shipping_billno").val();
+                if(!shipping_company){
+                    layer.msg('请先选择快递公司', {
+                        icon: 5,
+                        time: 2000
+                    });
+                    $(this).val("");
+                    return false;
+                }
+                $.ajax({
+                    url: "/admin/logistics/validateShippingNo",
+                    dataType: "json",
+                    data:{"shipping_company":shipping_company,"shipping_billno":shipping_billno},
+                    type:"POST",
+                    success:function(res){
+                        if(res.code==400){
+                            layer.msg('该运单号不存在，请重新填写', {
+                                icon: 5,
+                                time: 2000
+                            });
+                            $("#shipping_billno").val("");
+                        }
+                    }
+                });
+            }
 
         });
 
 
+
+
         $(function(){
+            var shipping_company = $(this).find("option:selected").text();
+            $("#shipping_company").val(shipping_company);
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
