@@ -502,7 +502,8 @@
                 return false;
             }
             var id = $(this).attr("data-id");
-            var number = $("#packing_spec").attr('data-id');
+//            var number = $("#packing_spec").attr('data-id');
+            var number = $(this).parent().siblings().attr('data-id');
             $.post("/cart",{'id':id,'number':number},function(res){
                 if(res.code==1){
                     var cart_count = res.data;
