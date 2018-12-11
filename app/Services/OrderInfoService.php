@@ -1664,6 +1664,7 @@ class OrderInfoService
     public static function updateOrderStatus($order_data)
     {
         $orderInfo = OrderInfoService::getOrderInfoByWhere(['id'=>$order_data['order_id'],'shop_id'=>$order_data['shop_id']]);
+        self::beginTransaction();
         if (!empty($orderInfo)) {
             $data = ['id' => $order_data['order_id']];
             // 确认订单
@@ -1804,12 +1805,15 @@ class OrderInfoService
                 ];
 
                 OrderInfoService::createLog($logData);
-                if ($pay_error){
-                    self::throwBizError($pay_error);
-                }
+//                if ($pay_error){
+//                    self::rollBack();
+//                    self::throwBizError($pay_error);
+//                }
+                self::commit();
                return $re;
             }
         } else {
+            self::rollBack();
             self::throwBizError('订单信息错误，或订单不存在');
         }
     }
