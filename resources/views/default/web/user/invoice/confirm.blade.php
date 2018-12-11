@@ -286,7 +286,7 @@
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>
 	$(function () {
-		let num = $("span.subtotal").text();
+		var num = $("span.subtotal").text();
 		sum = 0;
         $("span.subtotal").each(function(){
             sum =sum+parseInt($(this).text());
@@ -313,7 +313,7 @@
 	 * 修改默认开票
      */
 	$(".change_list").click(function () {
-		let invoice_id = $(this).attr('data-id');
+		var invoice_id = $(this).attr('data-id');
       	$.ajax({
 			url:'/updateDefaultInvoice',
 			data:{'invoice_id':invoice_id},
@@ -332,7 +332,7 @@
 	 * 选择收票地址
      */
     $(".check_address").click(function () {
-        let address_id = $(this).attr('data-id');
+        var address_id = $(this).attr('data-id');
         $.ajax({
             url:'/invoice/editInvoiceAddress',
             data:{'address_id':address_id},
@@ -350,7 +350,7 @@
      * 选择开票类型
      */
     $("input[name=invoice_type]").click(function(){
-		let invoice_type = $(this).val();
+		var invoice_type = $(this).val();
         $.ajax({
             url:'/invoice/editInvoiceType',
             data:{'invoice_type':invoice_type},
@@ -364,7 +364,7 @@
         });
 	});
 //    $(".check_address").click(function () {
-//        let invoice_type = $(this).attr('data-id');
+//        var invoice_type = $(this).attr('data-id');
 //        $.ajax({
 //            url:'/invoice/editInvoiceType',
 //            data:{'invoice_type':invoice_type},
@@ -379,7 +379,7 @@
 //        });
 //    });
     $(".address_sumb").click(function () {
-		let _form = $("#form").serializeArray();
+		var _form = $("#form").serializeArray();
 		$.ajax({
 			url: '/invoice/apply',
 			data:_form,

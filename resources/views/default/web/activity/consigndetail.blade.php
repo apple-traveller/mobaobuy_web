@@ -26,10 +26,10 @@
             });
 
             $(document).delegate('.shop_num_plus','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal=Number(ipts.val());//当前输入值
-                let packing_spec = Number($(this).attr('packing_spec'));//规格
-                let canSell = Number($(this).attr('canSell'));//规格
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal=Number(ipts.val());//当前输入值
+                var packing_spec = Number($(this).attr('packing_spec'));//规格
+                var canSell = Number($(this).attr('canSell'));//规格
 
                 if(iptsVal+packing_spec > canSell){
                     $.msg.error('不能大于可售');
@@ -40,10 +40,10 @@
             });
 
             $(document).delegate('.shop_num_reduce','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal=Number(ipts.val());//当前输入值
-                let packing_spec = Number($(this).attr('packing_spec'));//规格
-                let canSell = Number($(this).attr('canSell'));//规格
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal=Number(ipts.val());//当前输入值
+                var packing_spec = Number($(this).attr('packing_spec'));//规格
+                var canSell = Number($(this).attr('canSell'));//规格
                 if (iptsVal-packing_spec < packing_spec) {
                     $.msg.error('已经是最低的购买数量了');
                     return;
@@ -122,7 +122,7 @@
                     if(goodsNumber > activity_num){
                         _self.val(activity_num);
                     }else{
-                        let _count = goodsNumber%packing_spec;
+                        var _count = goodsNumber%packing_spec;
                         if(_count > 0){
                             _self.val(goodsNumber-_count);
                         }

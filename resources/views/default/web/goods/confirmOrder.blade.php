@@ -306,7 +306,7 @@
 @include(themePath('.','web').'web.include.partials.copyright')
 <script>
 //	$(function () {
-//		let num = $("span.subtotal").text();
+//		var num = $("span.subtotal").text();
 //		var sum = 0;
 //        $("span.subtotal").each(function(){
 //            sum =sum+parseInt($(this).text());
@@ -333,7 +333,7 @@
 	 * 修改默认开票
      */
 	$(".change_list").click(function () {
-		let invoice_id = $(this).attr('data-id');
+		var invoice_id = $(this).attr('data-id');
       	$.ajax({
 			url:'/updateDefaultInvoice',
 			data:{'invoice_id':invoice_id},
@@ -352,7 +352,7 @@
 	 * 修改默认地址
      */
 //    $(".check_address").click(function () {
-//        let address_id = $(this).attr('data-id');
+//        var address_id = $(this).attr('data-id');
 //        $.ajax({
 //            url:'/updateDefaultAddress',
 //            data:{'address_id':address_id},
@@ -370,7 +370,7 @@
 
 	//修改收货地址
 	$(".check_address").click(function () {
-        let address_id = $(this).attr('data-id');
+        var address_id = $(this).attr('data-id');
         $.ajax({
             url:'/editOrderAddress',
             data:{'address_id':address_id},
@@ -388,7 +388,7 @@
     $(".address_sumb").click(function () {
 //    	var payType = $('.payTypeList input[name=payType]:checked').val();
     	var activityPromoteId = $('#activityPromoteId').val();
-		let words =  $("input[ name='words' ]").val();
+		var words =  $("input[ name='words' ]").val();
 		$.ajax({
 			url:'/createOrder',
 			data:{

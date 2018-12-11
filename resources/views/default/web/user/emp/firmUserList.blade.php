@@ -140,7 +140,7 @@
             });
             //验证手机号对应用户是否存在并已实名
             $(document).delegate('#firmUserPhone','blur',function(){
-                let _mobile = $(this).val();
+                var _mobile = $(this).val();
                 if(!_mobile){
                     $.msg.error('请输入手机号');return;
                 }
@@ -238,7 +238,7 @@
 
         //请求验证用户是否存在并且已实名
         function checkRealName(mobile){
-            let _bool = false;
+            var _bool = false;
             $.ajax({
                 'type':'post',
                 'data':{'mobile':mobile},

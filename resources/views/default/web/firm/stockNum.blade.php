@@ -1,4 +1,5 @@
 <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <title>会员中心 - @yield('title')</title>
