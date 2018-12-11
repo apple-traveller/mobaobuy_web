@@ -1,5 +1,5 @@
 @extends(themePath('.')."admin.include.layouts.master")
-@section('styles')
+@section('iframe')
     <style>
         [class^="icon-"], [class*=" icon-"] {
             line-height: 23px;
@@ -8,9 +8,6 @@
             width: 278px !important;
         }
     </style>
-@endsection
-@section('body')
-    @include('partials.base_header')
     <script src="{{asset(themePath('/').'js/jquery.validation.min.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/jquery.cookie.js')}}" ></script>
     <script src="{{asset(themePath('/').'js/dsc_admin2.0.js')}}" ></script>
@@ -101,7 +98,6 @@
                                 </div>
                             </div>
 
-                                {{--<input type="hidden" name="currentPage" value="{{$currentPage}}">--}}
                             <input type="hidden" name="id" value="{{$consign_info['id']}}">
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
@@ -114,8 +110,13 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" id="salesman" class=" text" value="{{ $consign_info['salesman'] }}" maxlength="10" autocomplete="off">
-                                    <div class="form_prompt"></div>
+                                    <select  style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="salesman" id="salesman" >
+                                        @foreach($salesmans as $vo)
+                                            <option @if($consign_info['salesman']==$vo['name']) selected  @endif value="{{$vo['name']}}">{{$vo['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                    <div style="margin-left:10px;" class="notic">选择业务员</div>
                                 </div>
                             </div>
 
@@ -256,6 +257,7 @@
         $("#shop_id").change(function(){
             var shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
+            getSalemanList();
         });
         $("#cat_name").focus(function(){
             showWinZtreeSelector(this);
@@ -339,12 +341,12 @@
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
                 }
-                if (goods_number =="" || goods_number ==0) {
+                if (goods_number =="" || goods_number ==0 || goods_number<spac) {
                     console.log('123');
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.ceil(goods_number/spac) * spac);
+                $(this).val(Math.floor(goods_number/spac) * spac);
             });
         });
         // 商家 请求所有的商家数据
@@ -365,6 +367,30 @@
                             }
 
                         }
+                    }
+                }
+            })
+        }
+
+        //获取所有的商家业务员数据
+        function getSalemanList(){
+            let shop_id = $("#shop_id").val();
+            $.ajax({
+                url: "/admin/salesman/getSalemanByShopId",
+                dataType: "json",
+                data:{shop_id:shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">请选择业务员</option>');
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            $("#salesman").append('<option value="'+data[i].name+'">'+data[i].name+'</option>');
+                        }
+                    }else{
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">无业务员信息</option>');
                     }
                 }
             })

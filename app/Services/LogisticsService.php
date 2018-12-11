@@ -3,7 +3,7 @@ namespace App\Services;
 
 use App\Repositories\LogisticsRepo;
 use App\Repositories\OrderDeliveryRepo;
-
+use App\Repositories\ShippingRepo;
 class LogisticsService
 {
     use CommonService;
@@ -19,7 +19,10 @@ class LogisticsService
         return LogisticsRepo::getListBySearch($pager,$condition);
     }
 
-
+    public static function getList($order, $condition)
+    {
+        return LogisticsRepo::getList($order, $condition);
+    }
     //获取一条数据
     public static function getLogisticInfo($id)
     {
@@ -40,13 +43,13 @@ class LogisticsService
     }
 
     //验证
-    public static function validateShippingNo($shipping_billno)
+    public static function validateShippingNo($shipping_billno,$shipping_company)
     {
-        $flag = OrderDeliveryRepo::getInfoByFields(['shipping_billno'=>$shipping_billno]);
+        $flag = OrderDeliveryRepo::getInfoByFields(['shipping_billno'=>$shipping_billno,'shipping_name'=>$shipping_company]);
         if(!empty($flag)){
-            self::throwBizError('该运单号已存在');
-        }else{
             return true;
+        }else{
+            return false;
         }
     }
 

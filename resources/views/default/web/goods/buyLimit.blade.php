@@ -95,17 +95,17 @@
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已结束</div>
 							</div>
 						@elseif($v['is_soon'])
-							<div class="graybg count-down" data-endtime="{{$v['begin_time']}}">
+							<div class="graybg count-down" data-endtime="{{strtotime($v['begin_time'])*1000}}">
 								<div class="bottom_time"><p>距离开始：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">敬请期待</div>
 							</div>
 						@elseif($v['available_quantity'] == 0)
-							<div class="graybg count-down"  data-endtime="{{$v['end_time']}}">
+							<div class="graybg count-down"  data-endtime="{{strtotime($v['end_time'])*1000}}">
 								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已售完</div>
 							</div>
 						@else
-							<div class="graybg count-down" data-endtime="{{$v['end_time']}}">
+							<div class="graybg count-down" data-endtime="{{strtotime($v['end_time'])*1000}}">
 								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<a href="/buyLimitDetails/{{encrypt($v['id'])}}"><div class="bottom_btn redbg fs16 white cp">参与秒杀</div></a>
 							</div>

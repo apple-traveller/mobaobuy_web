@@ -32,7 +32,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/home', 'IndexController@home');
         Route::post('/home/getMonthlyOrders', 'IndexController@getMonthlyOrders');
         Route::get('/clear', 'IndexController@clear');
-        Route::post('/getActivityCount', 'IndexController@getActivityCount');
+        Route::get('/getActivityCount', 'IndexController@getActivityCount');
 
         Route::get('/adminuser/list','AdminUserController@getList');//管理员列表
         Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
@@ -215,6 +215,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logistics/edit', 'LogisticsController@editForm');//编辑
         Route::post('/logistics/save', 'LogisticsController@save');//保存
         Route::get('/logistics/delete', 'LogisticsController@delete');//删除
+        Route::post('/logistics/validateShippingNo', 'LogisticsController@validateShippingNo');//验证快递单号是否存在
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
@@ -299,6 +300,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/salesman/add', 'SalesmanController@edit');// 添加
         Route::get('/salesman/edit', 'SalesmanController@edit');// 编辑
         Route::post('/salesman/save', 'SalesmanController@save');// 保存
+        Route::post('/salesman/getSalemanByShopId', 'SalesmanController@getSalemanByShopId');// ajax根据shop_id获取数据
 
     });
 });
@@ -306,6 +308,7 @@ Route::get('/payment/orderPay','PayController@orderPay');//去付款
 
 
 Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
+Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/', 'IndexController@index'); //首页
@@ -765,6 +768,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
         });
         Route::post('/toPay','OrderController@toPay');//去付款
+        Route::post('/getConfigs','IndexController@getConfigs');//返回配置信息
     });
 
 });

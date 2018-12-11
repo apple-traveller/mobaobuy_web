@@ -588,6 +588,7 @@ class OrderInfoService
     {
         try{
             self::beginTransaction();
+            $order_info = OrderInfoRepo::getInfo($data['id']);
             //修改支付状态，和已付款金额字段
             if(isset($data['pay_status'])){
                 $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
@@ -595,7 +596,11 @@ class OrderInfoService
             }
             //修改订金状态
             if(isset($data['deposit_status'])){
-                OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1]);
+                //增加集采的已参与数量
+                $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$order_info['id']]);
+                $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($order_info['extension_id']);
+                ActivityWholesaleRepo::modify($order_info['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $orderGoodsInfo[0]['goods_number']]);
             }
             //修改卖家确认时间
             OrderInfoRepo::modify($data['id'], ['confirm_time'=>Carbon::now()]);
@@ -610,7 +615,7 @@ class OrderInfoService
                 'log_time'=>Carbon::now()
             ];
             $flag_order_log = OrderActionLogRepo::create($logData);
-            if(!empty($order_info) && !empty($flag_order_log)){
+            if(!empty($flag_order_log)){
                 self::commit();
                 return $order_info;
             }
@@ -635,32 +640,33 @@ class OrderInfoService
                 if($orderInfo['order_status']>=2){
                     self::throwBizError("企业已审核");
                 }
-                $order_info = OrderInfoRepo::modify($data['id'], $data);
+                $order_info = OrderInfoRepo::modify($data['id'], ['order_status'=>2]);
             }
-            if($data['order_status']==0){//订单取消 waitAffirm
+            if($data['order_status']==0){
+                //订单取消 waitAffirm
                 //根据来源返回库存
-                if($orderInfo['extension_code'] == 'promote'){//限时抢购
-                    $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
-                    ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
-                    //减去已参与数量
-                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
-                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
-                }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
-                    foreach ($orderGoodsInfo as $k=>$v){
-                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
-                    }
-                }else{//购物车下单
-                    foreach ($orderGoodsInfo as $k=>$v){
-                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                if($orderInfo['order_status']>=3){
+                    if($orderInfo['extension_code'] == 'promote'){//限时抢购
+                        $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
+                        ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+                    }elseif ($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status'==1]){//集采火拼 这边要减去活动已参与的数量
+                        //减去已参与数量
+                        $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                        ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                    }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
+                        foreach ($orderGoodsInfo as $k=>$v){
+                            $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                            ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                        }
+                    }else{//购物车下单
+                        foreach ($orderGoodsInfo as $k=>$v){
+                            $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                            ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                        }
                     }
                 }
+
                 $order_info = OrderInfoRepo::modify($data['id'],['order_status'=>0]);
-            }
-            if($data['order_status']==-1){ //删除订单
-                $order_info = OrderInfoRepo::modify($data['id'], ['is_delete'=>1]);
             }
             if($data['order_status']==4){//确认收货
                 //企业存库表
@@ -711,6 +717,14 @@ class OrderInfoService
                 $s_data['equipment'] = $data['equipment'];
                 $s_data['is_delete'] = 0;
                 OrderContractRepo::create($s_data);
+                //根据来源,减库存操作
+                //购物车和清仓
+                foreach ($orderGoodsInfo as $k=>$v){
+                     $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                     ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']-$v['goods_number']]);
+                }
+
+
             }
             //给管理员操作添加一条数据
             $logData = [
@@ -737,7 +751,20 @@ class OrderInfoService
     //保存订单合同（编辑覆盖）
     public static function createOrderContract($data)
     {
-        return OrderContractRepo::create($data);
+        try{
+            self::beginTransaction();
+            $order_contract = OrderContractRepo::create($data);
+            $order_info = OrderInfoRepo::modify($data['order_id'],['contract'=>$data['contract']]);
+            if(!empty($order_info) && !empty($order_contract)){
+                self::commit();
+                return $order_contract;
+            }
+            return " ";
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
     //修改自动收货天数，添加日志信息
@@ -1116,6 +1143,9 @@ class OrderInfoService
     // 订单详情
     public static function orderDetails($id,$firmId){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        if(empty($orderInfo)){
+            self::throwBizError('订单详情有误!');
+        }
         if($orderInfo['firm_id'] && $orderInfo['user_id']){
             if($firmId != $orderInfo['firm_id']){
                 return '';
@@ -1207,7 +1237,7 @@ class OrderInfoService
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
             return true;
-        }catch (Exception $e){
+        }catch (\Exception $e){
             self::rollBack();
             throw $e;
         }
@@ -1321,11 +1351,21 @@ class OrderInfoService
                     if (!$userId['firm_id']) {
                         $order_status = 2;
                     } else {
-                        if(!$userId['need_approval']){
-                            $order_status = 2;
+                        if($userId['user_id'] != $userId['firm_id']){
+                            $firmInfo = UserRepo::getInfo($userId['firm_id']);
+                            if($firmInfo['need_approval']){
+                                $order_status = 1;
+                            }else{
+                                $order_status = 2;
+                            }
                         }else{
-                            $order_status = 1;
+                            if(!$userId['need_approval']){
+                                $order_status = 2;
+                            }else{
+                                $order_status = 1;
+                            }
                         }
+
                     }
             }
 

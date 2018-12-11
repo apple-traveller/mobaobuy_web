@@ -19,8 +19,9 @@ class SalesmanController extends Controller
         $currentPage = $request->input('currentPage',1);
         $name = $request->input('name','');
         $condition['is_delete']= 0;
-        $pageSize =5;
-        $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
+        $condition['is_freeze']= 0;
+        $pageSize =10;
+        $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->display('admin.shopSalesman.list',[
             'total'=>$list['total'],
             'list'=>$list['list'],
@@ -95,6 +96,16 @@ class SalesmanController extends Controller
                 return $this->success('添加成功',url('/admin/salesman/list'));
             }
         }
+    }
 
+    //ajax获取获取业务员名称
+    public function getsalemanByShopId(Request $request)
+    {
+        $shop_id = $request->input('shop_id');
+        $salesman = ShopSalesmanService::getList([],['shop_id'=>$shop_id]);
+        if(!empty($salesman)){
+            return $this->result($salesman,200,'success');
+        }
+        return $this->result('',400,'error');
     }
 }

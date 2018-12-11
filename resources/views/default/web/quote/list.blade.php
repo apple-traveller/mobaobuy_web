@@ -308,7 +308,7 @@
             $('#brand_tag').hide();
             $('#brand_tag').empty();
             $('#brand_tag').attr('brand_id','');
-            let _t = $('#t').val();
+            var _t = $('#t').val();
             if(_t == 1 || _t == 2){
                 getInfo(1);
             }else{
@@ -323,7 +323,7 @@
             $('#cate_tag').empty();
             $('#cate_tag').attr('cate_id','');
 
-            let _t = $('#t').val();
+            var _t = $('#t').val();
             if(_t == 1 || _t == 2){
                 getInfo(1);
             }else{
@@ -390,7 +390,7 @@
     }
     //请求ajax获取列表数据
     function getInfo(currpage){
-        let _keyword = $('.search-input').val();
+        var _keyword = $('.search-input').val();
         var _cate_id = $('#cate_tag').attr('cate_id');
         var _brand_id = $('#brand_tag').attr('brand_id');
         var region_ids = [];
@@ -459,12 +459,12 @@
                     $('#t').val(res.data.t);
                     $(".table_title").nextAll().remove();//去除已经出现的数据
                     $("#page").remove();//删除分页div
-                    let _html = '';
-                    let imgUrlLeft = '<img onclick="javascript:window.open(';
-                    let imgUrlRight = '&site=qq&menu=yes\')';
-                    for (let i=0;i<list.length;i++)
+                    var _html = '';
+                    var imgUrlLeft = '<img onclick="javascript:window.open(';
+                    var imgUrlRight = '&site=qq&menu=yes\')';
+                    for (var i=0;i<list.length;i++)
                     {
-                        let _store_name = '无';
+                        var _store_name = '无';
                         if(list[i].store_name){
                             _store_name = list[i].store_name;
                         }

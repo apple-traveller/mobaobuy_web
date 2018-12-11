@@ -43,6 +43,9 @@
 		.collect_active_bg{
 			background-color: #eb3505;
 		}
+		.fs16 {
+			font-size: 14px;
+		}
 	</style>
 
 @endsection
@@ -77,11 +80,11 @@
 										距离结束：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@elseif($v['is_soon'])
-									<div class="collect_end_time count-down" id="collect_end_time" data-endtime="{{$v['begin_time']}}">
+									<div class="collect_end_time count-down" id="collect_end_time" data-endtime="{{strtotime($v['begin_time'])}}">
 										距离开始：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@else
-									<div class="collect_end_time count-down" data-endtime="{{$v['end_time']}}">
+									<div class="collect_end_time count-down" data-endtime="{{strtotime($v['end_time'])}}">
 										距离结束：<span class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@endif
@@ -100,7 +103,7 @@
 											@elseif((float)$v['num'] <= 0)
 												<div class="mx_progress_com" style="width: 100%;"></div>
 											@else
-												<div class="mx_progress_com" style="width: {{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%;"></div>
+												<div class="mx_progress_com" style="width: 100%;"></div>
 											@endif
 										</div>
 										@if((float)$v['partake_quantity'] <= 0)

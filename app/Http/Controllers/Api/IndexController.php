@@ -122,5 +122,16 @@ class IndexController extends ApiController
     }
 
 
+    //返回配置信息
+    public function getConfigs(Request $request)
+    {
+        $data = [
+            'qq'=>getConfig('service_qq'),
+            'kefu_mobil'=>getConfig('service_phone'),
+        ];
+        return $this->success($data,'success');
+    }
+
+
 
 }

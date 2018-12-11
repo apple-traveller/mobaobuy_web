@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InvoiceService;
+use App\Services\LogisticsService;
 use App\Services\OrderInfoService;
 use Illuminate\Http\Request;
 use Logistics\Client;
@@ -65,4 +66,32 @@ class KuaidiController extends Controller
         }
     }
 
+    public function searchInstation(Request $request)
+    {
+        $id = $request->input('id');
+        $search_type = $request->input('search_type','order');
+
+        switch ($search_type){
+            case 'order':
+                $delivery_info = OrderInfoService::getDeliveryInfo($id);
+                break;
+            case 'invoice':
+                $delivery_info = InvoiceService::getInfoById($id);
+                break;
+            default:
+                $delivery_info = [];
+        }
+        if(!empty($delivery_info)){
+            $where = [
+                'is_delete'=>0,
+                'shipping_company'=>$delivery_info['shipping_name'],
+                'shipping_billno'=>$delivery_info['shipping_billno'],
+            ];
+            $info = LogisticsService::getList(['add_time'=>'desc'],$where);
+            if(!empty($info)){
+                return $this->success('获取成功','',$info);
+            }
+        }
+        return $this->error('无物流信息');
+    }
 }

@@ -11,7 +11,7 @@
     <script>
        $(function () {
            layui.use('element', function(){
-               let element = layui.element;
+               var element = layui.element;
            });
        });
     </script>

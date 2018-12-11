@@ -55,11 +55,11 @@
 @yield('js')
 <script>
     $('#search_submit').click(function () {
-        let title = $('#search_info').val();
+        var title = $('#search_info').val();
         window.location.href = "/news.html?title="+title;
     });
     $('.news_Hot').on('click','.article_id',function () {
-        let article = $(this).attr('data_id');
+        var article = $(this).attr('data_id');
         window.location.href = "/detail/"+article+".html";
     });
 </script>

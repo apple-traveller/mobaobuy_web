@@ -178,6 +178,7 @@ class GoodsService
         $addTime = Carbon::now();
         //$id = decrypt($id);
         $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($shopGoodsQuoteId);
+
         if(empty($shopGoodsQuoteInfo)){
             self::throwBizError('报价信息不存在！');
         }
@@ -194,6 +195,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError('商品信息不存在！');
         }
+
         if($number > $shopGoodsQuoteInfo['goods_number']){
             self::throwBizError('不能大于库存数量');
         }
@@ -210,7 +212,11 @@ class GoodsService
             }
         }
         $cartResult = CartRepo::getInfoByFields(['user_id'=>$userId,'shop_goods_quote_id'=>$shopGoodsQuoteId]);
+
         if($cartResult){
+            if($shopGoodsQuoteInfo['goods_number'] < $cartResult['goods_number'] + $number){
+                self::throwBizError('购物车数量不能大于库存数量');
+            }
             return CartRepo::modify($cartResult['id'],['goods_number'=>$cartResult['goods_number']+$number]);
         }else{
             $cartInfo = [

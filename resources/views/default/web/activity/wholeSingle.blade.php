@@ -38,7 +38,7 @@
 		    background-size: 100% 100%;
 		}
 
-		.WholeSheet_banner{position:relative;background: url(img/WholeSheet_banner.png)no-repeat center;height: 501px;overflow: hidden;}
+		.WholeSheet_banner{width:100%;position:relative;background: url(img/WholeSheet_banner.png)no-repeat center;height: 501px;overflow: hidden;}
 		.WholeSheet_banner_btn{margin:20px auto;width: 287px;height: 66px;text-align: center;line-height: 66px;background-color: #f4a600;
 		font-size: 30px;color: #fff;border-radius: 35px;margin-top: 330px;cursor: pointer;}
 		.pursh_text{width:100%;background: rgba(3, 41, 95, 0.6);position: absolute;bottom: 0;height: 60px;line-height: 60px;}

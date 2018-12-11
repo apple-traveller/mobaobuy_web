@@ -517,7 +517,7 @@ class UserService
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
 
         //商品推荐
-        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1,'is_delete'=>0,'type'=>'1|2']);
 
         //企业和代理用户
         if(empty($userId)){
@@ -648,21 +648,23 @@ class UserService
                 self::throwBizError('绑定失败！');
             }
             //如果是企业用户不能修改昵称
-            $userInfo = self::getInfo($user_id);
+            $userInfo = UserRepo::getInfo($user_id);
             if($userInfo['is_firm']==1){
                 $user_res = self::modify($user_id,['avatar'=>$avatar]);
                 if(!$user_res){
                     self::throwBizError('用户信息更新失败！');
                 }
+                self::commit();
+                return true;
             }
             #更新用户信息
-            $user_res = self::modify($user_id,['nick_name'=>$nick_name,'avatar'=>$avatar]);
+            $user_res = UserRepo::modify($user_id,['nick_name'=>$nick_name,'avatar'=>$avatar]);
             if(!$user_res){
                 self::throwBizError('用户信息更新失败！');
             }
             self::commit();
             return true;
-        }catch (Exception $e){
+        }catch (\Exception $e){
             self::rollBack();
             self::throwBizError($e);
         }

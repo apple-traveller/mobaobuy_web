@@ -52,13 +52,16 @@ class ShopSalesmanService
     public static function getInfoByFields($condition)
     {
         $info = ShopSalesmanRepo::getInfoByFields($condition);
-        $shop_info = ShopService::getShopById($info['shop_id']);
-        if(!empty($shop_info)){
-            $info['company_name'] = $shop_info['company_name'];
+        if($info){
+            $shop_info = ShopService::getShopById($info['shop_id']);
+            if(!empty($shop_info)){
+                $info['company_name'] = $shop_info['company_name'];
+            }else{
+                $info['company_name'] = '';
+            }
         }else{
-            $info['company_name'] = '';
+            $info = [];
         }
-
         return $info;
     }
 

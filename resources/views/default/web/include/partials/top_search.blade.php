@@ -72,11 +72,11 @@
 <script>
 $(function() {
 
-    let _path_name = window.location.pathname+window.location.search;
+    var _path_name = window.location.pathname+window.location.search;
     console.log(_path_name);
     //设置高亮
     $('.nav-menu ul a').each(function(){
-        let _this_path_name = $(this).attr('href');
+        var _this_path_name = $(this).attr('href');
         if(_path_name == _this_path_name){
             $(this).addClass('green');
         }else{
