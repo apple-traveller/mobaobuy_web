@@ -517,7 +517,7 @@ class UserService
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId]);
 
         //商品推荐
-        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1]);
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1,'is_delete'=>0,'type'=>'1|2']);
 
         //企业和代理用户
         if(empty($userId)){
