@@ -50,12 +50,12 @@
 
 
             $(document).delegate('.shop_num_plus','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal= Number(ipts.val());
-                let packing_spec = Number(ipts.attr('packing_spec'));//规格
-                let min_num = Number(ipts.attr('min-limit'));//起售量
-                let max_num = Number(ipts.attr('max-limit'));//起售量
-                let can_num = Number(ipts.attr('canSell'));//可售
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal= Number(ipts.val());
+                var packing_spec = Number(ipts.attr('packing_spec'));//规格
+                var min_num = Number(ipts.attr('min-limit'));//起售量
+                var max_num = Number(ipts.attr('max-limit'));//起售量
+                var can_num = Number(ipts.attr('canSell'));//可售
                 if(iptsVal+packing_spec > max_num){
                     $.msg.error('不能大于最大限购量');
                     return;
@@ -69,10 +69,10 @@
             });
 //            $('.shop_num_reduce').click(function(){
             $(document).delegate('.shop_num_reduce','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal= Number(ipts.val());
-                let packing_spec = Number(ipts.attr('packing_spec'));//规格
-                let min_num = Number(ipts.attr('min-limit'));//起售量
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal= Number(ipts.val());
+                var packing_spec = Number(ipts.attr('packing_spec'));//规格
+                var min_num = Number(ipts.attr('min-limit'));//起售量
                 if (iptsVal-packing_spec < min_num) {
                     $.msg.error('已经是最低的购买数量了');
                     return;
@@ -158,7 +158,7 @@
                         layer.msg('输入的数量不能大于可售数量');
                         _self.val(can_num);
                     }else{
-                        let _count = goodsNumber%packing_spec;
+                        var _count = goodsNumber%packing_spec;
                         if(_count>0){
                             _self.val(goodsNumber-_count);
                         }

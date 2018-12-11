@@ -51,7 +51,7 @@
 <script>
 
     $(function () {
-        let its = $(".its").last();
+        var its = $(".its").last();
         its[0].style.visibility='hidden';
     });
 </script>

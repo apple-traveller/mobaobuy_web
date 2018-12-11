@@ -21,7 +21,7 @@
         })
         //
         function getLogisticsInfo(){
-            let _id = $('.order_pro_stute').attr('data-id');
+            var _id = $('.order_pro_stute').attr('data-id');
             if(_id != 0){
                 $.ajax({
                     url: "/logistics/detail",
@@ -33,10 +33,10 @@
                     type:"get",
                     success:function(data){
                         if(data.code === 1){
-                            let _list = data.data.Traces;
-                            let _length = data.data.Traces.length;
-                            let _html = '';
-                            for(let i=(_length-1); i>=0; i--){
+                            var _list = data.data.Traces;
+                            var _length = data.data.Traces.length;
+                            var _html = '';
+                            for(var i=(_length-1); i>=0; i--){
                                 _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
                             }
                             if(_html === ''){

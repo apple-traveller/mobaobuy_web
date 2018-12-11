@@ -50,17 +50,17 @@
 
 
             $(document).delegate('.shop_num_plus','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal=Number(ipts.val());//当前输入值
-                let packing_spec = Number($(this).attr('packing_spec'));//规格
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal=Number(ipts.val());//当前输入值
+                var packing_spec = Number($(this).attr('packing_spec'));//规格
 
                 ipts.val(iptsVal+packing_spec);
             });
 
             $(document).delegate('.shop_num_reduce','click',function(){
-                let ipts=$(this).siblings('input.Bidders_record_text');
-                let iptsVal=Number(ipts.val());//当前输入值
-                let packing_spec = Number($(this).attr('packing_spec'));//规格
+                var ipts=$(this).siblings('input.Bidders_record_text');
+                var iptsVal=Number(ipts.val());//当前输入值
+                var packing_spec = Number($(this).attr('packing_spec'));//规格
                 var min_num = Number($(this).attr('min-limit'));//起售量
                 if (iptsVal-packing_spec < min_num) {
                     $.msg.error('已经是最低的购买数量了');
@@ -135,7 +135,7 @@
                 var min_num = Number(_self.attr('min-limit'));//规格
 
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=min_num){
-                    let _count = goodsNumber%packing_spec;
+                    var _count = goodsNumber%packing_spec;
                     if(_count > 0){
                         _self.val(goodsNumber-_count);
                     }

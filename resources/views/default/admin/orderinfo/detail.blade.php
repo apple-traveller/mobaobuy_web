@@ -302,16 +302,20 @@
                                     <div class="item">
                                         <div class="label">订单状态：</div>
                                         <div class="value">
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="0" value="取消" >
+                                            @if($orderInfo['order_status']!=0)
+                                            <input  class="btn btn25 red_btn order_status" @if($orderInfo['pay_status']==1) style="display:none;" @endif   type="button" data-id="0" value="取消" >
                                             @if($orderInfo['firm_id']!=0 &&$orderInfo['order_status']==1)
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>2) style="display:none;" @endif  type="button" data-id="2" value="企业审核" >
                                             @else
                                             @endif
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>=3) style="display:none;" @endif  type="button" data-id="3" value="商家确认" >
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>=4 ) style="display:none;" @endif  type="button" data-id="4" value="收货" >
-                                            <input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >
+                                            {{--<input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >--}}
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
                                             <input type="hidden"  name="order_contract" id="order_contract" value="">
+                                            @else
+                                            已取消
+                                            @endif
                                         </div>
                                         @if(!empty($order_contact))
                                             <div class="item">
@@ -646,6 +650,20 @@
                 }
                 if(pay_status==1 && (order_status==0 || order_status==2 ||order_status==3)){
                     layer.msg("买家已付款", {
+                        icon: 5,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
+                if(old_order_status==1 && order_status==3){
+                    layer.msg("企业先审核后才能确认", {
+                        icon: 5,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
+                if(shipping_status!=1 && order_status==4 ){
+                    layer.msg("还未发货", {
                         icon: 5,
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     });

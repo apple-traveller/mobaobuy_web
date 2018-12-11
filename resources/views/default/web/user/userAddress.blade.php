@@ -228,8 +228,8 @@
 			//	删除
             $('.del_address').click(function(){
                 event.stopPropagation();
-                let io = $(this);
-                let id = $(this).attr('data_id');
+                var io = $(this);
+                var id = $(this).attr('data_id');
                 $.msg.confirm("确认删除么？",
 					function(index, layero){
 						$.ajax({
@@ -254,8 +254,8 @@
 			//	编辑
 			$(".edit_address").click(function () {
                 event.stopPropagation();
-                let address_id = $(this).attr('data_id');
-                let is_default = $(this).attr('data_default_id');
+                var address_id = $(this).attr('data_id');
+                var is_default = $(this).attr('data_default_id');
                 layer.open({
 					title:'用户地址',
                     type: 2,
@@ -269,7 +269,7 @@
              * 修改默认地址
              */
             $(".checked_btn").click(function () {
-                let address_id = $(this).attr('data-id');
+                var address_id = $(this).attr('data-id');
                 $.ajax({
                     url:'/updateDefaultAddress',
                     data:{'address_id':address_id},

@@ -118,13 +118,13 @@
         $(function(){
 			//	增加
             $('.add_address').click(function(){
-                let _str_address = $("input[name='str_address']").val();
-                let _id = $("input[name='id']").val();
-                let _address = $("input[name='address']").val();
-                let _zipcode = $("input[name='zipcode']").val();
-                let _consignee = $("input[name='consignee']").val();
-                let _mobile = $("input[name='mobile_phone']").val();
-                let _default = $("input[name='default_address']:checked").val();
+                var _str_address = $("input[name='str_address']").val();
+                var _id = $("input[name='id']").val();
+                var _address = $("input[name='address']").val();
+                var _zipcode = $("input[name='zipcode']").val();
+                var _consignee = $("input[name='consignee']").val();
+                var _mobile = $("input[name='mobile_phone']").val();
+                var _default = $("input[name='default_address']:checked").val();
 
 //                if(!_zipcode){
 //                    $.msg.error('请输入邮政编码');return;
