@@ -32,7 +32,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/home', 'IndexController@home');
         Route::post('/home/getMonthlyOrders', 'IndexController@getMonthlyOrders');
         Route::get('/clear', 'IndexController@clear');
-        Route::post('/getActivityCount', 'IndexController@getActivityCount');
+        Route::get('/getActivityCount', 'IndexController@getActivityCount');
 
         Route::get('/adminuser/list','AdminUserController@getList');//管理员列表
         Route::get('/adminuser/addForm','AdminUserController@addForm');//添加
