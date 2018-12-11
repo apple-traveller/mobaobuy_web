@@ -266,7 +266,7 @@
 
                                 @if($orderInfo['extension_code']=="wholesale")
                                 <dl style="margin-left: 20px;">
-                                    <dt style="width:300px;">定金付款凭证:
+                                    <dt style="width:300px;">订金付款凭证:
                                         @if(!empty($orderInfo['deposit_pay_voucher']))
                                         <span style="color:#62b3ff"><div style="color:#62b3ff;margin-left:10px;"  content="{{getFileUrl($orderInfo['deposit_pay_voucher'])}}" class="layui-btn layui-btn-sm viewImg">点击查看</div>
                                         </span>
@@ -274,11 +274,11 @@
                                             未上传
                                         @endif
                                     </dt>
-                                    <dl style="width:300px;margin-left: 20px;">确认收款:
+                                    <dl style="width:300px;margin-left: 20px;">确认收订金:
                                         @if($orderInfo['deposit_status']==1)
-                                            已收定金
+                                            已收订金
                                         @else
-                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status_deposit" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1"  value="确认收款" >
+                                            <input   style="margin-left:10px;" class="btn btn25 red_btn pay_status_deposit" type="button" content="{{$orderInfo['deposit_pay_voucher']}}" data-id="1"  value="确认收订金" >
                                         @endif
                                     </dl>
                                 </dl>
@@ -539,48 +539,68 @@
                     });
                     return ;
                 }
-                if(content==""){
-                    layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
-                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
-                            if(res.code==200){
-                                layer.msg(res.msg, {
-                                    icon: 6,
-                                    time: 2000
-                                }, function(){
-                                    window.location.reload();
-                                });
-                            }else{
-                                alert(res.msg);
-                            }
-                        },"json");
-                    });
+                layer.confirm('是否确认收款？', {icon: 3, title:'确定'}, function(index){
+                    if(content==""){
+                        layer.confirm('未上传凭证，是否继续收款?', {icon: 3, title:'确定'}, function(index){
+                            $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                                if(res.code==200){
+                                    layer.msg(res.msg, {
+                                        icon: 6,
+                                        time: 2000
+                                    }, function(){
+                                        window.location.reload();
+                                    });
+                                }else{
+                                    alert(res.msg);
+                                }
+                            },"json");
+                        });
 
+                        return false;
+                    }else{
+                        layer.confirm("确认？",{icon:3,title:'确定'},function(){
+                            $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                                if(res.code==200){
+                                    layer.msg(res.msg, {
+                                        icon: 6,
+                                        time: 2000
+                                    }, function(){
+                                        window.location.reload();
+                                    });
+                                }else{
+                                    alert(res.msg);
+                                }
+                            },"json");
+                        })
+                    }
                     return false;
-                }else{
-                    layer.confirm("确认？",{icon:3,title:'确定'},function(){
-                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
-                            if(res.code==200){
-                                layer.msg(res.msg, {
-                                    icon: 6,
-                                    time: 2000
-                                }, function(){
-                                    window.location.reload();
-                                });
-                            }else{
-                                alert(res.msg);
-                            }
-                        },"json");
-                    })
-                }
-                return false;
+                });
+
             });
 
             //修改定金状态
             $(".pay_status_deposit").click(function(){
                 var deposit_status = $(this).attr("data-id");
                 var content = $(this).attr("content");
-                if(content==""){
-                    layer.confirm('未上传凭证，请谨慎修改?', {icon: 3, title:'确定'}, function(index){
+                layer.confirm('确认收到订金?', {icon: 3, title:'确定'},
+                    function(index){
+                        if(content==""){
+                            layer.confirm('未上传凭证，是否继续确认?', {icon: 3, title:'确定'}, function(index){
+                                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
+                                    if(res.code==200){
+                                        layer.msg(res.msg, {
+                                            icon: 6,
+                                            time: 2000
+                                        }, function(){
+                                            window.location.reload();
+                                        });
+                                    }else{
+                                        alert(res.msg);
+                                    }
+                                },"json");
+                            });
+                            return false;
+                        }
                         $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
                             if(res.code==200){
                                 layer.msg(res.msg, {
@@ -593,22 +613,8 @@
                                 alert(res.msg);
                             }
                         },"json");
-                    });
-
-                    return false;
-                }
-                $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'deposit_status':deposit_status},function(res){
-                    if(res.code==200){
-                        layer.msg(res.msg, {
-                            icon: 6,
-                            time: 2000
-                        }, function(){
-                            window.location.reload();
-                        });
-                    }else{
-                        alert(res.msg);
                     }
-                },"json");
+                )
             });
 
             //编辑商品信息判断
