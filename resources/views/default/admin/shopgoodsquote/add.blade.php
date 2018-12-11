@@ -54,24 +54,11 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员姓名：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" class="text" value="" maxlength="40" autocomplete="off" id="salesman">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+                                    <select  style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="salesman" id="salesman" >
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系电话：</div>
-                                <div class="label_value">
-                                    <input type="text" name="contact_info" class="text" value="" maxlength="40" autocomplete="off" id="contact_info">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;QQ号：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" class="text" value="" maxlength="40" autocomplete="off" id="QQ">
-                                    <div class="form_prompt"></div>
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                    <div style="margin-left:10px;" class="notic">请选择业务员</div>
                                 </div>
                             </div>
 
@@ -81,7 +68,7 @@
 
                                     <input type="hidden" name="cat_id" id="cat_id"/>
                                     <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
-                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                    <div style="" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
 
@@ -91,13 +78,13 @@
                                     <input type="text" data-goodsname="" data-packing-spec="0" value=""  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{old('goods_id')}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 302px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 219px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
@@ -128,7 +115,7 @@
 
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
@@ -138,7 +125,10 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_method" class="text" value="" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
+                                        <option value="自提">自提</option>
+                                        <option value="配送">配送</option>
+                                    </select>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -146,7 +136,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_time" class="text" value="" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <input type="text" name="delivery_time" class="text" value="现货" maxlength="40" autocomplete="off" id="delivery_time">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -168,18 +158,14 @@
 
     <script type="text/javascript">
 
-        layui.use(['laydate'], function() {
+        layui.use(['layer','laydate'], function(){
+            var layer = layui.layer;
             var laydate = layui.laydate;
-            var index;
 
             laydate.render({
                 elem: '#expiry_time' //指定元素
                 , type: 'datetime'
             });
-
-        });
-        layui.use(['layer'], function(){
-            var layer = layui.layer;
 
             $("#goods_number").blur(function(){
                 var goods_number = Number($(this).val());
@@ -207,6 +193,7 @@
         });
         $(function(){
             getShopList();
+            getSalemanList();
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
@@ -242,9 +229,6 @@
                     production_date:{
                         required:true,
                     },
-                    contact_info:{
-                        required:true,
-                    },
                     salesman:{
                         required:true,
                     },
@@ -276,9 +260,6 @@
                     production_date :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    contact_info :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     salesman:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -299,13 +280,12 @@
             $("#shop_id").change(function(){
                 var shop_name = $(this).find("option:selected").text();
                 $("#shop_name").val(shop_name);
-
                 $("#store_name").val('自售');
-//                $("#store_name_val").val('');
                 $("#store_id").val('');
                 $("#store_id").empty();
                 $("#store_id").append('<option value="0">自售</option>');
                 getStoreList();
+                getSalemanList();
             });
             //选择店铺
             $("#store_id").change(function(){
@@ -313,69 +293,6 @@
                 $("#store_name").val(store_name);
             });
 
-
-//            // 店铺 获取焦点请求所有的店铺数据
-//            $("#store_name").focus(function(){
-//                let _shop_id = $('#shop_id').val();
-//                if(_shop_id == ''){
-//                    layer.alert('选择店铺之前请先选择商家');return;
-//                }
-//                $(".query_store_name").children().filter("li").remove();
-//                $.ajax({
-//                    url: "/admin/shop/store/list",
-//                    dataType: "json",
-//                    data:{shop_id:_shop_id},
-//                    type:"POST",
-//                    success:function(res){
-//                        if(res.code==1){
-//                            $(".query_store_name").show();
-//                            let data = res.data;
-//                            let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-//                            for(let i=0;i<data.length;i++){
-//                                _html += '<li data-store-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-//                            }
-//                            $(".query_store_name").append(_html);
-//                        }
-//                    }
-//                })
-//            });
-//
-//            //店铺 点击将li标签里面的值填入input框内
-//            $(document).delegate(".created_store_name","click",function(){
-//                //$("#company_name").siblings("div").filter(".notic").remove();
-//                var store_name = $(this).text();
-//                var store_id = $(this).attr("data-store-id");
-//                $("#store_name").val(store_name);
-//                $("#store_name_val").val(store_name);
-//                $("#store_id").val(store_id);
-//                $(".query_store_name").hide();
-//            });
-//
-//            //根据店铺里面输入的文字实时查询分类数据
-//            $("#store_name").bind("input propertychange",function(res){
-//                let _shop_id = $('#shop_id').val();
-//                if(_shop_id == ''){
-//                    layer.alert('选择店铺之前请先选择商家');return;
-//                }
-//                let store_name = $(this).val();
-//                $(".query_store_name").children().filter("li").remove();
-//                $.post('/admin/shop/store/list',{'shop_id':_shop_id,'store_name':store_name},function(res){
-//                    if(res.code==1){
-//                        $(".query_store_name").show();
-//                        let _html = '<li data-store-id="0" class="created_store_name" style="cursor:pointer;margin-left: 4px">自售</li>';
-//                        let data = res.data;
-//                        for(let i=0;i<data.length;i++){
-//                            _html += '<li data-shop-id="'+data[i].id+'" class="created_store_name" style="cursor:pointer;margin-left: 4px">'+data[i].store_name+'</li>';
-//                        }
-//                        $(".query_store_name").append(_html);
-//                    }
-//                },"json");
-//            });
-//
-//            $("#store_name").blur(function(){
-//                let _name = $("#store_name_val").val();
-//                $(this).val(_name);
-//            });
 
             //获取树形分类
             $("#cat_name").focus(function(){
@@ -438,6 +355,7 @@
                 var packing_spec = $(this).attr("data-packing-spec");
                 let packing_unit = $(this).attr('data-packing-unit');
                 let unit_name = $(this).attr('data-unit-name');
+                $(".unit-name").text(unit_name);
                 $("#goods_name").val(goods_name);
                 $("#goods_id").val(goods_id);
                 $("#goods_name").attr("data-packing-spec",packing_spec);
@@ -472,6 +390,31 @@
                 }
             })
         }
+
+        //获取所有的商家业务员数据
+        function getSalemanList(){
+            let shop_id = $("#shop_id").val();
+            $.ajax({
+                url: "/admin/salesman/getSalemanByShopId",
+                dataType: "json",
+                data:{shop_id:shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">请选择业务员</option>');
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            $("#salesman").append('<option value="'+data[i].name+'">'+data[i].name+'</option>');
+                        }
+                    }else{
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">无业务员信息</option>');
+                    }
+                }
+            })
+        }
+
         // 店铺 请求所有的店铺数据
         function getStoreList(){
             let _shop_id = $('#shop_id').val();

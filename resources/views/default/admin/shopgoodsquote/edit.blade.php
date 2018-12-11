@@ -60,12 +60,17 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员姓名：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" class="text" value="{{$goodsQuote['salesman']}}" maxlength="40" autocomplete="off" id="salesman">
+                                    <select  style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="salesman" id="salesman" >
+                                        @foreach($salesmans as $vo)
+                                        <option @if($goodsQuote['salesman']==$vo['name']) selected  @endif value="{{$vo['name']}}">{{$vo['name']}}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="form_prompt"></div>
+                                    <div style="margin-left:10px;" class="notic">选择业务员</div>
                                 </div>
                             </div>
 
-                            <div class="item">
+                           {{-- <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;业务员联系电话：</div>
                                 <div class="label_value">
                                     <input type="text" name="contact_info" class="text" value="{{$goodsQuote['contact_info']}}" maxlength="40" autocomplete="off" id="contact_info">
@@ -79,14 +84,14 @@
                                     <input type="text" name="QQ" class="text" value="{{$goodsQuote['QQ']}}" maxlength="40" autocomplete="off" id="QQ">
                                     <div class="form_prompt"></div>
                                 </div>
-                            </div>
+                            </div>--}}
 
                             <div class="item">
                                 <div class="label">&nbsp;选择商品分类：</div>
                                 <div class="label_value">
                                     <input type="hidden" name="cat_id" id="cat_id" value="{{$goodsQuote['cat_id']}}"/>
                                     <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" value="{{$goodsQuote['cat_name']}}" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
-                                    <div style="margin-left: 10px;" class="notic">商品分类用于辅助选择商品</div>
+                                    <div style="" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
 
@@ -97,13 +102,13 @@
                                     <div style="margin-left: 10px;color:red;" class="notic">包装规格为：{{$goodsQuote['packing_spec'].$goodsQuote['unit_name'].'/'.$goodsQuote['packing_unit'] }}</div>
                                     <input type="hidden" value="{{$goodsQuote['goods_id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
-                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 302px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
+                                    <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 219px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
                                     </ul>
                                 </div>
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
@@ -137,7 +142,7 @@
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
                                     <div class="form_prompt"></div>
@@ -148,7 +153,10 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
+                                        <option @if($goodsQuote['delivery_method']=="自提") selected @endif value="自提">自提</option>
+                                        <option @if($goodsQuote['delivery_method']=="配送") selected @endif value="配送">配送</option>
+                                    </select>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -298,6 +306,7 @@
                 $("#store_id").empty();
                 $("#store_id").append('<option value="0">自售</option>');
                 getStoreList(0,0);
+                getSalemanList();
             });
             //选择店铺
             $("#store_id").change(function(){
@@ -378,6 +387,7 @@
                 var packing_spec = $(this).attr("data-packing-spec");
                 let packing_unit = $(this).attr('data-packing-unit');
                 let unit_name = $(this).attr('data-unit-name');
+                $(".unit-name").text(unit_name);
                 $("#goods_name").val(goods_name);
                 $("#goods_id").val(goods_id);
                 $("#goods_name").attr("data-packing-spec",packing_spec);
@@ -414,6 +424,30 @@
                             }
 
                         }
+                    }
+                }
+            })
+        }
+
+        //获取所有的商家业务员数据
+        function getSalemanList(){
+            let shop_id = $("#shop_id").val();
+            $.ajax({
+                url: "/admin/salesman/getSalemanByShopId",
+                dataType: "json",
+                data:{shop_id:shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">请选择业务员</option>');
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            $("#salesman").append('<option value="'+data[i].name+'">'+data[i].name+'</option>');
+                        }
+                    }else{
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">无业务员信息</option>');
                     }
                 }
             })

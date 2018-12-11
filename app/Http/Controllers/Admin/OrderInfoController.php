@@ -363,7 +363,8 @@ class OrderInfoController extends Controller
         $order_delivery_data['add_time'] = Carbon::now();
         $order_delivery_data['shipping_id'] = $data['shipping_id'];
         $order_delivery_data['shipping_name'] = $data['shipping_name'];
-        $order_delivery_data['shipping_billno'] = $this->requestGetNotNull('');
+        //$order_delivery_data['shipping_billno'] = $this->requestGetNotNull('');
+        $order_delivery_data['shipping_billno'] = $data['shipping_billno'];
         $order_delivery_data['user_id'] = $orderInfo['user_id'];
         $order_delivery_data['firm_id'] = $orderInfo['firm_id'];
         $order_delivery_data['shop_id'] = $orderInfo['shop_id'];
