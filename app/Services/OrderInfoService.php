@@ -588,6 +588,7 @@ class OrderInfoService
     {
         try{
             self::beginTransaction();
+            $order_info = OrderInfoRepo::getInfo($data['id']);
             //修改支付状态，和已付款金额字段
             if(isset($data['pay_status'])){
                 $order_info = OrderInfoRepo::modify($data['id'], ['pay_status'=>$data['pay_status']]);
@@ -595,7 +596,7 @@ class OrderInfoService
             }
             //修改订金状态
             if(isset($data['deposit_status'])){
-                OrderInfoRepo::modify($data['id'], ['deposit_status'=>$order_info['deposit_status']]);
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1]);
             }
             //修改卖家确认时间
             OrderInfoRepo::modify($data['id'], ['confirm_time'=>Carbon::now()]);
@@ -610,7 +611,7 @@ class OrderInfoService
                 'log_time'=>Carbon::now()
             ];
             $flag_order_log = OrderActionLogRepo::create($logData);
-            if(!empty($order_info) && !empty($flag_order_log)){
+            if(!empty($flag_order_log)){
                 self::commit();
                 return $order_info;
             }
