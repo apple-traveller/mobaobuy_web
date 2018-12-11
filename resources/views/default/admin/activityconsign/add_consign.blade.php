@@ -121,26 +121,16 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;业务员：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;业务员姓名：</div>
                                 <div class="label_value">
-                                    <input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">
-                                    <div class="form_prompt"></div>
+                                    <select  style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="salesman" id="salesman" >
+
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                    <div style="margin-left:10px;" class="notic">请选择业务员</div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;手机号：</div>
-                                <div class="label_value">
-                                    <input type="text" name="contact_info" value="{{old('contact_info')}}" id="contact_info" class=" text" maxlength="40" autocomplete="off" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;QQ：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" id="QQ" value="{{old('QQ')}}" class=" text" maxlength="40" autocomplete="off" >
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>
@@ -160,13 +150,13 @@
     <script type="text/javascript">
         $(function(){
             getShopList();
+            getSalemanList();
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
                     $("#article_form").submit();
                 }
             });
-
 
             $('#article_form').validate({
                 errorPlacement:function(error, element){
@@ -195,12 +185,6 @@
                     salesman:{
                         required:true,
                     },
-                    contact_info:{
-                        required:true,
-                    },
-                    QQ:{
-                        required:true,
-                    },
                     store_name:{
                         required:true,
                     },
@@ -223,12 +207,6 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     salesman :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    contact_info :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    QQ :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     store_name :{
@@ -262,6 +240,7 @@
         $("#shop_id").change(function(){
             var shop_name = $(this).find("option:selected").text();
             $("#shop_name").val(shop_name);
+            getSalemanList();
         });
 
         // 商品 获取焦点请求所有的商品数据
@@ -336,12 +315,11 @@
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
                 }
-                if (goods_number =="" || goods_number ==0) {
-                    console.log('123');
+                if (goods_number =="" || goods_number ==0 || goods_number<spac) {
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.ceil(goods_number/spac) * spac);
+                $(this).val(Math.floor(goods_number/spac) * spac);
             });
         });
 
@@ -358,6 +336,30 @@
                         for(let i=0;i<data.length;i++){
                             $("#shop_id").append('<option value="'+data[i].id+'">'+data[i].company_name+'</option>');
                         }
+                    }
+                }
+            })
+        }
+
+        //获取所有的商家业务员数据
+        function getSalemanList(){
+            let shop_id = $("#shop_id").val();
+            $.ajax({
+                url: "/admin/salesman/getSalemanByShopId",
+                dataType: "json",
+                data:{shop_id:shop_id},
+                type:"POST",
+                success:function(res){
+                    if(res.code==200){
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">请选择业务员</option>');
+                        let data = res.data;
+                        for(let i=0;i<data.length;i++){
+                            $("#salesman").append('<option value="'+data[i].name+'">'+data[i].name+'</option>');
+                        }
+                    }else{
+                        $("#salesman").children().remove();
+                        $("#salesman").append('<option value="">无业务员信息</option>');
                     }
                 }
             })

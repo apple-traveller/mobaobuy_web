@@ -187,12 +187,12 @@
                                     <div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
                                 </div>
                             @elseif($item['is_soon'])
-                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['begin_time']}}">
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{strtotime($item['begin_time'])*1000}}">
                                     <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
                                     <div class="bottom_btn redbg fs16 white cp">敬请期待</div>
                                 </div>
                             @else
-                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{$item['end_time']}}">
+                                <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{strtotime($item['end_time'])}}">
                                     <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
                                     @if($item['available_quantity'] == 0)
                                         <a href="javascript:void(0)">
@@ -502,7 +502,8 @@
                 return false;
             }
             var id = $(this).attr("data-id");
-            var number = $("#packing_spec").attr('data-id');
+//            var number = $("#packing_spec").attr('data-id');
+            var number = $(this).parent().siblings().attr('data-id');
             $.post("/cart",{'id':id,'number':number},function(res){
                 if(res.code==1){
                     var cart_count = res.data;
