@@ -65,7 +65,7 @@
                                         <option @if($goodsQuote['salesman']==$vo['name']) selected  @endif value="{{$vo['name']}}">{{$vo['name']}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="form_prompt"></div>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
                                     <div style="margin-left:10px;" class="notic">选择业务员</div>
                                 </div>
                             </div>
@@ -262,6 +262,9 @@
                     delivery_method:{
                         required:true,
                     },
+                    salesman:{
+                        required:true,
+                    },
 
                 },
                 messages:{
@@ -286,7 +289,10 @@
                     },
                     delivery_method:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    }
+                    },
+                    salesman:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                 }
             });
 
