@@ -399,7 +399,7 @@
                         var _length = data.data.length;
                         var _html = '';
 
-                        for(var i=0; i<=_length; i++){
+                        for(var i=0; i<_length; i++){
                             _html += '<li><i class="external-cir"></i>'+_list[i].shipping_content+'<div class="gray">'+_list[i].add_time+'</div></li>';
                         }
                         console.log(_html);
