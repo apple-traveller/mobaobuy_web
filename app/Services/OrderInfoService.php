@@ -1142,6 +1142,9 @@ class OrderInfoService
     // 订单详情
     public static function orderDetails($id,$firmId){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        if(empty($orderInfo)){
+            self::throwBizError('订单详情有误!');
+        }
         if($orderInfo['firm_id'] && $orderInfo['user_id']){
             if($firmId != $orderInfo['firm_id']){
                 return '';
