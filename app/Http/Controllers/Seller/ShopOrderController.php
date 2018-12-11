@@ -617,6 +617,43 @@ class ShopOrderController extends Controller
         }
     }
 
+
+    /**
+     * 重新上传合同
+     * @param Request $request
+     * @return ShopOrderController|\Illuminate\Http\RedirectResponse
+     */
+    public function editContract(Request $request)
+    {
+        $shop_id = session('_seller_id')['shop_id'];
+        $order_id = $request->input('id','');
+        $contract = $request->input('contract','');
+        $request->setTrustedProxies(['116.226.54.5','192.168.10.1'],0);
+        $ip = $request->getClientIp();
+        $userAgent = $request->userAgent();
+        if (empty($order_id)){
+            return $this->error('信息错误');
+        }
+        if (empty($contract)){
+            return $this->error('合同不能为空');
+        }
+
+        $data = [
+            'order_id'=>$order_id,
+            'contract'=>$contract,
+            'from'=>2,
+            'from_id'=>$shop_id,
+            'ip'=>$ip,
+            'equipment'=>$userAgent
+        ];
+        try{
+            OrderContractService::checkOrderContract($data);
+            return $this->success('上传成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     public function microtime_float()
     { /* 微秒 */
         list($usec, $sec) = explode(' ', microtime()); /* 非科学计数法 */

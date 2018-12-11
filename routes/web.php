@@ -295,6 +295,11 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shipping/save', 'ShippingController@save');// 保存
         Route::post('/shipping/setStatus', 'ShippingController@setStatus');// 保存
 
+        Route::get('/salesman/list', 'SalesmanController@index');// 业务员
+        Route::get('/salesman/add', 'SalesmanController@edit');// 添加
+        Route::get('/salesman/edit', 'SalesmanController@edit');// 编辑
+        Route::post('/salesman/save', 'SalesmanController@save');// 保存
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
@@ -574,6 +579,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/order/getStatusCount', 'ShopOrderController@getStatusCount'); // 订单各状态数量
         Route::post('/order/toBuyerModify', 'ShopOrderController@toBuyerModify'); // 修改商家留言
         Route::post('/order/updateDeliveryPeriod', 'ShopOrderController@updateDeliveryPeriod'); // 修改商家留言
+        Route::post('/order/editContract', 'ShopOrderController@editContract'); // 商家重新上传合同
         Route::get('/order/modifyGoodsInfo', 'ShopOrderController@modifyGoodsInfo'); // 修改订单中商品信息-页面
         Route::post('/order/modifyReceiveDate', 'ShopOrderController@modifyReceiveDate'); // 修改自动确认收获的天数
         Route::post('/order/saveGoods', 'ShopOrderController@saveGoods'); // 修改订单商品信息-动作

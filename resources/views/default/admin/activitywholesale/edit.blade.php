@@ -1,4 +1,4 @@
-@extends(themePath('.')."seller.include.layouts.master")
+@extends(themePath('.')."admin.include.layouts.master")
 @section('styles')
     <style>
         [class^="icon-"], [class*=" icon-"] {

@@ -122,6 +122,7 @@
                        {{-- <li><s></s><a href="javascript:void(0);" data-url="/admin/shopgoods/list" data-param="menushopping|03_merchants_users_list" target="workspace">店铺商品列表</a></li>--}}
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/shopgoodsquote/list" data-param="menushopping|04_merchants_users_list" target="workspace">商品报价列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/shop/store" data-param="menushopping|05_merchants_users_list" target="workspace">店铺列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/salesman/list" data-param="menushopping|06_merchants_users_list" target="workspace">业务员列表</a></li>
                     </ul>
                 </div>
             </div>

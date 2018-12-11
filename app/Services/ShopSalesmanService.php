@@ -33,7 +33,15 @@ class ShopSalesmanService
      */
     public static function getListWithPage($pager,$condition)
     {
-        return ShopSalesmanRepo::getListBySearch($pager,$condition);
+        $salesman_list = ShopSalesmanRepo::getListBySearch($pager,$condition);
+        if($salesman_list['total'] > 0){
+            foreach ($salesman_list['list'] as $k=>$v){
+                $shop_info = ShopService::getShopById($v['shop_id']);
+                $salesman_list['list'][$k]['company_name'] = $shop_info['company_name'];
+            }
+        }
+
+        return $salesman_list;
     }
 
     /**
@@ -43,7 +51,15 @@ class ShopSalesmanService
      */
     public static function getInfoByFields($condition)
     {
-        return ShopSalesmanRepo::getInfoByFields($condition);
+        $info = ShopSalesmanRepo::getInfoByFields($condition);
+        $shop_info = ShopService::getShopById($info['shop_id']);
+        if(!empty($shop_info)){
+            $info['company_name'] = $shop_info['company_name'];
+        }else{
+            $info['company_name'] = '';
+        }
+
+        return $info;
     }
 
     /**
