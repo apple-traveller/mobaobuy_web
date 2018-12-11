@@ -302,6 +302,7 @@
                                     <div class="item">
                                         <div class="label">订单状态：</div>
                                         <div class="value">
+                                            @if($orderInfo['order_status']!=0)
                                             <input  class="btn btn25 red_btn order_status" @if($orderInfo['pay_status']==1) style="display:none;" @endif   type="button" data-id="0" value="取消" >
                                             @if($orderInfo['firm_id']!=0 &&$orderInfo['order_status']==1)
                                             <input  class="btn btn25 red_btn order_status"  @if($orderInfo['order_status']>2) style="display:none;" @endif  type="button" data-id="2" value="企业审核" >
@@ -312,6 +313,9 @@
                                             {{--<input  class="btn btn25 red_btn order_status"    type="button" data-id="-1" value="删除" >--}}
                                             <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态，请谨慎修改</span>
                                             <input type="hidden"  name="order_contract" id="order_contract" value="">
+                                            @else
+                                            已取消
+                                            @endif
                                         </div>
                                         @if(!empty($order_contact))
                                             <div class="item">
