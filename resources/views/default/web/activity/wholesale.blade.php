@@ -43,6 +43,9 @@
 		.collect_active_bg{
 			background-color: #eb3505;
 		}
+		.fs16 {
+			font-size: 14px;
+		}
 	</style>
 
 @endsection
@@ -100,7 +103,7 @@
 											@elseif((float)$v['num'] <= 0)
 												<div class="mx_progress_com" style="width: 100%;"></div>
 											@else
-												<div class="mx_progress_com" style="width: {{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%;"></div>
+												<div class="mx_progress_com" style="width: 100%;"></div>
 											@endif
 										</div>
 										@if((float)$v['partake_quantity'] <= 0)
