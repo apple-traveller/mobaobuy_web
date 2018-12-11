@@ -19,8 +19,9 @@ class SalesmanController extends Controller
         $currentPage = $request->input('currentPage',1);
         $name = $request->input('name','');
         $condition['is_delete']= 0;
+        $condition['is_freeze']= 0;
         $pageSize =10;
-        $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
+        $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->display('admin.shopSalesman.list',[
             'total'=>$list['total'],
             'list'=>$list['list'],
