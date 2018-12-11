@@ -81,8 +81,6 @@ class LogisticsController extends Controller
             }else{
                 //添加
                 $data['add_time'] = Carbon::now();
-                //验证唯一性
-                LogisticsService::validateShippingNo($data['shipping_billno']);
                 //保存
                 $logistics = LogisticsService::create($data);
                 if(!empty($logistics)){
@@ -107,6 +105,22 @@ class LogisticsController extends Controller
             return $this->error('删除失败');
         }catch(\Exception $e){
             return $this->error('删除失败');
+        }
+    }
+
+    //验证
+    public function validateShippingNo(Request $request)
+    {
+        $data = [
+            'shipping_billno'=>$request->input('shipping_billno'),
+            'shipping_company'=>$request->input('shipping_company'),
+            'is_delete'=>0
+        ];
+        $flag = LogisticsService::validateShippingNo($data['shipping_billno'],$data['shipping_company']);
+        if($flag){
+            return $this->result('',200,'success');
+        }else{
+            return $this->result('',400,'error');
         }
     }
 

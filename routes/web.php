@@ -215,6 +215,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/logistics/edit', 'LogisticsController@editForm');//编辑
         Route::post('/logistics/save', 'LogisticsController@save');//保存
         Route::get('/logistics/delete', 'LogisticsController@delete');//删除
+        Route::post('/logistics/validateShippingNo', 'LogisticsController@validateShippingNo');//验证快递单号是否存在
 
         Route::any('/seckill/list', 'SeckillController@getList');//秒杀活动列表
         Route::post('/seckill/change/status', 'SeckillController@status');//修改秒杀活动启用状态
