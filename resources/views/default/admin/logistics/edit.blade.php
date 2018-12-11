@@ -50,7 +50,7 @@
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
-                                    <input type="submit" value="确定" class="button" id="submitBtn">
+                                    <input type="button" value="确定" class="button" id="submitBtn">
                                     <input type="reset" value="重置" class="button button_reset">
                                 </div>
                             </div>
@@ -71,47 +71,102 @@
                 $("#shipping_company").val(shipping_company);
             });
 
+            $("#shipping_billno").focus(function(){
+                let shipping_company = $("#shipping_company").val();
+                if(shipping_company==" "){
+                    layer.msg('请先选择快递公司', {
+                        icon: 5,
+                        time: 2000
+                    });
+                    $(this).val("");
+                    return false;
+                }
+            });
 
         });
 
 
-        $(function(){
-            //表单验证
-            $("#submitBtn").click(function(){
-                if($("#article_form").valid()){
-                    $("#article_form").submit();
-                }
-            });
 
-            $('#article_form').validate({
-                errorPlacement:function(error, element){
-                    var error_div = element.parents('div.label_value').find('div.form_prompt');
-                    element.parents('div.label_value').find(".notic").hide();
-                    error_div.append(error);
-                },
-                ignore : [],
-                rules:{
-                    shipping_company :{
-                        required : true,
-                    },
-                    shipping_billno :{
-                        required : true,
-                    },
-                    shipping_content:{
-                        required : true,
+        layui.use(['layer'], function() {
+            $(function(){
+                var shipping_company = $(this).find("option:selected").text();
+                $("#shipping_company").val(shipping_company);
+
+                function checkShippingNo(){
+                    var shipping_company = $("#shipping_company").val();
+                    var shipping_billno = $("#shipping_billno").val();
+                    if(!shipping_company){
+                        layer.msg('请先选择快递公司', {
+                            icon: 5,
+                            time: 2000
+                        });
+                        $(this).val("");
+                        return 1;
                     }
-                },
-                messages:{
-                    shipping_company:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    shipping_billno :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    shipping_content :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    }
+                    $.ajax({
+                        url: "/admin/logistics/validateShippingNo",
+                        dataType: "json",
+                        data:{"shipping_company":shipping_company,"shipping_billno":shipping_billno},
+                        type:"POST",
+                        success:function(res){
+                            if(res.code==400){
+                                layer.confirm('运单号不存在,是否继续维护',function(index){
+                                    $("#article_form").submit();
+                                    layer.close(index);
+                                },function(index){
+                                    layer.close(index);
+                                    return false;
+                                });
+
+
+                            }else{
+                                $("#article_form").submit();
+                                return 2;
+                            }
+                        }
+                    });
                 }
+
+
+                //表单验证
+                $("#submitBtn").click(function(){
+
+                    if($("#article_form").valid()){
+                        checkShippingNo();
+                        // alert(1);
+                    }
+                });
+
+                $('#article_form').validate({
+                    errorPlacement:function(error, element){
+                        var error_div = element.parents('div.label_value').find('div.form_prompt');
+                        element.parents('div.label_value').find(".notic").hide();
+                        error_div.append(error);
+                    },
+                    ignore : [],
+                    rules:{
+                        shipping_company :{
+                            required : true,
+                        },
+                        shipping_billno :{
+                            required : true,
+                        },
+                        shipping_content:{
+                            required : true,
+                        }
+                    },
+                    messages:{
+                        shipping_company:{
+                            required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        },
+                        shipping_billno :{
+                            required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        },
+                        shipping_content :{
+                            required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        }
+                    }
+                });
             });
         });
     </script>
