@@ -1409,7 +1409,7 @@ DROP TABLE IF EXISTS `logistics`;
 CREATE TABLE `logistics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `add_time` datetime NOT NULL COMMENT '添加时间',
-  `shipping_billno` int(20) NOT NULL COMMENT '运单号',
+  `shipping_billno` varchar(30) NOT NULL COMMENT '运单号',
   `shipping_company` varchar(255) NOT NULL COMMENT '物流公司',
   `shipping_content` varchar(255) NOT NULL COMMENT '物流信息',
   `is_delete` tinyint(1) NOT NULL COMMENT '是否删除 0否 1是',

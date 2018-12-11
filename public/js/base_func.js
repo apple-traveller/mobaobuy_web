@@ -175,8 +175,9 @@ $(document).tooltip({
 });
 
 function updateCountDownText(obj) {
+    var _para = parseInt($(obj).attr('data-endtime'));
     var nowtime = new Date();
-    var endtime = new Date($(obj).data('endtime'));
+    var endtime = new Date(_para);
     var time = endtime - nowtime;
     var day = parseInt(time / 1000 / 60 / 60 / 24);
     var hour = parseInt(time / 1000 / 60 / 60 % 24);

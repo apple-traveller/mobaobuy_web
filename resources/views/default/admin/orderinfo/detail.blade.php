@@ -314,13 +314,13 @@
                                             <input type="hidden"  name="order_contract" id="order_contract" value="">
                                         </div>
                                         @if(!empty($order_contact))
-                                    <div class="item">
-                                        <div class="label">订单合同：</div>
-                                        <div >
-                                            <input content="{{getFileUrl($order_contact['contract'])}}"  class="btn btn25 view_order_contract"    type="button"  value="查看合同" >
-                                            <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="编辑合同,重新上传" >
-                                        </div>
-                                    </div>
+                                            <div class="item">
+                                                <div class="label">订单合同：</div>
+                                                <div >
+                                                    <input content="{{getFileUrl($orderInfo['contract'])}}"  class="btn btn25 view_order_contract"    type="button"  value="查看合同" >
+                                                    <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="编辑合同,重新上传" >
+                                                </div>
+                                            </div>
                                         @else
 
                                         @endif
