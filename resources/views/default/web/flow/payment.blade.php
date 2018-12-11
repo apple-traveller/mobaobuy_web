@@ -6,15 +6,11 @@
 
     <script type="text/javascript">
         $(function(){
-            layer.confirm('您已上传过支付凭证，是否更新？', {
+            layer.confirm('您已上传过支付凭证，可以在订单详情中进行查看,是否更新？', {
                 btn: ['是','否'] //按钮
             }, function(){
                 layer.closeAll();
             }, function(){
-//                layer.msg('也可以这样', {
-//                    time: 20000, //20s后自动关闭
-//                    btn: ['明白了', '知道了']
-//                });
                 window.location.href='/order/list';
             });
                  //隐藏关闭框

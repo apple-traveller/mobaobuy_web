@@ -19,7 +19,10 @@ class LogisticsService
         return LogisticsRepo::getListBySearch($pager,$condition);
     }
 
-
+    public static function getList($order, $condition)
+    {
+        return LogisticsRepo::getList($order, $condition);
+    }
     //获取一条数据
     public static function getLogisticInfo($id)
     {
