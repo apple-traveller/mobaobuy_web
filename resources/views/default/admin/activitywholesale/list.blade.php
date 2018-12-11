@@ -1,22 +1,22 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">促销 - 集采拼团列表</div>
+        <div class="title">促销 - 集采火拼列表</div>
         <div class="content">
 
                 <div class="explanation" id="explanation">
-                <div class="ex_tit">
-                    <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    <div class="ex_tit">
+                        <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    </div>
+                    <ul>
+                        <li>展示了所有优惠活动相关信息列表。</li>
+                        <li>展示信息有：商家名称、集采火拼名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
+                    </ul>
                 </div>
-                <ul>
-                    <li>展示了所有优惠活动相关信息列表。</li>
-                    <li>展示信息有：商家名称、集采拼团名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
-                </ul>
-            </div>
             <div class="flexilist">
                 <div class="common-head">
                     <div class="fl">
-                        <a href="/admin/activity/wholesale/add"><div class="fbutton"><div class="add" title="添加集采拼团活动"><span><i class="icon icon-plus"></i>添加集采拼团活动</span></div></div></a>
+                        <a href="/admin/activity/wholesale/add"><div class="fbutton"><div class="add" title="添加集采火拼活动"><span><i class="icon icon-plus"></i>添加集采火拼活动</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>

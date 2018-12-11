@@ -89,7 +89,7 @@
                         <div class="msg_content" ectype="promotionMsg">
 
                             <p>
-                                <a href="javascript:void(0);" data-url="/admin/activity/wholesale" data-param="menushopping|08_group_buy" target="workspace" class="message">集采拼团</a>
+                                <a href="javascript:void(0);" data-url="/admin/activity/wholesale" data-param="menushopping|08_group_buy" target="workspace" class="message">集采火拼</a>
                                 <span class="tiptool">（<em id="activity_promote">0</em>）</span>
                             </p>
 
@@ -157,7 +157,7 @@
         let user_certification= 0;//待实名审核
         let activity_promote = 0;//优惠活动
         let activity_consign = 0;//清仓特卖
-        let activity_wholesale = 0;//集采拼团
+        let activity_wholesale = 0;//集采火拼
         let order_total = 0;//订单提示总量
         let shop_total = 0;//商家提示总量
         let user_total = 0;//会员提示总量
@@ -211,7 +211,7 @@
         let user_certification= 0;//待实名审核
         let activity_promote = 0;//优惠活动
         let activity_consign = 0;//清仓特卖
-        let activity_wholesale = 0;//集采拼团
+        let activity_wholesale = 0;//集采火拼
         let order_total = 0;//订单提示总量
         let shop_total = 0;//商家提示总量
         let user_total = 0;//会员提示总量
@@ -262,7 +262,7 @@
             let user_certification= 0;//待实名审核
             let activity_promote = 0;//优惠活动
             let activity_consign = 0;//清仓特卖
-            let activity_wholesale = 0;//集采拼团
+            let activity_wholesale = 0;//集采火拼
             let order_total = 0;//订单提示总量
             let shop_total = 0;//商家提示总量
             let user_total = 0;//会员提示总量

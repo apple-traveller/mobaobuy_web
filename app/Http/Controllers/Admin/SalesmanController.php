@@ -5,25 +5,23 @@
  * Date: 2018-12-06
  * Time: 16:45
  */
-namespace App\Http\Controllers\Seller;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ShopSalesmanService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ShopSalesmanController extends Controller
+class SalesmanController extends Controller
 {
-    public function listView(Request $request)
+    public function index(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
-        $shop_id = session('_seller_id')['shop_id'];
         $name = $request->input('name','');
         $condition['is_delete']= 0;
-        $condition['shop_id']= $shop_id;
         $pageSize =5;
         $list = ShopSalesmanService::getListWithPage(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
-        return $this->display('seller.shopSalesman.list',[
+        return $this->display('admin.shopSalesman.list',[
             'total'=>$list['total'],
             'list'=>$list['list'],
             'currentPage'=>$currentPage,
@@ -44,21 +42,21 @@ class ShopSalesmanController extends Controller
         $currentPage = $request->input('currentPage',1);
         if (!empty($id)){
             $info = ShopSalesmanService::getInfoByFields(['id'=>$id]);
-            return $this->display('seller.shopSalesman.edit',['info'=>$info,'currentPage'=>$currentPage]);
+            return $this->display('admin.shopSalesman.edit',['info'=>$info,'currentPage'=>$currentPage]);
         } else {
-            return $this->display('seller.shopSalesman.edit',['currentPage'=>$currentPage]);
+            return $this->display('admin.shopSalesman.edit',['currentPage'=>$currentPage]);
         }
     }
 
     /**
      * 保存
      * @param Request $request
-     * @return ShopSalesmanController|\Illuminate\Http\RedirectResponse
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
         $id = $request->input('id','');
-        $shop_id = session('_seller_id')['shop_id'];
+        $shop_id = $request->input('shop_id','');
         $name = $request->input('name','');
         $mobile = $request->input('mobile','');
         $qq = $request->input('qq','');
@@ -77,14 +75,15 @@ class ShopSalesmanController extends Controller
             'shop_id' => $shop_id
         ];
         if (!empty($id)){
+            #同一个商家  业务员名称唯一
             $info = ShopSalesmanService::getList([],['name'=>$name,'id'=>'!'.$id,'shop_id'=>$shop_id]);
             if (!empty($info)){
                 return $this->error('业务员已存在，请重新编辑');
             }
             $re = ShopSalesmanService::updateById($id,$data);
             if ($re){
-                return $this->display('seller.shopSalesman.list');
-        }
+                return $this->success('修改成功',url('/admin/salesman/list'));
+            }
         } else {
             $info = ShopSalesmanService::getList([],['name'=>$name,'shop_id'=>$shop_id]);
             if (!empty($info)){
@@ -93,8 +92,8 @@ class ShopSalesmanController extends Controller
             $data['add_time'] = Carbon::now();
             $re = ShopSalesmanService::create($data);
             if ($re){
-                return $this->display('seller.shopSalesman.list');
-        }
+                return $this->success('添加成功',url('/admin/salesman/list'));
+            }
         }
 
     }

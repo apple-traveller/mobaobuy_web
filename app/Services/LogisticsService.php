@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Repositories\LogisticsRepo;
+use App\Repositories\OrderDeliveryRepo;
 
 class LogisticsService
 {
@@ -13,19 +14,9 @@ class LogisticsService
      * @param $condition
      * @return mixed
      */
-    public static function getListWithPage($pager,$condition)
+    public static function getLogistics($pager,$condition)
     {
         return LogisticsRepo::getListBySearch($pager,$condition);
-    }
-
-    /**
-     * 获取详情
-     * @param $where
-     * @return array
-     */
-    public static function getDetailByWhere($where)
-    {
-        return LogisticsRepo::getInfoByFields($where);
     }
 
 
@@ -35,5 +26,31 @@ class LogisticsService
         return LogisticsRepo::getInfo($id);
     }
 
+
+    //编辑
+    public static function modify($data)
+    {
+        return LogisticsRepo::modify($data['id'],$data);
+    }
+
+    //保存
+    public static function create($data)
+    {
+        return LogisticsRepo::create($data);
+    }
+
+    //验证
+    public static function validateShippingNo($shipping_billno)
+    {
+        $flag = OrderDeliveryRepo::getInfoByFields(['shipping_billno'=>$shipping_billno]);
+        if(!empty($flag)){
+            self::throwBizError('该运单号已存在');
+        }else{
+            return true;
+        }
+    }
+
 }
+
+
 

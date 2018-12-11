@@ -203,7 +203,7 @@ class OrderController extends ApiController
             }
             $goods_amount = $goodsList[0]['account_money'];
             return $this->success(compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id'),'success');
-        } elseif ($from == 'wholesale') {//集采拼团
+        } elseif ($from == 'wholesale') {//集采火拼
             try {
                 ActivityWholesaleService::getActivityWholesaleByIdApi($id);
             } catch (\Exception $e) {
@@ -416,6 +416,16 @@ class OrderController extends ApiController
     public function waitConfirm(Request $request)
     {
         return $this->success(['service_phone'=>getConfig('service_phone'),'service_qq'=>getConfig('service_qq')]);
+    }
+
+    //去支付
+    public function toPay(Request $request)
+    {
+        $userId = $this->getUserID($request);
+        $order_id = $request->input('order_id');
+        $order_info = OrderInfoService::getOrderInfoById($order_id);
+        $sellerInfo = OrderInfoService::getShopInfoByShopId($order_info['shop_id']);
+        return $this->success(compact('order_info','sellerInfo'),'success');
     }
 
 

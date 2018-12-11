@@ -41,7 +41,7 @@ class AutoCancelOrder extends Command
      */
     public function handle()
     {
-        //自动取消【未付款】超过三十分钟的【限时抢购】或【清仓特卖】订单和 未付订金的集采拼团
+        //自动取消【未付款】超过三十分钟的【限时抢购】或【清仓特卖】订单和 未付订金的集采火拼
         $c['opt'] = 'OR';
         $c['extension_code'] = 'promote|consign';
         $c['pay_status'] = 0;

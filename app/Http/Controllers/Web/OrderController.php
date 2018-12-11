@@ -312,7 +312,7 @@ class OrderController extends Controller
             $goods_amount = $goodsList[0]['account_money'];
             return $this->display('web.goods.confirmOrder', compact('invoiceInfo', 'addressList', 'goodsList', 'goods_amount', 'id'));
 
-        } elseif ($from == 'wholesale') {//集采拼团
+        } elseif ($from == 'wholesale') {//集采火拼
 
             try {
                 ActivityWholesaleService::getActivityWholesaleById($id);

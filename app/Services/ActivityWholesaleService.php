@@ -138,14 +138,14 @@ class ActivityWholesaleService
 //        return $buyLimitArr;
     }
 
-    //增加集采拼团的点击量
+    //增加集采火拼的点击量
     public static function addClickCount($id)
     {
         $id = decrypt($id);
         return ActivityWholesaleRepo::addClickCount($id);
     }
 
-    //增加集采拼团的点击量
+    //增加集采火拼的点击量
     public static function addClickCountApi($id)
     {
         return ActivityWholesaleRepo::addClickCount($id);
@@ -218,7 +218,7 @@ class ActivityWholesaleService
         return $goodsInfo;
     }
 
-    //集采拼团 立即下单
+    //集采火拼 立即下单
     public static function toBalance($goodsId,$activityId,$goodsNum,$userId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ActivityWholesaleRepo::getInfo($activityId);
@@ -289,7 +289,7 @@ class ActivityWholesaleService
         return UserWholeSingleRepo::create($demand);
     }
 
-    //获取未审核集采拼团数量
+    //获取未审核集采火拼数量
     public static function getWaitReview($condition)
     {
         $count = ActivityWholesaleRepo::getTotalCount($condition);

@@ -237,7 +237,7 @@
 					.Surplus_time{float:right;width:200px;height: 46px;line-height: 46px;margin-right: 20px;}
 				</style>
 				<div class="Time_limit mt3">
-					<span class="xs_ms fl">集采拼团</span>
+					<span class="xs_ms fl">集采火拼</span>
 					<div class="Surplus_time" >
 						<span class="white fl" >剩余时间</span>
                         {{--<span class="time_mode fl ml10 day_show1">00</span>--}}

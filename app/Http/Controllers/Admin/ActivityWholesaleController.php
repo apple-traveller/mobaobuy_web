@@ -128,7 +128,7 @@ class ActivityWholesaleController extends Controller
     }
 
     /**
-     * 删除集采拼团
+     * 删除集采火拼
      * delete
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse

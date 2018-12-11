@@ -1,4 +1,4 @@
-@extends(themePath('.')."seller.include.layouts.master")
+@extends(themePath('.')."admin.include.layouts.master")
 @section('styles')
     <style>
         [class^="icon-"], [class*=" icon-"] {
@@ -31,7 +31,7 @@
     </div>
 
     <div class="warpper">
-        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采拼团</div>
+        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currentPage}}" class="s-back">返回</a>集采火拼</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>

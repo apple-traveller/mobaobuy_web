@@ -1,4 +1,4 @@
-@extends(themePath('.')."seller.include.layouts.master")
+@extends(themePath('.')."admin.include.layouts.master")
 @section('styles')
     <style>
         [class^="icon-"], [class*=" icon-"] {
@@ -242,9 +242,11 @@
 
 
             $("#cat_name").focus(function(){
+                $("#delivery_place").attr('treeId','');
                 showWinZtreeSelector(this);
             });
             $("#delivery_place").focus(function(){
+                $("#cat_name").attr('treeId','');
                 showWinZtreeSelector(this);
             });
             $("#delivery_place").change(function(){

@@ -222,7 +222,7 @@
 					<span class="fl">支付凭证:</span>
 					@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 						<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
-							<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ URL::asset('storage/'.$orderDetailsInfo['orderInfo']['pay_voucher']) }}">
+							<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 
 							@else
 								暂无
@@ -257,6 +257,7 @@
 
 
 		</div>
+
 	</div>
 	<!--订单列表-->
 	<div class="whitebg br1 mt20 ovh">
@@ -281,7 +282,7 @@
 		<div class="Amount_money">
 			<div class="db">
 				<span>商品总额：</span>
-				<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['goods_amount']}}</span>
+				<span class="fr ml20">{{amount_format($orderDetailsInfo['orderInfo']['goods_amount'],2)}}</span>
 			</div>
 			<div class="db mt15">
 				<span class="di">运       费：</span>
@@ -289,10 +290,11 @@
 			</div>
 			<div class="db mt20 red">
 				<span class="lh35">应付总额：</span>
-				<span class="fr ml20 fs22">￥{{$orderDetailsInfo['orderInfo']['order_amount']}}</span>
+				<span class="fr ml20 fs22">{{amount_format($orderDetailsInfo['orderInfo']['order_amount'],2)}}</span>
 			</div>
 		</div>
 	</div>
+
 </div>
 
 
