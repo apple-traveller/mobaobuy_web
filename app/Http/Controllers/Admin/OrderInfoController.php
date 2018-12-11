@@ -170,7 +170,6 @@ class OrderInfoController extends Controller
         $action_note = $data['action_note'];
         unset($data['action_note']);
         try{
-
             $flag = OrderInfoService::modifyOrderStatus($data,$action_note);
             if($flag){
                 return $this->result('',200,'修改成功');

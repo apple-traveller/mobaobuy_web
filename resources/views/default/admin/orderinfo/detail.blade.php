@@ -651,6 +651,13 @@
                     });
                     return ;
                 }
+                if(old_order_status==1 && order_status==3){
+                    layer.msg("企业先审核后才能确认", {
+                        icon: 5,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return ;
+                }
                 if(shipping_status!=1 && order_status==4 ){
                     layer.msg("还未发货", {
                         icon: 5,

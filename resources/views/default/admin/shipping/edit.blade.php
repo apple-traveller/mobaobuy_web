@@ -7,7 +7,7 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
-
+                    <li>编辑物流公司信息</li>
                 </ul>
             </div>
             <div class="flexilist">
