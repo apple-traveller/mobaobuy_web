@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Services\ActivityWholesaleService;
 use App\Services\FirmUserService;
 use App\Services\InvoiceService;
 use App\Services\OrderContractService;
@@ -134,156 +135,31 @@ class ShopOrderController extends Controller
         $ip = $request->getClientIp();
         $userAgent = $request->userAgent();
 
-        $where = [
-            'id' => $id,
-            'shop_id' => $shop_id
+        $_data = [
+            'shop_id' =>$shop_id,
+            'order_id'=>$id,
+            'order_status'=>$order_status,
+            'to_buyer'=>$to_buyer,
+            'pay_status'=>$pay_status,
+            'pay_number'=>$pay_number,
+            'deposit_status'=>$deposit_status,
+            'action_note'=>$action_note,
+            'delivery_period'=>$deposit_status,
+            // 合同
+            'contract'=>$contract,
+            'ip'=>$ip,
+            'userAgent'=>$userAgent
         ];
+
+
         // 判断订单是否存在
         try {
-            $orderInfo = OrderInfoService::getOrderInfoByWhere($where);
-            if (!empty($orderInfo)) {
-                $data = ['id' => $id];
-                // 确认订单
-                if ($order_status == 3) {
-                    if ($orderInfo['extension_code'] == 'cart' || $orderInfo['extension_code'] == 'consign') {
-                        $re_rock = ShopGoodsQuoteService::updateStock($id);
-                        if (!$re_rock) {
-                            return $this->error('库存不足，无法确认');
-                        }
-                    }
-                    if ($orderInfo['order_status'] != 2) {
-                        return $this->error('订单状态不符合执行该操作的条件');
-                    }
-                    $data['confirm_time'] = Carbon::now();
-                    $data['order_status'] = $order_status;
-                    // 交货时间
-                    if (!empty($delivery_period)) {
-                        if ($orderInfo['order_status'] != 2) {
-                            return $this->error('订单状态不符合执行该操作的条件');
-                        }
-                        $data['delivery_period'] = $delivery_period;
-                        if (empty($action_note)) {
-                            $action_note = "修改交货时间";
-                        }
-                    }
-                }
-                // 取消订单
-                if ($order_status!='' && $order_status==0 ) {
-                    $re = OrderInfoService::orderCancel($orderInfo['id'],$orderInfo['extension_code']);
-                    if ($re==true){
-                        $data['order_status'] = $order_status;
-                        $data['to_buyer'] =$to_buyer;
-                        if (empty($action_note)){
-                            $action_note = "取消订单";
-                        }
-                    }
-
-                }
-                $pay_error = '';
-                // 付款
-                if (!empty($pay_status) && $pay_status>0){
-                    if ($orderInfo['shipping_status']==3){
-                        $data['order_status'] = 4;
-                    }
-                    $data['pay_status'] = $pay_status;
-                    if ($pay_status==1){
-                        $data['money_paid'] = $orderInfo['order_amount'];
-                    }
-
-//                if (!empty($pay_number)&&$pay_number>0) {
-//                    // 剩余应付金额
-//                    $paid = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount']-$orderInfo['money_paid'];
-//                    if ($orderInfo['deposit_status']==1){
-//                        $paid = $paid + $orderInfo['deposit'];
-//                    }
-//                    if ($paid<=0){
-//                        return $this->error('款已收齐，请不要重复操作');
-//                    }
-//                    // 部分付款
-//                    if ($pay_number<$paid){
-//                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
-//                        $data['pay_status'] = 2;
-//                    // 全款
-//                    } else if ($pay_number==$paid){
-//                        $data['money_paid'] = $orderInfo['money_paid']+$pay_number;
-//                        $data['pay_status'] = 1;
-//                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
-//                        if ($orderInfo['shipping_status'] == 3) {
-//                            $data['order_status'] = 5;
-//                        }
-//                    // 当付款金额大于订单金额时 为商家准备
-//                    } else if ($pay_number>$paid){
-//                        $data['money_paid'] = $orderInfo['goods_amount']+$orderInfo['shipping_fee']-$orderInfo['discount'];// 订单总金额
-//                        $data['pay_status'] = 1;
-//                        // 当款已收齐 检查是否已确认收货 则变更订单转态 5 待开票
-//                        if ($orderInfo['shipping_status'] == 3) {
-//                            $data['order_status'] = 5;
-//                        }
-//                        $pay_error = "填写的金额超过订单总金额，已自动调整";
-//                    }
-//                    // 已收款&&已收货 变更订单 待开票
-                    $data['pay_time'] = Carbon::now();
-                    $action_note = "商家确认收款";
-                }
-                // 收定金
-                if (!empty($deposit_status)){
-                    if ($orderInfo['order_status'] != 2) {
-                        return $this->error('订单状态不符合执行该操作的条件');
-                    }
-                    $data['pay_time'] = Carbon::now();
-                    $data['deposit_status'] = $deposit_status?$deposit_status:1;
-                    $data['money_paid'] = $orderInfo['money_paid']+$orderInfo['deposit'];
-
-                    if (empty($action_note)) {
-                        $action_note = "确认收到定金";
-                    }
-                }
-                // 确认订单是上传合同
-                if(array_key_exists('order_status',$data) && !empty($data['order_status']) && $data['order_status']==3){
-                    if (empty($contract)){
-                        return $this->error('合同不能为空');
-                    }
-                    $data['contract']=$contract;
-                    $contract_data = [
-                        'add_time'=>Carbon::now(),
-                        'order_id'=> $id,
-                        'from_id'=> $shop_id,
-                        'from'=> 2,
-                        'contract'=>$contract,
-                        'ip'=> $ip,
-                        'equipment'=>$userAgent,
-                    ];
-                    // 开启事务
-                    $re = OrderInfoService::modify($data, $contract_data);
-                } else {
-                    $re = OrderInfoService::modify($data);
-                }
-
-                if (!empty($re)) {
-                    if (empty($action_note)) {
-                        $action_note = "修改订单状态";
-                    }
-                    //存储日志信息
-                    $logData = [
-                        'action_note' => $action_note,
-                        'action_user' => session('_seller')['user_name'],
-                        'order_id' => $id,
-                        'order_status' => $re['order_status'],
-                        'shipping_status' => $re['shipping_status'],
-                        'pay_status' => $re['pay_status'],
-                        'log_time' => Carbon::now()
-                    ];
-
-                    OrderInfoService::createLog($logData);
-                    if ($pay_error){
-                        return $this->success($pay_error,url('/seller/order/list'));
-                    }
-                    return $this->success('修改成功', url('/seller/order/list'));
-                }
-            } else {
-                return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
-            }
+           $re = OrderInfoService::updateOrderStatus($_data);
+           if ($re){
+               return $this->success('修改成功');
+           }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return $this->error('订单信息错误，或订单不存在', url('/seller/order/list'));
         }
     }

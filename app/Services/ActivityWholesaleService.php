@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\GoodsRepo;
+use App\Repositories\OrderGoodsRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\UserWholeSingleRepo;
@@ -294,6 +295,25 @@ class ActivityWholesaleService
     {
         $count = ActivityWholesaleRepo::getTotalCount($condition);
         return $count;
+    }
+
+    /**
+     * 增加目标数
+     * @param $order_id
+     * @return bool
+     * @throws \Exception
+     */
+    public static function addPartakeQuantity($order_id)
+    {
+        try{
+            $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+            $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+            $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+            return ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+        }catch (\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+
     }
 
 }
