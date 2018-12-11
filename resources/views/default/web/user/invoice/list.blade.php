@@ -168,7 +168,7 @@
     // 单选框
 
     $('.shop_list .check_all span label input').change(function(){
-        let shop = '';
+        var shop = '';
         total_amount = 0;
         check_arr = [];
         $('.shop_list .check_all span label input:checked').each(function(index,item){
@@ -201,31 +201,31 @@
     });
 
     $('#on-search').click(function () {
-        let shop_name = $('#shop_name').val();
-        let order_sn = $('#order_no').val();
-        let begin_time = $('#begin_time').val();
-        let end_time = $('#end_time').val();
+        var shop_name = $('#shop_name').val();
+        var order_sn = $('#order_no').val();
+        var begin_time = $('#begin_time').val();
+        var end_time = $('#end_time').val();
         window.location.href = '/invoice?shop_name='+shop_name+'&order_sn='+order_sn+'&begin_time='+begin_time+'&end_time='+end_time;
     });
 
 
     // 单个申请
     function _apply(obj){
-        let order_id = $(obj).attr('data-id');
-        let order_ids = [];
-        let order_status = $(obj).attr('data-status');
-        let total_amount = parseInt($(obj).parent().siblings('.goods_amount').text());
+        var order_id = $(obj).attr('data-id');
+        var order_ids = [];
+        var order_status = $(obj).attr('data-status');
+        var total_amount = parseInt($(obj).parent().siblings('.goods_amount').text());
         if (order_status==4){
             layer.msg('订单已完成，无法提交申请');
         }
             order_ids.push(order_id);
 
-        let form = $("<form></form>");
+        var form = $("<form></form>");
         form.attr('action','/invoice/confirm');
         form.attr('method','post');
-        let input1 = $("<input type='hidden' name='order_id' />");
+        var input1 = $("<input type='hidden' name='order_id' />");
         input1.attr('value',order_ids);
-        let input2 = $("<input type='hidden' name='total_amount' />");
+        var input2 = $("<input type='hidden' name='total_amount' />");
         input2.attr('value',total_amount);
         form.append(input1);
         form.append(input2);
@@ -269,12 +269,12 @@
             total_amount = total_amount + parseInt($(this).text());
         });
         if(check_arr.length>0){
-            let form = $("<form></form>");
+            var form = $("<form></form>");
             form.attr('action','/invoice/confirm');
             form.attr('method','post');
-            let input1 = $("<input type='hidden' name='order_id' />");
+            var input1 = $("<input type='hidden' name='order_id' />");
             input1.attr('value',check_arr);
-            let input2 = $("<input type='hidden' name='total_amount' />");
+            var input2 = $("<input type='hidden' name='total_amount' />");
             input2.attr('value',total_amount);
             form.append(input1);
             form.append(input2);

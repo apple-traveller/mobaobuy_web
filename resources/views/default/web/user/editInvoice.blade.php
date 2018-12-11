@@ -178,7 +178,7 @@
     $(function(){
         //	增加
         $('.add_address').click(function(){
-            let input = $("#invoice_from").serialize();
+            var input = $("#invoice_from").serialize();
             Ajax.call('/createInvoices', input, function(res){
                 if (res.code == 1){
                     $.msg.alert(res.msg);
