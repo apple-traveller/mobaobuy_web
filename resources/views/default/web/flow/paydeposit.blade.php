@@ -47,7 +47,8 @@
     </script>
     <style type="text/css">
         .block_bg{display:none;height: 100%;left: 0;position: fixed; top: 0;width: 100%;background: #000;opacity: 0.8;z-index:2;}
-        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 300px;}
+        /*.power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;height: 300px;}*/
+        .power_edit{display:none;z-index: 2;width:520px;  left:50%; top:50%;margin-top:-175px;position:fixed;margin-left:-250px;}
         .whitebg{background: #FFFFFF;}
         .pay_title{height: 50px;line-height: 50px;}
         .f4bg{background-color: #f4f4f4;}
@@ -67,8 +68,22 @@
             float: left;
         }
 
-        .payment-order-box{padding: 30px;}
+        {{--.payment-order-box{padding: 30px;}--}}
 
+        {{--.payment-box{padding: 30px;}--}}
+        {{--.payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}--}}
+        {{--.payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}--}}
+        {{--.payment-box .p-mode-list {margin-top: 20px;width: calc(100% + 12px);overflow: hidden;}--}}
+        {{--.payment-box .p-mode-item {float: left;width: 178px;height: 88px;border: 1px solid #d2d2d2;text-align: center;position: relative;margin: 0 12px 12px 0;text-align:center}--}}
+        {{--.payment-box .p-mode-item input[type="button"]{border: 0;width: 178px;height: 88px;display: block;font-size: 0;outline: 0;cursor: pointer;}--}}
+        {{--.p-mode-list .alipay input[type="button"] {background: url({{asset(themePath('/','web').'/img/alipay-icon.png')}}) center center no-repeat;}--}}
+        {{--.p-mode-list .wxpay input[type="button"] {background: url({{asset(themePath('/','web').'/img/wxpay-icon.png')}}) center center no-repeat;}--}}
+        {{--.p-mode-list .enterprise_transfer input[type="button"] {background: url({{asset(themePath('/','web').'/img/enterprisepay-icon.jpg')}}) center center no-repeat;}--}}
+
+         .power_list li{font-size: 18px;overflow: hidden;}.til_btn{padding: 7px 39px;border-radius: 3px; color: #fff;}
+        .code_greenbg{background-color: #75b335;}.blackgraybg{background-color: #CCCCCC;}
+
+        .payment-order-box{padding: 30px;}
         .payment-box{padding: 30px;}
         .payment-box .p-mode-tit {padding-bottom: 15px;border-bottom: 1px solid #d2d2d2;}
         .payment-box .p-mode-tit h3{font-size: 18px;height: 18px;line-height: 18px;padding-left: 10px;border-left: 4px solid #f42424;}

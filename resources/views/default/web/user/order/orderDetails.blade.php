@@ -223,12 +223,23 @@
 					@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 						<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
 							<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}">
-
-							@else
-								暂无
-							@endif
 						</div>
-
+					@else
+								暂无
+					@endif
+					<br>
+					@if($orderDetailsInfo['orderInfo']['extension_code'] == 'wholesale')
+						<div class="" style="float:left;margin-top:25px;">
+						<span class="fl" style="margin-top:10px;">定金凭证:</span>
+						@if(!empty($orderDetailsInfo['orderInfo']['deposit_pay_voucher']))
+							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
+								<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']) }}">
+							</div>
+						@else
+							暂无
+						@endif
+						</div>
+					@endif
 				</div>
 			</div>
 			<div class="fl mt20">
