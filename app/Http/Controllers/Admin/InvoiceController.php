@@ -27,7 +27,7 @@ class InvoiceController extends Controller
             $condition['created_at|<'] = $end_time;
             $condition['created_at|>'] = $begin_time;
         }
-        $invoices = InvoiceService::getListBySearch(['page_size'=>$pageSize,'page'=>$currpage,'orderType'=>['created_at'=>'desc']],$condition);
+        $invoices = InvoiceService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['created_at'=>'desc']],$condition);
         return $this->display('admin.invoice.list',[
             'invoices'=>$invoices['list'],
             'total'=>$invoices['total'],
