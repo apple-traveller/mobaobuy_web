@@ -13,7 +13,8 @@ class ActivityPromoteService
     use CommonService;
 
     public static function getList($params=[], $page = 1 ,$pageSize=10){
-        $condition = [];
+        $condition = ['is_delete'=>0];
+
         if(isset($params['status'])){
             $condition['review_status'] = $params['status'];
         }
