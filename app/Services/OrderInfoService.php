@@ -649,7 +649,7 @@ class OrderInfoService
                     if($orderInfo['extension_code'] == 'promote'){//限时抢购
                         $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                         ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                    }elseif ($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status'==1]){//集采火拼 这边要减去活动已参与的数量
+                    }elseif ($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']==1){//集采火拼 这边要减去活动已参与的数量
                         //减去已参与数量
                         $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                         ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -1233,6 +1233,12 @@ class OrderInfoService
 
                 }
 
+            }else{
+                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }
             }
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
