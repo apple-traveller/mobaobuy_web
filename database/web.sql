@@ -1003,6 +1003,7 @@ DROP TABLE IF EXISTS `invoice_goods`;
 CREATE TABLE `invoice_goods` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '订单商品表索引id',
   `invoice_id` int(10) NOT NULL COMMENT '申请id',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单id',
   `order_goods_id` int(10) NOT NULL COMMENT '订单明细id',
   `goods_id` int(10) NOT NULL COMMENT '商品id',
   `goods_name` varchar(50) NOT NULL COMMENT '商品名称',
