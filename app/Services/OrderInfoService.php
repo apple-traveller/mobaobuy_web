@@ -1233,6 +1233,12 @@ class OrderInfoService
 
                 }
 
+            }else{
+                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }
             }
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
