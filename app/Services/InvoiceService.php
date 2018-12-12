@@ -74,9 +74,15 @@ class InvoiceService
                 $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
                 $data['invoice_numbers'] = $invoice_numbers;
                 //开票要修改order_info里面的order_status
-                $invoice_goods = InvoiceGoodsRepo::getInfoByFields(['invoice_id'=>$id]);
-                $order_id = OrderGoodsRepo::getInfoByFields(['id'=>$invoice_goods['order_goods_id']])['order_id'];
-                OrderInfoRepo::modify($order_id,['order_status'=>4]);
+                $invoice_goods = InvoiceGoodsRepo::getList([],['invoice_id'=>$id]);
+                $order_ids = [];
+                foreach($invoice_goods as $k=>$v){
+                    $order_ids[] = $v['order_id'];
+                }
+                $order_ids = array_unique($order_ids);
+                foreach($order_ids as $k=>$v){
+                    OrderInfoRepo::modify($v,['order_status'=>4]);
+                }
             }
             $data['updated_at'] = Carbon::now();
             InvoiceRepo::modify($id,$data);
