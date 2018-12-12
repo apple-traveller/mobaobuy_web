@@ -32,7 +32,10 @@ class IndexController extends Controller
     public function  index(Request $request){
         $now = Carbon::now();
         //获取顶部广告
-        $top_ad = AdService::getAdvertList(['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]);
+        $top_ad = AdService::getAdvertList(
+            ['pageSize'=>1,'page'=>1,'orderType'=>['sort_order'=>'asc']],
+            ['position_id'=>2,'enabled'=>1, 'start_time|<='=>$now, 'end_time|>=' => $now]
+        );
         if(empty($top_ad['list'])){
             $top_ad=$top_ad['list'];
         }else{
@@ -87,7 +90,7 @@ class IndexController extends Controller
         //获取资讯
         $article_list = ArticleService::getTopClick(1,7,['add_time'=>'desc'])['list'];
         //合作品牌
-        $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1])['list'];
+        $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1,'is_delete'=>0])['list'];
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$merge_trans_list, 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'top_ad'=>$top_ad]);
     }
