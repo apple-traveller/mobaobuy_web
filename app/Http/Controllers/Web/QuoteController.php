@@ -152,7 +152,7 @@ class QuoteController extends Controller
         $cate_id = $request->input('cate_id', "");
         $place_id = $request->input('place_id', "");
         $keyword = $request->input('keyword', "");
-        $t = $request->input('t', "");
+        $t = $request->input('t', "1|2");
         $condition = [];
 
         $orderBy = [];
@@ -241,7 +241,9 @@ class QuoteController extends Controller
         $goods_id = $good_info['goods_id'];
         $condition = [
             'shop_id' => $shop_id,
-            'goods_id' => $goods_id
+            'goods_id' => $goods_id,
+            'type'=>'1|2',
+            'is_delete'=>0
         ];
         $pageSize = 4;
         $userId = session('_web_user_id');
