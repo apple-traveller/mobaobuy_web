@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">促销 - 秒杀活动列表</div>
+        <div class="title">促销 - 限时抢购列表</div>
         <div class="content">
 
                 <div class="explanation" id="explanation">
@@ -15,7 +15,12 @@
             </div>
             <div class="flexilist">
                 <div class="common-head">
-                    <div class="fl">
+                    <div class="order_state_tab">
+                        <a href="/admin/promote/list?is_expire=0" @if($is_expire==0) class="current" @endif>全部<em @if($is_expire!=0) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/promote/list?is_expire=1" @if($is_expire==1) class="current" @endif>未过期<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/promote/list?is_expire=2" @if($is_expire==2) class="current" @endif>已过期<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
+                    </div>
+                    <div style="margin-left:10px;margin-top:6px;" class="fl">
                         <a href="/admin/promote/addForm"><div class="fbutton"><div class="add" title="添加优惠活动"><span><i class="icon icon-plus"></i>添加优惠活动</span></div></div></a>
                     </div>
                     <div class="refresh">
@@ -89,14 +94,14 @@
                                         </td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>
+                                                <a href="/admin/promote/detail?id={{$vo['id']}}&currpage={{$currpage}}&is_expire={{$is_expire}}" title="查看/审核" class="btn_see"><i class="sc_icon sc_icon_see"></i>
                                                     @if($vo['review_status']==1)
                                                         审核
                                                     @else
                                                        查看
                                                     @endif
                                                 </a>
-                                                <a href="/admin/promote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="/admin/promote/editForm?id={{$vo['id']}}&currpage={{$currpage}}&is_expire={{$is_expire}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                                 <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
@@ -147,7 +152,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/promote/list?currpage="+obj.curr+"&shop_name={{$shop_name}}";
+                            window.location.href="/admin/promote/list?currpage="+obj.curr+"&shop_name={{$shop_name}}&is_expire={{$is_expire}}";
                         }
                     }
                 });

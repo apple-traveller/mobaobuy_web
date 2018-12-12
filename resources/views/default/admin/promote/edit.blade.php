@@ -7,7 +7,7 @@
         <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
     </div>
     <div class="warpper">
-        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}" class="s-back">返回</a>优惠活动 - 编辑优惠活动</div>
+        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}&is_expire={{$is_expire}}" class="s-back">返回</a>优惠活动 - 编辑优惠活动</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
@@ -24,6 +24,7 @@
                                 <input type="hidden" name="id" value="{{$promote['id']}}"/>
                                 <input type="hidden" name="add_time" value="{{$promote['add_time']}}"/>
                                 <input type="hidden" name="currpage" value="{{$currpage}}"/>
+                                <input type="hidden" name="is_expire" value="{{$is_expire}}"/>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>店铺：</div>
                                     <div class="label_value">

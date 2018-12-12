@@ -17,8 +17,16 @@ class PromoteController extends Controller
     {
         $currpage = $request->input('currpage',1);
         $shop_name = $request->input('shop_name');
-        $pageSize = 10;
+        $is_expire = $request->input('is_expire',0);
         $condition = [];
+        if($is_expire!=0){
+            if($is_expire==1){
+                $condition['end_time|>'] = Carbon::now();//未过期
+            }else{
+                $condition['end_time|<'] = Carbon::now();//已过期
+            }
+        }
+        $pageSize = 10;
         if(!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -30,7 +38,8 @@ class PromoteController extends Controller
             'total'=>$promotes['total'],
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
-            'shop_name'=>$shop_name
+            'shop_name'=>$shop_name,
+            'is_expire'=>$is_expire
         ]);
     }
 
@@ -53,6 +62,7 @@ class PromoteController extends Controller
     public function editForm(Request $request){
         $id = $request->input("id");
         $currpage = $request->input("currpage");
+        $is_expire = $request->input('is_expire');
         $promote = ActivityService::getInfoById($id);
 
         $condition = [
@@ -65,7 +75,8 @@ class PromoteController extends Controller
             'promote'=>$promote,
             'goods_info'=>$goods_info,
             'currpage'=>$currpage,
-            'shops'=>$shops
+            'shops'=>$shops,
+            'is_expire'=>$is_expire
         ]);
 
     }
@@ -118,15 +129,17 @@ class PromoteController extends Controller
                 return $this->success("添加成功",url("/admin/promote/list"));
             }else{
                 $currpage = $data['currpage'];
+                $is_expire = $data['is_expire'];
                 if($data['available_quantity']>$data['num']){
                     return $this->error('当前可售数量不能大于总数量');
                 }
                 unset($data['currpage']);
+                unset($data['is_expire']);
                 $flag = ActivityService::updateById($data['id'],$data);
                 if(empty($flag)){
                     return $this->error("修改失败");
                 }
-                return $this->success("修改成功",url("/admin/promote/list")."?currpage=".$currpage);
+                return $this->success("修改成功",url("/admin/promote/list")."?currpage=".$currpage."&is_expire=".$is_expire);
             }
         }catch(\Exception $e){
             return $this->error($e->getMessage());
@@ -139,12 +152,14 @@ class PromoteController extends Controller
     {
         $id = $request->input("id");
         $currpage = $request->input("currpage");
+        $is_expire = $request->input('is_expire');
         $promote = ActivityService::getInfoById($id);
         $goods_info = GoodsService::getGoodInfo($promote['goods_id']);
         return $this->display('admin.promote.detail',[
             'promote'=>$promote,
             'currpage'=>$currpage,
-            'goods_info'=>$goods_info
+            'goods_info'=>$goods_info,
+            'is_expire'=>$is_expire
         ]);
     }
 
