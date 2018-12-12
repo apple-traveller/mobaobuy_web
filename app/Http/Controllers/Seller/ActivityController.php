@@ -88,7 +88,7 @@ class ActivityController extends Controller
             'begin_time' => $start_date.' '.$start_time,
             'end_time' => $end_date.' '.$end_time,
             'goods_id' => $goods_id,
-            'goods_name' => $goodsInfo['goods_name'],
+            'goods_name' => $goodsInfo['goods_full_name'],
             'price' => $price,
             'num' => $num,
             'min_limit' => $min_limit,
