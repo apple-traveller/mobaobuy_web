@@ -177,7 +177,8 @@ class InvoiceService
                         'goods_price' => $v['goods_price'],
                         'invoice_num' => $v['goods_number'],
                         'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'updated_at' => Carbon::now(),
+                        'order_id' => $v['order_id']
                     ];
                     $res[] = InvoiceGoodsRepo::create($goods_data);
                 }
