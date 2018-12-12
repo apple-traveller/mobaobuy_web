@@ -5,6 +5,7 @@ use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\CartRepo;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
+use App\Repositories\LogisticsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\RegionRepo;
@@ -1163,6 +1164,11 @@ class OrderInfoService
         $district = RegionRepo::getInfo($orderInfo['district']);
 
         $delivery_info = OrderDeliveryRepo::getList([],['order_id'=>$orderInfo['id']]);
+
+//        foreach($delivery_info as $v){
+//            $v[]
+//            = LogisticsRepo::getInfoByFields($v['shipping_billno'])
+//        }
 
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];

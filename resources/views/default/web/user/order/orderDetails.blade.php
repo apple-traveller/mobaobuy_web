@@ -124,26 +124,36 @@
 		</div>
 	</div>
 	<!--物流信息-->
-	<div class="whitebg br1 mt20 ovh">
-		<div class="order_pro_stute">
-			@if(!empty($orderDetailsInfo['delivery_info']))
-				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-				<span class="ml30 db mt20">
-				@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
-						物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
-						物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
-					@endforeach
-			</span>
-			@else
-				<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
-			@endif
-		</div>
-		<div class="fl wlgz_text">
-			<ul class="wlxx">
+@if(!empty($orderDetailsInfo['delivery_info']))
+    @foreach($orderDetailsInfo['delivery_info'] as $vv)
+            <div class="whitebg br1 mt20 ovh">
+                <div class="order_pro_stute">
 
-			</ul>
-		</div>
-	</div>
+                    <span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+                    <span class="ml30 db mt20">
+
+                                        物流公司：<span data-delivery_id="{{$vv['id']}}">{{$vv['shipping_name']}}</span><br>
+                                        物流单号：<span data-delivery_id="{{$vv['id']}}" class="delivery_id">{{$vv['shipping_billno']}}</span><br>
+
+                    </span>
+                </div>
+                <div class="fl wlgz_text">
+                    <ul class="wlxx">
+
+                    </ul>
+                </div>
+            </div>
+    @endforeach
+@else
+        <div class="whitebg br1 mt20 ovh">
+            <div class="order_pro_stute">
+                <span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+            </div>
+        </div>
+@endif
+
+
+
 	<!--收货人信息/商家信息/发票信息-->
 	<div class="whitebg br1 mt20 ovh">
 		<!--收货人信息-->
