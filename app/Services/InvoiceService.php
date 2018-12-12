@@ -14,6 +14,7 @@ use App\Repositories\OrderInfoRepo;
 use App\Repositories\UserRepo;
 use Illuminate\Support\Carbon;
 use phpDocumentor\Reflection\Types\Self_;
+use function PHPSTORM_META\type;
 
 class InvoiceService
 {
@@ -79,16 +80,14 @@ class InvoiceService
             $goods_ids_str = '';
             foreach ($goods_list as $k=>$v){
                 if ($k==0){
-                    $goods_ids_str = $v['id'];
+                    $goods_ids_str = $v['order_goods_id'];
                 } else {
-                    $goods_ids_str .= '|'.$v['id'];
+                    $goods_ids_str .= '|'.$v['order_goods_id'];
                 }
-
             }
             // 获取订单id
             $order_goods_list = OrderGoodsRepo::getList([],['id'=>$goods_ids_str]);
             $order_ids_str = '';
-
             foreach ($order_goods_list as $k1=>$v1){
                 if ($k1==0){
                     $order_ids_str = $v1['order_id'];
@@ -102,11 +101,12 @@ class InvoiceService
             self::beginTransaction();
             // 开票
             $re = self::updateInvoice($invoice_id,$data);
+
             // 变更订单状态 已完成
             if ($re){
                 $changed = [];
                 foreach ($order_list as $k2=>$v2){
-                   $changed[] =  OrderInfoRepo::modify($v2['id'],['order_status'=>4]);
+                   $changed[] =  OrderInfoRepo::modify($v2['id'],['order_status' => 4]);
                 }
                 self::commit();
                 if (count($changed) == count($order_goods_list)){
