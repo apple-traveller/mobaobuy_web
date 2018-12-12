@@ -56,9 +56,12 @@
                 var min_num = Number(ipts.attr('min-limit'));//起售量
                 var max_num = Number(ipts.attr('max-limit'));//起售量
                 var can_num = Number(ipts.attr('canSell'));//可售
-                if(iptsVal+packing_spec > max_num){
-                    $.msg.error('不能大于最大限购量');
-                    return;
+                if(max_num != 0){
+                    if(iptsVal+packing_spec > max_num){
+                        $.msg.error('不能大于最大限购量');
+                        return;
+                    }
+
                 }
                 if(iptsVal+packing_spec > can_num){
                     $.msg.error('不能大于可售');
@@ -66,6 +69,8 @@
                 }else{
                     ipts.val(iptsVal + packing_spec);
                 }
+
+
             });
 //            $('.shop_num_reduce').click(function(){
             $(document).delegate('.shop_num_reduce','click',function(){
