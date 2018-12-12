@@ -57,7 +57,7 @@ class IndexController extends ApiController
     public function getPromoteList(Request $request)
     {
         $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 3);
-        return $this->success(['promote_list' => $promote_list['list']]);
+        return $this->success([]);
     }
 
     //自营报价
