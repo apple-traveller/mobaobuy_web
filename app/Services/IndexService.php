@@ -37,7 +37,7 @@ class IndexService
         foreach (object_array($quote) as $k=>$v){
             //先组装报价信息
             $data[$k]['goods_name'] = $v['goods_name'];
-            $data[$k]['goods_price'] = $v['goods_price'];
+            $data[$k]['goods_price'] = $v['shop_price'];
             //生成随机数量
             $data[$k]['goods_number'] = (int)mt_rand(5, 25)*$v['packing_spec'];
             //再生成随机时间
