@@ -644,10 +644,35 @@ class OrderInfoService
             }
             if($data['order_status']==0){
                 //订单取消 waitAffirm
-                $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
+                //根据来源返回库存
+                if($orderInfo['order_status']>=3){
+                    if($orderInfo['extension_code'] == 'promote'){//限时抢购
+                        $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
+                        ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
+                    }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
+                        //减去已参与数量
+                        $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                        ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                    }elseif ($orderInfo['extension_code'] == 'consign'){//清仓特卖 这边要返回清仓特卖的 库存
+                        foreach ($orderGoodsInfo as $k=>$v){
+                            $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                            ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                        }
+                    }else{//购物车下单
+                        foreach ($orderGoodsInfo as $k=>$v){
+                            $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                            ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
+                        }
+                    }
+                }else{
+                    if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                        //减去已参与数量
+                        $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                        ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                    }
+                }
 
-                self::orderCancel($orderInfo['id'],$s);
-
+                $order_info = OrderInfoRepo::modify($data['id'],['order_status'=>0]);
             }
             if($data['order_status']==4){//确认收货
                 //企业存库表
@@ -1213,7 +1238,7 @@ class OrderInfoService
                     }
                 }
             }else{
-                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status'] == 1){
+                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
