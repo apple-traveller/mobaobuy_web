@@ -71,7 +71,8 @@ class ActivityWholesaleController extends Controller
      */
     public function add(Request $request)
     {
-        $currentPage = $request->input('currentPage',1);
+        $currentPage = $request->input('currpage',1);
+        $is_expire = $request->input('is_expire',0);
         $id = $request->input('id','');
         if($id){
             $wholesale_info = ActivityWholesaleService::getInfoById($id);
@@ -85,7 +86,8 @@ class ActivityWholesaleController extends Controller
         return $this->display('admin.activitywholesale.edit',[
             'currentPage' => $currentPage,
             'wholesale_info' => $wholesale_info,
-            'good' => $good
+            'good' => $good,
+            'is_expire'=>$is_expire
         ]);
     }
 

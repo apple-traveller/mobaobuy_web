@@ -911,6 +911,7 @@ class OrderInfoService
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods['list'][$k]['goods_sn'] = $good['goods_sn'];
             $order_goods['list'][$k]['unit_name'] = $good['unit_name'];
             $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
             $order_goods['list'][$k]['send_number_delivery'] = $vo['goods_number']-$vo['send_number'];

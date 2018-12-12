@@ -103,7 +103,7 @@
                                                 @endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/activity/wholesale/detail?id={{$v['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see">
+                                                <a href="/admin/activity/wholesale/detail?id={{$v['id']}}&currpage={{$currentPage}}?is_expire={{$is_expire}}" title="查看" class="btn_see">
                                                     <i class="sc_icon sc_icon_see"></i>
                                                     @if($v['review_status']==3)
                                                     查看
@@ -111,8 +111,8 @@
                                                         审核
                                                     @endif
                                                 </a>
-                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                                <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
+                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}&currpage={{$currentPage}}?is_expire={{$is_expire}}"  title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id="{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
                                     </tr>
