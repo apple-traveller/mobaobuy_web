@@ -61,7 +61,7 @@
 
                                 <dl style="width:40%">
                                     <dt>收货地址:<span style="color:#62b3ff">{{$invoiceInfo['address_str']}}详细地址：@if(empty($invoiceInfo['address'])) 无 @else {{$invoiceInfo['address']}} @endif</span></dt>
-                                    <dt>邮政编码:<span style="color:#62b3ff">@if(!empty($invoiceInfo['zipcode'])) {{$invoiceInfo['zipcode']}} @else 无 @endif</span></dt>
+                                    <dt>邮政编码:<span style="color:#62b3ff">@if(empty($invoiceInfo['zipcode']) || $invoiceInfo['zipcode']=="null") 无 @else {{$invoiceInfo['zipcode']}} @endif</span></dt>
                                 </dl>
                             </div>
                         </div>
