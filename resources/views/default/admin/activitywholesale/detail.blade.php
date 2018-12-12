@@ -2,7 +2,7 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currpage}}" class="s-back">返回</a>集采火拼详情</div>
+        <div class="title"><a href="/admin/activity/wholesale?currentPage={{$currpage}}&is_expire={{$is_expire}}" class="s-back">返回</a>集采火拼详情</div>
         <div class="content">
 
             <div class="explanation" id="explanation">

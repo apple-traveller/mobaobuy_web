@@ -56,10 +56,12 @@ class ActivityWholesaleController extends Controller
     {
         $id = $request->input('id','');
         $currpage = $request->input('currpage',1);
+        $is_expire = $request->input('is_expire',0);
         $result = ActivityWholesaleService::getInfoById($id);
         return $this->display('admin.activitywholesale.detail',[
             'result' => $result,
             'currpage' => $currpage,
+            'is_expire'=>$is_expire
         ]);
     }
 
