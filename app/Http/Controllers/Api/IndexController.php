@@ -53,6 +53,9 @@ class IndexController extends ApiController
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
         //合并真假数据
         $merge_trans_list = array_merge($trans_list['list'],$trans_false_list,$before_trans_false_list);
+        foreach($merge_trans_list as &$vo){
+            $vo['price'] = $vo['goods_price'];
+        }
 
         return $this->success(['trans_list' => $merge_trans_list]);
     }
