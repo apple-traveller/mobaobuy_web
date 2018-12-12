@@ -124,26 +124,26 @@
 		</div>
 	</div>
 	<!--物流信息-->
-	<div class="whitebg br1 mt20 ovh">
-		<div class="order_pro_stute">
-			@if(!empty($orderDetailsInfo['delivery_info']))
-				<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
-				<span class="ml30 db mt20">
-				@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
-						物流公司：<span data-delivery_id="{{$v['id']}}">{{$v['shipping_name']}}</span><br>
-						物流单号：<span @if($k+1 == count($orderDetailsInfo['delivery_info'])) data-delivery_id="{{$v['id']}}" id="delivery_id" @endif>{{$v['shipping_billno']}}</span><br>
-					@endforeach
-			</span>
-			@else
-				<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
-			@endif
-		</div>
-		<div class="fl wlgz_text">
-			<ul class="wlxx">
+	@foreach($orderDetailsInfo['delivery_info'] as $k=>$v)
+		<div class="whitebg br1 mt20 ovh getLogistics">
+			<div class="order_pro_stute">
+				@if(!empty($v))
+					<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+					<span class="ml30 db mt20">
+						物流公司：<span>{{$v['shipping_name']}}</span><br>
+						物流单号：<span>{{$v['shipping_billno']}}</span><br>
+					</span>
+				@else
+					<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+				@endif
+			</div>
+			<div class="fl wlgz_text">
+				<ul class="wlxx" data-delivery_id="{{$v['id']}}">
 
-			</ul>
+				</ul>
+			</div>
 		</div>
-	</div>
+	@endforeach
 	<!--收货人信息/商家信息/发票信息-->
 	<div class="whitebg br1 mt20 ovh">
 		<!--收货人信息-->
@@ -225,7 +225,7 @@
 							<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 						</div>
 					@else
-								暂无
+						暂无
 					@endif
 					<br>
 					@if($orderDetailsInfo['orderInfo']['extension_code'] == 'wholesale')
@@ -317,7 +317,9 @@
 <script type="text/javascript">
     $(function(){
         //请求快递物流信息
-        getLogisticsInfo();
+		$('.getLogistics').each(function(){
+            getLogisticsInfo(this);
+		});
 
         //调用示例
         layer.photos({
@@ -351,8 +353,8 @@
         })
     });
     //
-    function getLogisticsInfo(){
-        var _delivery_id = $('#delivery_id').data('delivery_id');
+    function getLogisticsInfo(obj){
+        var _delivery_id = $(obj).find('.wlxx').data('delivery_id');
         if(_delivery_id != 0){
             $.ajax({
                 url: "/logistics/detail",
@@ -374,10 +376,10 @@
                         if(_html == ''){
                             _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
                         }
-                        $('.wlxx').append(_html);
+                        $(obj).find('.wlxx').append(_html);
                     }else{
 						//物流单第三方查询失败 查询站内维护物流信息
-                        getInstationLogisticsInfo();
+                        getInstationLogisticsInfo(obj);
 //                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
 //                        $('.wlxx').append(_html);
                         // $.msg.alert(data.msg);
@@ -385,17 +387,17 @@
                 },
                 error:function(){
                     var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
-                    $('.wlxx').append(_html);
+                    $(obj).find('.wlxx').append(_html);
                 }
             })
         }else{
             var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
-            $('.wlxx').append(_html);
+            $(obj).find('.wlxx').append(_html);
         }
 
     }
-    function getInstationLogisticsInfo(){
-        var _delivery_id = $('#delivery_id').data('delivery_id');
+    function getInstationLogisticsInfo(obj){
+        var _delivery_id = $(obj).find('.wlxx').data('delivery_id');
         if(_delivery_id != 0){
             $.ajax({
                 url: "/logistics/instation",
@@ -417,22 +419,22 @@
                         if(_html == ''){
                             _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
                         }
-                        $('.wlxx').append(_html);
+                        $(obj).find('.wlxx').append(_html);
                     }else{
                         //物流单第三方查询失败 查询站内维护物流信息
                         var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
-                        $('.wlxx').append(_html);
+                        $(obj).find('.wlxx').append(_html);
                         // $.msg.alert(data.msg);
                     }
                 },
                 error:function(){
                     var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
-                    $('.wlxx').append(_html);
+                    $(obj).find('.wlxx').append(_html);
                 }
             })
         }else{
             var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
-            $('.wlxx').append(_html);
+            $(obj).find('.wlxx').append(_html);
         }
 
     }

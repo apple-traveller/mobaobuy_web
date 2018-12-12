@@ -90,10 +90,10 @@
                                     }
 
                                     html += '</td><td width="20%" rowspan="'+ full.goods.length +'">';
-                                    for(var i in full.deliveries){
-                                        console.log(full.deliveries);
-                                        html += '<p><img class="track-tooltip" data-id='+ full.deliveries[i].id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';
-                                    }
+                                    {{--for(var i in full.deliveries){--}}
+                                        {{--console.log(full.deliveries);--}}
+                                        {{--html += '<p><img class="track-tooltip" data-id='+ full.deliveries[i].id +' data-name="'+ full.deliveries[i].shipping_name +'" data-code="'+ full.deliveries[i].shipping_billno +'" src="{{asset(themePath('/', 'web') .'img/Track_icon.png')}}"> 跟踪 </p>';--}}
+                                    {{--}--}}
                                     html += '<p><span><a href="/orderDetails/'+full.order_sn+'">订单详情</a></span></p></td>';
                                     html += '<td rowspan="'+ full.goods.length +'">';
                                    
