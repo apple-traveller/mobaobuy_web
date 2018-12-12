@@ -1693,7 +1693,8 @@ class OrderInfoService
             }
             // 取消订单
             if ($orderInfo['order_status']!='' && $orderInfo['order_status']==0 ) {
-                $re = OrderInfoService::orderCancel($orderInfo['order_id'],$orderInfo['extension_code']);
+                $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
+                $re = OrderInfoService::orderCancel($orderInfo['order_id'],$s);
                 if ($re==true){
                     $data['order_status'] = $orderInfo['order_status'];
                     $data['to_buyer'] =$orderInfo['to_buyer'];
