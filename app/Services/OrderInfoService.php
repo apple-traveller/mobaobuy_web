@@ -162,6 +162,8 @@ class OrderInfoService
                             $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
+
+
             }
 
             //企业会员
@@ -306,6 +308,12 @@ class OrderInfoService
                 $orderList['list'][$k]['auth'][] = 'wait_invoice';
                 $orderList['list'][$k]['auth_desc'][] = '申请开票';
                 $orderList['list'][$k]['auth_html'][] = 'href="/invoice"';
+            }
+
+            if($item['order_status'] == 6){
+                $orderList['list'][$k]['auth'][] = 'invoiceIng';
+                $orderList['list'][$k]['auth_desc'][] = '开票中';
+                $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
             }
 
         }
@@ -1415,7 +1423,7 @@ class OrderInfoService
             $goods_amount = 0;
             foreach ($cartInfo_session as $v) {
                 $id = $v['id'];
-                //购物车生成订单
+
                 if ($type == 'promote') {
                     //限时抢购生产订单
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
@@ -1426,7 +1434,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
+//                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
+                        'shop_goods_quote_id' => 0,
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['goods_number'],
                         'goods_price' => $v['goods_price'],
@@ -1446,7 +1455,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
+                        'shop_goods_quote_id' => 0,
+//                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['num'],
                         'goods_price' => $v['price'],
@@ -1465,7 +1475,8 @@ class OrderInfoService
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
                         'shop_goods_id' => $activityConsignInfo['goods_id'],
-                        'shop_goods_quote_id' => $activityConsignInfo['id'],
+//                        'shop_goods_quote_id' => $activityConsignInfo['id'],
+                        'shop_goods_quote_id' => 0,
                         'goods_id' => $activityConsignInfo['goods_id'],
                         'goods_name' => $activityConsignInfo['goods_name'],
                         'goods_sn' => $activityConsignInfo['goods_sn'],
