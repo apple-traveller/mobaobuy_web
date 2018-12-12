@@ -645,6 +645,7 @@ class OrderInfoService
             if($data['order_status']==0){
                 //订单取消 waitAffirm
                 $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
+
                 self::orderCancel($orderInfo['id'],$s);
 
             }
@@ -1212,7 +1213,7 @@ class OrderInfoService
                     }
                 }
             }else{
-                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status'] == 1){
                     //减去已参与数量
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                     ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
