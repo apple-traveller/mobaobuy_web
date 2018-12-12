@@ -27,7 +27,7 @@ class InvoiceService
      */
     public static function getListBySearch($page,$condition)
     {
-        return InvoiceRepo::getListBySearch($page,$condition);
+        return InvoiceRepo::getListBySearch(['pageSize'=>$page['page_size'],'page'=>$page['page'],'orderType'=>['id'=>'desc']],$condition);
     }
 
     /**

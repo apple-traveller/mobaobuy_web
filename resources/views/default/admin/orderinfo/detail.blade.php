@@ -558,20 +558,18 @@
 
                         return false;
                     }else{
-                        layer.confirm("确认？",{icon:3,title:'确定'},function(){
-                            $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
-                                if(res.code==200){
-                                    layer.msg(res.msg, {
-                                        icon: 6,
-                                        time: 2000
-                                    }, function(){
-                                        window.location.reload();
-                                    });
-                                }else{
-                                    alert(res.msg);
-                                }
-                            },"json");
-                        })
+                        $.post('/admin/orderinfo/modifyPayStatus',{'id':"{{$orderInfo['id']}}",'pay_status':pay_status},function(res){
+                            if(res.code==200){
+                                layer.msg(res.msg, {
+                                    icon: 6,
+                                    time: 2000
+                                }, function(){
+                                    window.location.reload();
+                                });
+                            }else{
+                                alert(res.msg);
+                            }
+                        },"json");
                     }
                     return false;
                 });
