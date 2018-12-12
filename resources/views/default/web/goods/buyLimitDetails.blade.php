@@ -165,7 +165,7 @@
                     }
                 }else{
                     layer.msg('输入的数量不能小于起售量');
-                    _self.val(packing_spec);
+                    _self.val(min_num);
                 }
             });
         });

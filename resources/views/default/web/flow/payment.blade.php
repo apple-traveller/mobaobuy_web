@@ -6,13 +6,17 @@
 
     <script type="text/javascript">
         $(function(){
-            layer.confirm('您已上传过支付凭证，可以在订单详情中进行查看,是否更新？', {
-                btn: ['是','否'] //按钮
-            }, function(){
-                layer.closeAll();
-            }, function(){
-                window.location.href='/order/list';
-            });
+            var pay_voucher = '{{$order_info['pay_voucher']}}';
+            if(pay_voucher){
+                layer.confirm('您已上传过支付凭证，可以在订单详情中进行查看,是否更新？', {
+                    btn: ['是','否'] //按钮
+                }, function(){
+                    layer.closeAll();
+                }, function(){
+                    window.location.href='/order/list';
+                });
+            }
+
                  //隐藏关闭框
                 $('.cancel,.frame_close').click(function(){
 
