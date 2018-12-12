@@ -38,9 +38,12 @@ class InvoiceService
     public static function getInfoById($id)
     {
         $info =  InvoiceRepo::getInfo($id);
-        $user_info = UserRepo::getInfo($info['user_id']);
-        $info['address_str'] = RegionService::getRegion($info['country'],$info['province'],$info['city'],$info['district']);
-        $info['is_firm'] = $user_info['is_firm'];
+        if(!empty($info)){
+            $user_info = UserRepo::getInfo($info['user_id']);
+            $info['is_firm'] = $user_info['is_firm'];
+            $info['address_str'] = RegionService::getRegion($info['country'],$info['province'],$info['city'],$info['district']);
+        }
+
         return $info;
     }
 

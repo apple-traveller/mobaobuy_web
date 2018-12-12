@@ -59,7 +59,7 @@
         }
 
         function getInstationLogisticsInfo(){
-            var _delivery_id = $('#delivery_id').data('delivery_id');
+            var _delivery_id = $('.order_pro_stute').attr('data-id');
             if(_delivery_id != 0){
                 $.ajax({
                     url: "/logistics/instation",
