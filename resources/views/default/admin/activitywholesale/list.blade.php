@@ -4,19 +4,25 @@
         <div class="title">促销 - 集采火拼列表</div>
         <div class="content">
 
-                <div class="explanation" id="explanation">
-                    <div class="ex_tit">
-                        <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
-                    </div>
-                    <ul>
-                        <li>展示了所有优惠活动相关信息列表。</li>
-                        <li>展示信息有：商家名称、集采火拼名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
-                    </ul>
+            <div class="explanation" id="explanation">
+                <div class="ex_tit">
+                    <i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
                 </div>
+                <ul>
+                    <li>展示了所有优惠活动相关信息列表。</li>
+                    <li>展示信息有：商家名称、集采火拼名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
+                </ul>
+            </div>
+
             <div class="flexilist">
                 <div class="common-head">
+                    <div class="order_state_tab">
+                        <a href="/admin/activity/wholesale?is_expire=0" @if($is_expire==0) class="current" @endif>全部<em @if($is_expire!=0) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/activity/wholesale?is_expire=1" @if($is_expire==1) class="current" @endif>未过期<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/activity/wholesale?is_expire=2" @if($is_expire==2) class="current" @endif>已过期<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
+                    </div>
                     <div class="fl">
-                        <a href="/admin/activity/wholesale/add"><div class="fbutton"><div class="add" title="添加集采火拼活动"><span><i class="icon icon-plus"></i>添加集采火拼活动</span></div></div></a>
+                        <a href="/admin/activity/wholesale/add"><div style="margin-left:10px;margin-top:6px;" class="fbutton"><div class="add" title="添加集采火拼活动"><span><i class="icon icon-plus"></i>添加集采火拼活动</span></div></div></a>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -96,7 +102,7 @@
                                                 @endif</div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">
-                                                <a href="/admin/activity/wholesale/detail?id={{$v['id']}}&currpage={{$currentPage}}" title="查看" class="btn_see">
+                                                <a href="/admin/activity/wholesale/detail?id={{$v['id']}}&currpage={{$currentPage}}&is_expire={{$is_expire}}" title="查看" class="btn_see">
                                                     <i class="sc_icon sc_icon_see"></i>
                                                     @if($v['review_status']==3)
                                                     查看
@@ -104,8 +110,8 @@
                                                         审核
                                                     @endif
                                                 </a>
-                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}"  title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                                <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id = "{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
+                                                <a href="/admin/activity/wholesale/add?id={{$v['id']}}&currpage={{$currentPage}}&is_expire={{$is_expire}}"  title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                <a href="/admin/activity/wholesale/delete?id={{$v['id']}}&currentPage={{$currentPage}}"  data_id="{{$v['id']}}" data_page = "{{$currentPage}}" title="删除" class="btn_trash"><i class="sc_icon icon-trash"></i>删除</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -155,7 +161,7 @@
                     , curr: "{{$currentPage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/activity/wholesale?currpage="+obj.curr+"&shop_name={{$shop_name}}";
+                            window.location.href="/admin/activity/wholesale?currpage="+obj.curr+"&shop_name={{$shop_name}}"+"&is_expire={{$is_expire}}";
                         }
                     }
                 });

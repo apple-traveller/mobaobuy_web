@@ -2,9 +2,8 @@
 @section('iframe')
 
     <div class="warpper">
-        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}" class="s-back">返回</a>优惠活动 - 优惠活动详情</div>
+        <div class="title"><a href="/admin/promote/list?currpage={{$currpage}}&is_expire={{$is_expire}}" class="s-back">返回</a>优惠活动 - 优惠活动详情</div>
         <div class="content">
-
 
             <div class="flexilist">
                 <div class="mian-info">
@@ -75,7 +74,7 @@
                                     @else
                                         <input @if($promote['review_status']==1) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="1" value="待审核" >
                                         <input @if($promote['review_status']==2) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="2" value="不通过" >
-                                        <input @if($promote['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="3" value="已审核" >
+                                        <input @if($promote['review_status']==3) class="btn btn25 blue_btn pay_status" @else class="btn btn25 red_btn review_status" @endif  type="button" data-status="3" value="审核通过" >
                                         <span style="color: #00bbc8; margin-left: 20px;">点击按钮直接修改状态</span>
                                     @endif
                                 </div>
@@ -127,7 +126,7 @@
                             icon: 1,
                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                         },function(){
-                            window.location.href="/admin/promote/detail?id={{$promote['id']}}&currpage={{$currpage}}";
+                            window.location.href="/admin/promote/detail?id={{$promote['id']}}&currpage={{$currpage}}&is_expire={{$is_expire}}";
                         });
                     } else {
                         layer.msg(res.msg);

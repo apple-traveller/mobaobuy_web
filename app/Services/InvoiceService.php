@@ -28,7 +28,7 @@ class InvoiceService
      */
     public static function getListBySearch($page,$condition)
     {
-        return InvoiceRepo::getListBySearch($page,$condition);
+        return InvoiceRepo::getListBySearch(['pageSize'=>$page['pageSize'],'page'=>$page['page'],'orderType'=>['id'=>'desc']],$condition);
     }
 
     /**
@@ -39,9 +39,12 @@ class InvoiceService
     public static function getInfoById($id)
     {
         $info =  InvoiceRepo::getInfo($id);
-        $user_info = UserRepo::getInfo($info['user_id']);
-        $info['address_str'] = RegionService::getRegion($info['country'],$info['province'],$info['city'],$info['district']);
-        $info['is_firm'] = $user_info['is_firm'];
+        if(!empty($info)){
+            $user_info = UserRepo::getInfo($info['user_id']);
+            $info['is_firm'] = $user_info['is_firm'];
+            $info['address_str'] = RegionService::getRegion($info['country'],$info['province'],$info['city'],$info['district']);
+        }
+
         return $info;
     }
 
@@ -60,6 +63,36 @@ class InvoiceService
         }
         $data['updated_at'] = Carbon::now();
         return InvoiceRepo::modify($id,$data);
+    }
+
+    //后台更新发票，
+    public static function updateInvoiceAdmin($id,$data)
+    {
+        try{
+            self::beginTransaction();
+            if($data['status']==2){
+                $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+                $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+                $data['invoice_numbers'] = $invoice_numbers;
+                //开票要修改order_info里面的order_status
+                $invoice_goods = InvoiceGoodsRepo::getList([],['invoice_id'=>$id]);
+                $order_ids = [];
+                foreach($invoice_goods as $k=>$v){
+                    $order_ids[] = $v['order_id'];
+                }
+                $order_ids = array_unique($order_ids);
+                foreach($order_ids as $k=>$v){
+                    OrderInfoRepo::modify($v,['order_status'=>4]);
+                }
+            }
+            $data['updated_at'] = Carbon::now();
+            InvoiceRepo::modify($id,$data);
+            self::commit();
+            return true;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
     }
 
 
@@ -150,7 +183,8 @@ class InvoiceService
                         'goods_price' => $v['goods_price'],
                         'invoice_num' => $v['goods_number'],
                         'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'updated_at' => Carbon::now(),
+                        'order_id' => $v['order_id']
                     ];
                     $res[] = InvoiceGoodsRepo::create($goods_data);
                 }

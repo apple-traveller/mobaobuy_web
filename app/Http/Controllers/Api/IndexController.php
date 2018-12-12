@@ -32,6 +32,7 @@ class IndexController extends ApiController
         //成交动态 假数据 暂时定为$trans_type=1 时为开启创建并显示假数据 暂时创建的是8点到18点之间的数据 缓存有效期一天
         $trans_type = getConfig('open_trans_flow');
         $trans_false_list = [];
+        $before_trans_false_list = [];
         if($trans_type == 1){
             $day = date('Ymd');
             $cache_name = $day.'TRANS';
@@ -39,25 +40,31 @@ class IndexController extends ApiController
                 $trans_false_list = Cache::get($cache_name);
             }else{//没有缓存 创建假数据
                 $trans_false_list = IndexService::createFalseData();
-                Cache::add($cache_name,$trans_false_list,1440);
+                Cache::add($cache_name,$trans_false_list, 60*24*2);
+            }
+            //取前一天的数据
+            $before_day = date('Ymd',strtotime('-1 day'));
+            $before_cache_name = $before_day.'TRANS';
+            if(Cache::has($before_cache_name)){
+                $before_trans_false_list = Cache::get($before_cache_name);
             }
         }
-
         //成交动态 真实数据
         $trans_list = OrderInfoService::getOrderGoods([], 1, 10);
-        foreach($trans_list['list'] as $k=>$v){
-            $trans_list['list'][$k]['add_time'] =  Carbon::parse($trans_list['list'][$k]['add_time'])->diffForHumans();
-            ;
+        //合并真假数据
+        $merge_trans_list = array_merge($trans_list['list'],$trans_false_list,$before_trans_false_list);
+        foreach($merge_trans_list as &$vo){
+            $vo['price'] = $vo['goods_price'];
         }
 
-        return $this->success(['trans_list' => $trans_list['list']]);
+        return $this->success(['trans_list' => $merge_trans_list]);
     }
 
     //获取首页优惠活动
     public function getPromoteList(Request $request)
     {
         $promote_list = ActivityPromoteService::getList(['status'=>3,'end_time'=>1], 1, 3);
-        return $this->success(['promote_list' => $promote_list['list']]);
+        return $this->success([]);
     }
 
     //自营报价

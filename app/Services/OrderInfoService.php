@@ -5,6 +5,7 @@ use App\Repositories\ActivityWholesaleRepo;
 use App\Repositories\CartRepo;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
+use App\Repositories\LogisticsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\RegionRepo;
@@ -161,6 +162,8 @@ class OrderInfoService
                             $orderList['list'][$k]['auth_html'][] = 'onclick="confirmTake('.$item['id'].')"';
                     }
                 }
+
+
             }
 
             //企业会员
@@ -305,6 +308,12 @@ class OrderInfoService
                 $orderList['list'][$k]['auth'][] = 'wait_invoice';
                 $orderList['list'][$k]['auth_desc'][] = '申请开票';
                 $orderList['list'][$k]['auth_html'][] = 'href="/invoice"';
+            }
+
+            if($item['order_status'] == 6){
+                $orderList['list'][$k]['auth'][] = 'invoiceIng';
+                $orderList['list'][$k]['auth_desc'][] = '开票中';
+                $orderList['list'][$k]['auth_html'][] = 'style="background-color:#ccc;"';
             }
 
         }
@@ -649,7 +658,7 @@ class OrderInfoService
                     if($orderInfo['extension_code'] == 'promote'){//限时抢购
                         $activityPromoteInfo = ActivityPromoteRepo::getInfo($orderInfo['extension_id']);
                         ActivityPromoteRepo::modify($orderInfo['extension_id'],['available_quantity'=>$activityPromoteInfo['available_quantity'] + $orderGoodsInfo[0]['goods_number']]);
-                    }elseif ($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status'==1]){//集采火拼 这边要减去活动已参与的数量
+                    }elseif ($orderInfo['extension_code'] == 'wholesale'){//集采火拼 这边要减去活动已参与的数量
                         //减去已参与数量
                         $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
                         ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
@@ -663,6 +672,12 @@ class OrderInfoService
                             $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
                             ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
                         }
+                    }
+                }else{
+                    if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                        //减去已参与数量
+                        $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                        ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
                     }
                 }
 
@@ -905,6 +920,7 @@ class OrderInfoService
             $order_goods['list'][$k]['brand_name'] = $good['brand_name'];
             $order_goods['list'][$k]['shop_name'] = $order_info['shop_name'];
             $order_goods['list'][$k]['packing_spec'] = $good['packing_spec'];
+            $order_goods['list'][$k]['goods_sn'] = $good['goods_sn'];
             $order_goods['list'][$k]['unit_name'] = $good['unit_name'];
             $order_goods['list'][$k]['goods_full_name'] = $good['goods_full_name'];
             $order_goods['list'][$k]['send_number_delivery'] = $vo['goods_number']-$vo['send_number'];
@@ -1164,6 +1180,11 @@ class OrderInfoService
 
         $delivery_info = OrderDeliveryRepo::getList([],['order_id'=>$orderInfo['id']]);
 
+//        foreach($delivery_info as $v){
+//            $v[]
+//            = LogisticsRepo::getInfoByFields($v['shipping_billno'])
+//        }
+
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];
         }else{
@@ -1230,9 +1251,13 @@ class OrderInfoService
                         $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
                     }
-
                 }
-
+            }else{
+                if($orderInfo['extension_code'] == 'wholesale' && $orderInfo['deposit_status']){
+                    //减去已参与数量
+                    $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($orderInfo['extension_id']);
+                    ActivityWholesaleRepo::modify($orderInfo['extension_id'], ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] - $orderGoodsInfo[0]['goods_number']]);
+                }
             }
             OrderInfoRepo::modify($id,['order_status'=>0]);
             self::commit();
@@ -1398,7 +1423,7 @@ class OrderInfoService
             $goods_amount = 0;
             foreach ($cartInfo_session as $v) {
                 $id = $v['id'];
-                //购物车生成订单
+
                 if ($type == 'promote') {
                     //限时抢购生产订单
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
@@ -1409,7 +1434,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
+//                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
+                        'shop_goods_quote_id' => 0,
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['goods_number'],
                         'goods_price' => $v['goods_price'],
@@ -1429,7 +1455,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
+                        'shop_goods_quote_id' => 0,
+//                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['num'],
                         'goods_price' => $v['price'],
@@ -1448,7 +1475,8 @@ class OrderInfoService
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
                         'shop_goods_id' => $activityConsignInfo['goods_id'],
-                        'shop_goods_quote_id' => $activityConsignInfo['id'],
+//                        'shop_goods_quote_id' => $activityConsignInfo['id'],
+                        'shop_goods_quote_id' => 0,
                         'goods_id' => $activityConsignInfo['goods_id'],
                         'goods_name' => $activityConsignInfo['goods_name'],
                         'goods_sn' => $activityConsignInfo['goods_sn'],
@@ -1693,7 +1721,8 @@ class OrderInfoService
             }
             // 取消订单
             if ($orderInfo['order_status']!='' && $orderInfo['order_status']==0 ) {
-                $re = OrderInfoService::orderCancel($orderInfo['order_id'],$orderInfo['extension_code']);
+                $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
+                $re = OrderInfoService::orderCancel($orderInfo['order_id'],$s);
                 if ($re==true){
                     $data['order_status'] = $orderInfo['order_status'];
                     $data['to_buyer'] =$orderInfo['to_buyer'];

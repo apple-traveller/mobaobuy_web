@@ -59,7 +59,8 @@ class InvoiceController extends Controller
 
             $pager = [
                 'page'=>$page,
-                'page_size'=>$page_size
+                'pageSize'=>$page_size
+
             ];
 
             $rs_list = InvoiceService::getListBySearch($pager,$condition);

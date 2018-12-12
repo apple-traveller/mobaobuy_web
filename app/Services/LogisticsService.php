@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Repositories\LogisticsRepo;
 use App\Repositories\OrderDeliveryRepo;
 use App\Repositories\ShippingRepo;
+use App\Repositories\InvoiceRepo;
 class LogisticsService
 {
     use CommonService;
@@ -45,8 +46,9 @@ class LogisticsService
     //验证
     public static function validateShippingNo($shipping_billno,$shipping_company)
     {
-        $flag = OrderDeliveryRepo::getInfoByFields(['shipping_billno'=>$shipping_billno,'shipping_name'=>$shipping_company]);
-        if(!empty($flag)){
+        $flag_order = OrderDeliveryRepo::getInfoByFields(['shipping_billno'=>$shipping_billno,'shipping_name'=>$shipping_company]);
+        $flag_invoice = InvoiceRepo::getInfoByFields(['shipping_billno'=>$shipping_billno,'shipping_name'=>$shipping_company]);
+        if(!empty($flag_order) || $flag_invoice){
             return true;
         }else{
             return false;
