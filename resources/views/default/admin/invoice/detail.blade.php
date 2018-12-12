@@ -61,7 +61,7 @@
 
                                 <dl style="width:40%">
                                     <dt>收货地址:<span style="color:#62b3ff">{{$invoiceInfo['address_str']}}详细地址：@if(empty($invoiceInfo['address'])) 无 @else {{$invoiceInfo['address']}} @endif</span></dt>
-                                    <dt>邮政编码:<span style="color:#62b3ff">{{$invoiceInfo['zipcode']}}</span></dt>
+                                    <dt>邮政编码:<span style="color:#62b3ff">@if(!empty($invoiceInfo['zipcode'])) {{$invoiceInfo['zipcode']}} @else 无 @endif</span></dt>
                                 </dl>
                             </div>
                         </div>
@@ -115,6 +115,7 @@
                             <div class="step_title"><i class="ui-step"></i><h3>发货操作信息</h3></div>
                             <div class="step_info">
                                 <div class="order_operation order_operation100">
+                                    @if($invoiceInfo['status']==2 ||$invoiceInfo['status']==1)
                                     <div class="item">
                                         <div class="label">快递公司：</div>
                                         <div class="label_value">
@@ -127,6 +128,11 @@
                                             <input id="shipping_name" type="hidden" name="shipping_name" value="">
                                         </div>
                                     </div>
+                                    @else
+
+                                    @endif
+
+                                    @if($invoiceInfo['status']==2 ||$invoiceInfo['status']==1)
                                     <div class="item">
                                         <div class="label">运单号：</div>
                                         <div class="label_value">
@@ -137,14 +143,18 @@
                                             @endif
                                         </div>
                                     </div>
+                                    @else
 
+                                    @endif
                                     <div class="item">
                                         <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
                                         <div class="label_value font14">
                                             @if($invoiceInfo['status']==2)
                                                 已审核
+                                            @elseif($invoiceInfo['status']==0)
+                                                已取消
                                             @else
-                                            <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==0) @else layui-btn-primary @endif '>已取消</div>
+                                            <div data-status="0" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==0) @else layui-btn-primary @endif '>取消</div>
                                             <div data-status="1" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==1) @else layui-btn-primary @endif '>待开票</div>
                                             <div data-status="2" class='review_status layui-btn layui-btn-sm layui-btn-radius @if($invoiceInfo['status']==2) @else layui-btn-primary @endif '>开票</div>
                                             @endif

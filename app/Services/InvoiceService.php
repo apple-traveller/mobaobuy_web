@@ -64,6 +64,30 @@ class InvoiceService
         return InvoiceRepo::modify($id,$data);
     }
 
+    //后台更新发票，
+    public static function updateInvoiceAdmin($id,$data)
+    {
+        try{
+            self::beginTransaction();
+            if($data['status']==2){
+                $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+                $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+                $data['invoice_numbers'] = $invoice_numbers;
+                //开票要修改order_info里面的order_status
+                $invoice_goods = InvoiceGoodsRepo::getInfoByFields(['invoice_id'=>$id]);
+                $order_id = OrderGoodsRepo::getInfoByFields(['id'=>$invoice_goods['order_goods_id']])['order_id'];
+                OrderInfoRepo::modify($order_id,['order_status'=>4]);
+            }
+            $data['updated_at'] = Carbon::now();
+            InvoiceRepo::modify($id,$data);
+            self::commit();
+            return true;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
 
     /**
      * 审核发票

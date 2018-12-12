@@ -86,7 +86,7 @@ class InvoiceController extends Controller
     {
         $data = $request->all();
         try{
-            $flag = InvoiceService::updateInvoice($data['id'],$data);
+            $flag = InvoiceService::updateInvoiceAdmin($data['id'],$data);
             return $this->success("保存成功");
         }catch(\Exception $e){
             return $this->error($e->getMessage());
