@@ -179,6 +179,9 @@ function updateCountDownText(obj) {
     var nowtime = new Date();
     var endtime = new Date(_para);
     var time = endtime - nowtime;
+    if(time<=0){
+        window.location.reload();
+    }
     var day = parseInt(time / 1000 / 60 / 60 / 24);
     var hour = parseInt(time / 1000 / 60 / 60 % 24);
     var minute = parseInt(time / 1000 / 60 % 60);
