@@ -823,6 +823,14 @@
                 var pay_status = "{{$orderInfo['pay_status']}}";
                 var order_status = "{{$orderInfo['order_status']}}";
 
+                if(order_status==0){
+                    layer.msg("订单已取消", {
+                        icon: 5,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return false;
+                }
+
                 if(order_status<3){
                     layer.msg("商家未确认", {
                         icon: 5,

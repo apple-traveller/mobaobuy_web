@@ -1549,6 +1549,8 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        //$condition['order_status|<>'] = 0;
+        $condition['order_status'] = "!"."0";
         return OrderInfoRepo::getTotalCount($condition);
     }
 
@@ -1559,6 +1561,7 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $condition['pay_status'] =1 ;
         $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
         $sum = 0;
         foreach($orders as $k=>$v){
