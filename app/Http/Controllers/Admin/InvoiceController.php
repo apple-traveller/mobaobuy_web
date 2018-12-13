@@ -79,8 +79,6 @@ class InvoiceController extends Controller
         ]);
     }
 
-
-
     //保存优惠活动
     public function save(Request $request)
     {

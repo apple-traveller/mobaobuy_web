@@ -34,6 +34,8 @@
                         hour=Math.floor(intDiff/(60*60))-(day*24);
                         minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
                         second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                    }else{
+                        window.location.reload();
                     }
                     hour += day*24;
                     if(hour<=9)hour='0'+hour;

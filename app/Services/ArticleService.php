@@ -112,6 +112,7 @@ class ArticleService
             $cat_id .= $v['id'].'|';
         }
         $condition['cat_id'] = $cat_id;
+        $condition['is_show'] = 1;
         return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
     }
 

@@ -13,8 +13,16 @@
                     </div>
                 </div>
             </div>--}}
+            <style>
+                .contentWarp_item .section_select .item{ float:left; border-radius:5px;   width:24%; margin-bottom:12px;-webkit-box-shadow: 0 0 8px rgba(0,0,0,0.1);box-shadow: 0 0 8px rgba(0,0,0,.1);}
+                .contentWarp_item{ float: left;margin-right: 32px;width: 100%}
+                .contentWarp_item .section_order_select li{ width:19.1%; margin-right:1.1%; height:auto; background:#fff; border-radius:5px; float:left; text-align:center; margin-top:12px;-webkit-box-shadow: 0 0 8px rgba(0,0,0,0.1);box-shadow: 0 0 8px rgba(0,0,0,.1);}
+                .filter_date{ width: 100%;margin-top: 20px}
+                .contentWarp .system_section { float:left; width: 97%; padding:0 20px; margin-bottom:20px;}
+
+            </style>
             <div class="contentWarp">
-                <div class="contentWarp_item clearfix">
+                <div class="contentWarp_item clearfix" style="width: 100%">
                     <div class="section_select">
                         <div class="item item_price">
                             <i class="icon"><img src="/default/images/1.png" width="71" height="74"></i>
@@ -23,7 +31,7 @@
                                 <span>今日销售总额</span>
                             </div>
                         </div>
-                        <div class="item item_order">
+                        <div class="item item_order"  style="margin-right: 16px">
                             <i class="icon"><img src="/default/images/2.png"></i>
                             <div class="desc">
                                 <div class="tit">{{$orderCount}}</div>
@@ -42,7 +50,7 @@
                             <i class="icon"><img src="/default/images/4.png" width="86"></i>
                             <div class="desc">
                                 <div class="tit">{{$shopCount}}</div>
-                                <span>店铺数量</span>
+                                <span>商家数量</span>
                             </div>
                             <i class="icon"></i>
                         </div>
@@ -74,7 +82,7 @@
                     </div>
 
                 </div>
-                <div class="contentWarp_item clearfix">
+                <div class="contentWarp_item clearfix" style="width: 100%; margin-top:20px;">
                     <div class="section_order_select">
                         <ul>
                             <li>
@@ -119,10 +127,10 @@
                     </div>
                     <div class="clear"></div>
                     <div class="section section_order_count">
-                        <div class="sc_title">
+                        <div   class="sc_title">
                             <i class="sc_icon"></i>
                             <h3>当月订单统计</h3>
-                            <div class="filter_date">
+                            <div  class="filter_date">
                                 <canvas id="myChart" width="1100" height="400"></canvas>
                             </div>
                         </div>
@@ -159,23 +167,20 @@
                             <div class="section_body">
                                 <dl>
                                     <dt>客服电话：</dt>
-                                    <dd>4001-021-758</dd>
+                                    <dd>{{getConfig('service_phone')}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>客服QQ号码：</dt>
-                                    <dd><a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=800007167&amp;aty=0&amp;a=0&amp;curl=&amp;ty=1" target="_blank">800007167</a></dd>
+                                    <dd>{{getConfig('service_qq')}}</dd>
                                 </dl>
-                                <dl>
-                                    <dt>问答社区：</dt>
-                                    <dd><a href="http://wenda.ecmoban.com" target="_blank">http://{{$config['server_name']}}</a></dd>
-                                </dl>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="contentWarp">
-                <div class="section system_section w190">
+                <div class="section system_section">
                     <div class="system_section_con">
                         <div class="sc_title">
                             <h3>系统信息</h3>

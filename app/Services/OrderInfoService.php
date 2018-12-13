@@ -1549,6 +1549,8 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        //$condition['order_status|<>'] = 0;
+        $condition['order_status'] = "!"."0";
         return OrderInfoRepo::getTotalCount($condition);
     }
 
@@ -1559,6 +1561,7 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $condition['pay_status'] =1 ;
         $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
         $sum = 0;
         foreach($orders as $k=>$v){
@@ -1687,7 +1690,7 @@ class OrderInfoService
      * 更新订单状态
      * @param $order_data
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public static function updateOrderStatus($order_data)
     {
@@ -1720,7 +1723,7 @@ class OrderInfoService
                 }
             }
             // 取消订单
-            if ($orderInfo['order_status']!='' && $orderInfo['order_status']==0 ) {
+            if ($order_data['order_status']!='' && $order_data['order_status']==0 ) {
                 $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
                 $re = OrderInfoService::orderCancel($orderInfo['order_id'],$s);
                 if ($re==true){
