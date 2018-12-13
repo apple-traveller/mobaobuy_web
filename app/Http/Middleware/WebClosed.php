@@ -54,26 +54,7 @@ class WebClosed extends Controller
                 }
             }
             if(!session()->has('_web_user')){
-
-//                //用户不切换生效权限,is_logout存的是企业的id
-//                if($user_info['is_logout']){
-//
-//                    if($user_info['is_firm'] == 0 && session('_curr_deputy_user')['is_self'] == 0){
-//                        //获取用户所代表的公司
-//                        //firms是firmuser表信息 加企业名称和addressid
-//                        $firms = UserService::getUserFirms(session('_web_user_id'));
-//                        foreach ($firms as $firm){
-//                            if($user_info['is_logout'] == $firm['firm_id']){
-//                                //修改代表信息
-//                                $firm['is_self'] = 0;
-//                                $firm['is_firm'] = 1;
-//                                $firm['name'] = $firm['firm_name'];
-//                                session()->put('_curr_deputy_user', $firm);
-//                            }
-//                        }
-//                    }
-//                }
-
+                $user_info = UserService::getInfo(session('_web_user_id'));
                 #判断是否实名
                 $user_real_count = UserRealRepo::getTotalCount(['user_id'=>session('_web_user_id'),'review_status'=>1]);
                 if($user_real_count > 0){
