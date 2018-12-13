@@ -14,6 +14,10 @@ class ApiClosed extends ApiController
 {
     public function handle(Request $request, Closure $next, $guard = null)
     {
+        if(getConfig('shop_closed') == '1'){
+            return $this->error('网站已关闭');
+        }
+
         $uuid = $request->input('token');
         $user_id = Cache::get($uuid, 0);
         if(!empty($user_id)){
