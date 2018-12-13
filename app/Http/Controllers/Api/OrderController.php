@@ -371,6 +371,12 @@ class OrderController extends ApiController
                 'name' => $this->getUserInfo($request)['nick_name']
             ];
             Cache::put("_api_deputy_user_".$this->getUserID($request), $info, 60*24*1);
+            if(!Cache::has('cartSession'.$this->getUserID($request))){
+                Cache::forget('cartSession'.$this->getUserID($request));
+            }
+            if(!Cache::has('invoiceSession'.$this->getUserID($request))){
+                Cache::forget('invoiceSession'.$this->getUserID($request));
+            }
             return $this->success($info,'success');
         }else{
             //获取用户所代表的公司
@@ -386,7 +392,9 @@ class OrderController extends ApiController
                     if(!Cache::has('cartSession'.$this->getUserID($request))){
                         Cache::forget('cartSession'.$this->getUserID($request));
                     }
-                    //dd(Cache::get("_api_deputy_user_".$this->getUserID($request)));
+                    if(!Cache::has('invoiceSession'.$this->getUserID($request))){
+                        Cache::forget('invoiceSession'.$this->getUserID($request));
+                    }
                     return $this->success($firm,'success');
                 }
             }
