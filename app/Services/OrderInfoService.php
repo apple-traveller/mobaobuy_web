@@ -1690,7 +1690,7 @@ class OrderInfoService
      * 更新订单状态
      * @param $order_data
      * @return bool
-     * @throws Exception
+     * @throws \Exception
      */
     public static function updateOrderStatus($order_data)
     {
@@ -1723,7 +1723,7 @@ class OrderInfoService
                 }
             }
             // 取消订单
-            if ($orderInfo['order_status']!='' && $orderInfo['order_status']==0 ) {
+            if ($order_data['order_status']!='' && $order_data['order_status']==0 ) {
                 $s = $orderInfo['order_status'] >= 3 ? '' : 'waitAffirm';
                 $re = OrderInfoService::orderCancel($orderInfo['order_id'],$s);
                 if ($re==true){

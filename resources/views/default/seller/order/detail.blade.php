@@ -10,7 +10,7 @@
                         <dd class="s-text">提交订单<br><em class="ftx-03">{{$orderInfo['add_time']}}</em></dd>
                     </dl>
 
-                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 4 || $orderInfo['order_status'] == 5 || $orderInfo['order_status'] == 0) class="cur" @endif>
+                    <dl @if($orderInfo['order_status']==3 || $orderInfo['order_status'] == 4 || $orderInfo['order_status'] == 5 || $orderInfo['order_status'] == 6 || $orderInfo['order_status'] == 0) class="cur" @endif>
                         <dt></dt>
                         <dd class="s-text">审核订单<br>
                             <em class="ftx-03">
@@ -149,7 +149,9 @@
                                             合同:
                                             @if(!empty($orderInfo['contract']))
                                                 <button type="button" onclick="contractImg('{{ getFileUrl($orderInfo['contract']) }}')" class="layui-btn mt3" style="height: 29px;line-height: 30px;margin-bottom: 5px">查看</button>
+                                            @if($orderInfo['order_status']==3)
                                                 <button type="button" onclick="ReContractImg({{$orderInfo['id']}})" class="layui-btn layui-btn-normal" style="height: 29px;line-height: 30px;margin-bottom: 2px">重新提交</button>
+                                            @endif
                                             @else
                                                 <span>暂无</span>
                                             @endif

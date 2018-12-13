@@ -28,7 +28,7 @@ class AdService
     public static function getActiveAdvertListByPosition($position_id)
     {
         $now = Carbon::now();
-        return AdRepo::getList(['sort_order'=>'asc'], ['position_id'=>$position_id, 'start_time|<='=>$now, 'end_time|>=' => $now]);
+        return AdRepo::getList(['sort_order'=>'asc'], ['position_id'=>$position_id, 'start_time|<='=>$now, 'end_time|>=' => $now,'enabled'=>1]);
     }
 
 

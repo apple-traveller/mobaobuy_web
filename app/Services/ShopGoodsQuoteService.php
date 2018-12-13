@@ -104,9 +104,9 @@ class ShopGoodsQuoteService
 //        dd($shop_list);
 //        return $shop_list;
 
-        $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0]);
+        $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0,'is_freeze'=>0,'is_validated'=>1]);
         foreach($shopInfo['list'] as $k=>$v){
-             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5],['shop_id'=>$v['id'],'is_self_run'=>0]);
+             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5],['shop_id'=>$v['id'],'is_self_run'=>0,'is_delete'=>0,'type'=>'1|2']);
 
                 foreach($quotes['list'] as $va=>$value){
                     $goodsInfo = GoodsRepo::getInfo($value['goods_id']);
