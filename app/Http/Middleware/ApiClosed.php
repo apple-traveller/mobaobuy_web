@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Services\UserService;
+use App\Services\UserRealService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,50 +18,64 @@ class ApiClosed extends ApiController
         if(getConfig('shop_closed') == '1'){
             return $this->error('网站已关闭');
         }
-
         $uuid = $request->input('token');
         $user_id = Cache::get($uuid, 0);
-        if(!empty($user_id)){
+        if($user_id!=0){
             //缓存用户的基本信息
-            $user_info = $this->getUserInfo($request);
-            $deputy_user = Cache::get('_api_deputy_user_'.$user_id);
-            //dd($deputy_user);
-            //用户不切换生效权限,is_logout存的是企业的id
-            if($user_info['is_logout']){
-                if($user_info['is_firm'] == 0 && $deputy_user['is_self'] == 0){
-                    //获取用户所代表的公司
-                    //firms是firmuser表信息 加企业名称和addressid
-                    $firms = UserService::getUserFirms($user_id);
-                    foreach ($firms as $firm){
-                        if($user_info['is_logout'] == $firm['firm_id']){
-                            //修改代表信息
-                            $firm['is_self'] = 0;
-                            $firm['is_firm'] = 1;
-                            $firm['name'] = $firm['firm_name'];
-                            Cache::put('_api_deputy_user_'.$user_id,$firm,60*24*1);
-                        }
+            if(Cache::has('_api_user_'.$user_id)) {
+
+                if(Cache::get('_api_user_'.$user_id)['is_real'] == 2){
+                    $user_real_count = UserRealService::getTotalCount(['user_id'=>$user_id,'review_status'=>1]);
+                    if($user_real_count > 0){
+                        Cache::forget('_api_user_'.$user_id);
+                        Cache::forget('_api_deputy_user_'.$user_id);
+                    }
+                }
+
+                $deputy_user = $this->getDeputyUserInfo($request);
+                $user_info = $this->getUserInfo($request);
+                if(Cache::has('_api_deputy_user_'.$user_id) && $deputy_user['is_self'] != 1) {
+                    $user_info = UserService::getInfo($user_id);
+                    //用户不切换生效权限,is_logout存的是企业的id
+                    if ($user_info['is_logout'] > 0 && $user_info['is_logout'] == $deputy_user['firm_id']) {
+                        $firm['is_self'] = 0;
+                        $firm['is_firm'] = 1;
+                        $firm['name'] = $firm['firm_name'];
+                        Cache::put('_api_deputy_user_'.$user_id,$firm,60*24*1);
+                        UserService::modify($user_id, ['is_logout' => 0]);
+
                     }
                 }
             }
 
-            if(!$user_info['is_firm']){
-                $user_info['firms'] = UserService::getUserFirms($user_id);
+            if(!Cache::has('_api_user_'.$user_id)){
+                $user_info = UserService::getInfo($user_id);
+                #判断是否实名
+                $user_real_count = UserRealService::getTotalCount(['user_id'=>$user_id,'review_status'=>1]);
+                if($user_real_count > 0){
+                    $user_info['is_real'] = 1;//已实名
+                }else{
+                    $user_info['is_real'] = 2;//未实名
+                }
+
+                if(!$user_info['is_firm']){
+                    $user_info['firms'] = UserService::getUserFirms($user_id);
+                }
+                Cache::put('_api_user_'.$user_id,$user_info,60*24*1);
             }
 
             if(!Cache::has('_api_deputy_user_'.$user_id)){
+                $user_info = $this->getUserInfo($request);
                 $info = [
                     'is_self' => 1,
-                    'is_firm' => Cache::get('_api_user_'.$user_id)['is_firm'],
+                    'is_firm' => $user_info['is_firm'],
                     'firm_id'=> $user_id,
-                    'name' => Cache::get('_api_user_'.$user_id)['nick_name'],
-                    'address_id' => Cache::get('_api_user_'.$user_id)['address_id']
+                    'name' => $user_info['nick_name'],
+                    'address_id' => $user_info['address_id']
                 ];
-                Cache::put("_api_deputy_user_".$user_id, $info, 60*24*1);
+                Cache::put('_api_deputy_user_'.$user_id,$info,60*24*1);
             }
-
         }
-
-        //dd($deputy_user);
         return $next($request);
     }
 }
