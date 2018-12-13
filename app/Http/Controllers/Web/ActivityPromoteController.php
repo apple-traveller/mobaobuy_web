@@ -14,6 +14,7 @@ class ActivityPromoteController extends Controller
     //限时抢购
     public function buyLimit(){
         $condition['review_status'] = 3;
+        $condition['is_delete'] = 0;
 //        $condition['end_time|>'] = Carbon::now();
         try{
             $promoteInfo = ActivityPromoteService::buyLimit($condition);
