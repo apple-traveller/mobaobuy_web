@@ -180,7 +180,10 @@ class ShopGoodsQuoteService
         //截止时间大于当天时间即可
         $today_start = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
         $today_end = mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) - 1;
-        $condition['expiry_time|>'] = date("Y-m-d H:i:s", $today_end);
+        $condition['add_time|>'] = date("Y-m-d H:i:s", $today_start);
+        $condition['add_time|<'] = date("Y-m-d H:i:s", $today_end);
+        $condition['is_delete'] = 0;
+        $condition['type'] = "!"."3";
         return $quotes = ShopGoodsQuoteRepo::getTotalCount($condition);
     }
 
