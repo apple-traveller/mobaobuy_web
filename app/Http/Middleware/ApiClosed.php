@@ -22,7 +22,7 @@ class ApiClosed extends ApiController
 
         $uuid = $request->input('token');
         $user_id = Cache::get($uuid, 0);
-        if($user_id!=0 && empty($user_id)){
+        if($user_id!=0 && !empty($user_id)){
             //缓存用户的基本信息
             if(Cache::has('_api_user_'.$user_id)) {
                 if(Cache::get('_api_user_'.$user_id)['is_real'] == 2){
