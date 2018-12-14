@@ -734,24 +734,12 @@ class OrderInfoService
                 OrderContractRepo::create($s_data);
                 //根据来源,减库存操作
                 //购物车和清仓
-                //dd($orderGoodsInfo);
-                if($orderInfo['extension_code'] == 'cart') {
+                if($orderInfo['extension_code'] == 'cart' || $orderInfo['extension_code'] == 'consign') {
                     foreach ($orderGoodsInfo as $k => $v) {
                         $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'], ['goods_number' => $quoteInfo['goods_number'] - $v['goods_number']]);
                     }
                 }
-
-                if($orderInfo['extension_code'] == 'consign') {
-                    foreach ($orderGoodsInfo as $k => $v) {
-                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($orderInfo['extension_id']);
-
-                        ShopGoodsQuoteRepo::modify($quoteInfo['id'], ['goods_number' => $quoteInfo['goods_number'] - $v['goods_number']]);
-                    }
-                }
-
-
             }
             //给管理员操作添加一条数据
             $logData = [
