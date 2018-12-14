@@ -14,6 +14,10 @@ class InquireService
 {
     use CommonService;
 
-
+    //获取列表数据
+    public static function getInquireList($pager,$condition)
+    {
+        return InquireRepo::getListBySearch($pager,$condition);
+    }
 
 }

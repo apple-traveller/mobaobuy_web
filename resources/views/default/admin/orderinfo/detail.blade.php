@@ -325,6 +325,13 @@
                                                     <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="编辑合同,重新上传" >
                                                 </div>
                                             </div>
+                                        @elseif(empty($order_contact) && $orderInfo['extension_code']=="promote")
+                                            <div class="item">
+                                                <div class="label">订单合同：</div>
+                                                <div >
+                                                    <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="上传合同" >
+                                                </div>
+                                            </div>
                                         @else
 
                                         @endif
