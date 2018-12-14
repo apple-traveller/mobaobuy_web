@@ -100,7 +100,7 @@
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">敬请期待</div>
 							</div>
 						@elseif($v['available_quantity'] == 0)
-							<div class="graybg count-down"  data-endtime="{{strtotime($v['end_time'])*1000}}">
+							<div class="graybg">
 								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已售完</div>
 							</div>
