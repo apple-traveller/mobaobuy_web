@@ -77,11 +77,11 @@
 
 							<div class="mx_progress" style="width:250px;">
 								@if($v['available_quantity'] <= 0)
-									<div class="mx_progress_com" style="width: 100%"></div>
-								@elseif($v['num'] <= 0)
 									<div class="mx_progress_com" style="width: 0%"></div>
+								@elseif($v['num'] <= 0)
+									<div class="mx_progress_com" style="width: 100%"></div>
 								@else
-									<div class="mx_progress_com" style="width: {{(int)(((float)$v['num']-(float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
+									<div class="mx_progress_com" style="width: {{(int)(((float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
 								@endif
 							</div>
 							<span class="fl fs16 gray">可售{{$v['available_quantity']}}kg</span>
