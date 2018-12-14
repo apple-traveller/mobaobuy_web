@@ -1,11 +1,17 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!doctype html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
+    <title>整单采购 - {{getSeoInfoByType('wholeSingle')['title']}}</title>
+    <meta name="description" content="{{getSeoInfoByType('wholeSingle')['description']}}" />
+    <meta name="keywords" content="{{getSeoInfoByType('wholeSingle')['keywords']}}" />
+    @include(themePath('.','web').'web.include.partials.base')
+    <link rel="stylesheet" type="text/css" href="https://www.mobaobuy.com/plugs/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.mobaobuy.com/default/css/quotelist.css" />
+    <script src="https://www.mobaobuy.com/plugs/layui/layui.all.js"></script>
 </head>
 
 <body>
+@include(themePath('.','web').'web.include.partials.top')
 
 <link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>
 <style>
@@ -59,7 +65,7 @@
         <div class="buy-left" style="width: 930px;">
             <h3 class="supply-h3"><i class="supply-text">求购列表</i>
 
-                <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange">500125</i>条数据
+                <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange"></i>条数据
                 </p></h3>
 
             <div class="buy-form-search">
@@ -73,211 +79,36 @@
             </div>
 
             <ul class="buy-list">
-                                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大50.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：无锡市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728375">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大50.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：无锡市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728318">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大50.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：无锡市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728261">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大30.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：青岛市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728374">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大30.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：青岛市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728317">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大30.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：青岛市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728260">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大20.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：宁波市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728373">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大20.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：宁波市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728316">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大20.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：宁波市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728259">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                            <li>
-                            <div class="buy-list-text1">
-                                <p class="buy-list-te1"><span class="fs16">求购：HDPE 5000S中煤蒙大10.000 吨</span>
-                                    <span class="gray">发布时间：57分钟前</span></p>
-                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥9000.00</i><span class="gray">交货地：上海市</span><span class="gray">交货时间：现货</span></p>
-                                <p class="buy-list-te3 gray">跟进交易员：
-                                                                            <span>谢帆</span>
-                                                                                                                <span>15317830737</span>
-                                                                                                            <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> 2853708794
-                                    </a>
-                                                                    </p>
-                            </div>
-                                                        <div class="buy-list-text2">
-                                <p>正在洽谈</p>
-                                                                    <a href="javascript:void(0)" class="but_login" buy_id="2728372">我要供货</a>
-                                                            </div>
-                            
-                            
-                                                                                </li>
-                                                </ul>
+                @if(!empty($inquireList))
+                @foreach($inquireList['list'] as $v)
+                        {{--{{$v['unit_name']}}--}}
+                <li>
+                    <div class="buy-list-text1">
+                        <p class="buy-list-te1"><span class="fs16">求购：{{$v['goods_name']}}{{$v['num']}}</span>
+                            <span class="gray">发布时间：57分钟前</span></p>
+                        <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥{{$v['price']}}</i><span class="gray">交货地：{{$v['delivery_area']}}</span><span class="gray">交货时间：{{$v['delivery_time']}}</span></p>
+                        <p class="buy-list-te3 gray">跟进交易员：
+                         <span>{{$v['contacts']}}</span>
+                          <span>{{$v['contacts_mobile']}}</span>
+                           <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
+                                <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> {{$v['contacts_mobile']}}
+                            </a>
+                            </p>
+                    </div>
+                     <div class="buy-list-text2">
+                        {{--<p>正在洽谈</p>--}}
+                        <a href="javascript:void(0)" class="but_login" buy_id="2728375">我要供货</a>
+                     </div>
+                </li>
+                    @endforeach
+                    @endif
+            </ul>
 
             <div class="page" style="background:#fff; padding: 35px 0px;">
                 <div class="link">
-                     分页啊分页啊 程序猿要写分页阿
+                    <div class="news_pages" style="margin-top: 20px;text-align: center;">
+                        <ul id="page" class="pagination"></ul>
+                    </div>
                 </div>
             </div>
 
@@ -285,84 +116,79 @@
         <div class="buy-right">
             <div class="buy-right-release">
                 <h3 class="buy-right-release-h3">免费找货</h3>
-                <form action="/buy/buy" method="post" id="buyForm">
+                <form action="" method="post" id="buyForm" enctype="multipart/form-data">
                     <textarea class="brrtextarea product_code" id="content" name="content" placeholder="写下您的真实需求，包括品种、厂商、规格等，收到后我们会立即给您回电确认，我们会尽快帮您找货"></textarea>
-                    <input class="brrtext mobile" type="text" id="mobile" name="mobile" maxlength="11" placeholder="请输入手机号码">
-                    <input class="brrbtn cp f_buy page_subitm" type="submit" value="立即发布">
+                    @if(empty(session('_web_user_id')))
+                        <input class="brrtext mobile" type="text" id="mobile" name="contact" maxlength="11" placeholder="请输入手机号码">
+                    @endif
+                    <input class="brrbtn cp f_buy page_subitm" type="text" style="text-align:center;" value="立即发布">
+
                 </form>
             </div>
 
             <div class="buy-recent-trading">
                 <h3 class="buy-right-release-h3">最近交易</h3>
                 <ul class="buy-recent-trading-list">
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             <li>
-                                <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
-                                <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
-                                <p>状态：<i class="orange">正在洽谈</i></p>
-                                <p>时间：2018-12-14</p>
-                                </div>
-                                
-                            </li>
-                             
-                            </ul>
+                     <li>
+                        <div class="mtmg"><p class="pr10">采购：瑞邦生物 烟酰胺 100%</p>
+                        <p><span class="pr10">价格：<i class="orange">￥9000.00/kg</i></span></p>
+                        <p>状态：<i class="orange">正在洽谈</i></p>
+                        <p>时间：2018-12-14</p>
+                        </div>
+
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
+@include(themePath('.','web').'web.include.partials.footer_service')
+@include(themePath('.','web').'web.include.partials.footer_new')
+@include(themePath('.','web').'web.include.partials.copyright')
 </body>
 </html>
+<script>
+    $(function(){
+        paginate();
+        $('.page_subitm').click(function (){
+            var data = $("#buyForm").serialize();
+            Ajax.call('/demand/add',data,function(res){
+                console.log(res.data);
+                if (res.code == 1) {
+                    $.msg.alert('保存成功');
+                    window.location.reload();
+                } else {
+                    $.msg.alert(res.msg);
+
+                }
+            },'POST','JSON');
+        });
+
+    })
+
+    //分页
+    function paginate(){
+        layui.use(['laypage'], function() {
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                , count: "{{$inquireList['total']}}" //数据总数，从服务端得到
+                , limit: "{{$pageSize}}"   //每页显示的条数
+                , curr: "{{$currpage}}"  //当前页
+                , prev: "上一页"
+                , next: "下一页"
+                , theme: "#88be51" //样式
+                , jump: function (obj, first) {
+                    if (!first) {
+//                        getInfo(obj.curr);
+                        window.location.href='/wantBuy?currpage='+obj.curr;
+                    }
+                }
+            });
+        });
+    }
+
+
+</script>
+
+
