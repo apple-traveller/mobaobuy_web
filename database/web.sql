@@ -1416,3 +1416,58 @@ CREATE TABLE `logistics` (
   `is_delete` tinyint(1) NOT NULL COMMENT '是否删除 0否 1是',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站内维护物流信息表';
+
+DROP TABLE IF EXISTS `inquire`;
+CREATE TABLE `inquire` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品id',
+  `goods_name` varchar(255) NOT NULL COMMENT '商品名称',
+  `price` decimal(10,2) NOT NULL COMMENT '意向价格',
+  `num` int(11) NOT NULL COMMENT '数量',
+  `delivery_area` varchar(30) NOT NULL COMMENT '交货地',
+  `contacts` varchar(30) NOT NULL COMMENT '联系人',
+  `contacts_mobile` varchar(11) NOT NULL COMMENT '手机号',
+  `qq` varchar(20) DEFAULT NULL COMMENT 'qq',
+  `delivery_method` varchar(20) DEFAULT NULL COMMENT '交货方式',
+  `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
+  `is_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示 0否 1是',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0否 1是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求购表';
+
+DROP TABLE IF EXISTS `inquire_quote`;
+CREATE TABLE `inquire_quote` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `inquire_id` int(11) NOT NULL COMMENT '求购id',
+  `user_id` int(11) NOT NULL COMMENT '报价人',
+  `goods_id` int(11) NOT NULL COMMENT '商品id',
+  `goods_name` varchar(255) NOT NULL COMMENT '商品名称',
+  `price` decimal(10,2) NOT NULL COMMENT '价格',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  `num` int(11) NOT NULL COMMENT '数量',
+  `delivery_area` varchar(50) NOT NULL COMMENT '交货地',
+  `delivery_method` varchar(20) DEFAULT NULL COMMENT '交货方式',
+  `delivery_time` varchar(30) DEFAULT NULL COMMENT '交货时间',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0否 1是',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求购报价表';
