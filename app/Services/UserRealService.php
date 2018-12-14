@@ -17,6 +17,12 @@ class UserRealService
         return UserRealRepo::getInfoByFields(['user_id'=>$userid]);
     }
 
+    //根据条件查询一条实名认证数据
+    public static function getTotalCount($condition)
+    {
+        return UserRealRepo::getTotalCount($condition);
+    }
+
     //查询一条数据
     public static function getInfo($id)
     {

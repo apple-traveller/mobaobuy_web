@@ -23,6 +23,7 @@ class WebClosed extends Controller
             print_r(getConfig('close_comment'));
             die();
         }
+
         if(!empty(session('_web_user_id'))){
             //缓存用户的基本信息
 
@@ -65,7 +66,6 @@ class WebClosed extends Controller
                 }
 
                 session()->put('_web_user', $user_info);
-
             }
 
             if(!session()->has('_curr_deputy_user')){
