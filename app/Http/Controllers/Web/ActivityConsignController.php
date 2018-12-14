@@ -15,9 +15,9 @@ class ActivityConsignController extends Controller
 {
     //清仓特卖
     public function index(){
-        $condition['type'] = 3;//清仓特卖
-        $condition['is_delete'] = 0;
-        $condition['consign_status'] = 1;
+        $condition['b.type'] = 3;//清仓特卖
+        $condition['b.is_delete'] = 0;
+        $condition['b.consign_status'] = 1;
         try{
             $consignInfo =  ShopGoodsQuoteService::getShopGoodsQuoteListByFields(['add_time'=>'desc'],$condition);
             return $this->display('web.activity.consign',compact('consignInfo'));
