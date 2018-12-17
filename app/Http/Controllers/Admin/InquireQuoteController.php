@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\InquireService;
-use App\Services\GoodsService;
-use App\Services\GoodsCategoryService;
 use App\Services\InquireQuoteService;
 class InquireQuoteController extends Controller
 {
@@ -17,11 +13,12 @@ class InquireQuoteController extends Controller
         $currpage = $request->input("currpage",1);
         $quote_currpage = $request->input("quote_currpage",1);
         $pageSize = $request->input('pageSize ',10);
-        $inquire_id = $request->input('inquire_id');
+        $inquire_id = $request->input('inquire_id',"");
         $condition['is_delete'] = 0;
-        $condition['inquire_id'] = $inquire_id;
+        if(!empty($inquire_id)){
+            $condition['inquire_id'] = $inquire_id;
+        }
         $inquire_quotes = InquireQuoteService::getInquireQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-
         return $this->display('admin.inquire.quote_list',[
             'inquire_quotes'=>$inquire_quotes['list'],
             'total'=>$inquire_quotes['total'],

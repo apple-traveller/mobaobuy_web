@@ -54,8 +54,8 @@
                                 <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                 <td><div class="tDiv">{{$vo['user_id']}}</div></td>
-                                <td><div class="tDiv">{{$vo['price']}}</div></td>
-                                <td><div class="tDiv">{{$vo['num']}}</div></td>
+                                <td><div class="tDiv">{{$vo['price']}}元</div></td>
+                                <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_time']}}</div></td>
                                 <td class="handle">

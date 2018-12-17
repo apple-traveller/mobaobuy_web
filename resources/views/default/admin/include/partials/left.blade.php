@@ -90,8 +90,8 @@
                 <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_0100_inquire"></i><h4>求购管理</h4></a></div>
                 <div class="sub-menu" style="top: 0px; display: none;">
                     <ul>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquire/index" data-param="demand|03_goods_list" target="workspace">求购信息</a></li>
-                        {{--<li><s></s><a href="javascript:void(0);" data-url="/admin/inquire/index" data-param="demand|03_goods_list" target="workspace">求购报价</a></li>--}}
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquire/index" data-param="inquire|04_goods_list" target="workspace">求购信息</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquireQuote/index" data-param="inquire|05_goods_list" target="workspace">求购报价</a></li>
                     </ul>
                 </div>
             </div>

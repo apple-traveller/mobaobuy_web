@@ -42,8 +42,8 @@
                                 <tr class="">
                                     <td><div class="tDiv">{{$vo['user_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['real_name']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['mobile']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['email']}}</div></td>
+                                    <td><div class="tDiv">@if(empty($vo['mobile'])) 无 @else {{$vo['mobile']}} @endif</div></td>
+                                    <td><div class="tDiv">@if(empty($vo['email'])) 无 @else {{$vo['email']}} @endif</div></td>
                                     <td><div class="tDiv">{{$vo['visit_count']}}</div></td>
                                     <td><div class="tDiv">{{$vo['last_ip']}}</div></td>
 
