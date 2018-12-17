@@ -122,7 +122,7 @@ class LoginController extends ApiController
         $messCode = $request->input('messCode', '');
         $openid = $request->input('openid');
         $nick_name = $request->input('nick_name');
-        $avatar = $request->input('avatar');
+        $avatar = $this->requestGetNotNull('avatar');
 
         if(empty($openid)){
             return $this->error('缺少openid');
