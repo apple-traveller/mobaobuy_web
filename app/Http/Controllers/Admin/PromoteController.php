@@ -218,7 +218,7 @@ class PromoteController extends Controller
     {
         $cat_id = trim($request->input('cat_id'));
         $goods_name = $request->input('goods_name');
-        $condition = [];
+        $condition['is_delete'] = 0;
         if($cat_id!="" && $cat_id!=0){
             $cates = GoodsCategoryService::getCates();
             $cate_ids = GoodsCategoryService::getChilds($cates,$cat_id);
@@ -226,16 +226,19 @@ class PromoteController extends Controller
             $condition['cat_id'] = implode('|',$cate_ids);
         }
         if($goods_name!=""){
-            $condition['goods_name'] = "%".$goods_name."%";
+            $c['opt'] = "OR";
+            $c['goods_name'] = "%".$goods_name."%";
+            $c['goods_sn'] = $goods_name;
+            $c['brand_name'] = $goods_name;
+            $c['goods_model'] = $goods_name;
+            $condition[] = $c;
         }
-        $condition['is_delete'] = 0;
         $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit','unit_name']);
         if(!empty($goods)){
             return $this->success('success','',$goods);
         }else{
             return $this->error('error');
         }
-
     }
 
     //ajax获取商家列表

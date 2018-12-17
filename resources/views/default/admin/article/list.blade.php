@@ -54,6 +54,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @if(!empty($articles))
                                 @foreach($articles as $vo)
                                     <tr class="">
                                         <td><div class="tDiv">{{$vo['id']}}</div></td>
@@ -81,6 +82,9 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @else
+                                    <tr class=""> <td style="color:red;">未查询到数据</td></tr>
+                                @endif
                                 </tbody>
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <tfoot>
