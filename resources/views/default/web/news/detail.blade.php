@@ -53,6 +53,22 @@
         .cdbg{background-color: #cdcdcd;}
 
         .code_greenbg{background-color: #75b335;}
+        .info-detail-content  {
+            font-size: 15px;
+            line-height: 26px;
+            text-indent: 30px;
+            word-break: break-all;
+            word-wrap: break-word;
+            position: relative;
+            padding: 10px 20px 20px 20px;
+            background-color: #fff;
+        }
+        .info-detail-content  p {
+            margin: 0 0 15px 0
+        }
+        .info-detail-content  a{
+            color: #00a67c;
+        }
     </style>
 @endsection
 @section('js')
