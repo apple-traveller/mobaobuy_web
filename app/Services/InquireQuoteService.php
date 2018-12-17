@@ -9,6 +9,7 @@ namespace App\Services;
 
 use App\Repositories\InquireRepo;
 use App\Repositories\InquireQuoteRepo;
+use App\Repositories\UserRepo;
 class InquireQuoteService
 {
     use CommonService;
@@ -26,7 +27,12 @@ class InquireQuoteService
     //获取列表数据
     public static function getInquireQuoteList($pager,$condition)
     {
-        return InquireQuoteRepo::getListBySearch($pager,$condition);
+        $list = InquireQuoteRepo::getListBySearch($pager,$condition);
+        foreach($list['list'] as &$vo){
+            $user = UserRepo::getInfo($vo['user_id']);
+            $vo['user_name'] = $user['user_name'];
+        }
+        return $list;
     }
 
     //获取一条信息

@@ -38,7 +38,7 @@
                             <thead>
                                 <tr>
                                     <th width="15%"><div class="tDiv">商品名称</div></th>
-                                    <th width="10%"><div class="tDiv">添加时间</div></th>
+                                    <th width="10%"><div class="tDiv">报价时间</div></th>
                                     <th width="10%"><div class="tDiv">报价人</div></th>
                                     <th width="10%"><div class="tDiv">价格</div></th>
                                     <th width="10%"><div class="tDiv">数量</div></th>
@@ -53,7 +53,7 @@
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                <td><div class="tDiv">{{$vo['user_id']}}</div></td>
+                                <td><div class="tDiv">{{$vo['user_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['price']}}元</div></td>
                                 <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
