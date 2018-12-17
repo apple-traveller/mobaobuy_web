@@ -1423,6 +1423,9 @@ CREATE TABLE `inquire` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `goods_id` int(10) unsigned NOT NULL COMMENT '商品id',
   `goods_name` varchar(255) NOT NULL COMMENT '商品名称',
+  `cat_name` varchar(255) NOT NULL COMMENT '产品类型',
+  `brand_name` varchar(255) NOT NULL COMMENT '厂商',
+  `unit_name` varchar(20) NOT NULL DEFAULT '' COMMENT '产品单位',
   `price` decimal(10,2) NOT NULL COMMENT '意向价格',
   `num` int(11) NOT NULL COMMENT '数量',
   `delivery_area` varchar(30) NOT NULL COMMENT '交货地',
@@ -1444,26 +1447,8 @@ CREATE TABLE `inquire_quote` (
   `user_id` int(11) NOT NULL COMMENT '报价人',
   `goods_id` int(11) NOT NULL COMMENT '商品id',
   `goods_name` varchar(255) NOT NULL COMMENT '商品名称',
+  `unit_name` varchar(20) NOT NULL COMMENT '产品单位',
   `price` decimal(10,2) NOT NULL COMMENT '价格',
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   `num` int(11) NOT NULL COMMENT '数量',
   `delivery_area` varchar(50) NOT NULL COMMENT '交货地',
   `delivery_method` varchar(20) DEFAULT NULL COMMENT '交货方式',
