@@ -20,6 +20,9 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 Route::post('/region/level', 'RegionController@regionLevelList');
 
 
+
+
+
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
@@ -302,10 +305,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/salesman/save', 'SalesmanController@save');// 保存
         Route::post('/salesman/getSalemanByShopId', 'SalesmanController@getSalemanByShopId');// ajax根据shop_id获取数据
 
-        Route::get('/inquire/index', 'InquireController@index');//列表
+        Route::any('/inquire/index', 'InquireController@index');//列表
         Route::get('/inquire/add', 'InquireController@add');// 添加
         Route::get('/inquire/edit', 'InquireController@edit');// 编辑
         Route::post('/inquire/save', 'InquireController@save');// 保存
+        Route::get('/inquire/delete', 'InquireController@delete');// 删除
+        Route::post('/inquire/modifyShowStatus', 'InquireController@modifyShowStatus');// ajax修改是否显示
 
     });
 });
