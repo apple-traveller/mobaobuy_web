@@ -314,6 +314,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/inquire/modifyShowStatus', 'InquireController@modifyShowStatus');// ajax修改是否显示
 
         Route::any('/inquireQuote/index', 'InquireQuoteController@index');// 求购报价列表
+        Route::get('/inquireQuote/delete', 'InquireQuoteController@delete');// 求购报价删除
 
     });
 });

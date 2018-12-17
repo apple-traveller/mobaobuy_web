@@ -14,7 +14,7 @@ class InquireController extends Controller
     public function index(Request $request)
     {
         $currpage = $request->input("currpage",1);
-        $pageSize = $request->input('pageSize',10);
+        $pageSize = $request->input('pageSize',5);
         $goods_name = $request->input('goods_name','');
         $condition['is_delete'] = 0;
         if(!empty($goods_name)){

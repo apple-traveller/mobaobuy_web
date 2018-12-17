@@ -11,6 +11,7 @@
             </div>
             <ul>
                 <li>展示平台的求购信息。</li>
+                <li>点击商品名称查看求购报价列表。</li>
             </ul>
         </div>
     </div>
@@ -39,7 +40,8 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                                 <tr>
-                                    <th width="15%"><div class="tDiv">商品名称</div></th>
+                                    <th width="10%"><div class="tDiv">商品名称</div></th>
+                                    <th width="10%"><div class="tDiv">求购时间</div></th>
                                     <th width="10%"><div class="tDiv">意向价格</div></th>
                                     <th width="10%"><div class="tDiv">商品数量</div></th>
                                     <th width="10%"><div class="tDiv">交货地</div></th>
@@ -47,7 +49,7 @@
                                     <th width="10%"><div class="tDiv">手机号</div></th>
                                     <th width="10%"><div class="tDiv">交货时间</div></th>
                                     <th width="10%"><div class="tDiv">是否显示</div></th>
-                                    <th width="15%" class="handle">操作</th>
+                                    <th width="10%" class="handle">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,8 +57,9 @@
                             @foreach($inquire as $vo)
                             <tr class="">
                                 <td><div class="tDiv"><span data-id="{{$vo['id']}}" class="inquire_quote" style="color:red;cursor:pointer;">{{$vo['goods_name']}}</span></div></td>
-                                <td><div class="tDiv">{{$vo['price']}}</div></td>
-                                <td><div class="tDiv">{{$vo['num']}}</div></td>
+                                <td><div class="tDiv">{{$vo['add_time']}}</div></td>
+                                <td><div class="tDiv">{{$vo['price']}}元</div></td>
+                                <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
                                 <td><div class="tDiv">{{$vo['contacts']}}</div></td>
                                 <td><div class="tDiv">{{$vo['contacts_mobile']}}</div></td>
@@ -125,20 +128,6 @@
                 });
             });
         }
-
-        layui.use(['layer'], function() {
-            var layer = layui.layer;
-            $(".viwAdPicture").click(function(){
-                var pic = $(this).attr('data-pic');
-                index = layer.open({
-                    type: 1,
-                    title: '详情',
-                    area: ['700px', '500px'],
-                    content: '<img src="'+pic+'">'
-                });
-            });
-        });
-
 
 
         function remove(id)
