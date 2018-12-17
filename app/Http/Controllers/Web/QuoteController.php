@@ -240,10 +240,10 @@ class QuoteController extends Controller
         $currpage = $request->input("currpage", 1);
         $goods_id = $good_info['goods_id'];
         $condition = [
-            'shop_id' => $shop_id,
-            'goods_id' => $goods_id,
-            'type'=>'1|2',
-            'is_delete'=>0
+            'b.shop_id' => $shop_id,
+            'b.goods_id' => $goods_id,
+            'b.type'=>'1|2',
+            'b.is_delete'=>0
         ];
         $pageSize = 4;
         $userId = session('_web_user_id');
