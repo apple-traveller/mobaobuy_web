@@ -376,6 +376,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
     Route::get('/wantBuy', 'wantBuyController@wantBuyList');//整单采购 // 未登录可以访问
 
+
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
 
