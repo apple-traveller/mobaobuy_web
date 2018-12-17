@@ -309,6 +309,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/inquire/add', 'InquireController@add');// 添加
         Route::get('/inquire/edit', 'InquireController@edit');// 编辑
         Route::post('/inquire/save', 'InquireController@save');// 保存
+        Route::get('/inquire/delete', 'InquireController@delete');// 删除
         Route::post('/inquire/modifyShowStatus', 'InquireController@modifyShowStatus');// ajax修改是否显示
 
     });
