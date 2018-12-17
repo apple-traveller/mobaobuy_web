@@ -8,26 +8,31 @@ use Illuminate\Http\Request;
 use App\Services\InquireService;
 use App\Services\GoodsService;
 use App\Services\GoodsCategoryService;
-class InquireController extends Controller
+use App\Services\InquireQuoteService;
+class InquireQuoteController extends Controller
 {
     //列表
     public function index(Request $request)
     {
         $currpage = $request->input("currpage",1);
-        $pageSize = $request->input('pageSize',10);
+        $quote_currpage = $request->input("quote_currpage",1);
+        $pageSize = $request->input('pageSize ',10);
         $goods_name = $request->input('goods_name','');
+        $inquire_id = $request->input('inquire_id');
         $condition['is_delete'] = 0;
+        $condition['inquire_id'] = $inquire_id;
         if(!empty($goods_name)){
             $condition['goods_name'] = "%".$goods_name."%";
         }
-        $inquire = InquireService::getInquireList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($inquire['list']);
-        return $this->display('admin.inquire.list',[
-            'inquire'=>$inquire['list'],
-            'total'=>$inquire['total'],
+        $inquire_quotes = InquireQuoteService::getInquireQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+
+        return $this->display('admin.inquire.quote_list',[
+            'inquire_quotes'=>$inquire_quotes['list'],
+            'total'=>$inquire_quotes['total'],
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
-            'goods_name'=>$goods_name
+            'goods_name'=>$goods_name,
+            'quote_currpage'=>$quote_currpage
         ]);
     }
 

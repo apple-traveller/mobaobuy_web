@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
 <div class="warpper">
-    <div class="title">求购 - 求购信息列表</div>
+    <div class="title"><a href="/admin/inquire/index?currpage={{$currpage}}" class="s-back">返回</a>求购 - 求购报价信息</div>
     <div class="content visible">
         <div class="explanation" id="explanation">
             <div class="ex_tit">
@@ -54,7 +54,7 @@
                             @if(!empty($inquire))
                             @foreach($inquire as $vo)
                             <tr class="">
-                                <td><div class="tDiv"><span data-id="{{$vo['id']}}" class="inquire_quote" style="color:red;cursor:pointer;">{{$vo['goods_name']}}</span></div></td>
+                                <td><div class="tDiv"><span class="inquire_quote" style="color:red;cursor:pointer;">{{$vo['goods_name']}}</span></div></td>
                                 <td><div class="tDiv">{{$vo['price']}}</div></td>
                                 <td><div class="tDiv">{{$vo['num']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
@@ -154,8 +154,7 @@
 
         //求购报价列表
         $(".inquire_quote").click(function(){
-            var inquire_id = $(this).attr("data-id");
-            window.location.href="/admin/inquireQuote/index?currpage={{$currpage}}&inquire_id="+inquire_id;
+            window.location.href="/admin/inquireQuote/index?currpage={{$currpage}}";
         });
 
     </script>
