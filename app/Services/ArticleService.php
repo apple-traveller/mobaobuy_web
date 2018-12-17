@@ -108,25 +108,30 @@ class ArticleService
     {
 //        getTopClick(1,7,['add_time'=>'desc'])['list']
         $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id','cat_name']);
-//        dump($cat_list);
-//        $condition['cat_id'] = $cat_id;
+
+        $cat_id = '';
+        foreach ($cat_list as $k=>$v){
+            $cat_id .= $v['id'].'|';
+        }
+//        dump($cat_id);
+        $condition['cat_id'] = $cat_id;
+        $condition['is_show'] = 1;
+        return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
+
+    }
+    public static function getIndexNews($page=1,$page_size=6,$orderBy=['click'=>'desc','add_time'=>'desc'])
+    {
+        $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id','cat_name']);
         $condition['is_show'] = 1;
         $artArr = [];
-//        $cat_id = '';
-//        foreach ($cat_list as $k=>$v){
-//            $cat_id .= $v['id'].'|';
-//        }
+
         foreach($cat_list as $k=>$v){
             $condition['cat_id'] = $v['id'];
             $artArr[$v['id']] = ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
             $artArr[$v['id']]['cat_name'] = $v['cat_name'];
         }
-//        dump($cat_id);
-//
-//         $a = ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
-         return $artArr;
+        return $artArr;
     }
-
     /**
      * 更新点击量
      * @param $id
