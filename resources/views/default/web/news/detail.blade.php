@@ -120,7 +120,7 @@
                 {!! $article['content'] !!}
             </div>
         </div>
-        <div class="w800p pb10 ovh pt10 graybg pl10 pr10" style="margin-top: 35px; margin-bottom: 35px;">
+        <div class="w800p pb10 ovh pt10 graybg pl10" style="margin-top:20px; margin-bottom:20px;">
             <p class="fl new_other">上一篇：
                 @if(!empty($page_data['up_news_id']))
                 <a href="/detail/{{$page_data['up_news_id']}}.html">{{ $page_data['up_news_title'] }}</a>
@@ -136,6 +136,29 @@
                     @endif
             </p>
         </div>
+<style>
+    .info-h3{overflow:hidden;clear:both;background:#fff;border-bottom:2px solid #75b335;line-height:42px;height:42px;font-weight: bold;font-size:16px;width:800px;margin:0 auto;}
+    .relevan{width:800px;margin:0 auto;overflow: hidden;padding-bottom:30px;}
+    .relevan li {line-height:40px;height:40px;float: left;width:380px;border-bottom:1px dotted #ebebeb;padding-right:20px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+    .relevan li  span{color:#ccc;padding-right:10px;}
+</style>
+
+        <h3 class="info-h3">相关资讯</h3>
+        <ul class="relevan">
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
+
+
+        </ul>
+
     </div>
 @endsection
 @section('js')
