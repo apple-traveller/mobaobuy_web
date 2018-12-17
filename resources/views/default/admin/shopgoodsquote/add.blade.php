@@ -88,6 +88,7 @@
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
                             </div>
 
@@ -350,6 +351,7 @@
             //点击将li标签里面的值填入input框内
             $(document).delegate(".created_goods_name","click",function(){
                 $("#goods_name").siblings("div").filter(".notic").remove();
+                $("#goods_name").siblings("div").filter(".form_prompt").remove();
                 var goods_name = $(this).text();
                 var goods_id = $(this).attr("data-goods-id");
                 var packing_spec = $(this).attr("data-packing-spec");
