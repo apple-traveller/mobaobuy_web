@@ -429,43 +429,102 @@
         </div>
     @endif
     <!--维生素行情-->
+    <style>
+        .nil_bf{background:#fff;border-bottom:1px solid #ebebeb;}
+        .news_items_list{float:left;overflow:hidden;line-height:46px;height:46px;}
+        .news_items_list li{float:left;}
+        .news_items_list li .Self-support-title{border-left:0;padding-left:0;line-height:44px;height:44px;margin:0 12px;font-size:16px;}
+        .news_items_list li.curr .Self-support-title{border-bottom:2px solid #75b335;color:#75b335;cursor: pointer;}
+        .nil_more{float:right;line-height:46px;height:46px;margin-right:10px;}
+    </style>
+
+
+<script>
+    $(function(){
+        $('.news_items_list li').hover(function(){
+            $('.nil_more').attr('href',$(this).attr('href'));
+            $(this).addClass('curr').siblings().removeClass('curr');
+            $('.nil_items>li').eq($(this).index()).show().siblings().hide();
+        });
+    });
+</script>
+
+
     @if(!empty($article_list))
-        <div class="w1200" style="margin-top: 30px;">
-        <div class="ovh">
-            <h1 class="Self-support-title">维生素行情</h1>
-            <div class="fr mr20">
-                <a rel="nofollow" class="ml30" href="/news.html">查看更多></a>
-            </div>
+        <div class="w1200" style="margin-top:30px;">
+        <div class="ovh nil_bf">
+                <ul class="news_items_list">
+                    {{--<li class="curr" href="/news.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
+                    {{--<li href="/news1.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
+                    {{--<li href="/news2.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
+                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
+                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
+
+
+                    @foreach($article_list as $k=>$v)
+                        @if($loop->first)
+                            <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
+                        @else
+                            <li href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
+                        @endif
+                    @endforeach
+                </ul>
+            <a rel="nofollow" class="nil_more" href="/news.html">查看更多></a>
         </div>
-        <div class="whitebg ovh mt10">
+        <div class="whitebg ovh">
+            <ul class="nil_items">
+                {{--{{dd($article_list)}}--}}
+                @foreach($article_list as $k=>$v)
+                    <li @if(!$loop->first) style="display: none;" @endif>
+                        <ul class="Quotate">
+                            {{--@for ($i = 0; $i < 4; $i++)--}}
+                                {{--@php $article = $article_list[$i]??[]; @endphp--}}
+                                {{--@if(!empty($article))--}}
+                                    {{--<a rel="nofollow" href="detail/{{$article['id']}}.html">--}}
+                                        {{--<li>--}}
+                                            {{--<div class="Quotate-img" >--}}
+                                                {{--<img width="100%" src="{{getFileUrl($article['image'])}}" />--}}
+                                            {{--</div>--}}
+                                            {{--<div class="Quotate_text">{{$article['title']}}</div>--}}
+                                        {{--</li>--}}
+                                    {{--</a>--}}
+                                {{--@endif--}}
+                            {{--@endfor--}}
 
-            <ul class="Quotate">
-                @for ($i = 0; $i < 4; $i++)
-                    @php $article = $article_list[$i]??[]; @endphp
-                    @if(!empty($article))
-                        <a rel="nofollow" href="detail/{{$article['id']}}.html">
-                            <li>
-                                <div class="Quotate-img" >
-                                    <img width="100%" src="{{getFileUrl($article['image'])}}" />
-                                </div>
-                                <div class="Quotate_text">{{$article['title']}}</div>
-                            </li>
-                        </a>
-                    @endif
-                @endfor
-            </ul>
 
-            <ul class="Quotate_right">
-                @foreach($article_list as $item)
-                    <a href="detail/{{$item['id']}}.html">
-                        <li>
-                            <span class="fl ml5">{{$item['title']}}</span>
-                            <span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span>
-                        </li>
-                    </a>
+                                {{--@if($k < 4)--}}
+                                    @foreach($v['list'] as $vv)
+                                        <a rel="nofollow" href="detail/{{$vv['id']}}.html">
+                                            <li>
+                                                <div class="Quotate-img" >
+                                                    <img width="100%" src="{{getFileUrl($vv['image'])}}" />
+                                                </div>
+                                                <div class="Quotate_text">{{$vv['title']}}</div>
+                                            </li>
+                                        </a>
+                                    @endforeach
+                                 {{--@endif--}}
 
+                        </ul>
+
+                        <ul class="Quotate_right">
+                            @foreach($v['list'] as $item)
+                                <a href="detail/{{$item['id']}}.html">
+                                    <li>
+                                        <span class="fl ml5">{{$item['title']}}</span>
+                                        <span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span>
+                                    </li>
+                                </a>
+
+                            @endforeach
+                        </ul>
+                    </li>
                 @endforeach
+                {{--<li style="display: none;">zhelishi xinwena123 </li>--}}
+
+
             </ul>
+
         </div>
     </div>
     @endif

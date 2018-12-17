@@ -17,12 +17,10 @@ class InquireService
     /**
      * 求购列表
      */
-    public static function inquireList($pager){
-        $condition = [];
-        $condition['is_delete'] = 0;
-        $condition['is_show'] = 1;
+    public static function inquireList($pager,$condition){
         return InquireRepo::getListBySearch($pager,$condition);
     }
+
 
     //获取列表数据
     public static function getInquireList($pager,$condition)

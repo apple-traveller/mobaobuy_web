@@ -65,16 +65,16 @@
         <div class="buy-left" style="width: 930px;">
             <h3 class="supply-h3"><i class="supply-text">求购列表</i>
 
-                <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange"></i>条数据
+                <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange" id="relevant_total">{{$inquireList['total']}}</i>条数据
                 </p></h3>
 
             <div class="buy-form-search">
                 <form action="" method="get">
-                    品种<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">
-                    牌号<input class="buy-text" name="product_name" type="text" value="" style="width: 125px;">
+                    分类<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">
+                    商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
                     厂商<input class="buy-text" name="brand_name" type="text" value="" style="width: 125px;">
                     交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
-                    <input class="buy-btn" type="submit" value="搜 索">
+                    <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
                 </form>
             </div>
 
@@ -84,14 +84,14 @@
                         {{--{{$v['unit_name']}}--}}
                 <li>
                     <div class="buy-list-text1">
-                        <p class="buy-list-te1"><span class="fs16">求购：{{$v['goods_name']}}{{$v['num']}}</span>
-                            <span class="gray">发布时间：57分钟前</span></p>
+                        <p class="buy-list-te1"><span class="fs16">求购：{{$v['goods_name']}} {{$v['num']}}{{$v['unit_name']}}</span>
+                            <span class="gray">发布时间：{{ \Carbon\Carbon::parse($v['add_time'])->diffForHumans()}}</span></p>
                         <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥{{$v['price']}}</i><span class="gray">交货地：{{$v['delivery_area']}}</span><span class="gray">交货时间：{{$v['delivery_time']}}</span></p>
                         <p class="buy-list-te3 gray">跟进交易员：
                          <span>{{$v['contacts']}}</span>
                           <span>{{$v['contacts_mobile']}}</span>
-                           <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin=2853708794&amp;site=qq&amp;menu=yes">
-                                <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> {{$v['contacts_mobile']}}
+                           <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin={{$v['qq']}}&amp;site=qq&amp;menu=yes">
+                                <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> {{$v['qq']}}
                             </a>
                             </p>
                     </div>
@@ -100,8 +100,8 @@
                         <a href="javascript:void(0)" class="but_login" buy_id="2728375">我要供货</a>
                      </div>
                 </li>
-                    @endforeach
-                    @endif
+                @endforeach
+                @endif
             </ul>
 
             <div class="page" style="background:#fff; padding: 35px 0px;">
@@ -185,6 +185,71 @@
                     }
                 }
             });
+        });
+    }
+
+
+    //请求ajax获取列表数据
+    function getInfo(currpage){
+        var _brand_name = $('input[name=brand_name]').val();
+        var _cate_id = $('input[name=cat_name]').val();
+        var _goods_name = $('input[name=goods_name]').val();
+        var _delivery_area = $('input[name=delivery_area]').val();
+
+        $.ajax({
+            type: "get",
+            url: "/condition/toBuyList",
+            data: {
+                'currpage':currpage,
+                'brand_name':_brand_name,
+                'cate_id':_cate_id,
+                'goods_name':_goods_name,
+                'delivery_area':_delivery_area
+            },
+            dataType: "json",
+            success: function(res){
+                if(res.code==200) {
+                    var data = res.data;
+                    var currpage = data.currpage;
+                    var pageSize = data.pageSize;
+                    var total = data.total;
+                    var list = data.list;
+                    $(".buy-list").children('li').remove();
+                    for (var i=0;i<list.length;i++)
+                    {
+                       var _html = '';
+                        _html += ' <li><div class="buy-list-text1"> <p class="buy-list-te1"><span class="fs16">求购：'+list[i].goods_name +list[i].num+list[i].unit_name+'</span> <span class="gray">发布时间：'+list[i].add_time+'</span></p> <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥'+list[i].price+'</i><span class="gray">交货地：'+list[i].delivery_area+'</span><span class="gray">交货时间：'+list[i].delivery_time+'</span></p> <p class="buy-list-te3 gray">跟进交易员： <span>'+list[i].contacts+'</span> <span>'+list[i].contacts_mobile+'</span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin='+list[i].qq+'&amp;site=qq&amp;menu=yes"> <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> '+list[i].qq+'</a> </p></div><div class="buy-list-text2"> <a href="javascript:void(0)" class="but_login" buy_id="2728375">我要供货</a></div> </li>';
+                    }
+                    $(".buy-list").append(_html);
+//                    $(".news_pages").append('<ul id="page" class="pagination"></ul>');
+                    $('#relevant_total').text(total);
+
+                    layui.use(['laypage'], function() {
+                        var laypage = layui.laypage;
+                        laypage.render({
+                            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                            , count: total //数据总数，从服务端得到
+                            , limit: pageSize   //每页显示的条数
+                            , curr: currpage  //当前页
+                            , prev: "上一页"
+                            , next: "下一页"
+                            , theme: "#88be51" //样式
+                            , jump: function (obj, first) {
+                                if (!first) {
+                                    getInfo(obj.curr);
+                                }
+                            }
+                        });
+                    });
+
+                }else{
+                    $(".buy-list").children('li').remove();
+                    $('.page').remove();
+                    $(".buy-list").after(' <li class="nodata">无相关数据</li>');
+                    $('#relevant_total').text('0');
+                }
+                console.log(res);return;
+            }
         });
     }
 
