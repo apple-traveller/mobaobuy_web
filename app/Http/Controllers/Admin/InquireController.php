@@ -20,6 +20,7 @@ class InquireController extends Controller
         if(!empty($goods_name)){
             $condition['goods_name'] = "%".$goods_name."%";
         }
+        $condition['is_delete'] = 0;
         $inquire = InquireService::getInquireList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         //dd($inquire['list']);
         return $this->display('admin.inquire.list',[
@@ -51,15 +52,16 @@ class InquireController extends Controller
     }
 
     //编辑
-    public function editForm(Request $request)
+    public function edit(Request $request)
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
-        $inquire = InquireService::;
-        return $this->display('admin.ad.edit',[
+        $inquire = InquireService::getInquireInfo($id);
+        $goods = GoodsService::getGoodInfo($inquire['goods_id']);
+        return $this->display('admin.inquire.edit',[
+            'inquire'=>$inquire,
             'currpage'=>$currpage,
-            'ad_positions'=>$ad_positions,
-            'ad'=>$ad
+            'goods'=>$goods
         ]);
     }
 
@@ -106,9 +108,17 @@ class InquireController extends Controller
                 }
                 return $this->error('添加失败');
             }else{
+                $goods = GoodsService::getGoodInfo($data['goods_id']);
+                $goods_cate = GoodsCategoryService::getInfo($goods['cat_id']);
+                $data['goods_name'] = $goods['goods_full_name'];
+                $data['unit_name'] = $goods['unit_name'];
+                $data['brand_name'] = $goods['brand_name'];
+                $data['cat_name'] = $goods_cate['cat_name'];
+                $currpage = $data['currpage'];
+                unset($data['currpage']);
                 $flag = InquireService::modify($data);
                 if(!empty($flag)){
-                    return $this->success('修改成功',url('/admin/inquire/index'));
+                    return $this->success('修改成功',url('/admin/inquire/index')."?currpage=".$currpage);
                 }
                 return $this->error('修改失败');
             }
@@ -122,9 +132,9 @@ class InquireController extends Controller
     {
         $id = $request->input('id');
         try{
-            $flag = AdService::delete($id);
+            $flag = InquireService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
-                return $this->success('删除成功',url('/admin/ad/list'));
+                return $this->success('删除成功',url('/admin/inquire/index'));
             }else{
                 return $this->error('删除失败');
             }

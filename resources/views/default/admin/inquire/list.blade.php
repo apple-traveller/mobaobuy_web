@@ -147,7 +147,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/ad/delete?id="+id;
+                    window.location.href="/admin/inquire/delete?id="+id;
                     layer.close(index);
                 });
             });
