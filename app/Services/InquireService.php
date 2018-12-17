@@ -8,7 +8,6 @@
 namespace App\Services;
 
 use App\Repositories\InquireRepo;
-use Carbon\Carbon;
 
 class InquireService
 {
@@ -18,6 +17,24 @@ class InquireService
     public static function getInquireList($pager,$condition)
     {
         return InquireRepo::getListBySearch($pager,$condition);
+    }
+
+    //获取一条信息
+    public static function getInquireInfo($id)
+    {
+        return InquireRepo::getInfo($id);
+    }
+
+    //添加
+    public static function create($data)
+    {
+        return InquireRepo::create($data);
+    }
+
+    //修改
+    public static function modify($data)
+    {
+        return InquireRepo::modify($data['id'],$data);
     }
 
 }
