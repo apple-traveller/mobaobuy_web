@@ -45,6 +45,17 @@
                     @endforeach
                 </ul>
             </div>
+
+            <div class="today_news_search whitebg mt20">
+                <h1 class="today_news_top ovh"><span class="ml10">最新资讯</span></h1>
+                <ul class="news_Hot">
+                    @foreach(getLatestNews() as $k2=>$v2)
+                        @if ($k2 < 5)
+                            <li class="article_id" data_id="{{ $v2['id'] }}"><div class="news_list_num code_greenbg fl mr10">{{$k2+1}}</div><a class="fl ovhwp" style="width: 190px;height: 36px;">{{ $v2['title'] }}</a></li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 </div>

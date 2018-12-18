@@ -54,5 +54,11 @@ class InquireService
         }
     }
 
+    //ajax 我要报价弹层
+    public static function asingle($id){
+        return InquireRepo::getInfo($id);
+    }
+
+
 
 }

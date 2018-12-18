@@ -454,13 +454,6 @@
         <div class="w1200" style="margin-top:30px;">
         <div class="ovh nil_bf">
                 <ul class="news_items_list">
-                    {{--<li class="curr" href="/news.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news1.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news2.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-
-
                     @foreach($article_list as $k=>$v)
                         @if($loop->first)
                             <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
@@ -477,22 +470,7 @@
                 @foreach($article_list as $k=>$v)
                     <li @if(!$loop->first) style="display: none;" @endif>
                         <ul class="Quotate">
-                            {{--@for ($i = 0; $i < 4; $i++)--}}
-                                {{--@php $article = $article_list[$i]??[]; @endphp--}}
-                                {{--@if(!empty($article))--}}
-                                    {{--<a rel="nofollow" href="detail/{{$article['id']}}.html">--}}
-                                        {{--<li>--}}
-                                            {{--<div class="Quotate-img" >--}}
-                                                {{--<img width="100%" src="{{getFileUrl($article['image'])}}" />--}}
-                                            {{--</div>--}}
-                                            {{--<div class="Quotate_text">{{$article['title']}}</div>--}}
-                                        {{--</li>--}}
-                                    {{--</a>--}}
-                                {{--@endif--}}
-                            {{--@endfor--}}
 
-
-                                {{--@if($k < 4)--}}
                                     @foreach($v['list'] as $vv)
                                         <a rel="nofollow" href="detail/{{$vv['id']}}.html">
                                             <li>
@@ -503,8 +481,6 @@
                                             </li>
                                         </a>
                                     @endforeach
-                                 {{--@endif--}}
-
                         </ul>
 
                         <ul class="Quotate_right">
@@ -520,9 +496,6 @@
                         </ul>
                     </li>
                 @endforeach
-                {{--<li style="display: none;">zhelishi xinwena123 </li>--}}
-
-
             </ul>
 
         </div>

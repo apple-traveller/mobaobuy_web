@@ -20,9 +20,6 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 Route::post('/region/level', 'RegionController@regionLevelList');
 
 
-Route::get('/report', 'ReportController@index');
-Route::get('/report/test', 'ReportController@test');
-
 
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
@@ -385,6 +382,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
     Route::get('/wantBuy', 'wantBuyController@wantBuyList');//求购列表 // 未登录可以访问
     Route::get('/condition/toBuyList', 'wantBuyController@wantBuyListBycondition');//求购列表条件查询
+    Route::post('/buy/asingle', 'wantBuyController@asingle');//求购列表 我要供货弹层
+    Route::post('/buy/savebuy', 'wantBuyController@savebuy'); //求购列表  保存报价
 
 
     Route::group(['middleware' => 'web.auth'], function () {

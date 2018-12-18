@@ -3,7 +3,6 @@
 <meta name="renderer" content="webkit"/>
 <meta name="force-rendering" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
-
 @include('partials.base_header')
 <link rel="stylesheet" type="text/css" href="{{asset('css/jquery.dataTables.min.css')}}" />
 <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>

@@ -145,18 +145,12 @@
 
         <h3 class="info-h3">相关资讯</h3>
         <ul class="relevan">
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
-            <li><span>[12-14]</span><a href="/subject/detail/14030.html" title="2018年线性波幅偏小 均价高企" target="_blank">2018年线性波幅偏小 均价高企</a></li>
 
-
+            @if($aboutNews)
+                @foreach($aboutNews as $v)
+            <li><span>{{$v['add_time']}}</span><a href="/detail/{{$v['id']}}.html.html" title="{{$v['title']}}" target="_blank">{{$v['title']}}</a></li>
+                @endforeach
+            @endif
         </ul>
 
     </div>

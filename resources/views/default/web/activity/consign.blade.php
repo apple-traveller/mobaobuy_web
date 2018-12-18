@@ -84,11 +84,11 @@
 									</div>
 									<div class="tac mt30 ovh" style="text-align: left !important;">
 										<span class="addr_dw">{{$v['delivery_place']}}</span>
-										<span class="fr ovh di gray">可售 {{$v['goods_number']}}kg</span>
+										<span class="fr ovh di gray">可售 {{$v['goods_number']}}{{$v['unit_name']}}</span>
 									</div>
 									<div class="bq_price">
 										<font class="gray">单价</font>
-										<font class="orange fs24">￥{{$v['shop_price']}}</font>/kg
+										<font class="orange fs24">￥{{$v['shop_price']}}</font>/{{$v['unit_name']}}
 									</div>
 									<a href="/consign/detail/{{encrypt($v['id'])}}">
 										<div class="mx_btn">立即抢购</div>
