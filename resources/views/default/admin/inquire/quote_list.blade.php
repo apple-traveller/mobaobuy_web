@@ -26,14 +26,14 @@
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                     <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                 </div>
-                {{--<div class="search">
-                    <form action="/admin/inquire/index" name="searchForm" >
+                <div class="search">
+                    <form action="/admin/inquireQuote/index" name="searchForm" >
                         <div class="input">
                             <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus w180" placeholder="商品名称" autocomplete="off">
                             <input type="submit" class="btn"  ectype="secrch_btn" value="">
                         </div>
                     </form>
-                </div>--}}
+                </div>
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
@@ -57,7 +57,7 @@
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                <td><div class="tDiv">{{$vo['user_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['nick_name'].' / '.$vo['user_name']}}</div></td>
                                 <td><div class="tDiv">￥{{$vo['price']}}</div></td>
                                 <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
@@ -132,15 +132,16 @@
         }
 
         $(".btn_see").click(function(){
+            var _obj = this;
             layui.use('layer', function(){
                 var layer = layui.layer;
-                var remark = $(".btn_see").attr("data-remark");
+                var remark = $(_obj).attr("data-remark");
                 layer.open({
                     type: 1,
                     title: '备注',
                     area: ['350px', '220px'],
-                    content: '<div class="label_value">' +
-                    '<textarea style="margin: 10px;" name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+remark+'</textarea>' +
+                    content: '<div style="margin: 10px;">' + remark +
+//                    '<textarea name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+remark+'</textarea>' +
                     '</div>'
                 });
             });

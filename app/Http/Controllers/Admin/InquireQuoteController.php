@@ -14,9 +14,13 @@ class InquireQuoteController extends Controller
         $quote_currpage = $request->input("quote_currpage",1);
         $pageSize = $request->input('pageSize ',10);
         $inquire_id = $request->input('inquire_id',-1);
+        $goods_name = $request->input('goods_name','');
         $condition['is_delete'] = 0;
         if($inquire_id!=-1){
             $condition['inquire_id'] = $inquire_id;
+        }
+        if(!empty($goods_name)){
+            $condition['goods_name'] = '%'.$goods_name.'%';
         }
         $inquire_quotes = InquireQuoteService::getInquireQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         //dd($inquire_quotes);
@@ -26,7 +30,8 @@ class InquireQuoteController extends Controller
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
             'quote_currpage'=>$quote_currpage,
-            'inquire_id'=>$inquire_id
+            'inquire_id'=>$inquire_id,
+            'goods_name'=>$goods_name
         ]);
     }
 
