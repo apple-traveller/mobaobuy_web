@@ -60,7 +60,7 @@
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['shop_price']}}</div></td>
+                                    <td><div class="tDiv">￥{{$vo['shop_price']}}</div></td>
                                     <td><div class="tDiv">{{$vo['salesman']}}</div></td>
                                     <td><div class="tDiv">{{$vo['contact_info']}}</div></td>
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>

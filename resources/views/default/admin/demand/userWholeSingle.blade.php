@@ -58,7 +58,7 @@
                                             <td><div class="tDiv">{{$v['nick_name']}}</div></td>
                                             @if(!empty($v['content']))
                                                 <td class="handle">
-                                                    <div class="tDiv a2">
+                                                    <div style="cursor:pointer;" class="tDiv a2">
                                                         <a class="btn_see btn_see_content" onclick="see_content()" id="{{$v['id']}}" is_read="{{$v['is_read']}}" content="{{$v['content']}}"><i class="sc_icon sc_icon_see"></i>点击查看</a>
                                                     </div>
                                                 </td>
