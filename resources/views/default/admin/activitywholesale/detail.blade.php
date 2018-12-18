@@ -29,7 +29,7 @@
 
                             <div class="item">
                                 <div class="label">&nbsp;价格：</div>
-                                <div class="label_value font14">{{$result['price']}}</div>
+                                <div class="label_value font14">￥{{$result['price']}}</div>
                             </div>
 
                             <div class="item">

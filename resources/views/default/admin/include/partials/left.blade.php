@@ -82,7 +82,16 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/demand/list" data-param="demand|01_goods_list" target="workspace">需求列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/demand/userSale" data-param="demand|02_goods_list" target="workspace">会员卖货</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/demand/userWholeSingle" data-param="demand|03_goods_list" target="workspace">整单采购</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquire/index" data-param="demand|03_goods_list" target="workspace">求购信息</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_0100_inquire"></i><h4>求购管理</h4></a></div>
+                <div class="sub-menu" style="top: 0px; display: none;">
+                    <ul>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquire/index" data-param="inquire|04_goods_list" target="workspace">求购信息</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/inquireQuote/index" data-param="inquire|05_goods_list" target="workspace">求购报价</a></li>
                     </ul>
                 </div>
             </div>
@@ -96,7 +105,7 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/invoice/list" data-param="menushopping|10_delivery_order" target="workspace">发票申请列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/logistics/list" data-param="menushopping|10_delivery_order" target="workspace">物流信息列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/logistics/list" data-param="menushopping|11_delivery_order" target="workspace">物流信息列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/shipping" data-param="menushopping|12_delivery_order" target="workspace">物流公司列表</a></li>
                     </ul>
                 </div>

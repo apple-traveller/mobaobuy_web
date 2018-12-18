@@ -180,7 +180,6 @@ class GoodsCategoryController extends Controller
         }
 
         try{
-
             $flag = GoodsCategoryService::delete($id);
             if($flag){
                 return $this->success('删除成功',url('/admin/goodscategory/list'));

@@ -10,11 +10,8 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use App\Services\GsxxService;
 use App\Services\ShopLoginService;
-use App\Services\ShopService;
-use App\Services\ShopUserService;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller

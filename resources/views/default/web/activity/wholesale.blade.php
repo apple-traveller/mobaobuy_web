@@ -80,11 +80,11 @@
 										距离结束：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@elseif($v['is_soon'])
-									<div class="collect_end_time count-down" id="collect_end_time" data-endtime="{{strtotime($v['begin_time'])}}">
+									<div class="collect_end_time count-down" id="collect_end_time" data-endtime="{{strtotime($v['begin_time'])*1000}}">
 										距离开始：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@else
-									<div class="collect_end_time count-down" data-endtime="{{strtotime($v['end_time'])}}">
+									<div class="collect_end_time count-down" data-endtime="{{strtotime($v['end_time'])*1000}}">
 										距离结束：<span class="count-down-text">0天0小时0分钟0秒</span>
 									</div>
 								@endif

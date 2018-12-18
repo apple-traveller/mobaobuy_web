@@ -87,7 +87,7 @@
                                                 <tr>
                                                     <td><span style="color:#62b3ff">{{$v['order_sn']}}</span></td>
                                                     <td><span style="color:#62b3ff">{{$v['goods_name']}}</span></td>
-                                                    <td><span style="color:#62b3ff">{{$v['goods_price']}}</span></td>
+                                                    <td><span style="color:#62b3ff">￥{{$v['goods_price']}}</span></td>
                                                     <td><span style="color:#62b3ff">{{$v['invoice_num']}}</span></td>
                                                 </tr>
                                             @endforeach
@@ -147,7 +147,7 @@
 
                                     @endif
                                     <div class="item">
-                                        <div class="label"><span class="require-field">*</span>&nbsp;审核状态：</div>
+                                        <div class="label">&nbsp;审核状态：</div>
                                         <div class="label_value font14">
                                             @if($invoiceInfo['status']==2)
                                                 已审核
