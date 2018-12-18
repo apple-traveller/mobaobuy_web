@@ -70,7 +70,7 @@
                                 </td>
                                 <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['member_phone']}}</div></td>
-                                <td><div class="tDiv">{{$vo['invoice_amount']}}</div></td>
+                                <td><div class="tDiv">￥{{$vo['invoice_amount']}}</div></td>
                                 <td><div class="tDiv">{{$vo['order_quantity']}}</div></td>
                                 <td>
                                     <div class="tDiv">

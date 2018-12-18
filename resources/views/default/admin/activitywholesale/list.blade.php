@@ -68,7 +68,7 @@
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$v['goods_name']}}</div></td>
-                                        <td><div class="tDiv">{{$v['price']}}</div></td>
+                                        <td><div class="tDiv">¥{{$v['price']}}</div></td>
                                         <td><div class="tDiv">{{$v['num']}}</div></td>
                                         <td><div class="tDiv">{{$v['partake_quantity']}}</div></td>
                                         {{--<td><div class="tDiv">{{$v['min_limit']}}</div></td>

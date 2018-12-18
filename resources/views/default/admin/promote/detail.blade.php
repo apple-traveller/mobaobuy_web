@@ -31,8 +31,8 @@
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;促销价格(<span style="color:#909090;" class="unit-name">元</span>)：</div>
-                                <div class="label_value font14">{{$promote['price']}}</div>
+                                <div class="label">&nbsp;促销价格：</div>
+                                <div class="label_value font14">￥{{$promote['price']}}</div>
                             </div>
 
                             <div class="item">
