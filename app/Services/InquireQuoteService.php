@@ -63,6 +63,7 @@ class InquireQuoteService
         foreach($list['list'] as &$vo){
             $user = UserRepo::getInfo($vo['user_id']);
             $vo['user_name'] = $user['user_name'];
+            $vo['nick_name'] = $user['nick_name'];
         }
         return $list;
     }
