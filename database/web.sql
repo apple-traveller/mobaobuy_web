@@ -1454,5 +1454,6 @@ CREATE TABLE `inquire_quote` (
   `delivery_method` varchar(20) DEFAULT NULL COMMENT '交货方式',
   `delivery_time` varchar(30) DEFAULT NULL COMMENT '交货时间',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0否 1是',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求购报价表';
