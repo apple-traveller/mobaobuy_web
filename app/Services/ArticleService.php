@@ -64,6 +64,13 @@ class ArticleService
     }
 
     /**
+     * 相关文章
+     */
+    public static function aboutNews($pager,$condition){
+        return ArticleRepo::getListBySearch($pager,$condition)['list'];
+    }
+
+    /**
      * 资讯中心文章列表
      * @param $cat_id
      * @param $title
@@ -117,6 +124,10 @@ class ArticleService
         $condition['cat_id'] = $cat_id;
         $condition['is_show'] = 1;
         return ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
+
+    }
+
+    public static function latestNews($page=1,$page_size=6,$orderBy=['click'=>'desc','add_time'=>'desc']){
 
     }
     public static function getIndexNews($page=1,$page_size=6,$orderBy=['click'=>'desc','add_time'=>'desc'])
