@@ -15,7 +15,6 @@ class ActivityPromoteController extends Controller
     public function buyLimit(){
         $condition['review_status'] = 3;
         $condition['is_delete'] = 0;
-//        $condition['end_time|>'] = Carbon::now();
         try{
             $promoteInfo = ActivityPromoteService::buyLimit($condition);
             return $this->display('web.goods.buyLimit',compact('promoteInfo'));
@@ -48,11 +47,13 @@ class ActivityPromoteController extends Controller
         if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
             return $this->error('抢购只能是企业用户下单');
         }
+
         if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
             if(!session('_curr_deputy_user')['can_po']){
                 return $this->error('您没有权限为该企业下单');
             }
         }
+
         try{
             $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条

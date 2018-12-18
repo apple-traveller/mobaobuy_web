@@ -14,7 +14,6 @@ class ActivityPromoteService
 
     public static function getList($params=[], $page = 1 ,$pageSize=10){
         $condition = ['is_delete'=>0];
-
         if(isset($params['status'])){
             $condition['review_status'] = $params['status'];
         }
@@ -32,7 +31,6 @@ class ActivityPromoteService
             }else{
                 $item['is_over'] = false;
             }
-
             if(Carbon::now()->lt($item['begin_time'])){
                 $item['is_soon'] = true;
             }else{

@@ -15,10 +15,11 @@ class InquireQuoteController extends Controller
         $pageSize = $request->input('pageSize ',10);
         $inquire_id = $request->input('inquire_id',-1);
         $condition['is_delete'] = 0;
-        if($inquire_id==-1){
+        if($inquire_id!=-1){
             $condition['inquire_id'] = $inquire_id;
         }
         $inquire_quotes = InquireQuoteService::getInquireQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        //dd($inquire_quotes);
         return $this->display('admin.inquire.quote_list',[
             'inquire_quotes'=>$inquire_quotes['list'],
             'total'=>$inquire_quotes['total'],

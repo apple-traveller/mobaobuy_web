@@ -72,9 +72,6 @@
 							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}{{$v['unit_name']}}</div>
 						</div>
 						<div class="ovh mt10 ">
-
-							<!-- <div class="mx_progress"><div class="mx_progress_com" ></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}kg</span> -->
-
 							<div class="mx_progress" style="width:250px;">
 								@if($v['available_quantity'] <= 0)
 									<div class="mx_progress_com" style="width: 0%"></div>

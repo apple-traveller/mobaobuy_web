@@ -26,7 +26,6 @@ class WebClosed extends Controller
 
         if(!empty(session('_web_user_id'))){
             //缓存用户的基本信息
-
             if(session()->has('_web_user')) {
                 if (session('_web_user.is_real') == 2) {
                     $user_real_count = UserRealRepo::getTotalCount(['user_id' => session('_web_user_id'), 'review_status' => 1]);
@@ -76,11 +75,8 @@ class WebClosed extends Controller
                     'name' => session('_web_user')['nick_name'],
                     'address_id' => session('_web_user')['address_id']
                 ];
-
                 session()->put('_curr_deputy_user', $info);
             }
-
-
             //缓存模板信息
             if(!session()->has('web_theme')){
                 session()->put('web_theme', getConfig('template','default'));
