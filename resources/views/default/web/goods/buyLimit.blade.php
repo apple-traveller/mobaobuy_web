@@ -69,7 +69,7 @@
 							<h1 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{$v['goods_name']}}</h1><span class=" ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
 						</div>
 						<div class="ovh mt10">
-							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}kg</div>
+							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}{{$v['unit_name']}}</div>
 						</div>
 						<div class="ovh mt10 ">
 
@@ -84,10 +84,10 @@
 									<div class="mx_progress_com" style="width: {{(int)(((float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
 								@endif
 							</div>
-							<span class="fl fs16 gray">可售{{$v['available_quantity']}}kg</span>
+							<span class="fl fs16 gray">可售{{$v['available_quantity']}}{{$v['unit_name']}}</span>
 						</div>
 						<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
-						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>/kg</div>
+						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}</div>
 
 						@if($v['is_over'])
 							<div class="graybg">

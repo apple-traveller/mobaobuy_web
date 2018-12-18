@@ -117,13 +117,13 @@
 									</div>
 									<div class="tac mt20 ovh">
 										<span class="fr pt10 ovh di gray">
-											<span style="margin: 0 20px 0 0">目标：{{$v['num']}}kg</span>
+											<span style="margin: 0 20px 0 0">目标：{{$v['num']}}{{$v['unit_name']}}</span>
 											<font class="orange">{{$v['click_count']}}</font>次浏览
 										</span>
 									</div>
 									<div class="mx_price">
 										<font class="gray">单价不超过</font>
-										<font class="orange fs24">￥{{$v['price']}}</font>/kg
+										<font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}
 									</div>
 									@if($v['is_over'])
 										<div class="mx_btn" style='background: #b1b1b1;'>已结束</div>

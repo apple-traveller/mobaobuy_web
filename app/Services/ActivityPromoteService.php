@@ -48,6 +48,12 @@ class ActivityPromoteService
     //限时抢购
     public static function buyLimit($condition){
         $info_list = ActivityPromoteRepo::getList([],$condition);
+
+        foreach($info_list as &$v){
+            $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+            $v['unit_name'] = $goodsInfo['unit_name'];
+        }
+
         foreach ($info_list as &$item){
             if(Carbon::now()->gt($item['end_time'])){
                 $item['is_over'] = true;
