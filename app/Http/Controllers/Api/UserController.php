@@ -231,8 +231,12 @@ class UserController extends ApiController
     public function delCollection(Request $request)
     {
         $id = $request->input('id');
+        if(empty($id)){
+            return $this->error('缺少参数，id');
+        }
+        $userId = $this->getUserID($request);
         try{
-            UserService::delCollectGoods($id);
+            UserService::delCollectGoodsApi($id,$userId);
             return $this->success('','success');
         }catch(\Exception $e){
             return $this->error($e->getMessage());

@@ -367,6 +367,11 @@ class UserService
         return UserCollectGoodsRepo::delete($id);
     }
 
+    //删除搜藏商品
+    public static function delCollectGoodsApi($id,$userId){
+        return UserCollectGoodsRepo::deleteByFields(['user_id'=>$userId,'goods_id'=>$id]);
+    }
+
     //我要卖货提交
     public static function sale($data){
 
@@ -562,7 +567,7 @@ class UserService
     public static function checkUserIsCollectApi($userId,$goodsId){
         $collectGoodsInfo = UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$goodsId]);
         if(!empty($collectGoodsInfo)){
-            return $collectGoodsInfo['id'];
+            return 1;
         }
         return 0;
     }

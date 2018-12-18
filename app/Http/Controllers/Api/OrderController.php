@@ -76,6 +76,18 @@ class OrderController extends ApiController
         return $this->success(compact('orderDetailsInfo'),'success');
     }
 
+    //获取订单的各个状态
+    public function getOrderStatus(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        if(empty($order_id)){
+            return $this->error('缺少order_id');
+        }
+        $order_info = OrderInfoService::getOrderInfoById($order_id);
+        $res = OrderInfoService::getOrderStatusNameApi($order_info);
+        return $this->success($res,'success');
+    }
+
     //订单取消
     public function orderCancel(Request $request){
         $id = $request->input('id');
