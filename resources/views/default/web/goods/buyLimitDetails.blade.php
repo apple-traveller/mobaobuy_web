@@ -64,15 +64,14 @@
                         $.msg.error('不能大于最大限购量');
                         return;
                     }
-
                 }
+
                 if(iptsVal+packing_spec > can_num){
                     $.msg.error('不能大于可售');
                     return;
                 }else{
                     ipts.val(iptsVal + packing_spec);
                 }
-
 
             });
 //            $('.shop_num_reduce').click(function(){

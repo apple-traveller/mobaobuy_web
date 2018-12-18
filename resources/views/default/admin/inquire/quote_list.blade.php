@@ -64,7 +64,6 @@
                                 <td><div class="tDiv">{{$vo['delivery_time']}}</div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/admin/inquire/edit?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                         <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -125,7 +124,7 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/inquire/delete?id="+id;
+                    window.location.href="/admin/inquireQuote/delete?id="+id;
                     layer.close(index);
                 });
             });

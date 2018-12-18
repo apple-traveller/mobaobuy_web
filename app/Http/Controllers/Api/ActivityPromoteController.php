@@ -11,6 +11,7 @@ class ActivityPromoteController extends ApiController
     //限时抢购
     public function buyLimit(){
         $condition['review_status'] = 3;
+        $condition['is_delete'] = 0;
         try{
             $promoteInfo = ActivityPromoteService::buyLimit($condition);
             return $this->success($promoteInfo,'success');
@@ -35,7 +36,6 @@ class ActivityPromoteController extends ApiController
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
-
     }
 
     //抢购详情 立即下单
@@ -49,11 +49,13 @@ class ActivityPromoteController extends ApiController
         if($apiDeputyUser['is_self'] && ($apiDeputyUser['is_firm'] == 0)){
             return $this->error('抢购只能是企业用户下单');
         }
+
         if(($apiDeputyUser['is_firm'] == 1) && ($apiDeputyUser['is_self'] == 0)){
-            if(!session('_curr_deputy_user')['can_po']){
+            if(!$apiDeputyUser['can_po']){
                 return $this->error('您没有权限为该企业下单');
             }
         }
+
         try{
             $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
@@ -74,7 +76,6 @@ class ActivityPromoteController extends ApiController
             return $this->error($e->getMessage());
         }
     }
-
 
 
 }
