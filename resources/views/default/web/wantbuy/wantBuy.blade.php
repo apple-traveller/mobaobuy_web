@@ -1,17 +1,9 @@
-﻿<!doctype html>
-<html lang="en">
-<head>
-    <title>整单采购 - {{getSeoInfoByType('wholeSingle')['title']}}</title>
-    <meta name="description" content="{{getSeoInfoByType('wholeSingle')['description']}}" />
-    <meta name="keywords" content="{{getSeoInfoByType('wholeSingle')['keywords']}}" />
-    @include(themePath('.','web').'web.include.partials.base')
-    <link rel="stylesheet" type="text/css" href="https://www.mobaobuy.com/plugs/layui/css/layui.css" />
-    <link rel="stylesheet" type="text/css" href="https://www.mobaobuy.com/default/css/quotelist.css" />
-    <script src="https://www.mobaobuy.com/plugs/layui/layui.all.js"></script>
-</head>
-
-<body>
-@include(themePath('.','web').'web.include.partials.top')
+﻿@extends(themePath('.','web').'web.include.layouts.home')
+@section('title', getSeoInfoByType('consign')['title'])
+@section('keywords', getSeoInfoByType('consign')['keywords'])
+@section('description', getSeoInfoByType('consign')['description'])
+@section('css')
+    <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 
 <link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>
 <style>
@@ -79,8 +71,22 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 .cancel_btn{background:#c0bdbd;}
 .close_btn{background:#c0bdbd;}
 .buy_btn{padding-top:10px;}
-
+.nav-div .nav-cate .ass_menu {display: none;}
 </style>
+@endsection
+@section('js')
+
+
+    <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
+        })
+    </script>
+@endsection
+@section('content')
 <div class="look-out">
 
         <div class="buy-left" style="width: 930px;">
@@ -162,11 +168,8 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
         </div>
     </div>
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
-@include(themePath('.','web').'web.include.partials.footer_service')
-@include(themePath('.','web').'web.include.partials.footer_new')
-@include(themePath('.','web').'web.include.partials.copyright')
-</body>
-</html>
+
+<script src="http://mbbweb.com/plugs/layui/layui.all.js"></script>
 <script>
 
     $(function(){
@@ -404,5 +407,6 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 
 
 </script>
+@endsection
 
 

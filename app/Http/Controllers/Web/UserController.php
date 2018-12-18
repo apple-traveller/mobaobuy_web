@@ -572,9 +572,14 @@ class UserController extends Controller
             return $this->error('手机号未注册');
         }
 
+
         $type = 'sms_update_pwd';
         //生成的随机数
         $mobile_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        if (Cache::has(session()->getId().$type.session('_web_user.user_name'))) {
+            //
+            Cache::forget(session()->getId().$type.session('_web_user.user_name'));
+        }
 
         Cache::add(session()->getId().$type.session('_web_user.user_name'), $mobile_code, 5);
         createEvent('sendSms', ['phoneNumbers'=>session('_web_user.user_name'), 'type'=>$type, 'tempParams'=>['code'=>$mobile_code]]);

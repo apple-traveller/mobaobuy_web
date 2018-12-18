@@ -471,7 +471,8 @@
                     <li @if(!$loop->first) style="display: none;" @endif>
                         <ul class="Quotate">
 
-                                    @foreach($v['list'] as $vv)
+                                    @foreach($v['list'] as $k=>$vv)
+                                        @if($k <= 3)
                                         <a rel="nofollow" href="detail/{{$vv['id']}}.html">
                                             <li>
                                                 <div class="Quotate-img" >
@@ -480,6 +481,7 @@
                                                 <div class="Quotate_text">{{$vv['title']}}</div>
                                             </li>
                                         </a>
+                                        @endif
                                     @endforeach
                         </ul>
 
