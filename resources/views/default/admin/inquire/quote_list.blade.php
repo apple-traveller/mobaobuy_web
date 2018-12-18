@@ -1,8 +1,12 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
 <div class="warpper">
-    <div class="title"><a href="/admin/inquire/index?currpage={{$currpage}}" class="s-back">返回</a>求购 - 求购报价信息</div>
-    <div class="content visible">
+    @if($inquire_id==-1)
+    <div class="title">求购报价 - 求购报价列表</div>
+    @else
+        <div class="title"><a href="/admin/inquire/index?currpage={{$currpage}}" class="s-back">返回</a>求购 - 求购报价信息</div>
+    @endif
+        <div class="content visible">
         <div class="explanation" id="explanation">
             <div class="ex_tit">
                 <i class="sc_icon"></i>
