@@ -16,7 +16,7 @@ class WantBuyController extends Controller
      */
     public function wantBuyList(Request $request){
         $currpage = $request->input('currpage',1);
-        $pageSize = 1;
+        $pageSize = 5;
         $condition = [];
         $condition['is_delete'] = 0;
         $condition['is_show'] = 1;
@@ -33,20 +33,21 @@ class WantBuyController extends Controller
 
         $condition = [];
         if(!empty($delivery_area)){
-            $condition['delivery_area'] = $delivery_area;
+            $condition['delivery_area'] = '%' . $delivery_area . '%';
         }
         if(!empty($cat_name)){
-            $condition['cat_name'] = $cat_name;
+            $condition['cat_name'] = '%' . $cat_name . '%';
         }
         if(!empty($brand_name)){
-            $condition['brand_name'] = $brand_name;
+            $condition['brand_name'] = '%' . $brand_name . '%';
         }
         if(!empty($goods_name)){
-            $condition['goods_name'] = $goods_name;
+            $condition['goods_name'] = '%' . $goods_name . '%';
         }
-        $pageSize = 1;
+        $pageSize = 5;
 
         $goodsList = InquireService::inquireList(['pageSize' => $pageSize, 'page' => $currpage], $condition);
+//        dd($goodsList);
 
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');

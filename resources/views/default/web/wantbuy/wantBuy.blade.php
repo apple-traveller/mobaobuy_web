@@ -193,7 +193,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
         });
 
         //点击我要供货
-        $(".but_login").click(function() {
+        $("ul").on("click",'.but_login',function() {
             var userId = "{{session('_web_user_id')}}";
             var buy_id = $(this).attr('buy_id');
             if (userId == "") {
@@ -232,7 +232,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                         html += "<div class=\"lh30 gray\">请在下方填写您的真实报价（价格必填），并对您的货物描述清楚。</div>";
                         html += "<form action='/buy/quote.html' method='post'>";
                         html += " <input type=\"hidden\" name=\"buy_id\"  value=\"" + buy_id + "\">";
-                        html += "<div class=\"qg_text mb10\">求购：<span>" + row['cat_name'] + ' ' + row['goods_name'] + ' ' + row['brand_name'] + ' ' + row.num + ' ' + row.price + ' ' + row.delivery_area + "</span></div>";
+                        html += "<div class=\"qg_text mb10\">求购：<span>"  + row['goods_name'] + ' '  + row.num + row.unit_name +' $' + row.price + ' ' + row.delivery_area + "</span></div>";
                         html += "<div>价格：<input type\"text\" class=\"input-text4 mr5\" value=" + row.price + " name=\"price\">";
                         html += "数量：<input type=\"text\" class=\"input-text4 mr5\" value=" + row.num + " name=\"num\">";
                         html += "交货地：<input type=\"text\" class=\"input-text4 mr5\" value='" + row.delivery_area + "' name=\"deliveryarea\">";
@@ -317,7 +317,8 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                 , theme: "#88be51" //样式
                 , jump: function (obj, first) {
                     if (!first) {
-//                        getInfo(obj.curr);
+//                       getInfo(obj.curr);
+
                         window.location.href='/wantBuy?currpage='+obj.curr;
                     }
                 }
@@ -352,16 +353,18 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
             dataType: "json",
             success: function(res){
                 if(res.code==200) {
+
                     var data = res.data;
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;
                     var total = data.total;
                     var list = data.list;
+
                     $(".buy-list").children('li').remove();
+                    var _html = '';
                     for (var i=0;i<list.length;i++)
                     {
-                       var _html = '';
-                        _html += ' <li><div class="buy-list-text1"> <p class="buy-list-te1"><span class="fs16">求购：'+list[i].goods_name +list[i].num+list[i].unit_name+'</span> <span class="gray">发布时间：'+list[i].add_time+'</span></p> <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥'+list[i].price+'</i><span class="gray">交货地：'+list[i].delivery_area+'</span><span class="gray">交货时间：'+list[i].delivery_time+'</span></p> <p class="buy-list-te3 gray">跟进交易员： <span>'+list[i].contacts+'</span> <span>'+list[i].contacts_mobile+'</span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin='+list[i].qq+'&amp;site=qq&amp;menu=yes"> <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> '+list[i].qq+'</a> </p></div><div class="buy-list-text2"> <a href="javascript:void(0)" class="but_login" buy_id="2728375">我要供货</a></div> </li>';
+                        _html += ' <li><div class="buy-list-text1"> <p class="buy-list-te1"><span class="fs16">求购：'+list[i].goods_name +list[i].num+list[i].unit_name+'</span> <span class="gray">发布时间：'+list[i].add_time+'</span></p> <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥'+list[i].price+'</i><span class="gray">交货地：'+list[i].delivery_area+'</span><span class="gray">交货时间：'+list[i].delivery_time+'</span></p> <p class="buy-list-te3 gray">跟进交易员： <span>'+list[i].contacts+'</span> <span>'+list[i].contacts_mobile+'</span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin='+list[i].qq+'&amp;site=qq&amp;menu=yes"> <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> '+list[i].qq+'</a> </p></div><div class="buy-list-text2"> <a href="javascript:void(0)" class="but_login" buy_id="'+list[i].id+'">我要供货</a></div> </li>';
                     }
                     $(".buy-list").append(_html);
 //                    $(".news_pages").append('<ul id="page" class="pagination"></ul>');
@@ -379,6 +382,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                             , theme: "#88be51" //样式
                             , jump: function (obj, first) {
                                 if (!first) {
+//                                    window.location.href='/wantBuy?currpage='+obj.curr;
                                     getInfo(obj.curr);
                                 }
                             }
@@ -388,7 +392,9 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                 }else{
                     $(".buy-list").children('li').remove();
                     $('.page').remove();
+                    $(".buy-list").nextAll().remove();
                     $(".buy-list").after(' <li class="nodata">无相关数据</li>');
+
                     $('#relevant_total').text('0');
                 }
                 console.log(res);return;
