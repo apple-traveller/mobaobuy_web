@@ -202,7 +202,7 @@
                     , curr: "{{$currpage}}"  //当前页
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/user/userSale?currpage="+obj.curr+"&user_name={{$user_name}}";
+                            window.location.href="/admin/demand/userSale?currpage="+obj.curr+"&user_name={{$user_name}}";
                         }
                     }
                 });
