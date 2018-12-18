@@ -64,6 +64,7 @@
                                 <td><div class="tDiv">{{$vo['delivery_time']}}</div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
+                                        <a style="cursor:pointer;" title="查看" data-remark="{{$vo['remark']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看备注</a>
                                         <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -129,6 +130,21 @@
                 });
             });
         }
+
+        $(".btn_see").click(function(){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                var remark = $(".btn_see").attr("data-remark");
+                layer.open({
+                    type: 1,
+                    title: '备注',
+                    area: ['350px', '220px'],
+                    content: '<div class="label_value">' +
+                    '<textarea style="margin: 10px;" name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+remark+'</textarea>' +
+                    '</div>'
+                });
+            });
+        });
 
     </script>
 @stop

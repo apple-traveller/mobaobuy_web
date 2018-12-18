@@ -34,7 +34,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-goodsname="" data-packing-spec="0" value="{{$inquire['goods_name']}}"  autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-goodsname="{{$inquire['goods_name']}}" data-packing-spec="{{$goods['packing_spec']}}" value="{{$inquire['goods_name']}}"  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <input type="hidden" value="{{$inquire['goods_id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <div style="margin-left: 10px;color:red;" class="notic">包装规格为：{{$goods['packing_spec']}} {{$goods['unit_name']}}/{{$goods['packing_unit']}}</div>
