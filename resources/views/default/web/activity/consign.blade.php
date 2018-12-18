@@ -68,9 +68,11 @@
 									<div class="ovh mt10 ">
 										<div class="mx_progress">
 											@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
+												<div class="bq__progress_com" style="width: 100%;"></div>
+											@elseif((float)$v['goods_number'] <= 0)
 												<div class="bq__progress_com" style="width: 0%;"></div>
 											@else
-												<div class="bq__progress_com" style="width: {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
+												<div class="bq__progress_com" style="width: {{(int)(((float)$v['goods_number'])*100/(float)$v['total_number'])}}%;"></div>
 											@endif
 
 										</div>

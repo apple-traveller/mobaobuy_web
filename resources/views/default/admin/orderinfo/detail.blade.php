@@ -325,6 +325,13 @@
                                                     <input content=""  class="btn btn25 edit_order_contract"    type="button"  value="编辑合同,重新上传" >
                                                 </div>
                                             </div>
+                                        @elseif(empty($order_contact) && $orderInfo['extension_code']=="promote")
+                                            <div class="item">
+                                                <div class="label">订单合同：</div>
+                                                <div >
+                                                    <input content=""  class="btn btn25 edit_order_contract red_btn"    type="button"  value="上传合同" >
+                                                </div>
+                                            </div>
                                         @else
 
                                         @endif
@@ -822,6 +829,14 @@
                 var shipping_status = $(this).attr('data-status');
                 var pay_status = "{{$orderInfo['pay_status']}}";
                 var order_status = "{{$orderInfo['order_status']}}";
+
+                if(order_status==0){
+                    layer.msg("订单已取消", {
+                        icon: 5,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                    return false;
+                }
 
                 if(order_status<3){
                     layer.msg("商家未确认", {

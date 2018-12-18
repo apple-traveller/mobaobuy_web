@@ -83,7 +83,7 @@ class QuoteController extends Controller
             $type = explode(":", $orderType);
             $orderBy[$type[0]] = $type[1];
         }
-        $pageSize = 10;
+        $pageSize = 20;
         if(empty($t)){
             $condition['b.type'] = '1|2';
         }else{
@@ -207,7 +207,7 @@ class QuoteController extends Controller
             $con['cat.cat_name'] = '%' . $keyword . '%';
             $condition[] = $con;
         }
-        $pageSize = 10;
+        $pageSize = 20;
         $condition['b.is_delete'] = 0;
         $condition['b.is_self_run'] = 1;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
@@ -240,10 +240,10 @@ class QuoteController extends Controller
         $currpage = $request->input("currpage", 1);
         $goods_id = $good_info['goods_id'];
         $condition = [
-            'shop_id' => $shop_id,
-            'goods_id' => $goods_id,
-            'type'=>'1|2',
-            'is_delete'=>0
+            'b.shop_id' => $shop_id,
+            'b.goods_id' => $goods_id,
+            'b.type'=>'1|2',
+            'b.is_delete'=>0
         ];
         $pageSize = 4;
         $userId = session('_web_user_id');

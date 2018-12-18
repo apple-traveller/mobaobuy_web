@@ -70,21 +70,6 @@
                                 </div>
                             </div>
 
-                           {{-- <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;业务员联系电话：</div>
-                                <div class="label_value">
-                                    <input type="text" name="contact_info" class="text" value="{{$goodsQuote['contact_info']}}" maxlength="40" autocomplete="off" id="contact_info">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label">&nbsp;QQ号：</div>
-                                <div class="label_value">
-                                    <input type="text" name="QQ" class="text" value="{{$goodsQuote['QQ']}}" maxlength="40" autocomplete="off" id="QQ">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>--}}
 
                             <div class="item">
                                 <div class="label">&nbsp;选择商品分类：</div>
@@ -113,6 +98,7 @@
                                     <input type="text" name="goods_number" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
                                     <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
                             </div>
 

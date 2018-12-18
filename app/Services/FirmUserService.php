@@ -210,4 +210,10 @@ class FirmUserService
         return FirmUserRepo::getInfo($Firm_id);
     }
 
+    //根据条件获取详情
+    public static function getInfoByCondition($condition)
+    {
+        return FirmUserRepo::getInfoByFields($condition);
+    }
+
 }

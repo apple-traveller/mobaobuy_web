@@ -27,7 +27,7 @@ class OrderInfoRepo
         $query = $clazz::query();
         $res = $query->select(
             DB::raw('day(add_time) as d'),DB::raw('count(*) as order_count')
-        )->where('add_time','>',$start_time)->where('add_time','<',$end_time)->groupBy('d')->get();
+        )->where('add_time','>',$start_time)->where('add_time','<',$end_time)->where('order_status',"<>",0)->groupBy('d')->get();
         if($res){
             return $res->toArray();
         }

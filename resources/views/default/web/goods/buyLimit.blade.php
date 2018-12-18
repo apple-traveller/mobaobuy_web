@@ -66,22 +66,22 @@
 				<li>
 					<div class="ms_list_center">
 						<div class="ovh">
-							<h1 class="fs24 fl ovhwp" style="height: 36px;width:190px;">{{$v['goods_name']}}</h1><span class="fr pt10 ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
+							<h1 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{$v['goods_name']}}</h1><span class=" ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
 						</div>
-						<div class="ovh mt30">
+						<div class="ovh mt10">
 							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}kg</div>
 						</div>
-						<div class="ovh mt20 ">
+						<div class="ovh mt10 ">
 
 							<!-- <div class="mx_progress"><div class="mx_progress_com" ></div></div><span class="fl fs16 ml10 gray">可售{{$v['available_quantity']}}kg</span> -->
 
-							<div class="mx_progress">
+							<div class="mx_progress" style="width:250px;">
 								@if($v['available_quantity'] <= 0)
-									<div class="mx_progress_com" style="width: 100%"></div>
-								@elseif($v['num'] <= 0)
 									<div class="mx_progress_com" style="width: 0%"></div>
+								@elseif($v['num'] <= 0)
+									<div class="mx_progress_com" style="width: 100%"></div>
 								@else
-									<div class="mx_progress_com" style="width: {{(int)(((float)$v['num']-(float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
+									<div class="mx_progress_com" style="width: {{(int)(((float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
 								@endif
 							</div>
 							<span class="fl fs16 gray">可售{{$v['available_quantity']}}kg</span>
@@ -100,7 +100,7 @@
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">敬请期待</div>
 							</div>
 						@elseif($v['available_quantity'] == 0)
-							<div class="graybg count-down"  data-endtime="{{strtotime($v['end_time'])*1000}}">
+							<div class="graybg">
 								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
 								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已售完</div>
 							</div>

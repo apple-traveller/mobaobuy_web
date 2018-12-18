@@ -20,6 +20,10 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 Route::post('/region/level', 'RegionController@regionLevelList');
 
 
+Route::get('/report', 'ReportController@index');
+Route::get('/report/test', 'ReportController@test');
+
+
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
     Route::get('/', 'LoginController@loginForm');
@@ -302,6 +306,16 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/salesman/save', 'SalesmanController@save');// 保存
         Route::post('/salesman/getSalemanByShopId', 'SalesmanController@getSalemanByShopId');// ajax根据shop_id获取数据
 
+        Route::any('/inquire/index', 'InquireController@index');//求购列表
+        Route::get('/inquire/add', 'InquireController@add');// 添加
+        Route::get('/inquire/edit', 'InquireController@edit');// 编辑
+        Route::post('/inquire/save', 'InquireController@save');// 保存
+        Route::get('/inquire/delete', 'InquireController@delete');// 删除
+        Route::post('/inquire/modifyShowStatus', 'InquireController@modifyShowStatus');// ajax修改是否显示
+
+        Route::any('/inquireQuote/index', 'InquireQuoteController@index');// 求购报价列表
+        Route::get('/inquireQuote/delete', 'InquireQuoteController@delete');// 求购报价删除
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
@@ -369,6 +383,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//商品走势图价格
 
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
+    Route::get('/wantBuy', 'wantBuyController@wantBuyList');//求购列表 // 未登录可以访问
+    Route::get('/condition/toBuyList', 'wantBuyController@wantBuyListBycondition');//求购列表条件查询
+
 
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出

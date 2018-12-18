@@ -734,12 +734,12 @@ class OrderInfoService
                 OrderContractRepo::create($s_data);
                 //根据来源,减库存操作
                 //购物车和清仓
-                foreach ($orderGoodsInfo as $k=>$v){
-                     $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
-                     ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']-$v['goods_number']]);
+                if($orderInfo['extension_code'] == 'cart' || $orderInfo['extension_code'] == 'consign') {
+                    foreach ($orderGoodsInfo as $k => $v) {
+                        $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
+                        ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'], ['goods_number' => $quoteInfo['goods_number'] - $v['goods_number']]);
+                    }
                 }
-
-
             }
             //给管理员操作添加一条数据
             $logData = [
@@ -1434,8 +1434,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-//                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
-                        'shop_goods_quote_id' => 0,
+                        'shop_goods_quote_id' => $activityPromoteInfo['id'],
+                       // 'shop_goods_quote_id' => 0,
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['goods_number'],
                         'goods_price' => $v['goods_price'],
@@ -1455,8 +1455,8 @@ class OrderInfoService
                         'order_id' => $orderInfoResult['id'],
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
-                        'shop_goods_quote_id' => 0,
-//                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
+//                        'shop_goods_quote_id' => 0,
+                        'shop_goods_quote_id' => $activityWholesaleInfo['id'],
 //                        'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['num'],
                         'goods_price' => $v['price'],
@@ -1475,8 +1475,8 @@ class OrderInfoService
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
                         'shop_goods_id' => $activityConsignInfo['goods_id'],
-//                        'shop_goods_quote_id' => $activityConsignInfo['id'],
-                        'shop_goods_quote_id' => 0,
+                        'shop_goods_quote_id' => $activityConsignInfo['id'],
+                     //   'shop_goods_quote_id' => 0,
                         'goods_id' => $activityConsignInfo['goods_id'],
                         'goods_name' => $activityConsignInfo['goods_name'],
                         'goods_sn' => $activityConsignInfo['goods_sn'],
@@ -1549,6 +1549,8 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        //$condition['order_status|<>'] = 0;
+        $condition['order_status'] = "!"."0";
         return OrderInfoRepo::getTotalCount($condition);
     }
 
@@ -1559,6 +1561,7 @@ class OrderInfoService
         $today_end=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
         $condition['add_time|<'] = date("Y-m-d H:i:s",$today_end);
         $condition['add_time|>'] = date("Y-m-d H:i:s",$today_start);
+        $condition['pay_status'] =1 ;
         $orders = OrderInfoRepo::getList([],$condition,['goods_amount']);
         $sum = 0;
         foreach($orders as $k=>$v){

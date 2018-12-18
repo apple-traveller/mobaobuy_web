@@ -71,7 +71,6 @@ class GoodsController extends Controller
         //查询所有的分类
         $cates = GoodsCategoryService::getCates();
         $cateTrees = GoodsCategoryService::getCatesTree($cates,0,1);
-        //dd($goods_attr_ids);
         return $this->display('admin.goods.edit',[
             'brands'=>$brands['list'],
             'units'=>$units['list'],
@@ -99,15 +98,9 @@ class GoodsController extends Controller
         if(empty($data['goods_name'])){
             $errorMsg[] = '商品名称不能为空';
         }
-//        if(empty($data['original_img'])){
-//            $errorMsg[] = '商品原图不能为空';
-//        }
         if(empty($data['keywords'])){
             $errorMsg[] = '商品关键字不能为空';
         }
-//        if(empty($data['goods_model'])){
-//            $errorMsg[] = '商品型号不能为空';
-//        }
         if(empty($data['packing_spec'])){
             $errorMsg[] = '包装规格不能为空';
         }
@@ -120,15 +113,6 @@ class GoodsController extends Controller
         if(empty($data['goods_content'])){
             $errorMsg[] = '含量不能为空';
         }
-//        if(empty($data['goods_weight'])){
-//            $errorMsg[] = '商品重量不能为空';
-//        }
-//        if(empty($data['goods_desc'])){
-//            $errorMsg[] = '商品pc端描述不能为空';
-//        }
-//        if(empty($data['desc_mobile'])){
-//            $errorMsg[] = '商品移动端描述不能为空';
-//        }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
