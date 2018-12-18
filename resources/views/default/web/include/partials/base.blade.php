@@ -3,7 +3,7 @@
 <meta name="renderer" content="webkit"/>
 <meta name="force-rendering" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
-
+<meta name="wlhlauth" content="299fac1a8103a81c99c1c6877c0a0b7b"/>
 @include('partials.base_header')
 <link rel="stylesheet" type="text/css" href="{{asset('css/jquery.dataTables.min.css')}}" />
 <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
