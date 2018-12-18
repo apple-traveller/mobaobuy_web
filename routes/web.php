@@ -740,6 +740,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/detail','OrderController@orderDetails');//订单详情
+        Route::post('/order/order_status','OrderController@getOrderStatus');//获取订单的各个状态
         Route::post('/order/status','OrderController@orderStatusCount');//各个状态的订单数量
         Route::post('/order/del','OrderController@orderDel');//删除订单
         Route::post('/order/order_cancel','OrderController@orderCancel');//订单取消
