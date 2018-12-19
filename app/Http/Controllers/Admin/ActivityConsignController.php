@@ -32,12 +32,17 @@ class ActivityConsignController extends Controller
         $condition['b.type'] = '3';
         $pageSize =10;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
+        $goods_unit = "KG";
+        if(!empty($consign_info['list'])){
+            $goods_unit = GoodsService::getGoodInfo($consign_info['list'][0]['goods_id'])['unit_name'];
+        }
         return $this->display('admin.activityconsign.consign',[
             'total'=>$consign_info['total'],
             'consign_list'=>$consign_info['list'],
             'currentPage'=>$currentPage,
             'goods_name'=>$goods_name,
-            'pageSize'=>$pageSize
+            'pageSize'=>$pageSize,
+            'goods_unit'=>$goods_unit
         ]);
     }
 
