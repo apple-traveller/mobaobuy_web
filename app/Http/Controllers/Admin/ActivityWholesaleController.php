@@ -25,6 +25,7 @@ class ActivityWholesaleController extends Controller
         $condition = [];
         if($is_expire!=0){
             if($is_expire==1){
+                $condition['review_status'] = 3;//已通过审核
                 $condition['end_time|>'] = Carbon::now();//未过期
             }else{
                 $condition['end_time|<'] = Carbon::now();//已过期
@@ -40,14 +41,18 @@ class ActivityWholesaleController extends Controller
         $pageSize = 10;
 
         $list = ActivityWholesaleService::getListBySearch([['pageSize' => $pageSize, 'page' => $currentPage, 'orderType' => ['begin_time' => 'desc']]],$condition);
-
+        $goods_unit = "KG";
+        if(!empty($list['list'])){
+            $goods_unit = GoodsService::getGoodInfo($list['list'][0]['goods_id'])['unit_name'];
+        }
         return $this->display('admin.activitywholesale.list',[
             'list' => $list['list'],
             'total' => $list['total'],
             'pageSize' => $pageSize,
             'currentPage' => $currentPage,
             'shop_name'=>$shop_name,
-            'is_expire'=>$is_expire
+            'is_expire'=>$is_expire,
+            'goods_unit'=>$goods_unit
         ]);
     }
 

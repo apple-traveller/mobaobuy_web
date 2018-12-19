@@ -9,7 +9,6 @@
     @section('description', getSeoInfoByType('quote')['description'])
 @endif
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
 	<style>
         .trade-close-btn {
@@ -43,7 +42,6 @@
 	</style>
 @endsection
 @section('js')
-    <script src="{{asset('plugs/layui/layui.all.js')}}"></script>
     <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
     <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script>

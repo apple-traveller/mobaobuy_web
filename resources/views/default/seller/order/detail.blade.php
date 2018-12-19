@@ -235,29 +235,6 @@
                         <div class="step" style="background: #fff;padding: 10px 20px;">
                             <div class="step_title"><i class="ui-step"></i><h3>其他信息</h3></div>
                             <div class="section">
-                                {{--<dl>--}}
-                                    {{--<dt>发票抬头：--}}{{--@if(!empty($user_invoices)) {{ $user_invoices['shop_name'] }}@else 无 @endif--}}{{--</dt>--}}
-                                    {{--<dt>税号：@if(!empty($user_invoices)) {{$user_invoices['tax_id']}} @else 无 @endif</dt>--}}
-                                {{--</dl>--}}
-
-                                {{--<dl>--}}
-                                    {{--<dt>开票地址：@if(!empty($user_invoices)) {{$user_invoices['company_address']}} @else 无 @endif</dt>--}}
-
-                                    {{--<dt>开票电话：@if(!empty($user_invoices)) {{$user_invoices['company_telephone']}} @else 无 @endif</dt>--}}
-
-                                {{--</dl>--}}
-
-                                {{--<dl>--}}
-                                    {{--<dt>收票地址：@if(!empty($user_invoices)) {{$user_invoices['consignee_address']}} @else 无 @endif</dt>--}}
-
-                                    {{--<dt>收票电话：@if(!empty($user_invoices)){{$user_invoices['consignee_mobile_phone']}} @else 无 @endif</dt>--}}
-
-                                {{--</dl>--}}
-
-                                {{--<dl>--}}
-                                    {{--<dt>收票人：@if(!empty($user_invoices)) {{$user_invoices['consignee_name']}} @else 无 @endif</dt>--}}
-                                    {{--<dt></dt>--}}
-                                {{--</dl>--}}
 
                                 <dl style="width:30.6%">
                                     <dt style="width: 320%">卖家留言：@if(empty($orderInfo)) 无 @else {{$orderInfo['to_buyer']}} @endif<span class="viewMessage" style="color:blue;cursor:pointer;">留言</span></dt>
@@ -288,9 +265,9 @@
                                         <tr>
                                             <th width="15%" class="first" style="padding-left: 9px">商品名称 [ 品牌 ]</th>
                                             <th width="15%">商品编码</th>
-                                            <th width="10%">价格</th>
-                                            <th width="10%">购买数量</th>
-                                            <th width="10%">已发货数量</th>
+                                            <th width="10%">价格(￥)</th>
+                                            <th width="10%">购买数量(KG)</th>
+                                            <th width="10%">已发货数量(KG)</th>
                                         </tr>
                                         </thead>
                                         <tbody>

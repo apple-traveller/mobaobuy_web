@@ -90,55 +90,56 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 <div class="look-out">
 
         <div class="buy-left" style="width: 930px;">
-            <h3 class="supply-h3"><i class="supply-text">求购列表</i>
 
-                <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange" id="relevant_total">{{$inquireList['total']}}</i>条数据
-                </p></h3>
+            @if(isset($inquireList) && !empty($inquireList['list']))
+                <h3 class="supply-h3"><i class="supply-text">求购列表</i>
 
-            <div class="buy-form-search">
-                <form action="" method="get">
-                    {{--分类<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">--}}
-                    商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
-                    {{--厂商<input class="buy-text" name="brand_name" type="text" value="" style="width: 125px;">--}}
-                    交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
-                    <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
-                </form>
-            </div>
+                    <p class="fr">搜索：<i class="red"></i> 共搜到 <i class="orange" id="relevant_total">{{$inquireList['total']}}</i>条数据
+                    </p></h3>
 
-            <ul class="buy-list">
-                @if(!empty($inquireList))
-                @foreach($inquireList['list'] as $v)
-                        {{--{{$v['unit_name']}}--}}
-                <li>
-                    <div class="buy-list-text1">
-                        <p class="buy-list-te1"><span class="fs16">求购：{{$v['goods_name']}} {{$v['num']}}{{$v['unit_name']}}</span>
-                            <span class="gray">发布时间：{{ \Carbon\Carbon::parse($v['add_time'])->diffForHumans()}}</span></p>
-                        <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥{{$v['price']}}</i><span class="gray">交货地：{{$v['delivery_area']}}</span><span class="gray">交货时间：{{$v['delivery_time']}}</span></p>
-                        <p class="buy-list-te3 gray">跟进交易员：
-                         <span>{{$v['contacts']}}</span>
-                          <span>{{$v['contacts_mobile']}}</span>
-                           <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin={{$v['qq']}}&amp;site=qq&amp;menu=yes">
-                                <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> {{$v['qq']}}
-                            </a>
-                            </p>
-                    </div>
-                     <div class="buy-list-text2">
-                        {{--<p>正在洽谈</p>--}}
-                        <a href="javascript:void(0)" class="but_login" buy_id="{{$v['id']}}">我要供货</a>
-                     </div>
-                </li>
-                @endforeach
-                @endif
-            </ul>
+                <div class="buy-form-search">
+                    <form action="" method="get">
+                        分类<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">
+                        商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
+                        厂商<input class="buy-text" name="brand_name" type="text" value="" style="width: 125px;">
+                        交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
+                        <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
+                    </form>
+                </div>
 
-            <div class="page" style="background:#fff; padding: 35px 0px;">
-                <div class="link">
-                    <div class="news_pages" style="margin-top: 20px;text-align: center;">
-                        <ul id="page" class="pagination"></ul>
+                <ul class="buy-list">
+                    @foreach($inquireList['list'] as $v)
+                        <li>
+                            <div class="buy-list-text1">
+                                <p class="buy-list-te1"><span class="fs16">求购：{{$v['goods_name']}} {{$v['num']}}{{$v['unit_name']}}</span>
+                                    <span class="gray">发布时间：{{ \Carbon\Carbon::parse($v['add_time'])->diffForHumans()}}</span></p>
+                                <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥{{$v['price']}}</i><span class="gray">交货地：{{$v['delivery_area']}}</span><span class="gray">交货时间：{{$v['delivery_time']}}</span></p>
+                                <p class="buy-list-te3 gray">跟进交易员：
+                                 <span>{{$v['contacts']}}</span>
+                                  <span>{{$v['contacts_mobile']}}</span>
+                                   <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin={{$v['qq']}}&amp;site=qq&amp;menu=yes">
+                                        <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> {{$v['qq']}}
+                                    </a>
+                                    </p>
+                            </div>
+                             <div class="buy-list-text2">
+                                <p>正在洽谈</p>
+                                <a href="javascript:void(0)" class="but_login" buy_id="{{$v['id']}}">我要供货</a>
+                             </div>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <div class="page" style="background:#fff; padding: 35px 0px;">
+                    <div class="link">
+                        <div class="news_pages" style="margin-top: 20px;text-align: center;">
+                            <ul id="page" class="pagination"></ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            @else
+                <div class="nodata">暂无求购信息</div>
+            @endif
         </div>
         <div class="buy-right">
             <div class="buy-right-release">
@@ -169,7 +170,6 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
     </div>
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 
-<script src="http://mbbweb.com/plugs/layui/layui.all.js"></script>
 <script>
 
     $(function(){

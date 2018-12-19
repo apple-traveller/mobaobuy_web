@@ -18,8 +18,8 @@
                 <div class="common-head">
                     <div class="order_state_tab">
                         <a href="/admin/activity/wholesale?is_expire=0" @if($is_expire==0) class="current" @endif>全部<em @if($is_expire!=0) style="display:none;" @endif>({{$total}})</em></a>
-                        <a href="/admin/activity/wholesale?is_expire=1" @if($is_expire==1) class="current" @endif>未过期<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
-                        <a href="/admin/activity/wholesale?is_expire=2" @if($is_expire==2) class="current" @endif>已过期<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/activity/wholesale?is_expire=1" @if($is_expire==1) class="current" @endif>进行中<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/activity/wholesale?is_expire=2" @if($is_expire==2) class="current" @endif>已结束<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
                     </div>
                     <div class="fl">
                         <a href="/admin/activity/wholesale/add"><div style="margin-left:10px;margin-top:6px;" class="fbutton"><div class="add" title="添加集采火拼活动"><span><i class="icon icon-plus"></i>添加集采火拼活动</span></div></div></a>
@@ -69,8 +69,8 @@
                                         <td><div class="tDiv">{{$v['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$v['goods_name']}}</div></td>
                                         <td><div class="tDiv">¥{{$v['price']}}</div></td>
-                                        <td><div class="tDiv">{{$v['num']}}</div></td>
-                                        <td><div class="tDiv">{{$v['partake_quantity']}}</div></td>
+                                        <td><div class="tDiv">{{$v['num']}}{{$goods_unit}}</div></td>
+                                        <td><div class="tDiv">{{$v['partake_quantity']}}{{$goods_unit}}</div></td>
                                         {{--<td><div class="tDiv">{{$v['min_limit']}}</div></td>
                                         <td><div class="tDiv">{{$v['max_limit']}}</div></td>
                                         <td><div class="tDiv">{{$v['deposit_ratio']}}</div></td>

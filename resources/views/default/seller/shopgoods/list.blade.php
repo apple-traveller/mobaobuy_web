@@ -36,15 +36,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($list as $vo)
+                                @foreach($list as $v)
                                     <tr class="">
-                                        <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['brand_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_model']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['packing_spec']}}</div></td>
+                                        <td><div class="tDiv">{{$v['id']}}</div></td>
+                                        <td><div class="tDiv">{{$v['goods_sn']}}</div></td>
+                                        <td><div class="tDiv">{{$v['goods_full_name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['brand_name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['unit_name']}}</div></td>
+                                        <td><div class="tDiv">{{$v['goods_model']}}</div></td>
+                                        <td><div class="tDiv">{{$v['packing_spec'].$v['unit_name'].'/'.$v['packing_unit']}}</div></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

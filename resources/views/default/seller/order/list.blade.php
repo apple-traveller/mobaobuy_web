@@ -64,8 +64,8 @@
                                         </td>
                                         <td><div class="tDiv"><div>{{$vo['consignee']}}</div><div>{{$vo['mobile_phone']}}</div><div>{{$vo['address']}}</div></div></td>
                                         <td><div class="tDiv">{{$vo['_status']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['shipping_fee']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['goods_amount']}}</div></td>
+                                        <td><div class="tDiv">￥{{$vo['shipping_fee']}}</div></td>
+                                        <td><div class="tDiv">￥{{$vo['goods_amount']}}</div></td>
                                         <td><div class="tDiv">@if($vo['pay_type']==1) 先款后货 @elseif($vo['pay_type']==2) 货到付款 @endif </div></td>
                                         <td class="handle">
                                             <div class="tDiv a3">

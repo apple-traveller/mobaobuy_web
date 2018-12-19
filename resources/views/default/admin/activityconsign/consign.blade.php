@@ -1,7 +1,7 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
     <div class="warpper">
-        <div class="title">促销 - 清仓特卖活动</div>
+        <div class="title">促销 - 寄售清仓</div>
         <div class="content">
             <div class="explanation" id="explanation">
                 <div class="ex_tit">
@@ -59,7 +59,7 @@
                                     <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['goods_number']}}{{$goods_unit}}</div></td>
                                     <td><div class="tDiv">￥{{$vo['shop_price']}}</div></td>
                                     <td><div class="tDiv">{{$vo['salesman']}}</div></td>
                                     <td><div class="tDiv">{{$vo['contact_info']}}</div></td>

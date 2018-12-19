@@ -380,10 +380,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//商品走势图价格
 
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
-    Route::get('/wantBuy', 'wantBuyController@wantBuyList');//求购列表 // 未登录可以访问
-    Route::get('/condition/toBuyList', 'wantBuyController@wantBuyListBycondition');//求购列表条件查询
-    Route::post('/buy/asingle', 'wantBuyController@asingle');//求购列表 我要供货弹层
-    Route::post('/buy/savebuy', 'wantBuyController@savebuy'); //求购列表  保存报价
+    Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
+    Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
+    Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+    Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
 
 
     Route::group(['middleware' => 'web.auth'], function () {
