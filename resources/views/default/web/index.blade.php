@@ -433,7 +433,7 @@
         .nil_bf{background:#fff;border-bottom:1px solid #ebebeb;}
         .news_items_list{float:left;overflow:hidden;line-height:46px;height:46px;}
         .news_items_list li{float:left;}
-        .news_items_list li .Self-support-title{border-left:0;padding-left:0;line-height:44px;height:44px;margin:0 12px;font-size:16px;}
+        .news_items_list li .Self-support-title{border-left:0;padding-left:0;line-height:44px;height:44px;margin:0 12px;font-size:18px;}
         .news_items_list li.curr .Self-support-title{border-bottom:2px solid #75b335;color:#75b335;cursor: pointer;}
         .nil_more{float:right;line-height:46px;height:46px;margin-right:10px;}
     </style>
