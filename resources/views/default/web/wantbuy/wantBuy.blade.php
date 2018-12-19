@@ -99,9 +99,9 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 
                 <div class="buy-form-search">
                     <form action="" method="get">
-                        分类<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">
+
                         商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
-                        厂商<input class="buy-text" name="brand_name" type="text" value="" style="width: 125px;">
+                       
                         交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
                         <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
                     </form>
