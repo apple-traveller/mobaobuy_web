@@ -3,12 +3,13 @@
 <meta name="renderer" content="webkit"/>
 <meta name="force-rendering" content="webkit"/>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
-
 @include('partials.base_header')
 <link rel="stylesheet" type="text/css" href="{{asset('css/jquery.dataTables.min.css')}}" />
 <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/style.css')}}" />
-
+<link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'plugs/layui/css/layui.css')}}" />
+<script type="text/javascript" href="{{asset(themePath('/','web').'plugs/layui/layui.js')}}"></script>
+<script src="{{asset(themePath('/', 'web').'plugs/layui/layui.all.js')}}"></script>
 <script src="{{asset(themePath('/','web').'js/base.js')}}"></script>
 
 

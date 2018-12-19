@@ -193,7 +193,7 @@
             <ul class="order-list-brand">
                 <li><span>订单流水号</span><span>商品名称</span><span >单价</span><span>数量</span></li>
                 @foreach($invoiceGoods as $v)
-                    <li><span>{{$v['order_sn']}}</span><span class="ovhwp" style="height: 40px;">{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['invoice_num']}}kg</span><span></span><span></span></li>
+                    <li><span>{{$v['order_sn']}}</span><span class="ovhwp" style="height: 40px;">{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['invoice_num']}}KG</span><span></span><span></span></li>
                 @endforeach
             </ul>
             <div class="Amount_money">

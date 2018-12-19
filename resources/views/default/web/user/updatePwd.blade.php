@@ -173,7 +173,7 @@
             };
             Ajax.call("{{url('/updatePwd')}}", params, function (result){
                 if (result.code == 1) {
-                    $.msg.tips('修改成功！');
+                    $.msg.alert('修改成功！');
                     window.location.reload();
                 }else{
                     $.msg.error(result.msg);

@@ -24,30 +24,30 @@
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
             });
-
-            function Remaine_time(ntime,nday,nhour,nminute,nsecond){
-                var intDiff=parseInt(ntime);//总秒数
-                window.setInterval(function(){
-                    var day=0,hour=0,minute=0,second=0;
-                    if(intDiff>0){
-                        day=Math.floor(intDiff/(60*60*24));
-                        hour=Math.floor(intDiff/(60*60))-(day*24);
-                        minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
-                        second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
-                    }
-                    hour += day*24;
-                    if(hour<=9)hour='0'+hour;
-                    if(minute<=9)minute='0'+minute;
-                    if(second<=9)second='0'+second;
-                    nday.html(day);
-                    nhour.html('<s></s>'+hour);
-                    nminute.html('<s></s>'+minute);
-                    nsecond.html('<s></s>'+second);
-                    intDiff--;
-                },1000)
-            }
-            Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
-
+            @if($goodsInfo['seconds'] > 0)
+                function Remaine_time(ntime,nday,nhour,nminute,nsecond){
+                    var intDiff=parseInt(ntime);//总秒数
+                    window.setInterval(function(){
+                        var day=0,hour=0,minute=0,second=0;
+                        if(intDiff>0){
+                            day=Math.floor(intDiff/(60*60*24));
+                            hour=Math.floor(intDiff/(60*60))-(day*24);
+                            minute=Math.floor(intDiff/60)-(day*24*60)-(hour*60);
+                            second=Math.floor(intDiff)-(day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                        }
+                        hour += day*24;
+                        if(hour<=9)hour='0'+hour;
+                        if(minute<=9)minute='0'+minute;
+                        if(second<=9)second='0'+second;
+                        nday.html(day);
+                        nhour.html('<s></s>'+hour);
+                        nminute.html('<s></s>'+minute);
+                        nsecond.html('<s></s>'+second);
+                        intDiff--;
+                    },1000)
+                }
+                Remaine_time('{{$goodsInfo['seconds']}}',$('.day_show1'),$('.hour_show1'),$('.minute_show1'),$('.second_show1'));
+            @endif
 
             $(document).delegate('.shop_num_plus','click',function(){
                 var ipts=$(this).siblings('input.Bidders_record_text');

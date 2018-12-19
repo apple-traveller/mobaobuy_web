@@ -104,10 +104,11 @@
                             </div>
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;目标数量：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;目标数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="number" name="num" class="text" @if(!empty($wholesale_info)) value="{{$wholesale_info['num']}}" @endif maxlength="5"  autocomplete="off" id="num">
                                     <div class="form_prompt"></div>
+                                    <div class="notice">规格的整数倍，向下取整处理</div>
                                 </div>
                             </div>
 

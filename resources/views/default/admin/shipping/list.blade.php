@@ -132,7 +132,7 @@
             });
         }
         $(function(){
-            $(".onEnabled").click(function () {alert(1);
+            $(".onEnabled").click(function () {
                 var id = $(this).data("id");
                 var status = $(this).data("status");
                 $.post('/admin/shipping/setStatus', {

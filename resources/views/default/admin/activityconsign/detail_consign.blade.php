@@ -28,8 +28,8 @@
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;单价(<span style="color:#909090;" >元</span>)：</div>
-                                <div class="label_value font14">{{$consign_info['shop_price']}}</div>
+                                <div class="label">&nbsp;单价：</div>
+                                <div class="label_value font14">￥{{$consign_info['shop_price']}}</div>
                             </div>
 
                             <div class="item">

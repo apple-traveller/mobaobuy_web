@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\ArticleRepo;
 use App\Services\ArticleCatService;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
@@ -83,6 +84,18 @@ class NewsController extends Controller
         // 获取上下页
         $page_data = ArticleService::getUpDown($id);
 
-        return $this->display('web.news.detail',['cat'=>$cat_info,'page_data'=>$page_data,'article'=>$article]);
+        //获取相关资讯
+        $condition = [];
+        $condition['is_show'] = 1;
+        $condition['cat_id'] = $article['cat_id'];
+        $aboutNews = ArticleService::aboutNews(['page'=>1, 'pageSize'=>10,'orderType'=>['add_time'=>'desc']],$condition);
+
+        foreach($aboutNews as $k=>$v){
+            if($id == $v['id']){
+                unset($aboutNews[$k]);
+            }
+        }
+//        dd($aboutNews);
+        return $this->display('web.news.detail',['cat'=>$cat_info,'page_data'=>$page_data,'article'=>$article,'aboutNews'=>$aboutNews]);
     }
 }

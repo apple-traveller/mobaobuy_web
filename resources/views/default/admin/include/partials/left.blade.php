@@ -105,7 +105,7 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/list" data-param="menushopping|02_order_list" target="workspace">订单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/orderinfo/delivery/list" data-param="menushopping|09_delivery_order" target="workspace">发货单列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/invoice/list" data-param="menushopping|10_delivery_order" target="workspace">发票申请列表</a></li>
-                        <li><s></s><a href="javascript:void(0);" data-url="/admin/logistics/list" data-param="menushopping|10_delivery_order" target="workspace">物流信息列表</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/logistics/list" data-param="menushopping|11_delivery_order" target="workspace">物流信息列表</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/shipping" data-param="menushopping|12_delivery_order" target="workspace">物流公司列表</a></li>
                     </ul>
                 </div>

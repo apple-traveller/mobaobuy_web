@@ -11,6 +11,11 @@ class ArticleCatService
         return ArticleCatRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id]);
     }
 
+    //最新资讯
+    public static function getLatestNews(){
+         return ArticleRepo::getList(['id'=>'desc'],['is_show'=>1]);
+    }
+
 
     //获取列表数据
     public static function getListApi($parent_id)

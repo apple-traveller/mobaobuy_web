@@ -58,7 +58,7 @@
                             <tr class="">
                                 <td><div class="tDiv"><span data-id="{{$vo['id']}}" class="inquire_quote" style="color:red;cursor:pointer;">{{$vo['goods_name']}}</span></div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                <td><div class="tDiv">{{$vo['price']}}元</div></td>
+                                <td><div class="tDiv">￥{{$vo['price']}}</div></td>
                                 <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
                                 <td><div class="tDiv">{{$vo['contacts']}}</div></td>

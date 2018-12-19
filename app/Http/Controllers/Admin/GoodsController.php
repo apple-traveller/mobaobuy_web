@@ -121,7 +121,7 @@ class GoodsController extends Controller
             $data['goods_thumb'] = $data['original_img'];
         }
 
-        $data['goods_full_name'] = $data['brand_name']." ".$data['goods_name']." ".$data['goods_content'];
+        $data['goods_full_name'] = $data['brand_name']." ".$data['goods_content']." ".$data['goods_name'];
 
         try{
             if(!key_exists('id',$data)){

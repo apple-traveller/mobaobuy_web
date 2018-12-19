@@ -320,10 +320,18 @@ class OrderInfoService
         return $orderList;
     }
 
+    //获取订单的订单状态，发货状态，付款状态
+    public static function getOrderStatusNameApi($order_info)
+    {
+        $res = self::getOrderStatusName($order_info['order_status'],$order_info['pay_status'],$order_info['shipping_status'],$order_info['deposit_status'],$order_info['extension_code']);
+        return $res;
+    }
+
     //得到对应的权限
     private static function getFirmUserAuth($userId,$auth){
 
     }
+
 
     private static function getOrderStatusName($order_status, $pay_status, $shipping_status,$deposit_status,$extension_code = ''){
         $status = '';

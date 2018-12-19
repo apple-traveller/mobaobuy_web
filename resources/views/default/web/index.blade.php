@@ -178,8 +178,8 @@
                             <div class="Time_limit_action_top mt10">
                                 <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="green">{{$item['click_count']}}</font>次浏览</span></div>
                             <div class="mt40">
-                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}kg</span></div>
-                                <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/kg</span></div>
+                                <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}KG</span></div>
+                                <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/KG</span></div>
                             </div>
                             @if($item['is_over'])
                                 <div class="Time_limit_action_bottom graybg">
@@ -239,8 +239,8 @@
                     <!-- <span>品牌</span> -->
                     <span style="width:12%;">品种</span>
                     <span style="width:15%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
-                    <span style="width:12%;">可售数量（kg）</span>
-                    <span style="width:10%;">单价（元/kg）</span>
+                    <span style="width:12%;">可售数量（KG）</span>
+                    <span style="width:10%;">单价（元/KG）</span>
                     <span style="width:7%;">发货地</span>
                     <span style="width:7%;">交货方式</span>
                     <span style="width:10%;">交货时间</span>
@@ -454,13 +454,6 @@
         <div class="w1200" style="margin-top:30px;">
         <div class="ovh nil_bf">
                 <ul class="news_items_list">
-                    {{--<li class="curr" href="/news.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news1.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news2.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-                    {{--<li href="/news3.html"><h1 class="Self-support-title">维生素行情</h1></li>--}}
-
-
                     @foreach($article_list as $k=>$v)
                         @if($loop->first)
                             <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
@@ -477,23 +470,9 @@
                 @foreach($article_list as $k=>$v)
                     <li @if(!$loop->first) style="display: none;" @endif>
                         <ul class="Quotate">
-                            {{--@for ($i = 0; $i < 4; $i++)--}}
-                                {{--@php $article = $article_list[$i]??[]; @endphp--}}
-                                {{--@if(!empty($article))--}}
-                                    {{--<a rel="nofollow" href="detail/{{$article['id']}}.html">--}}
-                                        {{--<li>--}}
-                                            {{--<div class="Quotate-img" >--}}
-                                                {{--<img width="100%" src="{{getFileUrl($article['image'])}}" />--}}
-                                            {{--</div>--}}
-                                            {{--<div class="Quotate_text">{{$article['title']}}</div>--}}
-                                        {{--</li>--}}
-                                    {{--</a>--}}
-                                {{--@endif--}}
-                            {{--@endfor--}}
 
-
-                                {{--@if($k < 4)--}}
-                                    @foreach($v['list'] as $vv)
+                                    @foreach($v['list'] as $k=>$vv)
+                                        @if($k <= 3)
                                         <a rel="nofollow" href="detail/{{$vv['id']}}.html">
                                             <li>
                                                 <div class="Quotate-img" >
@@ -502,9 +481,8 @@
                                                 <div class="Quotate_text">{{$vv['title']}}</div>
                                             </li>
                                         </a>
+                                        @endif
                                     @endforeach
-                                 {{--@endif--}}
-
                         </ul>
 
                         <ul class="Quotate_right">
@@ -520,9 +498,6 @@
                         </ul>
                     </li>
                 @endforeach
-                {{--<li style="display: none;">zhelishi xinwena123 </li>--}}
-
-
             </ul>
 
         </div>

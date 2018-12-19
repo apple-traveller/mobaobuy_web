@@ -1,8 +1,12 @@
 @extends(themePath('.')."admin.include.layouts.master")
 @section('iframe')
 <div class="warpper">
-    <div class="title"><a href="/admin/inquire/index?currpage={{$currpage}}" class="s-back">返回</a>求购 - 求购报价信息</div>
-    <div class="content visible">
+    @if($inquire_id==-1)
+    <div class="title">求购报价 - 求购报价列表</div>
+    @else
+        <div class="title"><a href="/admin/inquire/index?currpage={{$currpage}}" class="s-back">返回</a>求购 - 求购报价信息</div>
+    @endif
+        <div class="content visible">
         <div class="explanation" id="explanation">
             <div class="ex_tit">
                 <i class="sc_icon"></i>
@@ -22,14 +26,14 @@
                     <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
                     <div class="refresh_span">刷新 - 共{{$total}}条记录</div>
                 </div>
-                {{--<div class="search">
-                    <form action="/admin/inquire/index" name="searchForm" >
+                <div class="search">
+                    <form action="/admin/inquireQuote/index" name="searchForm" >
                         <div class="input">
                             <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus w180" placeholder="商品名称" autocomplete="off">
                             <input type="submit" class="btn"  ectype="secrch_btn" value="">
                         </div>
                     </form>
-                </div>--}}
+                </div>
             </div>
             <div class="common-content">
                 <form method="POST" action="" name="listForm" onsubmit="return confirm_bath()">
@@ -53,14 +57,14 @@
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                <td><div class="tDiv">{{$vo['user_name']}}</div></td>
-                                <td><div class="tDiv">{{$vo['price']}}元</div></td>
+                                <td><div class="tDiv">{{$vo['nick_name'].' / '.$vo['user_name']}}</div></td>
+                                <td><div class="tDiv">￥{{$vo['price']}}</div></td>
                                 <td><div class="tDiv">{{$vo['num']}}{{$vo['unit_name']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_area']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_time']}}</div></td>
                                 <td class="handle">
                                     <div class="tDiv a2">
-                                        <a href="/admin/inquire/edit?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                        <a style="cursor:pointer;" title="查看" data-remark="{{$vo['remark']}}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看备注</a>
                                         <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                     </div>
                                 </td>
@@ -121,11 +125,27 @@
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/inquire/delete?id="+id;
+                    window.location.href="/admin/inquireQuote/delete?id="+id;
                     layer.close(index);
                 });
             });
         }
+
+        $(".btn_see").click(function(){
+            var _obj = this;
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                var remark = $(_obj).attr("data-remark");
+                layer.open({
+                    type: 1,
+                    title: '备注',
+                    area: ['350px', '220px'],
+                    content: '<div style="margin: 10px;">' + remark +
+//                    '<textarea name="postscript" cols="50" rows="4"  class="textarea to_buyer">'+remark+'</textarea>' +
+                    '</div>'
+                });
+            });
+        });
 
     </script>
 @stop

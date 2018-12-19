@@ -105,6 +105,7 @@ class ActivityWholesaleService
     public static function wholesale($condition)
     {
         $info_list = ActivityWholesaleRepo::getList(['end_time'=>'desc'], $condition);
+
         foreach ($info_list as &$item) {
             if (Carbon::now()->gt($item['end_time'])) {
                 $item['is_over'] = true;
@@ -117,7 +118,11 @@ class ActivityWholesaleService
             } else {
                 $item['is_soon'] = false;
             }
+
+            $goodsInfo = GoodsRepo::getInfo($item['goods_id']);
+            $item['unit_name'] = $goodsInfo['unit_name'];
         }
+
         return $info_list;
 //        unset($item);dump($info_list);
 //        //未结束

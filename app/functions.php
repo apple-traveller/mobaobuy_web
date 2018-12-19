@@ -200,6 +200,14 @@ if (!function_exists('getNewsSidebar')){
     }
 }
 
+//最新资讯
+if (!function_exists('getLatestNews')){
+    function getLatestNews(){
+        $data = \App\Services\ArticleCatService::getLatestNews(); // 新闻中心的cat_id 为2 数据库修改之后要修改这里
+        return $data;
+    }
+}
+
 if (!function_exists('getHotSearch')){
     function getHotSearch(){
         return \App\Services\HotSearchService::getList([],['is_show'=>1]);

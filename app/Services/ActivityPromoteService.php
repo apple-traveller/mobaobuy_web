@@ -14,7 +14,6 @@ class ActivityPromoteService
 
     public static function getList($params=[], $page = 1 ,$pageSize=10){
         $condition = ['is_delete'=>0];
-
         if(isset($params['status'])){
             $condition['review_status'] = $params['status'];
         }
@@ -32,7 +31,6 @@ class ActivityPromoteService
             }else{
                 $item['is_over'] = false;
             }
-
             if(Carbon::now()->lt($item['begin_time'])){
                 $item['is_soon'] = true;
             }else{
@@ -48,6 +46,12 @@ class ActivityPromoteService
     //限时抢购
     public static function buyLimit($condition){
         $info_list = ActivityPromoteRepo::getList([],$condition);
+
+        foreach($info_list as &$v){
+            $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+            $v['unit_name'] = $goodsInfo['unit_name'];
+        }
+
         foreach ($info_list as &$item){
             if(Carbon::now()->gt($item['end_time'])){
                 $item['is_over'] = true;

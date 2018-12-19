@@ -20,9 +20,6 @@ Route::post('/uploadImg', 'UploadController@uploadImg');
 Route::post('/region/level', 'RegionController@regionLevelList');
 
 
-Route::get('/report', 'ReportController@index');
-Route::get('/report/test', 'ReportController@test');
-
 
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
@@ -383,8 +380,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/price/ajaxcharts', 'GoodsController@productTrend');//商品走势图价格
 
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
-    Route::get('/wantBuy', 'wantBuyController@wantBuyList');//求购列表 // 未登录可以访问
-    Route::get('/condition/toBuyList', 'wantBuyController@wantBuyListBycondition');//求购列表条件查询
+    Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
+    Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
+    Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+    Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
 
 
     Route::group(['middleware' => 'web.auth'], function () {
@@ -741,6 +740,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/order/user_firm_list','OrderController@getUserFirmList');//切换代理
         Route::post('/order/list','OrderController@orderList');//我的订单
         Route::post('/order/detail','OrderController@orderDetails');//订单详情
+        Route::post('/order/order_status','OrderController@getOrderStatus');//获取订单的各个状态
         Route::post('/order/status','OrderController@orderStatusCount');//各个状态的订单数量
         Route::post('/order/del','OrderController@orderDel');//删除订单
         Route::post('/order/order_cancel','OrderController@orderCancel');//订单取消
