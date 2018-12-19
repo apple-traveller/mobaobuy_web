@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\InquireService;
 use App\Services\GoodsService;
 use App\Services\GoodsCategoryService;
+use App\services\InquireQuoteService;
 class InquireController extends Controller
 {
     //列表
@@ -55,6 +56,10 @@ class InquireController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
+        $inquire_quote = InquireQuoteService::getInquireQuoteInfoByCondition(['inquire_id'=>$id]);
+        if(!empty($inquire_quote)){
+            return $this->error("已经存在对应报价，不能修改");
+        }
         $inquire = InquireService::getInquireInfo($id);
         return $this->display('admin.inquire.edit',[
             'inquire'=>$inquire,

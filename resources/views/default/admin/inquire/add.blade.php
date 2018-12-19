@@ -21,7 +21,6 @@
                     <form action="/admin/inquire/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
 
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
@@ -65,7 +64,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
-                                    <input type="text" name="delivery_time" class="text" value="" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <input type="text" name="delivery_time" class="text" value="现货" maxlength="40" autocomplete="off" id="delivery_time">
                                     <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
                             </div>
@@ -93,7 +92,6 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
 
                             <div class="item">
                                 <div class="label">&nbsp;</div>

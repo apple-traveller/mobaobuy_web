@@ -389,7 +389,7 @@ class OrderInfoService
                         $orderList['list'][$k]['auth'] = $auth;
                     } elseif ($item['deposit_status'] == 0) {
                         $auth['can_cancel']=$waitAffirm;
-                        $auth['can_pay']=1;
+                        $auth['can_pay_deposite']=1;
                         $orderList['list'][$k]['auth'] = $auth;
                     }
 
@@ -437,7 +437,7 @@ class OrderInfoService
                             $orderList['list'][$k]['auth'] = $auth;
                         } elseif ($item['deposit_status'] == 0) {
                             if($currUserAuth[0]['can_pay']){
-                                $auth['can_pay']=1;
+                                $auth['can_pay_deposite']=1;
                                 $orderList['list'][$k]['auth'] = $auth;
                             }
 

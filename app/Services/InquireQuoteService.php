@@ -74,6 +74,12 @@ class InquireQuoteService
         return InquireQuoteRepo::getInfo($id);
     }
 
+    //获取一条信息
+    public static function getInquireQuoteInfoByCondition($condition)
+    {
+        return InquireQuoteRepo::getInfoByFields($condition);
+    }
+
     //添加
     public static function create($data)
     {
