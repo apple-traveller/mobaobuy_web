@@ -24,9 +24,9 @@
                                     <tr>
                                         <th class="first">商品名称 [ 品牌 ]</th>
                                         <th>商品编码</th>
-                                        <th>价格</th>
-                                        <th>购买数量</th>
-                                        <th>已发货数量</th>
+                                        <th>价格(￥)</th>
+                                        <th>购买数量(KG)</th>
+                                        <th>已发货数量(KG)</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>

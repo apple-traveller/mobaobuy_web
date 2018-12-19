@@ -41,10 +41,10 @@
                                     <th><div class="tDiv">申请时间</div></th>
                                     <th><div class="tDiv">促销商品</div></th>
                                     <th><div class="tDiv">促销价格</div></th>
-                                    <th><div class="tDiv">促销总数量</div></th>
-                                    <th><div class="tDiv">当前可销售数量</div></th>
-                                    <th><div class="tDiv">最小起售量</div></th>
-                                    <th><div class="tDiv">最大限购量</div></th>
+                                    <th><div class="tDiv">促销总数量(KG)</div></th>
+                                    <th><div class="tDiv">当前可销售数量(KG)</div></th>
+                                    <th><div class="tDiv">最小起售量(KG)</div></th>
+                                    <th><div class="tDiv">最大限购量(KG)</div></th>
                                     <th><div class="tDiv">开始时间</div></th>
                                     <th><div class="tDiv">结束时间</div></th>
                                     <th><div class="tDiv">审核状态</div></th>
@@ -57,7 +57,7 @@
                                         <td><div class="tDiv">{{$v["id"]}}</div></td>
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['goods_name']}}</div></td>
-                                        <td><div class="tDiv">{{$v['price']}}</div></td>
+                                        <td><div class="tDiv">￥{{$v['price']}}</div></td>
                                         <td><div class="tDiv">{{$v['num']}}</div></td>
                                         <td><div class="tDiv">{{$v['available_quantity']}}</div></td>
                                         <td><div class="tDiv">{{$v['min_limit']}}</div></td>

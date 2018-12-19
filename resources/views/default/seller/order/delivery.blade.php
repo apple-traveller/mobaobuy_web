@@ -60,9 +60,9 @@
                                                 <th lay-data="{field:'goods_full_name'}">商品名称</th>
                                                 <th lay-data="{field:'goods_sn'}">商品编码</th>
                                                 <th lay-data="{field:'packing_spec'}">商品规格</th>
-                                                <th lay-data="{field:'goods_price'}">价格</th>
-                                                <th lay-data="{field:'goods_number'}">购买数量</th>
-                                                <th lay-data="{field:'send_number'}">已发货数量</th>
+                                                <th lay-data="{field:'goods_price'}">价格(￥)</th>
+                                                <th lay-data="{field:'goods_number'}">购买数量(KG)</th>
+                                                <th lay-data="{field:'send_number'}">已发货数量(KG)</th>
                                                 {{--<th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.6;'}">编辑发货数量</th>--}}
                                                 <th class="send_name" lay-data="{field:'send_number_delivery',edit: 'text',style:'background-color: #183cb53b; opacity: 0.6;'}">编辑发货数量</th>
                                             </tr>

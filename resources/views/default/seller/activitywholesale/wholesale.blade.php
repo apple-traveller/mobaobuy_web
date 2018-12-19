@@ -41,10 +41,10 @@
                                     <th><div class="tDiv">申请时间</div></th>
                                     <th><div class="tDiv">拼团商品</div></th>
                                     <th><div class="tDiv">拼团价格</div></th>
-                                    <th><div class="tDiv">目标数量</div></th>
-                                    <th><div class="tDiv">已参与数量</div></th>
-                                    <th><div class="tDiv">最小拼团量</div></th>
-                                    <th><div class="tDiv">最大限购量</div></th>
+                                    <th><div class="tDiv">目标数量(KG)</div></th>
+                                    <th><div class="tDiv">已参与数量(KG)</div></th>
+                                    <th><div class="tDiv">最小拼团量(KG)</div></th>
+                                    <th><div class="tDiv">最大限购量(KG)</div></th>
                                     <th><div class="tDiv">订金比例</div></th>
                                     <th><div class="tDiv">开始时间</div></th>
                                     <th><div class="tDiv">结束时间</div></th>
@@ -58,12 +58,12 @@
                                         <td><div class="tDiv">{{$v["id"]}}</div></td>
                                         <td><div class="tDiv">{{$v['add_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['goods_name']}}</div></td>
-                                        <td><div class="tDiv">{{$v['price']}}</div></td>
+                                        <td><div class="tDiv">￥{{$v['price']}}</div></td>
                                         <td><div class="tDiv">{{$v['num']}}</div></td>
                                         <td><div class="tDiv">{{$v['partake_quantity']}}</div></td>
                                         <td><div class="tDiv">{{$v['min_limit']}}</div></td>
                                         <td><div class="tDiv">{{$v['max_limit']}}</div></td>
-                                        <td><div class="tDiv">{{$v['deposit_ratio']}}</div></td>
+                                        <td><div class="tDiv">{{$v['deposit_ratio']}}%</div></td>
                                         <td><div class="tDiv">{{$v['begin_time']}}</div></td>
                                         <td><div class="tDiv">{{$v['end_time']}}</div></td>
                                         <td><div class="tDiv">@if($v['review_status']==1)待审核 @elseif($v['review_status']==2)审核不通过@elseif($v['review_status']==3)审核通过@endif</div></td>
