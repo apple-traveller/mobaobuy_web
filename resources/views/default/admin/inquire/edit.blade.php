@@ -14,7 +14,6 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
-                    <li>库存数量必须是商品规格的整数倍,如果输入值非整数倍则自动向下取整。</li>
                 </ul>
             </div>
             <div class="flexilist">
