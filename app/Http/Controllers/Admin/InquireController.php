@@ -56,10 +56,10 @@ class InquireController extends Controller
     {
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
-        $inquire_quote = InquireQuoteService::getInquireQuoteInfoByCondition(['inquire_id'=>$id]);
-        if(!empty($inquire_quote)){
-            return $this->error("已经存在对应报价，不能修改");
-        }
+//        $inquire_quote = InquireQuoteService::getInquireQuoteInfoByCondition(['inquire_id'=>$id]);
+//        if(!empty($inquire_quote)){
+//            return $this->error("已经存在对应报价，不能修改");
+//        }
         $inquire = InquireService::getInquireInfo($id);
         return $this->display('admin.inquire.edit',[
             'inquire'=>$inquire,
@@ -125,7 +125,7 @@ class InquireController extends Controller
     {
         $id = $request->input('id');
         try{
-            $flag = InquireService::modify(['id'=>$id,'is_delete'=>1]);
+            $flag = InquireService::delete(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/admin/inquire/index'));
             }else{
