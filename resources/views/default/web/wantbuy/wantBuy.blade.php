@@ -169,7 +169,6 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
     </div>
 <div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 
-<script src="{{asset(themePath('/', 'web').'plugs/layui/layui.all.js')}}"></script>
 <script>
 
     $(function(){
