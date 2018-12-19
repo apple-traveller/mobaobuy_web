@@ -44,7 +44,7 @@
                                     <td><div class="tDiv">{{$v['user_name']}}</div></td>
                                     <td><div class="tDiv">{{$v['member_phone']}}</div></td>
                                     <td><div class="tDiv">{{$v['order_quantity']}}</div></td>
-                                    <td><div class="tDiv">{{$v['invoice_amount']}}</div></td>
+                                    <td><div class="tDiv">￥{{$v['invoice_amount']}}</div></td>
                                     <td>
                                         <div class="tDiv">
                                             @if($v['status'] == 0) 已取消 @elseif($v['status'] == 1) 待开票 @elseif($v['status']==2) 已开票 @endif
