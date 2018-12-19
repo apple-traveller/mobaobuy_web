@@ -44,8 +44,9 @@
 @endsection
 @section('js')
 <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.js"></script>
-<script type="text/javascript" src="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"> </script>
-    <link href="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" rel="stylesheet" type="text/css"/>
+
+{{--<script type="text/javascript" src="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"> </script>--}}
+    {{--<link href="https://hanlei525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" rel="stylesheet" type="text/css"/>--}}
 	<script>
         $(function(){
             // 更多/收起
