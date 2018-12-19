@@ -56,11 +56,9 @@ class InquireController extends Controller
         $id = $request->input('id');
         $currpage = $request->input('currpage',1);
         $inquire = InquireService::getInquireInfo($id);
-        $goods = GoodsService::getGoodInfo($inquire['goods_id']);
         return $this->display('admin.inquire.edit',[
             'inquire'=>$inquire,
             'currpage'=>$currpage,
-            'goods'=>$goods
         ]);
     }
 
@@ -71,7 +69,7 @@ class InquireController extends Controller
         unset($data['cat_id']);
         unset($data['cat_id_LABELS']);
         $errorMsg = [];
-        if(empty($data['goods_id'])){
+        if(empty($data['goods_name'])){
             $errorMsg[] = '商品不能为空';
         }
         if(empty($data['num'])){
@@ -92,27 +90,18 @@ class InquireController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode("|",$errorMsg));
         }
+        $data['goods_id'] = $this->requestGetNotNull("goods_id");
+        $data['cat_name'] = $this->requestGetNotNull("cat_name");
+        $data['brand_name'] = $this->requestGetNotNull("brand_name");
         try{
             if(!key_exists('id',$data)){
-                $goods = GoodsService::getGoodInfo($data['goods_id']);
-                $goods_cate = GoodsCategoryService::getInfo($goods['cat_id']);
                 $data['add_time'] = Carbon::now();
-                $data['goods_name'] = $goods['goods_full_name'];
-                $data['unit_name'] = $goods['unit_name'];
-                $data['brand_name'] = $goods['brand_name'];
-                $data['cat_name'] = $goods_cate['cat_name'];
                 $flag = InquireService::create($data);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/inquire/index'));
                 }
                 return $this->error('添加失败');
             }else{
-                $goods = GoodsService::getGoodInfo($data['goods_id']);
-                $goods_cate = GoodsCategoryService::getInfo($goods['cat_id']);
-                $data['goods_name'] = $goods['goods_full_name'];
-                $data['unit_name'] = $goods['unit_name'];
-                $data['brand_name'] = $goods['brand_name'];
-                $data['cat_name'] = $goods_cate['cat_name'];
                 $currpage = $data['currpage'];
                 unset($data['currpage']);
                 $flag = InquireService::modify($data);

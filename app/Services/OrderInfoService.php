@@ -356,10 +356,10 @@ class OrderInfoService
             //区分待确认的订单
             //取消需要返库
             if($item['order_status'] > 2){
-                $waitAffirm = "''";
+                $waitAffirm = 1;
             }else{
                 // 取消不需要返库
-                $waitAffirm = "'waitAffirm'";
+                $waitAffirm = 2;
             }
             $auth = [
                 'can_del'=>0,//删除
@@ -380,15 +380,15 @@ class OrderInfoService
                     if($needApproval){
                         $auth['can_approval']=1;
                     }
-                    $auth['can_cancel']="1|".$waitAffirm;
+                    $auth['can_cancel']=$waitAffirm;
                     $orderList['list'][$k]['auth'] = $auth;
                 }
                 if ($item['order_status'] == 2) {
                     if ($item['deposit_status'] == 1) {
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $orderList['list'][$k]['auth'] = $auth;
                     } elseif ($item['deposit_status'] == 0) {
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $auth['can_pay']=1;
                         $orderList['list'][$k]['auth'] = $auth;
                     }
@@ -397,7 +397,7 @@ class OrderInfoService
 
                 if($item['order_status'] == 3){
                     if($item['pay_status'] == 0){
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $auth['can_pay']=1;
                         $orderList['list'][$k]['auth'] = $auth;
                     }
@@ -472,10 +472,10 @@ class OrderInfoService
 
                 if ($item['order_status'] == 2){
                     if ($item['deposit_status'] == 1){
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $orderList['list'][$k]['auth'] = $auth;
                     } elseif ($item['deposit_status'] == 0){
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $auth['can_pay_deposite']=1;
                         $orderList['list'][$k]['auth'] = $auth;
                     }
@@ -483,7 +483,7 @@ class OrderInfoService
 
                 if ($item['order_status'] == 3){
                     if ($item['pay_status'] == 0){
-                        $auth['can_cancel']="1|".$waitAffirm;
+                        $auth['can_cancel']=$waitAffirm;
                         $auth['can_pay']=1;
                         $orderList['list'][$k]['auth'] = $auth;
                     }
