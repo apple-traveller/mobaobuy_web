@@ -8,6 +8,7 @@ use App\Services\AdService;
 use App\Services\ArticleService;
 use App\Services\BrandService;
 use App\Services\CartService;
+use App\Services\FriendLinkService;
 use App\Services\GoodsCategoryService;
 use App\Services\OrderInfoService;
 use App\Services\UserService;
@@ -92,8 +93,10 @@ class IndexController extends Controller
 //        dd($article_list);
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1,'is_delete'=>0])['list'];
+
+        $friend_link = FriendLinkService::getAllLink();
         return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
-            'trans_list'=>$merge_trans_list, 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'top_ad'=>$top_ad]);
+            'trans_list'=>$merge_trans_list, 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'top_ad'=>$top_ad,'friend_link'=>$friend_link]);
     }
 
     //选择公司
