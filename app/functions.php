@@ -170,12 +170,9 @@ if(!function_exists('getSidebar')){
         $Cates1 = \App\Services\ArticleCatService::getList(1);
 
         foreach ($Cates1 as $k1=>$v1){
-            $cat_list[$k1] = \App\Services\ArticleCatService::getList($v1['id']);
-            if ($k1>0){
-                $cat_list =  array_merge($cat_list[$k1-1],$cat_list[$k1]);
-            }
+            $list = \App\Services\ArticleCatService::getList($v1['id']);
+            $cat_list =  array_merge($cat_list,$list);
         }
-
         foreach ($cat_list as $k2=>$v2){
             $cat_list[$k2]['_child'] = \App\Services\ArticleService::getList(['cat_id'=>$v2['id']]);
         }
