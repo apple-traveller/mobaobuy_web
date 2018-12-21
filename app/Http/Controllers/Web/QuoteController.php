@@ -245,11 +245,11 @@ class QuoteController extends Controller
             'b.type'=>'1|2',
             'b.is_delete'=>0
         ];
-        $pageSize = 4;
+        $pageSize = 5;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
-//        dd($good_info);
+
         //是否收藏
         $collectGoods = UserService::checkUserIsCollect($userId, $good_info['goods_id']);
         return $this->display("web.goods.goodsDetail", [
