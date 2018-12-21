@@ -397,7 +397,7 @@ class UserController extends ApiController
             //判断用户是否还有待审核订单
             $order_status = OrderInfoService::getOrderStatusCount($user_id,$deputy_user['firm_id']);
             if($order_status['waitApproval']>0 && $need_approval==0){
-                return $this->error('还有未审核订单，不能设定为不需要待审核');
+                return $this->success("",'还有待审核订单，不能设定为不需要审核');
             }
             $user = UserService::modify($user_id,['need_approval'=>$need_approval]);
             return $this->success($user,'success');
