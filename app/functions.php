@@ -315,5 +315,16 @@ if(!function_exists('getFromInfo')){
         return $info[$key];
     }
 }
+if(!function_exists('isIncludeHttp')){
+    function isIncludeHttp($value){
+        $link = substr($value,0,4);
+        if($link == 'http'){
+            return $value;
+        }else{
+            $value = '//'.$value;
+            return $value;
+        }
+    }
+}
 
 
