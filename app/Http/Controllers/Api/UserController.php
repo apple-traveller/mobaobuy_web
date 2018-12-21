@@ -390,10 +390,6 @@ class UserController extends ApiController
     //订单是否需要审核
     public function needApproval(Request $request)
     {
-        /**
-         *
-         *
-        */
         $need_approval = $request->input("need_approval");
         $user_id = $this->getUserID($request);
         $deputy_user = $this->getDeputyUserInfo($request);
