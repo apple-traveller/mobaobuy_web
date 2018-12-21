@@ -427,7 +427,6 @@ class OrderInfoService
                             }else{
                                 $orderList['list'][$k]['auth'] = $auth;
                             }
-
                         }
                     }
 
@@ -440,7 +439,6 @@ class OrderInfoService
                                 $auth['can_pay_deposite']=1;
                                 $orderList['list'][$k]['auth'] = $auth;
                             }
-
                         }
                     }
                     //已确认
@@ -1800,12 +1798,16 @@ class OrderInfoService
     }
 
     //付款凭证提交
-    public static function payVoucherSaveApi($orderSn,$payVoucher){
+    public static function payVoucherSaveApi($orderSn,$payVoucher,$deposit){
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
-            return false;
+            self::throwBizError('订单信息不存在');
         }
-        return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+        if($deposit){
+            return OrderInfoRepo::modify($orderInfo['id'],['deposit_pay_voucher'=>$payVoucher]);
+        }else{
+            return OrderInfoRepo::modify($orderInfo['id'],['pay_voucher'=>$payVoucher]);
+        }
     }
 
     /**

@@ -19,7 +19,7 @@ class GoodsController extends Controller
         $condition = ['is_delete'=>0];
         if(!empty($goods_name)){
             $c['opt'] = "OR";
-            $c['goods_name'] = "%".$goods_name."%";
+            $c['goods_full_name'] = "%".$goods_name."%";
             $c['goods_sn'] = $goods_name;
             $c['brand_name'] = $goods_name;
             $c['goods_model'] = $goods_name;
