@@ -40,9 +40,10 @@ class FlowController extends ApiController
     public function payVoucherSave(Request $request){
         $orderSn = $request->input('orderSn');
         $payVoucher = $request->input('payVoucher');
-        //dd($payVoucher);
+        //$deposit 1 为支付定金 0为支付款
+        $deposit = $request->input('deposit');
         try{
-            $flag = OrderInfoService::payVoucherSaveApi($orderSn,$payVoucher);
+            $flag = OrderInfoService::payVoucherSaveApi($orderSn,$payVoucher,$deposit);
             if($flag){
                 return $this->success('','success');
             }

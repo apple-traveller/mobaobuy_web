@@ -9,6 +9,7 @@ use App\Services\UserAddressService;
 use App\Services\UserRealService;
 use App\Services\UserAccountLogService;
 use App\Services\RegionService;
+use App\Services\OrderInfoService;
 class UserController extends ApiController
 {
     //账号信息
@@ -230,7 +231,7 @@ class UserController extends ApiController
     //删除收藏
     public function delCollection(Request $request)
     {
-        $id = $request->input('id');
+        $id = $request->input('goods_id');
         if(empty($id)){
             return $this->error('缺少参数，id');
         }
@@ -389,9 +390,19 @@ class UserController extends ApiController
     //订单是否需要审核
     public function needApproval(Request $request)
     {
+        /**
+         *
+         *
+        */
         $need_approval = $request->input("need_approval");
         $user_id = $this->getUserID($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
         try{
+            //判断用户是否还有待审核订单
+            $order_status = OrderInfoService::getOrderStatusCount($user_id,$deputy_user['firm_id']);
+            if($order_status['waitApproval']>0 && $need_approval==0){
+                return $this->error('还有未审核订单，不能设定为不需要待审核');
+            }
             $user = UserService::modify($user_id,['need_approval'=>$need_approval]);
             return $this->success($user,'success');
         }catch(\Exception $e){
