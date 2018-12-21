@@ -67,7 +67,7 @@ table.dataTable.no-footer {border-bottom: 0px;}
 .nav-div .nav-cate .cate_title{background-color:#75b335; width: 100%;height: 100%;line-height: 38px;color: #fff;position: absolute;font-size: 16px;}
 .nav-div .nav-cate .ass_menu {position: absolute;left: 0;top:38px;width: 224px;height: 330px;z-index: 1;background-color: #282828;}
 .ass_menu li {height: 50px;line-height: 50px;font-size: 16px;color: #fff;padding-left: 20px;}
-.ass_menu .ass_fn {display: none;width: 900px;position: absolute;top: 0;left: 224px;}
+.ass_menu .ass_fn {display: none;width: 900px;position: absolute;top: 0;left: 224px;min-height: 330px;}
 .ass_fn .ass_fn_list {margin-left: 20px;margin-top:15px;margin-bottom:20px;}
 .ass_fn .ass_fn_list li {color: #333333; overflow:hidden;line-height:40px;height:auto;padding-left: 0;padding-bottom:10px;}
 .ass_fn .ass_fn_list .ass_fn_list_that {width: 725px;font-size: 14px;color: #999;}
