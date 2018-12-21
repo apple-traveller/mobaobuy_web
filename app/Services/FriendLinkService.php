@@ -34,5 +34,12 @@ class FriendLinkService
         return FriendLinkRepo::delete($id);
     }
 
+    /**
+     * web底部展示
+     */
+    public static function getAllLink(){
+       return FriendLinkRepo::getList(['sort_order'=>'desc'],[]);
+    }
+
 
 }

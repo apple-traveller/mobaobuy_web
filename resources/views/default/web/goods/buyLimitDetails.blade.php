@@ -327,16 +327,16 @@
 				<div class="price_market">
 					<div class="fl ml20">
 						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">秒杀价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/kg</span></div>
-						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/kg</span></div>
+						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/{{$goodsInfo['unit_name']}}</span></div>
 					</div>
 					<div class="limit_line"></div>
 					<div class="tac ovh">
 						<span class="db mt35">累计售出</span>
-						<span class="db red">{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}} kg</span>
+						<span class="db red">{{$goodsInfo['activity_num'] - $goodsInfo['available_quantity']}} {{$goodsInfo['unit_name']}}</span>
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
+					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}{{$goodsInfo['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>

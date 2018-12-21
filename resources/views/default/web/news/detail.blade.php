@@ -3,19 +3,19 @@
 @if(empty(getSeoInfoByType('article_content')['title']))
     @section('title', $article['title'])
 @else
-    @section('title', getSeoInfoByType('article_content')['title'].'-'.$article['title'])
+    @section('title', $article['title'].'-'.getSeoInfoByType('article_content')['title'])
 @endif
 
 @if(empty(getSeoInfoByType('article_content')['keywords']))
     @section('keywords',$article['keywords'])
 @else
-    @section('keywords', getSeoInfoByType('article_content')['keywords'].','.$article['keywords'])
+    @section('keywords', $article['keywords'].','.getSeoInfoByType('article_content')['keywords'])
 @endif
 
 @if(empty(getSeoInfoByType('article_content')['keywords']))
     @section('description', $article['description'])
 @else
-    @section('description', getSeoInfoByType('article_content')['description'].','.$article['description'])
+    @section('description', $article['description'].','.getSeoInfoByType('article_content')['description'])
 @endif
 
 

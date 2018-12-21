@@ -257,6 +257,7 @@ class ShopGoodsQuoteService
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['goods_sn'] = $ActivityInfo['goods_sn'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+
         //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
         $goodsInfo['goodsList'] = $goodsList;
@@ -268,6 +269,7 @@ class ShopGoodsQuoteService
         }else{
             $goodsInfo['collectGoods'] = 1;
         }
+
         return $goodsInfo;
     }
 
