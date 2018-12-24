@@ -313,6 +313,12 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::any('/inquireQuote/index', 'InquireQuoteController@index');// 求购报价列表
         Route::get('/inquireQuote/delete', 'InquireQuoteController@delete');// 求购报价删除
 
+        Route::get('/recruit/list','RecruitController@index');//招聘信息列表
+        Route::get('/recruit/add','RecruitController@add');//添加
+        Route::get('/recruit/edit','RecruitController@edit');//编辑
+        Route::post('/recruit/save','RecruitController@save');//保存
+        Route::get('/recruit/delete','RecruitController@delete');//删除
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
