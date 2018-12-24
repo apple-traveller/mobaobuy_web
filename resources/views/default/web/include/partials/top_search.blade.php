@@ -90,7 +90,9 @@ $(function() {
     });
 
     $('.ass_menu li').hover(function () {
-        $(this).find('.ass_fn').toggle();
+        $(this).find('.ass_fn').show();
+    },function () {
+        $(this).find('.ass_fn').hide();
     })
 });
 </script>
