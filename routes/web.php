@@ -382,8 +382,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
     Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
     Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
-    Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
-    Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
+
+    Route::get('/recruit/list', 'RecruitController@recruitList');//招聘列表
+    Route::get('/recruit/detail/{id}', 'RecruitController@recruitDetail'); //招聘详情
+
 
 
     Route::group(['middleware' => 'web.auth'], function () {
@@ -392,6 +394,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 //        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
+
+        Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+        Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
 
         Route::get('/member', 'UserController@index'); //会员中心
         Route::get('/member/emp', 'UserController@empList'); //会员中心

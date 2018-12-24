@@ -589,7 +589,6 @@
                  <div class="list">
                      <div class="list_div">
                          @foreach($friend_link as $v)
-                             {{--<a href="{{$v['link_url']}}" target="_blank" title="{{$v['link_name']}}">{{$v['link_name']}}</a>--}}
                              <a href="javascript:void(0);" onclick="window.location.href='{{isIncludeHttp($v['link_url'])}}'" target="_blank" title="{{$v['link_name']}}">{{$v['link_name']}}</a>
                          @endforeach
                      </div>
