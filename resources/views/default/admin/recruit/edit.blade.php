@@ -19,7 +19,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘职位：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_job" value="{{$recruit['recruit_job']}}" id="recruit_job" size="40"  class="text">
+                                        <input type="text" name="recruit_job" value="{{$recruit['recruit_job']}}" autocomplete="off" id="recruit_job" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘人数：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_number" value="{{$recruit['recruit_number']}}" id="recruit_number" size="40"  class="text">
+                                        <input type="text" name="recruit_number" value="{{$recruit['recruit_number']}}" autocomplete="off" id="recruit_number" size="40"  class="text">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -36,7 +36,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>工作地点：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_place" value="{{$recruit['recruit_place']}}" id="recruit_place" size="40"  class="text">
+                                        <input type="text" name="recruit_place" value="{{$recruit['recruit_place']}}" autocomplete="off" id="recruit_place" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘公司：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_firm" value="{{$recruit['recruit_firm']}}" id="recruit_firm" size="40"  class="text">
+                                        <input type="text" name="recruit_firm" value="{{$recruit['recruit_firm']}}" autocomplete="off" id="recruit_firm" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>薪资待遇：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_pay" value="{{$recruit['recruit_pay']}}" id="recruit_pay" size="40"  class="text">
+                                        <input type="text" name="recruit_pay" value="{{$recruit['recruit_pay']}}" autocomplete="off" id="recruit_pay" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>

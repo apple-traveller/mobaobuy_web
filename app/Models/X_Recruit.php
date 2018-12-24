@@ -7,6 +7,4 @@ class X_Recruit extends BaseModel
 
     protected $table = 'recruit';
 
-
-
 }

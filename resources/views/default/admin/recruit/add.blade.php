@@ -19,7 +19,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘职位：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_job" value="" id="recruit_job" size="40"  class="text">
+                                        <input type="text" name="recruit_job" value="" autocomplete="off" id="recruit_job" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘人数：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_number" value="" id="recruit_number" size="40"  class="text">
+                                        <input type="text" name="recruit_number" value="" autocomplete="off" id="recruit_number" size="40"  class="text">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -36,7 +36,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>工作地点：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_place" value="" id="recruit_place" size="40"  class="text">
+                                        <input type="text" name="recruit_place" value="" autocomplete="off" id="recruit_place" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘公司：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_firm" value="" id="recruit_firm" size="40"  class="text">
+                                        <input type="text" name="recruit_firm" value="" autocomplete="off" id="recruit_firm" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>薪资待遇：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_pay" value="" id="recruit_pay" size="40"  class="text">
+                                        <input type="text" name="recruit_pay" value="" autocomplete="off" id="recruit_pay" size="40"  class="text">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>岗位职责：</div>
                                     <div class="label_value">
-                                        <script id="job_desc" name="job_desc" type="text/plain"></script>
+                                        <script id="job_desc" name="job_desc"  type="text/plain"></script>
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>

@@ -1,13 +1,15 @@
 <?php
+
 namespace App\Services;
 use App\Repositories\RecruitRepo;
 class RecruitService
 {
     use CommonService;
+
     //分页获取数据
-    public static function getRecruitList($pager,$condition)
+    public static function getRecruitList($pager, $condition)
     {
-        $info = RecruitRepo::getListBySearch($pager,$condition);
+        $info = RecruitRepo::getListBySearch($pager, $condition);
         return $info;
     }
 
@@ -20,7 +22,7 @@ class RecruitService
     //修改
     public static function modify($data)
     {
-        return RecruitRepo::modify($data['id'],$data);
+        return RecruitRepo::modify($data['id'], $data);
     }
 
     //删除
@@ -32,8 +34,8 @@ class RecruitService
     //验证唯一性
     public static function uniqueValidate($recruit_job)
     {
-        $flag = RecruitRepo::getInfoByFields(['recruit_job'=>$recruit_job]);
-        if(!empty($flag)){
+        $flag = RecruitRepo::getInfoByFields(['recruit_job' => $recruit_job]);
+        if (!empty($flag)) {
             self::throwBizError('该职位已经存在');
         }
         return true;
@@ -43,6 +45,20 @@ class RecruitService
     public static function getRecruitInfo($id)
     {
         return RecruitRepo::getInfo($id);
+    }
+
+    /**
+     * 招聘列表
+     */
+    public static function recruitList($paper,$condition){
+        return RecruitRepo::getListBySearch($paper,$condition);
+    }
+
+    /**
+     * 招聘详情
+     */
+    public static function recruitDetail($condition){
+        return RecruitRepo::getInfo($condition['id']);
     }
 
 }
