@@ -115,7 +115,7 @@
             $('#change_2 .ys_bigimg').soChange({
                 thumbObj:'#change_2 .ys_banner_icon span',
                 thumbNowClass:'on',
-                changeTime:2000,
+                changeTime:3000,
             });
         });
     </script>
