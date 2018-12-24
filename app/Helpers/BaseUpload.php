@@ -12,13 +12,13 @@ namespace App\Helpers;
 class BaseUpload {
     private $path = "./uploads";          //上传文件保存的路径
     private $allowtype = array('jpg','gif','png'); //设置限制上传文件的类型
-    private $maxsize = 10*1024*1024;           //限制文件上传大小（字节）默认10 Mb
+    private $maxsize = 10*1024*1024;      //限制文件上传大小（字节）默认10 Mb
     private $israndname = true;           //设置是否随机重命名文件， false不随机
 
-    private $originName;              //源文件名
+    private $originName;               //源文件名
     private $tmpFileName;              //临时文件名
-    private $fileType;               //文件类型(文件后缀)
-    private $fileSize;               //文件大小
+    private $fileType;                 //文件类型(文件后缀)
+    private $fileSize;                 //文件大小
     private $newFileName;              //新文件名
     private $errorNum = 0;             //错误号
     private $errorMess="";             //错误报告消息
