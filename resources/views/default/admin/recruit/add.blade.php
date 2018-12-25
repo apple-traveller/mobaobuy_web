@@ -42,6 +42,14 @@
                                 </div>
 
                                 <div class="item">
+                                    <div class="label"><span class="require-field">*</span>详细地址：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_address" value="" autocomplete="off" id="recruit_address" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘公司：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_firm" value="" autocomplete="off" id="recruit_firm" size="40"  class="text">
@@ -53,6 +61,49 @@
                                     <div class="label"><span class="require-field">*</span>薪资待遇：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_pay" value="" autocomplete="off" id="recruit_pay" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label">联系人：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_user" value="" autocomplete="off" id="recruit_user" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label">联系电话：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_mobile" value="" autocomplete="off" id="recruit_mobile" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>工作经历：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="working_experience" value="" autocomplete="off" id="working_experience" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                        <div class="notic">例如：两年以上工作经验</div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>学历：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="education" value="" autocomplete="off" id="education" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                        <div class="notic">本科</div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>工作类型：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_type" value="" autocomplete="off" id="recruit_type" size="40"  class="text">
+                                        <div class="notic">兼职/全职</div>
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
@@ -117,6 +168,18 @@
                     },
                     recruit_pay :{
                         required : true,
+                    },
+                    recruit_address:{
+                        required :true,
+                    },
+                    working_experience:{
+                        required :true,
+                    },
+                    education:{
+                        required:true,
+                    },
+                    recruit_type : {
+                        required:true,
                     }
                 },
                 messages:{
@@ -133,6 +196,18 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     recruit_pay :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    recruit_address :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    working_experience :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    education :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    recruit_type :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                 }
