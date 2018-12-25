@@ -390,6 +390,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
 
     Route::get('/recruit/list', 'RecruitController@recruitList');//招聘列表
+    Route::get('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
     Route::get('/recruit/detail/{id}', 'RecruitController@recruitDetail'); //招聘详情
 
 

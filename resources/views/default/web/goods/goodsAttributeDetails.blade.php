@@ -89,7 +89,7 @@
 				@if(!empty($list))
 					@foreach($list as $v)
 						<li>
-							<div class="supply_list_frist">
+							<div class="supply_list_frist" style="width:230px;">
 								<span class="supply_list_frist_com">店铺 : {{$v['shop_name']}}</span> 
 								<!-- <span></span> <span class="ml15"></span> -->
 								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
@@ -101,7 +101,7 @@
 							</div>
 							<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
 							<div class="phy_line fl"></div>
-							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
+							<div class="phy_btn" style="margin-left:3px;"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
 						</li>
 					@endforeach
 				@else

@@ -368,6 +368,7 @@ CREATE TABLE `nav` (
   `opennew` tinyint(1) NOT NULL COMMENT '是否新窗口 0-否 1-是',
   `url` varchar(255) NOT NULL COMMENT '链接地址',
   `type` varchar(10) NOT NULL COMMENT '显示位置 top-顶部 middle-中间 bottom-底部',
+  `is_nofollow` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认0不加，1的话加nofollow',
   PRIMARY KEY (`id`),
   KEY `type` (`type`),
   KEY `is_show` (`is_show`),
@@ -1472,8 +1473,8 @@ CREATE TABLE `recruit` (
   `recruit_address` varchar(100) DEFAULT NULL COMMENT '详细地址',
   `recruit_user` varchar(50) DEFAULT NULL COMMENT '联系人',
   `recruit_mobile` varchar(50) NOT NULL COMMENT '联系方式',
-  `working experience` varchar(100) DEFAULT NULL COMMENT '工作经验',
+  `working_experience` varchar(100) DEFAULT NULL COMMENT '工作经验',
   `education` varchar(50) DEFAULT NULL COMMENT '学历',
-  `type` varchar(50) DEFAULT NULL COMMENT '类型',
+  `recruit_type` varchar(50) DEFAULT NULL COMMENT '工作类型',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;

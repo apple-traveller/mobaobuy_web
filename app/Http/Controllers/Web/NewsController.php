@@ -73,6 +73,8 @@ class NewsController extends Controller
         }
 
         $article = ArticleService::getInfo($id);
+        $article['content'] = str_replace('white-space: nowrap;','white-space: normal;',$article['content']);
+
 
         if (!empty($article)){
             #更新点击量
