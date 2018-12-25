@@ -51,7 +51,15 @@ class RecruitService
      * 招聘列表
      */
     public static function recruitList($paper,$condition){
-        return RecruitRepo::getListBySearch($paper,$condition);
+        $recruitInfo = RecruitRepo::getListBySearch($paper,$condition);
+        $recruitAllInfo = RecruitRepo::getList([],$condition);
+        $place = [];
+        foreach($recruitAllInfo as $v){
+            if(!in_array($v['recruit_place'],$place)){
+                $place[] = $v['recruit_place'];
+            }
+        }
+        return ['recruitInfo'=>$recruitInfo,'place'=>$place];
     }
 
     /**

@@ -1,8 +1,8 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@if(empty(getSeoInfoByType('article_content')['title']))
-	@section('title', $good_info['goods_name'])
+@if(empty(getSeoInfoByType('goods')['title']))
+	@section('title', $goodsInfo['goods_name'])
 @else
-	@section('title', $good_info['goods_name'].'-'.getSeoInfoByType('article_content')['title'])
+	@section('title', $goodsInfo['goods_name'].'-'.getSeoInfoByType('goods')['title'])
 @endif
 @section('keywords', getSeoInfoByType('goods')['keywords'])
 @section('description', getSeoInfoByType('goods')['description'])

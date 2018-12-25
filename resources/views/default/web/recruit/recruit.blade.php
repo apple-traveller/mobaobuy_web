@@ -18,6 +18,132 @@
 transform: translate(0, -10px); -webkit-transform: translate(0, -10px);-moz-transform: translate(0, -10px);  
 -o-transform: translate(0, -10px); -ms-transform: translate(0, -10px);}
 			.nav-div .nav-cate .ass_menu {display: none;}
+			.co_filter_condition dl.condition_item dd a:hover, .co_filter_condition dl.condition_item dd a.current {
+				background-color: #38b447;
+				color: #fff !important;
+				-webkit-transition: all 0.3s;
+				-moz-transition: all 0.3s;
+				-ms-transition: all 0.3s;
+				-o-transition: all 0.3s;
+				transition: all 0.3s;
+			}
+			.co_filter_condition dl.condition_item dt {
+				float: left;
+				width: 68px;
+				height: 24px;
+				line-height: 24px;
+				text-align: left;
+				color: #333333;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.co_filter_condition {
+				padding: 0px 30px;
+				background: #ffffff;
+			}
+			.co_filter_condition dl.condition_item {
+				position: relative;
+				padding: 15px 0;
+				padding-right: 50px;
+			}
+			.co_filter_condition dl.condition_item dd {
+				display: block;
+				height: 24px;
+				overflow: hidden;
+			}
+			.co_filter_condition dl.condition_item dd .all_item {
+				height: auto;
+			}
+			.co_filter_condition dl.condition_item dd a {
+				display: inline-block;
+				height: 24px;
+				line-height: 24px;
+				padding: 0 10px;
+				color: #666666;
+				white-space: nowrap;
+				border-radius: 15px;
+				margin-right: 5px;
+				background-color: #fff;
+			}
+			.recruitment_item {
+				padding: 30px 30px 30px 30px;
+				-webkit-transition: all 0.2s linear;
+				-moz-transition: all 0.2s linear;
+				-ms-transition: all 0.2s linear;
+				-o-transition: all 0.2s linear;
+				transition: all 0.2s linear;
+			}
+			.recruitment_item .position_info {
+				position: relative;
+			}
+
+			.position_info {
+				overflow: hidden;
+			}
+			.recruitment_item .position_info dl.company_dl dd {
+				margin-left: 0;
+			}
+			.position_info dd .dd_top {
+				overflow: hidden;
+			}
+			.recruitment_item .position_info .dd_top .name {
+				font-size: 18px;
+			}
+
+			a {
+				color: #333333;
+				outline-style: none;
+			}
+			a {
+				/* text-decoration: none; */
+			}
+			.recruitment_item .position_info dl.company_dl dd .city {
+				color: #58A0FE;
+				margin-left: 15px;
+			}
+
+			a {
+				color: #333333;
+				outline-style: none;
+			}
+			.recruitment_item .position_info dl.company_dl dd .ud_time {
+				margin-left: 20px;
+				color: #aaa;
+			}
+			.recruitment_item .position_info .dd_bot {
+				margin-top: 9px;
+			}
+
+			.position_info dd .dd_bot {
+				overflow: hidden;
+			}
+			.recruitment_item .position_info dl.company_dl dd .f_right {
+				position: absolute;
+				top: 1px;
+				right: 0;
+			}
+
+			.f_right {
+				float: right;
+			}
+			.recruitment_item .obligation {
+				margin-top: 15px;
+			}
+			.recruitment_item .obligation p {
+				line-height: 1.6;
+			}
+
+			p {
+				word-wrap: break-word;
+			}
+			.recruitment_item .position_info .dd_bot .salary {
+				color: #fc5c63;
+				font-size: 16px;
+			}
+			.recruitment_item .position_info dl.company_dl dd .info {
+				display: inline-block;
+				margin-left: 10px;
+			}
 		</style>
 @endsection
 @section('js')
@@ -35,38 +161,122 @@ transform: translate(0, -10px); -webkit-transform: translate(0, -10px);-moz-tran
 
 	{{--<body style="background-color: #f4f4f4;">--}}
 	@section('content')
+		<div style="margin:0 auto;width:880px;background-color: white;margin-top:20px;">
+		<section class="co_filter_condition mb15" style="margin-left:20px;margin-top:20px;">
+			<dl class="condition_item city">
+				<dt>城市:</dt>
+				<dd>
+					<div class="all_item">
+						{{--<a ka="job-city-all" href="/job/g2090879.html#co_tab" ref="nofollow">全部</a>--}}
+						@if(!empty($place))
+							@foreach($place as $v)
+								<a ka="job-city-show" href="" class="current">{{$v}}</a>
+							@endforeach
+						@endif
+						{{--<a ka="job-city-2" href="/job/g2090879/city-55.html#co_tab">济南</a>--}}
+					</div>
+					{{--<div class="grey_99 spread_option none">--}}
+						{{--<div class="c_toggler">更多<i></i></div>--}}
+					{{--</div>--}}
+				</dd>
+			</dl>
+		</section>
 
-	<!--logo-标题-->
-	<div class="clearfix whitebg">
-		<div class="w1200 ovh">
-			<div class="mb30 mt10 ovh">
-				<div class="logo fl"></div><div class="w_name fs24 gray fl mt20 ml20">人才招聘</div>
-			</div>
-		</div>
-	</div>
-	<!--内容-->
-	<div class="clearfix mt10">
-	    <div class="w1200">
-	    	<div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="">人才招聘</a></div>
-		
-		<ul class="recruit-list">
-			@if(!empty($recruitInfo))
-				@foreach($recruitInfo as $v)
-					<li>
-						<h1>{{$v['recruit_job']}}</h1>
-						<div class="recruit-list_txt">
-						<p>招聘人数：{{$v['recruit_number']}}人</p>
-						<p>工作地点：{{$v['recruit_place']}}</p>
+		<div style="margin:0 auto;width:1000px;">
+			@if(!empty($recruitInfo['list']))
+				@foreach($recruitInfo['list'] as $v)
+					<section class="recruitment_item wrap_style " data-e="false">
+						<div class="position_info">
+							<dl class="company_dl">
+								<dd>
+									<p class="dd_top">
+										<a class="name" ka="job-godetail1" href="" target="_blank" style="font-size: 18px;">{{$v['recruit_job']}}</a>
+										<a href="/job/c7" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$v['recruit_place']}}]</a>
+										<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$v['add_time']}}发布</span>
+									</p>
+									<div class="dd_bot">
+										<span class="salary">职位薪资:{{$v['recruit_pay']}}</span>
+										<div class="info">
+											<span>经验:{{$v['working_experience']}}</span>
+											<em class="line"></em>
+											<span>学历:{{$v['education']}}</span>
+											<em class="line"></em>
+											<span>类型:{{$v['recruit_type']}}</span>
+										</div>
+									</div>
+
+								</dd>
+							</dl>
 						</div>
-						<a class="recruit-list_btn" href="/recruit/detail/{{$v['id']}}" target="_blank">查看详情</a>
-					</li>
+						<div class="obligation">
+							<p>
+								岗位说明：
+								{!! $v['job_desc'] !!}
+							</p>
+						</div>
+					</section>
 				@endforeach
-			@else
-				<li class="nodata">无相关数据</li>
+					<div class="page">
+						<div class="link">
+							<div class="news_pages" style="margin-top: 20px;text-align: center;">
+								<ul id="page" class="pagination"></ul>
+							</div>
+						</div>
+					</div>
 			@endif
-				</ul>
-	    </div>
-	</div>
+			{{--分页--}}
+
+
+		</div>
+
+		</div>
+
+
+		<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
+		<script>
+			$(function(){
+                paginate();
+			})
+            //分页
+            function paginate(){
+                layui.use(['laypage'], function() {
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+                        , count: "{{$recruitInfo['total']}}" //数据总数，从服务端得到
+                        , limit: "{{$pageSize}}"   //每页显示的条数
+                        , curr: "{{$currpage}}"  //当前页
+                        , prev: "上一页"
+                        , next: "下一页"
+                        , theme: "#88be51" //样式
+                        , jump: function (obj, first) {
+                            if (!first) {
+//                       getInfo(obj.curr);
+                                window.location.href='/recruit/list?currpage='+obj.curr;
+                            }
+                        }
+                    });
+                });
+            }
+		</script>
+
+		
+		{{--<ul class="recruit-list">--}}
+			{{--@if(!empty($recruitInfo))--}}
+				{{--@foreach($recruitInfo as $v)--}}
+					{{--<li>--}}
+						{{--<h1>{{$v['recruit_job']}}</h1>--}}
+						{{--<div class="recruit-list_txt">--}}
+						{{--<p>招聘人数：{{$v['recruit_number']}}人</p>--}}
+						{{--<p>工作地点：{{$v['recruit_place']}}</p>--}}
+						{{--</div>--}}
+						{{--<a class="recruit-list_btn" href="/recruit/detail/{{$v['id']}}" target="_blank">查看详情</a>--}}
+					{{--</li>--}}
+				{{--@endforeach--}}
+			{{--@else--}}
+				{{--<li class="nodata">无相关数据</li>--}}
+			{{--@endif--}}
+				{{--</ul>--}}
 
 
 @endsection
