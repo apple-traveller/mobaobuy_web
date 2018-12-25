@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 class RecruitRepo
 {
     use CommonRepo;

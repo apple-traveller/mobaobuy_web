@@ -104,11 +104,11 @@ class FirmStockController extends ApiController
         }
         try{
             $goodsInfo = FirmStockService::searchGoodsName($goodsName);
-            $result = [];
+           /* $result = [];
             foreach($goodsInfo as $val){
                 $result[] = $val['goods_name'];
-            }
-            return $this->success($result,'success');
+            }*/
+            return $this->success($goodsInfo,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
