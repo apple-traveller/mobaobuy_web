@@ -24,7 +24,7 @@ class RecruitController extends Controller
         $condition['is_show'] = 1;
         try{
             $recruitInfo = RecruitService::recruitList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-            return $this->display('web.recruit.recruit',['recruitInfo'=>$recruitInfo['list']]);
+            return $this->display('web.recruit.recruit',['place'=>$recruitInfo['place'],'recruitInfo'=>$recruitInfo['recruitInfo'],'pageSize'=>$pageSize,'currpage'=>$currpage]);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
