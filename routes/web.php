@@ -318,6 +318,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/recruit/edit','RecruitController@edit');//编辑
         Route::post('/recruit/save','RecruitController@save');//保存
         Route::get('/recruit/delete','RecruitController@delete');//删除
+        Route::post('/recruit/change/isShow','RecruitController@isShow');//是否显示
 
     });
 });

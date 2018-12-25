@@ -23,11 +23,14 @@
                         <table cellspacing="0" cellpadding="0" border="0">
                             <thead>
                             <tr>
-                                <th width="20%"><div class="tDiv">招聘职位</div></th>
+                                <th width="10%"><div class="tDiv">招聘职位</div></th>
                                 <th width="10%"><div class="tDiv">招聘人数</div></th>
                                 <th width="20%"><div class="tDiv">工作地点</div></th>
                                 <th width="10%"><div class="tDiv">招聘公司</div></th>
                                 <th width="10%"><div class="tDiv">薪资待遇</div></th>
+                                <th width="10%"><div class="tDiv">学历</div></th>
+                                <th width="10%"><div class="tDiv">工作经验</div></th>
+                                <th width="10%"><div class="tDiv">是否显示</div></th>
                                 <th class="handle" width="10%">操作</th>
                             </tr>
                             </thead>
@@ -40,6 +43,16 @@
                                 <td><div class="tDiv">{{$vo['recruit_place']}}</div></td>
                                 <td><div class="tDiv">{{$vo['recruit_firm']}}</div></td>
                                 <td><div class="tDiv">{{$vo['recruit_pay']}}</div></td>
+                                <td><div class="tDiv">{{$vo['education']}}</div></td>
+                                <td><div class="tDiv">{{$vo['working_experience']}}</div></td>
+                                <td>
+                                    <div class="tDiv">
+                                        <div style="margin-left: 30px;" class="switch @if($vo['is_show']) active @endif" title="@if($vo['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/recruit/change/isShow')}}', '{{$vo['id']}}')">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
+                                </td>
                                 <td class="handle">
                                     <div class="tDiv a2">
                                         <a href="/admin/recruit/edit?id={{$vo['id']}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>

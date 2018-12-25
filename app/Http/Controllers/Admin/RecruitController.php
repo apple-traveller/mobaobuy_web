@@ -14,7 +14,7 @@ class RecruitController extends Controller
     {
         $currpage = $request->input('currpage',1);
         $pageSize = $request->input('pageSize',10);
-        $condition = [];
+        $condition = ['is_show'=>1];
         $recruits = RecruitService::getRecruitList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
         return $this->display('admin.recruit.list',[
             'total'=>$recruits['total'],
@@ -40,6 +40,19 @@ class RecruitController extends Controller
             'recruit'=>$recruit,
             'currpage'=>$currpage
         ]);
+    }
+
+    //是否显示
+    public function isShow(Request $request)
+    {
+        $id = $request->input("id");
+        $is_show = $request->input("val", 0);
+        try{
+            RecruitService::modify(['id'=>$id, 'is_show' => $is_show]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
     }
 
     //保存
