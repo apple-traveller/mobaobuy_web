@@ -90,7 +90,7 @@ class IndexController extends Controller
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
         $article_list = ArticleService::getIndexNews(1,7,['add_time'=>'desc']);
-//        dd($article_list);
+        //dd($article_list);
         //合作品牌
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1,'is_delete'=>0])['list'];
 
