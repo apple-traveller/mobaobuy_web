@@ -368,7 +368,7 @@ class GoodsController extends ApiController
         $goods_name= $request->input('goods_name', '');
         $condition = [];
         if(!empty($goods_name)){
-            $condition['goods_name'] = '%' . $goods_name . '%';
+            $condition['goods_full_name'] = '%' . $goods_name . '%';
         }
         try{
             $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);

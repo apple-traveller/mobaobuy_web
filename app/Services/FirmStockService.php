@@ -214,7 +214,7 @@ class FirmStockService
     //入库检索商品名称
     public static function searchGoodsName($goodsName){
         $condition = [];
-        $condition['goods_name'] = '%'.$goodsName.'%';
+        $condition['goods_full_name'] = '%'.$goodsName.'%';
         return GoodsRepo::getList([],$condition);
     }
 

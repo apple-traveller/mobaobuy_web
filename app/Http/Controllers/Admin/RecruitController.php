@@ -14,7 +14,7 @@ class RecruitController extends Controller
     {
         $currpage = $request->input('currpage',1);
         $pageSize = $request->input('pageSize',10);
-        $condition = [];
+        $condition = ['is_show'=>1];
         $recruits = RecruitService::getRecruitList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
         return $this->display('admin.recruit.list',[
             'total'=>$recruits['total'],
@@ -42,6 +42,19 @@ class RecruitController extends Controller
         ]);
     }
 
+    //是否显示
+    public function isShow(Request $request)
+    {
+        $id = $request->input("id");
+        $is_show = $request->input("val", 0);
+        try{
+            RecruitService::modify(['id'=>$id, 'is_show' => $is_show]);
+            return $this->success("修改成功");
+        }catch(\Exception $e){
+            return  $this->error($e->getMessage());
+        }
+    }
+
     //保存
     public function save(Request $request)
     {
@@ -51,6 +64,12 @@ class RecruitController extends Controller
             'recruit_place'=>$request->input("recruit_place"),
             'recruit_firm'=>$request->input("recruit_firm"),
             'recruit_pay'=>$request->input("recruit_pay"),
+            'recruit_address'=>$request->input("recruit_address"),
+            'recruit_user'=>$this->requestGetNotNull('recruit_user'),
+            'recruit_mobile'=>$this->requestGetNotNull('recruit_mobile'),
+            'working_experience'=>$request->input("working_experience"),
+            'education'=>$request->input("education"),
+            'recruit_type'=>$request->input("recruit_type"),
             'job_desc'=>$request->input("job_desc"),
             'id'=>$request->input('id',""),
             'currpage'=>$request->input('currpage',1),
