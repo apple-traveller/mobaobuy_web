@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-    @section('title', $article['title'])
+    @section('title', $article['title'].'-秣宝网')
     @section('keywords',$article['keywords'])
     @section('description', $article['description'])
 
@@ -132,7 +132,7 @@
 
             @if($aboutNews)
                 @foreach($aboutNews as $v)
-            <li><span>{{$v['add_time']}}</span><a href="/detail/{{$v['id']}}.html.html" title="{{$v['title']}}" target="_blank">{{$v['title']}}</a></li>
+            <li><span>{{$v['add_time']}}</span><a href="/detail/{{$v['id']}}.html" title="{{$v['title']}}" target="_blank">{{$v['title']}}</a></li>
                 @endforeach
             @endif
         </ul>

@@ -71,6 +71,15 @@
                                     </div>
                                 </div>
                                 <div class="item">
+                                    <div class="label">是否nofollow：</div>
+                                    <div class="label_value">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_nofollow" >
+                                            <option value="0">否</option>
+                                            <option value="1">是</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="item">
                                     <div class="label">&nbsp;</div>
                                     <div class="label_value info_btn">
                                         <input type="submit" class="button"  value=" 确定 " id="submitBtn">

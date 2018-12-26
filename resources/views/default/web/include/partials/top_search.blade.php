@@ -62,7 +62,7 @@
                     <a href="/"><li>首页</li></a>
 
                     @foreach(getPositionNav('middle') as $item)
-                        <a href="{{$item['url']}}"><li>{{$item['name']}}</li></a>
+                        <a @if($item['is_nofollow']) rel="nofollow" @endif href="{{$item['url']}}"><li>{{$item['name']}}</li></a>
                     @endforeach
                 </ul>
             </div>

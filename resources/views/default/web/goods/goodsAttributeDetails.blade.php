@@ -8,9 +8,19 @@
 @section('description', getSeoInfoByType('goods')['description'])
 @section('css')
 	<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />
-	<link rel="stylesheet" href="/css/index.css" />
+	<link rel="stylesheet" href="{{asset(themePath('/').'css/index.css')}}" />
+	<link rel="stylesheet" href='/css/index.css' />
+
+	{{--<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />--}}
+	{{--<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>--}}
+
 	<style>
+		.fn_title {
+			width: 100px;
+			text-align: right;
+		}
 		.nav-div .nav-cate .ass_menu {display: none;}
+
 		.top-search-div .search-div .logo{
 			background:none;
 		}
@@ -24,6 +34,7 @@
 	</style>
 @endsection
 @section('js')
+	<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script type="text/javascript">
         $(function(){
             $(document).delegate('.phy_chart','mouseenter mouseleave',function(){
@@ -89,7 +100,7 @@
 				@if(!empty($list))
 					@foreach($list as $v)
 						<li>
-							<div class="supply_list_frist">
+							<div class="supply_list_frist" style="width:230px;">
 								<span class="supply_list_frist_com">店铺 : {{$v['shop_name']}}</span> 
 								<!-- <span></span> <span class="ml15"></span> -->
 								<span class="db">联系人 : {{$v['salesman']}} {{$v['contact_info']}}</span>
@@ -101,7 +112,7 @@
 							</div>
 							<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
 							<div class="phy_line fl"></div>
-							<div class="phy_btn"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
+							<div class="phy_btn" style="margin-left:3px;"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
 						</li>
 					@endforeach
 				@else

@@ -354,7 +354,6 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
             dataType: "json",
             success: function(res){
                 if(res.code==200) {
-
                     var data = res.data;
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;

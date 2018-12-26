@@ -69,4 +69,11 @@ class RecruitService
         return RecruitRepo::getInfo($condition['id']);
     }
 
+    /**
+     * 招聘列表 条件查询
+     */
+    public static function recruitByCondition($paper,$condition){
+        return RecruitRepo::getListBySearch($paper,$condition);
+    }
+
 }
