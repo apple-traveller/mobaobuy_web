@@ -62,12 +62,6 @@ class RecruitService
         return ['recruitInfo'=>$recruitInfo,'place'=>$place];
     }
 
-    /**
-     * 招聘详情
-     */
-    public static function recruitDetail($condition){
-        return RecruitRepo::getInfo($condition['id']);
-    }
 
     /**
      * 招聘列表 条件查询
