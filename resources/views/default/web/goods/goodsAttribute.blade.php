@@ -29,6 +29,14 @@
 				@foreach(explode(',',getConfig('search_keywords')) as $item)
 					<a href="/goodsList?keyword={{$item}}" target="_blank">{{$item}}</a>
 				@endforeach
+
+				{{--@if(!empty(getHotSearch()))--}}
+					{{--<div class="hot_search_m">热门推荐：--}}
+						{{--@foreach(getHotSearch() as $item)--}}
+							{{--<a href="/goodsList?keyword={{$item['search_key']}}" target="_blank">{{$item['search_key']}}</a>--}}
+						{{--@endforeach--}}
+					{{--</div>--}}
+				{{--@endif--}}
             </div>
 
 	</div>

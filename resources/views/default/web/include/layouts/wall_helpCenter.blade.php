@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <title>@yield('title')</title>
+    <meta name="description" content="@yield('description')" />
+    <meta name="keywords" content="@yield('keywords')" />
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
     <style>
