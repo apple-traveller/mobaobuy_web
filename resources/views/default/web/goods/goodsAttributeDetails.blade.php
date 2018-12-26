@@ -8,9 +8,19 @@
 @section('description', getSeoInfoByType('goods')['description'])
 @section('css')
 	<link rel="stylesheet" href="{{asset(themePath('/').'css/global.css')}}" />
-	<link rel="stylesheet" href="/css/index.css" />
+	<link rel="stylesheet" href="{{asset(themePath('/').'css/index.css')}}" />
+	<link rel="stylesheet" href='/css/index.css' />
+
+	{{--<link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />--}}
+	{{--<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>--}}
+
 	<style>
+		.fn_title {
+			width: 100px;
+			text-align: right;
+		}
 		.nav-div .nav-cate .ass_menu {display: none;}
+
 		.top-search-div .search-div .logo{
 			background:none;
 		}
@@ -24,6 +34,7 @@
 	</style>
 @endsection
 @section('js')
+	<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script type="text/javascript">
         $(function(){
             $(document).delegate('.phy_chart','mouseenter mouseleave',function(){

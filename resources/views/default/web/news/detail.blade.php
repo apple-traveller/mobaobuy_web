@@ -1,5 +1,5 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-    @section('title', $article['title'])
+    @section('title', $article['title'].'-秣宝网')
     @section('keywords',$article['keywords'])
     @section('description', $article['description'])
 
