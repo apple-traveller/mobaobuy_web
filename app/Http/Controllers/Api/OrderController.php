@@ -181,9 +181,11 @@ class OrderController extends ApiController
             $u_id = $userInfo['id'];
             $address_id = $userInfo['address_id'] ? $userInfo['address_id'] : 0;
         }
+
+
+
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($u_id);
-        //dd($addressList);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
@@ -207,6 +209,7 @@ class OrderController extends ApiController
                 }
             }
         }
+
 
         if ($from == 'promote') {//限时抢购
             try {

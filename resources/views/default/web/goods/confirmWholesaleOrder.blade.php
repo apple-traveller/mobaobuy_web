@@ -242,18 +242,7 @@
 			@endif
 	</div>
 	
-	{{--@if(session('cartSession')['from'] != 'promote')--}}
-		{{--<div class="address whitebg ovh mt20 ">--}}
-		{{--<h1 class="ml30 fs18 mt30">付款方式</h1>--}}
-		{{--<ul class="Collect_goods_address ml30 mt10 ovh mb20">--}}
-			{{--<li class="payTypeList" data-id="" style="height: 80px;border:none;">--}}
-				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="1" checked="checked" />在线支付 </label> <br>--}}
-				{{--<label style="clear:both;margin-top:20px;"><input name="payType" type="radio" value="2" />货到付款</label> --}}
-			{{--</li>--}}
-		{{--</ul>--}}
-			{{----}}
-	{{--</div>--}}
-	{{--@endif--}}
+
 
 
 	<div class="address whitebg ovh mt20">
