@@ -248,7 +248,7 @@
 			function getInfo(currpage,place) {
                 $.ajax({
                     url: '/recruit/recruitByCondition',
-                    type: 'get',
+                    type: 'post',
                     data: {'place':place,'currpage':currpage},
                     success:function (res) {
                         console.log(res);
