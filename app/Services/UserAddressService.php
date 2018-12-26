@@ -134,6 +134,7 @@ class UserAddressService
         return $address_id;
     }
 
+
     //确认订单页 获取选中地址 有默认则为默认 没有默认任意选择一条
     public static function getOneAddressIdApi($userInfo,$info)
     {
