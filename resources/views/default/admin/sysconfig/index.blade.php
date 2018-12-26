@@ -49,7 +49,7 @@
                                         <textarea class="textarea"  name="{{$vo['code']}}" id="{{$vo['code']}}">{{$vo['value']}}</textarea>
                                         <div class="form_prompt"></div>
                                     @elseif($vo['type']=='file')
-                                        <button type="button" class="layui-btn upload-file" data-type="{{$vo['code']}}" data-path="{{$vo['store_dir']}}" ><i class="layui-icon">&#xe681;</i>上传图片</button>
+                                        <button type="button" class="layui-btn upload-file" data-type="" data-path="{{$vo['code']}}" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                         <input type="text" value="{{$vo['value']}}" class="text"  name="{{$vo['code']}}" style="display:none;">
                                         <img @if(empty($vo['value'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;" src="{{getFileUrl($vo['value'])}}"  @endif   class="layui-upload-img"><br/>
                                     @endif

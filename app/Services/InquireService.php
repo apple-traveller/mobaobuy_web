@@ -44,6 +44,16 @@ class InquireService
     public static function modify($data)
     {
         try{
+            return InquireRepo::modify($data['id'],$data);
+        }catch(\Exception $e){
+            self::throwBizError($e->getMessage());
+        }
+    }
+
+    //删除
+    public static function delete($data)
+    {
+        try{
             $inquire_quote = InquireQuoteRepo::getInfoByFields(['inquire_id'=>$data['id']]);
             if(!empty($inquire_quote)){
                 self::throwBizError('该求购信息有报价，不能删除');

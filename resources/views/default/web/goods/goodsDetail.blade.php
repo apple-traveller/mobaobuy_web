@@ -1,8 +1,8 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@if(empty(getSeoInfoByType('article_content')['title']))
+@if(empty(getSeoInfoByType('goods')['title']))
     @section('title', $good_info['goods_name'])
 @else
-    @section('title', $good_info['goods_name'].'-'.getSeoInfoByType('article_content')['title'])
+    @section('title', $good_info['goods_name'].'-'.getSeoInfoByType('goods')['title'])
 @endif
 @section('keywords', getSeoInfoByType('goods')['keywords'])
 @section('description', getSeoInfoByType('goods')['description'])
@@ -29,13 +29,15 @@
 		.pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
 		.pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
 		.pro_detail_btn{cursor:pointer;width: 140px;height: 42px;line-height: 42px;border: none;font-size:16px;color: #fff;border-radius:3px;}
-        .History_offo{height: 40px;line-height: 40px;border-bottom: 2px solid #75b335;background-color: #f0f0f0;box-sizing: border-box;}
-        .History_offo h1{background-color: #75b335;text-align: center;width: 106px;color: #fff;font-size: 16px;}
+        .History_offo{height: 40px;line-height: 40px;border-bottom: 1px solid #d4d3d3;background-color: #f0f0f0;box-sizing: border-box;}
+        .History_offo h1{line-height: 38px;  height: 38px;text-align: center;color: #666;font-size: 16px;}
+        .History_offo .titlecurr{border-bottom: 2px solid #75b335;  color: #75b335;margin: 0 auto; cursor: pointer;}
         .History-product-list{margin-top: 10px;}
         .History-product-list li span{width: 14.2%;float: left;text-align: center;}
-        .History-product-list li{height: 43px;line-height: 43px;background-color: #fff;border-bottom: 1px solid #CCCCCC;}
-        .History-product-list li:first-child{height: 40px;line-height: 40px;background-color: #cccccc;}
+        .History-product-list li{line-height: 43px;background-color: #fff;}
+        .History-product-list li:first-child{line-height: 40px; }
         .History-product-list li:last-child{border-bottom: none;}
+        .History_offo li{float: left;width: 106px;}
         .orangebg{background-color:#ff6f17;}
         .nav-div .nav-cate .ass_menu {display: none;}
     </style>
@@ -166,6 +168,16 @@
             })
         })
 	</script>
+<script>
+    $(function(){
+        $('.HistoryLi li').hover(function(){
+            $(this).addClass('titlecurr').siblings().removeClass('titlecurr');
+            $('.proitemlist>li').eq($(this).index()).show().siblings().hide();
+        });
+
+    });
+</script>
+
 @endsection
 
 @section('content')
@@ -254,11 +266,13 @@
 	</div>
         <div class="w1200" style="margin-top: 80px;">
             <div class="History_offo">
-                <h1>历史报价</h1>
+                <ul class="HistoryLi"><li class="titlecurr"><h1 >历史报价</h1></li><li><h1>商品详情</h1></li></ul>
             </div>
-
+<div>
+    <ul class="proitemlist">
+        <li>
             <ul class="History-product-list br1">
-                <li>
+                <li style="background-color: #cccccc">
                     <span style="width:15%">报价日期</span>
                     <span style="width:10%">种类</span>
                     <span style="width:25%">商品名称</span>
@@ -279,6 +293,23 @@
                     </li>
                 @endforeach
             </ul>
+            <div class="news_pages">
+                <ul id="page" class="pagination">
+
+                </ul>
+            </div>
+        </li>
+        <li style="display: none"><ul class="History-product-list br1">
+                <li>
+                    {!! $good_info['goods_desc'] !!}
+
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+            <div class="clearfix whitebg ovh mt10" style="font-size: 0;"></div>
+        </div>
 
             {{--<ul class="Self-product-list">--}}
                 {{--<li><span class="num_bg1">报价日期</span><span>品牌</span><span>种类</span><span>商品名称</span><span>数量（kg）</span><span>单价（元/kg）</span><span>发货地址</span><span>联系人</span></li>--}}
@@ -287,14 +318,7 @@
                 {{--@endforeach--}}
             {{--</ul>--}}
             <!--页码-->
-            <div class="news_pages">
-                <ul id="page" class="pagination">
 
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="clearfix whitebg ovh mt10" style="font-size: 0;">
 @endsection
 
 @section('bottom_js')
@@ -389,12 +413,13 @@
                     , theme: "#88be51"
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/goodsDetail?currpage="+obj.curr+"&shop_id={{$shop_id}}&id={{$id}}";
+                            window.location.href="/goodsDetail/{{$id}}/{{$shop_id}}?currpage="+obj.curr;
                         }
                     }
                 });
             });
         }
 	</script>
+
 @endsection
 

@@ -32,14 +32,18 @@ class PromoteController extends Controller
         }
         $condition['is_delete'] = 0;
         $promotes = ActivityService::getListBySearch(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-        //dd($seckills);
+        $goods_unit = "KG";
+        if(!empty($promotes['list'])){
+            $goods_unit = GoodsService::getGoodInfo($promotes['list'][0]['goods_id'])['unit_name'];
+        }
         return $this->display('admin.promote.list',[
             'promotes'=>$promotes['list'],
             'total'=>$promotes['total'],
             'pageSize'=>$pageSize,
             'currpage'=>$currpage,
             'shop_name'=>$shop_name,
-            'is_expire'=>$is_expire
+            'is_expire'=>$is_expire,
+            'goods_unit'=>$goods_unit
         ]);
     }
 

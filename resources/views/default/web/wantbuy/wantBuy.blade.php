@@ -1,7 +1,7 @@
 ﻿@extends(themePath('.','web').'web.include.layouts.home')
-@section('title', getSeoInfoByType('consign')['title'])
-@section('keywords', getSeoInfoByType('consign')['keywords'])
-@section('description', getSeoInfoByType('consign')['description'])
+@section('title', getSeoInfoByType('wantBuy')['title'])
+@section('keywords', getSeoInfoByType('wantBuy')['keywords'])
+@section('description', getSeoInfoByType('wantBuy')['description'])
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 
@@ -90,6 +90,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 <div class="look-out">
 
         <div class="buy-left" style="width: 930px;">
+
             @if(isset($inquireList) && !empty($inquireList['list']))
                 <h3 class="supply-h3"><i class="supply-text">求购列表</i>
 
@@ -98,9 +99,9 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 
                 <div class="buy-form-search">
                     <form action="" method="get">
-                        分类<input class="buy-text" name="cate_name" type="text" value="" style="width: 125px;">
+
                         商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
-                        厂商<input class="buy-text" name="brand_name" type="text" value="" style="width: 125px;">
+
                         交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
                         <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
                     </form>
@@ -337,8 +338,8 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 
     //请求ajax获取列表数据
     function getInfo(currpage){
-        var _brand_name = $('input[name=brand_name]').val();
-        var _cate_id = $('input[name=cat_name]').val();
+//        var _brand_name = $('input[name=brand_name]').val();
+//        var _cate_id = $('input[name=cat_name]').val();
         var _goods_name = $('input[name=goods_name]').val();
         var _delivery_area = $('input[name=delivery_area]').val();
 
@@ -347,15 +348,12 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
             url: "/condition/toBuyList",
             data: {
                 'currpage':currpage,
-                'brand_name':_brand_name,
-                'cate_id':_cate_id,
                 'goods_name':_goods_name,
                 'delivery_area':_delivery_area
             },
             dataType: "json",
             success: function(res){
                 if(res.code==200) {
-
                     var data = res.data;
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;

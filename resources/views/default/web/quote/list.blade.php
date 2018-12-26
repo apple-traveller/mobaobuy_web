@@ -198,8 +198,8 @@
                         <span style="width:12%" class="num_bg1">店铺</span>
                         <span style="width:11%;">种类</span>
                         <span style="width:12%">商品名称</span>
-                        <span style="width:8%;">数量（kg）</span>
-                        <span style="width:8%;">单价（元/kg）</span>
+                        <span style="width:8%;">数量（KG）</span>
+                        <span style="width:8%;">单价（元/KG）</span>
                         <span style="width:8%;">发货地址</span>
                         <span style="width:8%;">交货方式</span>
                         <span style="width:8%;">交货时间</span>

@@ -51,10 +51,11 @@ class OrderController extends ApiController
             $condition['order_sn'] = '%' . $order_no . '%';
         }
 
-        $rs_list = OrderInfoService::getWebOrderList($currUser,$condition, $page, $page_size);
+        $rs_list = OrderInfoService::getWebOrderListApi($currUser,$condition, $page, $page_size);
         foreach($rs_list['list'] as $k=>$v){
             $rs_list['list'][$k]['address_detail'] = RegionService::getRegionApi($v['country'],$v['province'],$v['city'],$v['district'])." ".$v['address'];
         }
+
         $data = [
             'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
             'recordsTotal' => $rs_list['total'], //数据总行数
@@ -180,9 +181,11 @@ class OrderController extends ApiController
             $u_id = $userInfo['id'];
             $address_id = $userInfo['address_id'] ? $userInfo['address_id'] : 0;
         }
+
+
+
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($u_id);
-        //dd($addressList);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
                 $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
@@ -206,6 +209,7 @@ class OrderController extends ApiController
                 }
             }
         }
+
 
         if ($from == 'promote') {//限时抢购
             try {

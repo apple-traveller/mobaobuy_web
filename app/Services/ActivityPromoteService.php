@@ -136,14 +136,15 @@ class ActivityPromoteService
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        $goodsInfo['max_limit'] = $ActivityInfo['max_limit'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
         //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);
         $goodsInfo['goodsList'] = $goodsList;
-
         //商品是否已收藏
         $collectGoods= UserCollectGoodsRepo::getInfoByFields(['user_id'=>$userId,'goods_id'=>$ActivityInfo['goods_id']]);
+        //dd($collectGoods);
         if(empty($collectGoods)){
             $goodsInfo['collectGoods'] = 0;
         }else{

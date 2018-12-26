@@ -17,6 +17,60 @@
         .ys_banner_icon li {display: -moz-inline-stack;display: inline-block;}
         .ys_banner_icon span {float: left; margin: 0 5px;border-radius: 25px;background: #fff;cursor: pointer;width: 14px;height: 14px;text-indent: -9999px;}
         .ys_banner_icon span.on {border-radius: 15px;background: #75b335}
+
+        .in_box {
+            margin: 0 auto;
+            overflow: hidden;
+            padding-top: 1px;
+            width: 1200px;
+        }
+        .box4 {
+            margin-top: -1px;
+            float: left;
+            width: 1198px;
+
+        }
+        .box4 .s {
+            float: left;
+            width: 81px;
+            height: 39px;
+            font-size: 14px;
+            line-height: 39px;
+            text-align: right;
+        }
+        .box4 .list {
+            overflow: hidden;
+            float: left;
+            width: 1082px;
+            height: 39px;
+        }
+        .box4 .list.all{
+            height: auto;
+        }
+        .box4 .list .list_div {
+            padding: 0;
+            float: left;
+            width: 1082px;
+        }
+        .box4 .list a {
+            float: left;
+            margin-right: 15px;
+            height: 39px;
+            font-size: 14px;
+            line-height: 39px;
+            color: #666;
+            white-space: nowrap;
+        }
+        .box4 .close, .box4 .open {
+            float: left;
+            margin: 7px 9px 0 0;
+            width: 26px;
+            height: 26px;
+            background: url(images/footer_close.png) no-repeat 0 0px;
+        }
+        .box4 .open{
+            background-position: 0 -51px;
+        }
     </style>
 @endsection
 @section('js')
@@ -51,6 +105,8 @@
             });
 
 
+
+
         })
     </script>
 
@@ -59,7 +115,7 @@
             $('#change_2 .ys_bigimg').soChange({
                 thumbObj:'#change_2 .ys_banner_icon span',
                 thumbNowClass:'on',
-                changeTime:2000,
+                changeTime:3000,
             });
         });
     </script>
@@ -433,7 +489,7 @@
         .nil_bf{background:#fff;border-bottom:1px solid #ebebeb;}
         .news_items_list{float:left;overflow:hidden;line-height:46px;height:46px;}
         .news_items_list li{float:left;}
-        .news_items_list li .Self-support-title{border-left:0;padding-left:0;line-height:44px;height:44px;margin:0 12px;font-size:16px;}
+        .news_items_list li .Self-support-title{border-left:0;padding-left:0;line-height:44px;height:44px;margin:0 12px;font-size:18px;}
         .news_items_list li.curr .Self-support-title{border-bottom:2px solid #75b335;color:#75b335;cursor: pointer;}
         .nil_more{float:right;line-height:46px;height:46px;margin-right:10px;}
     </style>
@@ -446,6 +502,7 @@
             $(this).addClass('curr').siblings().removeClass('curr');
             $('.nil_items>li').eq($(this).index()).show().siblings().hide();
         });
+
     });
 </script>
 
@@ -503,6 +560,7 @@
         </div>
     </div>
     @endif
+
     <!--合作品牌-->
     @if(!empty($brand_list))
         <div class="w1200" style="margin:30px auto">
@@ -518,8 +576,44 @@
             </ul>
         </div>
     @endif
-@endsection
 
+
+
+@endsection
+@section('friend_link')
+ @if(!empty($friend_link))
+     <div style="background-color: #f7f7f7">
+         <div class="in_box" style=" ">
+             <div class="box4">
+                 <span class="s">友情链接：</span>
+                 <div class="list">
+                     <div class="list_div">
+                         @foreach($friend_link as $v)
+                             <a href="javascript:void(0);" onclick="window.location.href='{{isIncludeHttp($v['link_url'])}}'" target="_blank" title="{{$v['link_name']}}">{{$v['link_name']}}</a>
+                         @endforeach
+                     </div>
+                 </div>
+                 <a href="javascript:;" class="close"></a>
+             </div>
+         </div>
+     </div>
+
+@endif
+<script>
+    $(function () {
+        $(document).on("click",".box4 .close",function(){
+            $(this).prev(".list").addClass("all");
+            $(this).addClass("open").removeClass("close");
+        });
+        $(document).on("click",".box4 .open",function(){
+            $(this).prev(".list").removeClass("all");
+            $(this).addClass("close").removeClass("open");
+        });
+    })
+
+
+</script>
+@endsection
 @section('bottom_js')
     <script>
         //加入购物车
@@ -549,4 +643,6 @@
             },"json");
         });
     </script>
+
 @endsection
+

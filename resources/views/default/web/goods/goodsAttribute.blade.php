@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>物性表 - {{getSeoInfoByType('article_content')['title']}}</title>
-	<meta name="description" content="{{getSeoInfoByType('article_content')['description']}}" />
-	<meta name="keywords" content="{{getSeoInfoByType('article_content')['keywords']}}" />
+    <title>物性表 - {{getSeoInfoByType('goods')['title']}}</title>
+	<meta name="description" content="{{getSeoInfoByType('goods')['description']}}" />
+	<meta name="keywords" content="{{getSeoInfoByType('goods')['keywords']}}" />
     @include(themePath('.','web').'web.include.partials.base')
     @yield('css')
 		<link rel="stylesheet" href="css/global.css" />

@@ -254,7 +254,6 @@ class OrderController extends Controller
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
         if(empty($cartSession) || !isset($cartSession) || empty($goodsList)){
-//           return $this->error('非法操作');
              return $this->redirect('/cart');
         }
 

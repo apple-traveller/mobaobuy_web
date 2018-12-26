@@ -44,15 +44,18 @@ class ActivityWholesaleController extends ApiController
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
         $userInfo = $this->getUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
         try{
             $activityInfo = ActivityWholesaleService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            $address_id = UserAddressService::getOneAddressId();
+            $address_id = UserAddressService::getOneAddressIdApi($userInfo,$deputy_user);
+
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
                 'from'=>'wholesale'
             ];
+
             Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
             return $this->success($session_data,'success');
         }catch (\Exception $e){

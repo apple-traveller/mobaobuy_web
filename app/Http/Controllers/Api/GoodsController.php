@@ -28,6 +28,7 @@ class GoodsController extends ApiController
         $place_id = $request->input('place_id',"");
         $goods_name = $request->input('goods_name','');
         $is_self_run = $request->input('is_self_run',0);
+        $type = $request->input('type',0);
         $condition =[];
 
         $orderBy = [];
@@ -35,16 +36,20 @@ class GoodsController extends ApiController
         if(!empty($sort_goods_number)){
             $orderBy['b.goods_number'] = $sort_goods_number;
         }
+
         if(!empty($sort_add_time)){
             $orderBy['b.add_time'] = $sort_add_time;
         }
+
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
+
         if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
             $t = explode(":",$orderType);
             $orderBy[$t[0]] = $t[1];
         }
+
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }
@@ -60,13 +65,16 @@ class GoodsController extends ApiController
         if($lowest=="" && $highest!=""){
             $condition['shop_price|<='] = $highest;
         }
+
         if($highest=="" && $lowest!=""){
             $condition['shop_price|>='] = $lowest;
         }
+
         if($lowest!="" && $highest!=""&&$lowest<$highest){
             $condition['shop_price|<='] = $highest;
             $condition['shop_price|>='] = $lowest;
         }
+
         if($lowest>$highest){
             $condition['shop_price|>='] = $lowest;
         }
@@ -74,16 +82,26 @@ class GoodsController extends ApiController
         if(!empty($brand_id)){
             $condition['g.brand_id'] = $brand_id;
         }
+
         if(!empty($cate_id)){
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
             $condition[] = $c;
         }
+
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
         }
 
+        if($type==0){
+            $condition['b.type'] = '1|2';
+        }else{
+            $condition['b.type'] = $type;
+        }
+
+        $condition['b.is_self_run'] = 1;
+        $condition['b.is_delete'] = 0;
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         if(empty($goodsList['list'])){
             return $this->error('无数据');
@@ -297,7 +315,7 @@ class GoodsController extends ApiController
             if(empty($flag)){
                 return $this->error('购物车中没有此商品');
             }else{
-                return $this->success(['goods_number'=>$flag['goods_number'],'account'=>$flag['goods_price']*$flag['goods_number']],'success');
+                return $this->success(['goods_number'=>$flag['goods_number'],'account'=>number_format($flag['goods_price']*$flag['goods_number'],2,".","")],'success');
             }
         }catch (\Exception $e){
             return $this->error($e->getMessage());
@@ -368,7 +386,7 @@ class GoodsController extends ApiController
         $goods_name= $request->input('goods_name', '');
         $condition = [];
         if(!empty($goods_name)){
-            $condition['goods_name'] = '%' . $goods_name . '%';
+            $condition['goods_full_name'] = '%' . $goods_name . '%';
         }
         try{
             $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);

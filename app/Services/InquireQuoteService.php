@@ -40,7 +40,6 @@ class InquireQuoteService
 
         $inquireInfo = InquireRepo::getInfo($buyQuote['inquire_id']);
         $buyQuote['goods_name'] = $inquireInfo['goods_name'];
-        $buyQuote['goods_id'] = $inquireInfo['goods_id'];
         $buyQuote['unit_name'] = $inquireInfo['unit_name'];
         $buyQuote['delivery_method'] = $inquireInfo['delivery_method'];
         $buyQuote['delivery_time'] = $inquireInfo['delivery_time'];
@@ -72,6 +71,12 @@ class InquireQuoteService
     public static function getInquireQuoteInfo($id)
     {
         return InquireQuoteRepo::getInfo($id);
+    }
+
+    //获取一条信息
+    public static function getInquireQuoteInfoByCondition($condition)
+    {
+        return InquireQuoteRepo::getInfoByFields($condition);
     }
 
     //添加

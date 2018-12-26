@@ -16,6 +16,7 @@
 
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
+    @yield('friend_link')
     @include(themePath('.','web').'web.include.partials.copyright')
     <script type="text/javascript" src="{{asset('/plugs/jquery/jquery.soChange-min.js')}}"></script>
     @yield('js')

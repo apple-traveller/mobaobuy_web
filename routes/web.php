@@ -313,6 +313,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::any('/inquireQuote/index', 'InquireQuoteController@index');// 求购报价列表
         Route::get('/inquireQuote/delete', 'InquireQuoteController@delete');// 求购报价删除
 
+        Route::get('/recruit/list','RecruitController@index');//招聘信息列表
+        Route::get('/recruit/add','RecruitController@add');//添加
+        Route::get('/recruit/edit','RecruitController@edit');//编辑
+        Route::post('/recruit/save','RecruitController@save');//保存
+        Route::get('/recruit/delete','RecruitController@delete');//删除
+        Route::post('/recruit/change/isShow','RecruitController@isShow');//是否显示
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
@@ -382,8 +389,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wholeSingle', 'ActivityWholesaleController@wholeSingle');//整单采购 // 未登录可以访问
     Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
     Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
-    Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
-    Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
+
+    Route::get('/recruit/list', 'RecruitController@recruitList');//招聘列表
+    Route::get('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
+    Route::get('/recruit/detail/{id}', 'RecruitController@recruitDetail'); //招聘详情
+
 
 
     Route::group(['middleware' => 'web.auth'], function () {
@@ -392,6 +402,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 //        Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 
         Route::post('/changeDeputy','IndexController@changeDeputy');//选择公司
+
+        Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+        Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
 
         Route::get('/member', 'UserController@index'); //会员中心
         Route::get('/member/emp', 'UserController@empList'); //会员中心

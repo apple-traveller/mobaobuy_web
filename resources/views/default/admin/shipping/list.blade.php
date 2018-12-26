@@ -73,7 +73,7 @@
                                                 @if($v['enabled']==0)
                                                     <a href="javascript:void(0);" data-id="{{$v['id']}}" data-status="{{$v['enabled']}}" title="启用" class="btn_see onEnabled"><i class="layui-icon layui-icon-ok-circle"></i>启用</a>
                                                 @else
-                                                    <a href="javascript:void(0);" data-id="{{$v['id']}}" data-status="{{$v['enabled']}}" title="禁用" class="btn_see onEnabled"><i class="layui-icon layui-icon-close-fill"></i>禁1用</a>
+                                                    <a href="javascript:void(0);" data-id="{{$v['id']}}" data-status="{{$v['enabled']}}" title="禁用" class="btn_see onEnabled"><i class="layui-icon layui-icon-close-fill"></i>禁用</a>
                                                 @endif
                                                 <a href="/admin/shipping/edit?id={{$v['id']}}" title="编辑" class="btn_see"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                                             </div>

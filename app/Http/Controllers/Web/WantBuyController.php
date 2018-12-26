@@ -27,20 +27,20 @@ class WantBuyController extends Controller
     public function wantBuyListBycondition(Request $request){
         $currpage = $request->input('currpage',1);
         $delivery_area = $request->input('delivery_area','');//发货地
-        $cat_name = $request->input('cat_name','');//分类名
-        $brand_name = $request->input('brand_name','');//厂商
+//        $cat_name = $request->input('cat_name','');//分类名
+//        $brand_name = $request->input('brand_name','');//厂商
         $goods_name = $request->input('goods_name','');//商品名称
 
         $condition = [];
         if(!empty($delivery_area)){
             $condition['delivery_area'] = '%' . $delivery_area . '%';
         }
-        if(!empty($cat_name)){
-            $condition['cat_name'] = '%' . $cat_name . '%';
-        }
-        if(!empty($brand_name)){
-            $condition['brand_name'] = '%' . $brand_name . '%';
-        }
+//        if(!empty($cat_name)){
+//            $condition['cat_name'] = '%' . $cat_name . '%';
+//        }
+//        if(!empty($brand_name)){
+//            $condition['brand_name'] = '%' . $brand_name . '%';
+//        }
         if(!empty($goods_name)){
             $condition['goods_name'] = '%' . $goods_name . '%';
         }

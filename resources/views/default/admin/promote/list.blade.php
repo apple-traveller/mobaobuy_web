@@ -17,8 +17,8 @@
                 <div class="common-head">
                     <div class="order_state_tab">
                         <a href="/admin/promote/list?is_expire=0" @if($is_expire==0) class="current" @endif>全部<em @if($is_expire!=0) style="display:none;" @endif>({{$total}})</em></a>
-                        <a href="/admin/promote/list?is_expire=1" @if($is_expire==1) class="current" @endif>未过期<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
-                        <a href="/admin/promote/list?is_expire=2" @if($is_expire==2) class="current" @endif>已过期<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/promote/list?is_expire=1" @if($is_expire==1) class="current" @endif>进行中<em @if($is_expire!=1) style="display:none;" @endif>({{$total}})</em></a>
+                        <a href="/admin/promote/list?is_expire=2" @if($is_expire==2) class="current" @endif>已结束<em @if($is_expire!=2) style="display:none;" @endif>({{$total}})</em></a>
                     </div>
                     <div style="margin-left:10px;margin-top:6px;" class="fl">
                         <a href="/admin/promote/addForm"><div class="fbutton"><div class="add" title="添加优惠活动"><span><i class="icon icon-plus"></i>添加优惠活动</span></div></div></a>
@@ -61,10 +61,10 @@
                                         <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
                                         <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
                                         <td><div class="tDiv">￥{{$vo['price']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['num']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['available_quantity']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['min_limit']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['max_limit']}}</div></td>
+                                        <td><div class="tDiv">{{$vo['num']}}{{$goods_unit}}</div></td>
+                                        <td><div class="tDiv">{{$vo['available_quantity']}}{{$goods_unit}}</div></td>
+                                        <td><div class="tDiv">{{$vo['min_limit']}}{{$goods_unit}}</div></td>
+                                        <td><div class="tDiv">{{$vo['max_limit']}}{{$goods_unit}}</div></td>
                                         <td>
                                             <div class="tDiv">
                                                 {{--

@@ -180,11 +180,24 @@
 
                             @if($info['review_status']==1)
                                 <div class="item">
-                                    <div class="label">审核状态：</div>
-                                    <div class="value">
-                                        已通过审核
+                                    <div class="label"><span class="require-field">*</span>&nbsp;审核意见：</div>
+                                    <div class="label_value">
+                                        <textarea id="review_content" name="review_content" class="textarea">@if(!empty($info['review_content'])){{$info['review_content']}}@else @endif</textarea>
+                                        <div class="form_prompt"></div>
                                     </div>
                                 </div>
+
+                                <div class="item">
+                                    <div class="label">审核状态：</div>
+                                    <div class="value">
+                                        <span >已通过审核</span>
+                                        @if($info['is_firm']==1)
+                                        <input style="margin-left:10px;" class="review_status btn btn25 blue_btn "  type="button" data-status="1" value="保存信息" >
+                                        @else
+                                        @endif
+                                    </div>
+                                </div>
+
                             @else
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;审核意见：</div>
@@ -329,28 +342,28 @@
                         return false;
                     }
                 }
-                if($("#is_special").val()==1 && $("#bank_of_deposit").length>0){
+                if($("#bank_of_deposit").length>0){
                     bank_of_deposit = $("#bank_of_deposit").val();
                     if(bank_of_deposit.length==0){
                         layer.msg("开户银行不能为空");
                         return false;
                     }
                 }
-                if($("#is_special").val()==1 && $("#bank_account").length>0){
+                if($("#bank_account").length>0){
                     bank_account = $("#bank_account").val();
                     if(bank_account.length==0){
                         layer.msg("银行账号不能为空");
                         return false;
                     }
                 }
-                if($("#is_special").val()==1 && $("#company_address").length>0){
+                if($("#company_address").length>0){
                     company_address = $("#company_address").val();
                     if(company_address.length==0){
                         layer.msg("开票地址不能为空");
                         return false;
                     }
                 }
-                if($("#is_special").val()==1 && $("#company_telephone").length>0){
+                if($("#company_telephone").length>0){
                     company_telephone = $("#company_telephone").val();
                     if(company_telephone.length==0){
                         layer.msg("开票电话不能为空");

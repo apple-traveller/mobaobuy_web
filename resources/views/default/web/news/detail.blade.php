@@ -1,23 +1,7 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-
-@if(empty(getSeoInfoByType('article_content')['title']))
-    @section('title', $article['title'])
-@else
-    @section('title', getSeoInfoByType('article_content')['title'].'-'.$article['title'])
-@endif
-
-@if(empty(getSeoInfoByType('article_content')['keywords']))
+    @section('title', $article['title'].'-秣宝网')
     @section('keywords',$article['keywords'])
-@else
-    @section('keywords', getSeoInfoByType('article_content')['keywords'].','.$article['keywords'])
-@endif
-
-@if(empty(getSeoInfoByType('article_content')['keywords']))
     @section('description', $article['description'])
-@else
-    @section('description', getSeoInfoByType('article_content')['description'].','.$article['description'])
-@endif
-
 
 @section('style')
     <style>
@@ -148,7 +132,7 @@
 
             @if($aboutNews)
                 @foreach($aboutNews as $v)
-            <li><span>{{$v['add_time']}}</span><a href="/detail/{{$v['id']}}.html.html" title="{{$v['title']}}" target="_blank">{{$v['title']}}</a></li>
+            <li><span>{{$v['add_time']}}</span><a href="/detail/{{$v['id']}}.html" title="{{$v['title']}}" target="_blank">{{$v['title']}}</a></li>
                 @endforeach
             @endif
         </ul>

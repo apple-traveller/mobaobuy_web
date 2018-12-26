@@ -70,6 +70,15 @@
                                         <div class="form_prompt fl"></div>
                                     </div>
                                 </div>
+                                <div class="item">
+                                    <div class="label">是否nofollow：</div>
+                                    <div class="label_value">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_nofollow" >
+                                            <option @if($nav['is_nofollow']) selected @endif value="1">是</option>
+                                            <option @if($nav['is_nofollow'] == 0) selected @endif value="0">否</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
                                 <div class="item">
                                     <div class="label">&nbsp;</div>
