@@ -163,61 +163,60 @@
 
 	{{--<body style="background-color: #f4f4f4;">--}}
 	@section('content')
-		<div style="margin:0 auto;width:1200px;background-color: white;margin-top:20px;">
-		<section class="co_filter_condition mb15" style=" margin-left:5px;margin-top:20px;">
-			<dl class="condition_item city">
-				<dt>城市:</dt>
-				<dd>
-					<div class="all_item">
-						{{--<a ka="job-city-all" href="/job/g2090879.html#co_tab" ref="nofollow">全部</a>--}}
-						@if(!empty($place))
-							@foreach($place as $v)
-								<a ka="job-city-show" onclick="getPlace(1,this);" href="javascript:(0)" text="{{$v}}" class="">{{$v}}</a>
-							@endforeach
-						@endif
-						{{--<a ka="job-city-2" href="/job/g2090879/city-55.html#co_tab">济南</a>--}}
-					</div>
-					{{--<div class="grey_99 spread_option none">--}}
-						{{--<div class="c_toggler">更多<i></i></div>--}}
-					{{--</div>--}}
-				</dd>
-			</dl>
-		</section>
-
-		<div style="margin:0 auto;width:1130px;" id="recruit">
-			@if(!empty($recruitInfo['list']))
-				@foreach($recruitInfo['list'] as $v)
-					<section class="recruitment_item wrap_style " data-e="false">
-						<div class="position_info">
-							<dl class="company_dl">
-								<dd>
-									<p class="dd_top">
-										<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">{{$v['recruit_job']}}</a>
-										<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$v['recruit_place']}}]</a>
-										<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$v['add_time']}}发布</span>
-									</p>
-									<div class="dd_bot">
-										<span class="salary">职位薪资:{{$v['recruit_pay']}}</span>
-										<div class="info">
-											<span>经验:{{$v['working_experience']}}</span>
-											<em class="line"></em>
-											<span>学历:{{$v['education']}}</span>
-											<em class="line"></em>
-											<span>类型:{{$v['recruit_type']}}</span>
+		@if(!empty($recruitInfo['list']))
+			<div style="margin:0 auto;width:1200px;background-color: white;margin-top:20px;">
+				<section class="co_filter_condition mb15" style=" margin-left:5px;margin-top:20px;">
+					<dl class="condition_item city">
+						<dt>城市:</dt>
+						<dd>
+							<div class="all_item">
+								{{--<a ka="job-city-all" href="/job/g2090879.html#co_tab" ref="nofollow">全部</a>--}}
+								@if(!empty($place))
+									@foreach($place as $v)
+										<a ka="job-city-show" onclick="getPlace(1,this);" href="javascript:(0)" text="{{$v}}" class="">{{$v}}</a>
+									@endforeach
+								@endif
+								{{--<a ka="job-city-2" href="/job/g2090879/city-55.html#co_tab">济南</a>--}}
+							</div>
+							{{--<div class="grey_99 spread_option none">--}}
+								{{--<div class="c_toggler">更多<i></i></div>--}}
+							{{--</div>--}}
+						</dd>
+					</dl>
+				</section>
+				<div style="margin:0 auto;width:1130px;" id="recruit">
+					@foreach($recruitInfo['list'] as $v)
+						<section class="recruitment_item wrap_style " data-e="false">
+							<div class="position_info">
+								<dl class="company_dl">
+									<dd>
+										<p class="dd_top">
+											<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">{{$v['recruit_job']}}</a>
+											<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$v['recruit_place']}}]</a>
+											<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$v['add_time']}}发布</span>
+										</p>
+										<div class="dd_bot">
+											<span class="salary">职位薪资:{{$v['recruit_pay']}}</span>
+											<div class="info">
+												<span>经验:{{$v['working_experience']}}</span>
+												<em class="line"></em>
+												<span>学历:{{$v['education']}}</span>
+												<em class="line"></em>
+												<span>类型:{{$v['recruit_type']}}</span>
+											</div>
 										</div>
-									</div>
 
-								</dd>
-							</dl>
-						</div>
-						<div class="obligation">
-							<p>
-								岗位说明：
-								{!! $v['job_desc'] !!}
-							</p>
-						</div>
-					</section>
-				@endforeach
+									</dd>
+								</dl>
+							</div>
+							<div class="obligation">
+								<p>
+									岗位说明：
+									{!! $v['job_desc'] !!}
+								</p>
+							</div>
+						</section>
+					@endforeach
 					<div class="page">
 						<div class="link">
 							<div class="news_pages" style="margin-top: 20px;text-align: center;">
@@ -225,15 +224,12 @@
 							</div>
 						</div>
 					</div>
-			@endif
-			{{--分页--}}
+				</div>
 
-
-		</div>
-
-		</div>
-
-
+			</div>
+		@else
+			<div class="nodata">暂无招聘信息</div>
+		@endif
 		<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 		<script>
 			$(function(){
