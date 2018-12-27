@@ -313,7 +313,6 @@ class InvoiceController extends Controller
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
             return $this->error('您不符合开增值专用发票的条件');
         }
-//dd($goodsList[0]['order_id']);
         // 通过订单商品获取订单详情->店铺信息
         $orderInfo = OrderInfoService::getOrderInfoById($goodsList[0]['order_id']);
         $address_info = UserAddressService::getAddressInfo($invoiceSession['address_id']);

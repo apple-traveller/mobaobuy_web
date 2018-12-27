@@ -222,7 +222,7 @@
                                 </span>
 
                                 <span style="width:10%;float:right;">
-                                     @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
+                                    @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
                                             <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                                     @elseif($vo['goods_number'] <= 0)
                                             <button class="trade-close-btn">已售完</button>

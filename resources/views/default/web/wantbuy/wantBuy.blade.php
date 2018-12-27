@@ -101,9 +101,9 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                     <form action="" method="get">
 
                         商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
-
                         交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
                         <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
+
                     </form>
                 </div>
 

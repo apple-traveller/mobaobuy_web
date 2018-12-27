@@ -10,7 +10,9 @@ class ActivityConsignController extends ApiController
 {
     //清仓特卖
     public function index(){
-        $condition['type'] = 3;//清仓特卖
+        $condition['b.type'] = 3;//清仓特卖
+        $condition['b.is_delete'] = 0;
+        $condition['b.consign_status'] = 1;
         try{
             $consignInfo =  ShopGoodsQuoteService::getShopGoodsQuoteListByFields(['add_time'=>'desc'],$condition);
             return $this->success(compact('consignInfo'),'success');
@@ -43,10 +45,11 @@ class ActivityConsignController extends ApiController
         $activityId = $request->input('activityId');
         $goodsNum = $request->input('goodsNum');
         $userInfo = $this->getUserInfo($request);
+        $deputy_user = $this->getDeputyUserInfo($request);
         try{
             $activityInfo = ShopGoodsQuoteService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            $address_id = UserAddressService::getOneAddressId();
+            $address_id = UserAddressService::getOneAddressIdApi($userInfo,$deputy_user);
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
