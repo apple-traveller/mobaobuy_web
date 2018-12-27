@@ -695,6 +695,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
     Route::get('/wholesale/list', 'ActivityWholesaleController@index');//集采火拼
     Route::post('/wholesale/detail', 'ActivityWholesaleController@detail');//集采火拼详情
+    Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
+    Route::post('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
 
     Route::get('/consign/list', 'ActivityConsignController@index');//寄售
     Route::post('/consign/detail', 'ActivityConsignController@detail');//寄售抢购详情
@@ -703,6 +705,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
 
     Route::group(['middleware' => 'api.auth'], function () {
+        Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+        Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
+
         Route::post('/user/detail', 'UserController@detail');//用户个人信息
         Route::post('/user/add_address','UserController@addAddress');//添加收货地址
         Route::post('/user/list_address','UserController@addressList');//收货地址列表

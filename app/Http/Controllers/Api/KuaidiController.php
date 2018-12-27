@@ -25,7 +25,7 @@ class KuaidiController extends ApiController
             default:
                 $delivery_info = [];
         }
-//        dd($delivery_info);
+
         if(empty($delivery_info)){
             return $this->error('获取物流信息失败');
         }
