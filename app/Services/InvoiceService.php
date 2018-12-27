@@ -214,7 +214,7 @@ class InvoiceService
     {
         try{
             $invoiceInfo = self::getInfoById($invoice_id);
-            $invoiceInfo['address_str'] = RegionService::getRegion($invoiceInfo['country'],$invoiceInfo['province'],$invoiceInfo['city'],$invoiceInfo['address']);
+            $invoiceInfo['address_str'] = RegionService::getRegion($invoiceInfo['country'],$invoiceInfo['province'],$invoiceInfo['city'],$invoiceInfo['district'],$invoiceInfo['address']);
             // 开票商品
             $orderInfo = InvoiceGoodsService::getListBySearch(['invoice_id'=>$invoice_id]);
             return ['invoiceInfo'=>$invoiceInfo,'invoiceGoods'=>$orderInfo];

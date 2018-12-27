@@ -58,17 +58,5 @@ class RecruitController extends Controller
         }
     }
 
-    /**
-     * 招聘详情
-     */
-    public function recruitDetail($recruitId){
-        $condition = [];
-        $condition['id'] = $recruitId;
-       try{
-            $recruitDetail =  RecruitService::recruitDetail($condition);
-            return $this->display('web.recruit.recruitDetail',['recruitDetail'=>$recruitDetail]);
-       }catch (\Exception $e){
-           return $this->error($e->getMessage());
-       }
-    }
+
 }

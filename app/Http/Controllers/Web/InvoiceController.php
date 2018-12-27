@@ -331,6 +331,7 @@ class InvoiceController extends Controller
             'city' =>   $address_info['city'],
             'district' => $address_info['district'],
             'street' => $address_info['street'],
+            'address' => $address_info['address'],
             'zipcode' => $address_info['zipcode'],
             'mobile_phone' => $user_info['user_name'],
             'invoice_type' => $invoiceSession['invoice_type'],

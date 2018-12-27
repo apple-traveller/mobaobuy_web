@@ -1,4 +1,8 @@
 @extends(themePath('.','web').'web.include.layouts.wall_helpCenter')
+
+@section('keywords', $detail['keywords'])
+@section('description', $detail['description'])
+
 @section('title', '帮助中心')
 @section('css')
 
@@ -10,6 +14,7 @@
     <div class="today_news whitebg fl">
         <div class="w800p">
             <h1 class="info-detail-title" align="center" style="width: 900px;">
+
                 {{ $detail['title'] }}
             </h1>
             <div class="info-detail-bq gray">
