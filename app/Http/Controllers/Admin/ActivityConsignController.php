@@ -100,8 +100,8 @@ class ActivityConsignController extends Controller
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
-        if(empty($data['goods_number'])){
-            $errorMsg[] = '库存不能为空';
+        if(empty($data['total_number'])){
+            $errorMsg[] = '报价总数不能为空';
         }
         if(empty($data['shop_price'])){
             $errorMsg[] = '店铺售价不能为空';
@@ -133,7 +133,7 @@ class ActivityConsignController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
-                $data['total_number'] = $data['goods_number'];
+                $data['goods_number'] = $data['total_number'];
                 $data['outer_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
                 $data['consign_status'] = 0;

@@ -496,8 +496,8 @@
                         laypage.render({
                             elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
                             , count: total //数据总数，从服务端得到
-                            , limit: pageSize   //每页显示的条数
-                            , curr: currpage  //当前页
+                            , limit: pageSize //每页显示的条数
+                            , curr: currpage //当前页
                             , prev: "上一页"
                             , next: "下一页"
                             , theme: "#88be51" //样式
