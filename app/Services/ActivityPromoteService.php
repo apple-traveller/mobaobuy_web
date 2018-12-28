@@ -46,22 +46,25 @@ class ActivityPromoteService
     //限时抢购
     public static function buyLimit($condition){
         $info_list = ActivityPromoteRepo::getList([],$condition);
-
         foreach($info_list as &$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $v['unit_name'] = $goodsInfo['unit_name'];
         }
+        unset($v);
 
         foreach ($info_list as &$item){
             if(Carbon::now()->gt($item['end_time'])){
+                //以结束
                 $item['is_over'] = true;
             }else{
                 $item['is_over'] = false;
             }
 
             if(Carbon::now()->lt($item['begin_time'])){
+                //未开始
                 $item['is_soon'] = true;
             }else{
+                //已开始
                 $item['is_soon'] = false;
             }
         }
@@ -71,17 +74,25 @@ class ActivityPromoteService
         //已结束
         $buyLimitArrOver = [];
         foreach($info_list as $k=>$v){
-            if($v['is_over'] == false){
+            if($v['is_over'] === false){
                 $buyLimitArr[] = $v;
             }else{
                 $buyLimitArrOver[] = $v;
             }
         }
-        foreach ($buyLimitArrOver as $kk=>$vv){
-            $keyLen = count($buyLimitArr) + 1;
-            $buyLimitArr[$keyLen] = $vv;
+
+        if(!empty($buyLimitArr)){
+            if(!empty($buyLimitArrOver)){
+                foreach ($buyLimitArrOver as $kk=>$vv){
+                    $keyLen = count($buyLimitArr);
+                    $buyLimitArr[$keyLen] = $vv;
+                }
+            }
+        }else{
+            return $buyLimitArrOver;
         }
         return $buyLimitArr;
+
     }
 
     //限时抢购详情
