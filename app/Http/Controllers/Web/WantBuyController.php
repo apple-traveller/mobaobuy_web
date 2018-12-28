@@ -27,6 +27,7 @@ class WantBuyController extends Controller
     public function wantBuyListBycondition(Request $request){
         $currpage = $request->input('currpage',1);
         $delivery_area = $request->input('delivery_area','');//发货地
+
 //        $cat_name = $request->input('cat_name','');//分类名
 //        $brand_name = $request->input('brand_name','');//厂商
         $goods_name = $request->input('goods_name','');//商品名称
@@ -45,6 +46,8 @@ class WantBuyController extends Controller
             $condition['goods_name'] = '%' . $goods_name . '%';
         }
         $pageSize = 5;
+        $condition['is_delete'] = 0;
+        $condition['is_show'] = 1;
 
         $goodsList = InquireService::inquireList(['pageSize' => $pageSize, 'page' => $currpage], $condition);
 //        dd($goodsList);
