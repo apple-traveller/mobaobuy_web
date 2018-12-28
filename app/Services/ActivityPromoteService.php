@@ -54,14 +54,17 @@ class ActivityPromoteService
 
         foreach ($info_list as &$item){
             if(Carbon::now()->gt($item['end_time'])){
+                //以结束
                 $item['is_over'] = true;
             }else{
                 $item['is_over'] = false;
             }
 
             if(Carbon::now()->lt($item['begin_time'])){
+                //未开始
                 $item['is_soon'] = true;
             }else{
+                //已开始
                 $item['is_soon'] = false;
             }
         }
@@ -77,11 +80,18 @@ class ActivityPromoteService
                 $buyLimitArrOver[] = $v;
             }
         }
-        foreach ($buyLimitArrOver as $kk=>$vv){
-            $keyLen = count($buyLimitArr) + 1;
-            $buyLimitArr[$keyLen] = $vv;
+        if(!empty($buyLimitArr)){
+            if(!empty($buyLimitArrOver)){
+                foreach ($buyLimitArrOver as $kk=>$vv){
+                    $keyLen = count($buyLimitArr);
+                    $buyLimitArr[$keyLen] = $vv;
+                }
+            }
+        }else{
+            return $buyLimitArrOver;
         }
         return $buyLimitArr;
+
     }
 
     //限时抢购详情
