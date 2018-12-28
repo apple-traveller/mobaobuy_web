@@ -180,7 +180,6 @@
                             </div>
                             <div class="fr">
 
-
                             </div>
                             <form class="fl" id="formid">
                                 <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="￥最低价" style="margin-left: 5px">
@@ -188,6 +187,7 @@
                                 <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
                             </form>
+
                         </div>
                     </div>
                 </div>
