@@ -138,12 +138,19 @@ class OrderInfoService
 
                 if($item['order_status'] == 3){
                     if($item['pay_status'] == 0){
-                        $orderList['list'][$k]['auth'][] = 'can_pay';
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
-                        $orderList['list'][$k]['auth_desc'][] = '去支付';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        if(!empty($item['pay_voucher'])){
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        }else{
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        }
+
                     }
 //                    elseif($item['pay_status'] == 1){
 //                        $orderList['list'][$k]['auth'][] = 'can_confirm';
@@ -276,12 +283,20 @@ class OrderInfoService
 
                 if ($item['order_status'] == 3){
                     if ($item['pay_status'] == 0){
-                        $orderList['list'][$k]['auth'][] = 'can_pay';
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
-                        $orderList['list'][$k]['auth_desc'][] = '去支付';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        if(!empty($item['pay_voucher'])){
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+
+                        }else{
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        }
+
                     }
 
                     //未发货
