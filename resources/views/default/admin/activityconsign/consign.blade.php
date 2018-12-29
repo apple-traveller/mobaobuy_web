@@ -112,7 +112,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="13">
+                                    <td colspan="17">
                                         <div class="tDiv">
                                             <div class="list-page">
                                                 <ul id="page"></ul>
