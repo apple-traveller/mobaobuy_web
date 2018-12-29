@@ -708,6 +708,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
         Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
 
+        Route::post('/user/get_deputy_user', 'UserController@getDeputyUser'); //获取代理信息的接口
+
         Route::post('/user/detail', 'UserController@detail');//用户个人信息
         Route::post('/user/add_address','UserController@addAddress');//添加收货地址
         Route::post('/user/list_address','UserController@addressList');//收货地址列表
