@@ -235,7 +235,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                         html += "<div class=\"lh30 gray\">请在下方填写您的真实报价（价格必填），并对您的货物描述清楚。</div>";
                         html += "<form action='/buy/quote.html' method='post'>";
                         html += " <input type=\"hidden\" name=\"buy_id\"  value=\"" + buy_id + "\">";
-                        html += "<div class=\"qg_text mb10\">求购：<span>"  + row['goods_name'] + ' '  + row.num + row.unit_name +' $' + row.price + ' ' + row.delivery_area + "</span></div>";
+                        html += "<div class=\"qg_text mb10\">求购：<span>"  + row['goods_name'] + ' '  + row.num + row.unit_name +' ￥' + row.price + ' ' + row.delivery_area + "</span></div>";
                         html += "<div>价格：<input type\"text\" class=\"input-text4 mr5\" value=" + row.price + " name=\"price\">";
                         html += "数量：<input type=\"text\" class=\"input-text4 mr5\" value=" + row.num + " name=\"num\">";
                         html += "交货地：<input type=\"text\" class=\"input-text4 mr5\" value='" + row.delivery_area + "' name=\"deliveryarea\">";

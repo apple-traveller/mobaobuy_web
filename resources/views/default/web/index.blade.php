@@ -270,14 +270,16 @@
             </div>
             <!--成交动态-->
             <div class="Tran_dynamics">
-                <h1 class="ml20 mt15 fs16 fwb">成交动态</h1>
+                {{--<h1 class="ml20 mt15 fs16 fwb">成交动态</h1>--}}
+                <div class="ml20 mt15 fs16 fwb">成交动态</div>
                 <div class="trans_marquee">
                     <ul class="Tran_dynamics_list">
                         @if(!empty($trans_list))
                             @foreach($trans_list as $item)
                                 @if($item['add_time'] <= \Carbon\Carbon::now())
                                     <li>
-                                        <h1 class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</h1>
+                                        {{--<h1 class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</h1>--}}
+                                        <div class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</div>
                                         <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
                                     </li>
                                 @endif
@@ -289,7 +291,10 @@
         </div>
         <!--自营报价-->
         <div class="Self-support mt30">
-            <div class="ovh"><h1 class="Self-support-title">自营报价</h1><div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a rel="nofollow" class="ml30" href="/goodsList/1">查看更多></a></div></div>
+            <div class="ovh">
+                {{--<h1 class="Self-support-title">自营报价</h1>--}}
+                <div class="Self-support-title">自营报价</div>
+                <div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a rel="nofollow" class="ml30" href="/goodsList/1">查看更多></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <!-- <span>品牌</span> -->
@@ -361,16 +366,18 @@
             <li class="One_service_bg1">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img src="/images/index_wl_icon.png"/></div>
-                    <h1 class="tac fs18 fwb ">物流</h1>
+                    <div class="One_service_icon"><img alt="饲料物流服务" src="/images/index_wl_icon.png"/></div>
+                    {{--<h1 class="tac fs18 fwb ">物流</h1>--}}
+                    <div class="tac fs18 fwb ">物流</div>
                     <div class="One_service_by ">运输、仓储、加工一体服务</div>
                 </div>
             </li>
             <li class="One_service_bg2">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img src="/images/index_jr_icon.png"/></div>
-                    <h1 class="tac fs18 fwb">金融</h1>
+                    <div class="One_service_icon"><img alt="饲料产业链金融" src="/images/index_jr_icon.png"/></div>
+                    {{--<h1 class="tac fs18 fwb">金融</h1>--}}
+                    <div class="tac fs18 fwb">金融</div>
                     <div class="One_service_by">解决产业链上下游资金问题</div>
                 </div>
 
@@ -378,8 +385,9 @@
             <li class="One_service_bg3">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img src="/images/index_hq_icon.png"/></div>
-                    <h1 class="tac fs18 fwb">行情</h1>
+                    <div class="One_service_icon"><img alt="饲料行情和饲料资讯" src="/images/index_hq_icon.png"/></div>
+                    <div class="tac fs18 fwb">行情</div>
+                    {{--<h1 class="tac fs18 fwb">行情</h1>--}}
                     <div class="One_service_by">维生素最及时的行情和资讯</div>
                 </div>
 
@@ -387,8 +395,9 @@
             <li class="One_service_bg4">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img src="/images/index_ys_icon.png"/></div>
-                    <h1 class="tac fs18 fwb">云商</h1>
+                    <div class="One_service_icon"><img alt="饲料电商平台" src="/images/index_ys_icon.png"/></div>
+                    {{--<h1 class="tac fs18 fwb">云商</h1>--}}
+                    <div class="tac fs18 fwb">云商</div>
                     <div class="One_service_by">用更少的人<br />接更多的单</div>
                 </div>
 
@@ -396,8 +405,9 @@
             <li class="One_service_bg5">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img src="/images/index_zn_icon.png"/></div>
-                    <h1 class="tac fs18 fwb">智能</h1>
+                    <div class="One_service_icon"><img alt="饲料智能产业" src="/images/index_zn_icon.png"/></div>
+                    {{--<h1 class="tac fs18 fwb">智能</h1>--}}
+                    <div class="tac fs18 fwb">智能</div>
                     <div class="One_service_by">助力智慧维生素产业升级</div>
                 </div>
 
@@ -407,7 +417,10 @@
     <!--供应商-->
     @if(!empty($shops))
         <div class="w1200" style="margin-top: 30px;">
-            <div class="ovh"><h1 class="Self-support-title">供应商</h1><div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList">查看更多></a></div></div>
+            <div class="ovh">
+                {{--<h1 class="Self-support-title">供应商</h1>--}}
+                <div class="Self-support-title">供应商</div>
+                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList">查看更多></a></div></div>
 
             <ul class="supply_list mt15">
                 <li class="graybg">
@@ -513,9 +526,15 @@
                 <ul class="news_items_list">
                     @foreach($article_list as $k=>$v)
                         @if($loop->first)
-                            <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
+                            <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
+                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
+                            </li>
                         @else
-                            <li href="/news/{{ $k }}/1.html" data_id = {{ $k }}><h1 class="Self-support-title">{{ $v['cat_name'] }}</h1></li>
+                            <li href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
+                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
+                            </li>
                         @endif
                     @endforeach
                 </ul>
@@ -565,7 +584,8 @@
     @if(!empty($brand_list))
         <div class="w1200" style="margin:30px auto">
             <div class="ovh">
-                <h1 class="Self-support-title">合作品牌</h1>
+                {{--<h1 class="Self-support-title">合作品牌</h1>--}}
+                <div class="Self-support-title">合作品牌</div>
             </div>
             <ul class="Cooperative_brand">
                 @foreach($brand_list as $item)
