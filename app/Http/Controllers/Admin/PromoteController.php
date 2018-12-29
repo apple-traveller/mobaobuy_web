@@ -122,6 +122,7 @@ class PromoteController extends Controller
         if(!empty($errorMsg)){
             return $this->error(implode("|",$errorMsg));
         }
+
         try{
             if(!key_exists('id',$data)){
                 $data['add_time'] = Carbon::now();

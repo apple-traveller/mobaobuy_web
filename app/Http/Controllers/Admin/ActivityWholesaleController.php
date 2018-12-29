@@ -141,6 +141,7 @@ class ActivityWholesaleController extends Controller
             $data['partake_quantity'] = $num;
             $re = ActivityWholesaleService::create($data);
         } else {
+            unset($data['review_status']);
             $re = ActivityWholesaleService::updateById($id,$data);
         }
         if ($re){
