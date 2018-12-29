@@ -98,10 +98,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')

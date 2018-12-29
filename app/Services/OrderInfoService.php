@@ -1635,9 +1635,11 @@ class OrderInfoService
                 'froms' => empty($token)?"pc":"weichat",
             ];
 
+
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
             //订单总金额
             $goods_amount = 0;
+
             foreach ($cartInfo_session as $v) {
                 $id = $v['id'];
 
@@ -1652,8 +1654,8 @@ class OrderInfoService
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
                         'shop_goods_quote_id' => $activityPromoteInfo['id'],
-                       // 'shop_goods_quote_id' => 0,
-//                        'goods_sn'=>$cartInfo['goods_sn'],
+                        // 'shop_goods_quote_id' => 0,
+                        // 'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['goods_number'],
                         'goods_price' => $v['goods_price'],
                         'add_time' => Carbon::now()
@@ -1682,7 +1684,7 @@ class OrderInfoService
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['num'] * $v['price'];
                     //增加已参与数量
-//                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
+ //                   ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {
