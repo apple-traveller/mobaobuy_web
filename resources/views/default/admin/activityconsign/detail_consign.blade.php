@@ -28,8 +28,13 @@
                             </div>
 
                             <div class="item">
-                                <div class="label">&nbsp;单价：</div>
+                                <div class="label">&nbsp;报价总数量：</div>
                                 <div class="label_value font14">￥{{$consign_info['shop_price']}}</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label">&nbsp;库存数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
+                                <div class="label_value font14">{{$consign_info['total_number']}}</div>
                             </div>
 
                             <div class="item">

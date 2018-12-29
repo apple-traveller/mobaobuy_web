@@ -406,6 +406,13 @@ class UserController extends ApiController
         }
     }
 
+    //获取代理用户信息的接口
+    public function getDeputyUser(Request $request)
+    {
+        $deputy_user = Cache::get('_api_deputy_user_'.$this->getUserID($request));
+        return $this->success(['deputy_user'=>$deputy_user]);
+    }
+
 
 
 

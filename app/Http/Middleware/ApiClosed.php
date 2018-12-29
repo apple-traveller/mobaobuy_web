@@ -39,6 +39,7 @@ class ApiClosed extends ApiController
                     $user_info = UserService::getInfo($user_id);
                     //用户不切换生效权限,is_logout存的是企业的id
                     if ($user_info['is_logout'] > 0 && $user_info['is_logout'] == $deputy_user['firm_id']) {
+
                         $firm = FirmUserService::getInfoByCondition(['firm_id'=>$deputy_user['firm_id'],'user_id'=>$user_id]);
                         $firm_info = UserService::getInfo($firm['firm_id']);
                         $firm['is_self'] = 0;
