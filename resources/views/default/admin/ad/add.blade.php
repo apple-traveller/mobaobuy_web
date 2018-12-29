@@ -64,6 +64,27 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否nofollow：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_nofollow" id="is_nofollow">
+
+                                            <option  value="0">否</option>
+                                            <option  value="1">是</option>
+
+                                    </select>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field"></span>&nbsp;设置alt属性：</div>
+                                <div class="label_value">
+                                    <input type="text" name="alt_attr" class="text" value="" maxlength="40"  id="alt_attr">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+
                             <div style="margin-top:10px;" class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;上传图片：</div>
                                 <div class="label_value">

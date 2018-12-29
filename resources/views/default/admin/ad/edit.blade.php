@@ -68,6 +68,28 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;是否nofollow：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_nofollow" id="is_nofollow">
+                                        @if($ad['is_nofollow'])
+                                            <option  value="{{$ad['is_nofollow']}}" selected="selected">是</option>
+                                            <option  value="0">否</option>
+                                        @else
+                                            <option  value="{{$ad['is_nofollow']}}" selected="selected">否</option>
+                                            <option  value="1">是</option>
+                                        @endif
+                                    </select>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field"></span>&nbsp;设置alt属性：</div>
+                                <div class="label_value">
+                                    <input type="text" name="alt_attr" class="text" value="{{$ad['alt_attr']}}" maxlength="40"  id="alt_attr">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div style="margin-top:10px;" class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;上传图片：</div>

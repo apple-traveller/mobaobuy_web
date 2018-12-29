@@ -85,6 +85,7 @@ class AdController extends Controller
         }
         $data['end_time'] = $this->requestGetNotNull('end_time',0);
         $data['ad_link'] = $this->requestGetNotNull('ad_link'," ");
+        $data['alt_attr'] = $this->requestGetNotNull('alt_attr','');
         if(!empty($errorMsg)){
             return $this->error(implode("|",$errorMsg));
         }

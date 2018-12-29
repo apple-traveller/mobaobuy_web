@@ -34,7 +34,7 @@
                 <div class="tel">
                     <p class="fs24 tac" style="color: #75b335;">{{getConfig('service_phone')}}</p>
                     <p class="tac" style="width: 190px; margin: 5px auto; color: #666;">交易时间(工作日) : 9:00-17:00</p>
-                    <p class="tac"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');"><img border="0" class="mr5p" style="margin-top:3px;" src="{{asset(themePath('/','web').'img/custom.png')}}"></a></p>
+                    <p class="tac"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');"><img alt="秣宝客服" border="0" class="mr5p" style="margin-top:3px;" src="{{asset(themePath('/','web').'img/custom.png')}}"></a></p>
                 </div>
             </li>
         </ul>

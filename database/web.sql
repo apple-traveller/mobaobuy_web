@@ -330,6 +330,8 @@ CREATE TABLE `ad` (
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用 0-否 1-是',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '排序',
+  `is_nofollow` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否nofollow，默认0，1的话有nofollow',
+  `alt_attr` varchar(100) DEFAULT NULL COMMENT '图片alt属性，默认可以为空',
   PRIMARY KEY (`id`),
   KEY `position_id` (`position_id`),
   KEY `enabled` (`enabled`),
