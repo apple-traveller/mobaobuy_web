@@ -1684,7 +1684,7 @@ class OrderInfoService
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['num'] * $v['price'];
                     //增加已参与数量
-                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
+ //                   ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {
