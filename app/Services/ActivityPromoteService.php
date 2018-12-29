@@ -69,12 +69,13 @@ class ActivityPromoteService
             }
         }
         unset($item);
+
         //未结束
         $buyLimitArr = [];
         //已结束
         $buyLimitArrOver = [];
         foreach($info_list as $k=>$v){
-            if($v['is_over'] === false){
+            if($v['is_over'] == false){
                 $buyLimitArr[] = $v;
             }else{
                 $buyLimitArrOver[] = $v;
