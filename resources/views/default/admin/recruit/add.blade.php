@@ -109,6 +109,24 @@
                                 </div>
 
                                 <div class="item">
+                                    <div class="label"><span class="require-field">*</span>部门名称：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_branch" value="" autocomplete="off" id="recruit_branch" size="40"  class="text">
+                                        <div class="notic"></div>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>职位类别：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="job_type" value="" autocomplete="off" id="job_type" size="40"  class="text">
+                                        <div class="notic"></div>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
                                     <div class="label"><span class="require-field">*</span>岗位职责：</div>
                                     <div class="label_value">
                                         <script id="job_desc" name="job_desc"  type="text/plain"></script>

@@ -23,7 +23,7 @@
 
                 <div class="qr-code">
                     <ul>
-                        <li><img src="{{asset(themePath('/','web').'img/二维码公众号.jpg')}}" width="100" alt="关注秣宝公众号"><span>关注秣宝公众号</span></li>
+                        <li><img src="{{asset(themePath('/','web').'img/699035190855330866.jpg')}}" width="100" alt="关注秣宝公众号"><span>关注秣宝公众号</span></li>
                         <li><img src="{{asset(themePath('/','web').'img/二维码小程序.jpg')}}" width="100" alt="进入秣宝小程序"><span>进入秣宝小程序</span></li>
                     </ul>
                 </div>

@@ -108,6 +108,24 @@
                                     </div>
                                 </div>
 
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>部门名称：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="recruit_branch" value="" autocomplete="off" id="recruit_branch" size="40"  class="text">
+                                        <div class="notic"></div>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>职位类别：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="job_type" value="" autocomplete="off" id="job_type" size="40"  class="text">
+                                        <div class="notic"></div>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="id" value="{{$recruit['id']}}">
                                 <input type="hidden" name="currpage" value="{{$currpage}}">
 

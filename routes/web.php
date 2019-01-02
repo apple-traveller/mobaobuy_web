@@ -390,7 +390,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
     Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
 
-    Route::get('/recruit/list', 'RecruitController@recruitList');//招聘列表
+    Route::get('/recruit/page', 'RecruitController@recruitPage');//招聘列表
+    Route::get('/recruit/list/{id}', 'RecruitController@recruitList');//招聘详情
+    Route::post('/resumeSave', 'RecruitController@resumeSave');//简历保存
     Route::post('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
 
 

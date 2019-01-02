@@ -5,7 +5,6 @@
 	@include(themePath('.','web').'web.include.partials.base')
 	<link rel="stylesheet" href="/default/css/global.css" />
 	<link rel="stylesheet" href="/default/css/index.css" />
-
 	<style>
 		/*订单状态*/
 		.order_pro_progress{border: 1px solid #DEDEDE;overflow: hidden;border-top: 2px solid #75b335;}
