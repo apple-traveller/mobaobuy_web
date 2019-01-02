@@ -138,7 +138,7 @@ class ActivityWholesaleController extends Controller
             $data['shop_id'] = $shop_id;
             $data['shop_name'] = $company_name;
             $data['click_count'] = 0;
-            $data['partake_quantity'] = $num;
+            $data['partake_quantity'] = 0;
             $re = ActivityWholesaleService::create($data);
         } else {
             unset($data['review_status']);
