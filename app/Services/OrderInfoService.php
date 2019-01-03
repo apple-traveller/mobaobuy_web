@@ -823,7 +823,7 @@ class OrderInfoService
             }
             //修改订金状态
             if(isset($data['deposit_status'])){
-                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1]);
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1,'money_paid'=>$order_info['deposit']]);
                 //增加集采的已参与数量
                 $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$order_info['id']]);
                 $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($order_info['extension_id']);
