@@ -1646,6 +1646,9 @@ class OrderInfoService
                 if ($type == 'promote') {
                     //限时抢购生产订单
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+                    if($activityPromoteInfo['available_quantity'] < $v['goods_number']){
+                        self::throwBizError('可售数量不足');
+                    }
                     if (empty($activityPromoteInfo)) {
                         self::throwBizError('商品不存在！');
                     }
@@ -1690,6 +1693,9 @@ class OrderInfoService
                     if (empty($activityConsignInfo)) {
                         self::throwBizError('商品不存在！');
                     }
+                    if($activityConsignInfo['goods_number'] < $v['goods_number']){
+                        self::throwBizError('库存数量不足');
+                    }
 
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
@@ -1709,6 +1715,11 @@ class OrderInfoService
                     $cartInfo = CartRepo::getInfo($id);
                     if (empty($cartInfo)) {
                         self::throwBizError('商品不存在！');
+                    }
+                    $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+
+                    if($cartInfo['goods_number'] > $shopGoodsQuoteInfo['goods_number']){
+                        self::throwBizError('库存数量不足');
                     }
 
                     $orderGoods = [

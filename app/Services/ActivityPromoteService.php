@@ -167,7 +167,7 @@ class ActivityPromoteService
 
     //限时抢购 立即下单
     public static function buyLimitToBalance($goodsId,$activityId,$goodsNum,$userId){
-        $goodsInfo = GoodsRepo::getInfo($goodsId);
+
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
@@ -180,13 +180,15 @@ class ActivityPromoteService
         if($goodsNum < $activityInfo['min_limit']){
             self::throwBizError('不能低于起售数量');
         }
+        $goodsInfo = GoodsRepo::getInfo($activityInfo['goods_id']);
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
         }else{
             if($goodsNum > $goodsInfo['packing_spec']){
-                $yuNumber = $goodsNum % $goodsInfo['packing_spec'];
+
+                $yuNumber = $goodsNum / $goodsInfo['packing_spec'];
                 $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
-                $goodsNumber = $goodsNum + $dNumber;
+                $goodsNumber = ($yuNumber+1)*$goodsInfo['packing_spec'];
             }else{
                 $goodsNumber = $goodsInfo['packing_spec'];
             }
