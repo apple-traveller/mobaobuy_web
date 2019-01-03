@@ -207,6 +207,7 @@ class ActivityWholesaleService
         $goodsInfo['partake_quantity'] = $ActivityInfo['partake_quantity'];
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['max_limit'] = $ActivityInfo['max_limit'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
