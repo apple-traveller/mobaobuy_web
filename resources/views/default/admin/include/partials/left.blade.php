@@ -22,6 +22,7 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/seo/index" data-param="menuplatform|ad_list3" target="workspace">SEO设置</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/nav/list" data-param="menuplatform|ad_list4" target="workspace">自定义导航栏</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/recruit/list" data-param="menuplatform|ad_list5" target="workspace">招聘信息</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/resume/list" data-param="menuplatform|ad_list5" target="workspace">招聘简历</a></li>
                     </ul>
                 </div>
             </div>
