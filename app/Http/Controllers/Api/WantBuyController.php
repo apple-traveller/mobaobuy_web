@@ -20,6 +20,10 @@ class WantBuyController extends ApiController
         $condition['is_delete'] = 0;
         $condition['is_show'] = 1;
         $inquireList = InquireService::inquireList(['pageSize' => $pageSize, 'page' => $currpage,'orderType'=>['add_time'=>'desc']],$condition);
+        foreach($inquireList['list'] as &$item){
+            $item['add_time'] = \Carbon\Carbon::parse($item['add_time'])->diffForHumans();
+        }
+        //\Carbon\Carbon::parse($v['add_time'])->diffForHumans()
         return $this->success(['inquireList'=>$inquireList,'pageSize'=>$pageSize,'currpage'=>$currpage],'success');
     }
 
@@ -43,7 +47,7 @@ class WantBuyController extends ApiController
 
         $goodsList = InquireService::inquireList(['pageSize' => $pageSize, 'page' => $currpage], $condition);
         if (empty($goodsList['list'])) {
-            return $this->error("error");
+            return $this->success("","");
         } else {
             return $this->success([
                 'list' => $goodsList['list'],
