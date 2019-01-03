@@ -89,9 +89,9 @@
             }
         </style>
         <div class="w800p">
-            <h1 class="info-detail-title">
+            <h2 class="info-detail-title">
                 {{ $article['title'] }}
-            </h1>
+            </h2>
             <div class="info-detail-bq gray">
                 <div style="display: inline-block;">发布时间： {{ $article['add_time'] }}</div>
                 <div style="display: inline-block;margin-left: 40px;">来源：{{ $article['author'] }}</div>

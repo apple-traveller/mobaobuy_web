@@ -164,7 +164,7 @@
 	</div>
         @if(!empty($search_data['list']))
             <div class="w1200 mt20 " style="margin-top: 20px;">
-                <h1 class="product_title">报价列表</h1>
+                <h2 class="product_title">报价列表</h2>
                 <div class="scr">
                     <div class="width1200">
                         <div class="sequence-bar" style="padding:0;padding-right:10px;">

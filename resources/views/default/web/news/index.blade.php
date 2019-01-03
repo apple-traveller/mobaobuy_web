@@ -52,13 +52,13 @@
     </div>
 
     <div class="today_news whitebg fl">
-        <h1 class="today_news_top ovh"><span class="fs16 ml15 fl">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="green">{{ $list['total'] }}</span>条数据</span></h1>
+        <h2 class="today_news_top ovh"><span class="fs16 ml15 fl">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="green">{{ $list['total'] }}</span>条数据</span></h2>
         <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
                 <div class="fl mb15" style="width: 200px;height: 114px"><a rel="nofollow" href="/detail/{{ $v['id'] }}.html"><img alt="{{$v['title']}}" src="{{ getFileUrl($v['image']) }}" style="width: 200px;height: 114px"/></a></div>
                 <div class="fl ml20">
-                    <h1 class="fs18 mt10"><a href="/detail/{{ $v['id'] }}.html">{{ $v['title'] }}</a></h1>
+                    <h2 class="fs18 mt10"><a href="/detail/{{ $v['id'] }}.html">{{ $v['title'] }}</a></h2>
                     <div class="mt30 gray"><span class="ovh">时间：{{ $v['add_time'] }}</span><span class="ml25">浏览量：{{ $v['click'] }}</span><span class="ml25">来源：{{ $v['author'] }}</span></div>
                     <p class="news_content ovhwp">{!! $v['description'] !!}</p>
                 </div>

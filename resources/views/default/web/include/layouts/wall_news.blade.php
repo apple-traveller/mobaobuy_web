@@ -13,18 +13,18 @@
 
 <div class="clearfix mt25 mb25">
     <div class="w1200">
-        <!--左边部分-->
+        <!--左边部分111-->
         @yield('content')
         <!--右边部分-->
         <div class="today_right_news fl ml15">
-            <!--相关搜索-->
+            <!--相关搜索1222-->
             <div class="today_news_search whitebg">
-                <h1 class="today_news_top ovh"><span class="ml10">相关搜索</span></h1>
+                <h2 class="today_news_top ovh"><span class="ml10">相关搜索</span></h2>
                 <div class="ovh mt20 ml15 mb20"><input type="text" class="search_input br1 fl" value="@if(!empty($title)){{$title}}@endif" id="search_info"/><div class="fl search_btn tac code_greenbg white" style="cursor: pointer" id="search_submit">搜索</div></div>
             </div>
             <!--资讯中心-->
             <div class="today_news_search whitebg mt20">
-                <h1 class="today_news_top ovh"><span class="ml10">资讯中心</span></h1>
+                <h2 class="today_news_top ovh"><span class="ml10">资讯中心</span></h2>
                 <ul class="news_center cat_list">
                     @foreach(getNewsSidebar()['cat'] as $v1)
                         <li><a href="/news/{{ $v1['id'] }}/1.html" data_id = {{ $v1['id'] }}>{{ $v1['cat_name'] }}</a></li>
@@ -34,7 +34,7 @@
 
             <!--热门资讯-->
             <div class="today_news_search whitebg mt20">
-                <h1 class="today_news_top ovh"><span class="ml10">热门资讯</span></h1>
+                <h2 class="today_news_top ovh"><span class="ml10">热门资讯</span></h2>
                 <ul class="news_Hot">
                     @foreach(getNewsSidebar()['hot_news'] as $k2=>$v2)
                         @if ($k2+1<4)
@@ -47,7 +47,7 @@
             </div>
 
             <div class="today_news_search whitebg mt20">
-                <h1 class="today_news_top ovh"><span class="ml10">最新资讯</span></h1>
+                <h2 class="today_news_top ovh"><span class="ml10">最新资讯</span></h2>
                 <ul class="news_Hot">
                     @foreach(getLatestNews() as $k2=>$v2)
                         @if ($k2 < 5)

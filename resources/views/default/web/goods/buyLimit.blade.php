@@ -66,7 +66,7 @@
 				<li>
 					<div class="ms_list_center">
 						<div class="ovh">
-							<h1 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{$v['goods_name']}}</h1><span class=" ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
+							<h2 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{$v['goods_name']}}</h2><span class=" ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
 						</div>
 						<div class="ovh mt10">
 							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}{{$v['unit_name']}}</div>

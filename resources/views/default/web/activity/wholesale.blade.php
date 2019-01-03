@@ -90,7 +90,7 @@
 								@endif
 								<div class="ms_list_center">
 									<div class="ovh">
-										<h1 class="fs20 ovhwp" style="height: 36px;" title="{{$v['goods_name']}}">{{$v['goods_name']}}</h1>
+										<h2 class="fs20 ovhwp" style="height: 36px;" title="{{$v['goods_name']}}">{{$v['goods_name']}}</h2>
 									</div>
 									<div class="ovh mt10">
 										<div class="mx_addr fl">{{$v['shop_name']}}</div>
