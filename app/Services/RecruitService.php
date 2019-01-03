@@ -92,4 +92,25 @@ class RecruitService
         return ResumeRepo::create($data);
     }
 
+    /**
+     * 后台简历列表
+     */
+    public static function resumeList($paer,$condition){
+        $resumeInfo =  ResumeRepo::getListBySearch($paer,$condition);
+        if(!empty($resumeInfo['list'])){
+            foreach($resumeInfo['list'] as $k=>$v){
+                $recruitInfo = RecruitRepo::getInfo($v['recruit_id']);
+                $resumeInfo['list'][$k]['recruit_job'] = $recruitInfo['recruit_job'];
+            }
+        }
+        return $resumeInfo;
+    }
+
+    /**
+     * 删除简历
+     */
+    public static function deleteResume($id){
+        return ResumeRepo::delete($id);
+    }
+
 }

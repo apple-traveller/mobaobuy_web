@@ -320,6 +320,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/recruit/delete','RecruitController@delete');//删除
         Route::post('/recruit/change/isShow','RecruitController@isShow');//是否显示
 
+        Route::get('/resume/list','RecruitController@resumeList');//招聘简历列表
+        Route::get('/resume/delete','RecruitController@deleteResume');//删除
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
