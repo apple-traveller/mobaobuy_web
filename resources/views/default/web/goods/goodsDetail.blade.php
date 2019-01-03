@@ -185,16 +185,16 @@
 	<div class="w1200 pr ovh">
 		<div class="crumbs mt5">当前位置：<a href="/goodsList">商品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
 		<div class="pro_chart mt5">
-			<h1 class="pro_chart_title">
+			<h2 class="pro_chart_title">
 				商品价格走势
-			</h1>
+			</h2>
 			<div class="pro_chart_img" id="price_zst">
 
 			</div>
 
 		</div>
 		<div class="fl ml35 mt5">
-			<h1 class="fwb fs16">{{$good_info['goods_full_name']}}</h1>
+			<h2 class="fwb fs16">{{$good_info['goods_full_name']}}</h2>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
 				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/kg</span></div>
@@ -266,7 +266,7 @@
 	</div>
         <div class="w1200" style="margin-top: 80px;">
             <div class="History_offo">
-                <ul class="HistoryLi"><li class="titlecurr"><h1 >历史报价</h1></li><li><h1>商品详情</h1></li></ul>
+                <ul class="HistoryLi"><li class="titlecurr"><h2>历史报价</h2></li><li><h2>商品详情</h2></li></ul>
             </div>
 <div>
     <ul class="proitemlist">
