@@ -83,6 +83,7 @@ class OrderInfoService
             }
         }
 
+
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);

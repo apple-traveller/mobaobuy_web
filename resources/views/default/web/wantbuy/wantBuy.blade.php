@@ -5,7 +5,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 
-<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>
+{{--<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>--}}
 <style>
 .look-out{width:1200px;margin:0 auto; overflow:hidden;margin-top:15px;}
 .look-out-h3{line-height:25px;height:30px;border-bottom:2px solid #ff6600;font-size:14px;overflow:hidden;clear:both;}
