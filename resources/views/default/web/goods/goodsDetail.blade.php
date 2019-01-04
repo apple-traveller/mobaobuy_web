@@ -266,7 +266,7 @@
 	</div>
         <div class="w1200" style="margin-top: 80px;">
             <div class="History_offo">
-                <ul class="HistoryLi"><li class="titlecurr"><h2>历史报价</h2></li><li><h2>商品详情</h2></li></ul>
+                <ul class="HistoryLi"><li style="margin-left:25px;" class="titlecurr"><h2>历史报价</h2></li><li><h2>商品详情</h2></li></ul>
             </div>
 <div>
     <ul class="proitemlist">
@@ -286,7 +286,7 @@
                         <span style="width:15%">{{$vo['add_time']}}</span>
                         <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
                         <span style="width:25%">{{$vo['goods_full_name']}}</span>
-                        <span style="width:10%">{{$vo['goods_number']}}</span>
+                        <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
                         <span style="width:10%">{{$vo['shop_price']}}</span>
                         <span style="width:10%">{{$vo['delivery_place']}}</span>
                         <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>

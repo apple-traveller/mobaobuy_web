@@ -209,7 +209,7 @@
 					@foreach($recruitInfo['list'] as $v)
 
 						<tr style="height:50px;margin-top:20px;width:1200px;line-height:30px;">
-							<td><a href="/recruit/list/{{$v['id']}}">{{$v['recruit_job']}}</a></td>
+							<td><a href="/recruit/list/{{$v['id']}}" style="font-weight: bold;">{{$v['recruit_job']}}</a></td>
 							<td>{{$v['recruit_place']}}</td>
 							<td>{{$v['job_type']}}</td>
 							<td>{{$v['recruit_branch']}}</td>
@@ -314,9 +314,4 @@
                 });
             }
 		</script>
-
-		
-
-
-
 @endsection

@@ -200,7 +200,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置： <a href="javascript:">寄售清仓</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置： <a href="javascript:">寄售清仓</a> &gt;<a href="javascript:">商品详情</a><span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势

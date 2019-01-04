@@ -283,6 +283,11 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                 $.msg.alert("请输入交货地");
                 return;
             }
+            if(!(/^(\+|-)?\d+$/.test( num )) || num < 0){
+                $.msg.alert('数量输入有误');
+                return;
+            }
+
 
             $.ajax({
                 headers : {
