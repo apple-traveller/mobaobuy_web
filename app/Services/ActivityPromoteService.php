@@ -46,26 +46,30 @@ class ActivityPromoteService
     //限时抢购
     public static function buyLimit($condition){
         $info_list = ActivityPromoteRepo::getList([],$condition);
-
         foreach($info_list as &$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $v['unit_name'] = $goodsInfo['unit_name'];
         }
+        unset($v);
 
         foreach ($info_list as &$item){
             if(Carbon::now()->gt($item['end_time'])){
+                //以结束
                 $item['is_over'] = true;
             }else{
                 $item['is_over'] = false;
             }
 
             if(Carbon::now()->lt($item['begin_time'])){
+                //未开始
                 $item['is_soon'] = true;
             }else{
+                //已开始
                 $item['is_soon'] = false;
             }
         }
         unset($item);
+
         //未结束
         $buyLimitArr = [];
         //已结束
@@ -77,11 +81,19 @@ class ActivityPromoteService
                 $buyLimitArrOver[] = $v;
             }
         }
-        foreach ($buyLimitArrOver as $kk=>$vv){
-            $keyLen = count($buyLimitArr) + 1;
-            $buyLimitArr[$keyLen] = $vv;
+
+        if(!empty($buyLimitArr)){
+            if(!empty($buyLimitArrOver)){
+                foreach ($buyLimitArrOver as $kk=>$vv){
+                    $keyLen = count($buyLimitArr);
+                    $buyLimitArr[$keyLen] = $vv;
+                }
+            }
+        }else{
+            return $buyLimitArrOver;
         }
         return $buyLimitArr;
+
     }
 
     //限时抢购详情
@@ -155,7 +167,7 @@ class ActivityPromoteService
 
     //限时抢购 立即下单
     public static function buyLimitToBalance($goodsId,$activityId,$goodsNum,$userId){
-        $goodsInfo = GoodsRepo::getInfo($goodsId);
+
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
@@ -168,13 +180,15 @@ class ActivityPromoteService
         if($goodsNum < $activityInfo['min_limit']){
             self::throwBizError('不能低于起售数量');
         }
+        $goodsInfo = GoodsRepo::getInfo($activityInfo['goods_id']);
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
             $goodsNumber = $goodsNum;
         }else{
             if($goodsNum > $goodsInfo['packing_spec']){
-                $yuNumber = $goodsNum % $goodsInfo['packing_spec'];
+
+                $yuNumber = $goodsNum / $goodsInfo['packing_spec'];
                 $dNumber = $goodsInfo['packing_spec'] - $yuNumber;
-                $goodsNumber = $goodsNum + $dNumber;
+                $goodsNumber = ($yuNumber+1)*$goodsInfo['packing_spec'];
             }else{
                 $goodsNumber = $goodsInfo['packing_spec'];
             }

@@ -371,7 +371,7 @@
                     return false;
                 }
                 if(!max_limit){
-                    $(this).val(min_limit);
+                    $(this).val(0);
                     return ;
                 }
                 if(max_limit>num){
@@ -380,6 +380,8 @@
                 }else if(max_limit<min_limit){
                     layer.msg("必须大于最小起售数量", {icon: 5,time:1000});
                     $(this).val(min_limit);
+                }else if(max_limit==0){
+                    $(this).val(0);
                 }else{
                     $(this).val(Math.floor(max_limit/packing_spec)*packing_spec);
                 }

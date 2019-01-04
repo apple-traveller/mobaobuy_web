@@ -320,6 +320,9 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/recruit/delete','RecruitController@delete');//删除
         Route::post('/recruit/change/isShow','RecruitController@isShow');//是否显示
 
+        Route::get('/resume/list','RecruitController@resumeList');//招聘简历列表
+        Route::get('/resume/delete','RecruitController@deleteResume');//删除
+
     });
 });
 Route::get('/payment/orderPay','PayController@orderPay');//去付款
@@ -390,7 +393,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
     Route::get('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
 
-    Route::get('/recruit/list', 'RecruitController@recruitList');//招聘列表
+    Route::get('/recruit/page', 'RecruitController@recruitPage');//招聘列表
+    Route::get('/recruit/list/{id}', 'RecruitController@recruitList');//招聘详情
+    Route::post('/resumeSave', 'RecruitController@resumeSave');//简历保存
     Route::post('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
 
 
@@ -695,6 +700,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
     Route::get('/wholesale/list', 'ActivityWholesaleController@index');//集采火拼
     Route::post('/wholesale/detail', 'ActivityWholesaleController@detail');//集采火拼详情
+    Route::get('/wantBuy', 'WantBuyController@wantBuyList');//求购列表 // 未登录可以访问
+    Route::post('/condition/toBuyList', 'WantBuyController@wantBuyListBycondition');//求购列表条件查询
 
     Route::get('/consign/list', 'ActivityConsignController@index');//寄售
     Route::post('/consign/detail', 'ActivityConsignController@detail');//寄售抢购详情
@@ -703,6 +710,11 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::post('/article/detail', 'ArticleController@getDetail');//获取咨询详情
 
     Route::group(['middleware' => 'api.auth'], function () {
+        Route::post('/buy/asingle', 'WantBuyController@asingle');//求购列表 我要供货弹层
+        Route::post('/buy/savebuy', 'WantBuyController@savebuy'); //求购列表  保存报价
+
+        Route::post('/user/get_deputy_user', 'UserController@getDeputyUser'); //获取代理信息的接口
+
         Route::post('/user/detail', 'UserController@detail');//用户个人信息
         Route::post('/user/add_address','UserController@addAddress');//添加收货地址
         Route::post('/user/list_address','UserController@addressList');//收货地址列表

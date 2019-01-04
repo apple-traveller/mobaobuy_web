@@ -60,7 +60,7 @@
 							<li>
 								<div class="ms_list_center">
 									<div class="ovh">
-										<h1 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h1>
+										<h2 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h2>
 									</div>
 									<div class="ovh mt10">
 										<div class="bq__addr fl">{{$v['shop_name']}}</div>

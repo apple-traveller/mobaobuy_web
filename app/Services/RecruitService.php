@@ -2,6 +2,9 @@
 
 namespace App\Services;
 use App\Repositories\RecruitRepo;
+use App\Repositories\ResumeRepo;
+use Carbon\Carbon;
+
 class RecruitService
 {
     use CommonService;
@@ -16,6 +19,7 @@ class RecruitService
     //新增
     public static function create($data)
     {
+        $data['add_time'] = Carbon::now();
         return RecruitRepo::create($data);
     }
 
@@ -68,6 +72,45 @@ class RecruitService
      */
     public static function recruitByCondition($paper,$condition){
         return RecruitRepo::getListBySearch($paper,$condition);
+    }
+
+    /**
+     * 招聘详情
+     */
+    public static function recruitDetail($id){
+        return RecruitRepo::getInfo($id);
+    }
+
+    /**
+     * 简历保存
+     */
+    public static function resumeSave($data){
+        $data['add_time'] = Carbon::now();
+        if(empty($data['resume_path'])){
+            self::throwBizError('上传简历不能为空');
+        }
+        return ResumeRepo::create($data);
+    }
+
+    /**
+     * 后台简历列表
+     */
+    public static function resumeList($paer,$condition){
+        $resumeInfo =  ResumeRepo::getListBySearch($paer,$condition);
+        if(!empty($resumeInfo['list'])){
+            foreach($resumeInfo['list'] as $k=>$v){
+                $recruitInfo = RecruitRepo::getInfo($v['recruit_id']);
+                $resumeInfo['list'][$k]['recruit_job'] = $recruitInfo['recruit_job'];
+            }
+        }
+        return $resumeInfo;
+    }
+
+    /**
+     * 删除简历
+     */
+    public static function deleteResume($id){
+        return ResumeRepo::delete($id);
     }
 
 }

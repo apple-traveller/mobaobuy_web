@@ -14,21 +14,50 @@ use Illuminate\Http\Request;
 
 class RecruitController extends Controller
 {
+
     /**
-     * 招聘列表
+     *招聘首页
      */
-    public function recruitList(Request $request){
+    public function recruitPage(Request $request){
         $currpage = $request->input('currpage',1);
         $pageSize = 5;
         $condition = [];
         $condition['is_show'] = 1;
+        try{
+            $recruitInfo = RecruitService::recruitList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
+            return $this->display('web.recruit.recruitPage',['place'=>$recruitInfo['place'],'recruitInfo'=>$recruitInfo['recruitInfo'],'pageSize'=>$pageSize,'currpage'=>$currpage]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+
+    }
+
+    /**
+     * 招聘详情
+     */
+    public function recruitList($id){
             try{
-                $recruitInfo = RecruitService::recruitList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
-                return $this->display('web.recruit.recruit',['place'=>$recruitInfo['place'],'recruitInfo'=>$recruitInfo['recruitInfo'],'pageSize'=>$pageSize,'currpage'=>$currpage]);
+                $recruitInfo = RecruitService::recruitDetail($id);
+                return $this->display('web.recruit.recruitList',['recruitInfo'=>$recruitInfo]);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
 
+    }
+
+    /**
+     * 简历保存
+     */
+    public function resumeSave(Request $request){
+        $data = [];
+        $data['recruit_id'] = $request->input('id');
+        $data['resume_path'] = $request->input('resume_path');
+        try{
+            $recruitInfo = RecruitService::resumeSave($data);
+            return $this->success('web.recruit.recruitList',['recruitInfo'=>$recruitInfo]);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
     }
 
     /**

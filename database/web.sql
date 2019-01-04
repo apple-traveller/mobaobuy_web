@@ -330,6 +330,8 @@ CREATE TABLE `ad` (
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否启用 0-否 1-是',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '排序',
+  `is_nofollow` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否nofollow，默认0，1的话有nofollow',
+  `alt_attr` varchar(100) DEFAULT NULL COMMENT '图片alt属性，默认可以为空',
   PRIMARY KEY (`id`),
   KEY `position_id` (`position_id`),
   KEY `enabled` (`enabled`),
@@ -1476,5 +1478,16 @@ CREATE TABLE `recruit` (
   `working_experience` varchar(100) DEFAULT NULL COMMENT '工作经验',
   `education` varchar(50) DEFAULT NULL COMMENT '学历',
   `recruit_type` varchar(50) DEFAULT NULL COMMENT '工作类型',
+   `recruit_branch` varchar(255) NOT NULL COMMENT '部门名称',
+  `job_type` varchar(255) NOT NULL COMMENT '职位类别',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `resume`;
+CREATE TABLE `resume` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recruit_id` int(11) NOT NULL COMMENT '招聘信息id',
+  `resume_path` varchar(255) DEFAULT NULL COMMENT '简历存放路径',
+  `add_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传简历时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招聘简历表';

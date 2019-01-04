@@ -90,7 +90,7 @@
 								@endif
 								<div class="ms_list_center">
 									<div class="ovh">
-										<h1 class="fs20 ovhwp" style="height: 36px;" title="{{$v['goods_name']}}">{{$v['goods_name']}}</h1>
+										<h2 class="fs20 ovhwp" style="height: 36px;" title="{{$v['goods_name']}}">{{$v['goods_name']}}</h2>
 									</div>
 									<div class="ovh mt10">
 										<div class="mx_addr fl">{{$v['shop_name']}}</div>
@@ -102,14 +102,17 @@
 												<div class="mx_progress_com" style="width: 0%;"></div>
 											@elseif((float)$v['num'] <= 0)
 												<div class="mx_progress_com" style="width: 100%;"></div>
-											@else
+											@elseif((float)$v['partake_quantity'] >= $v['num'])
 												<div class="mx_progress_com" style="width: 100%;"></div>
+											@else
+												<div class="mx_progress_com" style="width: {{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%;"></div>
 											@endif
 										</div>
 										@if((float)$v['partake_quantity'] <= 0)
 											<span class="fl fs16 gray">已参与0%</span>
 										@elseif((float)$v['num'] <= 0)
 											<span class="fl fs16 gray">已参与100%</span>
+
 										@else
 											<span class="fl fs16 gray">已参与{{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%</span>
 										@endif

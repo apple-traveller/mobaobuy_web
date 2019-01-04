@@ -81,10 +81,11 @@
                                 </div>
                             </div>
 
+
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品报价总数(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="total_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="total_number">
                                     <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -169,7 +170,7 @@
                     shop_price :{
                         required : true,
                     },
-                    goods_number :{
+                    total_number :{
                         required : true,
                         number:true
                     },
@@ -193,7 +194,7 @@
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_number :{
+                    total_number :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
@@ -308,18 +309,18 @@
             $(this).val(_goods_name);
         });
         layui.use(['layer'], function() {
-            $("#goods_number").blur(function () {
+            $("#total_number").blur(function () {
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
-                let goods_number = $(this).val();
+                let total_number = $(this).val();
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
                 }
-                if (goods_number =="" || goods_number ==0 || goods_number<spac) {
+                if (total_number =="" || total_number ==0 || total_number<spac) {
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.floor(goods_number/spac) * spac);
+                $(this).val(Math.floor(total_number/spac) * spac);
             });
         });
 

@@ -164,7 +164,7 @@
 	</div>
         @if(!empty($search_data['list']))
             <div class="w1200 mt20 " style="margin-top: 20px;">
-                <h1 class="product_title">报价列表</h1>
+                <h2 class="product_title">报价列表</h2>
                 <div class="scr">
                     <div class="width1200">
                         <div class="sequence-bar" style="padding:0;padding-right:10px;">
@@ -180,7 +180,6 @@
                             </div>
                             <div class="fr">
 
-
                             </div>
                             <form class="fl" id="formid">
                                 <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="￥最低价" style="margin-left: 5px">
@@ -188,6 +187,7 @@
                                 <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
                                 </span>
 
                                 <span style="width:10%;float:right;">
-                                     @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
+                                    @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
                                             <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
                                     @elseif($vo['goods_number'] <= 0)
                                             <button class="trade-close-btn">已售完</button>
@@ -496,8 +496,8 @@
                         laypage.render({
                             elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
                             , count: total //数据总数，从服务端得到
-                            , limit: pageSize   //每页显示的条数
-                            , curr: currpage  //当前页
+                            , limit: pageSize //每页显示的条数
+                            , curr: currpage //当前页
                             , prev: "上一页"
                             , next: "下一页"
                             , theme: "#88be51" //样式

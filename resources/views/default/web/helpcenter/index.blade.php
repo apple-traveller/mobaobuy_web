@@ -3,7 +3,7 @@
 @section('keywords', $detail['keywords'])
 @section('description', $detail['description'])
 
-@section('title', '帮助中心')
+@section('title', $detail['title'].'-秣宝饲料原料采购网')
 @section('css')
 
 <style>

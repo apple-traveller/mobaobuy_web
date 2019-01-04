@@ -5,7 +5,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ActivityPromoteService;
-
+use App\Services\UserAddressService;
 class ActivityPromoteController extends ApiController
 {
     //限时抢购
@@ -59,12 +59,7 @@ class ActivityPromoteController extends ApiController
         try{
             $activityInfo = ActivityPromoteService::buyLimitToBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-            if($userInfo['address_id']){
-                $address_id = $userInfo['address_id'];
-            }else{
-                #取一条地址id
-                $address_id = UserService::getOneAddressId($userInfo['id']);
-            }
+            $address_id = UserAddressService::getOneAddressIdApi($userInfo,$apiDeputyUser);
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,

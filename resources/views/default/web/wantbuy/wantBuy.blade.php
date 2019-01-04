@@ -5,7 +5,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('plugs/layui/css/layui.css')}}" />
 
-<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>
+{{--<link rel="stylesheet" type="text/css" href="https://www.sumibuy.com/css/global.css"/>--}}
 <style>
 .look-out{width:1200px;margin:0 auto; overflow:hidden;margin-top:15px;}
 .look-out-h3{line-height:25px;height:30px;border-bottom:2px solid #ff6600;font-size:14px;overflow:hidden;clear:both;}
@@ -101,9 +101,9 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                     <form action="" method="get">
 
                         商品名称<input class="buy-text" name="goods_name" type="text" value="" style="width: 125px;">
-
                         交货地<input class="buy-text" name="delivery_area" type="text" value="" style="width: 125px;">
                         <input class="buy-btn" type="button" onclick="getInfo(1)" value="搜 索">
+
                     </form>
                 </div>
 
@@ -235,7 +235,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                         html += "<div class=\"lh30 gray\">请在下方填写您的真实报价（价格必填），并对您的货物描述清楚。</div>";
                         html += "<form action='/buy/quote.html' method='post'>";
                         html += " <input type=\"hidden\" name=\"buy_id\"  value=\"" + buy_id + "\">";
-                        html += "<div class=\"qg_text mb10\">求购：<span>"  + row['goods_name'] + ' '  + row.num + row.unit_name +' $' + row.price + ' ' + row.delivery_area + "</span></div>";
+                        html += "<div class=\"qg_text mb10\">求购：<span>"  + row['goods_name'] + ' '  + row.num + row.unit_name +' ￥' + row.price + ' ' + row.delivery_area + "</span></div>";
                         html += "<div>价格：<input type\"text\" class=\"input-text4 mr5\" value=" + row.price + " name=\"price\">";
                         html += "数量：<input type=\"text\" class=\"input-text4 mr5\" value=" + row.num + " name=\"num\">";
                         html += "交货地：<input type=\"text\" class=\"input-text4 mr5\" value='" + row.delivery_area + "' name=\"deliveryarea\">";
@@ -283,6 +283,11 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                 $.msg.alert("请输入交货地");
                 return;
             }
+            if(!(/^(\+|-)?\d+$/.test( num )) || num < 0){
+                $.msg.alert('数量输入有误');
+                return;
+            }
+
 
             $.ajax({
                 headers : {
@@ -364,7 +369,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
                     var _html = '';
                     for (var i=0;i<list.length;i++)
                     {
-                        _html += ' <li><div class="buy-list-text1"> <p class="buy-list-te1"><span class="fs16">求购：'+list[i].goods_name +list[i].num+list[i].unit_name+'</span> <span class="gray">发布时间：'+list[i].add_time+'</span></p> <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥'+list[i].price+'</i><span class="gray">交货地：'+list[i].delivery_area+'</span><span class="gray">交货时间：'+list[i].delivery_time+'</span></p> <p class="buy-list-te3 gray">跟进交易员： <span>'+list[i].contacts+'</span> <span>'+list[i].contacts_mobile+'</span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin='+list[i].qq+'&amp;site=qq&amp;menu=yes"> <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> '+list[i].qq+'</a> </p></div><div class="buy-list-text2"> <a href="javascript:void(0)" class="but_login" buy_id="'+list[i].id+'">我要供货</a></div> </li>';
+                        _html += ' <li><div class="buy-list-text1"> <p class="buy-list-te1"><span class="fs16">求购：'+list[i].goods_name + ' '+list[i].num+list[i].unit_name+'</span> <span class="gray">发布时间：'+list[i].add_time+'</span></p> <p class="buy-list-te2 gray">意向价格 : <i class="orange">￥'+list[i].price+'</i><span class="gray">交货地：'+list[i].delivery_area+'</span><span class="gray">交货时间：'+list[i].delivery_time+'</span></p> <p class="buy-list-te3 gray">跟进交易员： <span>'+list[i].contacts+'</span> <span>'+list[i].contacts_mobile+'</span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&amp;uin='+list[i].qq+'&amp;site=qq&amp;menu=yes"> <img border="0" src="img/login_qq.gif" alt="点击这里给我发消息" title="点击这里给我发消息"> '+list[i].qq+'</a> </p></div><div class="buy-list-text2"> <a href="javascript:void(0)" class="but_login" buy_id="'+list[i].id+'">我要供货</a></div> </li>';
                     }
                     $(".buy-list").append(_html);
 //                    $(".news_pages").append('<ul id="page" class="pagination"></ul>');

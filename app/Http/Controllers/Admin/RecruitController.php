@@ -72,6 +72,8 @@ class RecruitController extends Controller
             'recruit_type'=>$request->input("recruit_type"),
             'job_desc'=>$request->input("job_desc"),
             'id'=>$request->input('id',""),
+            'recruit_branch'=>$request->input('recruit_branch'),
+            'job_type'=>$request->input('job_type'),
             'currpage'=>$request->input('currpage',1),
         ];
 
@@ -128,6 +130,41 @@ class RecruitController extends Controller
             }
 
         }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 删除招聘简历
+     *
+     */
+    public function deleteResume(Request $request){
+        $id = $request->input('id');
+        try{
+            $flag = recruitService::deleteResume($id);
+            if($flag){
+                return $this->success('删除成功', url("/admin/resume/list"));
+            }
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    /**
+     * 招聘简历列表
+     */
+    public function resumeList(Request $request){
+        $currpage = $request->input('currpage',1);
+        $pageSize = $request->input('pageSize',10);
+        try{
+            $resumeInfo = RecruitService::resumeList(['pageSize'=>$pageSize,'page'=>$currpage],[]);
+            return $this->display('admin.resume.list',[
+                'total'=>$resumeInfo['total'],
+                'resumes'=>$resumeInfo['list'],
+                'currpage'=>$currpage,
+                'pageSize'=>$pageSize
+            ]);
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
     }

@@ -63,6 +63,7 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
                                     <input type="text" data-goodsname="{{$good['goods_full_name']}}" data-packing-spac="{{$good['packing_spec']}}" value="{{$good['goods_full_name']}}" autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <div style="margin-left: 10px;color:red;" class="notic">包装规格为：{{$good['packing_spec']}}{{$good['unit_name']}}/{{$good['packing_unit']}}</div>
                                     <input type="hidden" value="{{$good['id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
                                     <ul class="query_goods_name" style="overflow:auto;display:none;height:200px;position: absolute;top: 141px; background: #fff;padding-left:20px;width: 300px; z-index: 2; box-shadow: 1px 1px 1px 1px #dedede;">
@@ -71,9 +72,19 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品报价总数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="total_number" class="text" value="{{$consign_info['total_number']}}" maxlength="40" autocomplete="off" id="total_number">
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -188,6 +199,10 @@
                     shop_price :{
                         required : true,
                     },
+                    total_number :{
+                        required : true,
+                        number:true
+                    },
                     goods_number :{
                         required : true,
                         number:true
@@ -217,6 +232,10 @@
                 messages:{
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    total_number :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
                     goods_number :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
@@ -336,7 +355,14 @@
         layui.use(['layer'], function() {
             $("#goods_number").blur(function () {
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
+                let old_goods_number = "{{$consign_info['goods_number']}}";
                 let goods_number = $(this).val();
+                let total_number = $("#total_number").val();
+                if(goods_number>total_number){
+                    layer.msg("不能大于报价总数", {icon: 5, time: 1000});
+                    $(this).val(old_goods_number);
+                    return false;
+                }
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
@@ -347,6 +373,28 @@
                     return false;
                 }
                 $(this).val(Math.floor(goods_number/spac) * spac);
+            });
+
+            $("#total_number").blur(function () {
+                let spac = parseInt($("#goods_name").attr("data-packing-spac"));
+                let old_total_number = "{{$consign_info['total_number']}}";
+                let goods_number = $("#goods_number").val();
+                let total_number = $(this).val();
+                if(goods_number>total_number){
+                    layer.msg("不能小于库存数量", {icon: 5, time: 1000});
+                    $(this).val(old_total_number);
+                    return false;
+                }
+                if (spac == 0) {
+                    layer.msg("请先选择商品", {icon: 5, time: 1000});
+                    return false;
+                }
+                if (total_number =="" || total_number ==0 || total_number<spac) {
+                    console.log('123');
+                    $(this).val(spac);
+                    return false;
+                }
+                $(this).val(Math.floor(total_number/spac) * spac);
             });
         });
         // 商家 请求所有的商家数据

@@ -83,6 +83,7 @@ class OrderInfoService
             }
         }
 
+
         foreach ($orderList['list'] as $k=>&$item){
             $item['status'] = self::getOrderStatusName($item['order_status'],$item['pay_status'],$item['shipping_status'],$item['deposit_status'],$item['extension_code']);
             $item['goods'] = self::getOrderGoodsByOrderId($item['id']);
@@ -138,12 +139,19 @@ class OrderInfoService
 
                 if($item['order_status'] == 3){
                     if($item['pay_status'] == 0){
-                        $orderList['list'][$k]['auth'][] = 'can_pay';
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
-                        $orderList['list'][$k]['auth_desc'][] = '去支付';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        if(!empty($item['pay_voucher'])){
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                        }else{
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';  //toPay
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        }
+
                     }
 //                    elseif($item['pay_status'] == 1){
 //                        $orderList['list'][$k]['auth'][] = 'can_confirm';
@@ -276,12 +284,20 @@ class OrderInfoService
 
                 if ($item['order_status'] == 3){
                     if ($item['pay_status'] == 0){
-                        $orderList['list'][$k]['auth'][] = 'can_pay';
-                        $orderList['list'][$k]['auth'][] = 'can_cancel';
-                        $orderList['list'][$k]['auth_desc'][] = '去支付';
-                        $orderList['list'][$k]['auth_desc'][] = '取消';
-                        $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
-                        $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        if(!empty($item['pay_voucher'])){
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+
+                        }else{
+                            $orderList['list'][$k]['auth'][] = 'can_pay';
+                            $orderList['list'][$k]['auth'][] = 'can_cancel';
+                            $orderList['list'][$k]['auth_desc'][] = '去支付';
+                            $orderList['list'][$k]['auth_desc'][] = '取消';
+                            $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
+                            $orderList['list'][$k]['auth_html'][] = 'onclick="orderCancel('.$item['id'].','.$waitAffirm.')"';
+                        }
+
                     }
 
                     //未发货
@@ -807,7 +823,7 @@ class OrderInfoService
             }
             //修改订金状态
             if(isset($data['deposit_status'])){
-                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1]);
+                OrderInfoRepo::modify($data['id'], ['deposit_status'=>1,'money_paid'=>$order_info['deposit']]);
                 //增加集采的已参与数量
                 $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$order_info['id']]);
                 $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($order_info['extension_id']);
@@ -1620,15 +1636,20 @@ class OrderInfoService
                 'froms' => empty($token)?"pc":"weichat",
             ];
 
+
             $orderInfoResult = OrderInfoRepo::create($orderInfo);
             //订单总金额
             $goods_amount = 0;
+
             foreach ($cartInfo_session as $v) {
                 $id = $v['id'];
 
                 if ($type == 'promote') {
                     //限时抢购生产订单
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
+                    if($activityPromoteInfo['available_quantity'] < $v['goods_number']){
+                        self::throwBizError('可售数量不足');
+                    }
                     if (empty($activityPromoteInfo)) {
                         self::throwBizError('商品不存在！');
                     }
@@ -1637,8 +1658,8 @@ class OrderInfoService
                         'goods_id' => $v['goods_id'],
                         'goods_name' => $v['goods_name'],
                         'shop_goods_quote_id' => $activityPromoteInfo['id'],
-                       // 'shop_goods_quote_id' => 0,
-//                        'goods_sn'=>$cartInfo['goods_sn'],
+                        // 'shop_goods_quote_id' => 0,
+                        // 'goods_sn'=>$cartInfo['goods_sn'],
                         'goods_number' => $v['goods_number'],
                         'goods_price' => $v['goods_price'],
                         'add_time' => Carbon::now()
@@ -1667,11 +1688,14 @@ class OrderInfoService
                     OrderGoodsRepo::create($orderGoods);
                     $goods_amount += $v['num'] * $v['price'];
                     //增加已参与数量
-//                    ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
+ //                   ActivityWholesaleRepo::modify($id, ['partake_quantity' => $activityWholesaleInfo['partake_quantity'] + $v['num']]);
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {
                         self::throwBizError('商品不存在！');
+                    }
+                    if($activityConsignInfo['goods_number'] < $v['goods_number']){
+                        self::throwBizError('库存数量不足');
                     }
 
                     $orderGoods = [
@@ -1692,6 +1716,11 @@ class OrderInfoService
                     $cartInfo = CartRepo::getInfo($id);
                     if (empty($cartInfo)) {
                         self::throwBizError('商品不存在！');
+                    }
+                    $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
+
+                    if($cartInfo['goods_number'] > $shopGoodsQuoteInfo['goods_number']){
+                        self::throwBizError('库存数量不足');
                     }
 
                     $orderGoods = [

@@ -153,10 +153,8 @@ class OrderController extends ApiController
     {
         $id = $request->input('id');
         $info = $this->getDeputyUserInfo($request);
-        //dd($info);
         $userInfo = $this->getUserInfo($request);
-        $cartSession = Cache::get("cartSession".$info['firm_id']);
-        //dd($cartSession);
+        $cartSession = Cache::get("cartSession".$userInfo['id']);
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 
@@ -265,6 +263,7 @@ class OrderController extends ApiController
         $token = $request->input('token');
         $info = $this->getDeputyUserInfo($request);
         $userIds['user_name'] = $this->getUserInfo($request)['user_name'];
+
         // 判断是否为企业用户
         if ($info['is_firm']) {
             //企业用户，企业
@@ -274,6 +273,7 @@ class OrderController extends ApiController
             $userIds['need_approval'] = $this->getUserInfo($request)['need_approval'];
             $u_id = $info['firm_id'];
             $smsType = '企业';
+
         } else {
             //个人
             $userInfo = $this->getUserInfo($request);
@@ -295,13 +295,12 @@ class OrderController extends ApiController
         if (empty($addressList)) {
             return $this->error('无地址信息请前去维护');
         }
-
-
         $cartSession = Cache::get("cartSession".$userIds['user_id']);
         $carList = $cartSession['goods_list'];
         if (!$cartSession['address_id']) {
             return $this->error('请选择收货地址');
         }
+
         //小程序解决删除地址又重新添加的问题
         if($info['is_self']==1){
             $address_flag = UserAddressService::getAddressInfo($cartSession['address_id']);
@@ -314,7 +313,7 @@ class OrderController extends ApiController
         //限时抢购下单
         if ($cartSession['from'] == 'promote') {
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType,$token);
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userIds['user_id']);
                     return $this->success($re,'订单提交成功');
@@ -324,10 +323,9 @@ class OrderController extends ApiController
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
-
         } elseif ($cartSession['from'] == 'wholesale') {
             try {
-                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$token);
+                $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType,$token);
                 if (!empty($re)) {
                     Cache::forget('cartSession'.$userIds['user_id']);
                     return $this->success($re,'订单提交成功');
@@ -337,7 +335,6 @@ class OrderController extends ApiController
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
             }
-
         } else {
             //购物车下单
             $shop_data = [];

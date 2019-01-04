@@ -140,18 +140,15 @@ class InvoiceController extends ApiController
             'order_status' =>  5,
             'is_delete' =>  0
         ];
+
         if($deputy_user['is_firm']){
-            if($deputy_user['is_self'] == 0 && $deputy_user['is_firm'] ){
-                $condition['user_id'] = $deputy_user['user_id'];
-                $condition['firm_id'] = $firm_id;
-            }else{
-                $condition['user_id'] = $firm_id;
-                $condition['firm_id'] = $firm_id;
-            }
+            $condition['firm_id'] = $firm_id;
         }else{
             $condition['user_id'] = $firm_id;
             $condition['firm_id'] = 0;
         }
+
+
         if (!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -333,6 +330,7 @@ class InvoiceController extends ApiController
             'city' =>   $address_info['city'],
             'district' => $address_info['district'],
             'street' => $address_info['street'],
+            'address' => $address_info['address'],
             'zipcode' => $address_info['zipcode'],
             'mobile_phone' => $user_info['user_name'],
             'invoice_type' => $invoiceSession['invoice_type'],

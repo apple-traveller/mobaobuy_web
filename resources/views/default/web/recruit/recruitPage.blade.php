@@ -79,15 +79,15 @@
 			position: relative;
 		}
 
-		.position_info {
-			overflow: hidden;
-		}
+		/*.position_info {*/
+			/*overflow: hidden;*/
+		/*}*/
 		.recruitment_item .position_info dl.company_dl dd {
 			margin-left: 0;
 		}
-		.position_info dd .dd_top {
-			overflow: hidden;
-		}
+		/*.position_info dd .dd_top {*/
+			/*overflow: hidden;*/
+		/*}*/
 		.recruitment_item .position_info .dd_top .name {
 			font-size: 18px;
 		}
@@ -146,6 +146,25 @@
 			display: inline-block;
 			margin-left: 10px;
 		}
+		#posi span{
+			margin:0 auto;
+		}
+		table{
+			table-layout: fixed;
+		}
+		table td>p
+	        {
+			            white-space: nowrap;
+			            overflow: hidden;
+		            text-overflow: ellipsis;
+
+	    }
+		.job_desc{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
 	</style>
 @endsection
 @section('js')
@@ -160,63 +179,48 @@
         })
 	</script>
 @endsection
-
-	{{--<body style="background-color: #f4f4f4;">--}}
 	@section('content')
 		@if(!empty($recruitInfo['list']))
 			<div style="margin:0 auto;width:1200px;background-color: white;margin-top:20px;">
-				<section class="co_filter_condition mb15" style=" margin-left:5px;margin-top:20px;">
-					<dl class="condition_item city">
-						<dt>城市:</dt>
-						<dd>
-							<div class="all_item">
+				{{--<section class="co_filter_condition mb15" style=" margin-left:5px;margin-top:20px;">--}}
+					{{--<dl class="condition_item city">--}}
+						{{--<dt>城市:</dt>--}}
+						{{--<dd>--}}
+							{{--<div class="all_item">--}}
 								{{--<a ka="job-city-all" href="/job/g2090879.html#co_tab" ref="nofollow">全部</a>--}}
-								@if(!empty($place))
-									@foreach($place as $v)
-										<a ka="job-city-show" onclick="getPlace(1,this);" href="javascript:(0)" text="{{$v}}" class="">{{$v}}</a>
-									@endforeach
-								@endif
-								{{--<a ka="job-city-2" href="/job/g2090879/city-55.html#co_tab">济南</a>--}}
-							</div>
-							{{--<div class="grey_99 spread_option none">--}}
-								{{--<div class="c_toggler">更多<i></i></div>--}}
+								{{--@if(!empty($place))--}}
+									{{--@foreach($place as $v)--}}
+										{{--<a ka="job-city-show" onclick="getPlace(1,this);" href="javascript:(0)" text="{{$v}}" class="">{{$v}}</a>--}}
+									{{--@endforeach--}}
+								{{--@endif--}}
 							{{--</div>--}}
-						</dd>
-					</dl>
-				</section>
-				<div style="margin:0 auto;width:1130px;" id="recruit">
-					@foreach($recruitInfo['list'] as $v)
-						<section class="recruitment_item wrap_style " data-e="false">
-							<div class="position_info">
-								<dl class="company_dl">
-									<dd>
-										<p class="dd_top">
-											<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">{{$v['recruit_job']}}</a>
-											<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$v['recruit_place']}}]</a>
-											<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$v['add_time']}}发布</span>
-										</p>
-										<div class="dd_bot">
-											<span class="salary">职位薪资:{{$v['recruit_pay']}}</span>
-											<div class="info">
-												<span>经验:{{$v['working_experience']}}</span>
-												<em class="line"></em>
-												<span>学历:{{$v['education']}}</span>
-												<em class="line"></em>
-												<span>类型:{{$v['recruit_type']}}</span>
-											</div>
-										</div>
+						{{--</dd>--}}
+					{{--</dl>--}}
+				{{--</section>--}}
 
-									</dd>
-								</dl>
-							</div>
-							<div class="obligation">
-								<p>
-									岗位说明：
-									{!! $v['job_desc'] !!}
-								</p>
-							</div>
-						</section>
+				<table align="center" style="width:1200px;margin:0 auto;text-align:center;">
+					<tr style="background-color: #ccc;height:30px;">
+						<td>职位名称</td>
+						<td>工作地点</td>
+						<td>职位类别</td>
+						<td>部门名称</td>
+					</tr>
+
+					@foreach($recruitInfo['list'] as $v)
+
+						<tr style="height:50px;margin-top:20px;width:1200px;line-height:30px;">
+							<td><a href="/recruit/list/{{$v['id']}}" style="font-weight: bold;">{{$v['recruit_job']}}</a></td>
+							<td>{{$v['recruit_place']}}</td>
+							<td>{{$v['job_type']}}</td>
+							<td>{{$v['recruit_branch']}}</td>
+
+						</tr>
+						<tr><td class="job_desc" colspan="4" style="text-align: left;padding-left: 130px;padding-right: 130px;">{{strip_tags($v['job_desc'])}}</td></tr>
+						<tr><td colspan="4" style="border-bottom: 0.1px solid #efeded;margin-top: 13px;padding-top: 12px;"></td></tr>
+						{{--<p style="width:1200px;height:2px;color:red;"></p>--}}
 					@endforeach
+				</table>
+				<div style="margin:0 auto;width:1200px;" id="recruit">
 					<div class="page">
 						<div class="link">
 							<div class="news_pages" style="margin-top: 20px;text-align: center;">
@@ -234,11 +238,6 @@
 		<script>
 			$(function(){
                 paginate();
-
-//                $('.all_item a').click(function(){
-//
-//
-//				})
 			})
 
 			function getInfo(currpage,place) {
@@ -308,31 +307,11 @@
                         , jump: function (obj, first) {
                             if (!first) {
 //                       getInfo(obj.curr);
-                                window.location.href='/recruit/list?currpage='+obj.curr;
+                                window.location.href='/recruit/page?currpage='+obj.curr;
                             }
                         }
                     });
                 });
             }
 		</script>
-
-		
-		{{--<ul class="recruit-list">--}}
-			{{--@if(!empty($recruitInfo))--}}
-				{{--@foreach($recruitInfo as $v)--}}
-					{{--<li>--}}
-						{{--<h1>{{$v['recruit_job']}}</h1>--}}
-						{{--<div class="recruit-list_txt">--}}
-						{{--<p>招聘人数：{{$v['recruit_number']}}人</p>--}}
-						{{--<p>工作地点：{{$v['recruit_place']}}</p>--}}
-						{{--</div>--}}
-						{{--<a class="recruit-list_btn" href="/recruit/detail/{{$v['id']}}" target="_blank">查看详情</a>--}}
-					{{--</li>--}}
-				{{--@endforeach--}}
-			{{--@else--}}
-				{{--<li class="nodata">无相关数据</li>--}}
-			{{--@endif--}}
-				{{--</ul>--}}
-
-
 @endsection

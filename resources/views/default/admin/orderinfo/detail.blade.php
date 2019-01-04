@@ -530,7 +530,7 @@
                     type: 1,
                     title: '详情',
                     area: ['700px', '500px'],
-                    content: '<img src="'+content+'">'
+                    content: '<img style="width:100%;" src="'+content+'">'
                 });
             });
 
