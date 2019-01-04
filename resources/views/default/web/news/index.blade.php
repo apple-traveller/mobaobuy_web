@@ -36,9 +36,17 @@
         .cdbg{background-color: #cdcdcd;}
 
         .code_greenbg{background-color: #75b335;}
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
 @endsection
 @section('js')
+    <script>
+        $(function(){
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
+        })
+    </script>
 @endsection
 @section('content')
     <div class="crumbs">
@@ -70,10 +78,11 @@
     <!--右边部分-->
 @endsection
 @section('js')
-    <script>
-       $(document).ready(function () {
-           console.log($(".today_right_news"));
-       })
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            console.log($(".today_right_news"));
+        })
         $(function () {
             console.log($(".today_right_news"));
         });
