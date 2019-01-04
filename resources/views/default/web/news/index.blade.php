@@ -36,66 +36,11 @@
         .cdbg{background-color: #cdcdcd;}
 
         .code_greenbg{background-color: #75b335;}
-        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
 @endsection
 @section('js')
-    <script type="text/javascript" src="{{asset('/plugs/jquery/jquery.soChange-min.js')}}"></script>
-    <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
-    <script type="text/javascript">
-        $(function(){
-            $(".nav-cate").hover(function(){
-                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
-            });
-        })
-    </script>
 @endsection
 @section('content')
-    <div class="clearfix nav-div">
-        <div class="nav-cate">
-            <div class="cate_title"><span class="ml30">原料分类</span><i class="iconfont icon-menu mr20 fr fs22"></i></div>
-            <ul class="ass_menu">
-                @foreach(getCategoryTree() as $k=>$level1_item)
-                    @if($k<=5)
-                        <li><span class="ass_title" title="{{$level1_item['cat_name']}}">{{$level1_item['cat_name']}}</span>
-                            <i class="iconfont icon-right fr mr20"></i>
-                            <div class="ass_fn whitebg">
-                                <ul class="ass_fn_list">
-                                    @if(isset($level1_item['_child']))
-                                        @foreach($level1_item['_child'] as  $level2_item)
-                                            <li>
-                                                <h2 class="fn_title fl"><i class="iconfont fr icon-right fr mr20"></i><a class="fr" href="/goodsList?cate_id={{$level2_item['id']}}&cat_name={{$level2_item['cat_name']}}" title="{{$level2_item['cat_name']}}">{{$level2_item['cat_name']}}</a></h2>
-                                                @if(isset($level2_item['_child']))
-                                                    <div class="ass_fn_list_that ovh fl">
-                                                        @foreach($level2_item['_child'] as $level3_item)
-                                                            <span><a href="/goodsList?cate_id={{$level3_item['id']}}&cat_name={{$level3_item['cat_name']}}" title="{{$level3_item['cat_name']}}">{{$level3_item['cat_name']}}</a></span>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                </ul>
-                            </div>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
-        </div>
-
-        <div class="nav-menu">
-            <ul>
-                <a href="/"><li>首页</li></a>
-
-                @foreach(getPositionNav('middle') as $item)
-                    <a @if($item['is_nofollow']) rel="nofollow" @endif href="{{$item['url']}}"><li>{{$item['name']}}</li></a>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-
-
-
     <div class="crumbs">
         当前位置：<a href="/">首页</a> &gt; <a href="/news.html">资讯中心</a>
         @if($cat['id'] > 0 && $cat['id'] != 2)
