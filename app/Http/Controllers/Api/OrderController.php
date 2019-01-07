@@ -25,7 +25,6 @@ class OrderController extends ApiController
         }
     }
 
-
     //订单列表
     public function orderList(Request $request)
     {
@@ -74,6 +73,7 @@ class OrderController extends ApiController
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+        $orderDetailsInfo['orderInfo']['contract'] = getFileUrl($orderDetailsInfo['orderInfo']['contract']);
         return $this->success(compact('orderDetailsInfo'),'success');
     }
 
@@ -90,7 +90,8 @@ class OrderController extends ApiController
     }
 
     //订单取消
-    public function orderCancel(Request $request){
+    public function orderCancel(Request $request)
+    {
         $id = $request->input('id');
         $type = $request->input('waitAffirm');
         try{

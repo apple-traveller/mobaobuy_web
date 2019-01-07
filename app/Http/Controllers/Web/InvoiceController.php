@@ -194,8 +194,8 @@ class InvoiceController extends Controller
         if (empty($invoiceSession)){
             return $this->redirect('/invoice');
         }
-        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
 
+        $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
         $order_ids = $request->input('order_id','');
         $total_amount = $request->input('total_amount','');
 

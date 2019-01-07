@@ -13,9 +13,11 @@ class KuaidiController extends ApiController
     public function searchWaybill(Request $request){
         require_once app_path('Plugins/Logistics/autoload.php');
         $id = $request->input('id');
-        if(!empty($id)){
-            return $this->error('获取物流信息失败');
+
+        if(empty($id)){
+            return $this->error('缺少id');
         }
+
         $search_type = $request->input('search_type','order');
 
         switch ($search_type){
@@ -64,7 +66,7 @@ class KuaidiController extends ApiController
             }
             return $this->success(\GuzzleHttp\json_decode($json), 'success' );
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->success("",$e->getMessage());
         }
     }
 
@@ -73,6 +75,9 @@ class KuaidiController extends ApiController
         $id = $request->input('id');
         $search_type = $request->input('search_type','order');
 
+        if(empty($id)){
+            return $this->error('获取物流信息失败');
+        }
         switch ($search_type){
             case 'order':
                 $delivery_info = OrderInfoService::getDeliveryInfo($id);
@@ -94,6 +99,6 @@ class KuaidiController extends ApiController
                 return $this->success($info,'');
             }
         }
-        return $this->error('无物流信息');
+        return $this->success("",'无物流信息');
     }
 }
