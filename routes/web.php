@@ -737,7 +737,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 
         Route::post('/logistics/detail','KuaidiController@searchWaybill');//查运单
-        Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
+        Route::post('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
         Route::post('/firmuser/list','FirmUserController@getList');//企业用户列表
         Route::post('/firmuser/detail','FirmUserController@getDetail');//企业用户详情

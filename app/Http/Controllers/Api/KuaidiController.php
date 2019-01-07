@@ -74,7 +74,8 @@ class KuaidiController extends ApiController
     {
         $id = $request->input('id');
         $search_type = $request->input('search_type','order');
-        if(!empty($id)){
+
+        if(empty($id)){
             return $this->error('获取物流信息失败');
         }
         switch ($search_type){
