@@ -1308,6 +1308,9 @@ class OrderInfoService
     public static function getDeliveryInfo($id)
     {
         $delivery = OrderDeliveryRepo::getInfo($id);
+        if (empty($delivery)){
+            self::throwBizError('物流信息不存在');
+        }
         $user = UserRepo::getList([],['id'=>$delivery['user_id']],['user_name'])[0];
         $order = OrderInfoRepo::getList([],['id'=>$delivery['order_id']],['add_time','shipping_fee'])[0];
         if (empty($order)){
