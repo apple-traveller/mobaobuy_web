@@ -17,6 +17,8 @@ use App\Repositories\UserInvoicesRepo;
 use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Repositories\HotSearchRepo;
+use Illuminate\Support\Facades\DB;
+
 class GoodsService
 {
     use CommonService;
@@ -424,20 +426,33 @@ class GoodsService
             self::throwBizError('商品信息有误');
         }
 
-        $goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
+        $goodsList = ShopGoodsQuoteRepo::getList(['add_time'=>'asc'],['goods_id'=>$goodsId]);
         if(empty($goodsList)){
             return [];
         }
-        $time = [];
-        $price = [];
-        foreach($goodsList as $k=>$v){
-            $time[] = substr($v['add_time'],0,10);
-            $price[] = $v['shop_price'];
+
+//        $sql = DB::statement("select *,left(add_time,10) as t,max(shop_price) as max_p,min(shop_price) as min_p from shop_goods_quote GROUP BY t");
+
+
+        $timeArr = [];
+        $minPriceArr = [];
+        $maxPriceArr = [];
+        $newData = GoodsRepo::productTrend();
+
+        foreach($newData as $v){
+            $timeArr[] = $v['t'];
+            $minPriceArr[] = $v['min_p'];
+            $maxPriceArr[] = $v['max_p'];
         }
-        $data['time'] = $time;
-        $data['price'] = $price;
-        return $data;
+        dump($timeArr);
+        dump($minPriceArr);
+        dump($maxPriceArr);
+        $data['time'] = $newData['t'];
+        $data['price'] = $newData['shop_price'];
+        dd($data);
+//        return $data;
     }
+
 
     public static function productTrendApi($goodsId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);

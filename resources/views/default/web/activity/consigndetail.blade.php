@@ -261,6 +261,18 @@
                     <span class="fl letter-space">品牌</span>
                     <span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
 				</div>
+
+                @if(!empty($goodsInfo['goods_attrs']))
+                    @foreach($goodsInfo['goods_attrs'] as $k=>$v)
+                        @if($k%2 == 0)
+                            <div class="pro_detail">
+                                <span class="ml15 letter-space fl">{{$v['attr']}}</span><span  class="pro_value">{{$v['value']}}</span>
+                                @else
+                                    <span class="fl letter-space">{{$v['attr']}}</span><span  class="ml5 fl">{{$v['value']}}</span>
+                            </div>
+                        @endif
+                    @endforeach
+                @endif
 				<div class="pro_detail">
 					<!-- <span class="ml15 pro_detail_title fl">商品含量</span><span  class="pro_value">50%</span> -->
 				</div>

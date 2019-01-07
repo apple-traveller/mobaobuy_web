@@ -108,6 +108,21 @@ class ActivityPromoteService
             self::throwBizError('商品不存在');
         }
 
+        //自定义属性分割
+        if(!empty($goodsInfo['goods_attr'])){
+            $goodsAttr = explode(';',$goodsInfo['goods_attr']);
+            $arr = [];
+            foreach($goodsAttr as $k=>$v){
+                $good_attr = explode(':',$v);
+                    $arr[$k]['attr'] = $good_attr[0];
+                    $arr[$k]['value'] = $good_attr[1];
+            }
+
+        }else{
+            $arr = '';
+        }
+
+        $goodsInfo['goods_attrs'] = $arr ? $arr : '';
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
         $goodsInfo['activity_num'] = $ActivityInfo['num'];
         $goodsInfo['available_quantity'] = $ActivityInfo['available_quantity'];
