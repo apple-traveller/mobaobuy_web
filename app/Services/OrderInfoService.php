@@ -1380,6 +1380,7 @@ class OrderInfoService
     // 订单详情
     public static function orderDetails($id,$firmId){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+
         if(empty($orderInfo)){
             self::throwBizError('订单详情有误!');
         }
@@ -1392,6 +1393,9 @@ class OrderInfoService
                 return '';
             }
         }
+
+
+
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
 
         $country = RegionRepo::getInfo($orderInfo['country']);
@@ -1400,11 +1404,6 @@ class OrderInfoService
         $district = RegionRepo::getInfo($orderInfo['district']);
 
         $delivery_info = OrderDeliveryRepo::getList([],['order_id'=>$orderInfo['id']]);
-
-//        foreach($delivery_info as $v){
-//            $v[]
-//            = LogisticsRepo::getInfoByFields($v['shipping_billno'])
-//        }
 
         if($orderInfo['firm_id'] == 0){
             $userId  = $orderInfo['user_id'];

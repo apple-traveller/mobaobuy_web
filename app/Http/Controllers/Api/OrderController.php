@@ -74,6 +74,7 @@ class OrderController extends ApiController
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+        $orderDetailsInfo['orderInfo']['contract'] = getFileUrl($orderDetailsInfo['orderInfo']['contract']);
         return $this->success(compact('orderDetailsInfo'),'success');
     }
 

@@ -737,6 +737,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/reset_pass', 'LoginController@resetPass');//重置密码
 
         Route::post('/logistics/detail','KuaidiController@searchWaybill');//查运单
+        Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
         Route::post('/firmuser/list','FirmUserController@getList');//企业用户列表
         Route::post('/firmuser/detail','FirmUserController@getDetail');//企业用户详情
@@ -805,8 +806,8 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::group(['middleware'=>'api.firmUserAuth'],function(){
             Route::post('/order/confirmOrder','OrderController@confirmOrder');//确认订单页面
             Route::post('/order/createOrder','OrderController@createOrder');//提交订单
-
         });
+
         Route::post('/toPay','OrderController@toPay');//去付款
         Route::post('/getConfigs','IndexController@getConfigs');//返回配置信息
         Route::post('/checkOrderContract',  'OrderContractController@checkOrderContract');
