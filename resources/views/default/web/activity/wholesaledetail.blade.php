@@ -53,8 +53,15 @@
                 var ipts=$(this).siblings('input.Bidders_record_text');
                 var iptsVal=Number(ipts.val());//当前输入值
                 var packing_spec = Number($(this).attr('packing_spec'));//规格
-
-                ipts.val(iptsVal+packing_spec);
+                var max_num = Number($(this).attr('max_limit'));//最大限购量
+                console.log(max_num);
+                if(max_num == 0){
+                    ipts.val(iptsVal+packing_spec);
+                }else if(iptsVal+packing_spec > max_num){
+                    ipts.val(max_num);
+                }else{
+                    ipts.val(iptsVal+packing_spec);
+                }
             });
 
             $(document).delegate('.shop_num_reduce','click',function(){
@@ -132,12 +139,16 @@
                 //数量
                 var goodsNumber = Number(_self.val());//当前输入值
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
-                var min_num = Number(_self.attr('min-limit'));//规格
+                var min_num = Number(_self.attr('min-limit'));//最小起购量
+                var max_num = Number(_self.attr('max_limit'));//最大限购量
 
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=min_num){
                     var _count = goodsNumber%packing_spec;
                     if(_count > 0){
-                        _self.val(goodsNumber-_count);
+                        if(goodsNumber > max_num){
+                            _self.val(max_num);
+                        }
+//                        _self.val(goodsNumber-_count);
                     }
                 }else{
                     layer.msg('输入的数量有误');
@@ -212,7 +223,7 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="/goodslist">商品列表</a> &gt; <a href="javascript:">商品详情</a> &gt;<span class="gray"></span></div>
+			<div class="crumbs mt5">当前位置：<a href="javascript:">集采火拼</a> &gt; <a href="javascript:">商品详情</a><span class="gray"></span></div>
 			<div class="pro_chart mt5">
 				<h1 class="pro_chart_title">
 					商品价格走势
@@ -280,8 +291,8 @@
 					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                     <div class="pur_volume ml15">
                         <span class="pur bbright shop_num_reduce" min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}">-</span>
-                        <input type="text" cid="{{$goodsInfo['id']}}"  min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" />
-                        <span id="min_limit" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" packing_spec="{{$goodsInfo['packing_spec']}}">+</span>
+                        <input type="text" cid="{{$goodsInfo['id']}}"  min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" max_limit="{{$goodsInfo['max_limit']}}" />
+                        <span id="min_limit" max_limit="{{$goodsInfo['max_limit']}}" min-limit="{{$goodsInfo['min_limit']}}" class="pur bbleft shop_num_plus" packing_spec="{{$goodsInfo['packing_spec']}}">+</span>
                     </div>
 
 				</div>

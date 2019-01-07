@@ -36,9 +36,17 @@
         .cdbg{background-color: #cdcdcd;}
 
         .code_greenbg{background-color: #75b335;}
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
 @endsection
 @section('js')
+    <script>
+        $(function(){
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
+        })
+    </script>
 @endsection
 @section('content')
     <div class="crumbs">
@@ -52,7 +60,7 @@
     </div>
 
     <div class="today_news whitebg fl">
-        <h2 class="today_news_top ovh"><span class="fs16 ml15 fl">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="green">{{ $list['total'] }}</span>条数据</span></h2>
+        <h2 class="today_news_top ovh"><span class="fs16 ml15 fl" style="font-weight: bold;">{{ $cat['cat_name']}}</span><span class="fr mr10">共<span class="green">{{ $list['total'] }}</span>条数据</span></h2>
         <ul class="ovh ml15 today_news_list mt15" style="min-height: 500px;">
             @foreach($list['list'] as $k=>$v)
             <li>
@@ -70,10 +78,11 @@
     <!--右边部分-->
 @endsection
 @section('js')
-    <script>
-       $(document).ready(function () {
-           console.log($(".today_right_news"));
-       })
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            console.log($(".today_right_news"));
+        })
         $(function () {
             console.log($(".today_right_news"));
         });

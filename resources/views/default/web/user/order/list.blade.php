@@ -86,7 +86,7 @@
                                     if(full.order_status == 2 && full.deposit_status == 0){
                                         html +='<p>待支付订金：￥'+ full.deposit +'</p>';
                                     }else{
-                                        html +='<p>应付款：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p>';
+                                        html +='<p>应付总额：￥'+ full.order_amount +'</p><p>已付款：￥'+ full.money_paid +'</p>';
                                     }
 
                                     html += '</td><td width="20%" rowspan="'+ full.goods.length +'">';
