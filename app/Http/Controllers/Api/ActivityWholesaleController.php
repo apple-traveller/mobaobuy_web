@@ -11,6 +11,7 @@ class ActivityWholesaleController extends ApiController
     //集采火拼
     public function index(){
         $condition['review_status'] = 3;//已审核
+        $condition['is_delete'] = 0;
         try{
             $wholesaleInfo = ActivityWholesaleService::wholesale($condition);
             return $this->success(compact('wholesaleInfo'),'success');
@@ -29,7 +30,7 @@ class ActivityWholesaleController extends ApiController
         $id = $request->input('id');
         //进入详情页 增加点击量
         try{
-            ActivityWholesaleService::addClickCountApi($id);
+            $res = ActivityWholesaleService::addClickCountApi($id);
             $goodsInfo = ActivityWholesaleService::detailApi($id,$userId);
             return $this->success(compact('goodsInfo'),'success');
         }catch (\Exception $e){

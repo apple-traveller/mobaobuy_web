@@ -22,7 +22,7 @@ class OrderContractService
             self::commit();
         }catch (\Exception $e){
             self::rollBack();
-            throw $e;
+            self::throwBizError($e->getMessage());
         }
 
     }

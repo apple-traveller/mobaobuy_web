@@ -113,9 +113,8 @@ class OrderController extends ApiController
     }
 
     //确认收货
-    public function orderConfirmTake(Request $request){
-
-
+    public function orderConfirmTake(Request $request)
+    {
         $id = $request->input('id');
         $firmUser = $this->getDeputyUserInfo($request);
         if($firmUser['is_firm'] && $firmUser['is_self'] == 0){
