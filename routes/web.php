@@ -809,6 +809,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         });
         Route::post('/toPay','OrderController@toPay');//去付款
         Route::post('/getConfigs','IndexController@getConfigs');//返回配置信息
+        Route::post('/checkOrderContract',  'OrderContractController@checkOrderContract');
     });
 
 });

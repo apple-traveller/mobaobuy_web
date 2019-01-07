@@ -11,6 +11,7 @@ class ActivityWholesaleController extends ApiController
     //集采火拼
     public function index(){
         $condition['review_status'] = 3;//已审核
+        $condition['is_delete'] = 0;
         try{
             $wholesaleInfo = ActivityWholesaleService::wholesale($condition);
             return $this->success(compact('wholesaleInfo'),'success');

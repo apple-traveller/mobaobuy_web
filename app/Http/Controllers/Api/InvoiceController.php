@@ -76,7 +76,6 @@ class InvoiceController extends ApiController
     public function getStatusCount(Request $request)
     {
         $deputy_user = $this->getDeputyUserInfo($request);
-
         // 待开票数量
         $status = InvoiceService::getStatusCount($deputy_user);
         if (!empty($status)){
@@ -112,7 +111,6 @@ class InvoiceController extends ApiController
                 return $this->error('网络错误');
             }
         }
-
         return $this->success([
             'invoiceInfo' => $invoiceDetail['invoiceInfo'],
             'invoiceGoods' => $invoiceDetail['invoiceGoods']
@@ -148,7 +146,6 @@ class InvoiceController extends ApiController
             $condition['firm_id'] = 0;
         }
 
-
         if (!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -169,6 +166,7 @@ class InvoiceController extends ApiController
             'address_id'=>$userInfo['address_id'],
             'invoice_type'=>$invoice_type,
         ];
+
         Cache::put('invoiceSession'.$this->getUserID($request),$invoiceSession,60*24*1);
 
         return $this->success(compact('orderList','invoice_type'),'success');
