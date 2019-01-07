@@ -243,6 +243,7 @@ if(!function_exists('getSeoInfoByType')){
             }
             return $res;
         }
+
         return [
             'title'=>getConfig('shop_title'),
             'keywords'=>getConfig('shop_keywords'),

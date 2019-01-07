@@ -1,7 +1,14 @@
 @extends(themePath('.','web').'web.include.layouts.wall_news')
-@section('title', getSeoInfoByType('article')['title'])
-@section('keywords', getSeoInfoByType('article')['keywords'])
-@section('description', getSeoInfoByType('article')['description'])
+@section('title', getSeoInfoByType('article')['title'].'-'.$cat['cat_name'].'-秣宝')
+@section('keywords', getSeoInfoByType('article')['keywords'].','.$cat['cat_name'])
+    @if($cat['cat_name'] == '维生素行情播报')
+        @section('description', '秣宝饲料原料采购网为中国饲料原料企业提供最新、全面、及时的维生素行情播报包括VA、VE、VD3、VB1、VB6、VB12等各类饲料维生素实时播报，维生素行情走势分析，维生素价格预测，秣宝饲料行情播报助力饲料行业蓬勃发展。')
+    @elseif($cat['cat_name'] == '饲料行业')
+            @section('description', '秣宝网为中国饲料原料行业提供最新、全面、及时的饲料行业相关新闻资讯，内容涵盖饲料原料、饲料行业新闻、饲料原料供求行情信息，秣宝饲料原料供应链平台助力饲料企业在饲料行业取得蓬勃发展。')
+    @elseif($cat['cat_name'] == '饲料百科')
+            @section('description', '秣宝饲料原料供应链平台为饲料行业提供饲料百科知识，包括饲料维生素行情信息，饲料氨基酸知识，以及微量元素等各类饲料添加剂百科知识，为饲料行业人员提供免费的饲料原料百科知识。')
+    @endif
+{{--@section('description', getSeoInfoByType('article')['description'])--}}
 @section('style')
     <style>
         .crumbs {padding: 5px 0;overflow: hidden;clear: both;zoom: 1;}

@@ -73,7 +73,13 @@ class ShopGoodsQuoteService
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
         }
+
         return $result;
+    }
+
+    //商家推荐5条数据
+    public static function getShopGoodsQuoteListByShopId($paper,$condition){
+        return ShopGoodsQuoteRepo::getListBySearch($paper,$condition);
     }
 
     //不分页
