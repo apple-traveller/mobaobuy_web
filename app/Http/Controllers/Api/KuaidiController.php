@@ -13,9 +13,11 @@ class KuaidiController extends ApiController
     public function searchWaybill(Request $request){
         require_once app_path('Plugins/Logistics/autoload.php');
         $id = $request->input('id');
-        if(!empty($id)){
-            return $this->error('获取物流信息失败');
+
+        if(empty($id)){
+            return $this->error('缺少id');
         }
+
         $search_type = $request->input('search_type','order');
 
         switch ($search_type){

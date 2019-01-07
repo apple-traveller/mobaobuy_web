@@ -29,11 +29,11 @@
                                             {{$delivery['shipping_name']}}</span>
                                     </dt>
                                 </dl>
-                                <dl>
+                                <dl >
                                     <dt>配送费用:<span style="color:#62b3ff">￥{{$delivery['shipping_fee']}}</span></dt>
-                                    <dt><span style="float:left;">快递单号:</span>
+                                    <dt style="width:300px;"><span style="float:left;">快递单号:</span>
                                         <div style="color:#62b3ff" class="editSpanInput" ectype="editSpanInput">
-                                            <span onclick="listTable.edit(this,'{{url('/admin/orderinfo/delivery/modifyShippingBillno')}}','{{$delivery['id']}}')">{{$delivery['shipping_billno']}}</span>
+                                            <span  onclick="listTable.edit(this,'{{url('/admin/orderinfo/delivery/modifyShippingBillno')}}','{{$delivery['id']}}')">{{$delivery['shipping_billno']}}</span>
                                             <i class="icon icon-edit"></i>
                                         </div>
                                     </dt>

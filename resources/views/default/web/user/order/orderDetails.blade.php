@@ -393,9 +393,6 @@
                     }else{
 						//物流单第三方查询失败 查询站内维护物流信息
                         getInstationLogisticsInfo(obj);
-//                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
-//                        $('.wlxx').append(_html);
-                        // $.msg.alert(data.msg);
                     }
                 },
                 error:function(){
