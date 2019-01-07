@@ -66,7 +66,7 @@ class KuaidiController extends ApiController
             }
             return $this->success(\GuzzleHttp\json_decode($json), 'success' );
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->success("",$e->getMessage());
         }
     }
 
@@ -99,6 +99,6 @@ class KuaidiController extends ApiController
                 return $this->success($info,'');
             }
         }
-        return $this->error('无物流信息');
+        return $this->success("",'无物流信息');
     }
 }
