@@ -210,6 +210,7 @@ class ActivityWholesaleService
         $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
         $goodsInfo['max_limit'] = $ActivityInfo['max_limit'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        $goodsInfo['click_count'] = $ActivityInfo['click_count'];
         //活动有效期总秒数
         $goodsInfo['seconds'] = strtotime($ActivityInfo['end_time']) - time();
         //商品市场价

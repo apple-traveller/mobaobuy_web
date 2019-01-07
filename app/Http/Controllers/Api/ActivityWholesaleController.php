@@ -30,7 +30,7 @@ class ActivityWholesaleController extends ApiController
         $id = $request->input('id');
         //进入详情页 增加点击量
         try{
-            ActivityWholesaleService::addClickCountApi($id);
+            $res = ActivityWholesaleService::addClickCountApi($id);
             $goodsInfo = ActivityWholesaleService::detailApi($id,$userId);
             return $this->success(compact('goodsInfo'),'success');
         }catch (\Exception $e){
