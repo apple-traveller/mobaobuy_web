@@ -1,5 +1,13 @@
 @extends(themePath('.')."seller.include.layouts.master")
 @section('body')
+    <style>
+        .list-div .tDiv {
+             padding: 0;
+        }
+        .list-div td .tDiv {
+            padding: 10px 0;
+        }
+    </style>
     <div class="warpper">
         <div class="title">店铺 - 店铺商品报价列表</div>
         <div class="content">
@@ -7,6 +15,7 @@
                 <div class="common-head">
                     <div class="fl">
                         <a href="/seller/quote/add"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
+                        <div class="fbutton batchReRelease"><div class="add" title="批量更新报价"><span><i class="icon icon-refresh"></i>批量更新报价</span></div></div>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据">
@@ -28,6 +37,7 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
+                                    <th width="4%"><input type="checkbox" id="theadInp"/></th>
                                     <th width="10%"><div class="tDiv">店铺名称</div></th>
                                     <th width="6%"><div class="tDiv">商品编码</div></th>
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
@@ -35,16 +45,17 @@
                                     <th width="6%"><div class="tDiv">店铺售价</div></th>
                                     <th width="6%"><div class="tDiv">业务员</div></th>
                                     <th width="6%"><div class="tDiv">联系方式</div></th>
-                                    <th width="9%"><div class="tDiv">交货地</div></th>
-                                    <th width="9%"><div class="tDiv">添加时间</div></th>
-                                    <th width="9%"><div class="tDiv">生产日期</div></th>
-                                    <th width="7%"><div class="tDiv">状态</div></th>
+                                    <th width="8%"><div class="tDiv">交货地</div></th>
+                                    <th width="8%"><div class="tDiv">添加时间</div></th>
+                                    <th width="8%"><div class="tDiv">生产日期</div></th>
+                                    <th width="6%"><div class="tDiv">状态</div></th>
                                     <th width="16%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($shopGoodsQuote as $vo)
                                 <tr class="">
+                                    <td><div class="tDiv"><input type="checkbox" name="goods_id" value="{{$vo['id']}}"/></div></td>
                                     <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
@@ -82,7 +93,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="12">
+                                    <td colspan="13">
                                         <div class="tDiv">
 
                                             <div class="list-page">
@@ -158,15 +169,14 @@
                 });
             });
         }
-        //重新报价
-        function reRelease(id){
+        function toAjax(ids){
             layui.use('layer', function(){
                 var layer = layui.layer;
-                layer.confirm('确定要重新发布此报价么?', {icon: 3, title:'提示'}, function(index){
+                layer.confirm('确定要重新发布报价么?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
                         url: "/seller/quote/reRelease",
                         dataType: "json",
-                        data:{"id":id},
+                        data:{"ids":ids},
                         type:"get",
                         success:function(res){
                             if(res.code==1){
@@ -180,5 +190,31 @@
                 });
             });
         }
+        //重新报价
+        function reRelease(id){
+            toAjax([id])
+        }
+        $(function() {
+            //实现全选反选
+            $("#theadInp").on('click', function() {
+                $("tbody input:checkbox").prop("checked", $(this).prop('checked'));
+            });
+            $("tbody input:checkbox").on('click', function() {
+                //当选中的长度等于checkbox的长度的时候,就让控制全选反选的checkbox设置为选中,否则就为未选中
+                if($("tbody input:checkbox").length === $("tbody input:checked").length) {
+                    $("#theadInp").prop("checked", true);
+                } else {
+                    $("#theadInp").prop("checked", false);
+                }
+            });
+            $('.batchReRelease').click(function(){
+                var _goods_ids = [];
+                $.each($('input[name=goods_id]:checked'),function(){
+                    _goods_ids.push($(this).val());
+                });
+                toAjax(_goods_ids);
+            });
+
+        })
     </script>
 @stop

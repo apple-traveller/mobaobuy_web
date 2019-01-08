@@ -139,13 +139,24 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::create($data);
     }
 
-    public static function reRelease($id)
+    public static function reRelease($ids)
     {
-        $info = ShopGoodsQuoteRepo::getInfo($id);
-        unset($info['id']);
-        $info['add_time'] = date('Y-m-d H:i:s');
-        $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
-        return ShopGoodsQuoteRepo::create($info);
+        try{
+            self::beginTransaction();
+                foreach ($ids as $id){
+                    $info = ShopGoodsQuoteRepo::getInfo($id);
+                    unset($info['id']);
+                    $info['add_time'] = date('Y-m-d H:i:s');
+                    $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
+                    ShopGoodsQuoteRepo::create($info);
+                }
+            self::commit();
+            return true;
+        }catch (Exception $e){
+            self::rollBack();
+            return $e->getMessage();
+        }
+
     }
     //修改
     public static function modify($data)
