@@ -158,13 +158,13 @@
                         type:"get",
                         success:function(res){
                             if(res.code==1){
-                                $.msg.alert('发布成功');
                                 window.location.reload();
                             }else{
-                                $.msg.alert(res.msg)
+                                layer.alert(res.msg);
                             }
                         }
-                    })
+                    });
+                    layer.close(index);
                 });
             });
         }
