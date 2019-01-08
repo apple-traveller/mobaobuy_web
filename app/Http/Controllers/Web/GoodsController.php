@@ -202,8 +202,21 @@ class GoodsController extends Controller
     //商品走势图
     public function productTrend(Request $request){
         $goodsId = $request->input('id');
+        $type = $request->input('type',1);
+        $begin_time = $request->input('begin_time');
+
+        $condition['goods_id'] = $goodsId;
+        $condition['consign_status'] = 1;
+        if(!empty($begin_time)){
+            $condition['add_time|>='] =  $begin_time;
+        }
+        $end_time = $request->input('end_time');
+        if(!empty($end_time)){
+            $condition['add_time|<='] =  $end_time;
+        }
+
         try{
-            $goodsList = GoodsService::productTrend($goodsId);
+            $goodsList = GoodsService::productTrend($goodsId,$type,$condition);
             return $this->success('','',$goodsList);
         }catch (\Exception $e){
             return $this->error($e->getMessage());

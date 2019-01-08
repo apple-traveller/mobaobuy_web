@@ -85,7 +85,21 @@ class ShopGoodsQuoteController extends Controller
             'good'=>$good
         ]);
     }
+    //更新发布
+    public function reRelease(Request $request)
+    {
+        $ids = $request->input('ids');
+        if(empty($ids)){
+            return $this->error('无法获取到参数ID');
+        }
+        $res = ShopGoodsQuoteService::reRelease($ids);
 
+        if($res){
+            return $this->success('成功');
+        }else{
+            return $this->error($res);
+        }
+    }
     /**
      * 添加和编辑
      * @param Request $request

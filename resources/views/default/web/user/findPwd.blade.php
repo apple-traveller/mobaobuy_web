@@ -195,8 +195,8 @@
             };
             Ajax.call("{{url('/findPwd')}}", params, function (result){
                 if (result.code == 1) {
-                    $.msg.alert('修改成功！');
-                    window.location.reload();
+                    $.msg.alert('修改成功！',{time:2000});
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }else{
                     $.msg.error(result.msg);
                 }
