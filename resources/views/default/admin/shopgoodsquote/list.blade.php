@@ -22,7 +22,7 @@
                 <div class="common-head">
                     <div class="fl">
                         <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
-                        <div class="fbutton batchReRelease"><div class="add" title="批量更新报价"><span><i class="icon icon-refresh"></i>批量更新报价</span></div></div>
+                        <div class="fbutton batchReRelease"><div class="add" title="批量更新报价"><span><i class="icon icon-refresh"></i>批量更新发布</span></div></div>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
