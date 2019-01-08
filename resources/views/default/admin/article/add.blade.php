@@ -101,7 +101,6 @@
                         <div class="switch_info" style="display: none;">
                             <div class="item">
                                 <script id="container" name="content" type="text/plain"></script>
-
                                 <div class="form_prompt"></div>
                             </div>
                         </div>
