@@ -253,6 +253,8 @@ class QuoteController extends Controller
         //商家推荐
         $condi = [];
         $condi['shop_id'] = $shop_id;
+        $condi['consign_status'] = 1;
+        $condi['is_delete'] = 0;
         $condi['id'] = '!'.$id;
 
 
