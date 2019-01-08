@@ -607,6 +607,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
         Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存
         Route::post('/quote/delete', 'ShopGoodsQuoteController@delete');// 删除
+        Route::get('/quote/reRelease', 'ShopGoodsQuoteController@reRelease');//更新报价
 
         Route::get('/order/list', 'ShopOrderController@getList');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情

@@ -146,7 +146,7 @@
                 });
             });
         }
-        ///admin/shopgoodsquote/reRelease
+        //重新报价
         function reRelease(id){
             layui.use('layer', function(){
                 var layer = layui.layer;

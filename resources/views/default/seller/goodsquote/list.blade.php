@@ -35,10 +35,11 @@
                                     <th width="6%"><div class="tDiv">店铺售价</div></th>
                                     <th width="6%"><div class="tDiv">业务员</div></th>
                                     <th width="6%"><div class="tDiv">联系方式</div></th>
-                                    <th width="10%"><div class="tDiv">交货地</div></th>
-                                    <th width="10%"><div class="tDiv">添加时间</div></th>
-                                    <th width="10%"><div class="tDiv">生产日期</div></th>
-                                    <th width="10%"><div class="tDiv">操作</div></th>
+                                    <th width="9%"><div class="tDiv">交货地</div></th>
+                                    <th width="9%"><div class="tDiv">添加时间</div></th>
+                                    <th width="9%"><div class="tDiv">生产日期</div></th>
+                                    <th width="7%"><div class="tDiv">状态</div></th>
+                                    <th width="16%"><div class="tDiv">操作</div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -56,9 +57,24 @@
                                     <td><div class="tDiv">{{$vo['production_date']}}</div></td>
                                     <td>
                                         <div class="tDiv">
+                                            @if($vo['consign_status'] == 0)
+                                                待审核
+                                            @elseif($vo['consign_status'] == 2)
+                                                <span class="red">审核不通过</span>
+                                            @else
+                                                @if($vo['expiry_time'] < date('Y-m-d H:i:s'))
+                                                    <span class="red">已过期</span>
+                                                @else
+                                                    <span class="green">销售中</span>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="tDiv">
                                             <a href="/seller/quote/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_trash"><i class="icon icon-edit"></i>编辑</a>
-
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                            <a href="javascript:void(0);" onclick="reRelease({{$vo['id']}})" title="更新发布" class="btn_trash"><i class="icon icon-refresh"></i>更新发布</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -139,6 +155,28 @@
                     });
                     // window.location.href="/seller/quote/delete?id="+id;
 
+                });
+            });
+        }
+        //重新报价
+        function reRelease(id){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定要重新发布此报价么?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        url: "/seller/quote/reRelease",
+                        dataType: "json",
+                        data:{"id":id},
+                        type:"get",
+                        success:function(res){
+                            if(res.code==1){
+                                window.location.reload();
+                            }else{
+                                layer.alert(res.msg);
+                            }
+                        }
+                    });
+                    layer.close(index);
                 });
             });
         }
