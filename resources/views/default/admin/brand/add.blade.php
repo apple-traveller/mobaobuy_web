@@ -167,7 +167,6 @@
                     brand_desc :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-
                 }
             });
         });

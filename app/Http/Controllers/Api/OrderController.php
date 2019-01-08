@@ -73,6 +73,7 @@ class OrderController extends ApiController
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
+        $orderDetailsInfo['orderInfo']['contract_flag'] = $orderDetailsInfo['orderInfo']['contract'];
         $orderDetailsInfo['orderInfo']['contract'] = getFileUrl($orderDetailsInfo['orderInfo']['contract']);
         return $this->success(compact('orderDetailsInfo'),'success');
     }
@@ -179,8 +180,6 @@ class OrderController extends ApiController
             $u_id = $userInfo['id'];
             $address_id = $userInfo['address_id'] ? $userInfo['address_id'] : 0;
         }
-
-
 
         // 收货地址列表
         $addressList = UserAddressService::getInfoByUserId($u_id);
