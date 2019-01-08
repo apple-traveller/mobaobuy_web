@@ -168,5 +168,40 @@ class ShopGoodsQuoteRepo
         return [];
     }
 
+    /**
+     * productTrend
+     * @param $order
+     * @param $condition
+     * @param int $type 1按日、 2按周、 3按月
+     * @return mixed
+     */
+    public static function productTrend($order,$condition,$type=1){
+        if($type == 3){
+            $param = 'left(add_time,7) as t';
+        }elseif($type == 2){
+            $param = "concat(year(add_time),'（第',week(add_time),'周）') as t";
+        }else{
+            $param = 'left(add_time,10) as t';
+        }
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        $query = $query->select(
+            '*',
+            DB::raw($param),
+            DB::raw('max(shop_price) as max_price'),
+            DB::raw('min(shop_price) as min_price')
+        )->groupBy('t');
+        $query = self::setCondition($query, $condition);
+
+        //处理排序
+        if (isset($order) && !empty($order)) {
+            foreach ($order as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+
+        $res = $query->get()->toArray();
+        return $res;
+    }
 }
 

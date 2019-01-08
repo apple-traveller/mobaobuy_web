@@ -187,6 +187,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopgoodsquote/save', 'ShopGoodsQuoteController@save');//保存
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
         Route::post('/shopgoodsquote/getGoods', 'ShopGoodsQuoteController@getGoods');//ajax获取商品
+        Route::get('/shopgoodsquote/reRelease', 'ShopGoodsQuoteController@reRelease');//更新发布
 
         Route::any('/orderinfo/list', 'OrderInfoController@getList');//订单列表
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情

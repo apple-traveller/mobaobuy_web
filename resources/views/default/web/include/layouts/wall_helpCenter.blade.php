@@ -13,6 +13,11 @@
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
 @component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '帮助中心'])@endcomponent
+<div class="top-search-box clearfix">
+    <div class="top-search-div">
+        @include(themePath('.','web').'web.include.partials.top_nav')
+    </div>
+</div>
 <div class="clearfix mt25 mb25">
     <div class="w1200">
         <div class="member_left">

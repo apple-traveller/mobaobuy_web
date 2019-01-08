@@ -53,10 +53,17 @@
         .info-detail-content  a{
             color: #00a67c;
         }
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
 @endsection
 @section('js')
-
+    <script>
+        $(function(){
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
+        })
+    </script>
 @endsection
 @section('content')
     <div class="crumbs">当前位置：<a href="/">首页</a> &gt; <a href="/news/{{$cat['id']}}/1.html">{{ $cat['cat_name'] }}</a> &gt;<span class="gray">{{ $article['title'] }}</span></div>

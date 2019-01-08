@@ -6,7 +6,8 @@
 @section('title', $detail['title'].'-秣宝饲料原料采购网')
 @section('css')
 
-<style>
+    <style>
+        .nav-div .nav-cate .ass_menu {display: none;}
     </style>
 @endsection
 @section('content')
@@ -31,4 +32,11 @@
 
 @endsection
 @section('js')
+    <script>
+        $(function(){
+            $(".nav-cate").hover(function(){
+                $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
+            });
+        })
+    </script>
 @endsection

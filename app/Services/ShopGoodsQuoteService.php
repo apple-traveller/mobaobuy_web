@@ -6,6 +6,7 @@ use App\Repositories\GoodsRepo;
 use App\Repositories\GoodsCategoryRepo;
 use App\Repositories\ShopRepo;
 use App\Repositories\UserCollectGoodsRepo;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use League\Flysystem\Exception;
@@ -138,6 +139,14 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::create($data);
     }
 
+    public static function reRelease($id)
+    {
+        $info = ShopGoodsQuoteRepo::getInfo($id);
+        unset($info['id']);
+        $info['add_time'] = date('Y-m-d H:i:s');
+        $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
+        return ShopGoodsQuoteRepo::create($info);
+    }
     //修改
     public static function modify($data)
     {

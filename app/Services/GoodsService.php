@@ -420,7 +420,7 @@ class GoodsService
 
     }
 
-    public static function productTrend($goodsId){
+    public static function productTrend($goodsId,$type=1,$condition){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         if(empty($goodsInfo)){
             self::throwBizError('商品信息有误');
@@ -435,22 +435,16 @@ class GoodsService
 
 
         $timeArr = [];
-        $minPriceArr = [];
-        $maxPriceArr = [];
-        $newData = GoodsRepo::productTrend();
+        $priceArr = [];
+        $newData = ShopGoodsQuoteRepo::productTrend([],$condition,$type);
 
         foreach($newData as $v){
             $timeArr[] = $v['t'];
-            $minPriceArr[] = $v['min_p'];
-            $maxPriceArr[] = $v['max_p'];
+            $priceArr[] = [$v['min_price'],$v['max_price'],$v['min_price'],$v['max_price']];
         }
-        dump($timeArr);
-        dump($minPriceArr);
-        dump($maxPriceArr);
-        $data['time'] = $newData['t'];
-        $data['price'] = $newData['shop_price'];
-        dd($data);
-//        return $data;
+        $data['time'] = $timeArr;
+        $data['price'] = $priceArr;
+        return $data;
     }
 
 

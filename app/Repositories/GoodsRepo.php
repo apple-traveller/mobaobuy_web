@@ -19,18 +19,4 @@ class GoodsRepo
         $query = $clazz::query();
         return $query->paginate(3);
     }
-
-    public static function productTrend(){
-        $res = \DB::table('shop_goods_quote')
-            ->select(
-                '*',
-                DB::raw('left(add_time,10) as t'),
-                DB::raw('max(shop_price) as max_p'),
-                DB::raw('min(shop_price) as min_p')
-            )
-            ->groupBy('t')->get()->toArray();
-        return $res;
-    }
-
-
 }
