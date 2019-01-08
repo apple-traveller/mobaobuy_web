@@ -85,7 +85,7 @@
                                         <div class="tDiv a3">
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
                                             <a href="/admin/shopgoodsquote/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                            <a href="javascript:void(0);" onclick="reRelease({{$vo['id']}})" title="更新发布" class="btn_edit"><i class="icon icon-edit"></i>更新发布</a>
+                                            <a href="javascript:void(0);" onclick="reRelease({{$vo['id']}})" title="更新发布" class="btn_edit"><i class="icon icon-refresh"></i>更新发布</a>
                                         </div>
                                     </td>
                                 </tr>
