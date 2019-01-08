@@ -204,7 +204,9 @@ class GoodsController extends Controller
         $goodsId = $request->input('id');
         $type = $request->input('type',1);
         $begin_time = $request->input('begin_time');
-        $condition = [];
+
+        $condition['goods_id'] = $goodsId;
+        $condition['consign_status'] = 1;
         if(!empty($begin_time)){
             $condition['add_time|>='] =  $begin_time;
         }

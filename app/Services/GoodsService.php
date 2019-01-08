@@ -437,10 +437,11 @@ class GoodsService
         $timeArr = [];
         $priceArr = [];
         $newData = ShopGoodsQuoteRepo::productTrend([],$condition,$type);
-
-        foreach($newData as $v){
-            $timeArr[] = $v['t'];
-            $priceArr[] = [$v['min_price'],$v['max_price'],$v['min_price'],$v['max_price']];
+        if(!empty($newData)){
+            foreach($newData as $v){
+                $timeArr[] = $v['t'];
+                $priceArr[] = [$v['min_price'],$v['max_price'],$v['min_price'],$v['max_price']];
+            }
         }
         $data['time'] = $timeArr;
         $data['price'] = $priceArr;
