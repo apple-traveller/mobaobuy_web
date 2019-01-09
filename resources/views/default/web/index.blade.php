@@ -313,7 +313,7 @@
                     @foreach($goodsList['list'] as $vo)
                         <li>
                             <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
-                            <span style="width:15%;" title="{{$vo['goods_full_name']}}"><i class="space_hidden" style="width:100%;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
+                            <span style="width:15%;" title="{{$vo['goods_full_name']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
                             <span style="width:12%;">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
