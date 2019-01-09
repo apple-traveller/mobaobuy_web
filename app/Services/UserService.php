@@ -292,9 +292,9 @@ class UserService
     public static function shopAddressList($condi){
         $userAddressInfo = UserAddressRepo::getList($order=[],$condi);
         foreach($userAddressInfo as $k=>$v){
-            $userAddressInfo[$k]['country'] = RegionRepo::getInfo($v['country'])['region_name'];
-            $userAddressInfo[$k]['province'] = RegionRepo::getInfo($v['province'])['region_name'];
-            $userAddressInfo[$k]['city'] = RegionRepo::getInfo($v['city'])['region_name'];
+            $userAddressInfo[$k]['country'] = RegionRepo::getInfo($v['country'])?RegionRepo::getInfo($v['country'])['region_name']:"";
+            $userAddressInfo[$k]['province'] = RegionRepo::getInfo($v['province'])?RegionRepo::getInfo($v['province'])['region_name']:"";
+            $userAddressInfo[$k]['city'] = RegionRepo::getInfo($v['city'])?RegionRepo::getInfo($v['city'])['region_name']:"";
             $userAddressInfo[$k]['district'] = RegionRepo::getInfo($v['district'])?RegionRepo::getInfo($v['district'])['region_name']:"";
         }
         return $userAddressInfo;

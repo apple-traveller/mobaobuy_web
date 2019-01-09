@@ -50,7 +50,10 @@ class ActivityWholesaleController extends ApiController
             $activityInfo = ActivityWholesaleService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条
             $address_id = UserAddressService::getOneAddressIdApi($userInfo,$deputy_user);
-
+            //dd($address_id);
+            if(empty($address_id)){
+                return $this->error('您还没有设置任何收货地址');
+            }
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
