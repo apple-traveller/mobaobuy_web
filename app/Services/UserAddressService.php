@@ -139,7 +139,6 @@ class UserAddressService
     public static function getOneAddressIdApi($userInfo,$info)
     {
         //判断是否有默认地址如果有 则直接赋值 没有则取出一条
-        //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
         if($info['is_self'] == 0 && $info['is_firm'] == 1){
             if(isset($info['address_id']) && !empty($info['address_id'])){
                 $address_id = $info['address_id'];

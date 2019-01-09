@@ -149,13 +149,13 @@ class RegionService
             $country = RegionRepo::getInfo($country_id)['region_name'];
         }
         if($province_id!=0){
-            $province = RegionRepo::getInfo($province_id)['region_name'];
+            $province = RegionRepo::getInfo($province_id)?RegionRepo::getInfo($province_id)['region_name']:"不存在的省份";
         }
         if($city_id!=0){
-            $city = RegionRepo::getInfo($city_id)['region_name'];
+            $city = RegionRepo::getInfo($city_id)?RegionRepo::getInfo($city_id)['region_name']:"不存在的城市";
         }
         if($district_id!=0){
-            $district = RegionRepo::getInfo($district_id)['region_name'];
+            $district = RegionRepo::getInfo($district_id)?RegionRepo::getInfo($district_id)['region_name']:"不存在的县";
         }
 
         return $country."-".$province."-".$city."-".$district;
@@ -184,7 +184,11 @@ class RegionService
         return $region['region_id'];
     }
 
-
+    //判断存入的地区是否在数据库中
+    public static function is_region($region_id)
+    {
+        return RegionRepo::getInfoByFields(['region_id'=>$region_id]);
+    }
 
 
 }

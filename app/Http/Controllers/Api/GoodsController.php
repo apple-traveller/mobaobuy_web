@@ -252,7 +252,6 @@ class GoodsController extends ApiController
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
-
     }
 
     //删除购物车商品

@@ -110,9 +110,6 @@ class UserController extends ApiController
         if (empty($address)){
             return $this->error('请输入详细地址');
         }
-       /* if (empty($zipcode)){
-            return $this->error('请输入邮政编码');
-        }*/
         if (empty($consignee)){
             return $this->error('请填写收货人');
         }
@@ -133,7 +130,7 @@ class UserController extends ApiController
         ];
         //dd($data);
         try{
-            if ($id){
+            if($id){
                 $res = UserService::updateShopAdderss($id,$data);
                 if(!empty($default) && $default == 'Y'){//设为默认地址
                     $data = [
@@ -145,6 +142,12 @@ class UserController extends ApiController
                 }
                 return $this->success('修改成功');
             }else{
+                $flag = RegionService::is_region($data['province']);
+                $flag2 = RegionService::is_region($data['city']);
+                $flag3 = RegionService::is_region($data['district']);
+                if(empty($flag) || empty($flag2) || empty($flag3)){
+                    return $this->error('选择的地址在数据库中不存在');
+                }
                 $re =  UserService::addShopAddress($data);
                 if(!empty($default) && $default == 'Y'){//设为默认地址
                     $data = [
