@@ -46,7 +46,7 @@
         .quoteList li{line-height: 43px;background-color: #fff;}
         /*.quoteList li:first-child{line-height: 40px; }*/
         /*.quoteList li:last-child{border-bottom: none;}*/
-        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;}
+        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:158px}
         .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
         .chart_btn:hover{background-color: #75b335; color: #fff;}
         .chart_btn.currlight{background-color: #75b335; color: #fff;}
