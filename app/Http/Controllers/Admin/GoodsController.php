@@ -63,7 +63,6 @@ class GoodsController extends Controller
         $good = GoodsService::getGoodInfo($id);
         $goods_attr = $good['goods_attr'];
         $attrArr = explode(";",$goods_attr);
-        //print_r($attrArr);
         //查询所有品牌
         $brands = BrandService::getBrandList([],[]);
         //查询所有的单位
