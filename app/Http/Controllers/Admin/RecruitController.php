@@ -83,17 +83,14 @@ class RecruitController extends Controller
         if(empty($data['recruit_job'])){
             $errorMsg[] = '招聘职位不能为空';
         }
-        if(empty($data['recruit_number'])){
-            $errorMsg[] = '招聘人数不能为空';
-        }
         if(empty($data['recruit_place'])){
             $errorMsg[] = '工作地点不能为空';
         }
-        if(empty($data['recruit_firm'])){
-            $errorMsg[] = '招聘公司不能为空';
+        if(empty($data['recruit_type'])){
+            $errorMsg[] = '工作类型不能为空';
         }
-        if(empty($data['recruit_pay'])){
-            $errorMsg[] = '工资待遇不能为空';
+        if(empty($data['job_type'])){
+            $errorMsg[] = '职位类别不能为空';
         }
         if(empty($data['job_desc'])){
             $errorMsg[] = '岗位职责不能为空';

@@ -25,7 +25,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>招聘人数：</div>
+                                    <div class="label">招聘人数：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_number" value="" autocomplete="off" id="recruit_number" size="40"  class="text">
                                         <div class="notic"></div>
@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>详细地址：</div>
+                                    <div class="label">详细地址：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_address" value="" autocomplete="off" id="recruit_address" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>招聘公司：</div>
+                                    <div class="label">招聘公司：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_firm" value="" autocomplete="off" id="recruit_firm" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>薪资待遇：</div>
+                                    <div class="label">薪资待遇：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_pay" value="" autocomplete="off" id="recruit_pay" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>工作经历：</div>
+                                    <div class="label">工作经历：</div>
                                     <div class="label_value">
                                         <input type="text" name="working_experience" value="" autocomplete="off" id="working_experience" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -91,7 +91,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>学历：</div>
+                                    <div class="label">学历：</div>
                                     <div class="label_value">
                                         <input type="text" name="education" value="" autocomplete="off" id="education" size="40"  class="text">
                                         <div class="form_prompt"></div>
@@ -109,7 +109,7 @@
                                 </div>
 
                                 <div class="item">
-                                    <div class="label"><span class="require-field">*</span>部门名称：</div>
+                                    <div class="label">部门名称：</div>
                                     <div class="label_value">
                                         <input type="text" name="recruit_branch" value="" autocomplete="off" id="recruit_branch" size="40"  class="text">
                                         <div class="notic"></div>
@@ -175,59 +175,36 @@
                     recruit_job :{
                         required : true,
                     },
-                    recruit_number :{
-                        required : true
-                    },
                     recruit_place :{
                         required : true,
                     },
-                    recruit_firm :{
-                        required : true,
-                    },
-                    recruit_pay :{
-                        required : true,
-                    },
-                    recruit_address:{
-                        required :true,
-                    },
-                    working_experience:{
-                        required :true,
-                    },
-                    education:{
-                        required:true,
-                    },
                     recruit_type : {
                         required:true,
-                    }
+                    },
+                    job_type:{
+                        required :true,
+                    },
+                    job_desc : {
+                        required:true,
+                    },
                 },
                 messages:{
                     recruit_job :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    recruit_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
                     recruit_place :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    recruit_firm :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    recruit_pay :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    recruit_address :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    working_experience :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
-                    },
-                    education :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     recruit_type :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+                    job_type :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    job_desc :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+
                 }
             });
         });

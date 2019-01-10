@@ -180,13 +180,14 @@
 			word-wrap: break-word;
 		}
 		.recruitment_item .position_info .dd_bot .salary {
-			color: #fc5c63;
+			/*color: #fc5c63;*/
 			font-size: 16px;
 		}
 		.recruitment_item .position_info dl.company_dl dd .info {
 			display: inline-block;
 			margin-left: 10px;
 		}
+		.apply_btn{    cursor: pointer;border: none; background-color: #75b335; padding: 3.5px 10px;font-size: 18px;color: #fff;}
 	</style>
 @endsection
 @section('js')
@@ -239,27 +240,10 @@
 
 	</script>
 @endsection
-
-	{{--<body style="background-color: #f4f4f4;">--}}
 	@section('content')
 		@if(!empty($recruitInfo))
 			<div style="margin:0 auto;width:1200px;background-color: white;margin-top:20px;">
-				{{--<section class="co_filter_condition mb15" style=" margin-left:5px;margin-top:20px;">--}}
-					{{--<dl class="condition_item city">--}}
-						{{--<dt>城市:</dt>--}}
-						{{--<dd>--}}
-							{{--<div class="all_item">--}}
-								{{--<a ka="job-city-all" href="/job/g2090879.html#co_tab" ref="nofollow">全部</a>--}}
-								{{--@if(!empty($place))--}}
-									{{--@foreach($place as $v)--}}
-										{{--<a ka="job-city-show" onclick="getPlace(1,this);" href="javascript:(0)" text="{{$v}}" class="">{{$v}}</a>--}}
-									{{--@endforeach--}}
-								{{--@endif--}}
-							{{--</div>--}}
-						{{--</dd>--}}
-					{{--</dl>--}}
-				{{--</section>--}}
-				<div style="margin:0 auto;width:1130px;height: 800px;" id="recruit">
+				<div style="margin:0 auto;width:1130px;" id="recruit">
 
 						<section class="recruitment_item wrap_style " data-e="false" style="padding-top:10px;">
 							<div class="position_info" style="margin-top:30px;">
@@ -269,38 +253,33 @@
 											<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">{{$recruitInfo['recruit_job']}}</a>
 											<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$recruitInfo['recruit_place']}}]</a>
 											<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$recruitInfo['add_time']}}发布</span>
+										<a href="/recruit/page" style="float:right; font-size:15px;margin-top:5px;color:red; cursor: pointer;">返回职位列表</a>
 										</p>
 										<div class="dd_bot">
-											<span class="salary">职位薪资:{{$recruitInfo['recruit_pay']}}</span>
-											<div class="info">
-												<span>经验:{{$recruitInfo['working_experience']}}</span>
-												<em class="line"></em>
-												<span>学历:{{$recruitInfo['education']}}</span>
-												<em class="line"></em>
-												<span>类型:{{$recruitInfo['recruit_type']}}</span>
-											</div>
+											{{--<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$recruitInfo['recruit_place']}}]</a>--}}
+											<span class="salary">类型:{{$recruitInfo['recruit_type']}}</span>
+											{{--<span class="salary">职位薪资:{{$recruitInfo['recruit_pay']}}</span>--}}
+											{{--<div class="info">--}}
+												{{--<span>经验:{{$recruitInfo['working_experience']}}</span>--}}
+												{{--<em class="line"></em>--}}
+												{{--<span>学历:{{$recruitInfo['education']}}</span>--}}
+												{{--<em class="line"></em>--}}
+												{{--<span>类型:{{$recruitInfo['recruit_type']}}</span>--}}
+												{{--<span>类型:全职</span>--}}
+											{{--</div>--}}
 										</div>
 									</dd>
 								</dl>
 							</div>
-							<div class="obligation">
+							<div class="obligation" style="">
 								<p>
-									岗位说明：
 									{!! $recruitInfo['job_desc'] !!}
 								</p>
-								{{--<span style="margin-left:10px;">申请职位</span>--}}
-								<input type="button" value="申请职位" style="float:left;font-size:15px;text-align: center;margin-top:5px;" onclick="openFrame();">
 							</div>
+							<p style="text-align: center;margin-top: 20px">
+								<input type="button" class="apply_btn" value="申请职位" onclick="openFrame();">
+							</p>
 						</section>
-
-
-					<div class="page">
-						<div class="link">
-							<div class="news_pages" style="margin-top: 20px;text-align: center;">
-								<ul id="page" class="pagination"></ul>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		@else
@@ -316,83 +295,4 @@
 				<li style="clear:both;margin-top:30px;margin-bottom:20px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="resumeSave({{$recruitInfo['id']}})">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>
 			</ul>
 		</div>
-		{{--<script>--}}
-			{{--$(function(){--}}
-                {{--paginate();--}}
-			{{--})--}}
-
-			{{--function getInfo(currpage,place) {--}}
-                {{--$.ajax({--}}
-                    {{--url: '/recruit/recruitByCondition',--}}
-                    {{--type: 'post',--}}
-                    {{--data: {'place':place,'currpage':currpage},--}}
-                    {{--success:function (res) {--}}
-                        {{--console.log(res);--}}
-                        {{--if(res.code == 200){--}}
-                            {{--var data = res.data;--}}
-                            {{--var currpage = data.currpage;--}}
-                            {{--var pageSize = data.pageSize;--}}
-                            {{--var total = data.total;--}}
-                            {{--var list = data.list;--}}
-                            {{--var strHtml = '';--}}
-                            {{--for(var i = 0; i < list.length; i++){--}}
-                                {{--strHtml += '<section class="recruitment_item wrap_style " data-e="false"><div class="position_info"> <dl class="company_dl"> <dd> <p class="dd_top"> <a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">'+list[i]['recruit_job']+'</a><a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:'+list[i]['recruit_place']+']</a><span class="ud_time" style="margin-left: 20px;color: #aaa;">'+list[i]['add_time']+'发布</span> </p> <div class="dd_bot"> <span class="salary">职位薪资:'+list[i]['recruit_pay']+'</span> <div class="info"> <span>经验:'+list[i]['working_experience']+'</span> <em class="line"></em> <span>学历:'+list[i]['education']+'</span> <em class="line"></em> <span>类型:'+list[i]['recruit_type']+'</span> </div> </div> </dd> </dl> </div> <div class="obligation"> <p>岗位说明：;'+list[i]['job_desc']+'</p> </div> </section>';--}}
-                            {{--}--}}
-                            {{--$('#recruit').children('section').remove();--}}
-                            {{--$('#recruit').prepend(strHtml);--}}
-                            {{--layui.use(['laypage'], function() {--}}
-                                {{--var laypage = layui.laypage;--}}
-                                {{--laypage.render({--}}
-                                    {{--elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号--}}
-                                    {{--, count: total //数据总数，从服务端得到--}}
-                                    {{--, limit: pageSize   //每页显示的条数--}}
-                                    {{--, curr: currpage  //当前页--}}
-                                    {{--, prev: "上一页"--}}
-                                    {{--, next: "下一页"--}}
-                                    {{--, theme: "#88be51" //样式--}}
-                                    {{--, jump: function (obj, first) {--}}
-                                        {{--if (!first) {--}}
-{{--//                                            window.location.href='/recruit/list?city='+place+'&currpage='+obj.curr;--}}
-                                            {{--getInfo(obj.curr,place);--}}
-                                        {{--}--}}
-                                    {{--}--}}
-                                {{--});--}}
-                            {{--});--}}
-                        {{--}--}}
-                    {{--}--}}
-                {{--})--}}
-            {{--}--}}
-
-			{{--function getPlace(currpage,obj){--}}
-                {{--$(obj).addClass('current').siblings().removeClass('current');--}}
-                {{--var place = $(obj).text();--}}
-                {{--if(place == ''){--}}
-                    {{--return;--}}
-                {{--}--}}
-                {{--getInfo(currpage,place);--}}
-
-			{{--}--}}
-
-            {{--//分页--}}
-            {{--function paginate(){--}}
-                {{--layui.use(['laypage'], function() {--}}
-                    {{--var laypage = layui.laypage;--}}
-                    {{--laypage.render({--}}
-                        {{--elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号--}}
-                        {{--, count: "{{$recruitInfo['total']}}" //数据总数，从服务端得到--}}
-                        {{--, limit: "{{$pageSize}}"   //每页显示的条数--}}
-                        {{--, curr: "{{$currpage}}"  //当前页--}}
-                        {{--, prev: "上一页"--}}
-                        {{--, next: "下一页"--}}
-                        {{--, theme: "#88be51" //样式--}}
-                        {{--, jump: function (obj, first) {--}}
-                            {{--if (!first) {--}}
-{{--//                       getInfo(obj.curr);--}}
-                                {{--window.location.href='/recruit/list?currpage='+obj.curr;--}}
-                            {{--}--}}
-                        {{--}--}}
-                    {{--});--}}
-                {{--});--}}
-            {{--}--}}
-		{{--</script>--}}
 @endsection
