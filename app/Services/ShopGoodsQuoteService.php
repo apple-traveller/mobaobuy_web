@@ -74,7 +74,6 @@ class ShopGoodsQuoteService
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
         }
-
         return $result;
     }
 

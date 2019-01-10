@@ -55,6 +55,7 @@ class IndexController extends ApiController
         $merge_trans_list = array_merge($trans_list['list'],$trans_false_list,$before_trans_false_list);
         foreach($merge_trans_list as &$vo){
             $vo['price'] = $vo['goods_price'];
+            $vo['add_time'] = Carbon::parse($vo['add_time'])->diffForHumans();
         }
 
         return $this->success(['trans_list' => $merge_trans_list]);
