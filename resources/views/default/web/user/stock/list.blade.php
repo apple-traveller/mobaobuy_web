@@ -131,7 +131,7 @@
                 <tr class="text-c">
                     <th width="20%">分类名称</th>
                     <th width="40%">名称</th>
-                    <th width="25%">库存剩余数量(kg)</th>
+                    <th width="25%">库存剩余数量</th>
                     <th width="15%">操作</th>
                 </tr>
                 </thead>

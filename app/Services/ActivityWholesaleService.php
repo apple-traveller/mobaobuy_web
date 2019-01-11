@@ -258,6 +258,7 @@ class ActivityWholesaleService
 
         //商品信息
         $activityInfo['num'] = $goodsNumber;
+        $activityInfo['unit_name'] = $goodsInfo['unit_name'];
         $activityInfo['amount'] = $goodsNumber * $activityInfo['price'];
         $activityInfo['deposit'] = $goodsNumber * $activityInfo['price'] * $activityInfo['deposit_ratio'] / 100;//订金金额
         $activityArr = [];

@@ -92,7 +92,7 @@ class ShopGoodsQuoteRepo
         $query = \DB::table($clazz->getTable().' as b')
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
-            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name');
+            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name');
 
         $query = self::setCondition($query, $condition);
 

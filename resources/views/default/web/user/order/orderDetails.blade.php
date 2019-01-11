@@ -296,8 +296,8 @@
 			@foreach($orderDetailsInfo['goodsInfo'] as $v)
 				<li>
 					<span class="ovhwp" style="width:29%">{{$v['goods_name']}}</span>
-					<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}} </span>
-					<span class="ovhwp" style="width:20%">{{$v['goods_number']}}kg</span>
+					<span class="ovhwp" style="width:20%">￥{{$v['goods_price']}}/{{$v['unit_name']}} </span>
+					<span class="ovhwp" style="width:20%">{{$v['goods_number']}}{{$v['unit_name']}}</span>
 					<span class="ovhwp" style="width:29%">￥{{number_format($v['goods_price'] * $v['goods_number'],2)}}</span>
 					{{--<span></span>--}}
 				</li>

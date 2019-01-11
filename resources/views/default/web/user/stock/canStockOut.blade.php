@@ -210,7 +210,7 @@
                 <thead>
                 <tr class="text-c">
                     <th width="50%">名称</th>
-                    <th width="25%">库存剩余数量(kg)</th>
+                    <th width="25%">库存剩余数量</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -225,10 +225,10 @@
             <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增出库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
             <ul class="pay_content ovh" style="margin-top: 35px;">
                 <li><div class="ovh mt10"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="good_name"/></div></li>
-                <li><div class="ovh mt10"><span>库存数量(kg):</span><input type="text" class="pay_text" name="number" id="number" /></div></li>
+                <li><div class="ovh mt10"><span>库存数量:</span><input type="text" class="pay_text" name="number" id="number" /></div></li>
                 <li><div class="ovh mt10"><span>单号:</span><input type="text" class="pay_text" id="order_sn" name="order_sn" /></div></li>
                 <li><div class="ovh mt10" id="appendPartnerName"><span>收料客户:</span><input type="text" class="pay_text" id="partner_name" name="partner_name" /></div></li>
-                <li><div class="ovh mt10"><span>出库数量(kg):</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
+                <li><div class="ovh mt10"><span>出库数量:</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
                 <li><div class="ovh mt10"><span>出库单价:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
                 <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></li>
                 <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>

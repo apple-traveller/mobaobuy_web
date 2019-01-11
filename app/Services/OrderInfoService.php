@@ -1397,6 +1397,12 @@ class OrderInfoService
 
 
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
+        if(!empty($goodsInfo)){
+            foreach ($goodsInfo as $k=>$v){
+                $info = GoodsRepo::getInfo($v['goods_id']);
+                $goodsInfo[$k]['unit_name'] = $info['unit_name'];
+            }
+        }
 
         $country = RegionRepo::getInfo($orderInfo['country']);
         $province = RegionRepo::getInfo($orderInfo['province']);

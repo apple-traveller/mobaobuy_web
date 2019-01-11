@@ -77,7 +77,7 @@
                         <th width="20%">出库日期</th>
                         <th width="20%">出库单号</th>
                         <th width="">商品名称</th>
-                        <th width="15%">出库数量(kg)</th>
+                        <th width="15%">出库数量</th>
                         <th width="15%">出库单价(元)</th>
                     </tr>
                 </thead>

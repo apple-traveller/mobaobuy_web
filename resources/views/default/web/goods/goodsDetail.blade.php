@@ -254,7 +254,7 @@
 			<h2 class="fwb fs16">{{$good_info['goods_full_name']}}</h2>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
-				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/kg</span></div>
+				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/{{$good_info['unit_name']}}</span></div>
 
 			</div>
 			<div class="pro_detail">
@@ -333,8 +333,8 @@
                 <span style="width:15%">报价日期</span>
 
                 <span style="width:25%">商品名称</span>
-                <span style="width:10%">数量（kg）</span>
-                <span style="width:10%">单价（元/kg）</span>
+                <span style="width:10%">数量</span>
+                <span style="width:10%">单价（元）</span>
                 <span style="width:10%">发货地址</span>
                 <span style="width:20%">联系人</span>
             </li>
@@ -342,8 +342,8 @@
                 <li>
                     <span style="width:15%">{{$vo['add_time']}}</span>
                     <span style="width:25%;"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span>
-                    <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
-                    <span style="width:10%">{{$vo['shop_price']}}</span>
+                    <span style="width:10%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>
+                    <span style="width:10%">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
                     <span style="width:10%">{{$vo['delivery_place']}}</span>
                     <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                 </li>

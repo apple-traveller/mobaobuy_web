@@ -112,13 +112,14 @@ class ShopGoodsQuoteService
 
         $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0,'is_freeze'=>0,'is_validated'=>1]);
         foreach($shopInfo['list'] as $k=>$v){
-             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5],['shop_id'=>$v['id'],'is_self_run'=>0,'is_delete'=>0,'type'=>'1|2']);
+             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5,'orderType'=>['add_time'=>'desc']],['shop_id'=>$v['id'],'is_self_run'=>0,'is_delete'=>0,'type'=>'1|2']);
 
                 foreach($quotes['list'] as $va=>$value){
                     $goodsInfo = GoodsRepo::getInfo($value['goods_id']);
                     $quotes['list'][$va]['brand_name'] = $goodsInfo['brand_name'];
                     $quotes['list'][$va]['packing_spec'] = $goodsInfo['packing_spec'];
                     $quotes['list'][$va]['goods_full_name'] = $goodsInfo['goods_full_name'];
+                    $quotes['list'][$va]['unit_name'] = $goodsInfo['unit_name'];
                     $cateInfo =  GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
                     $quotes['list'][$va]['cat_name'] = $cateInfo['cat_name'];
                 }
@@ -368,6 +369,7 @@ class ShopGoodsQuoteService
         //商品信息
         $activityInfo['goods_number'] = $goodsNumber;
         $activityInfo['goods_price'] = $activityInfo['shop_price'];
+        $activityInfo['unit_name'] = $goodsInfo['unit_name'];
         $activityInfo['amount'] = $goodsNumber * $activityInfo['shop_price'];
         $activityArr = [];
         $activityArr[] = $activityInfo;

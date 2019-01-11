@@ -213,6 +213,7 @@ class ActivityPromoteService
         $activityInfo['goods_number'] = $goodsNumber;
         $activityInfo['account_money'] = $goodsNumber * $activityInfo['price'];
         $activityInfo['goods_price'] = $activityInfo['price'];
+        $activityInfo['unit_name'] = $goodsInfo['unit_name'];
         $activityArr = [];
         $activityArr[] = $activityInfo;
         return $activityArr;

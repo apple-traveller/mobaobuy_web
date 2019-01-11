@@ -267,7 +267,7 @@
 			<li class="graybg">
 				<span>商品</span>
 				<span>单价（元）</span>
-				<span>数量（kg）</span>
+				<span>数量</span>
 				<!-- <span>发货地</span> -->
 				<span></span>
 				<span>小计</span>
@@ -275,11 +275,11 @@
 			@foreach($goodsList as $k =>$v)
 			<li class="graybg">
 				<span class="ovhwp">{{ $v['goods_name'] }}</span>
-				<span class="green">¥{{ $v['goods_price'] }}</span>
-				<span>{{ $v['goods_number'] }}</span>
+				<span class="green">¥{{ $v['goods_price'] }}/{{$v['unit_name']}}</span>
+				<span>{{ $v['goods_number'] }}{{$v['unit_name']}}</span>
 				<!-- <span>@if(isset($v['delivery_place'])) {{ $v['delivery_place']}} @endif</span> -->
 				<span></span>
-				<span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }} @else {{ number_format($v['account_money'],2) }} @endif</span>
+				<span class="orange subtotal">￥@if(isset($v['account'])) {{ $v['account'] }}/{{$v['unit_name']}} @else {{ number_format($v['account_money'],2) }} @endif</span>
 			</li>
 			@endforeach
 		</ul>

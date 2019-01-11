@@ -288,7 +288,7 @@
                     <th width="20%">入库日期</th>
                     <th width="20%">订单编号</th>
                     <th width="">商品名称</th>
-                    <th width="15%">入库数量(kg)</th>
+                    <th width="15%">入库数量</th>
                     <th width="15%">入库单价(元)</th>
                 </tr>
                 </thead>
@@ -306,7 +306,7 @@
             <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="goodName" /><i class="red ml5">*</i>
                 </div>
             </li>
-            <li><div class="ovh mt10"><span>入库数量(kg):</span><input type="number" class="pay_text" name="number" /><i class="red ml5">*</i></div></li>
+            <li><div class="ovh mt10"><span>入库数量:</span><input type="number" class="pay_text" name="number" /><i class="red ml5">*</i></div></li>
             <li><div class="ovh mt10"><span>入库单价:</span><input type="number" name="price" class="pay_text"/></div></li>
             <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" name="flow_desc"></textarea></li>
             <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();" style="margin-bottom: 30px">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;margin-bottom: 30px">取消</div></li>
