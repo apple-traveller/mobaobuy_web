@@ -308,11 +308,6 @@ class UserController extends Controller
                     return $this->result("",0,implode("|",$errorMsg));
                 }
 
-//           if(empty($dataArr['tax_id'])){
-//               $errorMsg[] = "税号";
-//               return $this->result("",0,implode("|",$errorMsg));
-//           }
-
                 if(empty($dataArr['attorney_letter_fileImg'])){
                     $errorMsg[] = "请上传授权委托书电子版";
                     return $this->result("",0,implode("|",$errorMsg));
@@ -327,8 +322,6 @@ class UserController extends Controller
                     $errorMsg[] = "请上传营业执照电子版";
                     return $this->result("",0,implode("|",$errorMsg));
                 }
-
-
 
                 if(!empty($errorMsg)){
                     return $this->result("",0,implode("|",$errorMsg));
