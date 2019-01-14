@@ -73,6 +73,7 @@
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/brand/list" data-param="demand|06_goods_list" target="workspace">品牌管理</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/unit/list" data-param="demand|07_goods_list" target="workspace">商品单位管理</a></li>
                         <li><s></s><a href="javascript:void(0);" data-url="/admin/hotsearch" data-param="demand|08_goods_list" target="workspace">热门搜索</a></li>
+                        <li><s></s><a href="javascript:void(0);" data-url="/admin/goodscategoryquoteconfig/list" data-param="demand|09_goods_list" target="workspace">商品分类配置</a></li>
                     </ul>
                 </div>
             </div>

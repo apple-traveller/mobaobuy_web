@@ -107,7 +107,7 @@
 							</div>
 							<div class="fl mb10 mt15 ml20" style="width:585px;">
 								<span class="db"></span>
-								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元/kg） : ¥{{$v['shop_price']}}元</span><span class="ml20"></span>
+								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元） : ¥{{$v['shop_price']}}/{{$goodsInfo['unit_name']}}</span><span class="ml20"></span>
 								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
 							<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>

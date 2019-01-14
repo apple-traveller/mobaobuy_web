@@ -326,7 +326,7 @@
 				</style>
 				<div class="price_market">
 					<div class="fl ml20">
-						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">秒杀价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/kg</span></div>
+						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">秒杀价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/{{$goodsInfo['unit_name']}}</span></div>
 						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/{{$goodsInfo['unit_name']}}</span></div>
 					</div>
 					<div class="limit_line"></div>

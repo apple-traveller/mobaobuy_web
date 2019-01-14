@@ -1468,20 +1468,20 @@ CREATE TABLE `recruit` (
   `recruit_number` int(11) DEFAULT NULL COMMENT '招聘人数',
   `recruit_place` varchar(100) NOT NULL COMMENT '工作地点',
   `recruit_firm` varchar(100) DEFAULT NULL COMMENT '招聘公司',
-  `recruit_pay` varchar(100) NOT NULL COMMENT '薪资待遇',
+  `recruit_pay` varchar(100) DEFAULT NULL COMMENT '薪资待遇',
   `job_desc` text COMMENT '岗位职责',
   `is_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示 默认显示1，不显示0',
   `add_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '发布时间',
   `recruit_address` varchar(100) DEFAULT NULL COMMENT '详细地址',
   `recruit_user` varchar(50) DEFAULT NULL COMMENT '联系人',
-  `recruit_mobile` varchar(50) NOT NULL COMMENT '联系方式',
+  `recruit_mobile` varchar(50) DEFAULT NULL COMMENT '联系方式',
   `working_experience` varchar(100) DEFAULT NULL COMMENT '工作经验',
   `education` varchar(50) DEFAULT NULL COMMENT '学历',
   `recruit_type` varchar(50) DEFAULT NULL COMMENT '工作类型',
-   `recruit_branch` varchar(255) NOT NULL COMMENT '部门名称',
+  `recruit_branch` varchar(255) DEFAULT NULL COMMENT '部门名称',
   `job_type` varchar(255) NOT NULL COMMENT '职位类别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `resume`;
 CREATE TABLE `resume` (
@@ -1491,3 +1491,14 @@ CREATE TABLE `resume` (
   `add_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传简历时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招聘简历表';
+
+DROP TABLE IF EXISTS `goods_category_quote_config`;
+CREATE TABLE `goods_category_quote_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `cat_id` int(11) DEFAULT NULL COMMENT '分类id',
+  `cat_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
+  `max` int(11) DEFAULT NULL COMMENT '最大值',
+  `min` int(11) DEFAULT NULL COMMENT '最小值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

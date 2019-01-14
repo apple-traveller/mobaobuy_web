@@ -104,6 +104,13 @@ class FirmStockService
         }
         $condition['flow_type'] = '1|2';
         $firmStockFlowInfo =  FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
+        if(!empty($firmStockFlowInfo['list'])){
+            foreach ($firmStockFlowInfo['list'] as $k=>$v){
+                $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+                $firmStockFlowInfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
+                $firmStockFlowInfo['list'][$k]['price'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+            }
+        }
         return $firmStockFlowInfo;
     }
 
@@ -122,7 +129,15 @@ class FirmStockService
         }
 
         $condition['flow_type'] = 3;
-        return FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
+        $firmStockFlowOutfo = FirmStockFlowRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['flow_time'=>'desc']],$condition);
+        if(!empty($firmStockFlowOutfo['list'])){
+            foreach ($firmStockFlowOutfo['list'] as $k=>$v){
+                $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+                $firmStockFlowOutfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
+                $firmStockFlowOutfo['list'][$k]['price'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+            }
+        }
+        return $firmStockFlowOutfo;
     }
 
     //库存记录列表
@@ -139,6 +154,8 @@ class FirmStockService
         $catName = [];
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+            $firmStockInfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
+
             $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
             if(empty($goodsCatInfo)){
                 self::throwBizError('找不到对应的分类');

@@ -263,6 +263,8 @@ class GoodsService
         $cartSession = [];
         foreach($cartIds as $v){
             $cartInfo = CartRepo::getInfo($v);
+            $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
+            $cartInfo['unit_name'] = $goodsInfo['unit_name'];
             if(empty($cartInfo)){
                 self::throwBizError('购物车商品不存在！');
             }

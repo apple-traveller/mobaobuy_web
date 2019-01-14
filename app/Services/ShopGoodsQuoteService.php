@@ -97,28 +97,17 @@ class ShopGoodsQuoteService
     }
 
     public static function getShopOrderByQuote($top){
-//        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
-////        dump($shops);
-//        $shop_list = [];
-//        foreach ($shops as $item) {
-//            $shop_info = ShopRepo::getInfo($item['shop_id']);
-//            //获取报价
-//            $quotes = self::getShopGoodsQuoteList(['pageSize' => 10, 'page' => 1, 'orderType' => ['b.add_time' => 'desc']], ['shop_id' => $item['shop_id'],'is_self_run'=>0]);
-//            $shop_info['quotes'] = $quotes['list'];
-//            $shop_list[] = $shop_info;
-//        }
-//        dd($shop_list);
-//        return $shop_list;
 
         $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0,'is_freeze'=>0,'is_validated'=>1]);
         foreach($shopInfo['list'] as $k=>$v){
-             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5],['shop_id'=>$v['id'],'is_self_run'=>0,'is_delete'=>0,'type'=>'1|2']);
+             $quotes = ShopGoodsQuoteRepo::getListBySearch(['page'=>1,'pageSize'=>5,'orderType'=>['add_time'=>'desc']],['shop_id'=>$v['id'],'is_self_run'=>0,'is_delete'=>0,'type'=>'1|2']);
 
                 foreach($quotes['list'] as $va=>$value){
                     $goodsInfo = GoodsRepo::getInfo($value['goods_id']);
                     $quotes['list'][$va]['brand_name'] = $goodsInfo['brand_name'];
                     $quotes['list'][$va]['packing_spec'] = $goodsInfo['packing_spec'];
                     $quotes['list'][$va]['goods_full_name'] = $goodsInfo['goods_full_name'];
+                    $quotes['list'][$va]['unit_name'] = $goodsInfo['unit_name'];
                     $cateInfo =  GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
                     $quotes['list'][$va]['cat_name'] = $cateInfo['cat_name'];
                 }
@@ -146,6 +135,8 @@ class ShopGoodsQuoteService
                     $info = ShopGoodsQuoteRepo::getInfo($id);
                     unset($info['id']);
                     $info['add_time'] = date('Y-m-d H:i:s');
+                    $rand_number = self::setRandomNumber($info['goods_id']);
+                    $info['goods_number'] = $info['total_number'] = $rand_number ? $rand_number : $info['total_number'];
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
                     ShopGoodsQuoteRepo::create($info);
                 }
@@ -156,6 +147,25 @@ class ShopGoodsQuoteService
             return $e->getMessage();
         }
 
+    }
+
+    public static function setRandomNumber($goods_id)
+    {
+        $goodsInfo = GoodsRepo::getInfo($goods_id);
+        #得到分类id
+        if($goodsInfo){
+            #获取分类配置的参数
+            $config = GoodsCategoryQuoteConfigService::getList([],['cat_id'=>$goodsInfo['cat_id']]);
+            if($config){
+                #最大值
+                $max = $config[0]['max']/$goodsInfo['packing_spec'];
+                $min = $config[0]['min']/$goodsInfo['packing_spec'];
+                #获取随机数
+                $rand_number = mt_rand($min,$max);
+                return $rand_number*$goodsInfo['packing_spec'];
+            }
+        }
+        return false;
     }
     //修改
     public static function modify($data)
@@ -368,6 +378,7 @@ class ShopGoodsQuoteService
         //商品信息
         $activityInfo['goods_number'] = $goodsNumber;
         $activityInfo['goods_price'] = $activityInfo['shop_price'];
+        $activityInfo['unit_name'] = $goodsInfo['unit_name'];
         $activityInfo['amount'] = $goodsNumber * $activityInfo['shop_price'];
         $activityArr = [];
         $activityArr[] = $activityInfo;

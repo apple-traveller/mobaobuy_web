@@ -33,7 +33,6 @@ class FirmStockController extends Controller
                         'end_time' => $request->input('end_time')
                     ];
                     $rs_list = FirmStockService::firmStockIn($params, $page, $page_size);
-
                     $data = [
                         'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
                         'recordsTotal' => $rs_list['total'], //数据总行数

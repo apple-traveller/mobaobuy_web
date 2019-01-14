@@ -85,9 +85,11 @@
 		<div class="crumbs mt5 mb5">
             <span class="fl">当前位置：</span>
             @if($t == 1)
-                <a class="fl" href="/goodsList?t=1">自营报价</a>
+                <a class="fl" href="/goodsList/1">自营报价</a>
             @elseif($t == 2)
-                <a class="fl" href="/goodsList?t=2">品牌直售</a>
+                <a class="fl" href="/goodsList/2">品牌直售</a>
+            @elseif($t == 3)
+                <a class="fl" href="/goodsList/3">供应商报价</a>
             @else
                 <a class="fl" href="/goodsList">报价列表</a>
             @endif
@@ -198,8 +200,8 @@
                         <span style="width:12%" class="num_bg1">店铺</span>
                         <span style="width:11%;">种类</span>
                         <span style="width:12%">商品名称</span>
-                        <span style="width:8%;">数量（KG）</span>
-                        <span style="width:8%;">单价（元/KG）</span>
+                        <span style="width:8%;">数量</span>
+                        <span style="width:8%;">单价（元）</span>
                         <span style="width:8%;">发货地址</span>
                         <span style="width:8%;">交货方式</span>
                         <span style="width:8%;">交货时间</span>
@@ -212,8 +214,8 @@
                                 <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                                 <span style="width:11%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
                                 <span style="width:12%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                                <span style="width:8%">{{$vo['goods_number']}}</span>
-                                <span style="width:8%;color:red">{{$vo['shop_price']}}</span>
+                                <span style="width:8%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>
+                                <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_method']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_time']}}</span>

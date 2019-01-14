@@ -299,8 +299,8 @@
                 <li>
                     <span style="width:12%;">品种</span>
                     <span style="width:15%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
-                    <span style="width:12%;">可售数量（KG）</span>
-                    <span style="width:10%;">单价（元/KG）</span>
+                    <span style="width:12%;">可售数量</span>
+                    <span style="width:10%;">单价（元）</span>
                     <span style="width:7%;">发货地</span>
                     <span style="width:7%;">交货方式</span>
                     <span style="width:10%;">交货时间</span>
@@ -314,8 +314,8 @@
                         <li>
                             <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
                             <span style="width:15%;" title="{{$vo['goods_full_name']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
-                            <span style="width:12%;">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
-                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}</span>
+                            <span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>
+                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
                             <span style="width:7%;">{{$vo['delivery_method']}}</span>
                             <span style="width:10%;">{{$vo['delivery_time']}}</span>
@@ -418,7 +418,7 @@
             <div class="ovh">
                 {{--<h1 class="Self-support-title">供应商</h1>--}}
                 <div class="Self-support-title">供应商</div>
-                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList">查看更多></a></div></div>
+                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList/3">查看更多></a></div></div>
 
             <ul class="supply_list mt15">
                 <li class="graybg">
@@ -445,14 +445,17 @@
                                 @if(isset($shop['quotes']) && !empty($shop['quotes']))
                                     @foreach($shop['quotes'] as $quote)
                                         <li>
-                                            <span style="width:14%;" class="ovhwp" title="{{$quote['cat_name']}}">{{$quote['cat_name']}}</span>
+                                            <span style="width:12%;" class="ovhwp" title="{{$quote['cat_name']}}">{{$quote['cat_name']}}</span>
                                             {{--<span>{{$quote['goods_full_name']}}</span>--}}
-                                            <span style="width:20%;" class="ovhwp" title="{{$quote['goods_full_name']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
-                                            <span style="width:14%;">{{$quote['goods_number']}}</span>
-                                            <span style="width:14%;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}</span>
-                                            <span style="width:14%;">{{$quote['delivery_place']}}</span>
+                                            <span style="width:15%;" class="ovhwp" title="{{$quote['goods_full_name']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
+                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>
+                                            <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}/{{$quote['unit_name']}}</span>
+                                            <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
-                                            <span style="width:10%;">
+                                            <span style="width:7%;">{{$quote['delivery_method']}}</span>
+                                            <span style="width:10%;">{{$quote['delivery_time']}}</span>
+                                            <span style="width:10%;">{{ \Carbon\Carbon::parse($quote['add_time'])->diffForHumans()}}</span>
+                                            <span style="width:6%;">
                                                 <div class="custom_service" style="margin-top: 0px">
                                                     <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
                                                     <div class="custom_service_popup" style="">
@@ -472,7 +475,7 @@
                                                     </div>
                                                 </div>
                                             </span>
-                                            <span style="width:14%;">
+                                            <span style="width:10%;">
                                                 @if($quote['goods_number'])
                                                     <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
                                                 @else

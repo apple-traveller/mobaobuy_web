@@ -140,6 +140,13 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/goods/getAttrs', 'GoodsController@getAttrs');//获取属性名
         Route::post('/goods/getAttrValues', 'GoodsController@getAttrValues');//获取属性值
 
+        //重新发布报价参数配置 根据商品分类
+        Route::get('/goodscategoryquoteconfig/list', 'GoodsCategoryQuoteConfigController@getList');
+        Route::get('/goodscategoryquoteconfig/addForm', 'GoodsCategoryQuoteConfigController@addForm');
+        Route::get('/goodscategoryquoteconfig/editForm', 'GoodsCategoryQuoteConfigController@editForm');
+        Route::post('/goodscategoryquoteconfig/save', 'GoodsCategoryQuoteConfigController@save');
+        Route::get('/goodscategoryquoteconfig/delete', 'GoodsCategoryQuoteConfigController@delete');
+
         Route::get('/unit/list', 'UnitController@getList');//单位列表
         Route::get('/unit/addForm', 'UnitController@addForm');//添加单位
         Route::get('/unit/editForm', 'UnitController@editForm');//修改单位

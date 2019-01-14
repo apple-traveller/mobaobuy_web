@@ -380,8 +380,12 @@
 				<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
 				<li class="shop_good">商品</li>
 				<!-- <li class="">品牌</li> -->
-				<li class="shop_price">单价</li><li class="shop_price">可售（kg）</li>
-				<li class="shop_num">购买数量（kg）</li><li class="shop_add">发货地址</li><li class="shop_sub">小计</li><li class="shop_oper">操作</li>
+				<li class="shop_price">单价</li>
+				<li class="shop_price">可售数量</li>
+				<li class="shop_num">购买数量</li>
+				<li class="shop_add">发货地址</li>
+				<li class="shop_sub">小计</li>
+				<li class="shop_oper">操作</li>
 			</ul>
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
 			<ul class="shop_list">
@@ -391,8 +395,8 @@
 					</span>
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
 					<!-- <span class="">{{$v['brand_name']}}</span> -->
-					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元</span>
-					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}} @else @endif </span>
+					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
@@ -402,7 +406,7 @@
 					</div>
 				    
 				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
+				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
 				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{encrypt($v['id'])}}" onclick="del(this)"></a></span>
 				</li>
 			</ul>

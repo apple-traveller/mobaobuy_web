@@ -76,7 +76,7 @@
                     <th width="15%">单号</th>
                     <th width="13%">类型</th>
                     <th width="">客户/供应商</th>
-                    <th width="12%">数量(kg)</th>
+                    <th width="12%">数量</th>
                     <th width="12%">单价(元)</th>
                 </tr>
                 </thead>

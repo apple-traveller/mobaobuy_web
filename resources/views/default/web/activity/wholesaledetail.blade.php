@@ -267,13 +267,13 @@
 				</style>
 				<div class="price_market">
 					<div class="fl ml20">
-						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">最高价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/kg</span></div>
-						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/kg</span></div>
+						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">最高价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/{{$goodsInfo['unit_name']}}</span></div>
+						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/{{$goodsInfo['unit_name']}}</span></div>
 					</div>
 					<div class="limit_line"></div>
 					<div class="tac ovh">
 						<span class="db mt35">已参与</span>
-						<span class="db red">{{$goodsInfo['partake_quantity']}} kg</span>
+						<span class="db red">{{$goodsInfo['partake_quantity']}}{{$goodsInfo['unit_name']}}</span>
 					</div>
 				</div>
 				<div class="pro_detail">
