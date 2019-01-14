@@ -418,7 +418,7 @@
             <div class="ovh">
                 {{--<h1 class="Self-support-title">供应商</h1>--}}
                 <div class="Self-support-title">供应商</div>
-                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList">查看更多></a></div></div>
+                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList/3">查看更多></a></div></div>
 
             <ul class="supply_list mt15">
                 <li class="graybg">

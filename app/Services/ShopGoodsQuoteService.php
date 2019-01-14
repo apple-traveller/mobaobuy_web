@@ -97,18 +97,6 @@ class ShopGoodsQuoteService
     }
 
     public static function getShopOrderByQuote($top){
-//        $shops = ShopGoodsQuoteRepo::getTopShopWidthUpdate(['is_self_run'=>0], $top);
-////        dump($shops);
-//        $shop_list = [];
-//        foreach ($shops as $item) {
-//            $shop_info = ShopRepo::getInfo($item['shop_id']);
-//            //获取报价
-//            $quotes = self::getShopGoodsQuoteList(['pageSize' => 10, 'page' => 1, 'orderType' => ['b.add_time' => 'desc']], ['shop_id' => $item['shop_id'],'is_self_run'=>0]);
-//            $shop_info['quotes'] = $quotes['list'];
-//            $shop_list[] = $shop_info;
-//        }
-//        dd($shop_list);
-//        return $shop_list;
 
         $shopInfo = ShopRepo::getListBySearch(['page'=>1,'pageSize'=>5],['is_self_run'=>0,'is_freeze'=>0,'is_validated'=>1]);
         foreach($shopInfo['list'] as $k=>$v){

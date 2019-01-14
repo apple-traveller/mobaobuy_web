@@ -85,12 +85,15 @@ class QuoteController extends Controller
         }
         $pageSize = 20;
         if(empty($t)){
-            $condition['b.type'] = '1|2';
+//            $condition['b.type'] = '1|2';
         }else{
-            $condition['b.type'] = $t;
+            if($t == 3){
+                $condition['b.is_self_run'] = 0;
+            }else{
+                $condition['b.type'] = $t;
+                $condition['b.is_self_run'] = 1;
+            }
         }
-
-        $condition['b.is_self_run'] = 1;
         $condition['b.is_delete'] = 0;
         //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
@@ -190,7 +193,13 @@ class QuoteController extends Controller
             $condition['g.brand_id'] = $brand_id;
         }
         if (!empty($t)) {
-            $condition['b.type'] = $t;
+//            $condition['b.type'] = $t;
+            if($t == 3){
+                $condition['b.is_self_run'] = 0;
+            }else{
+                $condition['b.type'] = $t;
+                $condition['b.is_self_run'] = 1;
+            }
         }
         if (!empty($cate_id)) {
             $c['opt'] = 'OR';
@@ -209,7 +218,6 @@ class QuoteController extends Controller
         }
         $pageSize = 20;
         $condition['b.is_delete'] = 0;
-        $condition['b.is_self_run'] = 1;
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');

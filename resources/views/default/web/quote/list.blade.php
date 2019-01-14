@@ -85,9 +85,11 @@
 		<div class="crumbs mt5 mb5">
             <span class="fl">当前位置：</span>
             @if($t == 1)
-                <a class="fl" href="/goodsList?t=1">自营报价</a>
+                <a class="fl" href="/goodsList/1">自营报价</a>
             @elseif($t == 2)
-                <a class="fl" href="/goodsList?t=2">品牌直售</a>
+                <a class="fl" href="/goodsList/2">品牌直售</a>
+            @elseif($t == 3)
+                <a class="fl" href="/goodsList/3">供应商报价</a>
             @else
                 <a class="fl" href="/goodsList">报价列表</a>
             @endif
