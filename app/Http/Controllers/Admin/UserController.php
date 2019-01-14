@@ -69,6 +69,25 @@ class UserController extends Controller
         }
     }
 
+    //修改真实姓名
+    public function changeUserReal(Request $request)
+    {
+        $user_id = $request->input('id');
+        $type = $request->input('upload_type');
+        $value = $request->input('value');
+        $data = [
+            'user_id'=>$user_id,
+            "$type"=>$value
+        ];
+
+        try{
+            $flag = UserRealService::modify($data);
+            return $this->result('',200,'修改成功');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //修改订单是否需审批字段
     public function modifyNeedApproval(Request $request)
     {

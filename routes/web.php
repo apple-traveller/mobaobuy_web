@@ -61,6 +61,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/user/save', 'UserController@save');//保存
         Route::any('/user/addUserRealForm', 'UserController@addUserRealForm');//添加实名认证
         Route::post('/user/saveUserReal', 'UserController@saveUserReal');//保存
+        Route::post('/user/change_userreal', 'UserController@changeUserReal');//修改身份证信息和营业执照信息
 
         Route::any('/blacklist/list', 'FirmBlackController@getList');//黑名单企业
         Route::get('/blacklist/addForm', 'FirmBlackController@addForm');//黑名单添加（表单）

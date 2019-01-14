@@ -74,6 +74,7 @@
                                         @else
                                             <div  content="{{getFileUrl($info['front_of_id_card'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
+                                        <button type="button" class="layui-btn upload-file" upload-type="front_of_id_card" data-type="" data-path="user/idcard" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     </div>
                                 </div>
 
@@ -85,6 +86,7 @@
                                         @else
                                             <div content="{{getFileUrl($info['reverse_of_id_card'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
+                                            <button type="button" class="layui-btn upload-file" upload-type="reverse_of_id_card" data-type="" data-path="user/idcard" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     </div>
                                 </div>
                         @else
@@ -95,6 +97,7 @@
                                         @else
                                             <div  content="{{getFileUrl($info['invoice_fileImg'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
+                                            <button type="button" class="layui-btn upload-file" upload-type="invoice_fileImg" data-type="" data-path="invoice_fileImg" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     </div>
                                 </div>
 
@@ -105,6 +108,7 @@
                                         @else
                                             <div  content="{{getFileUrl($info['license_fileImg'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
+                                            <button type="button" class="layui-btn upload-file" upload-type="license_fileImg" data-type="" data-path="license_fileImg" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     </div>
                                 </div>
 
@@ -115,6 +119,7 @@
                                         @else
                                             <div  content="{{getFileUrl($info['attorney_letter_fileImg'])}}" class="layui-btn viewImg">点击查看</div>
                                         @endif
+                                            <button type="button" class="layui-btn upload-file" upload-type="attorney_letter_fileImg" data-type="" data-path="attorney_letter_fileImg" ><i class="layui-icon">&#xe681;</i>上传图片</button>
                                     </div>
                                 </div>
 
@@ -226,8 +231,56 @@
     </div>
     <script>
 
-        layui.use(['layer'], function() {
+        layui.use(['layer','upload'], function() {
             var layer = layui.layer;
+            var upload = layui.upload;
+
+            //文件上传
+            upload.render({
+                elem: '.upload-file' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path'),'_token':'{{csrf_token()}}'};
+                }
+                ,done: function(res){
+                    //上传完毕回调
+                    if(1 == res.code){
+                        var item = this.item;
+                        var id = "{{$userid}}";
+                        var upload_type = item.attr('upload-type');
+                        $.ajax({
+                            url: "/admin/user/change_userreal",
+                            dataType: "json",
+                            data:{
+                                id:id,
+                                upload_type:upload_type,
+                                value:res.data.path
+                            },
+                            type:"POST",
+                            success:function(res){
+                                if(res.code==200){
+                                    layer.msg("上传成功", {
+                                        icon: 6,
+                                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                    },function(){
+                                        window.location.reload();
+                                    });
+                                }else{
+                                    layer.msg("上传失败", {
+                                        icon: 5,
+                                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                                    },function(){
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    }else{
+                        layer.msg(res.msg, {time:2000});
+                    }
+                }
+            });
 
             $(".viewImg").click(function(){
                 var content = $(this).attr('content');

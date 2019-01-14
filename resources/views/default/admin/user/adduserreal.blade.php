@@ -131,7 +131,7 @@
                                         <span class="infor_title">身份证反面：</span>
                                         <span class="ml10 fl">
 
-                                                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
+                                           @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
 
                         </span>
                                     </li>
