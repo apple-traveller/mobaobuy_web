@@ -135,6 +135,8 @@ class ShopGoodsQuoteService
                     $info = ShopGoodsQuoteRepo::getInfo($id);
                     unset($info['id']);
                     $info['add_time'] = date('Y-m-d H:i:s');
+                    $rand_number = self::setRandomNumber($info['goods_id']);
+                    $info['goods_number'] = $info['total_number'] = $rand_number ? $rand_number : $info['total_number'];
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
                     ShopGoodsQuoteRepo::create($info);
                 }
@@ -145,6 +147,25 @@ class ShopGoodsQuoteService
             return $e->getMessage();
         }
 
+    }
+
+    public static function setRandomNumber($goods_id)
+    {
+        $goodsInfo = GoodsRepo::getInfo($goods_id);
+        #得到分类id
+        if($goodsInfo){
+            #获取分类配置的参数
+            $config = GoodsCategoryQuoteConfigService::getList([],['cat_id'=>$goodsInfo['cat_id']]);
+            if($config){
+                #最大值
+                $max = $config[0]['max']/$goodsInfo['packing_spec'];
+                $min = $config[0]['min']/$goodsInfo['packing_spec'];
+                #获取随机数
+                $rand_number = mt_rand($min,$max);
+                return $rand_number*$goodsInfo['packing_spec'];
+            }
+        }
+        return false;
     }
     //修改
     public static function modify($data)

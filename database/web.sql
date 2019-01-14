@@ -1491,3 +1491,14 @@ CREATE TABLE `resume` (
   `add_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传简历时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='招聘简历表';
+
+DROP TABLE IF EXISTS `goods_category_quote_config`;
+CREATE TABLE `goods_category_quote_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `cat_id` int(11) DEFAULT NULL COMMENT '分类id',
+  `cat_name` varchar(255) DEFAULT NULL COMMENT '分类名称',
+  `max` int(11) DEFAULT NULL COMMENT '最大值',
+  `min` int(11) DEFAULT NULL COMMENT '最小值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
