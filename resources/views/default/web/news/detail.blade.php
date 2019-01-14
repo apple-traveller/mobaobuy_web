@@ -54,7 +54,6 @@
             color: #00a67c;
         }
         .nav-div .nav-cate .ass_menu {display: none;}
-        .info-detail-content img{width:100%}
     </style>
 @endsection
 @section('js')
