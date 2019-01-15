@@ -22,7 +22,7 @@
                 <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
                 <ul>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
-                    <li>库存数量必须是商品规格的整数倍,如果输入值非整数倍则自动向上取整。</li>
+                    <li>库存数量必须是商品规格的整数倍,不允许修改，如果添加报价时库存数量输入错误，请删除报价重新发布。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -95,7 +95,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number"  disabled="disabled" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
                                     <div class="form_prompt"></div>
                                     <div style="" class="notic">包装规格的整数倍，向下取整</div>

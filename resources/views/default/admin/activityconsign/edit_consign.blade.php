@@ -30,6 +30,7 @@
                 <ul>
                     <li>请谨慎填写各项数据。</li>
                     <li>标识“*”的选项为必填项，其余为选填项。</li>
+                    <li>库存数量必须是商品规格的整数倍,不允许修改，如果添加报价时库存数量输入错误，请删除活动重新发布。</li>
                 </ul>
             </div>
             <div class="flexilist">
@@ -71,19 +72,19 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品报价总数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="total_number" class="text" value="{{$consign_info['total_number']}}" maxlength="40" autocomplete="off" id="total_number">
-                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;商品报价总数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="total_number" class="text" value="{{$consign_info['total_number']}}" maxlength="40" autocomplete="off" id="total_number">--}}
+                                    {{--<div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">{{$good['unit_name']}}</span>)：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" disabled="disabled" name="goods_number" class="text" value="{{$consign_info['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -199,10 +200,10 @@
                     shop_price :{
                         required : true,
                     },
-                    total_number :{
-                        required : true,
-                        number:true
-                    },
+//                    total_number :{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_number :{
                         required : true,
                         number:true
@@ -233,10 +234,10 @@
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    total_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    total_number :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_number :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',

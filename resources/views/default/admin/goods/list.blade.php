@@ -22,7 +22,7 @@
                     <div class="search">
                         <form action="/admin/goods/list" name="searchForm" >
                             <div class="input">
-                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
+                                <input type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称/编码/型号/品牌" autocomplete="off">
                                 <input type="submit" class="btn"  ectype="secrch_btn" value="">
                             </div>
                         </form>

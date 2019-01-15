@@ -171,7 +171,7 @@ class ShopGoodsQuoteController extends Controller
 
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
-        $data['goods_name'] = $goods['goods_name'];
+        $data['goods_name'] = $goods['goods_full_name'];
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
@@ -244,10 +244,10 @@ class ShopGoodsQuoteController extends Controller
             if(empty($check)){
                 return $this->error('报价信息不存在');
             }
-            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
-            if($is_exist_order){
-                return $this->error('该活动存在相应订单，无法删除');
-            }
+//            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+//            if($is_exist_order){
+//                return $this->error('该活动存在相应订单，无法删除');
+//            }
             $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/seller/quote/list'));

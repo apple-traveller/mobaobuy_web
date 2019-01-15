@@ -106,6 +106,8 @@ class InvoiceController extends ApiController
             return $this->error('该开票信息不存在');
         }
         $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
+
+        $invoiceDetail['invoiceInfo']['address_str'] = explode(' ',$invoiceDetail['invoiceInfo']['address_str'])[0];
         if (!empty($invoiceDetail)){
             if ($invoiceDetail['invoiceInfo']['id'] != $invoice_id){
                 return $this->error('网络错误');

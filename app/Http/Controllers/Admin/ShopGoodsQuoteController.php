@@ -121,7 +121,7 @@ class ShopGoodsQuoteController extends Controller
 
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
-        $data['goods_name'] = $goods['goods_name'];
+        $data['goods_name'] = $goods['goods_full_name'];
         $currpage = $request->input('currpage');
         unset($data['currpage']);
         if(empty($data['shop_store_id']) && $data['store_name'] == '自售'){
@@ -172,10 +172,10 @@ class ShopGoodsQuoteController extends Controller
                 return $this->error('无法获取对应报价信息');
             }
             //检测报价是否存在对应的订单
-            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
-            if($is_exist_order){
-                return $this->error('该报价存在相应订单，无法删除');
-            }
+//            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+//            if($is_exist_order){
+//                return $this->error('该报价存在相应订单，无法删除');
+//            }
             $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
             if($flag){
                 return $this->success('删除成功',url('/admin/shopgoodsquote/list'));
