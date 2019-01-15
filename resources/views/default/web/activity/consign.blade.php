@@ -90,9 +90,13 @@
 										<font class="gray">单价</font>
 										<font class="orange fs24">￥{{$v['shop_price']}}</font>/{{$v['unit_name']}}
 									</div>
-									<a href="/consign/detail/{{encrypt($v['id'])}}">
-										<div class="mx_btn">立即抢购</div>
-									</a>
+									@if($v['goods_number']>0)
+										<a href="/consign/detail/{{encrypt($v['id'])}}">
+											<div class="mx_btn">立即抢购</div>
+										</a>
+									@else
+										<div class="mx_btn" style='background: #b1b1b1;'>已结束</div>
+									@endif
 								</div>
 							</li>
 						@endforeach

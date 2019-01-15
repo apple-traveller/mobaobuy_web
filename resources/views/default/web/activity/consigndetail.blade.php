@@ -255,12 +255,16 @@
                     <span class="fl ">包装规格</span>
                     <span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
 				</div>
-				<div class="pro_detail">
-					<span class="ml15 letter-space fl">批号</span>
+                <div class="pro_detail">
+                    <span class="ml15 letter-space fl">批号</span>
                     <span  class="pro_value">{{$goodsInfo['goods_sn']}}</span>
                     <span class="fl letter-space">品牌</span>
                     <span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
-				</div>
+                </div>
+                <div class="pro_detail">
+                    <span class="ml15 letter-space fl" style="letter-spacing: 1px;width:88px">生产日期</span>
+                    <span  class="pro_value">{{$goodsInfo['production_date']}}</span>
+                </div>
 
                 @if(!empty($goodsInfo['goods_attrs']))
                     @foreach($goodsInfo['goods_attrs'] as $k=>$v)
