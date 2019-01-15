@@ -139,7 +139,7 @@ class OrderInfoService
 
                 if($item['order_status'] == 3){
                     if($item['pay_status'] == 0){
-                        if(!empty($item['pay_voucher'])){
+                        if($item['money_paid'] > 0){
                             $orderList['list'][$k]['auth'][] = 'can_pay';
                             $orderList['list'][$k]['auth_desc'][] = '去支付';
                             $orderList['list'][$k]['auth_html'][] = 'href="http://'.$_SERVER['SERVER_NAME'].'/toPay?order_id='.$item['id'].'"';
