@@ -23,6 +23,7 @@
                     <div class="fl">
                         <a href="/admin/shopgoodsquote/addForm"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
                         <div class="fbutton batchReRelease"><div class="add" title="批量更新报价"><span><i class="icon icon-refresh"></i>批量更新发布</span></div></div>
+                        <div class="fbutton batchDelete"><div class="add" title="批量删除"><span><i class="icon icon-trash"></i>批量删除</span></div></div>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
@@ -30,14 +31,17 @@
                     </div>
                     <div class="search">
                         <form action="/admin/shopgoodsquote/list" name="searchForm" >
+                            <div class="input" style="margin-right: 20px">
+                                <input style="height:30px;" type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
+                            </div>
                             <div class="input">
-                                <select style="height:30px;float:left;border:1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_name" id="cat_id">
+                                <select style="height:30px;float:left;border:0;border-right: 1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_name" id="cat_id">
                                     <option value="0">全部店铺</option>
                                     @foreach($shops as $vo)
                                         <option @if($vo['shop_name']==$shop_name) selected @endif  value="{{$vo['shop_name']}}">{{$vo['shop_name']}}</option>
                                     @endforeach
                                 </select>
-                                <input type="submit" class="btn"  ectype="secrch_btn" value="">
+                                <input type="submit" class="btn" style="border-left:0" ectype="secrch_btn" value="">
                             </div>
                         </form>
                     </div>
@@ -149,36 +153,32 @@
 
         function remove(id)
         {
+            toDelete([id])
+        }
+        function toDelete(ids){
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-                    window.location.href="/admin/shopgoodsquote/delete?id="+id;
+//                    window.location.href="/admin/shopgoodsquote/delete?id="+id;
+                    $.ajax({
+                        url: "/admin/shopgoodsquote/delete",
+                        dataType: "json",
+                        data:{"ids":ids},
+                        type:"get",
+                        success:function(res){
+                            if(res.code==1){
+                                layer.msg('删除成功！',{time:2000});
+                                setTimeout(function () { window.location.reload(); }, 2000);
+                            }else{
+                                layer.alert(res.msg);
+                            }
+                        }
+                    });
                     layer.close(index);
                 });
             });
         }
         //重新报价
-//        function reRelease(id){
-//            layui.use('layer', function(){
-//                var layer = layui.layer;
-//                layer.confirm('确定要重新发布报价么?', {icon: 3, title:'提示'}, function(index){
-//                    $.ajax({
-//                        url: "/admin/shopgoodsquote/reRelease",
-//                        dataType: "json",
-//                        data:{"id":id},
-//                        type:"get",
-//                        success:function(res){
-//                            if(res.code==1){
-//                                window.location.reload();
-//                            }else{
-//                                layer.alert(res.msg);
-//                            }
-//                        }
-//                    });
-//                    layer.close(index);
-//                });
-//            });
-//        }
         function toAjax(ids){
             layui.use('layer', function(){
                 var layer = layui.layer;
@@ -190,7 +190,8 @@
                         type:"get",
                         success:function(res){
                             if(res.code==1){
-                                window.location.reload();
+                                layer.msg('发布成功！',{time:2000});
+                                setTimeout(function () { window.location.reload(); }, 2000);
                             }else{
                                 layer.alert(res.msg);
                             }
@@ -223,6 +224,13 @@
                     _goods_ids.push($(this).val());
                 });
                 toAjax(_goods_ids);
+            });
+            $('.batchDelete').click(function(){
+                var _goods_ids = [];
+                $.each($('input[name=goods_id]:checked'),function(){
+                    _goods_ids.push($(this).val());
+                });
+                toDelete(_goods_ids);
             });
 
         })

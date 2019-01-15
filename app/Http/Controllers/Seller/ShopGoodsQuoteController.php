@@ -235,21 +235,22 @@ class ShopGoodsQuoteController extends Controller
      */
     public function delete(Request $request)
     {
-        $id = $request->input('id');
-        if(!$id){
+        $ids = $request->input('ids');
+        if(!$ids){
             return $this->error('无法获取参数ID');
         }
         try{
-            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-            if(empty($check)){
-                return $this->error('报价信息不存在');
-            }
+//            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+//            if(empty($check)){
+//                return $this->error('报价信息不存在');
+//            }
 //            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
 //            if($is_exist_order){
 //                return $this->error('该活动存在相应订单，无法删除');
 //            }
-            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
-            if($flag){
+//            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
+            $res = ShopGoodsQuoteService::delete($ids);
+            if($res){
                 return $this->success('删除成功',url('/seller/quote/list'));
             }
             return  $this->error('删除失败');
