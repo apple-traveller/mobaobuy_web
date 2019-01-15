@@ -46,7 +46,7 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="shop_store_id" id="store_id" value="{{$goodsQuote['shop_store_id']}}">
                                         <option value="0">自售</option>
                                     </select>
-                                    <input type="hidden" name="store_name" id="store_name" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}">
+                                    <input type="hidden" name="store_name" id="store_name" value="{{$goodsQuote['shop_store_id'] == 0 ? '自售' : $goodsQuote['store_name']}}">
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
 
                                     {{--<input type="text"  store-id="{{$goodsQuote['shop_store_id']}}" value="{{$goodsQuote['store_name'] == $goodsQuote['shop_name'] ? '自售' : $goodsQuote['store_name']}}" autocomplete="off" id="store_name" size="40"  class="text">--}}
