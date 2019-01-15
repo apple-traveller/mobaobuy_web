@@ -98,9 +98,9 @@ class ShopGoodsQuoteController extends Controller
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
-        if(empty($data['goods_number'])){
-            $errorMsg[] = '库存不能为空';
-        }
+//        if(empty($data['goods_number'])){
+//            $errorMsg[] = '库存不能为空';
+//        }
         if(empty($data['salesman'])){
             $errorMsg[] = '业务员不能为空';
         }

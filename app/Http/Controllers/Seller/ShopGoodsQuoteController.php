@@ -148,9 +148,9 @@ class ShopGoodsQuoteController extends Controller
         if(!$production_date){
             return $this->error('生产日期不能为空');
         }
-        if(!$goods_number){
-            return $this->error('库存不能为空');
-        }
+//        if(!$goods_number){
+//            return $this->error('库存不能为空');
+//        }
         if(!$delivery_method){
             return $this->error('交货方式不能为空');
         }

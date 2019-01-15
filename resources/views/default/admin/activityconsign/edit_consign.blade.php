@@ -204,10 +204,10 @@
 //                        required : true,
 //                        number:true
 //                    },
-                    goods_number :{
-                        required : true,
-                        number:true
-                    },
+//                    goods_number :{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_id:{
                         required : true,
                     },
@@ -238,10 +238,10 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
 //                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
 //                    },
-                    goods_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    goods_number :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
