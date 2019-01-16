@@ -13,11 +13,11 @@ function hideZtreeSelect(treeId){
     $("#"+treeId).parent().fadeOut("fast");
     $("body").unbind("mousedown");
 }
-function showWinZtreeSelector(combobj){
+function showWinZtreeSelector(combobj,_treeId){
     var treeId = $(combobj).attr("treeId");
     var selectOffset = $(combobj).offset();
     if($('#'+treeId).length == 0){
-        treeId = 'setCatTree';
+        treeId = _treeId;
 
         var labelName = $(combobj).attr("name");
         var valueName = labelName.substring(0,labelName.lastIndexOf("_LABELS"));
@@ -47,6 +47,7 @@ function showWinZtreeSelector(combobj){
             async : {
                 enable : true,
                 url: selectorurl,
+                autoParam: ["id"],
                 otherParam : {
                     //是否显示树形标题
                     "isShowTreeTitle" : title.length>0?true:false,

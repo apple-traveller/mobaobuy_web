@@ -227,7 +227,7 @@
                 }
             });
             $("#cat_name").focus(function(){
-                showWinZtreeSelector(this);
+                showWinZtreeSelector(this,'setCatTree');
             });
             // 限制商品总数
             $("#num").change(function () {

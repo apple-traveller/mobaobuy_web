@@ -141,7 +141,7 @@
 
         //获取树形分类
         $("#cat_name").focus(function(){
-            showWinZtreeSelector(this);
+            showWinZtreeSelector(this,'setCatTree');
         });
 
         //商品获取焦点请求所有的商品数据

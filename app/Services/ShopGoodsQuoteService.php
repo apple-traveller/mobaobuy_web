@@ -279,7 +279,22 @@ class ShopGoodsQuoteService
     //查询所有的报价商品所属的分类信息(微信小程序接口)
     public static function getShopGoodsQuoteCates()
     {
-        $result = DB::select('select G.`cat_id` from goods as G inner join shop_goods_quote as Q  on G.id=Q.goods_id where G.is_delete=0 and Q.is_delete=0 AND G.`cat_id`>0 and Q.expiry_time>now() group by G.`cat_id`');
+        $result = DB::select("
+            SELECT
+                G.`cat_id`
+            FROM
+                goods AS G
+            INNER JOIN shop_goods_quote AS Q ON G.id = Q.goods_id
+            WHERE
+                G.is_delete = 0
+            AND Q.is_delete = 0
+            AND G.`cat_id` > 0
+            AND Q.expiry_time > now()
+            AND Q.`type` IN ('1', '2')
+            AND Q.is_self_run = 1
+            GROUP BY
+                G.`cat_id`
+        ");
 
         //将sql查询出来的对象转数组
         $cates_id = [];
