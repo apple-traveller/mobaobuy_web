@@ -266,9 +266,9 @@ class InvoiceController extends ApiController
         if(!$address_info){
             return $this->error('地址信息不存在！');
         }
-        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['firm_id']);
         $invoiceSession['address_id'] = $address_id;
-        Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
+        Cache::put('invoiceSession'.$dupty_user['firm_id'], $invoiceSession, 60*24*1);
         return $this->success(Cache::get('invoiceSession'.$this->getUserID($request)),'success');
     }
     /**
