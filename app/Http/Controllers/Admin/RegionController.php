@@ -106,9 +106,10 @@ class RegionController extends Controller
         }
     }
 
-    public function getRegionTree()
+    public function getRegionTree(Request $request)
     {
-        $res = RegionService::getRegionTree();
+        $id = $request->input('id');
+        $res = RegionService::getRegionTree($id);
 //        dd($res);
         return $res;
     }

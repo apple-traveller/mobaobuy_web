@@ -44,6 +44,9 @@ function showWinZtreeSelector(combobj,_treeId){
                 selectedMulti : false,
 //                        fontCss: PlatUtil.getTreeNodeHighLightFont
             },
+            // async: true,//是否一步加载节点
+            asyncUrl: selectorurl, //异步加载节点的路径
+            asyncParam: ["id"], //异步加载时自动传的参数
             async : {
                 enable : true,
                 url: selectorurl,
@@ -68,7 +71,8 @@ function showWinZtreeSelector(combobj,_treeId){
                             eval(callbackfn).call(this,treeNode.id,treeNode.name);
                         }
                     }
-                    hideZtreeSelect(treeId);
+                    groupzTreeOnClick(event, treeId, treeNode,selectorurl);
+                    // hideZtreeSelect(treeId);
                 },
                 onAsyncSuccess: function(event, treeId, treeNode, clickFlag) {
                     var zTreeObj = $.fn.zTree.getZTreeObj(treeId);
@@ -80,4 +84,30 @@ function showWinZtreeSelector(combobj,_treeId){
         $.fn.zTree.init($("#"+treeId), treeSetting);
     }
     showZtreeSelect(treeId, selectOffset.left, selectOffset.top+$(combobj).outerHeight());
+}
+function groupzTreeOnClick(event, treeId, treeNode,selectorurl) {
+    var shopId = treeNode.id; //判断该节点下是否有节点，没有就加载节点
+
+    var treeObj = $.fn.zTree.getZTreeObj(treeId);
+    var node = treeObj.getNodeByTId(treeNode.tId);
+    if(node.children == null || node.children == "undefined"){0
+        $.ajax({
+            url: selectorurl,
+            type: 'get',//请求方式：get
+            data: {id:shopId},
+            dataType : 'json',//数据传输格式：json
+            error : function() { //请求失败处理函数
+                console.log("警告",'亲，请求失败！');
+            },
+            success : function(data) {
+                if(data!=null && data!=""){
+                    //添加新节点
+                    treeObj.addNodes(node, data);
+                    // hideZtreeSelect(treeId);
+                }else{
+                    hideZtreeSelect(treeId);
+                }
+            }
+        })
+    }
 }

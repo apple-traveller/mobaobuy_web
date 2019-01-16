@@ -336,10 +336,16 @@
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$goodsInfo['available_quantity']}}{{$goodsInfo['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
+					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span>
+                    <span  class="pro_value">@if($goodsInfo['available_quantity']>0) {{$goodsInfo['available_quantity']}} @else 0 @endif{{$goodsInfo['unit_name']}}</span>
+                    <span class="fl ">包装规格</span>
+                    <span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
+					<span class="ml15 letter-space fl">批号</span>
+                    <span  class="pro_value">{{$goodsInfo['goods_sn']}}</span>
+                    <span class="fl letter-space">品牌</span>
+                    <span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
 				</div>
                 {{--{{dd($goodsInfo['goods_attrs'])}}--}}
                 @if(!empty($goodsInfo['goods_attrs']))

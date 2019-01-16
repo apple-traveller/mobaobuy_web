@@ -19,13 +19,22 @@ class GoodsCategoryService
         return make_treeTable($all_list, 'id', 'parent_id','_child');
     }
     //获取所有分类的树型数据
-    public static function getCategoryTreeAdmin($only_show = 1){
+    public static function getCategoryTreeAdmin($id = 0,$only_show = 1){
         $condition = [];
         if($only_show){
             $condition['is_show'] = 1;
         }
+        $condition['parent_id'] = $id;
         $all_list = GoodsCategoryRepo::getList('',$condition,['*','cat_name as name']);
-        return make_treeTable($all_list, 'id', 'parent_id','children');
+        foreach ($all_list as $k=>$v){
+            //检测是否存在下级分类
+            $res = GoodsCategoryRepo::getTotalCount(['parent_id'=>$v['id']]);
+            if($res > 0){//有子分类
+                $all_list[$k]['isParent'] = true;
+            }
+        }
+        return $all_list;
+//        return make_treeTable($all_list, 'id', 'parent_id','children');
     }
 
     public static function GoodsCategoryInfo($where=[]){

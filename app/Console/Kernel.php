@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('AutoCancelOrder')->everyMinute();
 
         $time = getConfig('close_quote');
-        $schedule->command('AutoCloseQuote')->dailyAt($time); //每天13:00运行任务 ;
+        $schedule->command('AutoCloseQuote')->dailyAt($time); //每天指定时间运行任务 ;
     }
 
     /**

@@ -84,7 +84,7 @@
 									</div>
 									<div class="tac mt30 ovh" style="text-align: left !important;">
 										<span class="addr_dw">{{$v['delivery_place']}}</span>
-										<span class="fr ovh di gray">可售 {{$v['goods_number']}}{{$v['unit_name']}}</span>
+										<span class="fr ovh di gray">可售 @if($v['goods_number']>0) {{$v['goods_number']}} @else 0 @endif{{$v['unit_name']}}</span>
 									</div>
 									<div class="bq_price">
 										<font class="gray">单价</font>

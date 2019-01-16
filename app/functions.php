@@ -129,7 +129,6 @@ if(!function_exists('make_treeTable')) {
         foreach ($list as $data) {
             $packData[$data[$pk]] = $data;
         }
-
         foreach ($packData as $key => $val) {
             if ($val[$pid] == $root) {//代表跟节点
                 $tree[] =& $packData[$key];

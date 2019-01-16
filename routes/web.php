@@ -84,7 +84,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/goodscategory/editForm', 'GoodsCategoryController@editForm');//商品分类编辑
         Route::post('/goodscategory/sort', 'GoodsCategoryController@sort');//商品分类排序
         Route::post('/goodscategory/upload', 'GoodsCategoryController@upload');//上传自定义图标
-        Route::post('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//分类树
+        Route::any('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//分类树
 
         Route::get('/sysconfig/index', 'SysConfigController@index');//平台配置首页
         Route::post('/sysconfig/modify', 'SysConfigController@modify');//平台配置修改

@@ -152,17 +152,27 @@
  <div class="block_bg"></div>
     <!--编辑框-->
     <div class="power_edit whitebg" id="power_edit_frame" style="">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+        <div class="pay_title f4bg">
+            <span class="fl pl30 gray fs16">支付信息</span>
+            <a class="fr frame_close mr15 mt15">
+                <img src="img/close.png" width="15" height="15">
+            </a>
+        </div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span>商家信息:</span>{{$sellerInfo['company_name']}}</div>
-                <div class="ovh mt10"><span>开户银行:</span>{{$sellerInfo['settlement_bank_account_name']}}</div>
-                <div class="ovh mt10"><span>银行账户:</span>{{$sellerInfo['settlement_bank_account_number']}}</div>
-                <div class="ovh mt10"><span>上传付款凭证:</span></div>
-                
+                <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">开户银行 : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">银行账户 : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
+                <div class="ovh mt15"><span class="fl mr10">上传付款凭证 : </span>
+                    @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
+                </div>
+
             </li>
-            @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
-            <li style="clear:both;margin-top:30px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>
+
+            <li style="clear:both;margin-top:30px; margin-bottom: 35px;">
+                <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div>
+                <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">取消</div>
+            </li>
         </ul>
     </div>
 
