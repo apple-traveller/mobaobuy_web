@@ -148,6 +148,7 @@ class InvoiceController extends ApiController
             $condition['firm_id'] = 0;
         }
 
+
         if (!empty($shop_name)){
             $condition['shop_name'] = "%".$shop_name."%";
         }
@@ -169,7 +170,7 @@ class InvoiceController extends ApiController
             'invoice_type'=>$invoice_type,
         ];
 
-        Cache::put('invoiceSession'.$this->getUserID($request),$invoiceSession,60*24*1);
+        Cache::put('invoiceSession'.$userInfo['id'],$invoiceSession,60*24*1);
 
         return $this->success(compact('orderList','invoice_type'),'success');
     }
@@ -188,6 +189,7 @@ class InvoiceController extends ApiController
             return $this->error('您没有申请开票的权限');
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
+        //dd($user_info);
         $order_ids = $request->input('order_id','');
         $total_amount = $request->input('total_amount','');
         if (empty($order_ids)){
@@ -300,7 +302,7 @@ class InvoiceController extends ApiController
             return $this->error('您没有申请开票的权限');
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
-        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
         if(empty($invoiceSession['goods_list'])){
             return $this->error('请先选择订单');
         }
