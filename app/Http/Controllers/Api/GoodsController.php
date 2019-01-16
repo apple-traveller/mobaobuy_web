@@ -251,6 +251,19 @@ class GoodsController extends ApiController
         }
         try{
             $cartInfo = GoodsService::cart($userId);
+            foreach($cartInfo['cartInfo'] as &$item){
+                $shop_quote_info = ShopGoodsQuoteService::getShopGoodsQuoteById($item['shop_goods_quote_id']);
+                if($shop_quote_info['expiry_time']<\Carbon\Carbon::now()){
+                    $item['is_expire'] = true;
+                }else{
+                    $item['is_expire'] = false;
+                }
+                if($shop_quote_info['goods_number']<=0){
+                    $item['is_sale'] = true;
+                }else{
+                    $item['is_sale'] = false;
+                }
+            }
             foreach($cartInfo['cartInfo'] as $k=>$v){
                 $cartInfo['cartInfo'][$k]['inventory'] = $cartInfo['quoteInfo'][$k]['goods_number'];
                 $cartInfo['cartInfo'][$k]['account'] = $cartInfo['quoteInfo'][$k]['account'];
@@ -258,7 +271,6 @@ class GoodsController extends ApiController
                 $cartInfo['cartInfo'][$k]['packing_spec'] = $cartInfo['goodsInfo'][$k]['packing_spec'];
             }
             return $this->success($cartInfo['cartInfo']);
-
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
