@@ -103,9 +103,19 @@ class GoodsController extends ApiController
         $condition['b.is_self_run'] = 1;
         $condition['b.is_delete'] = 0;
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
-        //return $this->success('','无数据');
+        foreach($goodsList['list'] as &$item){
+            if($item['expiry_time']<\Carbon\Carbon::now()){
+                $item['is_expire'] = true;
+            }else{
+                $item['is_expire'] = false;
+            }
+            if($item['goods_number']<=0){
+                $item['is_sale'] = true;
+            }else{
+                $item['is_sale'] = false;
+            }
+        }
         if(empty($goodsList['list'])){
-            //return $this->error('无数据');
             return $this->success('','无数据');
         }else{
             return $this->success([
