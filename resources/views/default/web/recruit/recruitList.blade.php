@@ -289,7 +289,7 @@
 
 		<div class="block_bg"></div>
 		<div class="power_edit whitebg" id="power_edit_frame" style="">
-			<div class="pay_title f4bg"><span class="fl pl30 gray fs16">上传简历</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+			<div class="pay_title f4bg"><span class="fl pl30 gray fs16">上传简历</span><a class="fr frame_close mr15 mt15"><img src="/img/close.png" width="15" height="15"></a></div>
 			<ul class="power_list ml30 mt25">
 				@component('widgets.upload_file',['upload_type'=>'file','upload_path'=>'user/resume_path','name'=>'resume_path'])@endcomponent
 				<li style="clear:both;margin-top:30px;margin-bottom:20px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="resumeSave({{$recruitInfo['id']}})">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>

@@ -38,7 +38,7 @@
         }
 
         .supply_quote_list li{height: 89px;overflow: initial;}
-
+        .bggreen{background-color: #75b335;color:#fff;}
 	</style>
 @endsection
 @section('js')
@@ -74,6 +74,11 @@
                     $('.pro_screen').removeClass('heightcurr');
                     $('.more_filter_box').text('更多选项...');
                 }
+            });
+            //选择项高亮切换
+            $('.sm_breed').click(function(){
+                $('.choose').removeClass('bggreen');
+                $(this).addClass('bggreen').siblings().removeClass('bggreen');
             });
         })
 	</script>
@@ -171,7 +176,16 @@
                     <div class="width1200">
                         <div class="sequence-bar" style="padding:0;padding-right:10px;">
                             <div class="fl">
-                                <a class="choose default active" href="#" style="height:39px;line-height:39px;margin-top:0;">综合</a>
+                                @if($t == 1)
+                                    <a class="choose default bggreen" href="/goodsList/1" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                @elseif($t == 2)
+                                    <a class="choose default bggreen" href="/goodsList/2" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                @elseif($t == 3)
+                                    <a class="choose default bggreen" href="/goodsList/3" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                @else
+                                    <a class="choose default bggreen" href="/goodsList" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                @endif
+
                             </div>
                             <div class="fl">
                                 <ul id="sort" sort_name="" class="chooselist">
