@@ -71,7 +71,7 @@ class IndexController extends ApiController
     //自营报价
     public function getGoodsQuoteList(Request $request)
     {
-        $goodsQuoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
+        $goodsQuoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
         foreach($goodsQuoteList['list'] as &$item){
             if($item['expiry_time']<\Carbon\Carbon::now()){
                 $item['is_expire'] = true;

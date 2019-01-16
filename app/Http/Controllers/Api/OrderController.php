@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Repositories\UserRepo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserService;
@@ -269,10 +270,9 @@ class OrderController extends ApiController
             $userInfo = $info;
             $userIds['user_id'] = $this->getUserID($request);
             $userIds['firm_id'] = $info['firm_id'];
-            $userIds['need_approval'] = $this->getUserInfo($request)['need_approval'];
+            $userIds['need_approval'] = UserRepo::getInfo($info['firm_id'])['need_approval'];
             $u_id = $info['firm_id'];
             $smsType = '企业';
-
         } else {
             //个人
             $userInfo = $this->getUserInfo($request);
