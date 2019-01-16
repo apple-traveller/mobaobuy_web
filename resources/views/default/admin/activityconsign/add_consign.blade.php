@@ -34,6 +34,9 @@
     <div class="menuContent" style="display:none; position: absolute;">
         <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
     </div>
+    <div class="menuContent" style="display:none; position: absolute;">
+        <ul id="setAreaTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+    </div>
     <div class="warpper">
         <div class="title"><a href="/admin/activity/consign" class="s-back">返回</a>添加清仓特卖</div>
         <div class="content">
@@ -218,12 +221,10 @@
 
 
             $("#cat_name").focus(function(){
-                $("#delivery_place").attr('treeId','');
-                showWinZtreeSelector(this);
+                showWinZtreeSelector(this,'setCatTree');
             });
             $("#delivery_place").focus(function(){
-                $("#cat_name").attr('treeId','');
-                showWinZtreeSelector(this);
+                showWinZtreeSelector(this,'setAreaTree');
             });
             $("#delivery_place").change(function(){
                 var _name = $(this).attr('old');

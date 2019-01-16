@@ -417,7 +417,7 @@
         });
 
         $("#cat_name").focus(function(){
-            showWinZtreeSelector(this);
+            showWinZtreeSelector(this,'setCatTree');
         });
         // 商家 获取焦点请求所有的商家数据
 //        $("#company_name").focus(function(){

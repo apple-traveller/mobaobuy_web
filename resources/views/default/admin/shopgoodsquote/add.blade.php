@@ -12,6 +12,11 @@
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/').'plugs/zTree_v3/css/zTreeStyle/zTreeStyle.css')}}" />
     <div class="menuContent" style="display:none; position: absolute;">
         <ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
+        {{--<ul id="setAreaTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>--}}
+    </div>
+    <div class="menuContent" style="display:none; position: absolute;">
+        {{--<ul id="setCatTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>--}}
+        <ul id="setAreaTree" class="ztree treeSelect" style="margin-top:0;border: 1px solid #617775;background:#f0f6e4;width: 309px;height: 360px;overflow-y: scroll;overflow-x: auto;"></ul>
     </div>
 
     <div class="warpper">
@@ -67,7 +72,7 @@
                                 <div class="label_value">
 
                                     <input type="hidden" name="cat_id" id="cat_id"/>
-                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" old="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                     <div style="" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
@@ -297,11 +302,10 @@
 
             //获取树形分类
             $("#cat_name").focus(function(){
-                showWinZtreeSelector(this);
+                showWinZtreeSelector(this,'setCatTree');
             });
-
             $("#delivery_place").focus(function(){
-                showWinZtreeSelector(this);
+                showWinZtreeSelector(this,'setAreaTree');
             });
             $("#delivery_place").change(function(){
                 var _name = $(this).attr('old');
