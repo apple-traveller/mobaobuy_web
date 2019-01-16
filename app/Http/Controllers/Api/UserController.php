@@ -72,7 +72,7 @@ class UserController extends ApiController
         $deputy_user = $this->getDeputyUserInfo($request);
         //dd($deputy_user);
         $condition = [];
-        $condition['user_id'] = $user_info['id'];
+        $condition['user_id'] = $deputy_user['firm_id'];
         $addressList = UserService::shopAddressList($condition);
         foreach ($addressList as $k=>$v){
             $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
