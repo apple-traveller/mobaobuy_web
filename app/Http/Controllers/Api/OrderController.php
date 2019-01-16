@@ -273,7 +273,6 @@ class OrderController extends ApiController
             $userIds['need_approval'] = UserRepo::getInfo($info['firm_id'])['need_approval'];
             $u_id = $info['firm_id'];
             $smsType = '企业';
-
         } else {
             //个人
             $userInfo = $this->getUserInfo($request);
