@@ -148,9 +148,9 @@ class ShopGoodsQuoteController extends Controller
         if(!$production_date){
             return $this->error('生产日期不能为空');
         }
-        if(!$goods_number){
-            return $this->error('库存不能为空');
-        }
+//        if(!$goods_number){
+//            return $this->error('库存不能为空');
+//        }
         if(!$delivery_method){
             return $this->error('交货方式不能为空');
         }
@@ -171,7 +171,7 @@ class ShopGoodsQuoteController extends Controller
 
         $goods = GoodsService::getGoodInfo($goods_id);
         $data['goods_sn'] = $goods['goods_sn'];
-        $data['goods_name'] = $goods['goods_name'];
+        $data['goods_name'] = $goods['goods_full_name'];
         $currentPage = $request->input('currentPage');
         $data = [
             'shop_store_id' => $store_id,
@@ -235,21 +235,22 @@ class ShopGoodsQuoteController extends Controller
      */
     public function delete(Request $request)
     {
-        $id = $request->input('id');
-        if(!$id){
+        $ids = $request->input('ids');
+        if(!$ids){
             return $this->error('无法获取参数ID');
         }
         try{
-            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-            if(empty($check)){
-                return $this->error('报价信息不存在');
-            }
-            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
-            if($is_exist_order){
-                return $this->error('该活动存在相应订单，无法删除');
-            }
-            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
-            if($flag){
+//            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+//            if(empty($check)){
+//                return $this->error('报价信息不存在');
+//            }
+//            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+//            if($is_exist_order){
+//                return $this->error('该活动存在相应订单，无法删除');
+//            }
+//            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
+            $res = ShopGoodsQuoteService::delete($ids);
+            if($res){
                 return $this->success('删除成功',url('/seller/quote/list'));
             }
             return  $this->error('删除失败');

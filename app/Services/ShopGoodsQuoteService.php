@@ -204,9 +204,24 @@ class ShopGoodsQuoteService
     }
 
     //删除
-    public static function delete($id)
+    public static function delete($ids)
     {
-        return ShopGoodsQuoteRepo::delete($id);
+        self::beginTransaction();
+        foreach ($ids as $id){
+            $check = self::getShopGoodsQuoteById($id);
+            if(!$check){
+                self::rollBack();
+                self::throwBizError('无法获取对应报价信息');
+            }
+            $res = self::modify(['id'=>$id,'is_delete'=>1]);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('删除失败!请联系管理员');
+            }
+        }
+        self::commit();
+        return true;
+
     }
 
     //获取当天报价条数
@@ -264,7 +279,8 @@ class ShopGoodsQuoteService
     //查询所有的报价商品所属的分类信息(微信小程序接口)
     public static function getShopGoodsQuoteCates()
     {
-        $result = DB::select('select `cat_id` from goods as G left join shop_goods_quote as Q  on G.id=Q.goods_id group by `cat_id`');
+        $result = DB::select('select G.`cat_id` from goods as G inner join shop_goods_quote as Q  on G.id=Q.goods_id where G.is_delete=0 and Q.is_delete=0 AND G.`cat_id`>0 and Q.expiry_time>now() group by G.`cat_id`');
+
         //将sql查询出来的对象转数组
         $cates_id = [];
         foreach ($result as $vo) {
@@ -308,6 +324,7 @@ class ShopGoodsQuoteService
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
         $goodsInfo['goods_sn'] = $ActivityInfo['goods_sn'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
+        $goodsInfo['production_date'] = $ActivityInfo['production_date'];
 
         //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);

@@ -155,7 +155,7 @@ class OrderController extends ApiController
         $id = $request->input('id');
         $info = $this->getDeputyUserInfo($request);
         $userInfo = $this->getUserInfo($request);
-        $cartSession = Cache::get("cartSession".$userInfo['id']);
+        $cartSession = Cache::get("cartSession".$info['firm_id']);
         $goodsList = $cartSession['goods_list'];
         $from = $cartSession['from'];
 

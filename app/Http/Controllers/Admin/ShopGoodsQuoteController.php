@@ -19,9 +19,13 @@ class ShopGoodsQuoteController extends Controller
     {
         $currpage = $request->input('currpage',1);
         $shop_name = $request->input('shop_name',"");
+        $goods_name = $request->input('goods_name',"");
         $condition = [];
         if(!empty($shop_name)){
             $condition['b.shop_name']="%".$shop_name."%";
+        }
+        if(!empty($goods_name)){
+            $condition['g.goods_full_name']="%".$goods_name."%";
         }
         $condition['b.type'] = '1|2';
         $condition['b.is_delete'] = 0;
@@ -34,7 +38,8 @@ class ShopGoodsQuoteController extends Controller
             'currpage'=>$currpage,
             'shop_name'=>$shop_name,
             'pageSize'=>$pageSize,
-            'shops'=>$shops['list']
+            'shops'=>$shops['list'],
+            'goods_name'=>$goods_name
         ]);
     }
 
@@ -93,9 +98,9 @@ class ShopGoodsQuoteController extends Controller
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
-        if(empty($data['goods_number'])){
-            $errorMsg[] = '库存不能为空';
-        }
+//        if(empty($data['goods_number'])){
+//            $errorMsg[] = '库存不能为空';
+//        }
         if(empty($data['salesman'])){
             $errorMsg[] = '业务员不能为空';
         }
@@ -121,7 +126,7 @@ class ShopGoodsQuoteController extends Controller
 
         $goods = GoodsService::getGoodInfo($data['goods_id']);
         $data['goods_sn'] = $goods['goods_sn'];
-        $data['goods_name'] = $goods['goods_name'];
+        $data['goods_name'] = $goods['goods_full_name'];
         $currpage = $request->input('currpage');
         unset($data['currpage']);
         if(empty($data['shop_store_id']) && $data['store_name'] == '自售'){
@@ -162,22 +167,24 @@ class ShopGoodsQuoteController extends Controller
     //删除
     public function delete(Request $request)
     {
-        $id = $request->input('id');
-        if(!$id){
+        $ids = $request->input('ids');
+        if(empty($ids)){
             return $this->error('无法获取参数ID');
         }
         try{
-            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-            if(!$check){
-                return $this->error('无法获取对应报价信息');
-            }
+
+//            $check = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
+//            if(!$check){
+//                return $this->error('无法获取对应报价信息');
+//            }
             //检测报价是否存在对应的订单
-            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
-            if($is_exist_order){
-                return $this->error('该报价存在相应订单，无法删除');
-            }
-            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
-            if($flag){
+//            $is_exist_order = OrderInfoService::checkQuoteExistOrder($id);
+//            if($is_exist_order){
+//                return $this->error('该报价存在相应订单，无法删除');
+//            }
+//            $flag = ShopGoodsQuoteService::modify(['id'=>$id,'is_delete'=>1]);
+            $res = ShopGoodsQuoteService::delete($ids);
+            if($res){
                 return $this->success('删除成功',url('/admin/shopgoodsquote/list'));
             }
             return  $this->error('删除失败');

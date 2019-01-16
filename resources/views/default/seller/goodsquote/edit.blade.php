@@ -71,7 +71,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
                                 <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
+                                    <input type="text" name="goods_number" disabled="disabled" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -203,10 +203,10 @@
                     shop_price :{
                         required : true,
                     },
-                    goods_number :{
-                        required : true,
-                        number:true
-                    },
+//                    goods_number :{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_id:{
                         required : true,
                     },
@@ -230,10 +230,10 @@
                     shop_price:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    goods_number :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    goods_number :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },

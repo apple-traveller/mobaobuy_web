@@ -100,9 +100,9 @@ class ActivityConsignController extends Controller
         if(empty($data['delivery_place'])){
             $errorMsg[] = '交货地不能为空';
         }
-        if(empty($data['total_number'])){
-            $errorMsg[] = '报价总数不能为空';
-        }
+//        if(empty($data['total_number'])){
+//            $errorMsg[] = '报价总数不能为空';
+//        }
         if(empty($data['shop_price'])){
             $errorMsg[] = '店铺售价不能为空';
         }

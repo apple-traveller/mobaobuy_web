@@ -16,6 +16,7 @@
                     <div class="fl">
                         <a href="/seller/quote/add"><div class="fbutton"><div class="add" title="添加商品报价"><span><i class="icon icon-plus"></i>添加商品报价</span></div></div></a>
                         <div class="fbutton batchReRelease"><div class="add" title="批量更新报价"><span><i class="icon icon-refresh"></i>批量更新发布</span></div></div>
+                        <div class="fbutton batchDelete"><div class="add" title="批量删除"><span><i class="icon icon-trash"></i>批量删除</span></div></div>
                     </div>
                     <div class="refresh">
                         <div class="refresh_tit" title="刷新数据">
@@ -142,30 +143,56 @@
         }
 
 
+//        function remove(id)
+//        {
+//            layui.use('layer', function(){
+//                var layer = layui.layer;
+//                layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+//                    $.ajax({
+//                        'url':'/seller/quote/delete',
+//                        'data':{
+//                            'id':id
+//                        },
+//                        'type':'post',
+//                        success: function (res) {
+//                            console.log(res.code);
+//                            if (res.code == 1){
+//                                layer.msg(res.msg, {icon: 1,time:1000});
+//                                layer.close(index);
+//                                window.location.reload();
+//                            } else {
+//                                layer.msg(res.msg, {icon: 5,time:2000});
+//                            }
+//                        }
+//                    });
+//                    // window.location.href="/seller/quote/delete?id="+id;
+//
+//                });
+//            });
+//        }
         function remove(id)
         {
+            toDelete([id])
+        }
+        function toDelete(ids){
             layui.use('layer', function(){
                 var layer = layui.layer;
                 layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
                     $.ajax({
-                        'url':'/seller/quote/delete',
-                        'data':{
-                            'id':id
-                        },
-                        'type':'post',
-                        success: function (res) {
-                            console.log(res.code);
-                            if (res.code == 1){
-                                layer.msg(res.msg, {icon: 1,time:1000});
-                                layer.close(index);
-                                window.location.reload();
-                            } else {
-                                layer.msg(res.msg, {icon: 5,time:2000});
+                        url: "/seller/quote/delete",
+                        dataType: "json",
+                        data:{"ids":ids},
+                        type:"get",
+                        success:function(res){
+                            if(res.code==1){
+                                layer.msg('删除成功！',{time:2000});
+                                setTimeout(function () { window.location.reload(); }, 2000);
+                            }else{
+                                layer.alert(res.msg);
                             }
                         }
                     });
-                    // window.location.href="/seller/quote/delete?id="+id;
-
+                    layer.close(index);
                 });
             });
         }
@@ -180,7 +207,8 @@
                         type:"get",
                         success:function(res){
                             if(res.code==1){
-                                window.location.reload();
+                                layer.msg('发布成功！',{time:2000});
+                                setTimeout(function () { window.location.reload(); }, 2000);
                             }else{
                                 layer.alert(res.msg);
                             }
@@ -213,6 +241,13 @@
                     _goods_ids.push($(this).val());
                 });
                 toAjax(_goods_ids);
+            });
+            $('.batchDelete').click(function(){
+                var _goods_ids = [];
+                $.each($('input[name=goods_id]:checked'),function(){
+                    _goods_ids.push($(this).val());
+                });
+                toDelete(_goods_ids);
             });
 
         })

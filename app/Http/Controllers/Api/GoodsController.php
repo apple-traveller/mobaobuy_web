@@ -375,7 +375,7 @@ class GoodsController extends ApiController
             Cache::put('cartSession'.$dupty_user['firm_id'], $cartCache, 60*24*1);
             return $this->success($cartCache,'success');
         }catch (\Exception $e){
-            return $this->error($e->getMessage());
+            return $this->error($e->getMessage()); 
         }
     }
 
