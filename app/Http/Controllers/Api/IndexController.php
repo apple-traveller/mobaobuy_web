@@ -72,6 +72,18 @@ class IndexController extends ApiController
     public function getGoodsQuoteList(Request $request)
     {
         $goodsQuoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['is_self_run'=>1]);
+        foreach($goodsQuoteList['list'] as &$item){
+            if($item['expiry_time']<\Carbon\Carbon::now()){
+                $item['is_expire'] = true;
+            }else{
+                $item['is_expire'] = false;
+            }
+            if($item['goods_number']<=0){
+                $item['is_sale'] = true;
+            }else{
+                $item['is_sale'] = false;
+            }
+        }
         return $this->success(['goodsQuoteList' => $goodsQuoteList['list']]);
     }
 
