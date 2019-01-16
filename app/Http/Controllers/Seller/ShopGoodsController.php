@@ -182,9 +182,10 @@ class ShopGoodsController extends Controller
         return response()->json($result);
     }
     //ajax获取商品分类
-    public function getGoodsCat()
+    public function getGoodsCat(Request $request)
     {
-        $res = GoodsCategoryService::getCategoryTreeAdmin();
+        $id = $request->input('id');
+        $res = GoodsCategoryService::getCategoryTreeAdmin($id);
 
         return $res;
     }

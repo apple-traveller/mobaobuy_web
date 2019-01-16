@@ -263,9 +263,10 @@ class ShopGoodsQuoteController extends Controller
      * 地址树形列表
      * @return array
      */
-    public function getAddressTree()
+    public function getAddressTree(Request $request)
     {
-        return RegionService::getRegionTree();
+        $id = $request->input('id');
+        return RegionService::getRegionTree($id);
     }
 
 }

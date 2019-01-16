@@ -606,11 +606,11 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/salesman/edit', 'ShopSalesmanController@edit');// 编辑
         Route::post('/salesman/save', 'ShopSalesmanController@save');// 保存
 
-        Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
+        Route::any('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@getList');// 商户商品报价
-        Route::post('/quote/getAddressTree', 'ShopGoodsQuoteController@getAddressTree');// 商户商品报价地址接口
+        Route::any('/quote/getAddressTree', 'ShopGoodsQuoteController@getAddressTree');// 商户商品报价地址接口
         Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加
         Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
         Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存
