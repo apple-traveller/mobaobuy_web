@@ -81,7 +81,7 @@
 									<div class="mx_progress_com" style="width: {{(int)(((float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
 								@endif
 							</div>
-							<span class="fl fs16 gray">可售{{$v['available_quantity']}}{{$v['unit_name']}}</span>
+							<span class="fl fs16 gray">可售@if($v['available_quantity']>0) {{$v['available_quantity']}} @else 0 @endif{{$v['unit_name']}}</span>
 						</div>
 						<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
 						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}</div>

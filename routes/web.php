@@ -84,7 +84,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/goodscategory/editForm', 'GoodsCategoryController@editForm');//商品分类编辑
         Route::post('/goodscategory/sort', 'GoodsCategoryController@sort');//商品分类排序
         Route::post('/goodscategory/upload', 'GoodsCategoryController@upload');//上传自定义图标
-        Route::post('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//分类树
+        Route::any('/goodscategory/getCategoryTree', 'GoodsCategoryController@getCategoryTree');//分类树
 
         Route::get('/sysconfig/index', 'SysConfigController@index');//平台配置首页
         Route::post('/sysconfig/modify', 'SysConfigController@modify');//平台配置修改
@@ -606,11 +606,11 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::get('/salesman/edit', 'ShopSalesmanController@edit');// 编辑
         Route::post('/salesman/save', 'ShopSalesmanController@save');// 保存
 
-        Route::post('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
+        Route::any('/goods/getGoodsCat', 'ShopGoodsController@getGoodsCat');// 获取商品分类
         Route::post('/goods/getGood', 'ShopGoodsController@getGood');// 获取商品
 
         Route::get('/quote/list', 'ShopGoodsQuoteController@getList');// 商户商品报价
-        Route::post('/quote/getAddressTree', 'ShopGoodsQuoteController@getAddressTree');// 商户商品报价地址接口
+        Route::any('/quote/getAddressTree', 'ShopGoodsQuoteController@getAddressTree');// 商户商品报价地址接口
         Route::get('/quote/add', 'ShopGoodsQuoteController@add');//  添加
         Route::get('/quote/edit', 'ShopGoodsQuoteController@edit');// 编辑
         Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存

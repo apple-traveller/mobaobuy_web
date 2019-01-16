@@ -190,10 +190,10 @@ class GoodsCategoryController extends Controller
         }
     }
 
-    public function getCategoryTree()
+    public function getCategoryTree(Request $request)
     {
-        $res = GoodsCategoryService::getCategoryTreeAdmin();
-
+        $id = $request->input('id');
+        $res = GoodsCategoryService::getCategoryTreeAdmin($id);
         return $res;
     }
 }

@@ -251,7 +251,7 @@
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售量</span>
-                    <span  class="pro_value">{{$goodsInfo['activity_num']}}{{$goodsInfo['unit_name']}}</span>
+                    <span  class="pro_value">@if($goodsInfo['activity_num']>0) {{$goodsInfo['activity_num']}} @else 0 @endif{{$goodsInfo['unit_name']}}</span>
                     <span class="fl ">包装规格</span>
                     <span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
 				</div>

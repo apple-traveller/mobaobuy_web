@@ -258,8 +258,10 @@
 
 			</div>
 			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span><span  class="pro_value">{{$good_info['goods_number']}}{{$good_info['unit_name']}}</span>
-                <span class="fl ">包装规格</span><span  class="ml35 fl">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
+				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span>
+                <span  class="pro_value">@if($good_info['goods_number']) {{$good_info['goods_number']}} @else 0 @endif{{$good_info['unit_name']}}</span>
+                <span class="fl ">包装规格</span>
+                <span  class="ml35 fl">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
 			</div>
 
 			<div class="pro_detail">

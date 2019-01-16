@@ -59,9 +59,17 @@ class RegionService
     }
 
     //获取所有地区的树型数据
-    public static function getRegionTree(){
-        $all_list = RegionRepo::getList('',[],['parent_id','region_id as id','region_name as name']);
-        return make_treeTable($all_list, 'id', 'parent_id','children');
+    public static function getRegionTree($id=0){
+        $all_list = RegionRepo::getList('',['parent_id'=>$id],['parent_id','region_id as id','region_name as name']);
+        foreach ($all_list as $k=>$v){
+            //检测是否存在下级分类
+            $res = RegionRepo::getTotalCount(['parent_id'=>$v['id']]);
+            if($res > 0){//有子分类
+                $all_list[$k]['isParent'] = true;
+            }
+        }
+        return $all_list;
+//        return make_treeTable($all_list, 'id', 'parent_id','children');
     }
 
     //获取当前页面所属地区类型

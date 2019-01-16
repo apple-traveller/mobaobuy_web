@@ -126,7 +126,12 @@
  <div class="block_bg"></div>
 <!--编辑框-->
 <div class="power_edit whitebg" id="power_edit_frame" style="">
-    <div class="pay_title f4bg"><span class="fl pl30 gray fs16">支付信息</span><a class="fr frame_close mr15 mt15"><img src="img/close.png" width="15" height="15"></a></div>
+    <div class="pay_title f4bg">
+        <span class="fl pl30 gray fs16">支付信息</span>
+        <a class="fr frame_close mr15 mt15">
+            <img src="img/close.png" width="15" height="15">
+        </a>
+    </div>
     <ul class="power_list ml30 mt25">
         <li>
             <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
