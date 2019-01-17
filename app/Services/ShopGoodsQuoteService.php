@@ -223,6 +223,30 @@ class ShopGoodsQuoteService
         return true;
 
     }
+    //置顶
+    public static function roof($ids,$is_cancel)
+    {
+        $is_roof = 1;
+        if($is_cancel == 1){
+            $is_roof = 0;
+        }
+        self::beginTransaction();
+        foreach ($ids as $id){
+            $check = self::getShopGoodsQuoteById($id);
+            if(!$check){
+                self::rollBack();
+                self::throwBizError('无法获取对应报价信息');
+            }
+            $res = self::modify(['id'=>$id,'is_roof'=>$is_roof]);
+            if(!$res){
+                self::rollBack();
+                self::throwBizError('设置失败!请联系管理员');
+            }
+        }
+        self::commit();
+        return true;
+
+    }
 
     //获取当天报价条数
     public static function getQuotesCount()

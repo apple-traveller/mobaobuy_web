@@ -59,12 +59,12 @@ class AutoCancelOrder extends Command
         ];
         $info = OrderInfoService::getOrderInfoList($pager,$where);
 //        if(!empty($info)){
-            Log::info('测试自动取消');
+//            Log::info('测试自动取消');
 //        }
         try{
             foreach ($info['list'] as $k=>$v){
                 //执行取消操作
-                OrderInfoService::orderCancel($v['id']);
+                OrderInfoService::orderCancel($v['id'],'waitAffirm');
             }
         }catch (Exception $e){
             Log::info($e->getMessage());

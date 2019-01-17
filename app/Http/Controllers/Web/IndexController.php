@@ -85,7 +85,7 @@ class IndexController extends Controller
         array_multisort(array_column($merge_trans_list,'add_time'),SORT_DESC,$merge_trans_list);
 
         //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1,'orderType'=>['b.add_time'=>'desc']],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯

@@ -196,6 +196,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shopgoodsquote/delete', 'ShopGoodsQuoteController@delete');//删除
         Route::post('/shopgoodsquote/getGoods', 'ShopGoodsQuoteController@getGoods');//ajax获取商品
         Route::get('/shopgoodsquote/reRelease', 'ShopGoodsQuoteController@reRelease');//更新发布
+        Route::get('/shopgoodsquote/roof', 'ShopGoodsQuoteController@roof');//更新发布
 
         Route::any('/orderinfo/list', 'OrderInfoController@getList');//订单列表
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情
@@ -616,6 +617,7 @@ Route::group(['namespace' => 'Seller','prefix' => 'seller'], function () {
         Route::post('/quote/save', 'ShopGoodsQuoteController@save');// 保存
         Route::get('/quote/delete', 'ShopGoodsQuoteController@delete');// 删除
         Route::get('/quote/reRelease', 'ShopGoodsQuoteController@reRelease');//更新报价
+        Route::get('/quote/roof', 'ShopGoodsQuoteController@roof');//置顶
 
         Route::get('/order/list', 'ShopOrderController@getList');// 商铺订单
         Route::get('/order/detail', 'ShopOrderController@detail');  // 订单详情
