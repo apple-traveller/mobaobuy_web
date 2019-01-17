@@ -265,7 +265,6 @@ class OrderController extends Controller
             return $this->error('您的实名认证还未通过，不能下单');
         }
 
-
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
         if ($info['is_self'] == 0 && $info['is_firm'] == 1) {
             $u_id = $info['firm_id'];

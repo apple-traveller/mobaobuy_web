@@ -377,6 +377,25 @@ class GoodsController extends ApiController
         return $this->success(['cart_num'=>$num],'success');
     }
 
+    //修改收货地址
+    public function editOrderAddress(Request $request)
+    {
+        $address_id = $request->input('address_id','');
+        $deputy = $this->getDeputyUserInfo($request);
+        if(!$address_id){
+            return $this->error('缺少参数地址ID！');
+        }
+        $address_info = UserAddressService::getAddressInfo($address_id);
+        if(!$address_info){
+            return $this->error('地址信息不存在！');
+        }
+        $cartSession = Cache::get('cartSession'.$deputy['firm_id']);
+        $cartSession['address_id'] = $address_id;
+
+        Cache::put('cartSession'.$deputy['firm_id'],$cartSession,60*24*1);
+        return $this->success('选择成功');
+    }
+
     //购物车去结算
     public function toBalance(Request $request)
     {

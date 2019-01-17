@@ -57,7 +57,6 @@ class IndexController extends ApiController
             $vo['price'] = $vo['goods_price'];
             $vo['add_time'] = Carbon::parse($vo['add_time'])->diffForHumans();
         }
-
         return $this->success(['trans_list' => $merge_trans_list]);
     }
 
