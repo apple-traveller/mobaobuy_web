@@ -41,7 +41,7 @@ class ShopGoodsQuoteController extends Controller
         }
         $condition['b.type'] = '1|2';
         $condition['b.is_delete'] = 0;
-        $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
+        $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
         return $this->display('seller.goodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
             'shopGoodsQuote'=>$shopGoodsQuote['list'],

@@ -30,7 +30,7 @@ class QuoteController extends Controller
         $currpage = $request->input("currpage", 1);
         $highest = $request->input("highest");
         $lowest = $request->input("lowest");
-        $orderType = $request->input("orderType", "b.add_time:desc");
+//        $orderType = $request->input("orderType", "b.add_time:desc");
         $brand_id = $request->input("brand_id", "");
         $cate_id = $request->input('cate_id', "");
         $cat_name = $request->input('cat_name', "");
@@ -78,11 +78,11 @@ class QuoteController extends Controller
             $con['cat.cat_name'] = '%' . $keyword . '%';
             $condition[] = $con;
         }
-        $orderBy = [];
-        if (!empty($orderType)) {
-            $type = explode(":", $orderType);
-            $orderBy[$type[0]] = $type[1];
-        }
+//        $orderBy = [];
+//        if (!empty($orderType)) {
+//            $type = explode(":", $orderType);
+//            $orderBy[$type[0]] = $type[1];
+//        }
         $pageSize = 20;
         if(empty($t)){
 //            $condition['b.type'] = '1|2';
@@ -96,7 +96,7 @@ class QuoteController extends Controller
         }
         $condition['b.is_delete'] = 0;
         //商品报价列表
-        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
+        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition);
 
         #热门推荐
         if (!empty($keyword)) {
@@ -123,7 +123,7 @@ class QuoteController extends Controller
             'search_data' => $goodsList,
             'currpage' => $currpage,
             'pageSize' => $pageSize,
-            'orderType' => $orderType,
+//            'orderType' => $orderType,
             'lowest' => $lowest,
             'highest' => $highest,
             'brand_id' => $brand_id,
@@ -150,7 +150,7 @@ class QuoteController extends Controller
         $sort_goods_number = $request->input("sort_goods_number", '');
         $sort_add_time = $request->input("sort_add_time", '');
         $sort_shop_price = $request->input("sort_shop_price", '');
-        $orderType = $request->input("orderType", "b.add_time:desc");
+//        $orderType = $request->input("orderType", "b.add_time:desc");
         $brand_id = $request->input("brand_id", "");
         $cate_id = $request->input('cate_id', "");
         $place_id = $request->input('place_id', "");
@@ -168,10 +168,10 @@ class QuoteController extends Controller
         if (!empty($sort_shop_price)) {
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-        if (empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)) {
-            $type = explode(":", $orderType);
-            $orderBy[$type[0]] = $type[1];
-        }
+//        if (empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)) {
+//            $type = explode(":", $orderType);
+//            $orderBy[$type[0]] = $type[1];
+//        }
         if (empty($lowest) && empty($highest)) {
             $condition = [];
         }
@@ -218,7 +218,7 @@ class QuoteController extends Controller
         }
         $pageSize = 20;
         $condition['b.is_delete'] = 0;
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage], $condition);
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');
         } else {

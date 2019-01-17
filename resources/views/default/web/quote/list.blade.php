@@ -417,7 +417,7 @@
         });
         var _highest = $('#maxPrice').val();
         var _lowest = $('#minPrice').val();
-        var _orderType = "{{$orderType}}";
+        {{--var _orderType = "{{$orderType}}";--}}
         var _place_id = region_ids.join("|");
 
         //获取排序筛选
@@ -448,7 +448,7 @@
                 "currpage":currpage,
                 'highest':_highest,//最高价
                 'lowest':_lowest,//最低价
-                'orderType':_orderType,//排序
+//                'orderType':_orderType,//排序
                 'cate_id':_cate_id,//分类
                 'place_id':_place_id,//地区
                 'sort_goods_number':_goods_number,//数量排序
