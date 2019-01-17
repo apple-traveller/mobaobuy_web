@@ -41,32 +41,26 @@ class InvoiceController extends ApiController
         } elseif($tab_code == 'Completed'){
             $condition['status'] = 2;
         }
-
         if (!empty($begin_time)){
             $condition['created_at|>'] = $begin_time . ' 00:00:00';
         }
         if (!empty($end_time)){
             $condition['created_at|<'] = $end_time . ' 23:59:59';
         }
-
         if(!empty($invoice_numbers)){
             $condition['invoice_numbers'] = '%'.$invoice_numbers.'%';
         }
-
         $pager = [
             'page'=>$page,
             'pageSize'=>$page_size
         ];
-
         $rs_list = InvoiceService::getListBySearch($pager,$condition);
-
         $data = [
             'draw' => $request->input('draw'), //浏览器cache的编号，递增不可重复
             'recordsTotal' => $rs_list['total'], //数据总行数
             'recordsFiltered' => $rs_list['total'], //数据总行数
             'data' => $rs_list['list']
         ];
-
         return $this->success($data,'success');
     }
 
@@ -98,7 +92,6 @@ class InvoiceController extends ApiController
         if(empty($invoice_id)){
             return $this->error('开票id不能为空');
         }
-
         if (isset($deputy_user['can_invoice']) && $deputy_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
