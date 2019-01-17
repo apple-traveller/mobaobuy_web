@@ -199,7 +199,6 @@ class OrderController extends ApiController
                 } else {
                     $addressList[$k]['is_default'] = '';
                 };
-
             }
             if (!empty($first_one)) {
                 foreach ($first_one as $k1 => $v1) {

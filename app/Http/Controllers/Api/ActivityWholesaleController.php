@@ -60,7 +60,7 @@ class ActivityWholesaleController extends ApiController
                 'from'=>'wholesale'
             ];
 
-            Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
+            Cache::put('cartSession'.$deputy_user['firm_id'], $session_data, 60*24*1);
             return $this->success($session_data,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());

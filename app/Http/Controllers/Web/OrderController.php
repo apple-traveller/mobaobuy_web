@@ -252,6 +252,7 @@ class OrderController extends Controller
         $userInfo = session('_web_user');
         $cartSession = session('cartSession');
         $goodsList = $cartSession['goods_list'];
+        //dd($goodsList);
         $from = $cartSession['from'];
         if(empty($cartSession) || !isset($cartSession) || empty($goodsList)){
              return $this->redirect('/cart');
