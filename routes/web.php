@@ -767,6 +767,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/cart/get_num','GoodsController@getCartNum');//获取用户购物车数量
         Route::post('/cart/check_listen_cart_input','GoodsController@checkListenCartInput');//购物车判断数量
         Route::post('/cart/to_balance','GoodsController@toBalance');//购物车去结算
+        Route::post('/cart/edit_order_address','GoodsController@editOrderAddress');//修改收货地址
 
         Route::post('/buyLimit/to_balance', 'ActivityPromoteController@buyLimitToBalance');//限时抢购 立即下单
         Route::post('/wholesale/to_balance', 'ActivityWholesaleController@toBalance');//集采火拼 立即下单
