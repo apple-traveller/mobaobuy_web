@@ -39,7 +39,7 @@
                 <div class="search">
                     <form action="/admin/user/list" name="searchForm" >
                         <div class="input">
-                            <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="会员名称" autocomplete="off">
+                            <input type="text" value="{{$user_name}}" name="user_name" class="text nofocus user_name" placeholder="用户名" autocomplete="off">
                             <input type="submit" class="btn" name="secrch_btn" ectype="secrch_btn" value="">
                         </div>
                     </form>

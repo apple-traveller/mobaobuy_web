@@ -1604,17 +1604,13 @@ class OrderInfoService
                     } else {
                         if($userId['user_id'] != $userId['firm_id']){
                             $firmInfo = UserRepo::getInfo($userId['firm_id']);
-                            if($firmInfo['need_approval']){
-                                $order_status = 1;
-                            }else{
-                                $order_status = 2;
-                            }
                         }else{
-                            if(!$userId['need_approval']){
-                                $order_status = 2;
-                            }else{
-                                $order_status = 1;
-                            }
+                            $firmInfo = UserRepo::getInfo($userId['user_id']);
+                        }
+                        if($firmInfo['need_approval']){
+                            $order_status = 1;
+                        }else{
+                            $order_status = 2;
                         }
 
                     }

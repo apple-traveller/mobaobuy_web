@@ -45,12 +45,13 @@
                             <tr>
                                 <th width="10%"><div class="tDiv">发票编号</div></th>
                                 <th width="10%"><div class="tDiv">店铺名称</div></th>
+                                <th width="20%"><div class="tDiv">申请人(联系方式)</div></th>
                                 <th width="10%"><div class="tDiv">买家电话</div></th>
                                 <th width="10%"><div class="tDiv">发票总金额</div></th>
                                 <th width="10%"><div class="tDiv">订单数量</div></th>
                                 <th width="10%"><div class="tDiv">状态</div></th>
                                 <th width="10%"><div class="tDiv">创建时间</div></th>
-                                <th width="18%" class="handle">操作</th>
+                                <th width="10%" class="handle">操作</th>
                             </tr>
                             </thead>
 
@@ -69,6 +70,7 @@
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['shop_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['nickname']}}({{$vo['username']}})</div></td>
                                 <td><div class="tDiv">{{$vo['member_phone']}}</div></td>
                                 <td><div class="tDiv">￥{{$vo['invoice_amount']}}</div></td>
                                 <td><div class="tDiv">{{$vo['order_quantity']}}</div></td>

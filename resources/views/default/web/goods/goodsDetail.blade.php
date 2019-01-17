@@ -261,22 +261,22 @@
 				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span>
                 <span  class="pro_value">@if($good_info['goods_number']) {{$good_info['goods_number']}} @else 0 @endif{{$good_info['unit_name']}}</span>
                 <span class="fl ">包装规格</span>
-                <span  class="ml35 fl">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
+                <span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
 			</div>
 
 			<div class="pro_detail">
 				<span class="ml15 letter-space fl">编号</span><span  class="pro_value">{{$good_info['goods_sn']}}</span>
-                <span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$good_info['brand_name']}}</span>
+                <span class="fl letter-space">品牌</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['brand_name']}}">{{$good_info['brand_name']}}</span>
 			</div>
 
             <div class="pro_detail">
                 <span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
-                <span class="fl">联系方式</span><span  class="ml35 fl">{{$good_info['contact_info']}}</span>
+                <span class="fl">联系方式</span><span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['contact_info']}}">{{$good_info['contact_info']}}</span>
             </div>
 
             <div class="pro_detail">
                 <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value">{{$good_info['production_date']}}</span>
-                 <span class="fl letter-space">含量</span><span  class="ml5 fl">{{$good_info['goods_content']}}</span>
+                 <span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>
             </div>
 
 			<!-- <div class="pro_detail">
@@ -342,12 +342,12 @@
             </li>
             @foreach($quoteList as $vo)
                 <li>
-                    <span style="width:15%">{{$vo['add_time']}}</span>
-                    <span style="width:25%;"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span>
+                    <span style="width:15%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
+                    <span style="width:25%;" class="ovhwp" title="{{$vo['goods_name']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span>
                     <span style="width:10%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>
-                    <span style="width:10%">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
-                    <span style="width:10%">{{$vo['delivery_place']}}</span>
-                    <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                    <span style="width:10%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
+                    <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
+                    <span style="width:20%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                 </li>
             @endforeach
         </ul>
@@ -355,7 +355,7 @@
         </div>
 
 
-        <div class="w1200" style="margin-top: 80px;">
+        <div class="w1200" style="margin-top: 20px;">
             <div class="History_offo">
                 <ul class="HistoryLi">
                     <li style="margin-left:25px;text-align:center;" class="titlecurr"><h2 style="font-weight: bold;">历史报价</h2></li>
@@ -377,13 +377,13 @@
                 </li>
                 @foreach($goodsList as $vo)
                     <li>
-                        <span style="width:15%">{{$vo['add_time']}}</span>
-                        <span style="width:10%" class="ovh">{{$vo['cat_name']}}</span>
-                        <span style="width:25%">{{$vo['goods_full_name']}}</span>
+                        <span style="width:15%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
+                        <span style="width:10%" class="ovhwp" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
+                        <span style="width:25%" class="ovhwp" title="{{$vo['goods_full_name']}}">{{$vo['goods_full_name']}}</span>
                         <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
                         <span style="width:10%">{{$vo['shop_price']}}</span>
-                        <span style="width:10%">{{$vo['delivery_place']}}</span>
-                        <span style="width:20%">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                        <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
+                        <span style="width:20%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                     </li>
                 @endforeach
             </ul>

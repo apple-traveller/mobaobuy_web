@@ -28,7 +28,13 @@ class InvoiceService
      */
     public static function getListBySearch($page,$condition)
     {
-        return InvoiceRepo::getListBySearch(['pageSize'=>$page['pageSize'],'page'=>$page['page'],'orderType'=>['id'=>'desc']],$condition);
+        $res = InvoiceRepo::getListBySearch(['pageSize'=>$page['pageSize'],'page'=>$page['page'],'orderType'=>['id'=>'desc']],$condition);
+        foreach ($res['list'] as $k=>$v){
+            $userInfo = UserRepo::getInfo($v['user_id']);
+            $res['list'][$k]['username'] = $userInfo['user_name'];
+            $res['list'][$k]['nickname'] = $userInfo['nick_name'];
+        }
+        return $res;
     }
 
     /**
