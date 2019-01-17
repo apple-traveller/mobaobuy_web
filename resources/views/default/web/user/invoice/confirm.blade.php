@@ -245,7 +245,7 @@
 				<span>商品</span>
 				<span>商品编码</span>
 				<span>单价（元）</span>
-				<span>已发货数量({{$goodsList['list'][0]['unit_name']}})</span>
+				<span>已发货数量</span>
 				<span></span>
 				<span>小计</span>
 			</li>
@@ -255,7 +255,7 @@
 				<span class="ovhwp">{{ $v['goods_name'] }}</span>
 				<span >{{ $v['goods_sn'] }}</span>
 				<span class="orange">¥{{ $v['goods_price'] }}</span>
-				<span>{{ $v['goods_number'] }}</span>
+				<span>{{ $v['goods_number'] }}{{$v['unit_name']}}</span>
 				<span></span><span class="orange subtotal">{{ amount_format($v['goods_price']*$v['goods_number']) }}</span>
 			</li>
 			@endforeach

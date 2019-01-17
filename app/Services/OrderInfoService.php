@@ -1700,9 +1700,6 @@ class OrderInfoService
                     if($activityConsignInfo['goods_number'] < $v['goods_number']){
                         self::throwBizError('库存数量不足');
                     }
-                    if($activityConsignInfo['end_time'] < date('Y-m-d H:i:s')){
-                        self::throwBizError('活动已过期，无法下单');
-                    }
 
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],

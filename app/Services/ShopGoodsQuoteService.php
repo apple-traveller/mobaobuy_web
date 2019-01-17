@@ -460,14 +460,10 @@ class ShopGoodsQuoteService
             self::beginTransaction();
             foreach ($quote_info as $k => $v) {
                 #改报价截止时间
-                $res = ShopGoodsQuoteRepo::modify($v['id'], $data);
-                if (!$res) {
-                    self::rollBack();
-                    return '改报价截止时间出错';
-                }
+                ShopGoodsQuoteRepo::modify($v['id'], $data);
+
                 #清除对应购物车信息
                 CartService::deleteByFields(['shop_goods_quote_id' => $v['id']]);
-
             }
             self::commit();
             return 'success';
