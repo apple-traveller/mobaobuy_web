@@ -349,9 +349,7 @@ class InvoiceController extends Controller
             unset($invoice_data['company_telephone']);
         }
         // 生成唯一开票号
-        $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
-        $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
-        $invoice_data['invoice_numbers'] = $invoice_numbers;
+        $invoice_data['invoice_numbers'] = getInvoiceSn();
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
         if ($re){
             return $this->success('提交成功','',$re['invoice_numbers']);

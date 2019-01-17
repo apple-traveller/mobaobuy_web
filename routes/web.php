@@ -18,8 +18,7 @@ Route::post('/checkVerifyCode', 'VerifyCodeController@check');
 Route::post('/uploadImg', 'UploadController@uploadImg');
 //省市县
 Route::post('/region/level', 'RegionController@regionLevelList');
-
-
+Route::get('closeQuote', 'CommonController@closeQuote');
 
 //后台
 Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
@@ -220,6 +219,8 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/orderinfo/delivery/modifyShippingBillno', 'OrderInfoController@modifyShippingBillno');//修改快递单号
         Route::post('/orderinfo/delivery/modifyDeliveryStatus', 'OrderInfoController@modifyDeliveryStatus');//修改发货状态
         Route::post('/orderinfo/editOrderContract', 'OrderInfoController@editOrderContract');//订单列表
+        Route::get('/orderinfo/applyInvoice', 'OrderInfoController@applyInvoice');//订单列表
+        Route::post('/orderinfo/saveApplyInvoice', 'OrderInfoController@saveApplyInvoice');//订单列表
 
         Route::any('/logistics/list', 'LogisticsController@getList');//站内物流信息列表
         Route::get('/logistics/add', 'LogisticsController@addForm');//添加

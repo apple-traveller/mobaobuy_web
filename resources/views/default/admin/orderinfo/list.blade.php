@@ -94,6 +94,9 @@
                                         <td class="handle">
                                             <div class="tDiv a3">
                                                 <a href="/admin/orderinfo/detail?id={{$vo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"  title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                                @if($order_status==5)
+                                                    <a href="/admin/orderinfo/applyInvoice?id={{$vo['id']}}&currpage={{$currpage}}&order_status={{$order_status}}"  title="申请开票" class="btn_see"><i class="sc_icon sc_icon_see"></i>申请开票</a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
