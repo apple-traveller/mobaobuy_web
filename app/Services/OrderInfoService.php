@@ -1472,7 +1472,6 @@ class OrderInfoService
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
                     }
                 }else{//购物车下单
-
                     foreach ($orderGoodsInfo as $k=>$v){
                         $quoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
                         ShopGoodsQuoteRepo::modify($v['shop_goods_quote_id'],['goods_number'=>$quoteInfo['goods_number']+$v['goods_number']]);
@@ -1701,6 +1700,9 @@ class OrderInfoService
                     if($activityConsignInfo['goods_number'] < $v['goods_number']){
                         self::throwBizError('库存数量不足');
                     }
+                    if($activityConsignInfo['end_time'] < date('Y-m-d H:i:s')){
+                        self::throwBizError('活动已过期，无法下单');
+                    }
 
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
@@ -1726,7 +1728,9 @@ class OrderInfoService
                     if($cartInfo['goods_number'] > $shopGoodsQuoteInfo['goods_number']){
                         self::throwBizError('库存数量不足');
                     }
-
+                    if($shopGoodsQuoteInfo['expiry_time'] < date('Y-m-d H:i:s')){
+                        self::throwBizError('存在已过期商品【'.$shopGoodsQuoteInfo['goods_name'].'】,不能下单');
+                    }
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
                         'shop_goods_id' => $cartInfo['shop_goods_id'],

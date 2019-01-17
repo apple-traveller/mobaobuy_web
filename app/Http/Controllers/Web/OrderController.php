@@ -344,7 +344,11 @@ class OrderController extends Controller
             $goods_amount = 0;
             try {
                 foreach ($goodsList as $k3 => $v3) {
-                    $goodsList[$k3]['delivery_place'] = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id'])['delivery_place'];
+                    $quote_info = ShopGoodsQuoteService::getShopGoodsQuoteById($v3['shop_goods_quote_id']);
+//                    if($quote_info['expiry_time'] < date('Y-m-d H:i:s')){
+//                        return $this->error('存在已过期商品【'.$quote_info['goods_name'].'】,不能下单');
+//                    }
+                    $goodsList[$k3]['delivery_place'] = $quote_info['delivery_place'];
                     $goodsList[$k3]['account'] = number_format($v3['goods_price'] * $v3['goods_number'], 2);
                     $goods_amount += $v3['goods_price'] * $v3['goods_number'];
                 }

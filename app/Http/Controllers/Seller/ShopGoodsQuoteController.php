@@ -29,6 +29,7 @@ class ShopGoodsQuoteController extends Controller
     public function getList(Request $request)
     {
         $currentPage = $request->input('currentPage',1);
+        $pageSize = $request->input('pagesize',10);
         $shop_id = session('_seller_id')['shop_id'];
         $goods_name = $request->input('goods_name','');
         $condition = [];
@@ -40,7 +41,6 @@ class ShopGoodsQuoteController extends Controller
         }
         $condition['b.type'] = '1|2';
         $condition['b.is_delete'] = 0;
-        $pageSize =5;
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         return $this->display('seller.goodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
@@ -258,7 +258,24 @@ class ShopGoodsQuoteController extends Controller
             return $this->error($e->getMessage());
         }
     }
-
+    //置顶
+    public function roof(Request $request)
+    {
+        $ids = $request->input('ids');
+        $is_cancel = $request->input('is_cancel',0);
+        if(empty($ids)){
+            return $this->error('无法获取参数ID');
+        }
+        try{
+            $res = ShopGoodsQuoteService::roof($ids,$is_cancel);
+            if($res){
+                return $this->success('设置成功',url('/seller/quote/list'));
+            }
+            return  $this->error('设置失败');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
     /**
      * 地址树形列表
      * @return array

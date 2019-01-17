@@ -61,7 +61,7 @@ class AutoCloseQuote extends Command
             ]
         );
 
-        Log::info($res);
+//        Log::info($res);
 
     }
 }

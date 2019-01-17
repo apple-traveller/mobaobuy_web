@@ -92,7 +92,10 @@ class ShopGoodsQuoteRepo
         $query = \DB::table($clazz->getTable().' as b')
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
-            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name');
+            ->select(
+                'b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name',
+                DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid')
+            );
 
         $query = self::setCondition($query, $condition);
 
@@ -117,6 +120,8 @@ class ShopGoodsQuoteRepo
             foreach ($pager['orderType'] as $c => $d) {
                 $query = $query->orderBy($c, $d);
             }
+        }else{//有效的报价（没过期、没售罄的报价）在前无效的在后，置顶的在前未置顶的在后，时间倒序
+            $query = $query->orderBy('valid','desc')->orderBy('b.is_roof','desc')->orderBy('b.add_time','desc');
         }
 //        dd($query->toSql());
         if ($page_size > 0) {
