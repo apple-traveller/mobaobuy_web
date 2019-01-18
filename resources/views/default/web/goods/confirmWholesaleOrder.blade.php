@@ -215,7 +215,11 @@
 		
 
 	<div class="address whitebg ovh mt20 ">
-		<h1 class="ml30 fs18 mt30">收货地址</h1>
+		<div class="ml30 fs18 mt30">收货地址
+			<div class="fr mr20" style="font-size: 14px;">
+				<a rel="nofollow" class="ml30 news_addr" href="javascript:">添加新地址&gt;</a>
+			</div>
+		</div>
 
 		@if(!empty($addressList))
 		<ul class="Collect_goods_address ml30 mt10 ovh mb20">
@@ -225,6 +229,7 @@
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}</span>
 				<div class="address_default">
 					<div class="address_default_edit">
+						<span class="mr20 cp edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}" style="color: #74b334">编辑</span>
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else
@@ -390,6 +395,45 @@
             }
 		});
     });
+	//新增地址
+	$('.news_addr').click(function(){
+
+		var Rlength=$('.Collect_goods_address li').length;
+		if (Rlength>10){
+			$.msg.alert('最多输入十个地址信息');
+			return false;
+		} else {
+			layer.open({
+				title:'用户地址',
+				type: 2,
+				area: ['600px', '500px'],
+				maxmin: true,
+				content: '/editAddressList',
+				zIndex: layer.zIndex
+			});
+
+		}
+	});
+
+	//  关闭地址
+	$('.frame_close,.cancel').click(function(){
+		document.getElementById("address_form").reset()
+		$('.block_bg,#addr_frame').hide();
+	})
+	//	编辑
+	$(".edit_address").click(function () {
+		event.stopPropagation();
+		var address_id = $(this).attr('data_id');
+		var is_default = $(this).attr('data_default_id');
+		layer.open({
+			title:'用户地址',
+			type: 2,
+			area: ['600px', '500px'],
+			maxmin: true,
+			content: '/editAddressList?id='+address_id+'&is_default='+is_default,
+			zIndex: layer.zIndex
+		});
+	});
 </script>
 </body>
 </html>
