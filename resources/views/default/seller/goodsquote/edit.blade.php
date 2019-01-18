@@ -78,6 +78,13 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
@@ -210,6 +217,10 @@
 //                        required : true,
 //                        number:true
 //                    },
+                    min_limit:{
+                        required : true,
+                        number:true
+                    },
                     goods_id:{
                         required : true,
                     },
@@ -237,6 +248,10 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
 //                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
 //                    },
+                    min_limit :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+                    },
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -371,6 +386,7 @@
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
             $("#goods_number").val(packing_spac);// 改变商品的时候将商品数量更改为商品规格
+            $("#min_limit").val(packing_spac);// 改变商品的时候将最小采购数量更改为商品规格
         });
 
         $("#goods_name").blur(function () {
@@ -397,6 +413,19 @@
                     $(this).val(goods_number-goods_number%spac);
                 } else {
                     $(this).val(goods_number);
+                }
+            }
+        });
+        $("#min_limit").change(function () {
+            let spac = Number($("#goods_name").attr("data-packing-spac"));
+            let min_limit = Number($(this).val());
+            if (Number(spac) > Number(min_limit)){
+                $(this).val(spac);
+            } else {
+                if (min_limit%spac>0){
+                    $(this).val(min_limit-min_limit%spac);
+                } else {
+                    $(this).val(min_limit);
                 }
             }
         });
