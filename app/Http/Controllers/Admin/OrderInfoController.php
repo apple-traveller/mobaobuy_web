@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\OrderInfoRepo;
+use App\Services\InvoiceService;
+use App\Services\UserAddressService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\OrderInfoService;
@@ -496,6 +498,95 @@ class OrderInfoController extends Controller
 
     }
 
+    //申请开票
+    public function applyInvoice(Request $request)
+    {
+        $order_id = $request->input('id');
+        $order_status = $request->input('order_status');
+        $currpage = $request->input('currpage');
+        if(empty($order_id)){
+            return $this->error('无法获取参数订单ID');
+        }
+        $order_info = OrderInfoService::getOrderInfoById($order_id);
+        #获取开票信息根据用户id
+        $u_id = empty($order_info['firm_id']) ? $order_info['user_id'] : $order_info['firm_id'];
+        #获取开票抬头等信息
+        $user_invoice_info = UserRealService::getInfoByUserId($u_id);
+        #获取申请人地址列表
+        $address_list = UserAddressService::getInfoByUserId($u_id);
+        #获取订单商品信息
+        $order_goods_list = OrderInfoService::getOrderGoodsByOrderId($order_id);
+
+        return $this->display('admin.orderinfo.applyinvoice',[
+            'user_invoice_info'=>$user_invoice_info,
+            'address_list'=>$address_list,
+            'order_goods_list'=>$order_goods_list,
+            'order_status'=>$order_status,
+            'currpage'=>$currpage,
+            'u_id'=>$u_id,
+            'order_id'=>$order_id
+        ]);
+    }
+
+    public function saveApplyInvoice(Request $request)
+    {
+        $order_status = $request->input('order_status');
+        $currpage = $request->input('currpage');
+        $u_id = $request->input('u_id');
+        $order_id = $request->input('order_id');
+        $address_id = $request->input('address_id');
+        #获取用户信息
+        $user_info = UserService::getInfo($u_id);
+        #获取订单商品信息
+        $goodsList = OrderInfoService::getOrderGoodsByOrderId($order_id);
+        $user_real = UserRealService::getInfoByUserId($u_id);
+//        if ($invoice_type==2 && $user_real['is_special']==0){
+//            return $this->error('您不符合开增值专用发票的条件');
+//        }
+        // 通过订单商品获取订单详情->店铺信息
+        $orderInfo = OrderInfoService::getOrderInfoById($order_id);
+        $address_info = UserAddressService::getAddressInfo($address_id);
+        $invoice_data = [
+            'shop_id'  =>  $orderInfo['shop_id'],
+            'shop_name' =>  $orderInfo['shop_name'],
+            'user_id' =>  $u_id,
+            'member_phone' =>  $user_info['user_name'],
+            'invoice_amount' =>  $orderInfo['order_amount'],
+            'order_quantity' =>  count($goodsList),
+            'status' =>  1,
+            'consignee' =>  $user_real['real_name'],
+            'country' =>  $address_info['country'],
+            'province' =>  $address_info['province'],
+            'city' =>   $address_info['city'],
+            'district' => $address_info['district'],
+            'street' => $address_info['street'],
+            'address' => $address_info['address'],
+            'zipcode' => $address_info['zipcode'],
+            'mobile_phone' => $user_info['user_name'],
+//            'invoice_type' => $invoice_type,
+            'company_name' => $user_real['company_name'],
+            'tax_id' => $user_real['tax_id'],
+            'bank_of_deposit' => $user_real['bank_of_deposit'],
+            'bank_account' => $user_real['bank_account'],
+            'company_address' => $user_real['company_address'],
+            'company_telephone' => $user_real['company_telephone']
+        ];
+        if(!$user_real['is_firm']){
+            unset($invoice_data['tax_id']);
+            unset($invoice_data['bank_of_deposit']);
+            unset($invoice_data['bank_account']);
+            unset($invoice_data['company_address']);
+            unset($invoice_data['company_telephone']);
+        }
+        // 生成唯一开票号
+        $invoice_data['invoice_numbers'] = getInvoiceSn();
+        $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
+        if ($re){
+            return $this->success('提交成功',url('/admin/orderinfo/list')."?currpage=".$currpage.'&order_status='.$order_status);
+        } else{
+            return $this->error('申请失败');
+        }
+    }
 
 
 }
