@@ -357,7 +357,7 @@
                             $(".query_goods_name").show();
                             var data = res.data;
                             for(var i=0;i<data.length;i++){
-                                $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                                $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                             }
                         }else{
                             $(".query_goods_name").show();
@@ -378,7 +378,7 @@
                         var data = res.data;
                         console.log(data);
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-packing-spec="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }
                 },"json");
@@ -391,8 +391,9 @@
                 var goods_name = $(this).text();
                 var goods_id = $(this).attr("data-goods-id");
                 var packing_spec = $(this).attr("data-packing-spec");
-                let packing_unit = $(this).attr('data-packing-unit');
-                let unit_name = $(this).attr('data-unit-name');
+                var packing_unit = $(this).attr('data-packing-unit');
+                var unit_name = $(this).attr('data-unit-name');
+                var min_limit = $(this).attr('data-min_limit');
                 $(".unit-name").text(unit_name);
                 $("#goods_name").val(goods_name);
                 $("#goods_id").val(goods_id);
@@ -404,6 +405,7 @@
                 $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spec+unit_name+'/'+packing_unit+'</div>');
 
                 $('#goods_number').val(packing_spec);
+                $('#min_limit').val(min_limit);
             });
 
             $("#goods_name").blur(function(){

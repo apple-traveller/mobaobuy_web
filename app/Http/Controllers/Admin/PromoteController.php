@@ -238,7 +238,7 @@ class PromoteController extends Controller
             $c['goods_model'] = $goods_name;
             $condition[] = $c;
         }
-        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit','unit_name']);
+        $goods = GoodsService::getGoods($condition,['id','goods_name','packing_spec','goods_full_name','packing_unit','unit_name','min_limit']);
         if(!empty($goods)){
             return $this->success('success','',$goods);
         }else{

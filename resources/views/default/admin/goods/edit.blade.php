@@ -113,6 +113,15 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;最小起订量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="{{$good['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;含量：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_content" class="text" value="{{$good['goods_content']}}" maxlength="40" autocomplete="off" id="goods_content">
@@ -431,6 +440,10 @@
                         required : true,
                         number:true,
                     },
+                    min_limit:{
+                        required : true,
+                        number:true,
+                    },
                     packing_unit:{
                         required : true
                     },
@@ -472,6 +485,10 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
+                    min_limit :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    },
                     packing_unit :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -494,6 +511,9 @@
 //                    },
 
                 }
+            });
+            $('#packing_spec').change(function(){
+                $('#min_limit').val('');
             });
         });
     </script>
