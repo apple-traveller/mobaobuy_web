@@ -65,7 +65,7 @@ class ActivityPromoteController extends ApiController
                 'address_id'=>$address_id,
                 'from'=>'promote'
             ];
-            Cache::put('cartSession'.$userInfo['id'], $session_data, 60*24*1);
+            Cache::put('cartSession'.$apiDeputyUser['firm_id'], $session_data, 60*24*1);
             return $this->success($session_data,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage());

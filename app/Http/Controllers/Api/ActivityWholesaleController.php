@@ -54,6 +54,7 @@ class ActivityWholesaleController extends ApiController
             if(empty($address_id)){
                 return $this->error('您还没有设置任何收货地址');
             }
+
             $session_data = [
                 'goods_list'=>$activityInfo,
                 'address_id'=>$address_id,
