@@ -103,6 +103,15 @@
                                     <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
+                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
@@ -207,6 +216,26 @@
                     return ;
                 }
                 $(this).val(Math.floor(goods_number/packing_spec)*packing_spec);
+            });
+            $("#min_limit").blur(function(){
+                var min_limit = $(this).val();
+                var packing_spec = $(this).data("packing_spec");
+                var goods_id = $("#goods_id").val();
+                console.log(goods_id);
+                if(!goods_id){
+                    layer.alert("请先选择商品");
+                    $(this).val("");
+                    return ;
+                }
+                if(!min_limit){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                if(min_limit<=packing_spec){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
             });
 
         });

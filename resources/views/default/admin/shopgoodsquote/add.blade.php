@@ -96,6 +96,14 @@
                                     <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
@@ -172,15 +180,11 @@
                 elem: '#expiry_time' //指定元素
                 , type: 'datetime'
             });
-
+            //过滤不正确的库存数量
             $("#goods_number").blur(function(){
                 var goods_number = Number($(this).val());
                 var packing_spec = Number($('#goods_name').attr("data-packing-spec"));
                 var goods_id = Number($("#goods_id").val());
-
-                console.log(goods_number);
-                console.log(packing_spec);
-                console.log(goods_id);
                 if(!goods_id){
                     layer.alert("请先选择商品");
                     $(this).val("");
@@ -195,6 +199,26 @@
                     return ;
                 }
                 $(this).val(Math.floor(goods_number/packing_spec)*packing_spec);
+            });
+            //过滤不正确的最小采购数量
+            $("#min_limit").blur(function(){
+                var min_limit = Number($(this).val());
+                var packing_spec = Number($('#goods_name').attr("data-packing-spec"));
+                var goods_id = Number($("#goods_id").val());
+                if(!goods_id){
+                    layer.alert("请先选择商品");
+                    $(this).val("");
+                    return ;
+                }
+                if(!min_limit){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                if(min_limit<=packing_spec){
+                    $(this).val(packing_spec);
+                    return ;
+                }
+                $(this).val(Math.floor(min_limit/packing_spec)*packing_spec);
             });
         });
         $(function(){
@@ -226,6 +250,10 @@
                         required : true,
                         number:true
                     },
+                    min_limit :{
+                        required : true,
+                        number:true
+                    },
                     goods_id:{
                         required : true,
                     },
@@ -254,6 +282,10 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_number :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+                    },
+                    min_limit :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
