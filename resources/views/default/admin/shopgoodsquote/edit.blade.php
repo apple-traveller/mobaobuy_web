@@ -333,7 +333,7 @@
                 $(this).val(_name);
             });
             // 商品 获取焦点请求所有的商品数据
-            $("#goods_name").focus(function(){
+            $("#goods_name").click(function(){
                 $(".query_goods_name").children().filter("li").remove();
                 var cat_id = $("#cat_id").val();
                 $.ajax({
