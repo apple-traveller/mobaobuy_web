@@ -395,6 +395,7 @@ class ShopGoodsQuoteService
         $goodsInfo['activity_num'] = $ActivityInfo['goods_number'];
         $goodsInfo['delivery_place'] = $ActivityInfo['delivery_place'];
         $goodsInfo['activity_id'] = $ActivityInfo['id'];
+        $goodsInfo['production_date'] = $ActivityInfo['production_date'];
         $goodsInfo['goods_sn'] = $ActivityInfo['goods_sn'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         //商品市场价
