@@ -163,7 +163,7 @@ class InvoiceController extends ApiController
             'invoice_type'=>$invoice_type,
         ];
 
-        Cache::put('invoiceSession'.$userInfo['id'],$invoiceSession,60*24*1);
+        Cache::put('invoiceSession'.$deputy_user['firm_id'],$invoiceSession,60*24*1);
 
         return $this->success(compact('orderList','invoice_type'),'success');
     }
@@ -198,7 +198,7 @@ class InvoiceController extends ApiController
             return $this->error('您的实名认证还未通过，不能申请发票');
         }
         // 判断默认地址 和当前选择地址
-        $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
+        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['firm_id']);
         //dd($invoiceSession);
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
@@ -235,7 +235,7 @@ class InvoiceController extends ApiController
         //重新封装session 加入商品信息
         $invoiceSession['goods_list'] = $goodsList['list'];
         $invoiceSession['total_amount'] = $total_amount;
-        Cache::put('invoiceSession'.$user_info['id'], $invoiceSession, 60*24*1);
+        Cache::put('invoiceSession'.$dupty_user['firm_id'], $invoiceSession, 60*24*1);
         return $this->success(compact('invoiceInfo','addressList','goodsList','total_amount','invoice_type'),'success');
     }
 
@@ -272,13 +272,14 @@ class InvoiceController extends ApiController
      */
     public function editInvoiceType(Request $request)
     {
+        $dupty_user = $this->getDeputyUserInfo($request);
         $invoice_type = $request->input('invoice_type','');
         if(!$invoice_type){
             return $this->error('缺少开票类型参数！');
         }
-        $invoiceSession = Cache::get('invoiceSession'.$this->getUserID($request));
+        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['firm_id']);
         $invoiceSession['invoice_type'] = $invoice_type;
-        Cache::put('invoiceSession'.$this->getUserID($request), $invoiceSession, 60*24*1);
+        Cache::put('invoiceSession'.$dupty_user['firm_id'], $invoiceSession, 60*24*1);
         return $this->success(Cache::get('invoiceSession'.$this->getUserID($request)),'success');
     }
 
@@ -295,12 +296,12 @@ class InvoiceController extends ApiController
             return $this->error('您没有申请开票的权限');
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
-        $invoiceSession = Cache::get('invoiceSession'.$user_info['id']);
+        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['id']);
         if(empty($invoiceSession['goods_list'])){
             return $this->error('请先选择订单');
         }
         $goodsList = $invoiceSession['goods_list'];
-        $user_real = UserRealService::getInfoByUserId($user_info['id']);
+        $user_real = UserRealService::getInfoByUserId($dupty_user['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
             return $this->error('您不符合开增值专用发票的条件');
         }
@@ -344,6 +345,8 @@ class InvoiceController extends ApiController
         $invoice_numbers = $yCode[intval(date('Y')) - 2011] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
         $invoice_data['invoice_numbers'] = $invoice_numbers;
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
+        //清空缓存
+        Cache::pull('invoiceSession'.$dupty_user['id']);
         if ($re){
             return $this->success($re['invoice_numbers'],'提交成功');
         } else{
