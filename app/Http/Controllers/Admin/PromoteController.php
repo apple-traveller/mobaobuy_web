@@ -225,7 +225,7 @@ class PromoteController extends Controller
         $goods_name = $request->input('goods_name');
         $condition['is_delete'] = 0;
         if($cat_id!="" && $cat_id!=0){
-            $cates = GoodsCategoryService::getCates();
+            $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
             $cate_ids = GoodsCategoryService::getChilds($cates,$cat_id);
             $cate_ids[] = $cat_id;
             $condition['cat_id'] = implode('|',$cate_ids);

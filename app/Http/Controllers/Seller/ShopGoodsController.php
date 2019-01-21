@@ -47,7 +47,7 @@ class ShopGoodsController extends Controller
      */
     public function add()
     {
-        $goodsCat = GoodsCategoryService::getCates();
+        $goodsCat = GoodsCategoryService::getCates(['is_delete'=>0]);
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
         return $this->display('seller.shopgoods.add',[
             'goodsCatTree'=>$goodsCatTree,
@@ -64,7 +64,7 @@ class ShopGoodsController extends Controller
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
         $shopGood = ShopGoodsService::getShopGoodsById($id);
-        $goodsCat = GoodsCategoryService::getCates();
+        $goodsCat = GoodsCategoryService::getCates(['is_delete'=>0]);
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
         return $this->display('seller.shopgoods.edit',[
             'shopGood'=>$shopGood,

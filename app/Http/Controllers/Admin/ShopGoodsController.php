@@ -37,7 +37,7 @@ class ShopGoodsController extends Controller
     public function addForm(Request $request)
     {
         $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
+        $goodsCat = GoodsCategoryService::getCates(['is_delete'=>0]);
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
         $goods = GoodsService::getGoodsList([],[]);
         //dd($goods);
@@ -55,7 +55,7 @@ class ShopGoodsController extends Controller
         $id = $request->input('id');
         $shopGood = ShopGoodsService::getShopGoodsById($id);
         $shops = ShopService::getShopList([],[]);
-        $goodsCat = GoodsCategoryService::getCates();
+        $goodsCat = GoodsCategoryService::getCates(['is_delete'=>0]);
         $goodsCatTree = GoodsCategoryService::getCatesTree($goodsCat);
         $goods = GoodsService::getGoodsList([],[]);
         $good = GoodsService::getGoodInfo($shopGood['goods_id']);

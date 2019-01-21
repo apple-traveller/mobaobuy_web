@@ -39,14 +39,14 @@ class ShopGoodsQuoteService
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
         if (!empty($cates)) {
-            $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates)]);
+            $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates),'is_delete'=>0]);
         } else {
             $filter['cates'] = [];
         }
         //2、获取品牌
         $brands = ShopGoodsQuoteRepo::getQuoteBrand($con);
         if (!empty($brands)) {
-            $brand_list = BrandService::getBrandList([], ['id' => implode('|', $brands)]);
+            $brand_list = BrandService::getBrandList([], ['id' => implode('|', $brands),'is_delete'=>0]);
             $filter['brands'] = $brand_list['list'];
         } else {
             $filter['brands'] = [];
@@ -325,7 +325,7 @@ class ShopGoodsQuoteService
         foreach ($result as $vo) {
             $cates_id[] = $vo->cat_id;
         }
-        $cates = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates_id)]);
+        $cates = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates_id),'is_delete'=>0]);
         return $cates;
     }
 

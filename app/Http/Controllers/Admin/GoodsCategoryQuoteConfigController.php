@@ -34,7 +34,7 @@ class GoodsCategoryQuoteConfigController extends Controller
     public function addForm()
     {
         //查询所有的分类
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         $cateTrees = GoodsCategoryService::getCatesTree($cates,0,1);
         //dd($goods_attr_ids);
         return $this->display('admin.goodscategoryquoteconfig.add',['cateTrees'=>$cateTrees,]);
@@ -50,7 +50,7 @@ class GoodsCategoryQuoteConfigController extends Controller
         $info = GoodsCategoryQuoteConfigService::getInfo($id);
 
         //查询所有的分类
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         $cateTrees = GoodsCategoryService::getCatesTree($cates,0,1);
         return $this->display('admin.goodscategoryquoteconfig.edit',[
             'cateTrees'=>$cateTrees,
