@@ -89,9 +89,10 @@
             $('#pur_num').blur(function(){
                 var _self = $(this);
                 //数量
-                var goodsNumber = Number(_self.val());//当前输入值
-                var packing_spec = Number(_self.attr('packing_spec'));//规格
-                var can_num = Number(_self.attr('can_num')); //可售
+                var goodsNumber = Number(_self.val());//当前输入值 10
+                var packing_spec = Number(_self.attr('packing_spec'));//规格 20
+                var min_limit = Number(_self.attr('min_limit'));//最小采购量
+                var can_num = Number(_self.attr('can_num')); //可售  100
                 if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
                     if(goodsNumber > can_num){
                         var _count = can_num%packing_spec; //整除为0
@@ -101,12 +102,15 @@
                             $(".pur_num").val(can_num);
                         }
                     }else{
-                        var _count2 = goodsNumber%packing_spec;
-                        if(_count2>0){
-                             $(".pur_num").val(goodsNumber - _count2);
-//                             $(".pur_num").val(packing_spec);
-                        }else if(_count2=0){
-                        	$(".pur_num").val(goodsNumber);
+                        if(goodsNumber > min_limit){
+                            var _count2 = goodsNumber%packing_spec;
+                            if(_count2>0){
+                                $(".pur_num").val(goodsNumber - _count2);
+                            }else if(_count2==0){
+                                $(".pur_num").val(goodsNumber);
+                            }
+                        }else{
+                            $(".pur_num").val(min_limit);
                         }
                     }
                 }else{
@@ -291,9 +295,10 @@
 				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                 <div class="pur_volume ml15">
                     <span class="pur shop_num_reduce">-</span>
-                        <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" id="pur_num" class="pur_num" value="{{$good_info['packing_spec']}}" />
+                    <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" min_limit="{{$good_info['min_limit']}}" id="pur_num" class="pur_num" @if($good_info['packing_spec']>$good_info['min_limit']) value="{{$good_info['packing_spec']}}" @else value="{{$good_info['min_limit']}}" @endif/>
                     <span class="pur shop_num_plus">+</span>
                 </div>
+                <span style="line-height: 28px;margin-left: 5px">{{$good_info['unit_name']}}</span>
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
@@ -420,7 +425,8 @@
         $(".shop_num_reduce").click(function(){
             var number = parseInt($(".pur_num").val());
             var packing_spec = parseInt("{{$good_info['packing_spec']}}");
-            if(number<=packing_spec){
+            var min_limit = parseInt("{{$good_info['min_limit']}}");
+            if(number<=packing_spec || number<=min_limit){
                 $(".pur_num").val(number);
                 $.msg.error('已经是最低的购买数量了');
             }else{

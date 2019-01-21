@@ -45,7 +45,8 @@
                             <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
                             <div>
                                 <h3 class="login-sd"><i>第三方账号登录</i></h3>
-                                <p class="login-sdn"><a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>
+                                <p class="login-sdn">
+                                    {{--<a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>--}}
                                     <a href="/login/wxLogin" target="_blank" class="ml5p" title="微信登录"><img src="/img/wx.jpg"/></a>
                                 </p>
                             </div>
@@ -62,8 +63,9 @@
                             <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
                             <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
                             <div>
-                                <h3 class="login-sd"><i>第三方账号登录</i></h3>
-                                <p class="login-sdn"><a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>
+                                <h3 class="login-sd"><i>第三方账号登录123</i></h3>
+                                <p class="login-sdn">
+                                    {{--<a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>--}}
                                     <a href="/login/wxLogin" target="_blank" class="ml5p" title="微信登录"><img src="/img/wx.jpg"/></a>
                                 </p>
                             </div>
