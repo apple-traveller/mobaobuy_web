@@ -76,6 +76,8 @@ class OrderController extends ApiController
         }
         $orderDetailsInfo['orderInfo']['contract_flag'] = $orderDetailsInfo['orderInfo']['contract'];
         $orderDetailsInfo['orderInfo']['contract'] = getFileUrl($orderDetailsInfo['orderInfo']['contract']);
+        $orderDetailsInfo['orderInfo']['pay_voucher'] = getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']);
+        $orderDetailsInfo['orderInfo']['deposit_pay_voucher'] = getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']);
         return $this->success(compact('orderDetailsInfo'),'success');
     }
 
