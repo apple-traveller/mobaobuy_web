@@ -94,13 +94,17 @@ class GoodsController extends ApiController
             $condition['place_id'] = $place_id;
         }
 
-        if($type==0){
-            $condition['b.type'] = '1';
+        if(empty($type)){
+//            $condition['b.type'] = '1|2';
         }else{
-            $condition['b.type'] = $type;
+            if($type == 3){
+                $condition['b.is_self_run'] = 0;
+            }else{
+                $condition['b.type'] = $type;
+                $condition['b.is_self_run'] = 1;
+            }
         }
 
-        $condition['b.is_self_run'] = 1;
         $condition['b.is_delete'] = 0;
         $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         foreach($goodsList['list'] as &$item){
