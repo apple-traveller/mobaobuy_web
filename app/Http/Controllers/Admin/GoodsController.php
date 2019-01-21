@@ -39,11 +39,11 @@ class GoodsController extends Controller
     public function addForm(Request $request)
     {
         //查询所有品牌
-        $brands = BrandService::getBrandList([],[]);
+        $brands = BrandService::getBrandList([],['is_delete'=>0]);
         //查询所有的单位
-        $units = GoodsService::getUnitList([],[]);
+        $units = GoodsService::getUnitList([],['is_delete'=>0]);
         //查询所有的分类
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         $cateTrees = GoodsCategoryService::getCatesTree($cates,0,1);
         //dd($goods_attr_ids);
         return $this->display('admin.goods.add',[
@@ -64,11 +64,11 @@ class GoodsController extends Controller
         $goods_attr = $good['goods_attr'];
         $attrArr = explode(";",$goods_attr);
         //查询所有品牌
-        $brands = BrandService::getBrandList([],[]);
+        $brands = BrandService::getBrandList([],['is_delete'=>0]);
         //查询所有的单位
-        $units = GoodsService::getUnitList([],[]);
+        $units = GoodsService::getUnitList([],['is_delete'=>0]);
         //查询所有的分类
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         $cateTrees = GoodsCategoryService::getCatesTree($cates,0,1);
         return $this->display('admin.goods.edit',[
             'brands'=>$brands['list'],
@@ -192,11 +192,11 @@ class GoodsController extends Controller
         $attrArr = explode(";",$goods_attr);
         //print_r($attrArr);
         //查询所有品牌
-        $brands = BrandService::getBrandList([],[]);
+        $brands = BrandService::getBrandList([],['is_delete'=>0]);
         //查询所有的单位
-        $units = GoodsService::getUnitList([],[]);
+        $units = GoodsService::getUnitList([],['is_delete'=>0]);
         //查询所有的分类
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         //dd($goods_attr_ids);
         return $this->display('admin.goods.detail',[
             'brands'=>$brands['list'],
@@ -251,7 +251,7 @@ class GoodsController extends Controller
         }
         try{
             foreach($attrs as $k=>$v){
-                $attrFlag = GoodsService::getAttr(['attr_name'=>$k]);//判断属性名是否存在
+                $attrFlag = GoodsService::getAttr(['attr_name'=>$k,'is_delete'=>0]);//判断属性名是否存在
                 $attr_id = 0;
                 if(empty($attrFlag)){
                     $info = GoodsService::saveAttrName(['attr_name'=>$k]);
@@ -259,7 +259,7 @@ class GoodsController extends Controller
                 }else{
                     $attr_id = $attrFlag['id'];
                 }
-                $attrValueFlag = GoodsService::getAttrValue(['attr_value'=>$v]);//判断属性值是否存在
+                $attrValueFlag = GoodsService::getAttrValue(['attr_value'=>$v,'is_delete'=>0]);//判断属性值是否存在
                 $attr_value_id = 0;
                 if(!empty($attrValueFlag)){
                     $attr_value_id = $attrValueFlag['id'];

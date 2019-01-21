@@ -171,7 +171,7 @@ class GoodsCategoryController extends Controller
     {
         $id = $request->input('id');
         //获取所有的栏目
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         //获取当前id的所有下级id
         $ids = GoodsCategoryService::getChilds($cates,$id);
         //此时ids如果有值 则代表该分类下有子分类
