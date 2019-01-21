@@ -70,12 +70,14 @@ class OrderController extends ApiController
         $deputy_user = $this->getDeputyUserInfo($request);
         $order_sn = $request->input('order_sn');
         try{
-            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn,$deputy_user['firm_id']);
+            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn,$deputy_user['firm_id'],$deputy_user);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
         $orderDetailsInfo['orderInfo']['contract_flag'] = $orderDetailsInfo['orderInfo']['contract'];
         $orderDetailsInfo['orderInfo']['contract'] = getFileUrl($orderDetailsInfo['orderInfo']['contract']);
+        $orderDetailsInfo['orderInfo']['pay_voucher'] = getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']);
+        $orderDetailsInfo['orderInfo']['deposit_pay_voucher'] = getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']);
         return $this->success(compact('orderDetailsInfo'),'success');
     }
 
@@ -187,7 +189,7 @@ class OrderController extends ApiController
         $addressList = UserAddressService::getInfoByUserId($u_id);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
-                $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
                 if ($v['id'] == $cartSession['address_id']) {
                     $addressList[$k]['is_select'] = 1;
                 } else {

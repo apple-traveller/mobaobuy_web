@@ -46,6 +46,14 @@ class ActivityWholesaleController extends ApiController
         $goodsNum = $request->input('goodsNum');
         $userInfo = $this->getUserInfo($request);
         $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_self'] && ($deputy_user['is_firm'] == 0)){
+            return $this->error('抢购只能是企业用户下单');
+        }
+        if(($deputy_user['is_firm'] == 1) && ($deputy_user['is_self'] == 0)){
+            if(!$deputy_user['can_po']){
+                return $this->error('您没有权限为该企业下单');
+            }
+        }
         try{
             $activityInfo = ActivityWholesaleService::toBalance($goodsId,$activityId,$goodsNum,$userInfo['id']);
             //判断是否有默认地址如果有 则直接赋值 没有则取出一条

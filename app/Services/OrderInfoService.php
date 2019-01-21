@@ -1378,8 +1378,165 @@ class OrderInfoService
     }
 
     // 订单详情
-    public static function orderDetails($id,$firmId){
+    public static function orderDetails($id,$firmId,$deputy_user=[]){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+        //dd($deputy_user);
+        if ($deputy_user['is_firm']) {
+            $condition['firm_id'] = $deputy_user['firm_id'];
+        } else {
+            $condition['user_id'] = $deputy_user['firm_id'];
+            $condition['firm_id'] = 0;
+        }
+        $needApproval = UserRepo::getInfo($deputy_user['firm_id'])['need_approval'];
+        $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$deputy_user['firm_id']);
+        $auth = [
+            'can_del'=>0,//删除
+            'can_approval'=>0,//审批
+            'can_cancel'=>0,//取消
+            'can_pay'=>0,//支付
+            'can_pay_deposite'=>0,//支付定金
+            'can_confirm'=>0,//收货
+            'wait_invoice'=>0,//申请开票
+        ];
+        //企业
+        if(($deputy_user['is_self'] == 1) && $deputy_user['is_firm']){
+            if($orderInfo['order_status'] == 0){
+                $auth['can_del']=1;
+                $orderInfo['auth'] = $auth;
+            }
+            if($orderInfo['order_status'] == 1){
+                if($needApproval){
+                    $auth['can_approval']=1;
+                }
+                $auth['can_cancel']=1;
+                $orderInfo['auth'] = $auth;
+            }
+            if ($orderInfo['order_status'] == 2) {
+                if ($orderInfo['deposit_status'] == 1) {
+                    $auth['can_cancel']=1;
+                    $orderInfo['auth'] = $auth;
+                } elseif ($orderInfo['deposit_status'] == 0) {
+                    $auth['can_cancel']=1;
+                    $auth['can_pay_deposite']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+
+            }
+
+            if($orderInfo['order_status'] == 3){
+                if($orderInfo['pay_status'] == 0){
+                    $auth['can_cancel']=1;
+                    $auth['can_pay']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+
+                //未发货
+                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
+                    $orderInfo['auth'] = $auth;
+                }
+                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                    $auth['can_confirm']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+            }
+
+
+        }
+
+        //企业会员
+        if(($deputy_user['is_self'] == 0) && $deputy_user['is_firm'] == 1){
+            if($currUserAuth){
+                //待企业审核订单
+                if($orderInfo['order_status'] == 1){
+                    if($needApproval){
+                        if($currUserAuth[0]['can_approval']){
+                            $auth['can_approval']=1;
+                            $orderInfo['auth'] = $auth;
+                        }else{
+                            $orderInfo['auth'] = $auth;
+                        }
+                    }
+                }
+
+                //待商家确认
+                if ($orderInfo['order_status'] == 2){
+                    if ($orderInfo['deposit_status'] == 1){
+                        $orderInfo['auth'] = $auth;
+                    } elseif ($orderInfo['deposit_status'] == 0) {
+                        if($currUserAuth[0]['can_pay']){
+                            $auth['can_pay_deposite']=1;
+                            $orderInfo['auth'] = $auth;
+                        }
+                    }
+                }
+                //已确认
+                if($orderInfo['order_status'] == 3){
+                    if($orderInfo['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
+                        $auth['can_pay']=1;
+                        $orderInfo['auth'] = $auth;
+                    }
+                    //未发货
+                    if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
+                        $orderInfo['auth'] = $auth;
+                    }elseif($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                        if($currUserAuth[0]['can_confirm']){
+                            $auth['can_confirm']=1;
+                            $orderInfo['auth'] = $auth;
+                        }
+                    }
+                }
+            }
+        }
+
+        //个人
+        if ($deputy_user['is_firm'] == 0){
+            //个人
+            if ($orderInfo['order_status'] == 0){
+                $auth['can_del']=1;
+                $orderInfo['auth'] = $auth;
+            }
+
+            if ($orderInfo['order_status'] == 2){
+                if ($orderInfo['deposit_status'] == 1){
+                    $auth['can_cancel']=1;
+                    $orderInfo['auth'] = $auth;
+                } elseif ($orderInfo['deposit_status'] == 0){
+                    $auth['can_cancel']=1;
+                    $auth['can_pay_deposite']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+            }
+
+            if ($orderInfo['order_status'] == 3){
+                if ($orderInfo['pay_status'] == 0){
+                    $auth['can_cancel']=1;
+                    $auth['can_pay']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+
+                //未发货
+                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
+                    $orderInfo['auth'] = $auth;
+                }
+                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                    $auth['can_confirm']=1;
+                    $orderInfo['auth'] = $auth;
+                }
+            }
+        }
+
+        if ($orderInfo['order_status'] == 4){
+            $orderInfo['auth'] = $auth;
+        }
+
+        if ($orderInfo['order_status'] == 5){
+            $auth['wait_invoice']=1;
+            $orderInfo['auth'] = $auth;
+        }
+
+        if($orderInfo['order_status'] == 6){
+            $orderInfo['auth'] = $auth;
+        }
 
         if(empty($orderInfo)){
             self::throwBizError('订单详情有误!');
@@ -1393,7 +1550,6 @@ class OrderInfoService
                 return '';
             }
         }
-
 
 
         $goodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
