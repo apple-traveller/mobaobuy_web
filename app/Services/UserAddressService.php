@@ -138,6 +138,7 @@ class UserAddressService
     //确认订单页 获取选中地址 有默认则为默认 没有默认任意选择一条
     public static function getOneAddressIdApi($userInfo,$info)
     {
+
         //判断是否有默认地址如果有 则直接赋值 没有则取出一条
         if($info['is_self'] == 0 && $info['is_firm'] == 1){
             if(isset($info['address_id']) && !empty($info['address_id'])){

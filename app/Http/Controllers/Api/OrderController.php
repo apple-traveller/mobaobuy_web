@@ -297,7 +297,7 @@ class OrderController extends ApiController
         if (empty($addressList)) {
             return $this->error('无地址信息请前去维护');
         }
-        $cartSession = Cache::get("cartSession".$userIds['user_id']);
+        $cartSession = Cache::get("cartSession".$info['firm_id']);
         $carList = $cartSession['goods_list'];
         if (!$cartSession['address_id']) {
             return $this->error('请选择收货地址');

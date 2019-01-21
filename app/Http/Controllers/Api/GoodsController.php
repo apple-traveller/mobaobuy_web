@@ -397,7 +397,8 @@ class GoodsController extends ApiController
         $cartSession['address_id'] = $address_id;
 
         Cache::put('cartSession'.$deputy['firm_id'],$cartSession,60*24*1);
-        return $this->success('选择成功');
+        $cartSession = Cache::get('cartSession'.$deputy['firm_id']);
+        return $this->success($cartSession);
     }
 
     //购物车去结算
@@ -418,7 +419,8 @@ class GoodsController extends ApiController
                 'from'=>'cart',
             ];
             Cache::put('cartSession'.$dupty_user['firm_id'], $cartCache, 60*24*1);
-            return $this->success($cartCache,'success');
+            $cartSession = Cache::get('cartSession'.$dupty_user['firm_id']);
+            return $this->success($cartSession,'success');
         }catch (\Exception $e){
             return $this->error($e->getMessage()); 
         }
