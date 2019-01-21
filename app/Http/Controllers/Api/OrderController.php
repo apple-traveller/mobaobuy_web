@@ -52,6 +52,7 @@ class OrderController extends ApiController
         }
 
         $rs_list = OrderInfoService::getWebOrderListApi($currUser,$condition, $page, $page_size);
+        //dd($rs_list['list']);
         foreach($rs_list['list'] as $k=>$v){
             $rs_list['list'][$k]['address_detail'] = RegionService::getRegionApi($v['country'],$v['province'],$v['city'],$v['district'])." ".$v['address'];
         }
@@ -446,6 +447,9 @@ class OrderController extends ApiController
         $userId = $this->getUserID($request);
         $order_id = $request->input('order_id');
         $order_info = OrderInfoService::getOrderInfoById($order_id);
+        $order_info['contract'] = getFileUrl($order_info['contract']);
+        $order_info['pay_voucher'] = getFileUrl($order_info['pay_voucher']);
+        $order_info['deposit_pay_voucher'] = getFileUrl($order_info['deposit_pay_voucher']);
         $sellerInfo = OrderInfoService::getShopInfoByShopId($order_info['shop_id']);
         return $this->success(compact('order_info','sellerInfo'),'success');
     }
