@@ -1398,7 +1398,6 @@ class OrderInfoService
             'can_confirm'=>0,//收货
             'wait_invoice'=>0,//申请开票
         ];
-        //dd($auth);
         //企业
         if(($deputy_user['is_self'] == 1) && $deputy_user['is_firm']){
             if($orderInfo['order_status'] == 0){

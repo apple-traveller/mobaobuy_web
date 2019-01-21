@@ -95,7 +95,7 @@ class GoodsController extends ApiController
         }
 
         if($type==0){
-            $condition['b.type'] = '1|2';
+            $condition['b.type'] = '1';
         }else{
             $condition['b.type'] = $type;
         }
