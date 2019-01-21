@@ -364,6 +364,8 @@ class ShopGoodsQuoteService
         $goodsInfo['goods_sn'] = $ActivityInfo['goods_sn'];
         $goodsInfo['goods_name'] = $ActivityInfo['goods_name'];
         $goodsInfo['production_date'] = $ActivityInfo['production_date'];
+        $goodsInfo['min_limit'] = $ActivityInfo['min_limit'];
+        $goodsInfo['goods_id'] = $ActivityInfo['goods_id'];
 
         //商品市场价
         $goodsList = GoodsRepo::getList([],['id'=>$ActivityInfo['goods_id']]);

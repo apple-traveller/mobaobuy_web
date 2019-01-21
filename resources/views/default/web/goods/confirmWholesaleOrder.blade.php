@@ -161,7 +161,7 @@
 			position: absolute;
 			bottom: 0;
 			top: 84px;
-			right: -164px;
+			right: -110px;
 		}
 		.address_list{cursor:pointer;}
 	</style>
@@ -230,6 +230,7 @@
 				<div class="address_default">
 					<div class="address_default_edit">
 						<span class="mr20 cp edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}" style="color: #74b334">编辑</span>
+						<span class="mr20 cp del_address " data_id = '{{ $v['id'] }}' style="color: #999">删除</span>
 						@if($v['is_default'] == 1)
 							<span class="mr20 cp " style="color: #74b334">默认</span>
 						@else
@@ -434,6 +435,32 @@
 			zIndex: layer.zIndex
 		});
 	});
+	//	删除
+	$('.del_address').click(function(){
+		event.stopPropagation();
+		var io = $(this);
+		var id = $(this).attr('data_id');
+		$.msg.confirm("确认删除么？",
+			function(index, layero){
+				$.ajax({
+					url:'/deleteAddress',
+					data:{id:id},
+					type:'POST',
+					success:function (res) {
+						if (res.code == 1){
+							// $.msg.alert(res.msg);
+							io.parents(".Collect_goods_address li").remove();
+						} else {
+							// $.msg.alert(res.msg);
+							return false;
+						}
+					}
+				});
+			},
+			function(index){
+			}
+		);
+	})
 </script>
 </body>
 </html>

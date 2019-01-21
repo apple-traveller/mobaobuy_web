@@ -112,9 +112,9 @@ class GoodsCategoryService
     }
 
     //获取所有分类
-    public static function getCates()
+    public static function getCates($condition=[])
     {
-        $res = GoodsCategoryRepo::getListBySearch([],[]);
+        $res = GoodsCategoryRepo::getListBySearch([],$condition);
         return $res['list'];
     }
 

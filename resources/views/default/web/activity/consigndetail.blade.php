@@ -9,16 +9,21 @@
 	<link rel="stylesheet" href="/css/index.css" />
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
-		.top-search-div .search-div .logo{
-			background:none;
-		}
+		.top-search-div .search-div .logo{background:none;}
+        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:158px}
+        .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
+        .chart_btn:hover{background-color: #75b335; color: #fff;}
+        .chart_btn.currlight{background-color: #75b335; color: #fff;}
+        .fn_title{width: 100px;}
 	</style>
 
 @endsection
 @section('js')
 	{{--<script src="{{asset('plugs/layui/layui.all.js')}}"></script>--}}
 	{{--<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>--}}
-	<script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.js"></script>
+	{{--<script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.common.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.js"></script>
+    <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
 	<script type="text/javascript">
         $(function(){
             $(".nav-cate").hover(function(){
@@ -52,63 +57,99 @@
                 }
 
 
-            })
+            });
 
-            //折线图
             var myChart = echarts.init(document.getElementById('price_zst'));
-		    // 指定图表的配置项和数据
-		    var option = {
-		        title: {
-		            text: ''
-		        },
-		        tooltip: {
-		            trigger: 'axis'
-		        },
-		        legend: {
-		            data:["{{$goodsInfo['goods_name']}}"]
-		        },
-		        grid: {
-		            left: '3%',
-		            right: '4%',
-		            bottom: '3%',
-		            containLabel: true
-		        },
-		        xAxis: {
-		            type: 'category',
-		            boundaryGap: false,
-		            data:[]
-		        },
-		        yAxis: {
-		            type: 'value'
-		        },
-		        series: [
-		            {
-		                name:"{{$goodsInfo['goods_name']}}",
-		                type:'line',
-		                stack: '价格',
-		                data:[]
-		            }
-		        ]
-		    };
+            var option = {
+                tooltip : {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        var res = params[0].seriesName + ' ' + params[0].name;
+                        res += '<br/>  最低价 : ' + params[0].value[1] + '  最高价 : ' + params[0].value[2];
+                        return res;
+                    }
+                },
+                legend: {
+                    data:['价格走势']
+                },
+                dataZoom : {
+                    show : true,
+                    realtime: true,
+                    start : 0,
+                    end : 100
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : true,
+                        axisTick: {onGap:false},
+                        splitLine: {show:false},
+                        data : []
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        scale:true,
+                        boundaryGap: [0.01, 0.01]
+                    }
+                ],
+                series : [
+                    {
+                        name:'价格指数',//上证指数
+                        type:'k',
+                        barMaxWidth: 20,
+                        data:[ // 开盘，收盘，最低，最高
 
-		    // 使用刚指定的配置项和数据显示图表。
-		    myChart.setOption(option);
+                        ],
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            //页面初始化获取按日的全部信息
+            getChartInfo();
 
-		    $.get('/price/ajaxcharts?id={{$goodsInfo['id']}}').done(function (data) {
-		    	console.log(data);
-		    	
-		    	myChart.setOption({
-		            xAxis: {
-		                data: data.data.time
-		            },
-		            series: [{
-		                // 根据名字对应到相应的系列
-		                data: data.data.price
-		            }]
-		        });
-		    	
-		        
-		    });
+            $('.get_chart_day').click(function(){
+                $('.hid_type').val(1);
+                $(this).siblings().removeClass('currlight');
+                $(this).addClass('currlight');
+                getChartInfo()
+            });
+            $('.get_chart_week').click(function(){
+                $('.hid_type').val(2);
+                $(this).siblings().removeClass('currlight');
+                $(this).addClass('currlight');
+                getChartInfo()
+            });
+            $('.get_chart_month').click(function(){
+                $('.hid_type').val(3);
+                $(this).siblings().removeClass('currlight');
+                $(this).addClass('currlight');
+                getChartInfo()
+            });
+            $('.chart_search_btn').click(function(){
+                getChartInfo()
+            });
+
+            function getChartInfo(){
+                var _goods_id = $('.goods_id').val();
+                var _type = $('.hid_type').val();
+                var _begin_time = $('#begin_time').val();
+                var _end_time = $('#end_time').val();
+                $.get('/price/ajaxcharts?id='+_goods_id+'&type='+_type+'&begin_time='+_begin_time+'&end_time='+_end_time).done(function (data) {
+                    console.log(data);
+
+                    myChart.setOption({
+                        xAxis: {
+                            data: data.data.time
+                        },
+                        series: [{
+                            // 根据名字对应到相应的系列
+                            data: data.data.price
+                        }]
+                    });
+                })
+            }
 
             //数量输入检测
             $('#goodsNum').blur(function(){
@@ -205,6 +246,16 @@
 				<h1 class="pro_chart_title">
 					商品价格走势
 				</h1>
+                <div style="margin: 10px 0">
+                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="开始时间">
+                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="结束时间">
+                    <input type="button" class="chart_btn chart_search_btn" value="查询" />
+                    <input type="hidden" class="hid_type " value="1" />
+                    <input type="hidden" class="goods_id" value="{{$goodsInfo['goods_id']}}" />
+                    <input class="get_chart_day chart_btn currlight" type="button" value="按日">
+                    <input class="get_chart_week chart_btn" type="button" value="按周">
+                    <input class="get_chart_month chart_btn" type="button" value="按月">
+                </div>
 				<div class="pro_chart_img" id="price_zst">
 
 				</div>
