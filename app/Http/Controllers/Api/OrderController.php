@@ -70,7 +70,7 @@ class OrderController extends ApiController
         $deputy_user = $this->getDeputyUserInfo($request);
         $order_sn = $request->input('order_sn');
         try{
-            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn,$deputy_user['firm_id']);
+            $orderDetailsInfo = OrderInfoService::orderDetails($order_sn,$deputy_user['firm_id'],$deputy_user);
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
