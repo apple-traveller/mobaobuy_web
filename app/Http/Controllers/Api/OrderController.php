@@ -187,7 +187,7 @@ class OrderController extends ApiController
         $addressList = UserAddressService::getInfoByUserId($u_id);
         if (!empty($addressList)) {
             foreach ($addressList as $k => $v) {
-                $addressList[$k] = UserAddressService::getAddressInfo($v['id']);
+                $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
                 if ($v['id'] == $cartSession['address_id']) {
                     $addressList[$k]['is_select'] = 1;
                 } else {
