@@ -89,15 +89,19 @@ class InvoiceController extends ApiController
     {
         $deputy_user = $this->getDeputyUserInfo($request);
         $invoice_id = $request->input('invoice_id');
+
         if(empty($invoice_id)){
             return $this->error('开票id不能为空');
         }
+
         if (isset($deputy_user['can_invoice']) && $deputy_user['can_invoice']==0){
             return $this->error('您没有申请开票的权限');
         }
+
         if (empty($invoice_id)){
             return $this->error('该开票信息不存在');
         }
+
         $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
 
         $invoiceDetail['invoiceInfo']['address_str'] = explode(' ',$invoiceDetail['invoiceInfo']['address_str'])[0];
@@ -199,10 +203,8 @@ class InvoiceController extends ApiController
         }
         // 判断默认地址 和当前选择地址
         $invoiceSession = Cache::get('invoiceSession'.$dupty_user['firm_id']);
-        //dd($invoiceSession);
         $invoice_type = $invoiceSession['invoice_type'];
         $addressList = UserAddressService::getInfoByUserId($user_info['id']);
-        //dd($addressList);
         foreach ($addressList as $k =>  $v){
             $addressList[$k] = UserAddressService::getAddressInfoApi($v['id']);
             if ($v['id'] == $invoiceSession['address_id']){
@@ -296,12 +298,12 @@ class InvoiceController extends ApiController
             return $this->error('您没有申请开票的权限');
         }
         $user_info = UserService::getInfo($dupty_user['firm_id']);
-        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['id']);
+        $invoiceSession = Cache::get('invoiceSession'.$dupty_user['firm_id']);
         if(empty($invoiceSession['goods_list'])){
             return $this->error('请先选择订单');
         }
         $goodsList = $invoiceSession['goods_list'];
-        $user_real = UserRealService::getInfoByUserId($dupty_user['id']);
+        $user_real = UserRealService::getInfoByUserId($dupty_user['firm_id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
             return $this->error('您不符合开增值专用发票的条件');
         }
@@ -346,7 +348,7 @@ class InvoiceController extends ApiController
         $invoice_data['invoice_numbers'] = $invoice_numbers;
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
         //清空缓存
-        Cache::pull('invoiceSession'.$dupty_user['id']);
+        Cache::pull('invoiceSession'.$dupty_user['firm_id']);
         if ($re){
             return $this->success($re['invoice_numbers'],'提交成功');
         } else{
