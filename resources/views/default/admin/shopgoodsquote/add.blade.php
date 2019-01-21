@@ -72,7 +72,7 @@
                                 <div class="label_value">
 
                                     <input type="hidden" name="cat_id" id="cat_id"/>
-                                    <input type="text" name="cat_id_LABELS"  autocomplete="off" treeId="" old="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
+                                    <input type="text" name="cat_id_LABELS" autocomplete="off" treeId="" old="" id="cat_name" treeDataUrl="/admin/goodscategory/getCategoryTree" size="40"  class="text" title="">
                                     <div style="" class="notic">商品分类用于辅助选择商品</div>
                                 </div>
                             </div>
@@ -92,14 +92,6 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
                                     <div class="form_prompt"></div>
                                     <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
@@ -154,7 +146,14 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -250,10 +249,10 @@
                         required : true,
                         number:true
                     },
-                    min_limit :{
-                        required : true,
-                        number:true
-                    },
+//                    min_limit :{
+//                        required : true,
+//                        number:true
+//                    },
                     goods_id:{
                         required : true,
                     },
@@ -285,10 +284,10 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
                     },
-                    min_limit :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
-                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
-                    },
+//                    min_limit :{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+//                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
+//                    },
                     goods_id :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
@@ -406,6 +405,7 @@
 
                 $('#goods_number').val(packing_spec);
                 $('#min_limit').val(min_limit);
+                $('.unit-name').text(unit_name);
             });
 
             $("#goods_name").blur(function(){

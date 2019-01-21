@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2018\11\29 0029.
  */
+
 function showZtreeSelect(treeId, x, y){
     $("#"+treeId).parent().css({"top":y+"px", "left":x+"px","z-index":"999","position":"absolute", "visibility":"visible"}).slideDown("fast");
     $("body").bind("mousedown", function(){
@@ -13,9 +14,11 @@ function hideZtreeSelect(treeId){
     $("#"+treeId).parent().fadeOut("fast");
     $("body").unbind("mousedown");
 }
+
 function showWinZtreeSelector(combobj,_treeId){
     var treeId = $(combobj).attr("treeId");
     var selectOffset = $(combobj).offset();
+
     if($('#'+treeId).length == 0){
         treeId = _treeId;
 
@@ -60,6 +63,7 @@ function showWinZtreeSelector(combobj,_treeId){
             },
             callback: {
                 onClick: function(event, treeId, treeNode, clickFlag) {
+
                     if(event.target.tagName=="SPAN"){
                         $(combobj).val(treeNode.name);
                         $(combobj).attr('old',treeNode.name);
@@ -71,7 +75,8 @@ function showWinZtreeSelector(combobj,_treeId){
                             eval(callbackfn).call(this,treeNode.id,treeNode.name);
                         }
                     }
-                    groupzTreeOnClick(event, treeId, treeNode,selectorurl);
+                    // groupzTreeOnClick(event, treeId, treeNode,selectorurl);
+
                     // hideZtreeSelect(treeId);
                 },
                 onAsyncSuccess: function(event, treeId, treeNode, clickFlag) {
@@ -90,7 +95,7 @@ function groupzTreeOnClick(event, treeId, treeNode,selectorurl) {
 
     var treeObj = $.fn.zTree.getZTreeObj(treeId);
     var node = treeObj.getNodeByTId(treeNode.tId);
-    if(node.children == null || node.children == "undefined"){0
+    if(node.children == null || node.children == "undefined"){
         $.ajax({
             url: selectorurl,
             type: 'get',//请求方式：get

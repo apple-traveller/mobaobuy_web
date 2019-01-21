@@ -103,15 +103,6 @@
                                     <div style="" class="notic">包装规格的整数倍，向下取整</div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="min_limit" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
-                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
-                                </div>
-                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>
@@ -165,7 +156,15 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
+                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -423,6 +422,7 @@
 
                 $('#goods_number').val(packing_spec);
                 $('#min_limit').val(packing_spec);
+                $('.unit-name').text(unit_name);
             });
 
             $("#goods_name").blur(function(){

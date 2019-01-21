@@ -100,6 +100,19 @@
 
                                 <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
 
+                                {{--分类图片--}}
+                                <div class="item">
+                                    <div class="label">分类图片：</div>
+                                    <div class="label_value">
+                                        <button style="float: left;" type="button" class="layui-btn upload-file1" data-type="" data-path="goodscategory" >
+                                            <i class="layui-icon">&#xe681;</i> 上传图片
+                                        </button>
+                                        <input type="hidden" value="" class="text" id="cat_img"  name="cat_img" style="display:none;">
+                                        <img @if(empty($cate['cat_img'])) style="width:60px;height:60px;display:none;margin-top:-5px;margin-left:10px;" @else src="{{getFileUrl($cate['cat_img'])}}" style="width:60px;height:60px;margin-top:-5px;margin-left:10px;" @endif class="layui-upload-img">
+                                        <div style="margin-left: 10px;line-height:40px;" class="form_prompt"></div>
+                                    </div>
+                                </div>
+
                                 <div class="item">
                                     <div class="label">分类菜单图标：</div>
                                     <div class="label_value" >
@@ -209,7 +222,31 @@
                 }
             });
         });
+        layui.use(['upload','layer'], function(){
+            var upload = layui.upload;
+            var layer = layui.layer;
 
+            //文件上传
+            upload.render({
+                elem: '.upload-file1' //绑定元素
+                ,url: "/uploadImg" //上传接口
+                ,accept:'file'
+                ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    this.data={'upload_type':this.item.attr('data-type'),'upload_path':this.item.attr('data-path')};
+                }
+                ,done: function(res){
+                    //上传完毕回调
+                    if(1 == res.code){
+                        var item = this.item;
+                        item.siblings('input').attr('value', res.data.path);
+                        item.siblings('img').show().attr('src', res.data.url);
+                        item.siblings('div').filter(".form_prompt").remove();
+                    }else{
+                        layer.msg(res.msg, {time:2000});
+                    }
+                }
+            });
+        });
         $(function(){
             //表单验证
             $("#submitBtn").click(function(){

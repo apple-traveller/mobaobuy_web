@@ -478,6 +478,7 @@ CREATE TABLE `goods_category` (
   `is_top_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否在顶级分类页显示 0-否 1-是',
   `category_links` varchar(200) NOT NULL DEFAULT '' COMMENT '分类链接',
   `cat_alias_name` varchar(90) NOT NULL DEFAULT '' COMMENT '分类别名，多个之间用|分隔',
+  `cat_img` varchar(255) DEFAULT NULL COMMENT '分类图片',
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   KEY `is_show` (`is_show`),
@@ -593,17 +594,18 @@ CREATE TABLE `goods` (
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
   `last_update` datetime NOT NULL COMMENT '更新时间',
+  `min_limit` int(11) NOT NULL COMMENT '最小起订量',
   PRIMARY KEY (`id`),
   KEY `goods_sn` (`goods_sn`),
   KEY `cat_id` (`cat_id`),
   KEY `brand_id` (`brand_id`),
   KEY `is_delete` (`is_delete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COMMENT='商品表';
 INSERT INTO goods(id, cat_id, goods_sn, goods_name, brand_id, brand_name, unit_id, unit_name, goods_model, packing_spec, packing_unit, goods_attr_ids, goods_attr, goods_desc, desc_mobile, market_price, add_time, last_update) VALUES
-(1, 5, 'P000001', '蛋鸡维生素', 4, '优利保', 1, 'KG', '', '10', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now()),
-(2, 6, 'P000002', '饲料级维生素A', 1, '新和成', 1, 'KG', '', '25', '箱', ';1_2;', '含量:50万 IU/g', 'PC详情', '移动端详情','800', now(), now()),
-(3, 7, 'P000003', '饲料级维生素B1', 5, '天新', 1, 'KG', '', '25', '箱', ';1_6;', '含量:99%', 'PC详情', '移动端详情','600', now(), now()),
-(4, 8, 'P000001', '饲料级维生素C', 3, '天力兴农', 1, 'KG', '', '25', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now());
+(1, 5, 'P000001', '蛋鸡维生素', 4, '优利保', 1, 'KG', '', '10', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now(),'10'),
+(2, 6, 'P000002', '饲料级维生素A', 1, '新和成', 1, 'KG', '', '25', '箱', ';1_2;', '含量:50万 IU/g', 'PC详情', '移动端详情','800', now(), now(),'25'),
+(3, 7, 'P000003', '饲料级维生素B1', 5, '天新', 1, 'KG', '', '25', '箱', ';1_6;', '含量:99%', 'PC详情', '移动端详情','600', now(), now(),'25'),
+(4, 8, 'P000001', '饲料级维生素C', 3, '天力兴农', 1, 'KG', '', '25', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now(),'25');
 
 DROP TABLE IF EXISTS `shop`;
 CREATE TABLE `shop` (
@@ -683,8 +685,8 @@ CREATE TABLE `shop_goods` (
 
 DROP TABLE IF EXISTS `shop_goods_quote`;
 CREATE TABLE `shop_goods_quote` (
-	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-	`shop_id` int(10) NOT NULL COMMENT '商家ID',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `shop_id` int(10) NOT NULL COMMENT '商家ID',
   `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '商家名称',
   `shop_store_id` int(10) NOT NULL COMMENT '店铺ID',
   `store_name` varchar(255) DEFAULT NULL COMMENT '店铺名称',
@@ -693,10 +695,10 @@ CREATE TABLE `shop_goods_quote` (
   `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
   `delivery_place` varchar(50) NOT NULL DEFAULT '' COMMENT '发货地',
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
-  `goods_number` int(10) NOT NULL DEFAULT 0 COMMENT '库存数量',
-  `total_number` int(10) NOT NULL DEFAULT '0' COMMENT '报价总数',
-  `shop_price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '店铺售价',
-  `shop_user_id` int(10) NOT NULL DEFAULT 0 COMMENT '店铺职员ID',
+  `goods_number` int(10) NOT NULL DEFAULT '0' COMMENT '库存数量',
+  `total_number` int(10) NOT NULL COMMENT '报价总数',
+  `shop_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '店铺售价',
+  `shop_user_id` int(10) NOT NULL DEFAULT '0' COMMENT '店铺职员ID',
   `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
   `salesman` varchar(10) NOT NULL DEFAULT '' COMMENT '业务员名称',
   `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
@@ -704,19 +706,20 @@ CREATE TABLE `shop_goods_quote` (
   `production_date` varchar(50) NOT NULL COMMENT '生产日期',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `expiry_time` datetime DEFAULT NULL COMMENT '截止时间',
-  `outer_id` int(10) NOT NULL DEFAULT 0 COMMENT '外部ID',
+  `outer_id` int(10) NOT NULL DEFAULT '0' COMMENT '外部ID',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
   `type` tinyint(1) NOT NULL DEFAULT '2' COMMENT '报价类型 1自售 2品牌直售 3清仓特卖',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `consign_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '清仓特卖状态 0 待审核 1已审核 2审核不通过',
   `delivery_method` varchar(10) NOT NULL COMMENT '交货方式',
   `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
+  `is_roof` tinyint(4) NOT NULL COMMENT '是否置顶 0否 1是',
+  `min_limit` int(11) NOT NULL COMMENT '最小采购量',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`),
   KEY `goods_id` (`goods_id`),
-
   KEY `shop_store_id` (`shop_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
+) ENGINE=InnoDB AUTO_INCREMENT=1164 DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
 
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (

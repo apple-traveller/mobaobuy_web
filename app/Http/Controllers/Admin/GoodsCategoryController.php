@@ -52,7 +52,7 @@ class GoodsCategoryController extends Controller
         //获取图标库文件
         $icons = GoodsCategoryService::getIcons();
         //获取所有的栏目
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         //获取所有的栏目(无限极分类)
         $catesTree = GoodsCategoryService::getCatesTree($cates,0,1);
         //dd($catesTree);
@@ -70,7 +70,7 @@ class GoodsCategoryController extends Controller
         //获取图标库文件
         $icons = GoodsCategoryService::getIcons();
         //获取所有的栏目
-        $cates = GoodsCategoryService::getCates();
+        $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
         //获取所有的栏目(无限极分类)
         $catesTree = GoodsCategoryService::getCatesTree($cates,0,1);
         foreach($catesTree as $k=>$v){
@@ -95,7 +95,8 @@ class GoodsCategoryController extends Controller
             'is_show'=>$request->input('is_show'),
             'is_nav_show'=>$request->input('is_nav_show'),
             'is_top_show'=>$request->input('is_top_show'),
-            'cat_icon'=>$this->requestGetNotNull('cat_icon')
+            'cat_icon'=>$this->requestGetNotNull('cat_icon'),
+            'cat_img'=>$request->input('cat_img'),
         ];
         //dd($data);
 
