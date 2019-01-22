@@ -230,7 +230,9 @@ class GoodsService
                 'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],
                 'goods_name'=>$shopGoodsQuoteInfo['goods_name'],
                 'goods_price'=>$shopGoodsQuoteInfo['shop_price'],
-                'goods_number'=>$goodsNumber,'add_time'=>$addTime];
+                'goods_number'=>$goodsNumber,
+                'add_time'=>$addTime
+            ];
             return CartRepo::create($cartInfo);
         }
 

@@ -103,10 +103,6 @@
             },function(){
                 $('.custom_service_popup').hide();
             });
-
-
-
-
         })
     </script>
 
@@ -445,7 +441,7 @@
                                 @if(isset($shop['quotes']) && !empty($shop['quotes']))
                                     @foreach($shop['quotes'] as $quote)
                                         <li>
-                                            <span style="width:12%;" class="ovhwp" title="{{$quote['cat_name']}}">{{$quote['cat_name']}}</span>
+                                            <span style="width:12%;" data-id="{{$quote['packing_spec']}}" class="ovhwp" title="{{$quote['cat_name']}}">{{$quote['cat_name']}}</span>
                                             {{--<span>{{$quote['goods_full_name']}}</span>--}}
                                             <span style="width:15%;" class="ovhwp" title="{{$quote['goods_full_name']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
                                             <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>
@@ -476,10 +472,14 @@
                                                 </div>
                                             </span>
                                             <span style="width:10%;">
-                                                @if($quote['goods_number'])
-                                                    <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
+                                                @if($quote['expiry_time'] > date('Y-m-d H:i:s'))
+                                                    @if($quote['goods_number'])
+                                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
+                                                    @else
+                                                        <button class="trade-close-btn" style="margin-top:-10px;">已售完</button>
+                                                    @endif
                                                 @else
-                                                    <button class="trade-close-btn" style="margin-top:-10px;">已售完</button>
+                                                    <button class="trade-close-btn" style="margin-top:-10px;">已过期</button>
                                                 @endif
                                             </span>
 
