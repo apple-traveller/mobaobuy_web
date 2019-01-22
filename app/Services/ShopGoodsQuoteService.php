@@ -31,10 +31,15 @@ class ShopGoodsQuoteService
         //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
         $con['b.is_self_run'] = 1;
         $con['b.is_delete'] = 0;
-        if (!isset($condition['b.type'])) {
-            $con['b.type'] = '1|2';
+        if (isset($condition['b.type'])) {
+            if($condition['b.type'] == 3){
+                $con['b.is_self_run'] = 0;
+                $con['b.type'] = '1|2';
+            }else{
+                $con['b.type'] = $condition['b.type'];
+            }
         }else{
-            $con['b.type'] = $condition['b.type'];
+            $con['b.type'] = '1|2';
         }
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
