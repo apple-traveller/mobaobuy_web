@@ -376,8 +376,8 @@
                     <span style="width:15%">报价日期</span>
                     <span style="width:10%">种类</span>
                     <span style="width:25%">商品名称</span>
-                    <span style="width:10%">数量（kg）</span>
-                    <span style="width:10%">单价（元/kg）</span>
+                    <span style="width:10%">数量</span>
+                    <span style="width:10%">单价（元)</span>
                     <span style="width:10%">发货地址</span>
                     <span style="width:20%">联系人</span>
                 </li>
@@ -386,8 +386,8 @@
                         <span style="width:15%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
                         <span style="width:10%" class="ovhwp" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
                         <span style="width:25%" class="ovhwp" title="{{$vo['goods_full_name']}}">{{$vo['goods_full_name']}}</span>
-                        <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif</span>
-                        <span style="width:10%">{{$vo['shop_price']}}</span>
+                        <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>
+                        <span style="width:10%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                         <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
                         <span style="width:20%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                     </li>

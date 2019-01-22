@@ -30,6 +30,7 @@ class ActivityConsignController extends Controller
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
         $condition['b.type'] = '3';
+        $condition['b.is_delete'] = 0;
         $pageSize =10;
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currentPage,'orderType'=>['b.add_time'=>'desc']],$condition);
         $goods_unit = "KG";

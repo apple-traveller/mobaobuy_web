@@ -22,7 +22,7 @@ class GoodsController extends ApiController
         $sort_goods_number = $request->input("sort_goods_number",'');
         $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
-        $orderType = $request->input("orderType","b.add_time:desc");
+//        $orderType = $request->input("orderType","b.add_time:desc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
@@ -30,72 +30,56 @@ class GoodsController extends ApiController
         $is_self_run = $request->input('is_self_run',0);
         $type = $request->input('type',0);
         $condition =[];
-
         $orderBy = [];
-
         if(!empty($sort_goods_number)){
             $orderBy['b.goods_number'] = $sort_goods_number;
         }
-
         if(!empty($sort_add_time)){
             $orderBy['b.add_time'] = $sort_add_time;
         }
-
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-
-        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
-            $t = explode(":",$orderType);
-            $orderBy[$t[0]] = $t[1];
-        }
-
+//        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
+//            $t = explode(":",$orderType);
+//            $orderBy[$t[0]] = $t[1];
+//        }
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }
-
         if(!empty($is_self_run)){
             $condition['b.is_self_run'] = 1;
         }
-
         if(!empty($goods_name)){
             $condition['b.goods_name'] = "%".$goods_name."%";
         }
-
         if($lowest=="" && $highest!=""){
             $condition['shop_price|<='] = $highest;
         }
-
         if($highest=="" && $lowest!=""){
             $condition['shop_price|>='] = $lowest;
         }
-
         if($lowest!="" && $highest!=""&&$lowest<$highest){
             $condition['shop_price|<='] = $highest;
             $condition['shop_price|>='] = $lowest;
         }
-
         if($lowest>$highest){
             $condition['shop_price|>='] = $lowest;
         }
-
         if(!empty($brand_id)){
             $condition['g.brand_id'] = $brand_id;
         }
-
         if(!empty($cate_id)){
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
             $condition[] = $c;
         }
-
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
         }
-
         if(empty($type)){
-//            $condition['b.type'] = '1|2';
+            $condition['b.type'] = '1';//小程序默认的只显示自营报价
         }else{
             if($type == 3){
                 $condition['b.is_self_run'] = 0;

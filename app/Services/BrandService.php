@@ -60,7 +60,7 @@ class BrandService
     {
         $brands = [];
         foreach($goodsList as $vo){
-            $brands[] = GoodsRepo::getList([],['id'=>$vo['goods_id']],['brand_id','brand_name'])[0];
+            $brands[] = GoodsRepo::getList([],['id'=>$vo['goods_id'],'is_delete'=>0],['brand_id','brand_name'])[0];
         }
         $brands_ids = [];
         $unique_brands_ids = [];
@@ -70,7 +70,7 @@ class BrandService
         $unique_brands_ids = array_unique($brands_ids);
         $unique_brands = [];
         foreach ($unique_brands_ids as $item) {
-            $unique_brands[] = BrandRepo::getList([],['id'=>$item],['id','brand_name'])[0];
+            $unique_brands[] = BrandRepo::getList([],['id'=>$item,'is_delete'=>0],['id','brand_name'])[0];
         }
         return $unique_brands;
     }
@@ -78,7 +78,7 @@ class BrandService
     //根据brand_name获取goods数据
     public static function getGoodsIds($brand_name)
     {
-        $goods_id = GoodsRepo::getList([],['brand_name'=>$brand_name],['id']);
+        $goods_id = GoodsRepo::getList([],['brand_name'=>$brand_name,'is_delete'=>0],['id']);
         $res = [];
         foreach ($goods_id as $item){
             $res[] = $item['id'];
