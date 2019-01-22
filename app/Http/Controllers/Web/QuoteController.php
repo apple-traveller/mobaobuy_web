@@ -85,10 +85,10 @@ class QuoteController extends Controller
 //        }
         $pageSize = 20;
         if(!empty($t)){
-            $condition['b.type'] = $t;
             if($t == 3){
                 $condition['b.is_self_run'] = 0;
             }else{
+                $condition['b.type'] = $t;
                 $condition['b.is_self_run'] = 1;
             }
         }else{
@@ -96,7 +96,7 @@ class QuoteController extends Controller
         }
         $condition['b.is_delete'] = 0;
         //商品报价列表
-        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition);
+        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition,$t);
 
         #热门推荐
         if (!empty($keyword)) {

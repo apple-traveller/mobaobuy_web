@@ -21,7 +21,7 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::goodsQuoteList();
     }
 
-    public static function getQuoteByWebSearch($pager, $condition)
+    public static function getQuoteByWebSearch($pager, $condition,$t)
     {
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
 
@@ -32,14 +32,12 @@ class ShopGoodsQuoteService
         $con['b.is_self_run'] = 1;
         $con['b.is_delete'] = 0;
         if (isset($condition['b.type'])) {
-            if($condition['b.type'] == 3){
-                $con['b.is_self_run'] = 0;
-                $con['b.type'] = '1|2';
-            }else{
-                $con['b.type'] = $condition['b.type'];
-            }
+            $con['b.type'] = $condition['b.type'];
         }else{
             $con['b.type'] = '1|2';
+            if($t == 3){
+                $con['b.is_self_run'] = 0;
+            }
         }
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
