@@ -137,13 +137,13 @@ class ShopGoodsQuoteService
                     unset($info['id']);
                     $info['add_time'] = date('Y-m-d H:i:s');
                     if($open_change_quote_price == 1){
-                        $rand_number = self::setRandomNumber($info['goods_id']);dump($rand_number);
+                        $rand_number = self::setRandomNumber($info['goods_id']);
                         $info['goods_number'] = $info['total_number'] = $rand_number ? $rand_number : $info['total_number'];
                     }else{
                         $info['goods_number'] = $info['total_number'];
                     }
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
-                    dd($info);
+
                     ShopGoodsQuoteRepo::create($info);
                 }
             self::commit();
