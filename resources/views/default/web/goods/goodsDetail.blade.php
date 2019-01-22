@@ -92,8 +92,13 @@
                 var goodsNumber = Number(_self.val());//当前输入值 10
                 var packing_spec = Number(_self.attr('packing_spec'));//规格 20
                 var min_limit = Number(_self.attr('min_limit'));//最小采购量
-                var can_num = Number(_self.attr('can_num')); //可售  100
-                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>0){
+                var can_num = Number(_self.attr('can_num')); //可售
+                if(min_limit>packing_spec){
+                    var min_count = min_limit;
+                }else{
+                    var min_count = packing_spec;
+                }
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=min_count){
                     if(goodsNumber > can_num){
                         var _count = can_num%packing_spec; //整除为0
                         if(_count>0){
@@ -102,20 +107,16 @@
                             $(".pur_num").val(can_num);
                         }
                     }else{
-                        if(goodsNumber > min_limit){
-                            var _count2 = goodsNumber%packing_spec;
-                            if(_count2>0){
-                                $(".pur_num").val(goodsNumber - _count2);
-                            }else if(_count2==0){
-                                $(".pur_num").val(goodsNumber);
-                            }
-                        }else{
-                            $(".pur_num").val(min_limit);
+                        var _count2 = goodsNumber%packing_spec;
+                        if(_count2>0){
+                            $(".pur_num").val(goodsNumber - _count2);
+                        }else if(_count2==0){
+                            $(".pur_num").val(goodsNumber);
                         }
                     }
                 }else{
                     $.msg.error('输入的数量有误');
-                    _self.val(packing_spec);
+                    _self.val(min_count);
                 }
             });
 

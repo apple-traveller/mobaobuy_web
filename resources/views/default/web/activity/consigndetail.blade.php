@@ -48,8 +48,14 @@
                 var ipts=$(this).siblings('input.Bidders_record_text');
                 var iptsVal=Number(ipts.val());//当前输入值
                 var packing_spec = Number($(this).attr('packing_spec'));//规格
+                var min_limit = Number($(this).attr('min_limit'));//规格
                 var canSell = Number($(this).attr('canSell'));//规格
-                if (iptsVal-packing_spec < packing_spec) {
+                if(min_limit>packing_spec){
+                    var min_count = min_limit;
+                }else{
+                    var min_count = packing_spec;
+                }
+                if (iptsVal-packing_spec < min_count) {
                     $.msg.error('已经是最低的购买数量了');
                     return;
                 }else{
@@ -158,19 +164,28 @@
                 var goodsNumber = Number(_self.val());//当前输入值
                 var packing_spec = Number(_self.attr('packing_spec'));//规格
                 var activity_num = Number(_self.attr('activity_num'));//活动总量
-
-                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=packing_spec){
+                var min_limit = Number(_self.attr('min_limit'));//起订量
+                if(min_limit>packing_spec){
+                    var min_count = min_limit;
+                }else{
+                    var min_count = packing_spec;
+                }
+                if((/^(\+|-)?\d+$/.test( goodsNumber ))&&goodsNumber>=min_count){
                     if(goodsNumber > activity_num){
                         _self.val(activity_num);
                     }else{
-                        var _count = goodsNumber%packing_spec;
-                        if(_count > 0){
-                            _self.val(goodsNumber-_count);
+                        if(goodsNumber <= min_count){
+                            _self.val(min_count);
+                        }else{
+                            var _count = goodsNumber%packing_spec;
+                            if(_count > 0){
+                                _self.val(goodsNumber-_count);
+                            }
                         }
                     }
                 }else{
                     layer.msg('输入的数量有误');
-                    _self.val(packing_spec);
+                    _self.val(min_count);
                 }
             });
         })
@@ -321,9 +336,9 @@
                     @foreach($goodsInfo['goods_attrs'] as $k=>$v)
                         @if($k%2 == 0)
                             <div class="pro_detail">
-                                <span class="ml15 letter-space fl">{{$v['attr']}}</span><span  class="pro_value">{{$v['value']}}</span>
+                                <span class="ml15 letter-space fl" @if(mb_strlen($v['attr'],'UTF8') >=4) style="letter-spacing:0;width: 88px;" @elseif(mb_strlen($v['attr'],'UTF8') == 3) style="letter-spacing: 8px;width: 88px;" @endif>{{$v['attr']}}</span><span  class="pro_value">{{$v['value']}}</span>
                                 @else
-                                    <span class="fl letter-space">{{$v['attr']}}</span><span  class="ml5 fl">{{$v['value']}}</span>
+                                    <span class="fl letter-space" @if(mb_strlen($v['attr'],'UTF8') >=4) style="letter-spacing:0;width: 88px;" @elseif(mb_strlen($v['attr'],'UTF8') == 3) style="letter-spacing: 8px;width: 88px;" @endif>{{$v['attr']}}</span><span  class="ml5 fl">{{$v['value']}}</span>
                             </div>
                         @endif
                     @endforeach
@@ -336,8 +351,8 @@
 
 					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
                     <div class="pur_volume ml15">
-                        <span class="pur bbright shop_num_reduce" packing_spec="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num']}}">-</span>
-                        <input type="text" cid="{{$goodsInfo['id']}}" activity_num="{{$goodsInfo['activity_num']}}" packing_spec="{{$goodsInfo['packing_spec']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['packing_spec']}}" id="goodsNum" />
+                        <span class="pur bbright shop_num_reduce" packing_spec="{{$goodsInfo['packing_spec']}}" min_limit="{{$goodsInfo['min_limit']}}" canSell="{{$goodsInfo['activity_num']}}">-</span>
+                        <input type="text" cid="{{$goodsInfo['id']}}" activity_num="{{$goodsInfo['activity_num']}}" packing_spec="{{$goodsInfo['packing_spec']}}" min_limit="{{$goodsInfo['min_limit']}}" class="pur_num Bidders_record_text" id="goodsNum" @if($goodsInfo['packing_spec']>$goodsInfo['min_limit']) value="{{$goodsInfo['packing_spec']}}" @else value="{{$goodsInfo['min_limit']}}" @endif />
                         <span id="min_limit" packing_spec="{{$goodsInfo['packing_spec']}}" canSell="{{$goodsInfo['activity_num']}}" class="pur bbleft shop_num_plus">+</span>
                     </div>
 

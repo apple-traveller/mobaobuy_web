@@ -330,7 +330,7 @@
 					</div>
 				</div>
 				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">目标数</span><span  class="pro_value">{{$goodsInfo['activity_num']}}kg</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
+					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">目标数</span><span  class="pro_value">{{$goodsInfo['activity_num']}}{{$goodsInfo['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
 				</div>
 				<div class="pro_detail">
 					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>

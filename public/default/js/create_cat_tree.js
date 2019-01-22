@@ -77,7 +77,7 @@ function showWinZtreeSelector(combobj,_treeId){
                     }
                     // groupzTreeOnClick(event, treeId, treeNode,selectorurl);
 
-                    // hideZtreeSelect(treeId);
+                    hideZtreeSelect(treeId);
                 },
                 onAsyncSuccess: function(event, treeId, treeNode, clickFlag) {
                     var zTreeObj = $.fn.zTree.getZTreeObj(treeId);

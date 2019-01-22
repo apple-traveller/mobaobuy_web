@@ -149,7 +149,14 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="{{ $consign_info['min_limit'] }}" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -305,7 +312,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -326,7 +333,7 @@
                     var data = res.data;
                     console.log(data);
                     for(var i=0;i<data.length;i++){
-                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                     }
                 }
             },"json");
@@ -340,6 +347,7 @@
             var packing_spac = $(this).attr("data-packing-spac");
             let packing_unit = $(this).attr('data-packing-unit');
             let unit_name = $(this).data('unit_name');
+            let min_limit = $(this).data('min_limit');
             $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
@@ -349,6 +357,9 @@
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
+            $('#total_number').val(packing_spac);
+            $('#min_limit').val(min_limit);
+            $('.unit-name').text(unit_name);
         });
 
         $("#goods_name").blur(function(){
@@ -360,12 +371,6 @@
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
                 let old_goods_number = "{{$consign_info['goods_number']}}";
                 let goods_number = $(this).val();
-                let total_number = $("#total_number").val();
-                if(goods_number>total_number){
-                    layer.msg("不能大于报价总数", {icon: 5, time: 1000});
-                    $(this).val(old_goods_number);
-                    return false;
-                }
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
@@ -377,27 +382,18 @@
                 }
                 $(this).val(Math.floor(goods_number/spac) * spac);
             });
-
-            $("#total_number").blur(function () {
+            $("#min_limit").blur(function () {
                 let spac = parseInt($("#goods_name").attr("data-packing-spac"));
-                let old_total_number = "{{$consign_info['total_number']}}";
-                let goods_number = $("#goods_number").val();
-                let total_number = $(this).val();
-                if(goods_number>total_number){
-                    layer.msg("不能小于库存数量", {icon: 5, time: 1000});
-                    $(this).val(old_total_number);
-                    return false;
-                }
+                let min_limit = $(this).val();
                 if (spac == 0) {
                     layer.msg("请先选择商品", {icon: 5, time: 1000});
                     return false;
                 }
-                if (total_number =="" || total_number ==0 || total_number<spac) {
-                    console.log('123');
+                if (min_limit =="" || min_limit ==0 || min_limit<spac) {
                     $(this).val(spac);
                     return false;
                 }
-                $(this).val(Math.floor(total_number/spac) * spac);
+                $(this).val(Math.floor(min_limit/spac) * spac);
             });
         });
         // 商家 请求所有的商家数据
