@@ -1380,14 +1380,22 @@ class OrderInfoService
     // 订单详情
     public static function orderDetails($id,$firmId,$deputy_user=[]){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
+
         if ($deputy_user['is_firm']) {
             $condition['firm_id'] = $deputy_user['firm_id'];
         } else {
             $condition['user_id'] = $deputy_user['firm_id'];
             $condition['firm_id'] = 0;
         }
-        $needApproval = UserRepo::getInfo($deputy_user['firm_id'])['need_approval'];
-        $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$deputy_user['firm_id']);
+        //企业会员权限
+        if($deputy_user['is_firm']){
+            $needApproval = UserRepo::getInfo($deputy_user['firm_id'])['need_approval'];
+            if($condition['firm_id'] && $deputy_user['is_self'] == 0){
+                $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$deputy_user['user_id']);
+                $currUserAuth[0]['need_approval'] = $needApproval;
+            }
+        }
+
         $auth = [
             'can_del'=>0,//删除
             'can_approval'=>0,//审批
@@ -1397,6 +1405,7 @@ class OrderInfoService
             'can_confirm'=>0,//收货
             'wait_invoice'=>0,//申请开票
         ];
+
         //企业
         if(($deputy_user['is_self'] == 1) && $deputy_user['is_firm']){
             if($orderInfo['order_status'] == 0){
@@ -1454,6 +1463,8 @@ class OrderInfoService
                         }else{
                             $orderInfo['auth'] = $auth;
                         }
+                    }else{
+                        $orderInfo['auth'] = $auth;
                     }
                 }
 
