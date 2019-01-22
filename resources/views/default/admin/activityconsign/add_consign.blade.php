@@ -88,7 +88,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品报价总数(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
-                                    <input type="text" name="total_number" class="text" value="{{old('goods_number')}}" maxlength="40" autocomplete="off" id="total_number">
+                                    <input type="text" name="total_number" class="text" value="{{old('total_number')}}" maxlength="40" autocomplete="off" id="total_number">
                                     <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -134,8 +134,14 @@
                                     <div style="margin-left:10px;" class="notic">请选择业务员</div>
                                 </div>
                             </div>
-
-
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div style="color:red;" class="notic">商品包装规格的整数倍，向下取整。</div>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -143,7 +149,6 @@
                                     <input type="reset" value="重置" class="button button_reset">
                                 </div>
                             </div>
-
                         </div>
                     </form>
                 </div>
@@ -259,7 +264,7 @@
                         $(".query_goods_name").show();
                         var data = res.data;
                         for(var i=0;i<data.length;i++){
-                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                            $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }
                     }else{
                         $(".query_goods_name").show();
@@ -280,7 +285,7 @@
                     var data = res.data;
                     console.log(data);
                     for(var i=0;i<data.length;i++){
-                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
+                        $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                     }
                 }
             },"json");
@@ -292,8 +297,9 @@
             var goods_name = $(this).text();
             var goods_id = $(this).attr("data-goods-id");
             var packing_spac = $(this).attr("data-packing-spac");
-            let packing_unit = $(this).attr('data-packing-unit');
-            let unit_name = $(this).data('unit_name');
+            var packing_unit = $(this).attr('data-packing-unit');
+            var unit_name = $(this).data('unit_name');
+            var min_limit = $(this).data('min_limit');
             $(".unit-name").text(unit_name);
             $("#goods_name").val(goods_name);
             $("#goods_id").val(goods_id);
@@ -303,6 +309,9 @@
             $("#num").val(packing_spac);
             $("#num").attr("disabled",false);
             $("#goods_name").after('<div style="margin-left: 10px;color:red;" class="notic">包装规格为：'+packing_spac+unit_name+'/'+packing_unit+'</div>');
+            $('#total_number').val(packing_spac);
+            $('#min_limit').val(min_limit);
+            $('.unit-name').text(unit_name);
         });
 
         $("#goods_name").blur(function(){
@@ -322,6 +331,19 @@
                     return false;
                 }
                 $(this).val(Math.floor(total_number/spac) * spac);
+            });
+            $("#min_limit").blur(function () {
+                let spac = parseInt($("#goods_name").attr("data-packing-spac"));
+                let min_limit = $(this).val();
+                if (spac == 0) {
+                    layer.msg("请先选择商品", {icon: 5, time: 1000});
+                    return false;
+                }
+                if (min_limit =="" || min_limit ==0 || min_limit<spac) {
+                    $(this).val(spac);
+                    return false;
+                }
+                $(this).val(Math.floor(min_limit/spac) * spac);
             });
         });
 

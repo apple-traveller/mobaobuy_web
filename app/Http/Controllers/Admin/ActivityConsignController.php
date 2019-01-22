@@ -56,7 +56,7 @@ class ActivityConsignController extends Controller
         $currentPage = $request->input('currentPage',1);
         $id = $request->input('id');
         $consign_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
-        $goods = GoodsService::getGoodsList([],[]);
+        $goods = GoodsService::getGoodsList([],['is_delete'=>0]);
         $good = GoodsService::getGoodInfo($consign_info['goods_id']);
         //查询该公司的所有业务员信息
         $salesmans = ShopSalesmanService::getList([],['shop_id'=>$consign_info['shop_id']]);
