@@ -1380,7 +1380,6 @@ class OrderInfoService
     // 订单详情
     public static function orderDetails($id,$firmId,$deputy_user=[]){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
-        //dd($deputy_user);
         if ($deputy_user['is_firm']) {
             $condition['firm_id'] = $deputy_user['firm_id'];
         } else {
