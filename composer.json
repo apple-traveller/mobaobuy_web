@@ -26,7 +26,6 @@
         "classmap": [
             "database/seeds",
             "database/factories",
-            "app/Plugins/SMS/ALiDaYu/api_sdk",
             "app/Plugins/SMS/DianJi"
         ],
         "psr-4": {
