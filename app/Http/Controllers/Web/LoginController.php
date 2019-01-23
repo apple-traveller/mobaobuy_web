@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
 {
-    private $_appId = "wxb936150f08e31321";
-    private $_appSecret = "b329babee031fd2a9f18d0dc8366c1b0";
+    private $_appId = "wx0ed48729f527b0e8";
+    private $_appSecret = "763c665c4af2efc90ee13a5702c8dd02";
     private $_scope = "snsapi_login";
-    private $_redirect = "http://mobao.com/login/wxcallback";
+    private $_redirect = "http://www.mobaobuy.com/login/wxCallBack";
     //用户登录页面
     public function index()
     {
