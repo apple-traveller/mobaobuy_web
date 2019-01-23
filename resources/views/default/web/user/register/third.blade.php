@@ -207,7 +207,7 @@
     });
     // 点击获取短信验证码
     function sendMessage(type) {
-        phoneValidate();
+//        phoneValidate();
         verifyValidate ();
 
         if (!checkAccount || !pwdValidate() || !registerCode) {
