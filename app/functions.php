@@ -105,11 +105,14 @@ if(!function_exists('getCategoryTree')){
 /*获取所有特殊规格的商品*/
 if(!function_exists('getSpecialGoods')){
     function getSpecialGoods(){
+        $rs = [];
         $value = \App\Services\GoodsService::getSpecialGoods();
         foreach ($value['list'] as $k=>$v){
-            $value['list'][$k]['cat_top_id'] = getTopCatByCatId($v['cat_id']);
+            $top_cat_id = getTopCatByCatId($v['cat_id']);
+            $rs[$top_cat_id]['goods'][] = $v;
+            //$value['list'][$k]['cat_top_id'] = getTopCatByCatId($v['cat_id']);
         }
-        return $value['list'];
+        return $rs;
     }
 }
 /*根据商品id获取这个商品顶级分类id、名称*/
