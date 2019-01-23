@@ -163,8 +163,11 @@ class LoginController extends Controller
         if(empty($username) || empty($password)){
             return $this->error('用户名或密码参数错误！');
         }
+        $other_params = [
+            'ip'  => $request->getClientIp()
+        ];
         #检测账号密码是否正确
-        $user_id =  UserService::loginValidate($username,$password);
+        $user_id =  UserService::loginValidate($username,$password,$other_params);
         #认证成功 绑定qq或微信
         $app_data = [
             'app_id' => $third_info['openid'],
