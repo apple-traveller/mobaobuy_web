@@ -31,7 +31,7 @@
                         <a class="next_banding" style='color:#ff6600'>继续绑定</a>，或者<a href='/' style='color:#ff6600'>返回首页</a>
                     </div>
                     <div class="item b_password" style="display: none">
-                        <div class="item-libel">设置密码</div>
+                        <div class="item-libel">输入密码</div>
                         <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
                         <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                     </div>
