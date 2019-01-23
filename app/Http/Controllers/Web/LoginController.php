@@ -172,7 +172,7 @@ class LoginController extends Controller
         $app_data = [
             'open_id' => $third_info['openid'],
             'identity_type' => $source_type,
-            'user_id' => $user_id['id']
+            'user_id' => $user_id
         ];
         $result = UserService::createAppUserInfo($app_data);
         if($result){
