@@ -143,7 +143,7 @@ class LoginController extends Controller
             $user['third_type'] = $type;
             session()->put('third_info',$user);
             $title ="账号绑定";
-            return view('web.user.register.third',compact('type','title'));//返回第三方登录类型参数$type 标记Q:qq W:微信
+            return $this->display('web.user.register.third',compact('type','title'));//返回第三方登录类型参数$type 标记Q:qq W:微信
         }
     }
 
