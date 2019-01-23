@@ -23,7 +23,7 @@
                                                 </li>
                                             @endforeach
                                         @endif
-                                        @if(!empty(getSpecialGoods()[$level1_item['id']]['goods']))
+                                        @if(isset(getSpecialGoods()[$level1_item['id']]['goods']) && !empty(getSpecialGoods()[$level1_item['id']]['goods']))
                                             <li>
                                                 <h1 class="fn_title fl">
                                                     <i class="iconfont fr icon-right fr mr20"></i>
