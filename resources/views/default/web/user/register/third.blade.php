@@ -21,6 +21,7 @@
         <div class="register-box">
             <div class="register-form">
                 <div class="form">
+                    <input type="hidden" name="third_type" id="third_type" value="{{$type}}" />
                     <div class="item">
                         <div class="item-libel">用户名</div>
                         <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"></div>
@@ -266,7 +267,8 @@
         params = {
             accountName: $("#phone").val(),
             password: window.btoa($("#password").val()),
-            messCode: $("#messCode").val()
+            messCode: $("#messCode").val(),
+            third_type:$('#third_type').val()
         };
         Ajax.call("{{url('/login/createNewUser')}}", params, function (result){
             if (result.code == 1) {
@@ -290,6 +292,7 @@
         params = {
             username: $("#phone").val(),
             password: window.btoa($("#password").val()),
+            third_type:$('#third_type').val()
         };
         Ajax.call("{{url('/login/createThird')}}", params, function (result){
             if (result.code == 1) {

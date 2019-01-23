@@ -171,7 +171,7 @@ class LoginController extends Controller
         #认证成功 绑定qq或微信
         $app_data = [
             'open_id' => $third_info['openid'],
-            'identity_type' => $source_type,
+            'identity_type' => $source_type ? $source_type : 'W',
             'user_id' => $user_id
         ];
         $result = UserService::createAppUserInfo($app_data);
@@ -214,7 +214,7 @@ class LoginController extends Controller
         if($user_id){
             $app_data = [
                 'open_id' => $third_info['openid'],
-                'identity_type' => $source_type,
+                'identity_type' => $source_type ? $source_type : 'W',
                 'user_id' => $user_id
             ];
             $result = UserService::createAppUserInfo($app_data);
