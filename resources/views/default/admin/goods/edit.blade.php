@@ -180,7 +180,17 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>特殊规格：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special" value="{{$good['is_special']}}">
+                                        <option value="0" @if($good['is_special'] == 0) selected="selected" @endif>否</option>
+                                        <option value="1" @if($good['is_special'] == 1) selected="selected" @endif>是</option>
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                </div>
 
+                            </div>
                             {{--<div class="item">--}}
                                 {{--<div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>--}}
                                 {{--<div class="label_value">--}}

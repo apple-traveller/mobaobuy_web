@@ -215,4 +215,14 @@ class GoodsCategoryService
         return $res;
     }
 
+    public static function getTopCatByCatId($cat_id)
+    {
+        $cat_info = GoodsCategoryRepo::getInfo($cat_id);
+        $top_id = $cat_id;
+        if(!empty($cat_info['parent_id'])){
+            $top_id = self::getTopCatByCatId($cat_info['parent_id']);
+        }
+        return $top_id;
+    }
+
 }

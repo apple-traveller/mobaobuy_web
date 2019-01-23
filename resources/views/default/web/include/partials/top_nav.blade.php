@@ -23,6 +23,19 @@
                                                 </li>
                                             @endforeach
                                         @endif
+                                        <li>
+                                            <h1 class="fn_title fl">
+                                                <i class="iconfont fr icon-right fr mr20"></i>
+                                                <a class="fr" href="#" title="特殊规格">特殊规格</a>
+                                            </h1>
+                                            <div class="ass_fn_list_that ovh fl">
+                                                @foreach(getSpecialGoods() as $k=>$v)
+                                                    @if($level1_item['id'] == $v['cat_top_id'])
+                                                        <span><a href="/goods/special/detail/{{$v['id']}}" title="{{$v['goods_full_name']}}">{{$v['goods_full_name']}}</a></span>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>

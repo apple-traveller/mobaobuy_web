@@ -413,6 +413,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::post('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
 
 
+    Route::get('/goods/special/detail/{id}', 'GoodsController@specialDetail');//招聘列表条件查询
+
+
     Route::group(['middleware' => 'web.auth'], function () {
         Route::get('/logout', 'UserController@logout');//登出
 
