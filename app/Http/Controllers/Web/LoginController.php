@@ -156,7 +156,7 @@ class LoginController extends Controller
     public function createThird(Request $request)
     {
         $username = $request->input('username','');
-        $password = $request->input('password','');
+        $password = base64_decode($request->input('password',''));
 
         $source_type = $request->get('third_type','');//登录来源 Q：qq W：微信
         $third_info = session('third_info');
