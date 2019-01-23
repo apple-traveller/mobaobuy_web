@@ -13,6 +13,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cache;
+use League\Flysystem\Exception;
 
 class LoginController extends Controller
 {
@@ -166,22 +167,27 @@ class LoginController extends Controller
         $other_params = [
             'ip'  => $request->getClientIp()
         ];
-        #检测账号密码是否正确
-        $user_id =  UserService::loginValidate($username,$password,$other_params);
-        #认证成功 绑定qq或微信
-        $app_data = [
-            'open_id' => $third_info['openid'],
-            'identity_type' => $source_type ? $source_type : 'W',
-            'user_id' => $user_id
-        ];
-        $result = UserService::createAppUserInfo($app_data);
-        if($result){
-            #登录更新
-            session()->put('_web_user_id', $user_id);
-            return $this->success('登录成功，正在进入系统...');
-        }else{
-            return $this->error('绑定失败！请联系客服处理。');
+        try{
+            #检测账号密码是否正确
+            $user_id =  UserService::loginValidate($username,$password,$other_params);
+            #认证成功 绑定qq或微信
+            $app_data = [
+                'open_id' => $third_info['openid'],
+                'identity_type' => $source_type ? $source_type : 'W',
+                'user_id' => $user_id
+            ];
+            $result = UserService::createAppUserInfo($app_data);
+            if($result){
+                #登录更新
+                session()->put('_web_user_id', $user_id);
+                return $this->success('登录成功，正在进入系统...');
+            }else{
+                return $this->error('绑定失败！请联系客服处理。');
+            }
+        }catch (Exception $e){
+            return $this->error($e->getMessage());
         }
+
     }
     /**
      * 没有账号创建新账号
@@ -209,25 +215,29 @@ class LoginController extends Controller
             'password' => $password,
             'is_firm' => 0
         ];
-
-        $user_id = UserService::userRegister($data);
-        if($user_id){
-            $app_data = [
-                'open_id' => $third_info['openid'],
-                'identity_type' => $source_type ? $source_type : 'W',
-                'user_id' => $user_id
-            ];
-            $result = UserService::createAppUserInfo($app_data);
-            if($result){
-                if(getConfig('individual_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
-                }else{
-                    #登录更新
-                    session()->put('_web_user_id', $user_id);
-                    return $this->success('登录成功，正在进入系统...');
+        try{
+            $user_id = UserService::userRegister($data);
+            if($user_id){
+                $app_data = [
+                    'open_id' => $third_info['openid'],
+                    'identity_type' => $source_type ? $source_type : 'W',
+                    'user_id' => $user_id
+                ];
+                $result = UserService::createAppUserInfo($app_data);
+                if($result){
+                    if(getConfig('individual_reg_check')) {
+                        return $this->success('提交成功，请等待审核！', url('/verifyReg'));
+                    }else{
+                        #登录更新
+                        session()->put('_web_user_id', $user_id);
+                        return $this->success('登录成功，正在进入系统...');
+                    }
                 }
             }
+            return $this->error('注册失败！');
+        }catch (Exception $e){
+            return $this->error($e->getMessage());
         }
-        return $this->error('注册失败！');
+
     }
 }
