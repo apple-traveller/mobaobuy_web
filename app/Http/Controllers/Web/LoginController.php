@@ -178,7 +178,7 @@ class LoginController extends Controller
         if($result){
             #登录更新
             session()->put('_web_user_id', $user_id);
-            return Redirect::to("/");
+            return $this->success('登录成功，正在进入系统...');
         }else{
             return $this->error('绑定失败！请联系客服处理。');
         }
@@ -224,7 +224,7 @@ class LoginController extends Controller
                 }else{
                     #登录更新
                     session()->put('_web_user_id', $user_id);
-                    return Redirect::to("/");
+                    return $this->success('登录成功，正在进入系统...');
                 }
             }
         }

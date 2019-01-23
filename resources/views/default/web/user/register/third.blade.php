@@ -272,7 +272,7 @@
         };
         Ajax.call("{{url('/login/createNewUser')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href = result.url;
+                window.location.href = '/';
             }else{
                 $.msg.error(result.msg);
             }
@@ -296,7 +296,7 @@
         };
         Ajax.call("{{url('/login/createThird')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href = result.url;
+                window.location.href = '/';
             }else{
                 $.msg.error(result.msg);
             }
