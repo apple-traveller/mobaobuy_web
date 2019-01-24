@@ -53,7 +53,7 @@
 							<span> 品牌 : {{$v['brand_name']}}</span>
 							<span class="ml20"> 含量：{{$v['goods_content']}}</span>
 							<span class="ml20">包装单位 :<font class="blue">{{$v['packing_unit']}}</font></span>
-							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}</font></span>
+							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}/{{$v['packing_unit']}}</font></span>
 						</div>
 						<!-- <span class="db mt5">属       性 : </span> -->
 					</div>

@@ -102,6 +102,26 @@ if(!function_exists('getCategoryTree')){
         return $value;
     }
 }
+/*获取所有特殊规格的商品*/
+if(!function_exists('getSpecialGoods')){
+    function getSpecialGoods(){
+        $rs = [];
+        $value = \App\Services\GoodsService::getSpecialGoods();
+        foreach ($value['list'] as $k=>$v){
+            $top_cat_id = getTopCatByCatId($v['cat_id']);
+            $rs[$top_cat_id]['goods'][] = $v;
+            //$value['list'][$k]['cat_top_id'] = getTopCatByCatId($v['cat_id']);
+        }
+        return $rs;
+    }
+}
+/*根据商品id获取这个商品顶级分类id、名称*/
+if(!function_exists('getTopCatByCatId')){
+    function getTopCatByCatId($cat_id){
+        $value = \App\Services\GoodsCategoryService::getTopCatByCatId($cat_id);
+        return $value;
+    }
+}
 
 if(!function_exists('amount_format')){
     function amount_format($amount, $decimals=2, $currency_symbol='￥', $dec_point='.', $thousands_sep=','){

@@ -162,6 +162,18 @@
                                 </div>
                             </div>
 
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>特殊规格：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
+                                        <option value="0" selected="selected">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                </div>
+
+                            </div>
+
                             {{--<div class="item">--}}
                                 {{--<div class="label"><span class="require-field">*</span>&nbsp;商品重量：</div>--}}
                                 {{--<div class="label_value">--}}

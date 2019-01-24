@@ -84,19 +84,19 @@ class QuoteController extends Controller
 //            $orderBy[$type[0]] = $type[1];
 //        }
         $pageSize = 20;
-        if(empty($t)){
-//            $condition['b.type'] = '1|2';
-        }else{
+        if(!empty($t)){
             if($t == 3){
                 $condition['b.is_self_run'] = 0;
             }else{
                 $condition['b.type'] = $t;
                 $condition['b.is_self_run'] = 1;
             }
+        }else{
+            //            $condition['b.type'] = '1|2';
         }
         $condition['b.is_delete'] = 0;
         //商品报价列表
-        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition);
+        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition,$t);
 
         #热门推荐
         if (!empty($keyword)) {

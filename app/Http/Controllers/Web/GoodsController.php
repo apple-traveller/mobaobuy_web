@@ -222,4 +222,15 @@ class GoodsController extends Controller
             return $this->error($e->getMessage());
         }
     }
+
+    /**
+     * 获取特殊规格产品信息
+     * specialDetail
+     * @param $id
+     */
+    public function specialDetail($id)
+    {
+        $info =GoodsService::getGoodInfo($id);
+        return $this->display('web.goods.specialdetail',compact('info'));
+    }
 }

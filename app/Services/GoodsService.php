@@ -66,6 +66,7 @@ class GoodsService
         return $goods_info;
     }
 
+
     /**
      * 检测商品是否存在对应的信息
      * checkGoodsExistOtherInfo
@@ -472,6 +473,12 @@ class GoodsService
         $data['time'] = $time;
         $data['price'] = $price;
         return $data;
+    }
+    //获取特殊规格的商品
+    public static function getSpecialGoods()
+    {
+        $res = GoodsRepo::getListBySearch([],['is_delete'=>0,'is_special'=>1]);
+        return $res;
     }
 
 }

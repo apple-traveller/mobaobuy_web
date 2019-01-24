@@ -21,6 +21,7 @@
         <div class="register-box">
             <div class="register-form">
                 <div class="form">
+                    <input type="hidden" name="third_type" id="third_type" value="{{$type}}" />
                     <div class="item">
                         <div class="item-libel">用户名</div>
                         <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"></div>
@@ -31,7 +32,7 @@
                         <a class="next_banding" style='color:#ff6600'>继续绑定</a>，或者<a href='/' style='color:#ff6600'>返回首页</a>
                     </div>
                     <div class="item b_password" style="display: none">
-                        <div class="item-libel">设置密码</div>
+                        <div class="item-libel">输入密码</div>
                         <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
                         <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                     </div>
@@ -206,7 +207,7 @@
     });
     // 点击获取短信验证码
     function sendMessage(type) {
-        phoneValidate();
+//        phoneValidate();
         verifyValidate ();
 
         if (!checkAccount || !pwdValidate() || !registerCode) {
@@ -266,11 +267,12 @@
         params = {
             accountName: $("#phone").val(),
             password: window.btoa($("#password").val()),
-            messCode: $("#messCode").val()
+            messCode: $("#messCode").val(),
+            third_type:$('#third_type').val()
         };
         Ajax.call("{{url('/login/createNewUser')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href = result.url;
+                window.location.href = '/';
             }else{
                 $.msg.error(result.msg);
             }
@@ -290,10 +292,11 @@
         params = {
             username: $("#phone").val(),
             password: window.btoa($("#password").val()),
+            third_type:$('#third_type').val()
         };
         Ajax.call("{{url('/login/createThird')}}", params, function (result){
             if (result.code == 1) {
-                window.location.href = result.url;
+                window.location.href = '/';
             }else{
                 $.msg.error(result.msg);
             }

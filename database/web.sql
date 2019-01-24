@@ -595,6 +595,7 @@ CREATE TABLE `goods` (
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除 0-否 1-是',
   `last_update` datetime NOT NULL COMMENT '更新时间',
   `min_limit` int(11) NOT NULL COMMENT '最小起订量',
+  `is_special` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否特殊 0否 1是',
   PRIMARY KEY (`id`),
   KEY `goods_sn` (`goods_sn`),
   KEY `cat_id` (`cat_id`),

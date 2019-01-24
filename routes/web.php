@@ -360,6 +360,8 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/login/qqCallBack', 'LoginController@qqCallBack');//点击微信登录
     Route::get('/login/wxLogin', 'LoginController@wxLogin');//点击微信登录
     Route::get('/login/wxCallBack', 'LoginController@wxCallBack');//点击微信登录
+    Route::post('/login/createThird', 'LoginController@createThird');//有账号输入密码登录
+    Route::post('/login/createNewUser', 'LoginController@createNewUser');//没有账号先注册在登录
 
     Route::get('/findPwd','UserController@userFindPwd');//忘记密码
     Route::post('/findPwd','UserController@userFindPwd');
@@ -409,6 +411,9 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::get('/recruit/list/{id}', 'RecruitController@recruitList');//招聘详情
     Route::post('/resumeSave', 'RecruitController@resumeSave');//简历保存
     Route::post('/recruit/recruitByCondition', 'RecruitController@recruitByCondition');//招聘列表条件查询
+
+
+    Route::get('/goods/special/detail/{id}', 'GoodsController@specialDetail');//招聘列表条件查询
 
 
     Route::group(['middleware' => 'web.auth'], function () {
