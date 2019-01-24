@@ -200,7 +200,7 @@ class LoginController extends Controller
     {
         $source_type = $request->get('third_type','');//登录来源 Q：qq W：微信
         $third_info = session('third_info');
-        $username = $request->get('username','');
+        $username = $request->get('accountName','');
         $password = base64_decode($request->input('password', ''));
         $messCode = $request->input('verifyCode', '');
 
