@@ -88,7 +88,7 @@
     function phoneValidate() {
         phoneValidateBool();
         //验证手机
-        if(checkNameExists()){//手机号已经注册  直接输入密码绑定第三方账号
+        if(!checkNameExists()){//手机号已经注册  直接输入密码绑定第三方账号
             $('.b_password').show();
             $('.b_img_code').hide();
             $('.b_mobile_code').hide();
@@ -123,35 +123,25 @@
     });
     // 验证手机是否注册
     function checkNameExists() {
-        Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
-            if (result.msg) {
-                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
-                checkAccount = false;
-            } else {
-                checkAccount = true;
+        $.ajax({
+            url: "{{url('user/checkNameExists')}}",
+            dataType: "json",
+            data: {
+                'accountName':$("#phone").val()
+            },
+            type: "POST",
+            async:false,
+            success: function (data) {
+                if(data.code == 1){
+                    $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
+                    checkAccount = false;
+                }else{
+                    checkAccount = true;
+                }
             }
-        }, "POST", "JSON",false);
+        })
+        return checkAccount;
     }
-    {{--// 验证手机是否注册--}}
-    {{--function checkNameExists() {--}}
-        {{--$.ajax({--}}
-            {{--url: "{{url('user/checkNameExists')}}",--}}
-            {{--dataType: "json",--}}
-            {{--data: {--}}
-                {{--'accountName':$("#phone").val()--}}
-            {{--},--}}
-            {{--type: "POST",--}}
-            {{--async:false,--}}
-            {{--success: function (data) {--}}
-                {{--if(data.code == 1){--}}
-                    {{--checkAccount = true;--}}
-                {{--}else{--}}
-                    {{--checkAccount = false;--}}
-                {{--}--}}
-            {{--}--}}
-        {{--})--}}
-        {{--return checkAccount;--}}
-    {{--}--}}
 
     // 密码格式检查
     function pwdValidate() {
