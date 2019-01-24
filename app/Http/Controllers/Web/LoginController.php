@@ -202,7 +202,7 @@ class LoginController extends Controller
         $third_info = session('third_info');
         $username = $request->get('username','');
         $password = base64_decode($request->input('password', ''));
-        $messCode = $request->input('messCode', '');
+        $messCode = $request->input('verifyCode', '');
 
         $type = 'sms_signup';
 
@@ -210,7 +210,6 @@ class LoginController extends Controller
         if(Cache::get(session()->getId().$type.$username) != $messCode){
             return $this->error('手机验证码不正确');
         }
-
         $data=[
             'user_name' => $username,
             'password' => $password,
