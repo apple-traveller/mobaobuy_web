@@ -291,6 +291,21 @@ class GoodsController extends ApiController
         }
     }
 
+    //购物车批量删除
+    public function batchDelete(Request $request)
+    {
+        $cart_ids = $request->input('cart_ids');
+        try{
+            $id_arr = explode(',',$cart_ids);
+            foreach($id_arr as $item){
+                GoodsService::delCart($item);
+            }
+            return $this->success('','批量删除成功');
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //递加商品数量
     public function addCartGoodsNum(Request $request){
         $id = $request->input('id');//购物车id

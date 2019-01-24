@@ -691,6 +691,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::post('/send_findpass_sms', 'LoginController@sendFindPwdSms');//忘记密码获取手机验证码
     Route::post('/bind_third', 'LoginController@bindThird');//有账号直接和微信绑定
     Route::post('/create_third', 'LoginController@createThird');//没有账号和微信先绑定再注册
+    Route::post('/login_third', 'LoginController@loginThird');//用手机号验证码登录
 
     Route::post('/uploadImg', 'UploadController@uploadImg');//文件上传
 
@@ -768,6 +769,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
         Route::post('/cart/list', 'GoodsController@getCartList');//加入购物车
         Route::post('/cart/delete', 'GoodsController@delCart');//删除购物车
         Route::post('/cart/clear_cart','GoodsController@clearCart');//清空购物车
+        Route::post('/cart/batch_delete','GoodsController@batchDelete');//批量删除购物车
         Route::post('/cart/add_goods_num','GoodsController@addCartGoodsNum');//购物车商品数量递增
         Route::post('/cart/reduce_goods_num','GoodsController@reduceCartGoodsNum');//购物车商品数量递减
         Route::post('/cart/edit_cart_num','GoodsController@editCartNum');//修改购物车数量

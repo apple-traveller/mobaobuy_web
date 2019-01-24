@@ -114,6 +114,56 @@ class LoginController extends ApiController
         }
     }
 
+    //有账号直接用手机验证码登录
+    public function loginThird(Request $request)
+    {
+        $username = $request->input('mobile');
+        $messCode = $request->input('messCode', '');
+        $openid = $request->input('openid');
+        $nick_name = $request->input('nick_name');
+        $avatar = $this->requestGetNotNull('avatar');
+        $other_params = [
+            'ip'  => $request->getClientIp()
+        ];
+
+        if(empty($openid)){
+            return $this->error('缺少openid');
+        }
+        if(empty($messCode)){
+            return $this->error('手机验证码不能为空');
+        }
+        $type = 'sms_find_signin';
+
+        //手机验证码是否正确
+        if(Cache::get($type.$username) != $messCode){
+            return $this->error('手机验证码不正确');
+        }
+
+        try{
+            //验证会员是否已经存在
+            $flag = UserService::checkNameExists($username);
+            if(!$flag){
+                return $this->error("您未注册，请前去注册");
+            }
+            #先验证会员账号信息
+            $user_id = UserService::loginValidate_mcode($username,$other_params);
+            #绑定账号
+            UserService::bindThird($user_id,$openid,$nick_name,$avatar);
+            $uuid = \Illuminate\Support\Str::uuid();
+            Cache::put($uuid, $user_id, 60*24*7);
+            $userInfo = UserService::getUserInfoApi($user_id);
+            unset($userInfo['id']);
+            $userInfo['token']=$uuid;
+            $rs = [
+                'is_login'=>1,
+                'userInfo'=>$userInfo,
+            ];
+            return $this->success($rs);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
     //没有账号 注册并绑定
     public function createThird(Request $request)
     {
