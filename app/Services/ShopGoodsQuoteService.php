@@ -456,7 +456,7 @@ class ShopGoodsQuoteService
     //
     public static function checkStoreExistQuote($store_id)
     {
-        $res = ShopGoodsQuoteRepo::getTotalCount(['shop_store_id'=>$store_id]);
+        $res = ShopGoodsQuoteRepo::getTotalCount(['shop_store_id'=>$store_id,'is_delete'=>0]);
         if($res>0){
             return true;
         }

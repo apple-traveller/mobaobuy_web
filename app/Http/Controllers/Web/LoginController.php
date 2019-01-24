@@ -174,7 +174,8 @@ class LoginController extends Controller
             $app_data = [
                 'open_id' => $third_info['openid'],
                 'identity_type' => $source_type ? $source_type : 'W',
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'create_time' => date('Y-m-d H:i:s'),
             ];
             $result = UserService::createAppUserInfo($app_data);
             if($result){
@@ -221,7 +222,8 @@ class LoginController extends Controller
                 $app_data = [
                     'open_id' => $third_info['openid'],
                     'identity_type' => $source_type ? $source_type : 'W',
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
+                    'create_time' => date('Y-m-d H:i:s'),
                 ];
                 $result = UserService::createAppUserInfo($app_data);
                 if($result){
