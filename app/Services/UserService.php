@@ -74,7 +74,7 @@ class UserService
 
     //用户注册
     public static function userRegister($data)
-    {dump($data);
+    {
         if(self::checkNameExists($data['user_name'])){
             self::throwBizError('手机号已经注册');
         }
@@ -146,7 +146,6 @@ class UserService
             }else{
                 $data['is_validated'] = 1;
             }
-            dd($data);
             $user_info = UserRepo::create($data);
             $user_id = $user_info['id'];
         }
