@@ -202,7 +202,7 @@
         <div class="table-condition">
             <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
             <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white"><a href="{{url('stockOut')}}">返回</a></div>
+            <div class="fr add_stock tac white"><a href="{{url('stockOut')}}" style="color:#fff">返回</a></div>
         </div>
 
         <div class="table-body">

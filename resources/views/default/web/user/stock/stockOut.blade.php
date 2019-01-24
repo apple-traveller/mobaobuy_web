@@ -44,7 +44,8 @@
                     {"data": "order_sn", "bSortable": false},
                     {"data": "goods_name", "bSortable": false},
                     {"data": "number", "bSortable": false},
-                    {"data": "price", "bSortable": false}
+                    {"data": "price", "bSortable": false},
+                    {"data": "flow_desc", "bSortable": false}
                 ]
             });
 
@@ -74,11 +75,12 @@
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                     <tr class="text-c">
-                        <th width="20%">出库日期</th>
-                        <th width="20%">出库单号</th>
-                        <th width="">商品名称</th>
+                        <th width="15%">出库日期</th>
+                        <th width="15%">出库单号</th>
+                        <th width="20">商品名称</th>
                         <th width="15%">出库数量</th>
                         <th width="15%">出库单价(元)</th>
+                        <th width="20%">备注</th>
                     </tr>
                 </thead>
 

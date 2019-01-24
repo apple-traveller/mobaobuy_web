@@ -47,7 +47,7 @@
         .partner_select{width: 330px; position: absolute; top: 124px; left: 171px; background-color: #fff;  border: 1px solid #dedede;  box-sizing: border-box;z-index:1;}
         .partner_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
         .partner_select li:hover{background-color: #f1f1f1;}
-
+        #data-table tbody tr td{word-break: break-all;}
      
     </style>
     <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
@@ -83,6 +83,7 @@
                     {"data": "goods_name", "bSortable": false},
                     {"data": "number", "bSortable": false},
                     {"data": "price", "bSortable": false},
+                    {"data": "flow_desc", "bSortable": false}
                 ]
             });
 
@@ -285,11 +286,12 @@
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="20%">入库日期</th>
-                    <th width="20%">订单编号</th>
-                    <th width="">商品名称</th>
+                    <th width="15%">入库日期</th>
+                    <th width="15%">订单编号</th>
+                    <th width="20%">商品名称</th>
                     <th width="15%">入库数量</th>
                     <th width="15%">入库单价(元)</th>
+                    <th width="20%">备注</th>
                 </tr>
                 </thead>
             </table>
