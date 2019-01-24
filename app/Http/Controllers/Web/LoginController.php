@@ -202,7 +202,7 @@ class LoginController extends Controller
         $third_info = session('third_info');
         $username = $request->get('accountName','');
         $password = base64_decode($request->input('password', ''));
-        $messCode = $request->input('verifyCode', '');
+        $messCode = $request->input('messCode', '');
 
         $type = 'sms_signup';
 
