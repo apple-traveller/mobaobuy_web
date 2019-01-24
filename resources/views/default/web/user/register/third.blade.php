@@ -86,18 +86,7 @@
     gv();
     // 手机格式验证
     function phoneValidate() {
-        $("#phone_error").html('');
-        if (isNull.test($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入手机号");
-            checkAccount = false;
-
-            return false;
-        } else if (!Utils.isPhone($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确");
-            checkAccount = false;
-
-            return false;
-        }
+        phoneValidateBool();
         //验证手机
         if(checkNameExists()){//手机号已经注册  直接输入密码绑定第三方账号
             $('.b_password').show();
@@ -111,6 +100,20 @@
             $('#sub-btn').attr('class','register-button')
         }
     }
+    function phoneValidateBool(){
+        $("#phone_error").html('');
+        if (isNull.test($("#phone").val())) {
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入手机号");
+            checkAccount = false;
+
+            return false;
+        } else if (!Utils.isPhone($("#phone").val())) {
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确");
+            checkAccount = false;
+
+            return false;
+        }
+    }
     $('.next_banding').click(function(){
         $('.b_msg').hide();
         $('.b_password').show();
@@ -118,27 +121,37 @@
         $('.b_mobile_code').show();
         $('#sub-btn').attr('class','register-button sub-btn-register')
     });
-
     // 验证手机是否注册
     function checkNameExists() {
-        $.ajax({
-            url: "{{url('user/checkNameExists')}}",
-            dataType: "json",
-            data: {
-                'accountName':$("#phone").val()
-            },
-            type: "POST",
-            async:false,
-            success: function (data) {
-                if(data.code == 1){
-                    checkAccount = true;
-                }else{
-                    checkAccount = false;
-                }
+        Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
+            if (result.msg) {
+                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
+                checkAccount = false;
+            } else {
+                checkAccount = true;
             }
-        })
-        return checkAccount;
+        }, "POST", "JSON",false);
     }
+    {{--// 验证手机是否注册--}}
+    {{--function checkNameExists() {--}}
+        {{--$.ajax({--}}
+            {{--url: "{{url('user/checkNameExists')}}",--}}
+            {{--dataType: "json",--}}
+            {{--data: {--}}
+                {{--'accountName':$("#phone").val()--}}
+            {{--},--}}
+            {{--type: "POST",--}}
+            {{--async:false,--}}
+            {{--success: function (data) {--}}
+                {{--if(data.code == 1){--}}
+                    {{--checkAccount = true;--}}
+                {{--}else{--}}
+                    {{--checkAccount = false;--}}
+                {{--}--}}
+            {{--}--}}
+        {{--})--}}
+        {{--return checkAccount;--}}
+    {{--}--}}
 
     // 密码格式检查
     function pwdValidate() {
@@ -207,9 +220,8 @@
     });
     // 点击获取短信验证码
     function sendMessage(type) {
-//        phoneValidate();
+        phoneValidateBool();
         verifyValidate ();
-
         if (!checkAccount || !pwdValidate() || !registerCode) {
             return false;
         }
