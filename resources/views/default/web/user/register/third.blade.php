@@ -271,7 +271,7 @@
         if (!$("#action").is(':checked')) {
             return false;
         }
-        phoneValidate();
+        phoneValidateBool();
         verifyValidate ();
         if (!checkAccount || !pwdValidate() || !registerCode || !msgCodeValidate()) {
             return false;
@@ -296,8 +296,8 @@
         if (!$("#action").is(':checked')) {
             return false;
         }
-        phoneValidate();
-//        verifyValidate ();
+        phoneValidateBool();
+        verifyValidate ();
         if (!checkAccount || !pwdValidate()) {
             return false;
         }
