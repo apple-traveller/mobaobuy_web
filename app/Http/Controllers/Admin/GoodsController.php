@@ -91,7 +91,7 @@ class GoodsController extends Controller
         if($data['cat_id']==0){
             $errorMsg[] = '商品分类不能为空';
         }
-        if($data['brand_id']==0){
+        if($data['brand_id']==0 && $data['is_special'] == 0){
             $errorMsg[] = '商品品牌不能为空';
         }
         if(empty($data['goods_name'])){

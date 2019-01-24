@@ -174,7 +174,8 @@ class LoginController extends Controller
             $app_data = [
                 'open_id' => $third_info['openid'],
                 'identity_type' => $source_type ? $source_type : 'W',
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'create_time' => date('Y-m-d H:i:s'),
             ];
             $result = UserService::createAppUserInfo($app_data);
             if($result){
@@ -201,7 +202,7 @@ class LoginController extends Controller
         $third_info = session('third_info');
         $username = $request->get('username','');
         $password = base64_decode($request->input('password', ''));
-        $messCode = $request->input('messCode', '');
+        $messCode = $request->input('verifyCode', '');
 
         $type = 'sms_signup';
 
@@ -209,7 +210,6 @@ class LoginController extends Controller
         if(Cache::get(session()->getId().$type.$username) != $messCode){
             return $this->error('手机验证码不正确');
         }
-
         $data=[
             'user_name' => $username,
             'password' => $password,
@@ -221,7 +221,8 @@ class LoginController extends Controller
                 $app_data = [
                     'open_id' => $third_info['openid'],
                     'identity_type' => $source_type ? $source_type : 'W',
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
+                    'create_time' => date('Y-m-d H:i:s'),
                 ];
                 $result = UserService::createAppUserInfo($app_data);
                 if($result){

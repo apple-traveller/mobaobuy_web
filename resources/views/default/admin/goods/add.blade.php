@@ -36,7 +36,16 @@
                                     <div class="notic">关键词，多个用|分隔</div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>特殊规格：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
+                                        <option value="0" selected="selected">否</option>
+                                        <option value="1">是</option>
+                                    </select>
+                                    <div style="margin-left:10px;" class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>所属品牌：</div>
                                 <div class="label_value">
@@ -60,9 +69,9 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="cat_id" id="cat_id">
                                         <option value="">请选择分类</option>
                                         @if(!empty($cateTrees))
-                                        @foreach($cateTrees as $v)
-                                            <option  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
-                                        @endforeach
+                                            @foreach($cateTrees as $v)
+                                                <option  value="{{$v['id']}}">|<?php echo str_repeat('-->',$v['level']).$v['cat_name'];?></option>
+                                            @endforeach
                                         @endif
                                     </select>
                                     <div style="margin-left:10px;" class="form_prompt"></div>
@@ -160,18 +169,6 @@
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
-                            </div>
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>特殊规格：</div>
-                                <div class="label_value">
-                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_special" id="is_special">
-                                        <option value="0" selected="selected">否</option>
-                                        <option value="1">是</option>
-                                    </select>
-                                    <div style="margin-left:10px;" class="form_prompt"></div>
-                                </div>
-
                             </div>
 
                             {{--<div class="item">--}}
@@ -393,6 +390,26 @@
         });
 
         $(function(){
+            $('#is_special').change(function(){
+                var _val = $(this).val();
+                if(_val == 1){
+                    $('#brand_id option:first').val(0);
+                    $('#unit_id option:first').val(0);
+                    $('#packing_spec').val(1);
+                    $('#min_limit').val(1);
+                    $('#goods_content').val('100%');
+                    $('#packing_unit').val('箱');
+                    $('#market_price').val(1);
+                }else{
+                    $('#brand_id option:first').val('');
+                    $('#unit_id option:first').val('');
+                    $('#packing_spec').val('');
+                    $('#min_limit').val('');
+                    $('#goods_content').val('');
+                    $('#packing_unit').val('');
+                    $('#market_price').val('');
+                }
+            });
             //表单验证
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){

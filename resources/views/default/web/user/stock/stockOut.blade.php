@@ -67,7 +67,7 @@
                 <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
             </div>
             <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}">+新增出库</a></div>
+            <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}" style="color:#fff">+新增出库</a></div>
         </div>
         
         <div class="table-body">

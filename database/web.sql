@@ -574,10 +574,10 @@ CREATE TABLE `goods` (
   `goods_full_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品全称',
   `goods_content` varchar(120) NOT NULL DEFAULT '' COMMENT '含量',
   `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词，多个用|分隔',
-  `brand_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '品牌ID',
-  `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
-  `unit_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '单位ID',
-  `unit_name` varchar(15) NOT NULL DEFAULT 'KG' COMMENT '单位名称',
+  `brand_id` smallint(5) unsigned DEFAULT '0' COMMENT '品牌ID',
+  `brand_name` varchar(60) DEFAULT '' COMMENT '品牌名称',
+  `unit_id` smallint(5) unsigned DEFAULT '0' COMMENT '单位ID',
+  `unit_name` varchar(15) DEFAULT 'KG' COMMENT '单位名称',
   `goods_model` varchar(50) DEFAULT '' COMMENT '商品型号',
   `packing_spec` int(11) NOT NULL DEFAULT '1' COMMENT '包装规格',
   `packing_unit` varchar(20) NOT NULL DEFAULT '包' COMMENT '包装单位',
@@ -601,7 +601,7 @@ CREATE TABLE `goods` (
   KEY `cat_id` (`cat_id`),
   KEY `brand_id` (`brand_id`),
   KEY `is_delete` (`is_delete`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='商品表';
 INSERT INTO goods(id, cat_id, goods_sn, goods_name, brand_id, brand_name, unit_id, unit_name, goods_model, packing_spec, packing_unit, goods_attr_ids, goods_attr, goods_desc, desc_mobile, market_price, add_time, last_update) VALUES
 (1, 5, 'P000001', '蛋鸡维生素', 4, '优利保', 1, 'KG', '', '10', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now(),'10'),
 (2, 6, 'P000002', '饲料级维生素A', 1, '新和成', 1, 'KG', '', '25', '箱', ';1_2;', '含量:50万 IU/g', 'PC详情', '移动端详情','800', now(), now(),'25'),
