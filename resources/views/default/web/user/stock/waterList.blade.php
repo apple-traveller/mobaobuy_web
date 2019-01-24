@@ -65,7 +65,7 @@
         <div class="table-condition" >
             <div class="item fl" style="font-size: 16px;height: 40px;line-height: 40px;"><span class="pr20 pl15">商品名称：{{$firmStockInfo['goods_name']}}</span>库存数：<span class="fs18 orange fwb">{{$firmStockInfo['number']}}</span>
             </div>
-            <div class="fr back_btn "><a href="{{url('stock/list')}}">返回</a></div>
+            <div class="fr back_btn "><a href="{{url('stock/list')}}" style="color:#fff">返回</a></div>
         </div>
 
         <div class="table-body">

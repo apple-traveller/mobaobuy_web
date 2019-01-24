@@ -37,10 +37,10 @@
                                 <input style="height:30px;" type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
                             </div>
                             <div class="input">
-                                <select style="height:30px;float:left;border:0;border-right: 1px solid #dbdbdb;line-height:30px;width:150px;" name="shop_name" id="cat_id">
+                                <select style="height:30px;float:left;border:0;border-right: 1px solid #dbdbdb;line-height:30px;width:220px;" name="shop_name" id="cat_id">
                                     <option value="0">全部店铺</option>
                                     @foreach($shops as $vo)
-                                        <option @if($vo['shop_name']==$shop_name) selected @endif  value="{{$vo['shop_name']}}">{{$vo['shop_name']}}</option>
+                                        <option @if($vo['company_name']==$shop_name) selected @endif  value="{{$vo['company_name']}}">{{$vo['company_name']}}</option>
                                     @endforeach
                                 </select>
                                 <input type="submit" class="btn" style="border-left:0" ectype="secrch_btn" value="">
