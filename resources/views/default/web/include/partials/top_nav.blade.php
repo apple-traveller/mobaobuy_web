@@ -31,7 +31,7 @@
                                                 </h1>
                                                 <div class="ass_fn_list_that ovh fl">
                                                     @foreach(getSpecialGoods()[$level1_item['id']]['goods']??[] as $v)
-                                                        <span><a href="/goods/special/detail/{{$v['id']}}" title="{{$v['goods_full_name']}}">{{$v['goods_full_name']}}</a></span>
+                                                        <span><a href="/goods/special/detail/{{$v['id']}}" title="{{$v['goods_name']}}">{{$v['goods_name']}}</a></span>
                                                     @endforeach
                                                 </div>
                                             </li>

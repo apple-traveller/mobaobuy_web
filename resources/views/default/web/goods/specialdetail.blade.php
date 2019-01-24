@@ -49,10 +49,10 @@
 @section('content')
     <div class="clearfix" style="background-color: rgb(244, 244, 244);">
         <div class="clearfix mb20">
-            <div class="w1200 crumbs" style="margin: 10px auto">当前位置：<a href="javascript:">特殊规格</a> > <span class="gray">{{ $info['goods_full_name'] }}</span></div>
+            <div class="w1200 crumbs" style="margin: 10px auto">当前位置：<a href="javascript:">特殊规格</a> > <span class="gray">{{ $info['goods_name'] }}</span></div>
             <div class="w1200" style="min-height: 400px;background-color: #fff">
                 <h1 class="info-detail-title">
-                    {{ $info['goods_full_name'] }}
+                    {{ $info['goods_name'] }}
                 </h1>
                 <div class="info-detail-bq gray">
                     <div>发布时间： {{ $info['add_time'] }}</div>
