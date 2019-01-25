@@ -38,7 +38,7 @@
                             </div>
                             <div class="input">
                                 <select style="height:30px;float:left;border:0;border-right: 1px solid #dbdbdb;line-height:30px;width:220px;" name="shop_name" id="cat_id">
-                                    <option value="0">全部店铺</option>
+                                    <option value="0">全部商家</option>
                                     @foreach($shops as $vo)
                                         <option @if($vo['company_name']==$shop_name) selected @endif  value="{{$vo['company_name']}}">{{$vo['company_name']}}</option>
                                     @endforeach
