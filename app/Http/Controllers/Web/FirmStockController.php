@@ -90,6 +90,7 @@ class FirmStockController extends Controller
     public function addFirmStock(Request $request){
         if(session('_curr_deputy_user')['is_firm']) {
             $stockInData = [];
+            $id = $request->input('id');
             $stockInData['goods_id'] = $request->input('goods_id');
             $stockInData['partner_name'] = $this->requestGetNotNull('partner_name','');
 //            $stockInData['goods_name'] = $request->input('goods_name');
@@ -98,10 +99,19 @@ class FirmStockController extends Controller
             $stockInData['order_sn'] = $this->requestGetNotNull('order_sn','');
             $stockInData['price'] = $this->requestGetNotNull('price', 0);
             $stockInData['firm_id'] = session('_curr_deputy_user')['firm_id'];
-            $stockInData['created_by'] = session('_web_user_id');
-            $stockInData['flow_type'] = 2;
+
             try {
-                FirmStockService::createFirmStock($stockInData);
+                if(isset($id) && !empty($id)){//编辑
+                    $number_old = $this->requestGetNotNull('number_old', 0);
+                    $count = $stockInData['number'] - $number_old;
+                    FirmStockService::in_modify($id,$stockInData,$count);
+
+                }else{
+                    $stockInData['created_by'] = session('_web_user_id');
+                    $stockInData['flow_type'] = 2;
+                    FirmStockService::createFirmStock($stockInData);
+                }
+
                 return $this->success();
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -212,16 +222,25 @@ class FirmStockController extends Controller
     public function curStockSave(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
             $currStockOut = [];
-            $currStockOut['id'] = $request->input('id');
+            $currStockOut['id'] = $request->input('id',0);
+            $stock_out_id = $request->input('stock_out_id',0);
             $currStockOut['order_sn'] = $this->requestGetNotNull('order_sn', '');
             $currStockOut['partner_name'] = $this->requestGetNotNull('partner_name', '');
-            $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
+            $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);//出库数量
             $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
             $currStockOut['firm_id']= session('_curr_deputy_user')['firm_id'];
-            $currStockOut['created_by'] = session('_web_user_id');
             $currStockOut['price'] = $this->requestGetNotNull('price', '0');
             try{
-                FirmStockService::createFirmStockOut($currStockOut);
+                if(isset($stock_out_id) && !empty($stock_out_id)){//编辑
+                    $number_old = $this->requestGetNotNull('number_old', 0);
+                    $count = $number_old - $currStockOut['currStockNum'];
+                    FirmStockService::out_modify($stock_out_id,$currStockOut,$count);
+
+                }else{
+                    $stockInData['created_by'] = session('_web_user_id');
+                    FirmStockService::createFirmStockOut($currStockOut);
+                }
+
                 return $this->success();
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -252,6 +271,25 @@ class FirmStockController extends Controller
         try{
             $partnerNameInfo = FirmStockService::searchPartnerName($partnerName,$id,$is_type);
             return $this->success('','',$partnerNameInfo);
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+    /**
+     * 删除仓库流水
+     * delFirmStock
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function delFirmStockFlow(Request $request)
+    {
+        $id = $request->input('id',0);
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
+        try{
+            FirmStockService::deleteFlow($id);
+            return $this->success();
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

@@ -48,7 +48,22 @@
         .partner_select li{height: 30px;line-height: 30px;padding-left: 5px; box-sizing: border-box;cursor: default;}
         .partner_select li:hover{background-color: #f1f1f1;}
         #data-table tbody tr td{word-break: break-all;}
-     
+        .operation-btn{
+            width: 38px;
+            height: 24px;
+            line-height: 24px;
+            padding: 2px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #fff;
+            border: 1px solid #999;
+            background-color: rgb(244, 244, 244);
+            margin: 0 5px;
+        }
+        .operation-btn:hover{
+            /*background-color: #75b335;*/
+            border: 1px solid #75b335;
+        }
     </style>
     <script type="text/javascript" src="{{asset(themePath('/','web').'plugs/My97DatePicker/4.8/WdatePicker.js')}}"></script>
     <script type="text/javascript">
@@ -81,51 +96,35 @@
                     {"data": "flow_time", "bSortable": false},
                     {"data": "order_sn", "bSortable": false},
                     {"data": "goods_name", "bSortable": false},
-                    {"data": "number", "bSortable": false},
-                    {"data": "price", "bSortable": false},
-                    {"data": "flow_desc", "bSortable": false}
+                    {"data": "number_full", "bSortable": false},
+                    {"data": "price_full", "bSortable": false},
+//                    {"data": "flow_desc", "bSortable": false}
+                    {"data": "flow_desc", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            var data = "'"+data+"'";
+                            return "<button class='operation-btn' onclick='delBtn(this,"+JSON.stringify(row)+")'><img height='15' style='margin-bottom: 10px' src='/default/img/del.png' /> </button>" +
+                                "<button class='operation-btn' onclick='editBtn(this,"+JSON.stringify(row)+")'><img height='15' style='margin-bottom: 10px' src='/default/img/edit.png' /> </button>" +
+                                '<button class="operation-btn" onclick="remarkBtn(this,'+data+')"><img height="15" style="margin-bottom: 10px" src="/default/img/view.png" /> </button>';
+                        }
+                    }
                 ]
             });
-
             $("#on-search").click(function () {
                 var oSettings = tbl.fnSettings();
                 tbl.fnClearTable(0);
                 tbl.fnDraw();
-                
-                // var goods_name = $('#goods_name').val();
-                // var begin_time = $('#begin_time').val();
-                // var end_time = $('#end_time').val();
-                // if(!goods_name && (!begin_time && !end_time)){
-                //     alert('请完整输入查询条件');
-                //     return;
-                // }
-                // $.ajax({
-                //     url: "/stockIn",
-                //     dataType: "json",
-                //     data: {
-                //         'goods_name':goods_name,
-                //         'begin_time':begin_time,
-                //         'end_time':end_time
-                //     },
-                //     type: "POST",
-                //     success: function (data) {
-                //         console.log(data);
-                //         if(data['data']['data'].length > 0){
-                //             var strHtml = '';
-                //             for(var i = 0;i<data['data']['data'].length;i++){
-                //                    strHtml += '<tr role="row" class="odd"><td>'+data['data']['data'][i]['flow_time']+'</td><td>'+data['data']['data'][i]['order_sn']+'</td><td>'+data['data']['data'][i]['goods_name']+'</td><td>'+data['data']['data'][i]['number']+'</td><td>0.00</td></tr>';
-                //             }
-                //             $('tbody').html(strHtml);
-                
-                //         }else{
-                //            $('tbody').html('无此记录');
-                //         }
-                //     }
-                // })
             });
 
             $('.add_stock').click(function(){
-                $('.block_bg,.putIn').toggle()
+                $('#stork_in_id').val('');
+                $('#partner_name').val('');
+                $('#order_sn').val('');
+                $('#goodName').val('');
+                $('#number').val('');
+                $('#pay_text').val('');
+                $('#flow_desc').val('');
+                $('#goodName').attr('goodsId','');
+                $('.block_bg,.putIn').toggle();
             });
             $('.close,.cancel').click(function(){
                 $('.block_bg,.putIn').hide()
@@ -202,7 +201,61 @@
             
         });
 
+        function delBtn(obj,row){
+            if(row.order_sn != ''){
+                layer.msg('订单生成的入库单，无法删除');return;
+            }
+            $.msg.confirm('是否确认删除？',
+                function () {
+                    $.ajax({
+                        url: "/delFirmStockFlow",
+                        dataType: "json",
+                        data: {
+                            'id':row.id
+                        },
+                        type: "GET",
+                        success: function (data) {
+                            if(data.code){
+                                $.msg.alert('删除成功！',{time:2000});
+                                setTimeout(function () { window.location.reload(); }, 2000);
+                            }else{
+                                $.msg.error(data.msg);
+                            }
+                        }
+                    })
+                },
+                function(){
 
+                }
+            )
+
+
+        }
+        function editBtn(obj,row){
+            if(row.order_sn != ''){
+                layer.msg('订单生成的入库单，无法编辑');return;
+            }
+            console.log(row);
+            $('#stork_in_id').val(row.id);
+            $('#partner_name').val(row.partner_name);
+            $('#order_sn').val(row.order_sn);
+            $('#goodName').val(row.goods_name);
+            $('#number').val(row.number);
+            $('#number_old').val(row.number);
+            $('#pay_text').val(row.price);
+            $('#flow_desc').val(row.flow_desc);
+            $('#goodName').attr('goodsId',row.goods_id)
+            $('.block_bg,.putIn').toggle();
+        }
+        function remarkBtn(obj,res){
+            if(res == ''){
+                res = '无备注信息'
+            }
+            layer.tips(res, obj, {
+                tips: [1, '#3595CC'],
+                time: 4000
+            });
+        }
         //商品名称选择下拉列表的值
         $(document).on('click', '.pro_select li', function(e) {
             var goodsName = $(this).text();
@@ -226,11 +279,13 @@
         });
 
         function addStockSave(){
+            var id = $('input[name=id]').val();
             var partner_name = $('input[name=partner_name]').val();
             var order_sn = $('input[name=order_sn]').val();
             // var goods_name = $('#goodName').val();
             var goods_id = $('#goodName').attr('goodsId');
             var number = $('input[name=number]').val();
+            var number_old = $('input[name=number_old]').val();
             var price = $('input[name=price]').val();
             var flow_desc = $('textarea[name=flow_desc]').val();
             if(goods_id == '' || goods_id <= 0){
@@ -246,10 +301,11 @@
                 url: "/addStockIn",
                 dataType: "json",
                 data: {
+                    'id':id,
                     'partner_name':partner_name,
                     'order_sn':order_sn,
-                    // 'goods_name':goods_name,
                     'number':number,
+                    'number_old':number_old,
                     'price':price,
                     'flow_desc':flow_desc,
                     'goods_id':goods_id
@@ -257,8 +313,8 @@
                 type: "POST",
                 success: function (data) {
                     if(data.code){
-                        $.msg.alert('添加成功！');
-                        window.location.reload();
+                        $.msg.alert('提交成功！',{time:2000});
+                        setTimeout(function () { window.location.reload(); }, 2000);
                     }else{
                         $.msg.error(data.msg);
                     }
@@ -291,7 +347,7 @@
                     <th width="20%">商品名称</th>
                     <th width="15%">入库数量</th>
                     <th width="15%">入库单价(元)</th>
-                    <th width="20%">备注</th>
+                    <th width="20%">操作</th>
                 </tr>
                 </thead>
             </table>
@@ -304,13 +360,15 @@
         <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增入库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
         <ul class="pay_content" style="margin-top: 35px;">
             <li><div class="ovh mt10" id="appendPartnerName"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" id="partner_name" /></div></li>
-            <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" /></div></li>
-            <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="goodName" /><i class="red ml5">*</i>
+            <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" id="order_sn"/></div></li>
+            <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="goodName" goodsId="" /><i class="red ml5">*</i>
                 </div>
             </li>
-            <li><div class="ovh mt10"><span>入库数量:</span><input type="number" class="pay_text" name="number" /><i class="red ml5">*</i></div></li>
-            <li><div class="ovh mt10"><span>入库单价:</span><input type="number" name="price" class="pay_text"/></div></li>
-            <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" name="flow_desc"></textarea></li>
+            <li><div class="ovh mt10"><span>入库数量:</span><input type="number" class="pay_text" name="number" id="number"/><i class="red ml5">*</i></div></li>
+            <li><div class="ovh mt10"><span>入库单价:</span><input type="number" name="price" class="pay_text" id="pay_text"/></div></li>
+            <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" name="flow_desc" id="flow_desc"></textarea></div></li>
+            <input type="hidden" name="id" id="stork_in_id" value="" />
+            <input type="hidden" name="number_old" id="number_old" value="" />
             <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();" style="margin-bottom: 30px">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;margin-bottom: 30px">取消</div></li>
         </ul>
     </div>

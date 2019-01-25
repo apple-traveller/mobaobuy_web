@@ -482,11 +482,11 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
         Route::get('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
         Route::post('/stockIn','FirmStockController@FirmStockIn');//入库记录列表
-        Route::get('/addStockIn','FirmStockController@addFirmStock');//新增入库记录
-        Route::post('/addStockIn','FirmStockController@addFirmStock');
+        Route::any('/addStockIn','FirmStockController@addFirmStock');
         Route::post('/searchGoodsName','FirmStockController@searchGoodsName');//入库检索商品名称
         Route::post('/searchPartnerName','FirmStockController@searchPartnerName');//入库检索供应商名称
         Route::post('/searchStockIn','FirmStockController@searchStockIn');//入库查询
+        Route::get('/delFirmStockFlow','FirmStockController@delFirmStockFlow');//删除流水
 
         Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');   //出库记录列表
         Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表

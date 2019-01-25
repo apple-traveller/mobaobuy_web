@@ -107,8 +107,8 @@ class FirmStockService
         if(!empty($firmStockFlowInfo['list'])){
             foreach ($firmStockFlowInfo['list'] as $k=>$v){
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
-                $firmStockFlowInfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
-                $firmStockFlowInfo['list'][$k]['price'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+                $firmStockFlowInfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
+                $firmStockFlowInfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
             }
         }
         return $firmStockFlowInfo;
@@ -133,8 +133,11 @@ class FirmStockService
         if(!empty($firmStockFlowOutfo['list'])){
             foreach ($firmStockFlowOutfo['list'] as $k=>$v){
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
-                $firmStockFlowOutfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
-                $firmStockFlowOutfo['list'][$k]['price'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+                $firmStockFlowOutfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
+                $firmStockFlowOutfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+                $stock_info = FirmStockRepo::getInfoByFields(['goods_id'=>$v['goods_id'],'firm_id'=>$v['firm_id']]);
+                $firmStockFlowOutfo['list'][$k]['stock_id'] = $stock_info['id'];
+                $firmStockFlowOutfo['list'][$k]['stock_num'] = $stock_info['number'];//库存数量
             }
         }
         return $firmStockFlowOutfo;
@@ -316,5 +319,61 @@ class FirmStockService
         return $stockFlow;
     }
 
+    /**
+     *
+     * modify
+     * @param $id
+     * @param $data
+     * @param int $count
+     * @return bool
+     */
+    public static function in_modify($id,$data,$count = 0)
+    {
+        self::beginTransaction();
+        FirmStockFlowRepo::modify($id,$data);
+        if($count != 0){//数量没有发生变化，不用改变库存
+            $info = FirmStockRepo::getInfoByFields(['goods_id'=>$data['goods_id'],'firm_id'=>$data['firm_id']]);
+            FirmStockRepo::modify($info['id'],['number'=>$info['number'] + $count]);
+        }
+        self::commit();
+        return true;
+    }
 
+    public static function out_modify($id,$data,$count = 0)
+    {
+        $currStockInfo = FirmStockRepo::getInfo($data['id']);
+        if(empty($currStockInfo)){
+            self::throwBizError('库存商品不存在');
+        }
+        if($currStockInfo['number'] < $data['currStockNum']){
+            self::throwBizError('出库数量不能大于库存数量！');
+        }
+        $firmStockData['flow_type'] = 3 ;
+        $firmStockData['order_sn'] = $data['order_sn'];
+        $firmStockData['partner_name'] = $data['partner_name'];
+        $firmStockData['number'] = $data['currStockNum'];
+        $firmStockData['firm_id'] = $data['firm_id'];
+        $firmStockData['flow_desc'] = $data['flow_desc'];
+        $firmStockData['price'] = $data['price'];
+        $firmStockData['goods_name'] = $currStockInfo['goods_name'];
+        $firmStockData['goods_id'] = $currStockInfo['goods_id'];
+        self::beginTransaction();
+        FirmStockFlowRepo::modify($id,$firmStockData);
+        if($count != 0){//数量没有发生变化，不用改变库存
+            FirmStockRepo::modify($currStockInfo['id'],['number'=>$currStockInfo['number'] + $count]);
+        }
+        self::commit();
+        return true;
+    }
+
+    public static function deleteFlow($id)
+    {
+        self::beginTransaction();
+        $flow_info = FirmStockFlowRepo::getInfo($id);
+        $info = FirmStockRepo::getInfoByFields(['goods_id'=>$flow_info['goods_id'],'firm_id'=>$flow_info['firm_id']]);
+        FirmStockRepo::modify($info['id'],['number'=>$info['number'] - $flow_info['number']]);
+        FirmStockFlowRepo::delete($id);
+        self::commit();
+        return true;
+    }
 }
