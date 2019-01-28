@@ -108,8 +108,8 @@ if(!function_exists('getSpecialGoods')){
         $rs = [];
         $value = \App\Services\GoodsService::getSpecialGoods();
         foreach ($value['list'] as $k=>$v){
-            $top_cat_id = getTopCatByCatId($v['cat_id']);
-            $rs[$top_cat_id]['goods'][] = $v;
+            $top_cat = getTopCatByCatId($v['cat_id']);
+            $rs[$top_cat['top_id']]['goods'][] = $v;
             //$value['list'][$k]['cat_top_id'] = getTopCatByCatId($v['cat_id']);
         }
         return $rs;

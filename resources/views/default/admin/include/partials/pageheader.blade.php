@@ -2,7 +2,7 @@
     <div class="bgSelector"></div>
     <div class="admin-logo">
         <a href="/admin/home"  data-param="home" target="workspace">
-            <img style="max-height: 40px" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
+            <img style="max-height: 40px" src="{{getFileUrl(getConfig('shop_logo', asset('images/logo_admin.png')))}}">
         </a>
         <div class="foldsider"><i class="icon icon-indent-right"></i></div>
     </div>

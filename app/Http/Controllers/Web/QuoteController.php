@@ -242,8 +242,6 @@ class QuoteController extends Controller
      */
     public function goodsDetail(Request $request,$id,$shop_id)
     {
-//        $id = $request->input("id");
-//        $shop_id = $request->input("shop_id");
         $good_info = ShopGoodsQuoteService::getShopGoodsQuoteById($id);
         $currpage = $request->input("currpage", 1);
         $goods_id = $good_info['goods_id'];
@@ -253,7 +251,7 @@ class QuoteController extends Controller
             'b.type'=>'1|2',
             'b.is_delete'=>0
         ];
-        $pageSize = 5;
+        $pageSize = 15;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
@@ -265,12 +263,11 @@ class QuoteController extends Controller
         $condi['is_delete'] = 0;
         $condi['id'] = '!'.$id;
 
-
         $quoteList = ShopGoodsQuoteService::getShopGoodsQuoteListByShopId(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condi);
-
 
         //是否收藏
         $collectGoods = UserService::checkUserIsCollect($userId, $good_info['goods_id']);
+
         return $this->display("web.goods.goodsDetail", [
             'good_info' => $good_info,
             'goodsList' => $goodList['list'],

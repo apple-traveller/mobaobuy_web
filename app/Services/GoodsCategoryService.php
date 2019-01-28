@@ -219,10 +219,16 @@ class GoodsCategoryService
     {
         $cat_info = GoodsCategoryRepo::getInfo($cat_id);
         $top_id = $cat_id;
+        $top_name = $cat_info['cat_name'];
         if(!empty($cat_info['parent_id'])){
-            $top_id = self::getTopCatByCatId($cat_info['parent_id']);
+            $top_info = self::getTopCatByCatId($cat_info['parent_id']);
+            $top_id = $top_info['top_id'];
+            $top_name = $top_info['top_name'];
         }
-        return $top_id;
+        return [
+            'top_id'=>$top_id,
+            'top_name'=>$top_name
+        ];
     }
 
 }

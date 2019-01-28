@@ -27,6 +27,8 @@ class ShopGoodsQuoteService
 
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
+            $top_cat = getTopCatByCatId($vo['cat_id']);
+            $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
         }
         //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
         $con['b.is_self_run'] = 1;
@@ -76,6 +78,8 @@ class ShopGoodsQuoteService
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
+            $top_cat = getTopCatByCatId($vo['cat_id']);
+            $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
         }
         return $result;
     }
@@ -111,8 +115,11 @@ class ShopGoodsQuoteService
                     $quotes['list'][$va]['packing_spec'] = $goodsInfo['packing_spec'];
                     $quotes['list'][$va]['goods_full_name'] = $goodsInfo['goods_full_name'];
                     $quotes['list'][$va]['unit_name'] = $goodsInfo['unit_name'];
+                    $quotes['list'][$va]['goods_content'] = $goodsInfo['goods_content'];
                     $cateInfo =  GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
                     $quotes['list'][$va]['cat_name'] = $cateInfo['cat_name'];
+                    $top_cat = getTopCatByCatId($goodsInfo['cat_id']);
+                    $quotes['list'][$va]['cat_top_name'] = $top_cat['top_id'] == $goodsInfo['cat_id'] ? $cateInfo['cat_name'] : $top_cat['top_name'];
                 }
                 $shopInfo['list'][$k]['quotes'] = $quotes['list'];
         }

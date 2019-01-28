@@ -207,6 +207,7 @@ class GoodsController extends Controller
 
         $condition['goods_id'] = $goodsId;
         $condition['consign_status'] = 1;
+        $condition['is_delete'] = 0;
         if(!empty($begin_time)){
             $condition['add_time|>='] =  $begin_time;
         }

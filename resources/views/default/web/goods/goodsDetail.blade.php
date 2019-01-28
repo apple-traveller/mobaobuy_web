@@ -129,7 +129,7 @@
                     trigger: 'axis',
                     formatter: function (params) {
                         var res = params[0].seriesName + ' ' + params[0].name;
-                        res += '<br/>  最低价 : ' + params[0].value[1] + '  最高价 : ' + params[0].value[2];
+//                        res += '<br/>  最低价 : ' + params[0].value[1] + '  最高价 : ' + params[0].value[2];
                         return res;
                     }
                 },
@@ -263,8 +263,8 @@
 
 			</div>
 			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">可售数</span>
-                <span  class="pro_value">@if($good_info['goods_number']) {{$good_info['goods_number']}} @else 0 @endif{{$good_info['unit_name']}}</span>
+				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:0px;">交货时间</span>
+                <span  class="pro_value">{{$good_info['delivery_time']}}</span>
                 <span class="fl ">包装规格</span>
                 <span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
 			</div>
@@ -283,23 +283,22 @@
                 <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value">{{$good_info['production_date']}}</span>
                  <span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>
             </div>
-
-			<!-- <div class="pro_detail">
-				<span class="ml15 pro_detail_title fl">商品属性</span>
-				@foreach($good_info['goods_attr'] as $vo)
-					<span style="width:100px;color:#88be51;"  class="pro_value">{{$vo}}</span>
-				@endforeach
-			</div> -->
+            <div class="pro_detail">
+                <span class="ml15 pro_detail_title fl">运费说明</span><span  class="pro_value">待定</span>
+                {{--<span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>--}}
+            </div>
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
 				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
-                <div class="pur_volume ml15">
+                <div class="pur_volume ml15 fl">
                     <span class="pur shop_num_reduce">-</span>
                     <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" min_limit="{{$good_info['min_limit']}}" id="pur_num" class="pur_num" @if($good_info['packing_spec']>$good_info['min_limit']) value="{{$good_info['packing_spec']}}" @else value="{{$good_info['min_limit']}}" @endif/>
                     <span class="pur shop_num_plus">+</span>
                 </div>
-                <span style="line-height: 28px;margin-left: 5px">{{$good_info['unit_name']}}</span>
+                <span class="fl" style="line-height: 28px;margin-left: 5px">{{$good_info['unit_name']}}</span>
+                <span class="fl" style="line-height: 28px;margin-left: 50px">最小采购数量：</span>
+                <span  class="ml5 fl ovhwp" style="width: 150px;line-height: 28px;margin-left: 5px">{{$good_info['min_limit'] ? $good_info['min_limit'] : $good_info['packing_spec']}}{{$good_info['unit_name']}}</span>
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
@@ -393,11 +392,11 @@
                     </li>
                 @endforeach
             </ul>
-            <div class="news_pages">
-                <ul id="page" class="pagination">
+            {{--<div class="news_pages">--}}
+                {{--<ul id="page" class="pagination">--}}
 
-                </ul>
-            </div>
+                {{--</ul>--}}
+            {{--</div>--}}
         </li>
         <li style="display: none"><ul class="History-product-list br1">
                 <li>

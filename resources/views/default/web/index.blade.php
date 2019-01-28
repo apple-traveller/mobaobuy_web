@@ -294,27 +294,27 @@
             <ul class="Self-product-list quote_list">
                 <li>
                     <span style="width:12%;">品种</span>
-                    <span style="width:15%;">厂商&nbsp;&nbsp;&nbsp;规格</span>
-                    <span style="width:12%;">可售数量</span>
+                    <span style="width:15%;">品牌</span>
+                    <span style="width:12%;">规格</span>
                     <span style="width:10%;">单价（元）</span>
+                    <span style="width:10%;">交货时间</span>
                     <span style="width:7%;">发货地</span>
                     <span style="width:7%;">交货方式</span>
-                    <span style="width:10%;">交货时间</span>
                     <span style="width:10%;">更新时间</span>
                     <span style="width:6%;">联系方式</span>
                     <span style="width:10%;">操作</span>
                 </li>
                 @if(!empty($goodsList['list']))
-
                     @foreach($goodsList['list'] as $vo)
                         <li>
-                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
-                            <span style="width:15%;" title="{{$vo['goods_full_name']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></i></span>
-                            <span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>
+                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
+                            <span style="width:15%;" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
+                            <span style="width:12%;" title="{{$vo['goods_content']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></i></span>
+                            {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
+                            <span style="width:10%;">{{$vo['delivery_time']}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
                             <span style="width:7%;">{{$vo['delivery_method']}}</span>
-                            <span style="width:10%;">{{$vo['delivery_time']}}</span>
                             <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
                             <span style="width:6%;">
                                 <div class="custom_service">
@@ -441,15 +441,16 @@
                                 @if(isset($shop['quotes']) && !empty($shop['quotes']))
                                     @foreach($shop['quotes'] as $quote)
                                         <li>
-                                            <span style="width:12%;" data-id="{{$quote['packing_spec']}}" class="ovhwp" title="{{$quote['cat_name']}}">{{$quote['cat_name']}}</span>
-                                            {{--<span>{{$quote['goods_full_name']}}</span>--}}
-                                            <span style="width:15%;" class="ovhwp" title="{{$quote['goods_full_name']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_full_name']}}</a></span>
-                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>
+                                            <span style="width:12%;" data-id="{{$quote['packing_spec']}}" class="ovhwp" title="{{$quote['cat_top_name']}}">{{$quote['cat_top_name']}}</span>
+                                            <span style="width:15%;" class="ovhwp" title="{{$quote['brand_name']}}">{{$quote['brand_name']}}</span>
+                                            <span style="width:12%;" class="ovhwp" title="{{$quote['goods_content']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_content']}}</a></span>
+{{--                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>--}}
                                             <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}/{{$quote['unit_name']}}</span>
+                                            <span style="width:10%;">{{$quote['delivery_time']}}</span>
                                             <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                             <span style="width:7%;">{{$quote['delivery_method']}}</span>
-                                            <span style="width:10%;">{{$quote['delivery_time']}}</span>
+
                                             <span style="width:10%;">{{ \Carbon\Carbon::parse($quote['add_time'])->diffForHumans()}}</span>
                                             <span style="width:6%;">
                                                 <div class="custom_service" style="margin-top: 0px">

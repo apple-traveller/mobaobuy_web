@@ -71,7 +71,7 @@
                     trigger: 'axis',
                     formatter: function (params) {
                         var res = params[0].seriesName + ' ' + params[0].name;
-                        res += '<br/>  最低价 : ' + params[0].value[1] + '  最高价 : ' + params[0].value[2];
+//                        res += '<br/>  最低价 : ' + params[0].value[1] + '  最高价 : ' + params[0].value[2];
                         return res;
                     }
                 },
