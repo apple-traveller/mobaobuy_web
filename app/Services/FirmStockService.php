@@ -89,6 +89,37 @@ class FirmStockService
         }
     }
 
+    public static function modifyFirmStockOut($data)
+    {
+        $currStockInfo = FirmStockFlowRepo::getInfo($data['id']);
+        if(empty($currStockInfo)){
+            self::throwBizError('库存商品不存在');
+        }
+        $firmStockData = [];
+        $firmStockData['flow_time'] = Carbon::now();
+        $firmStockData['flow_type'] = 3 ;
+        $firmStockData['order_sn'] = $data['order_sn'];
+        $firmStockData['partner_name'] = $data['partner_name'];
+        $firmStockData['number'] = $data['currStockNum'];
+        $firmStockData['firm_id'] = $data['firm_id'];
+        $firmStockData['flow_desc'] = $data['flow_desc'];
+        $firmStockData['price'] = $data['price'];
+        $firmStockData['created_by'] = $data['created_by'];
+        $firmStockData['goods_name'] = $currStockInfo['goods_name'];
+        $firmStockData['goods_id'] = $currStockInfo['goods_id'];
+        try{
+            self::beginTransaction();
+            FirmStockFlowRepo::modify($currStockInfo['id'],$firmStockData);
+            $firm_stock = FirmStockRepo::getInfoByFields(['goods_id'=>$firmStockData['goods_id'],'firm_id'=>$data['firm_id']]);
+            FirmStockRepo::modify($data['id'],['number'=>$firm_stock['number'] - $data['currStockNum']]);
+            self::commit();
+            return true;
+        }catch(\Exception $e){
+            self::rollBack();
+            self::throwBizError($e->getMessage());
+        }
+    }
+
     //入库记录列表
     public static function firmStockIn($params, $page = 1 ,$pageSize=10){
         $condition = [];
@@ -199,6 +230,16 @@ class FirmStockService
         //get返回分类列表
         return ['catName'=>$catName,'catInfo'=>$catInfo];
     }
+
+    //出库记录详情
+    public static function getFirmStockDetail($id)
+    {
+        $flow_info = FirmStockFlowRepo::getInfo($id);
+        return $flow_info;
+    }
+
+
+
     //库存商品流水
     public static function stockFlowList($params, $page = 1, $pageSize = 10){
         $condition = [];

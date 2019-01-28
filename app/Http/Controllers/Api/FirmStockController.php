@@ -234,10 +234,66 @@ class FirmStockController extends ApiController
             $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
             $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
             $currStockOut['firm_id']= $deputy_user['firm_id'];
-            $currStockOut['created_by'] = $this->getUserID($request);
+            $currStockOut['created_by'] = $deputy_user['firm_id'];
             $currStockOut['price'] = $this->requestGetNotNull('price', '0');
             try{
                 FirmStockService::createFirmStockOut($currStockOut);
+                return $this->success();
+            }catch (\Exception $e){
+                return $this->error($e->getMessage());
+            }
+        }
+        return $this->error('非法访问');
+    }
+
+    /**
+     * 删除仓库流水
+     * delFirmStock
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function delFirmStockFlow(Request $request)
+    {
+        $id = $request->input('id',0);
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
+        try{
+            FirmStockService::deleteFlow($id);
+            return $this->success();
+        }catch (\Exception $e){
+            return $this->error($e->getMessage());
+        }
+    }
+
+    public function editFirmStockFlow(Request $request)
+    {
+        $id = $request->input('id',0);
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
+        $res = FirmStockService::getFirmStockDetail($id);
+        if(empty($res)){
+            return $this->error('数据有误');
+        }
+        return $this->success($res,'success');
+    }
+
+    public function saveFirmStockFlow(Request $request)
+    {
+        $deputy_user = $this->getDeputyUserInfo($request);
+        if($deputy_user['is_firm']){
+            $currStockOut = [];
+            $currStockOut['id'] = $request->input('id');
+            $currStockOut['order_sn'] = $this->requestGetNotNull('order_sn', '');
+            $currStockOut['partner_name'] = $this->requestGetNotNull('partner_name', '');
+            $currStockOut['currStockNum'] = $this->requestGetNotNull('currStockNum', 0);
+            $currStockOut['flow_desc'] = $this->requestGetNotNull('flow_desc', '');
+            $currStockOut['firm_id']= $deputy_user['firm_id'];
+            $currStockOut['created_by'] = $deputy_user['firm_id'];
+            $currStockOut['price'] = $this->requestGetNotNull('price', '0');
+            try{
+                FirmStockService::modifyFirmStockOut($currStockOut);
                 return $this->success();
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
