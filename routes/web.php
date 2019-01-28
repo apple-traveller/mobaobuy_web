@@ -488,7 +488,7 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
         Route::post('/searchStockIn','FirmStockController@searchStockIn');//入库查询
         Route::get('/delFirmStockFlow','FirmStockController@delFirmStockFlow');//删除流水
 
-        Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');   //出库记录列表
+        Route::get('/stockOut/{goodsName?}/{begin_time?}/{end_time?}','FirmStockController@firmStockOut');//出库记录列表
         Route::post('/stockOut','FirmStockController@firmStockOut');//出库记录列表
         Route::get('/addStockOut','FirmStockController@addFirmSotckOut');//新增出库记录
         Route::post('/addStockOut','FirmStockController@addFirmSotckOut');
@@ -822,6 +822,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
         Route::post('/stock/list','FirmStockController@stockList');//实时库存
         Route::post('/stock/flow','FirmStockController@stockFlowList');//企业库存流水
+        Route::post('/stock/del_firm_stock_flow','FirmStockController@delFirmStockFlow');//删除流水
+        Route::post('/stock/edit_firm_stock_flow','FirmStockController@editFirmStockFlow');//编辑出库流水
+        Route::post('/stock/save_firm_stock_flow','FirmStockController@saveFirmStockFlow');//保存出库流水
 
         /********************************************************************************************/
 
