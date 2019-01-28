@@ -698,9 +698,10 @@ CREATE TABLE `shop_goods_quote` (
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT '0' COMMENT '库存数量',
   `total_number` int(10) NOT NULL COMMENT '报价总数',
+  `min_limit` int(11) NOT NULL COMMENT '报价最小采购量',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT '0' COMMENT '店铺职员ID',
-  `outer_user_id` varchar(10) NOT NULL DEFAULT '' COMMENT '外部业务员ID',
+  `outer_user_id` varchar(10) NOT NULL DEFAULT '0' COMMENT '外部业务员ID',
   `salesman` varchar(10) NOT NULL DEFAULT '' COMMENT '业务员名称',
   `contact_info` varchar(50) NOT NULL COMMENT '联系方式',
   `QQ` varchar(15) DEFAULT '' COMMENT '联系QQ',
@@ -714,13 +715,12 @@ CREATE TABLE `shop_goods_quote` (
   `consign_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '清仓特卖状态 0 待审核 1已审核 2审核不通过',
   `delivery_method` varchar(10) NOT NULL COMMENT '交货方式',
   `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
-  `is_roof` tinyint(4) NOT NULL COMMENT '是否置顶 0否 1是',
-  `min_limit` int(11) NOT NULL COMMENT '最小采购量',
+  `is_roof` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否置顶 0否 1是',
   PRIMARY KEY (`id`),
-  KEY `shop_id` (`shop_id`),
-  KEY `goods_id` (`goods_id`),
-  KEY `shop_store_id` (`shop_store_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1164 DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
+  KEY `shop_id` (`shop_id`) USING BTREE,
+  KEY `goods_id` (`goods_id`) USING BTREE,
+  KEY `shop_store_id` (`shop_store_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
 
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (

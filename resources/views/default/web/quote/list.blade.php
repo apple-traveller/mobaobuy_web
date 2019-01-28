@@ -212,13 +212,14 @@
 
                     <li class="table_title">
                         <span style="width:12%" class="num_bg1">店铺</span>
-                        <span style="width:11%;">种类</span>
-                        <span style="width:12%">商品名称</span>
-                        <span style="width:8%;">数量</span>
+                        <span style="width:10%;">品种</span>
+                        <span style="width:9%">品牌</span>
+                        <span style="width:12%">规格</span>
+                        {{--<span style="width:7%;">数量</span>--}}
                         <span style="width:8%;">单价（元）</span>
+                        <span style="width:8%;">交货时间</span>
                         <span style="width:8%;">发货地址</span>
                         <span style="width:8%;">交货方式</span>
-                        <span style="width:8%;">交货时间</span>
                         <span style="width:15%;">联系人</span>
                         <span style="width:10%;float:right;">操作</span>
                     </li>
@@ -226,13 +227,14 @@
                         @foreach($search_data['list'] as $vo)
                             <li>
                                 <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                                <span style="width:11%;" title="{{$vo['cat_name']}}" class="ovh">{{$vo['cat_name']}}</span>
-                                <span style="width:12%" title="{{$vo['goods_full_name']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_full_name']}}</a></span>
-                                <span style="width:8%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>
+                                <span style="width:10%;" title="{{$vo['cat_top_name']}}" class="ovh">{{$vo['cat_top_name']}}</span>
+                                <span style="width:9%" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
+                                <span style="width:12%" title="{{$vo['goods_content']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></span>
+                                {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
+                                <span style="width:8%;">{{$vo['delivery_time']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_method']}}</span>
-                                <span style="width:8%;">{{$vo['delivery_time']}}</span>
                                 <span style="width:15%">{{$vo['salesman']}}/{{$vo['contact_info']}}
                                     <img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
                                 </span>
@@ -492,13 +494,15 @@
 
                         _html += '<li>' +
                             '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:12%;">'+_store_name+'</span>' +
-                            '<span style="width:11%;" class="ovh">'+list[i].cat_name+'</span>' +
-                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_full_name+'</a></span>' +
-                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
+                            '<span style="width:10%;" class="ovh">'+list[i].cat_top_name+'</span>' +
+                            '<span  style="width:9%;">'+list[i].brand_name+'</span>' +
+                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_content+'</a></span>' +
+//                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
+                            '<span style="width:8%;">'+list[i].delivery_time+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_method+'</span>' +
-                            '<span style="width:8%;">'+list[i].delivery_time+'</span>' +
+
                             '<span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
                             '<span style="width:10%;float:right;">'+_add_cart+'</span>' +
                             '</li>';

@@ -29,8 +29,8 @@
 		.pur_volume .pur{cursor:pointer;width: 26px;text-align: center;float: left;height: 28px;line-height: 28px;background-color: #fafafa;box-sizing:border-box;}
 		.pur_num{float:left;width: 50px;height: 28px;line-height: 28px;text-align: center;border: none;}
 		.pro_detail_btn{cursor:pointer;width: 140px;height: 42px;line-height: 42px;border: none;font-size:16px;color: #fff;border-radius:3px;}
-        .History_offo{height: 40px;line-height: 40px;border-bottom: 1px solid #d4d3d3;background-color: #f0f0f0;box-sizing: border-box;}
-        .History_offo h1{line-height: 38px;  height: 38px;text-align: center;color: #666;font-size: 16px;}
+        .History_offo{height: 50px;line-height: 50px;border-bottom: 1px solid #d4d3d3;background-color: #f0f0f0;box-sizing: border-box;}
+        .History_offo h1{line-height: 50px;  height: 50px;text-align: center;color: #666;font-size: 18px;}
         .History_offo .titlecurr{border-bottom: 2px solid #75b335;  color: #75b335;margin: 0 auto; cursor: pointer;}
         .History-product-list{margin-top: 10px;}
         .History-product-list li span{width: 14.2%;float: left;text-align: center;}
@@ -43,7 +43,8 @@
 
         .quoteList{height: 280px;}
         .quoteList li span{width: 14.2%;float: left;text-align: center;}
-        .quoteList li{line-height: 43px;background-color: #fff;}
+        .quoteList li{line-height: 45px;background-color: #fff; border-bottom: 1px solid #DEDEDE;
+            height: 45px;}
         /*.quoteList li:first-child{line-height: 40px; }*/
         /*.quoteList li:last-child{border-bottom: none;}*/
         .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:158px}
@@ -234,7 +235,8 @@
     <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
 		<div class="crumbs mt5">当前位置：<a href="/goodsList">商品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
-		<div class="pro_chart mt5">
+		<div class="pro_chart mt5" style="position:relative">
+            <div style="position:absolute;left:110px;top:200px;"><img src="/images/mobao_logo1.png" style="opacity:0.8;" width="250"/></div>
 			<h2 class="pro_chart_title">
 				商品价格走势
 			</h2>
@@ -329,34 +331,35 @@
 	</div>
 
         <div class="w1200" style="margin-top: 80px;">
-            <div class="History_offo">
-                <ul class="">
-                    <li style="margin-left:25px;text-align:center;"><h2 style="font-weight: bold;">商家推荐</h2></li>
-                </ul>
-            </div>
-         <div>
-        <ul class="quoteList">
-            <li>
-                <span style="width:15%">报价日期</span>
+            <h2 class="History_offo" style="font-weight: bold; padding-left: 20px">商家推荐</h2>
+            {{--<div >--}}
+                {{--<ul class="">--}}
+                    {{--<li style="margin-left:25px;text-align:center;"></li>--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+        <ul class="quoteList" style="overflow: hidden; height: auto;">
+            <li style="background-color: #F7F7F7">
+                <span style="width: 18%;">报价日期</span>
 
-                <span style="width:25%">商品名称</span>
-                <span style="width:10%">数量</span>
-                <span style="width:10%">单价（元）</span>
-                <span style="width:10%">发货地址</span>
-                <span style="width:20%">联系人</span>
+                <span style="width: 18%;">品牌</span>
+                <span style="width: 20%;">规格</span>
+                {{--<span style="width: 12%;">数量</span>--}}
+                <span style="width: 15%;">单价（元）</span>
+                <span style="width: 16%;">发货地址</span>
+                <span style="width: 13%;">联系人</span>
             </li>
             @foreach($quoteList as $vo)
                 <li>
-                    <span style="width:15%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
-                    <span style="width:25%;" class="ovhwp" title="{{$vo['goods_name']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_name']}}</a></span>
-                    <span style="width:10%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>
-                    <span style="width:10%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
-                    <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
-                    <span style="width:20%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                    <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
+                    <span style="width:18%;" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
+                    <span style="width:20%;" class="ovhwp" title="{{$vo['goods_content']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></span>
+{{--                    <span style="width:12%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>--}}
+                    <span style="width:15%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
+                    <span style="width:16%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
+                    <span style="width:13%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                 </li>
             @endforeach
         </ul>
-         </div>
         </div>
 
 
@@ -372,23 +375,25 @@
         <li>
             <ul class="History-product-list br1">
                 <li style="background-color: #cccccc">
-                    <span style="width:15%">报价日期</span>
-                    <span style="width:10%">种类</span>
-                    <span style="width:25%">商品名称</span>
-                    <span style="width:10%">数量</span>
-                    <span style="width:10%">单价（元)</span>
+                    <span style="width: 18%;">报价日期</span>
+                    <span style="width: 16%;">种类</span>
+                    <span style="width:15%">品牌</span>
+                    <span style="width:17%">规格</span>
+                    {{--<span style="width: 11%;">数量</span>--}}
+                    <span style="width: 11%;">单价（元)</span>
                     <span style="width:10%">发货地址</span>
-                    <span style="width:20%">联系人</span>
+                    <span style="width: 13%;">联系人</span>
                 </li>
                 @foreach($goodsList as $vo)
                     <li>
-                        <span style="width:15%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
-                        <span style="width:10%" class="ovhwp" title="{{$vo['cat_name']}}">{{$vo['cat_name']}}</span>
-                        <span style="width:25%" class="ovhwp" title="{{$vo['goods_full_name']}}">{{$vo['goods_full_name']}}</span>
-                        <span style="width:10%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>
-                        <span style="width:10%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
+                        <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
+                        <span style="width:16%" class="ovhwp" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
+                        <span style="width:15%" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
+                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{$vo['goods_content']}}">{{$vo['goods_content']}}</span>
+                        {{--<span style="width:11%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>--}}
+                        <span style="width:11%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                         <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
-                        <span style="width:20%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                        <span style="width:13%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                     </li>
                 @endforeach
             </ul>

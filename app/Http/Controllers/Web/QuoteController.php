@@ -258,12 +258,12 @@ class QuoteController extends Controller
 
         //商家推荐
         $condi = [];
-        $condi['shop_id'] = $shop_id;
-        $condi['consign_status'] = 1;
-        $condi['is_delete'] = 0;
-        $condi['id'] = '!'.$id;
+        $condi['b.shop_id'] = $shop_id;
+        $condi['b.consign_status'] = 1;
+        $condi['b.is_delete'] = 0;
+        $condi['b.id'] = '!'.$id;
 
-        $quoteList = ShopGoodsQuoteService::getShopGoodsQuoteListByShopId(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condi);
+        $quoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage], $condi);
 
         //是否收藏
         $collectGoods = UserService::checkUserIsCollect($userId, $good_info['goods_id']);

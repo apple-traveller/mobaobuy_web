@@ -267,7 +267,8 @@
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
 			<div class="crumbs mt5">当前位置：<a href="javascript:">集采火拼</a> &gt; <a href="javascript:">商品详情</a><span class="gray"></span></div>
-			<div class="pro_chart mt5">
+			<div class="pro_chart mt5" style="position:relative">
+                <div style="position:absolute;left:110px;top:200px;"><img src="/images/mobao_logo1.png" style="opacity:0.8;" width="250"/></div>
 				<h1 class="pro_chart_title">
 					商品价格走势
 				</h1>

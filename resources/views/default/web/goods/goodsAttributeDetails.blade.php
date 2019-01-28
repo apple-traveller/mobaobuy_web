@@ -37,9 +37,9 @@
 	<script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
 	<script type="text/javascript">
         $(function(){
-            $(document).delegate('.phy_chart','mouseenter mouseleave',function(){
-                $(this).find('.tag').toggle();
-            })
+//            $(document).delegate('.phy_chart','mouseenter mouseleave',function(){
+//                $(this).find('.tag').toggle();
+//            })
 
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
@@ -110,7 +110,8 @@
 								<span>商品名称 : {{$v['goods_name']}}</span><span class="ml30">单价（元） : ¥{{$v['shop_price']}}/{{$goodsInfo['unit_name']}}</span><span class="ml20"></span>
 								<span class="phy_qq">{{$v['QQ']}}</span>
 							</div>
-							<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>
+							{{--<div class="phy_chart" style="margin: 35px 100px"><div class="tag fl"><div class="arrow"></div>CSS气泡框实现</div></div>--}}
+							<div class="phy_chart" style="margin: 35px 100px;background: none"><div class="tag fl"><div class="arrow"></div></div></div>
 							<div class="phy_line fl"></div>
 							<div class="phy_btn" style="margin-left:3px;"><a rel="nofollow" href="javascript:" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$v['QQ']}}&site=qq&menu=yes');" >立即询价</a></div>
 						</li>
