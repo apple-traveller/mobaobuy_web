@@ -352,7 +352,7 @@
                 <li>
                     <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
                     <span style="width:18%;" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                    <span style="width:20%;" class="ovhwp" title="{{$vo['goods_content']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></span>
+                    <span style="width:20%;" class="ovhwp" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a></span>
 {{--                    <span style="width:12%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>--}}
                     <span style="width:15%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
                     <span style="width:16%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
