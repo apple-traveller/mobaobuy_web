@@ -93,7 +93,7 @@ class ShopGoodsQuoteRepo
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
             ->select(
-                'b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name','g.goods_content','g.cat_id',
+                'b.*','g.goods_name as simple_goods_name','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name','g.goods_content','g.cat_id',
                 DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid')
             );
 
