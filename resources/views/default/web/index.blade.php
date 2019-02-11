@@ -308,8 +308,8 @@
                     @foreach($goodsList['list'] as $vo)
                         <li>
                             <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
-                            <span style="width:15%;" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                            <span style="width:12%;" title="{{$vo['goods_content']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></i></span>
+                            <span style="width:12%;" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
+                            <span style="width:15%;" title="{{$vo['goods_content'].' '.$vo['goods_name']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['goods_name']}}</a></i></span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
                             <span style="width:10%;">{{$vo['delivery_time']}}</span>
