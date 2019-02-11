@@ -229,7 +229,7 @@
                                 <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
                                 <span style="width:10%;" title="{{$vo['cat_top_name']}}" class="ovh">{{$vo['cat_top_name']}}</span>
                                 <span style="width:9%" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                                <span style="width:12%" title="{{$vo['goods_content']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content']}}</a></span>
+                                <span style="width:12%" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                                 <span style="width:8%;">{{$vo['delivery_time']}}</span>
