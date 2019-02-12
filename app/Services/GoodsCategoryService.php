@@ -68,7 +68,7 @@ class GoodsCategoryService
     //获取列表
     public static function getList($parent_id)
     {
-        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id,['is_delete'=>0]]);
+        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id,'is_delete'=>0]);
         return $res;
     }
 

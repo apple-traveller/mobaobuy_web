@@ -153,6 +153,7 @@ class ShopGoodsQuoteRepo
                 $query = $query->orderBy($c, $d);
             }
         }
+//        dd($query->toSql());
         $res = $query->get()->toArray();
         return object_array($res);
     }
@@ -207,6 +208,25 @@ class ShopGoodsQuoteRepo
 
         $res = $query->get()->toArray();
         return $res;
+    }
+
+    public static function getHotDates($condition)
+    {
+        #SELECT date_format(add_time, '%Y-%m-%d') as t,add_time from shop_goods_quote GROUP BY t limit 2
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->select(
+                DB::raw("date_format(b.add_time, '%Y-%m-%d') as t"),'b.add_time'
+            );
+        $query = self::setCondition($query, $condition);
+
+        $query = $query->groupBy('t')
+            ->orderBy('b.add_time','desc')
+            ->limit(2);
+
+        $res = $query->get()->toArray();
+        return object_array($res);
     }
 }
 

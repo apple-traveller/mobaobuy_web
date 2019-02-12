@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\GoodsCategoryService;
 use App\Services\ShopGoodsQuoteService;
 use Illuminate\Http\Request;
 use App\Services\GoodsService;
@@ -482,4 +483,11 @@ class GoodsController extends ApiController
         }
     }
 
+    //获取分类
+    public function getCateList(Request $request)
+    {
+        $parent_id = $request->input('parent_id',0);
+        $res = GoodsCategoryService::getList($parent_id);
+        return $res;
+    }
 }

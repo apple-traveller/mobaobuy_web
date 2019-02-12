@@ -151,6 +151,11 @@ class IndexController extends ApiController
         return $this->success($data,'success');
     }
 
-
+    //首页热卖商品 取得是置顶报价的最近两天的报价信息
+    public function getHotQuoteList()
+    {
+        $list = ShopGoodsQuoteService::getHotQuoteList();
+        return $list;
+    }
 
 }

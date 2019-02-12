@@ -124,6 +124,12 @@ trait CommonRepo
                             }else{
                                 $q = $q->Where($arr[0], $arr[1], $value);
                             }
+                        }elseif($arr[1] == 'raw'){
+                            if($opt == 'OR'){
+                                $q = $q->orWhereRaw($value);
+                            }else{
+                                $q = $q->WhereRaw($value);
+                            }
                         }else{
                             throw new \Exception('参数名称格式不正确：'.$key);
                         }
