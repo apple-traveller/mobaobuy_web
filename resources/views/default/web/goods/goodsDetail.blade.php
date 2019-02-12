@@ -225,6 +225,15 @@
             $(this).addClass('titlecurr').siblings().removeClass('titlecurr');
             $('.proitemlist>li').eq($(this).index()).show().siblings().hide();
         });
+        var tipindex
+        $('#show_yf_tips').hover(function(){
+            tipindex = layer.tips('秣宝网产品报价均不含运费，运费价格需联系客服人员确认。', '#show_yf_tips', {
+                tips: [1, '#75b335'],
+                time: 0
+            });
+        },function () {
+            layer.close(tipindex);
+        })
 
     });
 </script>
@@ -286,7 +295,8 @@
                  <span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>
             </div>
             <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">运费说明</span><span  class="pro_value">待定</span>
+                <span class="ml15 pro_detail_title fl">运费说明</span>
+                <span  class="pro_value">待定 <span style="color: #bbbbbb;" id="show_yf_tips">物流说明</span></span>
                 {{--<span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>--}}
             </div>
 			<div class="pro_detail bd1"></div>
@@ -389,7 +399,7 @@
                         <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
                         <span style="width:16%" class="ovhwp" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
                         <span style="width:15%" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{$vo['goods_content']}}">{{$vo['goods_content']}}</span>
+                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</span>
                         {{--<span style="width:11%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>--}}
                         <span style="width:11%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                         <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
