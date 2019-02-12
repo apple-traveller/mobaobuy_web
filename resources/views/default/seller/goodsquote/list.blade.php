@@ -44,7 +44,7 @@
                                     <th width="9%"><div class="tDiv">店铺名称</div></th>
                                     <th width="4%"><div class="tDiv">商品编码</div></th>
                                     <th width="9%"><div class="tDiv">商品名称</div></th>
-                                    <th width="6%"><div class="tDiv">库存数量(KG)</div></th>
+                                    {{--<th width="6%"><div class="tDiv">库存数量(KG)</div></th>--}}
                                     <th width="6%"><div class="tDiv">店铺售价</div></th>
                                     <th width="6%"><div class="tDiv">业务员</div></th>
                                     <th width="6%"><div class="tDiv">联系方式</div></th>
@@ -63,7 +63,7 @@
                                     <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_full_name']}}</div></td>
-                                    <td><div class="tDiv">{{$vo['goods_number']}}</div></td>
+                                    {{--<td><div class="tDiv">{{$vo['goods_number']}}</div></td>--}}
                                     <td><div class="tDiv">￥{{$vo['shop_price']}}</div></td>
                                     <td><div class="tDiv">{{$vo['salesman']}}</div></td>
                                     <td><div class="tDiv">{{$vo['contact_info']}}</div></td>

@@ -71,13 +71,13 @@
                             </div>
 
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_number" disabled="disabled" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;商品库存数量：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="goods_number" disabled="disabled" class="text" value="{{$goodsQuote['goods_number']}}" maxlength="40" autocomplete="off" id="goods_number">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品最小采购数量：</div>
                                 <div class="label_value">

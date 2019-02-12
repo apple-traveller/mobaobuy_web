@@ -88,14 +88,14 @@
                                 </div>
                             </div>
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
-                                </div>
-                            </div>
+                            {{--<div class="item">--}}
+                                {{--<div class="label"><span class="require-field">*</span>&nbsp;商品库存数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>--}}
+                                {{--<div class="label_value">--}}
+                                    {{--<input type="text" name="goods_number" class="text" value="" maxlength="40" autocomplete="off" id="goods_number">--}}
+                                    {{--<div class="form_prompt"></div>--}}
+                                    {{--<div style="" class="notic">包装规格的整数倍，向下取整</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货地：</div>

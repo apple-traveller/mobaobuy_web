@@ -149,7 +149,7 @@ class ShopGoodsQuoteController extends Controller
                 }
             }else{
                 $data['add_time'] = Carbon::now();
-                $data['total_number'] = $data['goods_number'];
+                $data['total_number'] = $data['goods_number'] = $goods['packing_spec']*10000;
                 $data['shop_user_id'] = session('_admin_user_id');
                 $data['outer_id'] = 0;
                 $data['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
