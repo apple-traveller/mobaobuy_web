@@ -706,7 +706,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
 
 
     Route::get('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
-    Route::get('/getCateList','GoodsController@getCateList');//获取分类信息
+    Route::post('/getCateList','GoodsController@getCateList');//获取分类信息
 
     Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
     Route::post('/goods/list', 'GoodsController@getList');//商品报价列表
