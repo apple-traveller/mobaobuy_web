@@ -508,7 +508,7 @@ class ShopGoodsQuoteService
             'b.type' => '1|2',
         ];
         $dates = ShopGoodsQuoteRepo::getHotDates($condition);
-
+        //dd($dates);
         $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
 
         $list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);
