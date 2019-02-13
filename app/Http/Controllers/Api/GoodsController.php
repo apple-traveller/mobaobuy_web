@@ -488,6 +488,6 @@ class GoodsController extends ApiController
     {
         $parent_id = $request->input('parent_id',0);
         $res = GoodsCategoryService::getList($parent_id);
-        return $res;
+        return $this->success($res,'success');
     }
 }
