@@ -25,9 +25,10 @@
                             <thead>
                             <tr>
                                 <th width="8%"><div class="tDiv">级别(@if(!empty($level)) {{$level}}级 @else {{null}} @endif)</div></th>
-                                <th width="20%"><div class="tDiv">分类名称</div></th>
-                                <th width="10%"><div class="tDiv">是否在导航栏显示</div></th>
-                                <th width="10%"><div class="tDiv">是否在顶部显示</div></th>
+                                <th width="12%"><div class="tDiv">分类名称</div></th>
+                                <th width="12%"><div class="tDiv">分类英文名称</div></th>
+                                <th width="8%"><div class="tDiv">是否在导航栏显示</div></th>
+                                <th width="8%"><div class="tDiv">是否在顶部显示</div></th>
                                 <th width="10%"><div class="tDiv">别名</div></th>
                                 <th width="10%"><div class="tDiv">是否显示</div></th>
                                 <th width="10%"><div class="tDiv">排序</div></th>
@@ -49,6 +50,7 @@
                                     </div>
                                 </td>
                                 <td><div class="tDiv">{{$vo['cat_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['cat_name_en']}}</div></td>
 
                                 <td>
                                     <div class="tDiv">

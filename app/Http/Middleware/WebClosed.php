@@ -8,6 +8,7 @@ use App\Repositories\UserRepo;
 use App\Services\FirmUserService;
 use App\Services\UserService;
 use Closure;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,11 @@ class WebClosed extends Controller
             if(!session()->has('web_theme')){
                 session()->put('web_theme', getConfig('template','default'));
             }
+        }
+
+        if($request->session()->exists("lang")){
+
+            App::setLocale(session("lang"));
         }
 
         return $next($request);

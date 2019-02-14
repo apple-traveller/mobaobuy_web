@@ -500,17 +500,18 @@ class ShopGoodsQuoteService
 
     public static function getHotQuoteList()
     {
-        #先获取最近有数据的两天的日期
+
         $condition = [
             'b.is_roof' => 1,
             'b.is_delete' => 0,
             'b.is_self_run' => 1,
             'b.type' => '1|2',
         ];
+        #先获取最近有数据的两天的日期
         $dates = ShopGoodsQuoteRepo::getHotDates($condition);
 
         $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
-
+        #根据时间查这两天的数据
         $list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);
         return $list;
     }

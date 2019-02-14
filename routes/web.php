@@ -342,8 +342,11 @@ Route::get('/payment/orderPay','PayController@orderPay');//去付款
 Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
+
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
+
     Route::get('/', 'IndexController@index'); //首页
+    Route::get('/edit_language', 'IndexController@edit_language'); //首页
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
     Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
     Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信

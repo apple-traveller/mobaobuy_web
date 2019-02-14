@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\Services\IndexService;
 use App\Http\Controllers\Controller;
 use App\Services\ShopGoodsQuoteService;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -176,5 +177,24 @@ class IndexController extends Controller
     public function article($id){
         $articleInfo = IndexService::article($id);
         return $this->display('web.user.articleDetails',compact('articleInfo'));
+    }
+
+    /** 语言切换
+     * @param Request $request
+     */
+    public function edit_language(Request $request){
+
+        if($request->ajax()){
+
+            $data = $request->all();
+
+            App::setLocale($data['lang']);
+
+            $request->session()->put('lang',$data['lang']);
+
+            echo json_encode(['status'=>200,'msg'=>'OK']);
+
+        }
+
     }
 }
