@@ -488,6 +488,9 @@ class GoodsController extends ApiController
     {
         $parent_id = $request->input('parent_id',0);
         $res = GoodsCategoryService::getList($parent_id);
+        foreach($res as &$item){
+            $item['cat_img'] = getFileUrl($item['cat_img']);
+        }
         return $this->success($res,'success');
     }
 }
