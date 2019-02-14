@@ -509,7 +509,7 @@ class ShopGoodsQuoteService
         ];
         #先获取最近有数据的两天的日期
         $dates = ShopGoodsQuoteRepo::getHotDates($condition);
-
+        //dd($dates);
         $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
         #根据时间查这两天的数据
         $list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);

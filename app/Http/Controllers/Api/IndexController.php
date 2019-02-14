@@ -155,7 +155,7 @@ class IndexController extends ApiController
     public function getHotQuoteList()
     {
         $list = ShopGoodsQuoteService::getHotQuoteList();
-        return $list;
+        return $this->success($list,'success');
     }
 
 }
