@@ -26,10 +26,10 @@
                     <li class="site-nav-menu"><div><a rel="nofollow" href="{{route('register')}}">{{trans('home.header_register')}}</a></div></li>
                 @endif
                     {{trans('home.header_working_day')}} : 9:00-17:00
-                <select onchange="changelang(this.value)">
-                    <option value='zh-cn'@if(App::getLocale() == 'zh-cn') selected @endif>简体中文</option>
-                    <option value="en" @if(App::getLocale() =='en')selected @endif> English </option>
-                </select>
+                {{--<select onchange="changelang(this.value)">--}}
+                    {{--<option value='zh-cn'@if(App::getLocale() == 'zh-cn') selected @endif>简体中文</option>--}}
+                    {{--<option value="en" @if(App::getLocale() =='en')selected @endif> English </option>--}}
+                {{--</select>--}}
             </ul>
         </div>
         <div class="fr quick-menu">
