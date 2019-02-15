@@ -74,7 +74,6 @@ class GoodsController extends ApiController
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
-            $c['cat2.parent_id'] = $cate_id;
             $condition[] = $c;
         }
         if(!empty($place_id)){
