@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <title>@yield('title')</title>
     <meta name="description" content="@yield('description')" />

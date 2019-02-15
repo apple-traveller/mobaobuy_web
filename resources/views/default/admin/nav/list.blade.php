@@ -20,10 +20,11 @@
                         <table cellpadding="0" cellspacing="0" border="0">
                             <thead>
                             <tr>
-                                <th width="15%"><div class="tDiv">名称</div></th>
-                                <th width="10%"><div class="tDiv">是否显示</div></th>
-                                <th width="10%"><div class="tDiv">是否新窗口</div></th>
-                                <th width="10%"><div class="tDiv">地址</div></th>
+                                <th width="10%"><div class="tDiv">名称</div></th>
+                                <th width="10%"><div class="tDiv">英文名称</div></th>
+                                <th width="8%"><div class="tDiv">是否显示</div></th>
+                                <th width="8%"><div class="tDiv">是否新窗口</div></th>
+                                <th width="9%"><div class="tDiv">地址</div></th>
                                 <th width="8%"><div class="tDiv">位置</div></th>
                                 <th width="10%"><div class="tDiv">排序</div></th>
                                 <th width="12%" class="handle">操作</th>
@@ -36,6 +37,7 @@
                             <tr class="">
                                 <input id="_token" type="hidden" name="_token" value="{{ csrf_token()}}"/>
                                 <td><div class="tDiv">{{$nav['name']}}</div></td>
+                                <td><div class="tDiv">{{$nav['name_en']}}</div></td>
                                 <td>
                                     <div class="tDiv">
                                         <div style="margin-left: 40px;" class="switch @if($nav['is_show']) active @endif" title="@if($nav['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/nav/change/isShow')}}', '{{$nav['id']}}')">

@@ -51,6 +51,9 @@ class NavController extends Controller
         if(empty($data['name'])){
             $errorMsg[] = "导航名称不能为空";
         }
+        if(empty($data['name_en'])){
+            $errorMsg[] = "导航英文名称不能为空";
+        }
         if(empty($data['url'])){
             $errorMsg[] = "导航地址不能为空";
         }
