@@ -81,7 +81,7 @@ class GoodsController extends ApiController
             $condition['place_id'] = $place_id;
         }
         if(empty($type)){
-            $condition['b.type'] = '1';//小程序默认的只显示自营报价
+            //$condition['b.type'] = '1';//小程序默认的只显示自营报价
         }else{
             if($type == 3){
                 $condition['b.is_self_run'] = 0;

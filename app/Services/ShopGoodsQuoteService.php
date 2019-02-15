@@ -155,7 +155,6 @@ class ShopGoodsQuoteService
                         $info['goods_number'] = $info['total_number'];
                     }
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
-
                     ShopGoodsQuoteRepo::create($info);
                 }
             self::commit();
@@ -263,7 +262,6 @@ class ShopGoodsQuoteService
         }
         self::commit();
         return true;
-
     }
 
     //获取当天报价条数
