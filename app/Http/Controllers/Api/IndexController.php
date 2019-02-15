@@ -155,6 +155,18 @@ class IndexController extends ApiController
     public function getHotQuoteList()
     {
         $list = ShopGoodsQuoteService::getHotQuoteList();
+        foreach($list as &$item){
+            if($item['expiry_time']<\Carbon\Carbon::now()){
+                $item['is_expire'] = true;
+            }else{
+                $item['is_expire'] = false;
+            }
+            if($item['goods_number']<=0){
+                $item['is_sale'] = true;
+            }else{
+                $item['is_sale'] = false;
+            }
+        }
         return $this->success($list,'success');
     }
 
