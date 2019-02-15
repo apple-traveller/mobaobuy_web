@@ -30,6 +30,13 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;文章英文标题：</div>
+                                <div class="label_value">
+                                    <input type="text" name="title_en" class="text" value="{{$article['title_en']}}" maxlength="40" autocomplete="off" id="title_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <input type="hidden" name="id" value="{{$article['id']}}">
                             <!--  -->
                             <div class="item">
@@ -101,9 +108,18 @@
                         <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
                         <div class="switch_info" style="display: none;">
                             <div class="item">
-                                <script id="container" name="content" type="text/plain"><?php echo html_entity_decode($article['content']);?></script>
-
-                                <div class="form_prompt"></div>
+                                <div class="label" style="width:5%">中文：</div>
+                                <div class="label_value">
+                                    <script id="container" name="content" type="text/plain"><?php echo html_entity_decode($article['content']);?></script>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label" style="width:5%">英文：</div>
+                                <div class="label_value">
+                                    <script id="content_en" name="content_en" type="text/plain"><?php echo html_entity_decode($article['content_en']);?></script>
+                                    <div class="form_prompt"></div>
+                                </div>
                             </div>
                         </div>
                         <input type="hidden" name="currpage" value="{{$currpage}}">
@@ -121,6 +137,10 @@
 
     <script type="text/javascript">
         var ue = UE.getEditor('container',{
+            initialFrameWidth : '100%',//宽度
+            initialFrameHeight: 500//高度
+        });
+        var ue2 = UE.getEditor('content_en',{
             initialFrameWidth : '100%',//宽度
             initialFrameHeight: 500//高度
         });
@@ -159,8 +179,13 @@
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
                     var content = ue.getContent();
+                    var content_en = ue2.getContent();
                     if(content==""){
                         alert("文章内容不能为空");
+                        return false;
+                    }
+                    if(content_en==""){
+                        alert("文章英文内容不能为空");
                         return false;
                     }
                     $("#article_form").submit();
@@ -180,19 +205,26 @@
                     content :{
                         required : true,
                     },
-
-
-
+                    title_en :{
+                        required : true,
+                    },
+                    content_en :{
+                        required : true,
+                    },
                 },
                 messages:{
                     title:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'文章标题不能为空'
                     },
                     content:{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章内容不能为空'
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章英文内容不能为空'
                     },
-
-
+                    title_en:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章标题不能为空'
+                    },
+                    content_en:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'文章英文内容不能为空'
+                    },
                 }
             });
         });

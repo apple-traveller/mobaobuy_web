@@ -381,7 +381,7 @@
 				<li class="shop_good">商品</li>
 				<!-- <li class="">品牌</li> -->
 				<li class="shop_price">单价</li>
-				<li class="shop_price">可售数量</li>
+				{{--<li class="shop_price">可售数量</li>--}}
 				<li class="shop_num">购买数量</li>
 				<li class="shop_add">发货地址</li>
 				<li class="shop_sub">小计</li>
@@ -396,7 +396,7 @@
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
 					<!-- <span class="">{{$v['brand_name']}}</span> -->
 					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
-					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
+{{--					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>--}}
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>

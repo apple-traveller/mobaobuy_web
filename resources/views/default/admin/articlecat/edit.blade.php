@@ -22,6 +22,13 @@
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;分类英文名称：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="cat_name_en" class="text" id="cat_name_en" maxlength="20" value="{{$cate['cat_name_en']}}" size="27">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
 
                                 <div class="item">
                                     <div class="label">上级分类：</div>
@@ -90,13 +97,18 @@
                         required : true,
                         specialchar:""
                     },
-
+                    cat_name_en :{
+                        required : true,
+                        specialchar:""
+                    },
                 },
                 messages:{
                     cat_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'分类名称不能为空'
                     },
-
+                    cat_name_en:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'分类英文名称不能为空'
+                    },
                 }
             });
         });

@@ -24,6 +24,7 @@
                                 <th width="10%"><div class="tDiv"> </div></th>
                                 <th width="10%"><div class="tDiv">标号</div></th>
                                 <th width="20%"><div class="tDiv">分类名称</div></th>
+                                <th width="20%"><div class="tDiv">分类英文名称</div></th>
                                 <th width="10%"><div class="tDiv">排序</div></th>
                                 <th width="12%" class="handle">操作</th>
                             </tr>
@@ -49,6 +50,11 @@
                                 <td>
                                     <div class="tDiv">
                                         {{$vo['cat_name']}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="tDiv">
+                                        {{$vo['cat_name_en']}}
                                     </div>
                                 </td>
                                 <td><div class="tDiv changeInput"><input style="margin-left: 50px;" type="text" name="sort_order" class="text w40 " data-id="{{$vo['id']}}" value="{{$vo['sort_order']}}" ></div></td>
