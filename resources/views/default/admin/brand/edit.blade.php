@@ -16,71 +16,77 @@
                 <div class="mian-info">
                     <form action="/admin/brand/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;品牌名称：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="brand_name" class="text" value="{{$brand['brand_name']}}" maxlength="40" autocomplete="off" id="brand_name">
-                                        <div class="form_prompt"></div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;品牌首字母：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="brand_first_char" class="text" value="{{$brand['brand_first_char']}}" maxlength="40" autocomplete="off" id="brand_first_char">
-                                        <div class="form_prompt"></div>
-                                        <div class="notic">请仔细填写品牌首字母</div>
-                                    </div>
-                                </div>
-
-                                <div style="margin-top:10px;" class="item">
-                                    <div class="label"><span class="require-field">*</span>&nbsp;品牌Logo：</div>
-                                    <div class="label_value">
-                                        <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="brand" ><i class="layui-icon">&#xe681;</i>上传图片</button>
-                                        <input type="text" value="{{$brand['brand_logo']}}" class="text"  name="brand_logo" style="display:none;">
-                                        <img  @if(empty($brand['brand_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;margin-left:10px;margin-top:-10px;" src="{{getFileUrl($brand['brand_logo'])}}"  @endif    class="layui-upload-img"><br/>
-                                        <div style="float: left;" style="float: left;margin-left: 10px;line-height: 36px;" class="form_prompt brand_logo"></div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>品牌描述：</div>
-                                    <div class="label_value">
-                                        <textarea class="textarea" id="brand_desc" name="brand_desc" >{{$brand['brand_desc']}}</textarea>
-                                    </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;品牌名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="brand_name" class="text" value="{{$brand['brand_name']}}" maxlength="40" autocomplete="off" id="brand_name">
                                     <div class="form_prompt"></div>
                                 </div>
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>排序：</div>
-                                    <div class="label_value">
-                                        <input type="text" name="sort_order" class="text" autocomplete="off" id="sort_order" value="{{$brand['sort_order']}}"/>
-                                    </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;品牌英文名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="brand_name_en" class="text" value="{{$brand['brand_name_en']}}" maxlength="40" autocomplete="off" id="brand_name_en">
                                     <div class="form_prompt"></div>
                                 </div>
-
-                                <input type="hidden" name="id"  value="{{$brand['id']}}"/>
-                                <input type="hidden" name="currpage"  value="{{$currpage}}"/>
-
-
-                                <div class="item">
-                                    <div class="label"><span class="require-field">*</span>是否推荐：</div>
-                                    <div class="label_value">
-                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_recommend" id="is_recommend">
-                                            <option @if($brand['is_recommend']==0) selected @endif  value="0">否</option>
-                                            <option @if($brand['is_recommend']==1) selected @endif  value="1">是</option>
-                                        </select>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;品牌首字母：</div>
+                                <div class="label_value">
+                                    <input type="text" name="brand_first_char" class="text" value="{{$brand['brand_first_char']}}" maxlength="40" autocomplete="off" id="brand_first_char">
                                     <div class="form_prompt"></div>
+                                    <div class="notic">请仔细填写品牌首字母</div>
                                 </div>
+                            </div>
 
-                                <div class="item">
-                                    <div class="label">&nbsp;</div>
-                                    <div class="label_value info_btn">
-                                        <input type="submit" value=" 确定 " class="button" id="submitBtn">
-                                        <input type="reset" value=" 重置 " class="button button_reset">
-                                        <input type="hidden" name="id" value="{{$brand['id']}}">
-                                    </div>
+                            <div style="margin-top:10px;" class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;品牌Logo：</div>
+                                <div class="label_value">
+                                    <button style="float: left;" type="button" class="layui-btn upload-file" data-type="" data-path="brand" ><i class="layui-icon">&#xe681;</i>上传图片</button>
+                                    <input type="text" value="{{$brand['brand_logo']}}" class="text"  name="brand_logo" style="display:none;">
+                                    <img  @if(empty($brand['brand_logo'])) style="width:60px;height:60px;display:none;" @else style="width:60px;height:60px;margin-left:10px;margin-top:-10px;" src="{{getFileUrl($brand['brand_logo'])}}"  @endif    class="layui-upload-img"><br/>
+                                    <div style="float: left;" style="float: left;margin-left: 10px;line-height: 36px;" class="form_prompt brand_logo"></div>
                                 </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>品牌描述：</div>
+                                <div class="label_value">
+                                    <textarea class="textarea" id="brand_desc" name="brand_desc" >{{$brand['brand_desc']}}</textarea>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>排序：</div>
+                                <div class="label_value">
+                                    <input type="text" name="sort_order" class="text" autocomplete="off" id="sort_order" value="{{$brand['sort_order']}}"/>
+                                </div>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <input type="hidden" name="id"  value="{{$brand['id']}}"/>
+                            <input type="hidden" name="currpage"  value="{{$currpage}}"/>
+
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>是否推荐：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="is_recommend" id="is_recommend">
+                                        <option @if($brand['is_recommend']==0) selected @endif  value="0">否</option>
+                                        <option @if($brand['is_recommend']==1) selected @endif  value="1">是</option>
+                                    </select>
+                                <div class="form_prompt"></div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label">&nbsp;</div>
+                                <div class="label_value info_btn">
+                                    <input type="submit" value=" 确定 " class="button" id="submitBtn">
+                                    <input type="reset" value=" 重置 " class="button button_reset">
+                                    <input type="hidden" name="id" value="{{$brand['id']}}">
+                                </div>
+                            </div>
 
                             </div>
                         </div>
@@ -148,6 +154,9 @@
                     brand_name :{
                         required : true,
                     },
+                    brand_name_en :{
+                        required : true,
+                    },
                     brand_first_char :{
                         required : true,
                         isLetter : "[A-Z]"
@@ -161,6 +170,9 @@
                 },
                 messages:{
                     brand_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    brand_name_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     brand_first_char :{

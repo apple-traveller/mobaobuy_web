@@ -23,6 +23,13 @@
                             </div>
                         </div>
                         <div class="item">
+                            <div class="label"><span class="require-field">*</span>链接英文名称：</div>
+                            <div class="label_value">
+                                <input name="link_name_en" value="{{$link['link_name_en']}}" class="text" autocomplete="off" type="text">
+                                <div class="form_prompt"></div>
+                            </div>
+                        </div>
+                        <div class="item">
                             <div class="label"><span class="require-field">*</span>链接地址：</div>
                             <div class="label_value">
                                 <input name="link_url" value="{{$link['link_url']}}" class="text" autocomplete="off" type="text">
@@ -105,6 +112,9 @@
                     link_name :{
                         required : true,
                     },
+                    link_name_en :{
+                        required : true,
+                    },
                     link_url :{
                         required : true,
                     },
@@ -115,6 +125,9 @@
                 messages:{
                     link_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'链接名称不能为空'
+                    },
+                    link_name_en:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'链接英文名称不能为空'
                     },
                     link_url :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'链接地址不能为空'

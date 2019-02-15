@@ -23,6 +23,13 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;品牌英文名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="brand_name_en" class="text" value="" maxlength="40" autocomplete="off" id="brand_name_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;品牌首字母：</div>
@@ -77,11 +84,6 @@
                                     <input type="reset" value=" 重置 " class="button button_reset">
                                 </div>
                             </div>
-
-
-
-
-
                             </div>
                         </div>
                     </form>
@@ -143,6 +145,9 @@
                     brand_name :{
                         required : true,
                     },
+                    brand_name_en :{
+                        required : true,
+                    },
                     brand_first_char :{
                         required : true,
                         isLetter : "[A-Z]"
@@ -156,6 +161,9 @@
                 },
                 messages:{
                     brand_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    brand_name_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     brand_first_char :{
