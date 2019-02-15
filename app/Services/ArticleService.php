@@ -132,7 +132,7 @@ class ArticleService
     }
     public static function getIndexNews($page=1,$page_size=6,$orderBy=['click'=>'desc','add_time'=>'desc'])
     {
-        $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id','cat_name']);
+        $cat_list = ArticleCatRepo::getList([],['parent_id'=>2],['id','cat_name','cat_name_en']);
         $condition['is_show'] = 1;
         $artArr = [];
 
@@ -140,6 +140,7 @@ class ArticleService
             $condition['cat_id'] = $v['id'];
             $artArr[$v['id']] = ArticleRepo::getListBySearch(['pageSize'=>$page_size, 'page'=>$page, 'orderType'=>$orderBy],$condition);
             $artArr[$v['id']]['cat_name'] = $v['cat_name'];
+            $artArr[$v['id']]['cat_name_en'] = $v['cat_name_en'];
         }
         return $artArr;
     }

@@ -36,7 +36,7 @@
 
 
             @foreach(getPositionNav('top') as $item)
-                <a rel="nofollow" href="{{$item['url']}}" @if($item['opennew'])target="_blank"@else target="_self"@endif>{{$item['name']}}</a>
+                <a rel="nofollow" href="{{$item['url']}}" @if($item['opennew'])target="_blank"@else target="_self"@endif>{{getLangData($item,'name')}}</a>
             @endforeach
             <span><i class="iconfont icon-3"></i>{{getConfig('service_phone')}}</span>
         </div>

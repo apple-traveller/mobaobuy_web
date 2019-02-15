@@ -538,12 +538,12 @@
                     @foreach($article_list as $k=>$v)
                         @if($loop->first)
                             <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
-                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                <h2 class="Self-support-title">{{ getLangData($v,'cat_name') }}</h2>
                                 {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
                             </li>
                         @else
                             <li href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
-                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                <h2 class="Self-support-title">{{ getLangData($v,'cat_name') }}</h2>
                                 {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
                             </li>
                         @endif

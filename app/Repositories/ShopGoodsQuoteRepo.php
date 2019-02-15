@@ -92,6 +92,7 @@ class ShopGoodsQuoteRepo
         $query = \DB::table($clazz->getTable().' as b')
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->leftJoin('goods_category as cat2', 'cat.parent_id', '=', 'cat2.id')
             ->select(
                 'b.*','g.goods_name as simple_goods_name','g.brand_name','g.packing_spec','cat.cat_name',
                 'g.goods_full_name','g.unit_name','g.goods_content','g.cat_id',DB::raw('date_format(b.add_time,"%Y-%m-%d") as t'),
