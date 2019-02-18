@@ -152,10 +152,12 @@ class IndexController extends ApiController
     }
 
     //首页热卖商品 取得是置顶报价的最近两天的报价信息
-    public function getHotQuoteList()
+    public function getHotQuoteList(Request $request)
     {
-        $list = ShopGoodsQuoteService::getHotQuoteList();
-        foreach($list as &$item){
+        $currpage = $request->input('currpage',1);
+        $pageSize = $request->input('pageSize',10);
+        $list = ShopGoodsQuoteService::getHotQuoteList(['pageSize'=>$pageSize,'page'=>$currpage]);
+        foreach($list['list'] as &$item){
             if($item['expiry_time']<\Carbon\Carbon::now()){
                 $item['is_expire'] = true;
             }else{

@@ -157,9 +157,56 @@ class ShopGoodsQuoteRepo
                 $query = $query->orderBy($c, $d);
             }
         }
-//        dd($query->toSql());
         $res = $query->get()->toArray();
         return object_array($res);
+    }
+
+    //热卖商品，带分页
+    public static function getQuoteInfoByFields_se($pager,$condition)
+    {
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->select('b.*','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name');
+
+        $query = self::setCondition($query, $condition);
+
+        $page = 1;
+        $page_size = -1;
+
+        if (isset($pager['pageSize']) || isset($pager['page'])) {
+            if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
+                $page_size = 10;
+            } else {
+                $page_size = intval($pager['pageSize']);
+            }
+            if (isset($pager['page']) && intval($pager['page']) > 0) {
+                $page = $pager['page'];
+            }
+        }
+
+        //总条数
+        $rs['total'] = $query->count();
+
+        //处理排序
+        if (isset($pager['orderType']) && !empty($pager['orderType'])) {
+            foreach ($pager['orderType'] as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }
+
+        if ($page_size > 0) {
+            $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
+        } else {
+            $rs['list'] = $query->get()->toArray();
+        }
+        $rs['list'] = object_array($rs['list']);
+        $rs['page'] = $page;
+        $rs['pageSize'] = $page_size;
+        $rs['totalPage'] = ceil($rs['total'] / $page_size);
+        return $rs;
     }
 
     //获取随机报价
