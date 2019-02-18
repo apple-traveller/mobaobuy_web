@@ -25,7 +25,11 @@ class GoodsService
     //商品列表（分页）
     public static function getGoodsList($pager,$condition)
     {
-        return GoodsRepo::getListBySearch($pager,$condition);
+        $rs = GoodsRepo::getListBySearch($pager,$condition);
+        foreach ($rs['list'] as &$item){
+            $item['goods_img_url'] = getFileUrl($item['goods_img']);
+        }
+        return $rs;
     }
 
     //无分页
