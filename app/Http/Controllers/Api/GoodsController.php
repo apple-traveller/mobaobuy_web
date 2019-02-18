@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Account\Base\GoodsUomController;
+use App\Services\Account\Base\BaseGoodsBrandService;
+use App\Services\Account\Base\BaseGoodsUomService;
+use App\Services\BrandService;
+use App\Services\GoodsCategoryService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\UnitService;
 use Illuminate\Http\Request;
 use App\Services\GoodsService;
 use App\Services\UserRealService;
@@ -10,8 +16,45 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserAddressService;
 use App\Services\UserService;
+
 class GoodsController extends ApiController
 {
+    public function getGoodsInfoBySn(Request $request){
+        $goods_sn = $request->input("goods_sn");
+        if(empty($goods_sn)){
+            return $this->error('商品编码不能为空');
+        }
+        $info = GoodsService::getGoodInfoBySn($goods_sn);
+        return $this->success($info);
+    }
+
+    public function getGoodsCategoryByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = GoodsCategoryService::getInfo($id);
+        return $this->success($info);
+    }
+
+    public function getGoodsUomByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = UnitService::getUnitById($id);
+        return $this->success($info);
+    }
+
+    public function getGoodsBrandByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = BrandService::getBrandInfo($id);
+        return $this->success($info);
+    }
+
     //自营报价列表
     public function getList(Request $request)
     {
