@@ -150,45 +150,45 @@
                         <div class="header_text">
                             <span class="ovhwp" style="display: block;" title="{{session('_web_user.nick_name')}}">{{session('_web_user.nick_name')}}</span>
                             @if(session('_web_user.is_firm'))
-                                <span class="db">【企业用户】</span>
+                                <span class="db">【{{trans('home.home_firm_member')}}】</span>
                             @else
-                                <span class="db">【个人用户】</span>
+                                <span class="db">【{{trans('home.home_personal_member')}}】</span>
                             @endif
                         </div>
                     </div>
 
                     <div>
                         <ul class="order-stute">
-                            <a rel="nofollow" href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>待确认</span></a>
-                            <a rel="nofollow" href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>待付款</span></a>
-                            <a rel="nofollow" href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>待收货</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>{{trans('home.home_wait_affirm')}}</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>{{trans('home.home_wait_pay')}}</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>{{trans('home.home_wait_confirm')}}</span></a>
                         </ul>
                     </div>
                     <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">
-                    <textarea class="demand-text" style="resize: none; width:220px;height: 104px;" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
-                    <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
+                    <textarea class="demand-text" style="resize: none; width:220px;height: 104px;" id="demand-text" placeholder="{{trans('home.home_find_goods_placeholder')}}"></textarea>
+                    <button class="opt-btn" id="demand-btn" style="width:100%;">{{trans('home.home_find_goods')}}</button>
                 </div>
             </div>
         @else
         <div class="member_center_div">
             <div class="member_center tac">
                 <div class="member_header tac"><img src="/images/hd.png"/></div>
-                <div class="tac">尊敬的用户，欢迎来到秣宝网!</div>
+                <div class="tac">{{trans('home.home_welcome')}}</div>
                 <div class="mt5 pl10 pr10">
                     <a rel="nofollow" href="{{route('login')}}">
                         <div class="login-btn">
-                            登录
+                            {{trans('home.header_login')}}
                         </div>
                     </a>
                     <a rel="nofollow" href="{{route('register')}}">
                         <div class="reg-btn">
-                            注册
+                            {{trans('home.header_register')}}
                         </div>
                     </a>
                 </div>
-                <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="请输入联系方式"/>
-                <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="填写您的真实需求，提交给我们"></textarea>
-                <button class="opt-btn" id="demand-btn" style="width:100%;">立即找货</button>
+                <input type="text" class="contact-input" id="demand-phone" autocomplete="off" placeholder="{{trans('home.home_find_goods_contact_placeholder')}}"/>
+                <textarea style="resize: none; width:220px;height:60px" class="demand-text" id="demand-text" placeholder="{{trans('home.home_find_goods_placeholder')}}"></textarea>
+                <button class="opt-btn" id="demand-btn" style="width:100%;">{{trans('home.home_find_goods')}}</button>
             </div>
         </div>
         @endif
@@ -197,7 +197,7 @@
     <div class="w1200 pr" style="z-index: 1;">
         <div class="mt10 ovh">
             <!--限时秒杀-查看更多-->
-            <div class="index_xs_ms"><a rel="nofollow" href="/buyLimit" class="See_more tac ovh"><span style="color:#fff">查看更多></span></a></div>
+            <div class="index_xs_ms"><a rel="nofollow" href="/buyLimit" class="See_more tac ovh"><span style="color:#fff">{{trans('home.more')}}></span></a></div>
             <!--秒杀进度-->
             <div class="fl pr" style="margin-bottom: 4px;">
                 @for ($i = 0; $i < 2; $i++)
@@ -205,14 +205,14 @@
                     @if(empty($item))
                         <div class="Time_limit_action whitebg pr  fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 0%</div>
+                                <div class="Time_limit_action_progress  fs16 white fl">{{trans('home.pace')}} 0%</div>
                                 <span class="fr mr15">
-                                    <font class="green">0</font>次浏览
+                                    <font class="green">0</font>{{trans('home.browse')}}
                                 </span>
                             </div>
                             <div class="mt40">
                                 <div class="fs20 tac">
-                                    <span>暂无活动 敬请期待</span>
+                                    <span>{{trans('home.none_activity')}}</span>
                                 </div>
                                 {{--<div class="fs16 tac">--}}
                                     {{--<span>价格</span>--}}
@@ -222,37 +222,37 @@
                                 {{--</div>--}}
                             </div>
                             <div class="Time_limit_action_bottom graybg">
-                                <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #75b335;">敬请期待</div>
+                                <div class="bottom_time">{{trans('home.distance_end')}}：<span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div><div class="bottom_btn redbg fs16 white cp" style="background-color: #75b335;">{{trans('home.expect')}}</div>
                             </div>
                         </div>
                     @else
                         <div class="Time_limit_action whitebg pr ovh fl @if($i) ml2 @endif">
                             <div class="Time_limit_action_top mt10">
-                                <div class="Time_limit_action_progress  fs16 white fl">进度 {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="green">{{$item['click_count']}}</font>次浏览</span></div>
+                                <div class="Time_limit_action_progress  fs16 white fl">{{trans('home.pace')}} {{number_format(100 - $item['available_quantity']/$item['num']*100)}}%</div><span class="fr mr15"><font class="green">{{$item['click_count']}}</font>{{trans('home.browse')}}</span></div>
                             <div class="mt40">
                                 <div class="fs20 tac"><span>{{$item['goods_name']}}</span><span class="ml15">{{$item['num']}}KG</span></div>
-                                <div class="fs16 tac"><span>价格</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/KG</span></div>
+                                <div class="fs16 tac"><span>{{trans('home.price')}}</span><span class="ml15"><font class="fs24 orange">{{amount_format($item['price'])}}</font>/KG</span></div>
                             </div>
                             @if($item['is_over'])
                                 <div class="Time_limit_action_bottom graybg">
-                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-                                    <div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">已结束</div>
+                                    <div class="bottom_time">{{trans('home.distance_end')}}：<span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp" style="background-color: #aca9a9">{{trans('home.end')}}</div>
                                 </div>
                             @elseif($item['is_soon'])
                                 <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{strtotime($item['begin_time'])*1000}}">
-                                    <div class="bottom_time">距离开始：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-                                    <div class="bottom_btn redbg fs16 white cp">敬请期待</div>
+                                    <div class="bottom_time">{{trans('home.distance_begin')}}：<span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+                                    <div class="bottom_btn redbg fs16 white cp">{{trans('home.expect')}}</div>
                                 </div>
                             @else
                                 <div class="Time_limit_action_bottom graybg count-down" data-endtime="{{strtotime($item['end_time'])*1000}}">
-                                    <div class="bottom_time">距离结束：<span class="orange count-down-text">0天0小时0分钟0秒</span></div>
+                                    <div class="bottom_time">{{trans('home.distance_end')}}：<span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
                                     @if($item['available_quantity'] == 0)
                                         <a href="javascript:void(0)">
-                                            <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">已售完</div>
+                                            <div class="bottom_btn redbg fs16 white cp" style="background-color: #ccc;">{{trans('home.sold_out')}}</div>
                                         </a>
                                      @else
                                         <a href="/buyLimitDetails/{{encrypt($item['id'])}}">
-                                            <div class="bottom_btn redbg fs16 white cp">参与秒杀</div>
+                                            <div class="bottom_btn redbg fs16 white cp">{{trans('home.partaking')}}</div>
                                         </a>
                                     @endif
                                 </div>
@@ -267,7 +267,7 @@
             <!--成交动态-->
             <div class="Tran_dynamics">
                 {{--<h1 class="ml20 mt15 fs16 fwb">成交动态</h1>--}}
-                <div class="ml20 mt15 fs16 fwb">成交动态</div>
+                <div class="ml20 mt15 fs16 fwb">{{trans('home.home_dynamic')}}</div>
                 <div class="trans_marquee">
                     <ul class="Tran_dynamics_list">
                         @if(!empty($trans_list))
@@ -289,38 +289,42 @@
         <div class="Self-support mt30">
             <div class="ovh">
                 {{--<h1 class="Self-support-title">自营报价</h1>--}}
-                <div class="Self-support-title">自营报价</div>
-                <div class="fr mr20"><span>共<font class="green">{{$goodsList['total']}}</font>条自营报价</span><a rel="nofollow" class="ml30" href="/goodsList/1">查看更多></a></div></div>
+                <div class="Self-support-title">{{trans('home.self_quote')}}</div>
+                <div class="fr mr20"><span>{{trans('home.self_quote_prefix')}}<font class="green"> {{$goodsList['total']}} </font>{{trans('home.self_quote_suffix')}}</span><a rel="nofollow" class="ml30" href="/goodsList/1">{{trans('home.more')}}></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
-                    <span style="width:12%;">品种</span>
-                    <span style="width:15%;">品牌</span>
-                    <span style="width:12%;">规格</span>
-                    <span style="width:10%;">单价（元）</span>
-                    <span style="width:10%;">交货时间</span>
-                    <span style="width:7%;">发货地</span>
-                    <span style="width:7%;">交货方式</span>
-                    <span style="width:10%;">更新时间</span>
-                    <span style="width:6%;">联系方式</span>
-                    <span style="width:10%;">操作</span>
+                    <span style="width:12%;">{{trans('home.cate')}}</span>
+                    <span style="width:15%;">{{trans('home.brand')}}</span>
+                    <span style="width:12%;">{{trans('home.spec')}}</span>
+                    <span style="width:10%;">{{trans('home.price')}}</span>
+                    <span style="width:10%;">{{trans('home.delivery_time')}}</span>
+                    <span style="width:7%;">{{trans('home.delivery_area')}}</span>
+                    <span style="width:7%;">{{trans('home.delivery_method')}}</span>
+                    <span style="width:10%;">{{trans('home.update_time')}}</span>
+                    <span style="width:6%;">{{trans('home.contact')}}</span>
+                    <span style="width:10%;">{{trans('home.operation')}}</span>
                 </li>
                 @if(!empty($goodsList['list']))
                     @foreach($goodsList['list'] as $vo)
                         <li>
-                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
-                            <span style="width:12%;" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                            <span style="width:15%;" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}"><i class="space_hidden" style="width:100%;line-height: 55px;"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a></i></span>
+                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{ getLangData($vo, 'cat_top_name') }}">{{ getLangData($vo, 'cat_top_name') }}</span>
+                            <span style="width:12%;" title="{{ getLangData($vo, 'brand_name') }}">{{ getLangData($vo, 'brand_name') }}</span>
+                            <span style="width:15%;" title="{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">
+                                <i class="space_hidden" style="width:100%;line-height: 55px;">
+                                    <a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a>
+                                </i>
+                            </span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
-                            <span style="width:10%;">{{$vo['delivery_time']}}</span>
+                            <span style="width:10%;">{{getLangData($vo,'delivery_time')}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
-                            <span style="width:7%;">{{$vo['delivery_method']}}</span>
+                            <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
                             <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
                             <span style="width:6%;">
                                 <div class="custom_service">
                                     <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
                                     <div class="custom_service_popup" style="display: none;">
-                                        <p class="custom_service_popup_p">联系方式</p>
+                                        <p class="custom_service_popup_p">{{trans('home.contact_way')}}</p>
                                         <div class="custom_service_popup_text">
                                             <p>
                                                 <span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>
@@ -337,72 +341,72 @@
                             </span>
                             <span style="width:10%;">
                                 @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                    <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                                    <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
                                 @elseif($vo['goods_number'] <= 0)
-                                    <button class="trade-close-btn">已售完</button>
+                                    <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
                                 @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
-                                    <button class="trade-close-btn">已过期</button>
+                                    <button class="trade-close-btn">{{trans('home.overdue')}}</button>
                                 @endif
                             </span>
                         </li>
                     @endforeach
                 @else
-                    <li class="nodata">无相关数据</li>
+                    <li class="nodata">{{trans('home.no_data')}}</li>
                 @endif
             </ul>
         </div>
     </div>
 
-    <div class="w1200 tac fs30 fwb" style="margin-top: 30px;">一站式服务</div>
+    <div class="w1200 tac fs30 fwb" style="margin-top: 30px;">{{trans('home.home_service')}}</div>
     <div class="One_service_bg">
 
         <ul class="One_service">
             <li class="One_service_bg1">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img alt="饲料物流服务" src="/images/index_wl_icon.png"/></div>
+                    <div class="One_service_icon"><img alt="{{trans('home.home_logistics_alt')}}" src="/images/index_wl_icon.png"/></div>
                     {{--<h1 class="tac fs18 fwb ">物流</h1>--}}
-                    <div class="tac fs18 fwb ">物流</div>
-                    <div class="One_service_by ">运输、仓储、加工一体服务</div>
+                    <div class="tac fs18 fwb ">{{trans('home.home_logistics')}}</div>
+                    <div class="One_service_by ">{{trans('home.home_logistics_by')}}</div>
                 </div>
             </li>
             <li class="One_service_bg2">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img alt="饲料产业链金融" src="/images/index_jr_icon.png"/></div>
+                    <div class="One_service_icon"><img alt="{{trans('home.home_finance_alt')}}" src="/images/index_jr_icon.png"/></div>
                     {{--<h1 class="tac fs18 fwb">金融</h1>--}}
-                    <div class="tac fs18 fwb">金融</div>
-                    <div class="One_service_by">解决产业链上下游资金问题</div>
+                    <div class="tac fs18 fwb">{{trans('home.home_finance')}}</div>
+                    <div class="One_service_by">{{trans('home.home_finance_by')}}</div>
                 </div>
 
             </li>
             <li class="One_service_bg3">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img alt="饲料行情和饲料资讯" src="/images/index_hq_icon.png"/></div>
-                    <div class="tac fs18 fwb">行情</div>
+                    <div class="One_service_icon"><img alt="{{trans('home.home_quotation_alt')}}" src="/images/index_hq_icon.png"/></div>
+                    <div class="tac fs18 fwb">{{trans('home.home_quotation')}}</div>
                     {{--<h1 class="tac fs18 fwb">行情</h1>--}}
-                    <div class="One_service_by">维生素最及时的行情和资讯</div>
+                    <div class="One_service_by">{{trans('home.home_quotation_by')}}</div>
                 </div>
 
             </li>
             <li class="One_service_bg4">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img alt="饲料电商平台" src="/images/index_ys_icon.png"/></div>
+                    <div class="One_service_icon"><img alt="{{trans('home.home_cloud_quotient_alt')}}" src="/images/index_ys_icon.png"/></div>
                     {{--<h1 class="tac fs18 fwb">云商</h1>--}}
-                    <div class="tac fs18 fwb">云商</div>
-                    <div class="One_service_by">用更少的人<br />接更多的单</div>
+                    <div class="tac fs18 fwb">{{trans('home.home_cloud_quotient')}}</div>
+                    <div class="One_service_by">{{trans('home.home_cloud_quotient_by')}}</div>
                 </div>
 
             </li>
             <li class="One_service_bg5">
                 <div class="One_service_blue"></div>
                 <div class="One_service_top">
-                    <div class="One_service_icon"><img alt="饲料智能产业" src="/images/index_zn_icon.png"/></div>
+                    <div class="One_service_icon"><img alt="{{trans('home.home_intelligence_alt')}}" src="/images/index_zn_icon.png"/></div>
                     {{--<h1 class="tac fs18 fwb">智能</h1>--}}
-                    <div class="tac fs18 fwb">智能</div>
-                    <div class="One_service_by">助力智慧维生素产业升级</div>
+                    <div class="tac fs18 fwb">{{trans('home.home_intelligence')}}</div>
+                    <div class="One_service_by">{{trans('home.home_intelligence_by')}}</div>
                 </div>
 
             </li>
@@ -413,17 +417,17 @@
         <div class="w1200" style="margin-top: 30px;">
             <div class="ovh">
                 {{--<h1 class="Self-support-title">供应商</h1>--}}
-                <div class="Self-support-title">供应商</div>
-                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList/3">查看更多></a></div></div>
+                <div class="Self-support-title">{{trans('home.home_supplier')}}</div>
+                <div class="fr mr20"><a rel="nofollow" class="ml30" href="/goodsList/3">{{trans('home.more')}}></a></div></div>
 
             <ul class="supply_list mt15">
                 <li class="graybg">
-                    <span>公司名称</span>
-                    <span>联系人</span>
-                    <span>联系电话</span>
-                    <span>主营品种</span>
-                    <span>更新时间</span>
-                    <span>操作</span>
+                    <span>{{trans('home.company')}}</span>
+                    <span>{{trans('home.contact')}}</span>
+                    <span>{{trans('home.contact_phone')}}</span>
+                    <span>{{trans('home.main_product')}}</span>
+                    <span>{{trans('home.update_time')}}</span>
+                    <span>{{trans('home.operation')}}</span>
                 </li>
                 @if(!empty($shops))
                     @foreach($shops as $shop)
@@ -433,8 +437,12 @@
                             <span>{{$shop['contactName']}}</span>
                             <span>{{$shop['contactPhone']}}</span>
                             <span>{{$shop['major_business']}}</span>
-                            <span>1小时前</span>
-                            <span class="lcolor operation">展开</span>
+                            <span>
+                                @if(isset($shop['quotes']) && !empty($shop['quotes']))
+                                    {{ \Carbon\Carbon::parse($shop['quotes'][0]['add_time'])->diffForHumans()}}
+                                @endif
+                            </span>
+                            <span class="lcolor operation">{{trans('home.open')}}</span>
                         </div>
                         <div class="supply_list_inside" style="display: none;">
                             <ul class="quote_list supply_quote_list">
@@ -456,7 +464,7 @@
                                                 <div class="custom_service" style="margin-top: 0px">
                                                     <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
                                                     <div class="custom_service_popup" style="">
-                                                        <p class="custom_service_popup_p">联系方式</p>
+                                                        <p class="custom_service_popup_p">{{trans('home.contact_way')}}</p>
                                                         <div class="custom_service_popup_text">
                                                             <p>
                                                                 <span style="width:60px;text-align: right;width: 60px;text-align: right;margin-top: 0;margin-bottom: 0;">{{$quote['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$quote['contact_info']}}
@@ -475,26 +483,27 @@
                                             <span style="width:10%;">
                                                 @if($quote['expiry_time'] > date('Y-m-d H:i:s'))
                                                     @if($quote['goods_number'])
-                                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">加入购物车</button>
+                                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">{{trans('home.add_cart')}}</button>
                                                     @else
-                                                        <button class="trade-close-btn" style="margin-top:-10px;">已售完</button>
+                                                        <button class="trade-close-btn" style="margin-top:-10px;">{{trans('home.sold_out')}}</button>
                                                     @endif
                                                 @else
-                                                    <button class="trade-close-btn" style="margin-top:-10px;">已过期</button>
+                                                    <button class="trade-close-btn" style="margin-top:-10px;">{{trans('home.overdue')}}</button>
                                                 @endif
                                             </span>
+
 
                                         </li>
                                     @endforeach
                                 @else
-                                    <li class="nodata">无相关数据</li>
+                                    <li class="nodata">{{trans('home.no_data')}}</li>
                                 @endif
                             </ul>
                         </div>
                     </li>
                     @endforeach
                 @else
-                    <li class="nodata">无相关数据</li>
+                    <li class="nodata">{{trans('home.no_data')}}</li>
                 @endif
             </ul>
         </div>
@@ -529,18 +538,18 @@
                     @foreach($article_list as $k=>$v)
                         @if($loop->first)
                             <li class="curr" href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
-                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                <h2 class="Self-support-title">{{ getLangData($v,'cat_name') }}</h2>
                                 {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
                             </li>
                         @else
                             <li href="/news/{{ $k }}/1.html" data_id = {{ $k }}>
-                                <h2 class="Self-support-title">{{ $v['cat_name'] }}</h2>
+                                <h2 class="Self-support-title">{{ getLangData($v,'cat_name') }}</h2>
                                 {{--<div class="Self-support-title">{{ $v['cat_name'] }}</div>--}}
                             </li>
                         @endif
                     @endforeach
                 </ul>
-            <a rel="nofollow" class="nil_more" href="/news.html">查看更多></a>
+            <a rel="nofollow" class="nil_more" href="/news.html">{{trans('home.more')}}></a>
         </div>
         <div class="whitebg ovh">
             <ul class="nil_items">
@@ -548,26 +557,25 @@
                 @foreach($article_list as $k=>$v)
                     <li @if(!$loop->first) style="display: none;" @endif>
                         <ul class="Quotate">
-
-                                    @foreach($v['list'] as $k=>$vv)
-                                        @if($k <= 3)
-                                        <a rel="nofollow" href="detail/{{$vv['id']}}.html">
-                                            <li>
-                                                <div class="Quotate-img" >
-                                                    <img width="100%" src="{{getFileUrl($vv['image'])}}" />
-                                                </div>
-                                                <div class="Quotate_text">{{$vv['title']}}</div>
-                                            </li>
-                                        </a>
-                                        @endif
-                                    @endforeach
+                            @foreach($v['list'] as $k=>$vv)
+                                @if($k <= 3)
+                                <a rel="nofollow" href="detail/{{$vv['id']}}.html">
+                                    <li>
+                                        <div class="Quotate-img" >
+                                            <img width="100%" src="{{getFileUrl($vv['image'])}}" />
+                                        </div>
+                                        <div class="Quotate_text">{{ getLangData($vv,'title') }}</div>
+                                    </li>
+                                </a>
+                                @endif
+                            @endforeach
                         </ul>
 
                         <ul class="Quotate_right">
                             @foreach($v['list'] as $item)
                                 <a href="detail/{{$item['id']}}.html">
                                     <li>
-                                        <span class="fl ml5">{{$item['title']}}</span>
+                                        <span class="fl ml5">{{ getLangData($item,'title') }}</span>
                                         <span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span>
                                     </li>
                                 </a>
@@ -587,7 +595,7 @@
         <div class="w1200" style="margin:30px auto">
             <div class="ovh">
                 {{--<h1 class="Self-support-title">合作品牌</h1>--}}
-                <div class="Self-support-title">合作品牌</div>
+                <div class="Self-support-title">{{trans('home.home_cooperative')}}</div>
             </div>
             <ul class="Cooperative_brand">
                 @foreach($brand_list as $item)
@@ -607,11 +615,11 @@
      <div style="background-color: #f7f7f7">
          <div class="in_box" style=" ">
              <div class="box4">
-                 <span class="s">友情链接：</span>
+                 <span class="s">{{trans('home.home_friendship')}}：</span>
                  <div class="list">
                      <div class="list_div">
                          @foreach($friend_link as $v)
-                             <a href="javascript:void(0);" onclick='window.open("{{isIncludeHttp($v['link_url'])}}", "_blank");' title="{{$v['link_name']}}">{{$v['link_name']}}</a>
+                             <a href="javascript:void(0);" onclick='window.open("{{isIncludeHttp($v['link_url'])}}", "_blank");' title="{{ getLangData($v, 'link_name') }}">{{ getLangData($v, 'link_name') }}</a>
                          @endforeach
                      </div>
                  </div>

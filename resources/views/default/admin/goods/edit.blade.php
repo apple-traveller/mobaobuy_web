@@ -29,9 +29,24 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品英文全称：</div>
+                                <div class="label_value">
+                                    <input type="text" disabled class="text" value="{{$good['goods_full_name_en']}}" maxlength="40" autocomplete="off" id="goods_full_name">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">英文品牌+英文品名+英文含量,不可编辑</div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
                                     <input type="text" name="goods_name" class="text" value="{{$good['goods_name']}}" maxlength="40" autocomplete="off" id="goods_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品英文名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_name_en" class="text" value="{{$good['goods_name_en']}}" maxlength="40" autocomplete="off" id="goods_name_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -70,10 +85,11 @@
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;" name="brand_id" id="brand_id">
                                         <option value="0">请选择品牌</option>
                                         @foreach($brands as $v)
-                                            <option @if($v['id']==$good['brand_id']) selected @endif  value="{{$v['id']}}">{{$v['brand_name']}}</option>
+                                            <option @if($v['id']==$good['brand_id']) selected @endif  value="{{$v['id']}}" en="{{$v['brand_name_en']}}">{{$v['brand_name']}}</option>
                                         @endforeach
                                     </select>
                                     <input class="brand_name" type="hidden" name="brand_name" value="@if(!empty($good['brand_name'])) {{$good['brand_name']}} @else {{$brands[0]['brand_name']}} @endif">
+                                    <input class="brand_name_en" type="hidden" name="brand_name_en" value="@if(!empty($good['brand_name_en'])) {{$good['brand_name_en']}} @else {{$brands[0]['brand_name_en']}} @endif">
                                 </div>
                                 <div class="form_prompt"></div>
                             </div>
@@ -141,9 +157,26 @@
                             </div>
 
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content_en" class="text" value="{{$good['goods_content_en']}}" maxlength="40" autocomplete="off" id="goods_content_en">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装单位：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_unit" class="text" value="{{$good['packing_unit']}}" maxlength="40" autocomplete="off" id="packing_unit">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文包装单位：</div>
+                                <div class="label_value">
+                                    <input type="text" name="packing_unit_en" class="text" value="{{$good['packing_unit_en']}}" maxlength="40" autocomplete="off" id="packing_unit_en">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -209,6 +242,15 @@
                             </div>
 
                             <div class="item">
+                                <div class="label">&nbsp;pc商品英文详情：</div>
+                                <div class="label_value">
+                                    <script id="goods_desc_en" name="goods_desc_en" type="text/plain"><?php echo stripslashes($good['goods_desc_en']);?></script>
+
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
                                 <div class="label">&nbsp;移动端商品详情：</div>
                                 <div class="label_value">
                                     <script id="desc_mobile" name="desc_mobile" type="text/plain"><?php echo  stripslashes($good['desc_mobile']);?></script>
@@ -236,9 +278,14 @@
             ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
 
-        var ue = UE.getEditor('desc_mobile',{initialFrameHeight:400});
-        ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        var ue2 = UE.getEditor('desc_mobile',{initialFrameHeight:400});
+        ue2.ready(function() {
+            ue2.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        });
+
+        var ue3 = UE.getEditor('goods_desc_en',{initialFrameHeight:400});
+        ue3.ready(function() {
+            ue3.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
     <script type="text/javascript">
@@ -248,6 +295,7 @@
         $("#brand_id").change(function(){
             var option = $("#brand_id option:selected");
             $(".brand_name").val(option.text());
+            $(".brand_name_en").val(option.attr('en'));
         })
 
         //选择单位的同时给隐藏的unit_name赋值
@@ -450,6 +498,9 @@
                     goods_name :{
                         required : true,
                     },
+                    goods_name_en :{
+                        required : true,
+                    },
                     goods_sn :{
                         required : true,
                     },
@@ -476,6 +527,9 @@
                     packing_unit:{
                         required : true
                     },
+                    packing_unit_en:{
+                        required : true
+                    },
                     market_price:{
                         required : true,
                         number:true
@@ -490,12 +544,18 @@
                     goods_content:{
                         required :true,
                     },
+                    goods_content_en:{
+                        required :true,
+                    },
 //                    original_img:{
 //                        required :true,
 //                    },
                 },
                 messages:{
                     goods_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_name_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_sn :{
@@ -511,6 +571,10 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
 //                    },
                     packing_spec :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
+                        number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
+                    },
+                    packing_spec_en :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     },
@@ -533,6 +597,9 @@
 //                        required : '<i class="icon icon-exclamation-sign"></i>'+'不能为空',
 //                    },
                     goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_content_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 //                    original_img:{

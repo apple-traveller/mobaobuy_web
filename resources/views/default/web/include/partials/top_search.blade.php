@@ -4,26 +4,26 @@
         <div class="search-div">
             <div class="logo">
                 <a href="/">
-                    <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}" title="饲料添加剂供应商-饲料原料价格行情-「秣宝」饲料原料采购网" alt="饲料添加剂供应商-饲料原料价格行情-「秣宝」饲料原料采购网">
+                    <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}" title="{{trans('home.header_logo_alt')}}" alt="{{trans('home.header_logo_alt')}}">
                 </a>
             </div>
             <div class="search-box">
                 <form action="/goodsList" method="get">
-                    <input type="text" name="keyword" @if(isset($keyword)) value="{{$keyword}}" @endif class="search-input" placeholder="请输入关键词、类别进行搜索"/>
-                    <input type="submit" class="opt-btn" value="搜 索"/>
+                    <input type="text" name="keyword" @if(isset($keyword)) value="{{$keyword}}" @endif class="search-input" placeholder="{{trans('home.header_search_placeholder')}}"/>
+                    <input type="submit" class="opt-btn" value="{{trans('home.header_search')}}"/>
                 </form>
 
-                <a rel="nofollow" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');" class="contact_artificial tac br1 db fl ml10">联系人工找货</a>
+                <a rel="nofollow" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{getConfig('service_qq')}}&site=qq&menu=yes');" class="contact_artificial tac br1 db fl ml10">{{trans('home.header_find_goods')}}</a>
 
                 @if(!empty(getHotSearch()))
-                    <div class="hot_search_m">热门推荐：
+                    <div class="hot_search_m">{{trans('home.header_hot')}}：
                         @foreach(getHotSearch() as $item)
                             <a href="/goodsList?keyword={{$item['search_key']}}" target="_blank">{{$item['search_key']}}</a>
                         @endforeach
                     </div>
                 @endif
             </div>
-            <a rel="nofollow" class="shopping_cart mt40 tac" href="/cart"><span class="fl ml25"><i class="iconfont icon-gouwuche"></i>我的购物车</span><span id="shopping-amount" class="pro_cart_num">0</span></a>
+            <a rel="nofollow" class="shopping_cart mt40 tac" href="/cart"><span class="fl ml25"><i class="iconfont icon-gouwuche"></i>{{trans('home.header_cart')}}</span><span id="shopping-amount" class="pro_cart_num">0</span></a>
         </div>
         @include(themePath('.','web').'web.include.partials.top_nav')
     </div>

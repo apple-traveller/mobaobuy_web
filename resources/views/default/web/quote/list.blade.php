@@ -496,7 +496,7 @@
                             '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:12%;">'+_store_name+'</span>' +
                             '<span style="width:10%;" class="ovh">'+list[i].cat_top_name+'</span>' +
                             '<span  style="width:9%;">'+list[i].brand_name+'</span>' +
-                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_content+'</a></span>' +
+                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_content+' '+list[i].simple_goods_name+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_time+'</span>' +

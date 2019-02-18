@@ -25,7 +25,8 @@
                             <thead>
                             <tr>
                                 <th width="20%"><div class="tDiv">链接名称</div></th>
-                                <th width="35%"><div class="tDiv">链接地址</div></th>
+                                <th width="20%"><div class="tDiv">链接英文名称</div></th>
+                                <th width="20%"><div class="tDiv">链接地址</div></th>
                                 <th width="20%"><div class="tDiv">链接LOGO</div></th>
                                 <th width="10%"><div class="tDiv">显示顺序</div></th>
                                 <th class="handle" width="10%">操作</th>
@@ -36,6 +37,7 @@
                             @foreach($links as $vo)
                             <tr class="">
                                 <td><div class="tDiv">{{$vo['link_name']}}</div></td>
+                                <td><div class="tDiv">{{$vo['link_name_en']}}</div></td>
                                 <td>
                                     <div class="tDiv">
                                         <a href="{{$vo['link_url']}}" target="_blank">{{$vo['link_url']}}</a>

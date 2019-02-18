@@ -121,7 +121,8 @@ class GoodsController extends Controller
         }
 
         $data['goods_full_name'] = $data['brand_name']." ".$data['goods_content']." ".$data['goods_name'];
-
+        $data['goods_full_name_en'] = $data['brand_name_en']." ".$data['goods_content_en']." ".$data['goods_name_en'];
+        unset($data['brand_name_en']);
         try{
             if(!key_exists('id',$data)){
 //                GoodsService::uniqueValidate($data['goods_name']);

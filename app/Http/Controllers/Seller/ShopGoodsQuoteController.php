@@ -121,10 +121,11 @@ class ShopGoodsQuoteController extends Controller
         $delivery_place = $request->input('place_id_LABELS','');
         $place_id = $request->input('place_id','');
         $production_date = $request->input('production_date','');
-        $goods_number = $request->input('goods_number','');
+//        $goods_number = $request->input('goods_number','');
         $shop_price = $request->input('shop_price','');
         $salesman_id = $request->input('salesman_id','');
         $type = $request->input('type','');
+        $min_limit = $request->input('min_limit','');
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -182,7 +183,8 @@ class ShopGoodsQuoteController extends Controller
             'delivery_place' => $delivery_place,
             'place_id' => $place_id,
             'production_date' => $production_date,
-            'goods_number' => $goods_number,
+            'goods_number' => $goods['packing_spec']*10000,
+            'min_limit' => $min_limit,
             'delivery_method' => $delivery_method,
             'delivery_time' => $delivery_time,
             'shop_price' => $shop_price,
@@ -206,11 +208,10 @@ class ShopGoodsQuoteController extends Controller
                     }else{
                         return $this->success('修改成功',url('/seller/activity/consign')."?currentPage=".$currentPage);
                     }
-
                 }
             }else{
                 $data['add_time'] = Carbon::now();
-                $data['total_number'] = $goods_number;
+                $data['total_number'] = $data['goods_number'];
                 $data['shop_user_id'] = session('_seller_id')['user_id'];
                 $flag = ShopGoodsQuoteService::create($data);
                 if(!empty($flag)){

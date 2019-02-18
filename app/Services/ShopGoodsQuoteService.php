@@ -78,8 +78,10 @@ class ShopGoodsQuoteService
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
+//            $result['list'][$k]['brand_name_en'] = $vo['brand_name_en'] ? $vo['brand_name_en'] : "No brand";
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
+            $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
         }
         return $result;
     }
@@ -153,7 +155,6 @@ class ShopGoodsQuoteService
                         $info['goods_number'] = $info['total_number'];
                     }
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
-
                     ShopGoodsQuoteRepo::create($info);
                 }
             self::commit();
@@ -261,7 +262,6 @@ class ShopGoodsQuoteService
         }
         self::commit();
         return true;
-
     }
 
     //获取当天报价条数
@@ -496,6 +496,24 @@ class ShopGoodsQuoteService
     {
         $count = ShopGoodsQuoteRepo::getTotalCount($condition);
         return $count;
+    }
+
+    public static function getHotQuoteList()
+    {
+
+        $condition = [
+            'b.is_roof' => 1,
+            'b.is_delete' => 0,
+            'b.is_self_run' => 1,
+            'b.type' => '1|2',
+        ];
+        #先获取最近有数据的两天的日期
+        $dates = ShopGoodsQuoteRepo::getHotDates($condition);
+        //dd($dates);
+        $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
+        #根据时间查这两天的数据
+        $list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);
+        return $list;
     }
 }
 

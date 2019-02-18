@@ -342,8 +342,11 @@ Route::get('/payment/orderPay','PayController@orderPay');//去付款
 Route::get('/logistics/detail','KuaidiController@searchWaybill');//查运单
 Route::get('/logistics/instation','KuaidiController@searchInstation');//查站内运单
 
+
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
+
     Route::get('/', 'IndexController@index'); //首页
+    Route::get('/edit_language', 'IndexController@edit_language'); //首页
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
     Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
     Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信
@@ -708,6 +711,9 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::get('/goods/category/info', 'GoodsController@getGoodsCategoryByID');//获取产品分类信息
     Route::get('/goods/brand/info', 'GoodsController@getGoodsBrandByID');//获取产品品牌信息
     Route::get('/goods/unit/info', 'GoodsController@getGoodsUomByID');//获取产品单位信息
+
+    Route::get('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
+    Route::post('/getCateList','GoodsController@getCateList');//获取分类信息
 
     Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
     Route::post('/goods/list', 'GoodsController@getList');//商品报价列表

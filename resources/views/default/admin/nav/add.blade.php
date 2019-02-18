@@ -27,6 +27,13 @@
                                     </div>
                                 </div>
                                 <div class="item">
+                                    <div class="label"><span class="require-field">*</span>英文名称：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="name_en" value="" id="name_en" size="40"  class="text">
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
                                     <div class="label"><span class="require-field">*</span>链接地址：</div>
                                     <div class="label_value">
                                         <input type="text" name="url" value="" id="url" size="40"  class="text">
@@ -112,7 +119,9 @@
                 rules:{
                     name :{
                         required : true,
-
+                    },
+                    name_en :{
+                        required : true,
                     },
                     url :{
                         required : true
@@ -126,11 +135,14 @@
                     name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'导航名称不能为空'
                     },
+                    name_en:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'导航英文名称不能为空'
+                    },
                     url :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空'
                     },
                     sort_order :{
-                        required : '<i class="icon icon-exclamation-sign"></i>'+'导航地址不能为空',
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'排序不能为空',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字'
                     }
                 }

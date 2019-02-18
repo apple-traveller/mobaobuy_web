@@ -27,6 +27,13 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;商品英文名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_name_en" class="text" value="" maxlength="40" autocomplete="off" id="goods_name_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;关键词：</div>
@@ -53,12 +60,13 @@
                                         <option value="">请选择品牌</option>
                                         @if(!empty($brands))
                                         @foreach($brands as $v)
-                                            <option  value="{{$v['id']}}">{{$v['brand_name']}}</option>
+                                            <option  value="{{$v['id']}}" en="{{$v['brand_name_en']}}">{{$v['brand_name']}}</option>
                                         @endforeach
                                         @endif
                                     </select>
                                     <div style="margin-left:10px;" class="form_prompt"></div>
                                     <input class="brand_name" type="hidden" name="brand_name" value="">
+                                    <input class="brand_name_en" type="hidden" name="brand_name_en" value="">
                                 </div>
 
                             </div>
@@ -126,11 +134,27 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文含量：</div>
+                                <div class="label_value">
+                                    <input type="text" name="goods_content_en" class="text" value="" maxlength="40" autocomplete="off" id="goods_content_en">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;包装单位：</div>
                                 <div class="label_value">
                                     <input type="text" name="packing_unit" class="text" value="" maxlength="40" autocomplete="off" id="packing_unit">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文包装单位：</div>
+                                <div class="label_value">
+                                    <input type="text" name="packing_unit_en" class="text" value="" maxlength="40" autocomplete="off" id="packing_unit_en">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>
@@ -187,6 +211,13 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label">&nbsp;pc商品英文详情：</div>
+                                <div class="label_value">
+                                    <script id="goods_desc_en" name="goods_desc_en" type="text/plain"></script>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label">&nbsp;移动端商品详情：</div>
@@ -219,6 +250,11 @@
         ue2.ready(function() {
             ue2.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
+
+        var ue3 = UE.getEditor('goods_desc_en',{initialFrameHeight:400});
+        ue3.ready(function() {
+            ue3.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        });
     </script>
     <script type="text/javascript">
         var tag_token = $("#_token").val();
@@ -227,6 +263,7 @@
         $("#brand_id").change(function(){
             var option = $("#brand_id option:selected");
             $(".brand_name").val(option.text());
+            $(".brand_name_en").val(option.attr('en'));
         })
 
         //选择单位的同时给隐藏的unit_name赋值
@@ -421,6 +458,7 @@
             $('.button_reset').click(function(){
                 ue1.setContent('');
                 ue2.setContent('');
+                ue3.setContent('');
             });
 
             $('#article_form').validate({
@@ -432,6 +470,9 @@
                 ignore : [],
                 rules:{
                     goods_name :{
+                        required : true,
+                    },
+                    goods_name_en :{
                         required : true,
                     },
                     keywords:{
@@ -457,6 +498,9 @@
                     packing_unit:{
                         required : true
                     },
+                    packing_unit_en:{
+                        required : true
+                    },
                     market_price:{
                         required : true,
                         number:true
@@ -474,6 +518,9 @@
                     goods_content:{
                         required :true,
                     },
+                    goods_content_en:{
+                        required :true,
+                    },
 //                    original_img:{
 //                        required :true,
 //                    },
@@ -481,6 +528,9 @@
                 },
                 messages:{
                     goods_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_name_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     keywords:{
@@ -506,6 +556,9 @@
                     packing_unit :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+                    packing_unit_en :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                     market_price :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项',
                         number : '<i class="icon icon-exclamation-sign"></i>'+'必须为数字',
@@ -521,6 +574,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     goods_content:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_content_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
 //                    original_img:{

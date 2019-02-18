@@ -91,9 +91,13 @@ class ShopGoodsQuoteRepo
         $clazz = new $clazz_name();
         $query = \DB::table($clazz->getTable().' as b')
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('brand', 'g.brand_id', '=', 'brand.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->leftJoin('goods_category as cat2', 'cat.parent_id', '=', 'cat2.id')
             ->select(
-                'b.*','g.goods_name as simple_goods_name','g.brand_name','g.packing_spec','cat.cat_name','g.goods_full_name','g.unit_name','g.goods_content','g.cat_id',
+                'b.*','g.goods_name as simple_goods_name','g.goods_name_en as simple_goods_name_en',
+                'g.brand_name','g.packing_spec','cat.cat_name','cat.cat_name_en','brand.brand_name_en',
+                'g.goods_full_name','g.unit_name','g.goods_content','g.goods_content_en','g.cat_id',DB::raw('date_format(b.add_time,"%Y-%m-%d") as t'),
                 DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid')
             );
 
@@ -121,7 +125,7 @@ class ShopGoodsQuoteRepo
                 $query = $query->orderBy($c, $d);
             }
         }else{//有效的报价（没过期、没售罄的报价）在前无效的在后，置顶的在前未置顶的在后，时间倒序
-            $query = $query->orderBy('valid','desc')->orderBy('b.is_roof','desc')->orderBy('b.add_time','desc');
+            $query = $query->orderBy('valid','desc')->orderBy('t','desc')->orderBy('b.is_roof','desc')->orderBy('b.add_time','desc');
         }
 //        dd($query->toSql());
         if ($page_size > 0) {
@@ -153,6 +157,7 @@ class ShopGoodsQuoteRepo
                 $query = $query->orderBy($c, $d);
             }
         }
+//        dd($query->toSql());
         $res = $query->get()->toArray();
         return object_array($res);
     }
@@ -207,6 +212,25 @@ class ShopGoodsQuoteRepo
 
         $res = $query->get()->toArray();
         return $res;
+    }
+
+    public static function getHotDates($condition)
+    {
+        #SELECT date_format(add_time, '%Y-%m-%d') as t,add_time from shop_goods_quote GROUP BY t limit 2
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->select(
+                DB::raw("date_format(b.add_time, '%Y-%m-%d') as t"),'b.add_time'
+            );
+        $query = self::setCondition($query, $condition);
+
+        $query = $query->groupBy('t')
+            ->orderBy('b.add_time','desc')
+            ->limit(2);
+
+        $res = $query->get()->toArray();
+        return object_array($res);
     }
 }
 

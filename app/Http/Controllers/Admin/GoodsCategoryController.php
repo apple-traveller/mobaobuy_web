@@ -89,6 +89,7 @@ class GoodsCategoryController extends Controller
         $id = $request->input('id',0);
         $data = [
             'cat_name'=>$request->input('cat_name'),
+            'cat_name_en'=>$request->input('cat_name_en'),
             'cat_alias_name'=>$request->input('cat_alias_name'),
             'parent_id'=>$request->input('parent_id'),
             'sort_order'=>$request->input('sort_order'),
@@ -102,6 +103,9 @@ class GoodsCategoryController extends Controller
 
         if(empty($data['cat_name'])){
             $errorMsg[] = '分类名称不能为空';
+        }
+        if(empty($data['cat_name_en'])){
+            $errorMsg[] = '分类英文名称不能为空';
         }
         if(empty($data['cat_alias_name'])){
             $errorMsg[] = '分类别名不能为空';

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Account\Base\GoodsUomController;
-use App\Services\Account\Base\BaseGoodsBrandService;
-use App\Services\Account\Base\BaseGoodsUomService;
 use App\Services\BrandService;
 use App\Services\GoodsCategoryService;
 use App\Services\ShopGoodsQuoteService;
@@ -116,13 +113,14 @@ class GoodsController extends ApiController
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
+            $c['cat2.parent_id'] = $cate_id;
             $condition[] = $c;
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
         }
         if(empty($type)){
-            $condition['b.type'] = '1';//小程序默认的只显示自营报价
+            //$condition['b.type'] = '1';//小程序默认的只显示自营报价
         }else{
             if($type == 3){
                 $condition['b.is_self_run'] = 0;
@@ -525,4 +523,14 @@ class GoodsController extends ApiController
         }
     }
 
+    //获取分类
+    public function getCateList(Request $request)
+    {
+        $parent_id = $request->input('parent_id',0);
+        $res = GoodsCategoryService::getList($parent_id);
+        foreach($res as &$item){
+            $item['cat_img'] = getFileUrl($item['cat_img']);
+        }
+        return $this->success($res,'success');
+    }
 }

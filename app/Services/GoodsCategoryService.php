@@ -68,7 +68,7 @@ class GoodsCategoryService
     //获取列表
     public static function getList($parent_id)
     {
-        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id,['is_delete'=>0]]);
+        $res = GoodsCategoryRepo::getList(['sort_order'=>'asc'],['parent_id'=>$parent_id,'is_delete'=>0]);
         return $res;
     }
 
@@ -220,14 +220,17 @@ class GoodsCategoryService
         $cat_info = GoodsCategoryRepo::getInfo($cat_id);
         $top_id = $cat_id;
         $top_name = $cat_info['cat_name'];
+        $top_name_en = $cat_info['cat_name_en'];
         if(!empty($cat_info['parent_id'])){
             $top_info = self::getTopCatByCatId($cat_info['parent_id']);
             $top_id = $top_info['top_id'];
             $top_name = $top_info['top_name'];
+            $top_name_en = $top_info['top_name_en'];
         }
         return [
             'top_id'=>$top_id,
-            'top_name'=>$top_name
+            'top_name'=>$top_name,
+            'top_name_en'=>$top_name_en
         ];
     }
 
