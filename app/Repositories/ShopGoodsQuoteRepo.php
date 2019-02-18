@@ -188,8 +188,8 @@ class ShopGoodsQuoteRepo
         }
 
         //总条数
-        //$rs['total'] = $query->toBase()->getCountForPagination();
         $rs['total'] = $query->count();
+
         //处理排序
         if (isset($pager['orderType']) && !empty($pager['orderType'])) {
             foreach ($pager['orderType'] as $c => $d) {
@@ -202,7 +202,6 @@ class ShopGoodsQuoteRepo
         } else {
             $rs['list'] = $query->get()->toArray();
         }
-        //dd($query->toSql());
         $rs['list'] = object_array($rs['list']);
         $rs['page'] = $page;
         $rs['pageSize'] = $page_size;
