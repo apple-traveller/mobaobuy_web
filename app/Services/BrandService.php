@@ -21,7 +21,9 @@ class BrandService
     //获取一条数据
     public static function getBrandInfo($id)
     {
-        return BrandRepo::getInfo($id);
+        $info = BrandRepo::getInfo($id);
+        $info['brand_logo_url'] = getFileUrl($info['brand_logo']);
+        return $info;
     }
 
     //唯一性验证

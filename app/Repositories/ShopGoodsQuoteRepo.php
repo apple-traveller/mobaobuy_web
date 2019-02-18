@@ -91,11 +91,13 @@ class ShopGoodsQuoteRepo
         $clazz = new $clazz_name();
         $query = \DB::table($clazz->getTable().' as b')
             ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('brand', 'g.brand_id', '=', 'brand.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
             ->leftJoin('goods_category as cat2', 'cat.parent_id', '=', 'cat2.id')
             ->select(
-                'b.*','g.goods_name as simple_goods_name','g.brand_name','g.packing_spec','cat.cat_name',
-                'g.goods_full_name','g.unit_name','g.goods_content','g.cat_id',DB::raw('date_format(b.add_time,"%Y-%m-%d") as t'),
+                'b.*','g.goods_name as simple_goods_name','g.goods_name_en as simple_goods_name_en',
+                'g.brand_name','g.packing_spec','cat.cat_name','cat.cat_name_en','brand.brand_name_en',
+                'g.goods_full_name','g.unit_name','g.goods_content','g.goods_content_en','g.cat_id',DB::raw('date_format(b.add_time,"%Y-%m-%d") as t'),
                 DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid')
             );
 

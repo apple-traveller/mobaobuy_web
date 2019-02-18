@@ -307,18 +307,18 @@
                 @if(!empty($goodsList['list']))
                     @foreach($goodsList['list'] as $vo)
                         <li>
-                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
-                            <span style="width:12%;" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                            <span style="width:15%;" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}">
+                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{ getLangData($vo, 'cat_top_name') }}">{{ getLangData($vo, 'cat_top_name') }}</span>
+                            <span style="width:12%;" title="{{ getLangData($vo, 'brand_name') }}">{{ getLangData($vo, 'brand_name') }}</span>
+                            <span style="width:15%;" title="{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">
                                 <i class="space_hidden" style="width:100%;line-height: 55px;">
-                                    <a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a>
+                                    <a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a>
                                 </i>
                             </span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
-                            <span style="width:10%;">{{$vo['delivery_time']}}</span>
+                            <span style="width:10%;">{{getLangData($vo,'delivery_time')}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
-                            <span style="width:7%;">{{$vo['delivery_method']}}</span>
+                            <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
                             <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
                             <span style="width:6%;">
                                 <div class="custom_service">
@@ -557,26 +557,25 @@
                 @foreach($article_list as $k=>$v)
                     <li @if(!$loop->first) style="display: none;" @endif>
                         <ul class="Quotate">
-
-                                    @foreach($v['list'] as $k=>$vv)
-                                        @if($k <= 3)
-                                        <a rel="nofollow" href="detail/{{$vv['id']}}.html">
-                                            <li>
-                                                <div class="Quotate-img" >
-                                                    <img width="100%" src="{{getFileUrl($vv['image'])}}" />
-                                                </div>
-                                                <div class="Quotate_text">{{$vv['title']}}</div>
-                                            </li>
-                                        </a>
-                                        @endif
-                                    @endforeach
+                            @foreach($v['list'] as $k=>$vv)
+                                @if($k <= 3)
+                                <a rel="nofollow" href="detail/{{$vv['id']}}.html">
+                                    <li>
+                                        <div class="Quotate-img" >
+                                            <img width="100%" src="{{getFileUrl($vv['image'])}}" />
+                                        </div>
+                                        <div class="Quotate_text">{{ getLangData($vv,'title') }}</div>
+                                    </li>
+                                </a>
+                                @endif
+                            @endforeach
                         </ul>
 
                         <ul class="Quotate_right">
                             @foreach($v['list'] as $item)
                                 <a href="detail/{{$item['id']}}.html">
                                     <li>
-                                        <span class="fl ml5">{{$item['title']}}</span>
+                                        <span class="fl ml5">{{ getLangData($item,'title') }}</span>
                                         <span class="fr">({{ \Carbon\Carbon::parse($item['add_time'])->format('m/d') }})</span>
                                     </li>
                                 </a>
@@ -620,7 +619,7 @@
                  <div class="list">
                      <div class="list_div">
                          @foreach($friend_link as $v)
-                             <a href="javascript:void(0);" onclick='window.open("{{isIncludeHttp($v['link_url'])}}", "_blank");' title="{{$v['link_name']}}">{{$v['link_name']}}</a>
+                             <a href="javascript:void(0);" onclick='window.open("{{isIncludeHttp($v['link_url'])}}", "_blank");' title="{{ getLangData($v, 'link_name') }}">{{ getLangData($v, 'link_name') }}</a>
                          @endforeach
                      </div>
                  </div>

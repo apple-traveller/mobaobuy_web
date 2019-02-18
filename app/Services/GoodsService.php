@@ -66,6 +66,14 @@ class GoodsService
         return $goods_info;
     }
 
+    //获取一条商品
+    public static function getGoodInfoBySn($goods_sn)
+    {
+        $goods_info = GoodsRepo::getInfoByFields(['goods_sn'=>$goods_sn]);
+        $goods_info['goods_img_url'] = getFileUrl($goods_info['goods_img']);
+        return $goods_info;
+    }
+
 
     /**
      * 检测商品是否存在对应的信息

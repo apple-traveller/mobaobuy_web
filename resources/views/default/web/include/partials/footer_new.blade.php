@@ -4,10 +4,10 @@
             @foreach(getFooterArticle() as $cat)
                 @if($loop->index < 3)
                 <li>
-                    <h4>{{$cat['cat_name']}}</h4>
+                    <h4>{{getLangData($cat, 'cat_name')}}</h4>
                     @foreach($cat['articles'] as $item)
 {{--                        <a href="{{env('APP_URL').$item['file_url']}}" class="ovhwp" rel="nofollow">{{$item['title']}}</a>--}}
-                        <a href="/{{$item['id']}}/helpCenter.html" class="ovhwp" rel="nofollow">{{$item['title']}}</a>
+                        <a href="/{{$item['id']}}/helpCenter.html" class="ovhwp" rel="nofollow">{{ getLangData($item,'title') }}</a>
                     @endforeach
                 </li>
             @endif

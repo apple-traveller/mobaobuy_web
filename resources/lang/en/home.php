@@ -106,5 +106,5 @@ return [
 
     'home_supplier'=>'Supplier',//Supplier
     'home_cooperative'=>'Cooperative brand',//Cooperative brand
-    'home_friendship'=>'Friendship link',//Friendship link
+    'home_friendship'=>'Links',//Friendship link
 ];
