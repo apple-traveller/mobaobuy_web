@@ -712,7 +712,7 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::get('/goods/brand/info', 'GoodsController@getGoodsBrandByID');//获取产品品牌信息
     Route::get('/goods/unit/info', 'GoodsController@getGoodsUomByID');//获取产品单位信息
 
-    Route::get('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
+    Route::post('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
     Route::post('/getCateList','GoodsController@getCateList');//获取分类信息
     Route::get('/getShopStoreList','GoodsController@getShopStoreList');//获取直营店铺
 
