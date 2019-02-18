@@ -11,6 +11,8 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserAddressService;
 use App\Services\UserService;
+use App\Services\ShopStoreService;
+
 class GoodsController extends ApiController
 {
     //自营报价列表
@@ -30,6 +32,7 @@ class GoodsController extends ApiController
         $goods_name = $request->input('goods_name','');
         $is_self_run = $request->input('is_self_run',0);
         $type = $request->input('type',0);
+        $shop_store_id = $request->input('shop_store_id',0);
         $condition =[];
         $orderBy = [];
         if(!empty($sort_goods_number)){
@@ -79,6 +82,9 @@ class GoodsController extends ApiController
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
+        }
+        if($shop_store_id!=0){
+            $condition['b.shop_store_id'] = $shop_store_id;
         }
         if(empty($type)){
             //$condition['b.type'] = '1';//小程序默认的只显示自营报价
@@ -493,5 +499,16 @@ class GoodsController extends ApiController
             $item['cat_img'] = getFileUrl($item['cat_img']);
         }
         return $this->success($res,'success');
+    }
+
+    //获取直营所有的店铺
+    public function getShopStoreList(Request $request)
+    {
+        $res = ShopStoreService::getList();
+        if(empty($res)){
+            return $this->error('error');
+        }else{
+            return $this->success($res,'success');
+        }
     }
 }

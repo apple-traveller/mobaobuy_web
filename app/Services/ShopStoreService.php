@@ -58,4 +58,11 @@ class ShopStoreService
         return ShopStoreRepo::modify($data['id'],$data);
     }
 
+    //获取列表
+    public static function getList()
+    {
+        $condition = ['is_delete'=>0];
+        return ShopStoreRepo::getList([],$condition);
+    }
+
 }
