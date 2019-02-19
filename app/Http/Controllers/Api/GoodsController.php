@@ -70,7 +70,7 @@ class GoodsController extends ApiController
         $place_id = $request->input('place_id',"");
         $goods_name = $request->input('goods_name','');
         $is_self_run = $request->input('is_self_run',0);
-        $type = $request->input('type',0);
+        $type = $request->input('type',"1|2");
         $shop_store_id = $request->input('shop_store_id',0);
         $condition =[];
         $orderBy = [];
