@@ -54,6 +54,15 @@ class GoodsController extends ApiController
         return $this->success($info);
     }
 
+    public function getGoodsBaseList(Request $request){
+        $max_id = $request->input('max_id', 0);
+        $currpage = $request->input('currpage',1);
+        $pageSize = $request->input('pageSize',50);
+        $condition['id|>'] = $max_id;
+        $goodsList = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['id'=>'asc']],$condition);
+        return $this->success($goodsList);
+    }
+
     //自营报价列表
     public function getList(Request $request)
     {
