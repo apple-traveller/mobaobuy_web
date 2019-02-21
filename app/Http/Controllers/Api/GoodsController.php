@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\BrandService;
 use App\Services\GoodsCategoryService;
 use App\Services\ShopGoodsQuoteService;
+use App\Services\UnitService;
 use Illuminate\Http\Request;
 use App\Services\GoodsService;
 use App\Services\UserRealService;
@@ -11,8 +13,56 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Cache;
 use App\Services\UserAddressService;
 use App\Services\UserService;
+use App\Services\ShopStoreService;
+
+
 class GoodsController extends ApiController
 {
+    public function getGoodsInfoBySn(Request $request){
+        $goods_sn = $request->input("goods_sn");
+        if(empty($goods_sn)){
+            return $this->error('商品编码不能为空');
+        }
+        $info = GoodsService::getGoodInfoBySn($goods_sn);
+        return $this->success($info);
+    }
+
+    public function getGoodsCategoryByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = GoodsCategoryService::getInfo($id);
+        return $this->success($info);
+    }
+
+    public function getGoodsUomByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = UnitService::getUnitById($id);
+        return $this->success($info);
+    }
+
+    public function getGoodsBrandByID(Request $request){
+        $id = $request->input("id");
+        if(empty($id)){
+            return $this->error('ID不能为空');
+        }
+        $info = BrandService::getBrandInfo($id);
+        return $this->success($info);
+    }
+
+    public function getGoodsBaseList(Request $request){
+        $max_id = $request->input('max_id', 0);
+        $currpage = $request->input('currpage',1);
+        $pageSize = $request->input('pageSize',50);
+        $condition['id|>'] = $max_id;
+        $goodsList = GoodsService::getGoodsList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['id'=>'asc']],$condition);
+        return $this->success($goodsList);
+    }
+
     //自营报价列表
     public function getList(Request $request)
     {
@@ -29,7 +79,8 @@ class GoodsController extends ApiController
         $place_id = $request->input('place_id',"");
         $goods_name = $request->input('goods_name','');
         $is_self_run = $request->input('is_self_run',0);
-        $type = $request->input('type',0);
+        $type = $request->input('type',"1|2");
+        $shop_store_id = $request->input('shop_store_id',0);
         $condition =[];
         $orderBy = [];
         if(!empty($sort_goods_number)){
@@ -79,6 +130,9 @@ class GoodsController extends ApiController
         }
         if(!empty($place_id)){
             $condition['place_id'] = $place_id;
+        }
+        if($shop_store_id!=0){
+            $condition['b.shop_store_id'] = $shop_store_id;
         }
         if(empty($type)){
             //$condition['b.type'] = '1';//小程序默认的只显示自营报价
@@ -493,5 +547,16 @@ class GoodsController extends ApiController
             $item['cat_img'] = getFileUrl($item['cat_img']);
         }
         return $this->success($res,'success');
+    }
+
+    //获取直营所有的店铺
+    public function getShopStoreList(Request $request)
+    {
+        $res = ShopStoreService::getList();
+        if(empty($res)){
+            return $this->error('error');
+        }else{
+            return $this->success($res,'success');
+        }
     }
 }

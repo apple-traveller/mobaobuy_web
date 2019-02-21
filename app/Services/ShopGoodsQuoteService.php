@@ -99,6 +99,12 @@ class ShopGoodsQuoteService
         return ShopGoodsQuoteRepo::getQuoteInfoByFields($order,$condition);
     }
 
+    //热卖商品分页
+    public static function getShopGoodsQuoteListByFields_se($pager,$condition)
+    {
+        return ShopGoodsQuoteRepo::getQuoteInfoByFields_se($pager,$condition);
+    }
+
     //分页
     public static function getShopGoodsQuoteListByAjax($pager,$condition)
     {
@@ -512,7 +518,7 @@ class ShopGoodsQuoteService
         return $count;
     }
 
-    public static function getHotQuoteList()
+    public static function getHotQuoteList($pager)
     {
 
         $condition = [
@@ -526,7 +532,9 @@ class ShopGoodsQuoteService
         //dd($dates);
         $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
         #根据时间查这两天的数据
-        $list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);
+        $pager['orderType']=['b.add_time'=>'desc'];
+        //$list = self::getShopGoodsQuoteListByFields(['b.add_time'=>'desc'],$condition);
+        $list = self::getShopGoodsQuoteListByFields_se($pager,$condition);
         return $list;
     }
 }

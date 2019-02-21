@@ -359,8 +359,8 @@
                                             <th width="15%">操作者</th>
                                             <th width="15%">操作时间</th>
                                             <th width="15%">订单状态</th>
-                                            <th width="15%">付款状态</th>
-                                            <th width="15%">发货状态</th>
+                                            {{--<th width="15%">付款状态</th>--}}
+                                            {{--<th width="15%">发货状态</th>--}}
                                             <th width="20%">备注</th>
                                         </tr></thead>
                                         <tbody>
@@ -377,14 +377,12 @@
                                                 @elseif($vo['order_status']==4)已完成
                                                 @else待开票
                                                 @endif
-                                            </td>
-                                            <td>
+                                                、
                                                 @if($vo['pay_status']==0)待付款
                                                 @elseif($vo['pay_status']==1)已付款
                                                 @else部分付款
                                                 @endif
-                                            </td>
-                                            <td>
+                                                、
                                                 @if($orderInfo['shipping_status']==0)待发货
                                                 @elseif($orderInfo['shipping_status']==1)已发货
                                                 @elseif($orderInfo['shipping_status']==2)部分发货

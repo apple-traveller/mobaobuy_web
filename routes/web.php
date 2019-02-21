@@ -707,9 +707,15 @@ Route::group(['namespace' => 'Api','prefix' => 'api','middleware' => 'api.closed
     Route::get('/index/shop_list', 'IndexController@getShopsList');//首页供应商列表
     Route::post('/index/demand_add','IndexController@addDemand');//获取用户需求信息
 
+    Route::get('/goods/info/sn', 'GoodsController@getGoodsInfoBySn');//获取产品信息
+    Route::get('/goods/category/info', 'GoodsController@getGoodsCategoryByID');//获取产品分类信息
+    Route::get('/goods/brand/info', 'GoodsController@getGoodsBrandByID');//获取产品品牌信息
+    Route::get('/goods/unit/info', 'GoodsController@getGoodsUomByID');//获取产品单位信息
+    Route::get('/goods/base/list', 'GoodsController@getGoodsBaseList');//获取产品基本信息列表
 
-    Route::get('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
+    Route::post('/index/getHotQuoteList','IndexController@getHotQuoteList');//首页获取热卖商品接口
     Route::post('/getCateList','GoodsController@getCateList');//获取分类信息
+    Route::get('/getShopStoreList','GoodsController@getShopStoreList');//获取直营店铺
 
     Route::get('/goods/cates', 'GoodsController@getCates');//获取分类信息
     Route::post('/goods/list', 'GoodsController@getList');//商品报价列表
