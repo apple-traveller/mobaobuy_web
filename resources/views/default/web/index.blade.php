@@ -361,7 +361,7 @@
             <div class="ovh">
                 {{--<h1 class="Self-support-title">自营报价</h1>--}}
                 <div class="Self-support-title">{{trans('home.direct_sale')}}</div>
-                <div class="fr mr20"><span>{{trans('home.self_quote_prefix')}}<font class="green"> {{$goodsList['total']}} </font>{{trans('home.direct_sale_suffix')}}</span><a rel="nofollow" class="ml30" href="/goodsList/2">{{trans('home.more')}}></a></div></div>
+                <div class="fr mr20"><span>{{trans('home.self_quote_prefix')}}<font class="green"> {{$goodsList_brand['total']}} </font>{{trans('home.direct_sale_suffix')}}</span><a rel="nofollow" class="ml30" href="/goodsList/2">{{trans('home.more')}}></a></div></div>
             <ul class="Self-product-list quote_list">
                 <li>
                     <span style="width:12%;">{{trans('home.cate')}}</span>
