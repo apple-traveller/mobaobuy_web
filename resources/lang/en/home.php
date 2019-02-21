@@ -158,6 +158,10 @@ return [
     'change_code'=>'Click to change a check code',
     'new_password'=>'New password',//New password
     'password_placeholder'=>'Password consists of 8-16 characters (letters + numbers)',
+    'edit_success'=>'Modified success',
+    'set_password'=>'Set password',//Set password
+    'read_agreed'=>'I have read and agreed to the',//
+    'registration_agreement'=>'user registration agreement of Mobao Platform',//
 
     #首页
     'home_firm_member'=>'Enterprise user',
