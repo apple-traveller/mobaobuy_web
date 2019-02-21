@@ -13,7 +13,7 @@
                 </a>
             </div>
 
-            <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+            <div class="go-login">{{trans('home.login_prefix')}} <a href="{{route('login')}}" style="color:#36a3ef">{{trans('home.login_suffix')}}</a></div>
         </div>
     </div>
 
@@ -21,33 +21,33 @@
         <div class="register-box">
             <div class="register-form form">
                 <div class="item">
-                    <div class="item-libel">手机号</div>
-                    <div class="item-info"><input type="text" class="text" autocomplete="false" id="accountName" value=""></div>
+                    <div class="item-libel">{{trans('home.mobile')}}</div>
+                    <div class="item-info"><input type="text" class="text" autocomplete="false" id="accountName" value="" placeholder="{{trans('home.login_mobile')}}"></div>
                     <div class="input-tip"></div>
                 </div>
                 <div class="item">
-                    <div class="item-libel">图形验证码</div>
+                    <div class="item-libel">{{trans('home.graphic_code')}}</div>
                     <div class="item-info" style="width: 178px;">
-                        <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                        <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="{{trans('home.graphic_code')}}" id="verify" onblur="verifyValidate();">
                     </div>
-                    <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                    <img src="" title="{{trans('home.change_code')}}" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="{{trans('home.change_code')}}" id="imVcode">
                     <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
                 </div>
                 <div class="item">
-                    <div class="item-libel">手机验证码</div>
+                    <div class="item-libel">{{trans('home.code')}}</div>
                     <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
                         <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly="" onblur="msgCodeValidate();">
                     </div>
-                    <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                    <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="{{trans('home.get_code')}}">
                     <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
                 </div>
                 <div class="item">
-                    <div class="item-libel">新密码</div>
-                    <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
+                    <div class="item-libel">{{trans('home.new_password')}}</div>
+                    <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="{{trans('home.password_placeholder')}}" id="password" onblur="pwdValidate()"></div>
                     <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                 </div>
             </div>
-            <button class="register-button" id="sub-btn">确 定</button>
+            <button class="register-button" id="sub-btn">{{trans('home.ok')}}</button>
         </div>
 
     </div>
@@ -55,7 +55,6 @@
     <div class="clearfix" style="height: 35px;"></div>
     @include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
-
     <script>
         var countdown = 60; //间隔函数，1秒执行
         var isNull = /^[\s]{0,}$/;
@@ -74,10 +73,10 @@
         function pwdValidate() {
             $("#pwd_error").html('');
             if (isNull.test($("#password").val())) {
-                $("#pwd_error").html("请输入密码");
+                $("#pwd_error").html("{{trans('home.login_password')}}");
                 return false;
             } else if (!pwdReg.test($("#password").val())) {
-                $("#pwd_error").html("密码必须包含字母和数字长度8-16位字符");
+                $("#pwd_error").html("{{trans('home.password_placeholder')}}");
                 return false;
             }
             return true;
@@ -95,11 +94,11 @@
         function verifyValidate() {
             $("#verify_error").html("&nbsp;");
             if (isNull.test($("#verify").val())) {
-                $("#verify_error").html("验证码不能为空");
+                $("#verify_error").html("{{trans('home.code_required_tips')}}");
                 registerCode = false;
                 return false;
             } else if (!veriCodeExep.test($("#verify").val())) {
-                $("#verify_error").html("您输入的验证码有误");
+                $("#verify_error").html("{{trans('home.code_error_tips')}}");
                 registerCode = false;
                 return false;
             }
@@ -115,7 +114,7 @@
                 } else {
                     registerCode = false;
                     gv();
-                    $("#verify_error").text("验证码不正确");
+                    $("#verify_error").text("{{trans('home.code_error_tips')}}");
                 }
             }, "POST", "JSON",false);
 
@@ -124,10 +123,10 @@
         function msgCodeValidate() {
             $("#msgCode_error").html("");
             if (isNull.test($("#messCode").val())) {
-                $("#msgCode_error").html("手机验证码不能为空");
+                $("#msgCode_error").html("{{trans('home.code_required_tips')}}");
                 return false;
             } else if (!verify.test($("#messCode").val())) {
-                $("#msgCode_error").html("您输入的手机验证码有误");
+                $("#msgCode_error").html("{{trans('home.code_error_tips')}}");
                 return false;
             }
             return true;
@@ -164,7 +163,7 @@
         }
         function Settime(type) {
             if (countdown == 0) {
-                $("#messCode_but").val("获取手机验证码");
+                $("#messCode_but").val("{{trans('home.get_code')}}");
                 $("#messCode_but").attr("class", "messCode_but");
                 countdown = 60;
                 msType = true;
@@ -176,7 +175,7 @@
                 msType = false;
                 msType02 = false;
 
-                $("#messCode_but").val(countdown + "s重新获取");
+                $("#messCode_but").val(countdown + "s {{trans('home.regain')}}");
                 countdown--;
                 setTimeout(function() {
                     Settime(type);
@@ -195,7 +194,7 @@
             };
             Ajax.call("{{url('/findPwd')}}", params, function (result){
                 if (result.code == 1) {
-                    $.msg.alert('修改成功！',{time:2000});
+                    $.msg.alert('{{trans('home.edit_success')}}！',{time:2000});
                     setTimeout(function () { window.location.reload(); }, 2000);
                 }else{
                     $.msg.error(result.msg);

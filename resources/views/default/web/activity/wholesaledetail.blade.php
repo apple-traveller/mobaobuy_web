@@ -12,11 +12,17 @@
 		.top-search-div .search-div .logo{
 			background:none;
 		}
-        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:158px}
+        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:145px}
         .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
         .chart_btn:hover{background-color: #75b335; color: #fff;}
         .chart_btn.currlight{background-color: #75b335; color: #fff;}
         .fn_title{width: 100px;}
+        .detail_table{table-layout: fixed; }
+        .detail_table tr{height: 40px;color: #666;}
+        .detail_table tr td{white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
+        .detail_table tr td:nth-child(odd){width: 90px; display: inline-block; margin-top: 9px; margin-right: 15px;
+            text-align: right;}
+        .detail_table tr td:nth-child(even){width: 210px;}
 	</style>
 
 @endsection
@@ -77,7 +83,7 @@
                 var packing_spec = Number($(this).attr('packing_spec'));//规格
                 var min_num = Number($(this).attr('min-limit'));//起售量
                 if (iptsVal-packing_spec < min_num) {
-                    $.msg.error('已经是最低的购买数量了');
+                    $.msg.error('{{trans('home.error_min_num_tips')}}');
                     return;
                 }else{
                      ipts.val(iptsVal-packing_spec);
@@ -95,7 +101,7 @@
                     }
                 },
                 legend: {
-                    data:['价格走势']
+                    data:['{{trans('home.price_trend')}}']
                 },
                 dataZoom : {
                     show : true,
@@ -121,7 +127,7 @@
                 ],
                 series : [
                     {
-                        name:'价格指数',//上证指数
+                        name:'{{trans('home.price_index')}}',//上证指数
                         type:'k',
                         barMaxWidth: 20,
                         data:[ // 开盘，收盘，最低，最高
@@ -194,7 +200,7 @@
 //                        _self.val(goodsNumber-_count);
                     }
                 }else{
-                    layer.msg('输入的数量有误');
+                    layer.msg('{{trans('home.error_tips_num')}}');
                     _self.val(min_num);
                 }
             });
@@ -203,8 +209,8 @@
         function collectGoods(obj){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                layer.confirm('请先登录再进行操作。', {
-                    btn: ['去登陆','再看看'] //按钮
+                layer.confirm('{{trans('home.no_login_msg')}}。', {
+                    btn: ['{{trans('home.login')}}','{{trans('home.see_others')}}'] //按钮
                 }, function(){
                     window.location.href='/login';
                 }, function(){
@@ -223,7 +229,7 @@
                     type:"POST",
                     success:function(data){
                         if(data.code){
-                            $.msg.alert('收藏成功');
+                            $.msg.alert('{{trans('home.collection_success')}}');
                             window.location.reload();
                         }else{
                             $.msg.alert(data.msg);
@@ -266,21 +272,21 @@
 @section('content')
 	<div class="clearfix" style="background-color:white;">
 		<div class="w1200 pr ovh">
-			<div class="crumbs mt5">当前位置：<a href="javascript:">集采火拼</a> &gt; <a href="javascript:">商品详情</a><span class="gray"></span></div>
+			<div class="crumbs mt5">{{trans('home.curr')}}：<a href="javascript:">{{trans('home.wholesale')}}</a> &gt; <a href="javascript:">{{trans('home.product_details')}}</a><span class="gray"></span></div>
 			<div class="pro_chart mt5" style="position:relative">
                 <div style="position:absolute;left:110px;top:200px;"><img src="/images/mobao_logo1.png" style="opacity:0.8;" width="250"/></div>
 				<h1 class="pro_chart_title">
-					商品价格走势
+					{{trans('home.product_price_trend')}}
 				</h1>
                 <div style="margin: 10px 0">
-                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="开始时间">
-                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="结束时间">
-                    <input type="button" class="chart_btn chart_search_btn" value="查询" />
+                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
+                    <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
+                    <input type="button" class="chart_btn chart_search_btn" value="{{trans('home.query')}}" />
                     <input type="hidden" class="hid_type " value="1" />
                     <input type="hidden" class="goods_id" value="{{$goodsInfo['goods_id']}}" />
-                    <input class="get_chart_day chart_btn currlight" type="button" value="按日">
-                    <input class="get_chart_week chart_btn" type="button" value="按周">
-                    <input class="get_chart_month chart_btn" type="button" value="按月">
+                    <input class="get_chart_day chart_btn currlight" type="button" value="{{trans('home.by_day')}}">
+                    <input class="get_chart_week chart_btn" type="button" value="{{trans('home.by_week')}}">
+                    <input class="get_chart_month chart_btn" type="button" value="{{trans('home.monthly')}}">
                 </div>
 				<div class="pro_chart_img" id="price_zst">
 
@@ -293,18 +299,18 @@
                 </div>
 			</div>
 			<div class="fl ml35 mt5">
-				<h1 class="fwb fs16">{{$goodsInfo['goods_full_name']}}</h1>
+				<h1 class="fwb fs16">{{getLangData($goodsInfo,'goods_full_name') }}</h1>
 				<span class="red mt5 db"></span>
 				<style type="text/css">
 					.Time_limit{height:46px;background: url(/img/limit_time.png)no-repeat;}
 					.xs_ms{margin-left:15px;width:95px;height:46px;line-height: 46px;background: url(/img/xs_ms.png)no-repeat 0px 16px;font-size: 18px;color: #fff; padding-left: 20px;}
 					.time_mode{margin-top:11px;width: 24px;height: 24px;border-radius:6px;background-color: #323232;overflow: hidden;line-height: 24px;text-align: center;color: #fff;}
-					.Surplus_time{float:right;width:200px;height: 46px;line-height: 46px;margin-right: 20px;}
+					.Surplus_time{float:right;width:230px;height: 46px;line-height: 46px;margin-right: 20px;}
 				</style>
 				<div class="Time_limit mt3">
-					<span class="xs_ms fl">集采火拼</span>
+					<span class="xs_ms fl">{{trans('home.wholesale')}}</span>
 					<div class="Surplus_time" >
-						<span class="white fl" >剩余时间</span>
+						<span class="white fl" >{{trans('home.remaining_time')}}</span>
                         {{--<span class="time_mode fl ml10 day_show1">00</span>--}}
                         {{--<span class="fl ml5">天</span>--}}
 						<span class="time_mode fl ml10 hour_show1">00</span>
@@ -321,28 +327,51 @@
 				</style>
 				<div class="price_market">
 					<div class="fl ml20">
-						<div class="mt15" style="width: 500px;"><span class="fs14" style="letter-spacing: 10px;">最高价</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/{{$goodsInfo['unit_name']}}</span></div>
-						<div class="mt20"><span class="fs14" style="letter-spacing: 10px;">市场价</span><span class="ml25">￥{{$goodsInfo['market_price']}}/{{$goodsInfo['unit_name']}}</span></div>
+						<div class="mt15" style="width: 500px;"><span class="fs14">{{trans('home.highest_price')}}</span><span class="ml20 fs18"><font class="fwb red fs22">￥{{$goodsInfo['activity_price']}}</font>/{{$goodsInfo['unit_name']}}</span></div>
+						<div class="mt20"><span class="fs14">{{trans('home.market_price')}}</span><span class="ml25">￥{{$goodsInfo['market_price']}}/{{$goodsInfo['unit_name']}}</span></div>
 					</div>
 					<div class="limit_line"></div>
 					<div class="tac ovh">
-						<span class="db mt35">已参与</span>
+						<span class="db mt35">{{trans('home.partake')}}</span>
 						<span class="db red">{{$goodsInfo['partake_quantity']}}{{$goodsInfo['unit_name']}}</span>
 					</div>
 				</div>
-				<div class="pro_detail">
-					<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">目标数</span><span  class="pro_value">{{$goodsInfo['activity_num']}}{{$goodsInfo['unit_name']}}</span><span class="fl ">包装规格</span><span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>
-				</div>
-				<div class="pro_detail">
-					<span class="ml15 letter-space fl">批号</span><span  class="pro_value">{{$goodsInfo['goods_sn']}}</span><span class="fl letter-space">品牌</span><span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>
-				</div>
+				{{--<div class="pro_detail">--}}
+					{{--<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:8px;">{{trans('home.target')}}</span>--}}
+                    {{--<span  class="pro_value">{{$goodsInfo['activity_num']}}{{$goodsInfo['unit_name']}}</span>--}}
+                    {{--<span class="fl ">{{trans('home.spec2')}}</span>--}}
+                    {{--<span  class="ml35 fl">{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}</span>--}}
+				{{--</div>--}}
+				{{--<div class="pro_detail">--}}
+					{{--<span class="ml15 letter-space fl">{{trans('home.number')}}</span>--}}
+                    {{--<span  class="pro_value">{{$goodsInfo['goods_sn']}}</span>--}}
+                    {{--<span class="fl letter-space">{{trans('home.brand')}}</span>--}}
+                    {{--<span  class="ml5 fl">{{$goodsInfo['brand_name']}}</span>--}}
+				{{--</div>--}}
+                <table class="detail_table mt10 ">
+                    <tbody>
+                    <tr>
+                        <td>{{trans('home.target')}}</td>
+                        <td>{{$goodsInfo['activity_num']}}{{$goodsInfo['unit_name']}}</td>
+                        <td>{{trans('home.spec2')}}</td>
+                        <td title="{{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}">
+                            {{$goodsInfo['packing_spec'].$goodsInfo['unit_name'].'/'.$goodsInfo['packing_unit']}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >{{trans('home.number')}}</td>
+                        <td>{{$goodsInfo['goods_sn']}}</td>
+                        <td >{{trans('home.brand')}}</td>
+                        <td title="{{getLangData($goodsInfo,'brand_name')}}">{{getLangData($goodsInfo,'brand_name')}}</td>
+                    </tr>
+                    </tbody>
+                </table>
 				<div class="pro_detail">
 					<!-- <span class="ml15 pro_detail_title fl">商品含量</span><span  class="pro_value">50%</span> -->
 				</div>
 				<div class="pro_detail bd1"></div>
 				<div class="pro_detail">
-
-					<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
+					<span class="ml15 fl pro_detail_title" style="width:120px;height: 28px;line-height: 28px;">{{trans('home.purchase_num')}}</span>
                     <div class="pur_volume ml15">
                         <span class="pur bbright shop_num_reduce" min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}">-</span>
                         <input type="text" cid="{{$goodsInfo['id']}}"  min-limit="{{$goodsInfo['min_limit']}}" packing_spec="{{$goodsInfo['packing_spec']}}" class="pur_num Bidders_record_text" value="{{$goodsInfo['min_limit']}}" id="goodsNum" max_limit="{{$goodsInfo['max_limit']}}" />
@@ -353,18 +382,18 @@
 
 				<div class="mt30" style="margin-left: 115px;">
                     @if($goodsInfo['seconds']>0)
-                        <button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">立即下单</button>
+                        <button class="pro_detail_btn redbg" onclick="toBalance({{$goodsInfo['id']}},{{$goodsInfo['activity_id']}})">{{trans('home.order_immediately')}}</button>
                     @else
-                        <button class="pro_detail_btn b1b1b1bg">已结束</button>
+                        <button class="pro_detail_btn b1b1b1bg">{{trans('home.end')}}</button>
                     @endif
                     @if(session('_web_user_id'))
                         @if($goodsInfo['collectGoods'])
-                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">已收藏</button>
+                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">{{trans('home.collected')}}</button>
                          @else
-                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                         <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">{{trans('home.collection')}}</button>
                          @endif
                     @else
-                        <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">收藏商品</button>
+                        <button class="pro_detail_btn cccbg ml15 follow_btn" id="{{$goodsInfo['id']}}" aid="" onClick="collectGoods(this)">{{trans('home.collection')}}</button>
                     @endif
                    
 				</div>

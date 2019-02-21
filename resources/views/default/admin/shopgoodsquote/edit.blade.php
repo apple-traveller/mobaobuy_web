@@ -142,8 +142,8 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
-                                        <option @if($goodsQuote['delivery_method']=="自提") selected @endif value="自提">自提</option>
-                                        <option @if($goodsQuote['delivery_method']=="配送") selected @endif value="配送">配送</option>
+                                        <option @if($goodsQuote['delivery_method']=="自提") selected @endif value="自提">自提(Self delivery)</option>
+                                        <option @if($goodsQuote['delivery_method']=="配送") selected @endif value="配送">配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -153,6 +153,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_time" class="text" value="{{$goodsQuote['delivery_time']}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time_en" class="text" @if(!empty($goodsQuote['delivery_time_en'])) value="{{$goodsQuote['delivery_time_en']}}" @else value="spot goods" @endif maxlength="40" autocomplete="off" id="delivery_time_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -275,6 +282,9 @@
                     delivery_time:{
                         required:true,
                     },
+                    delivery_time_en:{
+                        required:true,
+                    },
                     delivery_method:{
                         required:true,
                     },
@@ -301,6 +311,9 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_time:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_time_en:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_method:{

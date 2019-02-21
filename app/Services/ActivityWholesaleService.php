@@ -121,6 +121,9 @@ class ActivityWholesaleService
 
             $goodsInfo = GoodsRepo::getInfo($item['goods_id']);
             $item['unit_name'] = $goodsInfo['unit_name'];
+            $item['goods_name_en'] = $goodsInfo['goods_full_name_en'];
+            $shop_info = ShopService::getShopById($item['shop_id']);
+            $item['shop_name_en'] = $shop_info['shop_name_en'];
         }
 
         return $info_list;

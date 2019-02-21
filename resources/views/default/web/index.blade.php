@@ -81,13 +81,13 @@
     <script>
         $(function(){
             $(document).delegate('.supply_list>li','mouseenter',function(){
-                $(this).find('.operation').text('收起');
+                $(this).find('.operation').text('{{trans('home.retract')}}');
                 $(this).find('.supply_list_inside').show();
                 $(this).addClass('supply_border_curr');
                 $('.supply_list>li:first-child').removeClass("supply_border_curr");
             });
             $(document).delegate('.supply_list>li','mouseleave',function(){
-                $(this).find('.operation').text('展开');
+                $(this).find('.operation').text('{{trans('home.open')}}');
                 $(this).find('.supply_list_inside').hide();
                 $(this).removeClass('supply_border_curr');
             });
@@ -275,7 +275,7 @@
                                 @if($item['add_time'] <= \Carbon\Carbon::now())
                                     <li>
                                         {{--<h1 class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</h1>--}}
-                                        <div class="ml5 mt5 ovhwp" title="{{$item['goods_name']}}">{{$item['goods_name']}}</div>
+                                        <div class="ml5 mt5 ovhwp" title="{{ getLangData($item,'goods_name') }}">{{ getLangData($item,'goods_name') }}</div>
                                         <div class="ml5 gray"><span>{{$item['goods_number']}}kg</span><span class="ml10">{{$item['add_time']}}</span></div>
                                     </li>
                                 @endif
@@ -433,7 +433,7 @@
                     @foreach($shops as $shop)
                     <li>
                         <div class="clearfix">
-                            <span>{{$shop['company_name']}}</span>
+                            <span>{{getLangData($shop,'company_name')}}</span>
                             <span>{{$shop['contactName']}}</span>
                             <span>{{$shop['contactPhone']}}</span>
                             <span>{{$shop['major_business']}}</span>
@@ -449,15 +449,15 @@
                                 @if(isset($shop['quotes']) && !empty($shop['quotes']))
                                     @foreach($shop['quotes'] as $quote)
                                         <li>
-                                            <span style="width:12%;" data-id="{{$quote['packing_spec']}}" class="ovhwp" title="{{$quote['cat_top_name']}}">{{$quote['cat_top_name']}}</span>
-                                            <span style="width:15%;" class="ovhwp" title="{{$quote['brand_name']}}">{{$quote['brand_name']}}</span>
+                                            <span style="width:12%;" data-id="{{$quote['packing_spec']}}" class="ovhwp" title="{{getLangData($quote,'cat_top_name')}}">{{getLangData($quote,'cat_top_name')}}</span>
+                                            <span style="width:15%;" class="ovhwp" title="{{getLangData($quote,'brand_name')}}">{{getLangData($quote,'brand_name')}}</span>
                                             <span style="width:12%;" class="ovhwp" title="{{$quote['goods_content']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_content']}}</a></span>
 {{--                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>--}}
                                             <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}/{{$quote['unit_name']}}</span>
-                                            <span style="width:10%;">{{$quote['delivery_time']}}</span>
+                                            <span style="width:10%;">{{getLangData($quote,'delivery_time')}}</span>
                                             <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
-                                            <span style="width:7%;">{{$quote['delivery_method']}}</span>
+                                            <span style="width:7%;">{{getLangData($quote,'delivery_method')}}</span>
 
                                             <span style="width:10%;">{{ \Carbon\Carbon::parse($quote['add_time'])->diffForHumans()}}</span>
                                             <span style="width:6%;">
@@ -650,8 +650,8 @@
         $(".P_cart_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                layer.confirm('请先登录再进行操作。', {
-                    btn: ['去登陆','再看看'] //按钮
+                layer.confirm('{{trans('home.no_login_msg')}}。', {
+                    btn: ['{{trans('home.login')}}','{{trans('home.see_others')}}'] //按钮
                 }, function(){
                     window.location.href='/login';
                 }, function(){

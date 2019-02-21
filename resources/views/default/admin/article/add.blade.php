@@ -116,7 +116,7 @@
                             <div class="item">
                                 <div class="label" style="width:5%">英文：</div>
                                 <div class="label_value">
-                                    <script id="content_en" name="content_en" type="text/plain"></script>
+                                    <script id="container_en" name="content_en" type="text/plain"></script>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
             initialFrameWidth : '100%',//宽度
             initialFrameHeight: 500//高度
         });
-        var ue2 = UE.getEditor('content_en',{
+        var ue2 = UE.getEditor('container_en',{
             initialFrameWidth : '100%',//宽度
             initialFrameHeight: 500//高度
         });

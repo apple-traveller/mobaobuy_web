@@ -47,10 +47,18 @@
             height: 45px;}
         /*.quoteList li:first-child{line-height: 40px; }*/
         /*.quoteList li:last-child{border-bottom: none;}*/
-        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:158px}
+        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:150px}
         .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
         .chart_btn:hover{background-color: #75b335; color: #fff;}
         .chart_btn.currlight{background-color: #75b335; color: #fff;}
+    </style>
+    <style type="text/css">
+        .detail_table{table-layout: fixed; }
+        .detail_table tr{height: 40px;color: #666;}
+        .detail_table tr td{white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
+        .detail_table tr td:nth-child(odd){width: 90px; display: inline-block; margin-top: 9px; margin-right: 15px;
+            text-align: right;}
+        .detail_table tr td:nth-child(even){width: 210px;}
     </style>
 @endsection
 @section('js')
@@ -135,7 +143,7 @@
                     }
                 },
                 legend: {
-                    data:['价格走势']
+                    data:['{{trans('home.price_trend')}}']
                 },
                 dataZoom : {
                     show : true,
@@ -161,7 +169,7 @@
                 ],
                 series : [
                     {
-                        name:'价格指数',//上证指数
+                        name:'{{trans('home.price_index')}}',//上证指数
                         type:'k',
                         barMaxWidth: 20,
                         data:[ // 开盘，收盘，最低，最高
@@ -243,73 +251,105 @@
 @section('content')
     <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
-		<div class="crumbs mt5">当前位置：<a href="/goodsList">商品列表</a> &gt;<span class="gray">{{$good_info['goods_name']}}</span></div>
+		<div class="crumbs mt5">{{trans('home.curr')}}：<a href="/goodsList">{{trans('home.product_list')}}</a> &gt;<span class="gray">{{getLangData($good_info,'goods_name')}}</span></div>
 		<div class="pro_chart mt5" style="position:relative">
             <div style="position:absolute;left:110px;top:200px;"><img src="/images/mobao_logo1.png" style="opacity:0.8;" width="250"/></div>
 			<h2 class="pro_chart_title">
-				商品价格走势
+                {{trans('home.product_price_trend')}}
 			</h2>
             <div style="margin: 10px 0">
-                <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="开始时间">
-                <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="结束时间">
-                <input type="button" class="search_btn chart_btn" value="查询" />
+                <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
+                <input type="text" class="Wdate input_data" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
+                <input type="button" class="search_btn chart_btn" value="{{trans('home.query')}}" />
                 <input type="hidden" class="hid_type " value="1" />
                 <input type="hidden" class="goods_id" value="{{$good_info['goods_id']}}" />
-                <input class="get_chart_day chart_btn currlight" type="button" value="按日">
-                <input class="get_chart_week chart_btn" type="button" value="按周">
-                <input class="get_chart_month chart_btn" type="button" value="按月">
+                <input class="get_chart_day chart_btn currlight" type="button" value="{{trans('home.by_day')}}">
+                <input class="get_chart_week chart_btn" type="button" value="{{trans('home.by_week')}}">
+                <input class="get_chart_month chart_btn" type="button" value="{{trans('home.monthly')}}">
             </div>
-
-
 			<div class="pro_chart_img" id="price_zst">
 
 			</div>
-
 		</div>
 		<div class="fl ml35 mt5">
-			<h2 class="fwb fs16">{{$good_info['goods_full_name']}}</h2>
+			<h2 class="fwb fs16">{{getLangData($good_info,'goods_full_name')}}</h2>
 			<span class="red mt5 db"></span>
 			<div class="pro_price f4bg mt10">
-				<div class="pro_price_dj fl"><span class="ml15 letter-space">单价</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}元</font>/{{$good_info['unit_name']}}</span></div>
-
+				<div class="pro_price_dj fl"><span class="ml15">{{trans('home.price')}}</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}</font>/{{$good_info['unit_name']}}</span></div>
 			</div>
-			<div class="pro_detail">
-				<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:0px;">交货时间</span>
-                <span  class="pro_value">{{$good_info['delivery_time']}}</span>
-                <span class="fl ">包装规格</span>
-                <span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{$good_info['packing_unit']}}</span>
-			</div>
+			{{--<div class="pro_detail">--}}
+				{{--<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:0px;">{{trans('home.delivery_time')}}</span>--}}
+                {{--<span  class="pro_value">{{$good_info['delivery_time']}}</span>--}}
+                {{--<span class="fl ">{{trans('home.spec2')}}</span>--}}
+                {{--<span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}</span>--}}
+			{{--</div>--}}
+			{{--<div class="pro_detail">--}}
+				{{--<span class="ml15 letter-space fl">{{trans('home.number')}}</span><span  class="pro_value">{{$good_info['goods_sn']}}</span>--}}
+                {{--<span class="fl letter-space">{{trans('home.brand')}}</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{getLangData($good_info,'brand_name')}}">{{getLangData($good_info,'brand_name')}}</span>--}}
+			{{--</div>--}}
 
-			<div class="pro_detail">
-				<span class="ml15 letter-space fl">编号</span><span  class="pro_value">{{$good_info['goods_sn']}}</span>
-                <span class="fl letter-space">品牌</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['brand_name']}}">{{$good_info['brand_name']}}</span>
-			</div>
+            {{--<div class="pro_detail">--}}
+                {{--<span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">{{trans('home.salesman')}}</span><span  class="pro_value">{{$good_info['salesman']}}</span>--}}
+                {{--<span class="fl">{{trans('home.contact_way')}}</span><span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['contact_info']}}">{{$good_info['contact_info']}}</span>--}}
+            {{--</div>--}}
 
-            <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">业务员</span><span  class="pro_value">{{$good_info['salesman']}}</span>
-                <span class="fl">联系方式</span><span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['contact_info']}}">{{$good_info['contact_info']}}</span>
-            </div>
+            {{--<div class="pro_detail">--}}
+                {{--<span class="ml15 pro_detail_title fl">{{trans('home.mfg_date')}}</span><span  class="pro_value">{{$good_info['production_date']}}</span>--}}
+                 {{--<span class="fl letter-space">{{trans('home.content')}}</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{getLangData($good_info,'goods_content')}}">{{getLangData($good_info,'goods_content')}}</span>--}}
+            {{--</div>--}}
 
-            <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">生产日期</span><span  class="pro_value">{{$good_info['production_date']}}</span>
-                 <span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>
-            </div>
-            <div class="pro_detail">
-                <span class="ml15 pro_detail_title fl">运费说明</span>
-                <span  class="pro_value">待定 <span style="color: #bbbbbb;" id="show_yf_tips">物流说明</span></span>
+            <table class="detail_table mt10 ">
+                <tbody>
+                    <tr>
+                        <td>{{trans('home.delivery_time')}}</td>
+                        <td>{{$good_info['delivery_time']}}</td>
+                        <td>{{trans('home.spec2')}}</td>
+                        <td title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}">
+                            {{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >{{trans('home.number')}}</td>
+                        <td>{{$good_info['goods_sn']}}</td>
+                        <td >{{trans('home.brand')}}</td>
+                        <td title="{{getLangData($good_info,'brand_name')}}">{{getLangData($good_info,'brand_name')}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{trans('home.salesman')}}</td>
+                        <td>{{$good_info['salesman']}}</td>
+                        <td>{{trans('home.contact_way')}}</td>
+                        <td title="{{$good_info['contact_info']}}">{{$good_info['contact_info']}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{trans('home.mfg_date')}}</td>
+                        <td>{{$good_info['production_date']}}</td>
+                        <td>{{trans('home.content')}}</td>
+                        <td title="{{getLangData($good_info,'goods_content')}}">{{getLangData($good_info,'goods_content')}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{trans('home.freight_description')}}</td>
+                        <td colspan="3">{{trans('home.undetermined')}} <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            {{--<div class="pro_detail">--}}
+                {{--<span class="ml15 pro_detail_title fl">{{trans('home.freight_description')}}</span>--}}
+                {{--<span  class="pro_value">{{trans('home.undetermined')}} <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></span>--}}
                 {{--<span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>--}}
-            </div>
+            {{--</div>--}}
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">采  购  量</span>
+				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">{{trans('home.purchase_num')}}</span>
                 <div class="pur_volume ml15 fl">
                     <span class="pur shop_num_reduce">-</span>
                     <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" min_limit="{{$good_info['min_limit']}}" id="pur_num" class="pur_num" @if($good_info['packing_spec']>$good_info['min_limit']) value="{{$good_info['packing_spec']}}" @else value="{{$good_info['min_limit']}}" @endif/>
                     <span class="pur shop_num_plus">+</span>
                 </div>
                 <span class="fl" style="line-height: 28px;margin-left: 5px">{{$good_info['unit_name']}}</span>
-                <span class="fl" style="line-height: 28px;margin-left: 50px">最小采购数量：</span>
+                <span class="fl" style="line-height: 28px;margin-left: 50px">{{trans('home.min_purchase_num')}}：</span>
                 <span  class="ml5 fl ovhwp" style="width: 150px;line-height: 28px;margin-left: 5px">{{$good_info['min_limit'] ? $good_info['min_limit'] : $good_info['packing_spec']}}{{$good_info['unit_name']}}</span>
 			</div>
 
@@ -317,22 +357,22 @@
                 @if(session('_web_user_id'))
                     @if($collectGoods)
                         @if(!empty($good_info['expiry_time']) && $good_info['expiry_time'] < \Carbon\Carbon::now())
-                             <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
+                             <button class="pro_detail_btn">{{trans('home.end')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collected')}}</button>
                         @else
-                             <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">已收藏</button>
+                             <button class="pro_detail_btn orangebg">{{trans('home.add_cart')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collected')}}</button>
                         @endif
                     @else
                         @if(!empty($good_info['expiry_time']) && $good_info['expiry_time'] < \Carbon\Carbon::now())
-                                 <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                                 <button class="pro_detail_btn">{{trans('home.end')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collection')}}</button>
                         @else
-                                <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                                <button class="pro_detail_btn orangebg">{{trans('home.add_cart')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collection')}}</button>
                         @endif
                     @endif
                 @else
-                    @if(!empty($good_info['expiry_time']) &&  $good_info['expiry_time'] < \Carbon\Carbon::now())
-                         <button class="pro_detail_btn">已结束</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                    @if(!empty($good_info['expiry_time']) && $good_info['expiry_time'] < \Carbon\Carbon::now())
+                         <button class="pro_detail_btn">{{trans('home.end')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collection')}}</button>
                     @else
-                        <button class="pro_detail_btn orangebg">加入购物车</button><button class="pro_detail_btn cccbg ml15 follow_btn">收藏商品</button>
+                        <button class="pro_detail_btn orangebg">{{trans('home.add_cart')}}</button><button class="pro_detail_btn cccbg ml15 follow_btn">{{trans('home.collection')}}</button>
                     @endif
                 @endif
 				
@@ -341,7 +381,7 @@
 	</div>
 
         <div class="w1200" style="margin-top: 80px;">
-            <h2 class="History_offo" style="font-weight: bold; padding-left: 20px">商家推荐</h2>
+            <h2 class="History_offo" style="font-weight: bold; padding-left: 20px">{{trans('home.shop_recommend')}}</h2>
             {{--<div >--}}
                 {{--<ul class="">--}}
                     {{--<li style="margin-left:25px;text-align:center;"></li>--}}
@@ -349,20 +389,20 @@
             {{--</div>--}}
         <ul class="quoteList" style="overflow: hidden; height: auto;">
             <li style="background-color: #F7F7F7">
-                <span style="width: 18%;">报价日期</span>
+                <span style="width: 18%;">{{trans('home.update_time')}}</span>
 
-                <span style="width: 18%;">品牌</span>
-                <span style="width: 20%;">规格</span>
+                <span style="width: 18%;">{{trans('home.brand')}}</span>
+                <span style="width: 20%;">{{trans('home.spec')}}</span>
                 {{--<span style="width: 12%;">数量</span>--}}
-                <span style="width: 15%;">单价（元）</span>
-                <span style="width: 16%;">发货地址</span>
-                <span style="width: 13%;">联系人</span>
+                <span style="width: 15%;">{{trans('home.price')}}</span>
+                <span style="width: 16%;">{{trans('home.delivery_area')}}</span>
+                <span style="width: 13%;">{{trans('home.contact')}}</span>
             </li>
             @foreach($quoteList as $vo)
                 <li>
                     <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
-                    <span style="width:18%;" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                    <span style="width:20%;" class="ovhwp" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a></span>
+                    <span style="width:18%;" class="ovhwp" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
+                    <span style="width:20%;" class="ovhwp" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
 {{--                    <span style="width:12%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>--}}
                     <span style="width:15%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
                     <span style="width:16%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
@@ -376,30 +416,30 @@
         <div class="w1200" style="margin-top: 20px;">
             <div class="History_offo">
                 <ul class="HistoryLi">
-                    <li style="margin-left:25px;text-align:center;" class="titlecurr"><h2 style="font-weight: bold;">历史报价</h2></li>
-                    <li style="text-align: center;"><h2 style="font-weight: bold;">商品详情</h2></li>
+                    <li style="margin-left:25px;text-align:center;" class="titlecurr"><h2 style="font-weight: bold;">{{trans('home.historical_quotation')}}</h2></li>
+                    <li style="text-align: center;"><h2 style="font-weight: bold;">{{trans('home.product_details')}}</h2></li>
                 </ul>
             </div>
-        <div>
+            <div>
     <ul class="proitemlist">
         <li>
             <ul class="History-product-list br1">
                 <li style="background-color: #cccccc">
-                    <span style="width: 18%;">报价日期</span>
-                    <span style="width: 16%;">种类</span>
-                    <span style="width:15%">品牌</span>
-                    <span style="width:17%">规格</span>
+                    <span style="width: 18%;">{{trans('home.update_time')}}</span>
+                    <span style="width: 16%;">{{trans('home.cate')}}</span>
+                    <span style="width:15%">{{trans('home.brand')}}</span>
+                    <span style="width:17%">{{trans('home.spec')}}</span>
                     {{--<span style="width: 11%;">数量</span>--}}
-                    <span style="width: 11%;">单价（元)</span>
-                    <span style="width:10%">发货地址</span>
-                    <span style="width: 13%;">联系人</span>
+                    <span style="width: 11%;">{{trans('home.price')}}</span>
+                    <span style="width:10%">{{trans('home.delivery_area')}}</span>
+                    <span style="width: 13%;">{{trans('home.contact')}}</span>
                 </li>
                 @foreach($goodsList as $vo)
                     <li>
                         <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
-                        <span style="width:16%" class="ovhwp" title="{{$vo['cat_top_name']}}">{{$vo['cat_top_name']}}</span>
-                        <span style="width:15%" class="ovhwp" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</span>
+                        <span style="width:16%" class="ovhwp" title="{{getLangData($vo,'cat_top_name')}}">{{getLangData($vo,'cat_top_name')}}</span>
+                        <span style="width:15%" class="ovhwp" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
+                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</span>
                         {{--<span style="width:11%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>--}}
                         <span style="width:11%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
                         <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
@@ -415,7 +455,7 @@
         </li>
         <li style="display: none"><ul class="History-product-list br1">
                 <li>
-                    {!! $good_info['goods_desc'] !!}
+                    {!! getLangData($good_info,'goods_desc') !!}
 
                 </li>
             </ul>
@@ -443,7 +483,7 @@
             var min_limit = parseInt("{{$good_info['min_limit']}}");
             if(number<=packing_spec || number<=min_limit){
                 $(".pur_num").val(number);
-                $.msg.error('已经是最低的购买数量了');
+                $.msg.error('{{trans('home.error_min_num_tips')}}');
             }else{
                 $(".pur_num").val(number-packing_spec);
             }
@@ -460,7 +500,7 @@
                 }else{
                     $(".pur_num").val(can_num);
                 }
-                $.msg.error('不能大于可售');
+                $.msg.error('{{trans('home.error_max_num_tips')}}');
             }else{
                 $(".pur_num").val(number+packing_spec);
             }
@@ -469,8 +509,8 @@
         $(".orangebg").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                layer.confirm('请先登录再进行操作。', {
-                    btn: ['去登陆','再看看'] //按钮
+                layer.confirm('{{trans('home.no_login_msg')}}。', {
+                    btn: ['{{trans('home.login')}}','{{trans('home.see_others')}}'] //按钮
                 }, function(){
                     window.location.href='/login';
                 }, function(){
@@ -494,8 +534,8 @@
         $(".follow_btn").click(function(){
             var userId = "{{session('_web_user_id')}}";
             if(userId==""){
-                layer.confirm('请先登录再进行操作。', {
-                    btn: ['去登陆','再看看'] //按钮
+                layer.confirm('{{trans('home.no_login_msg')}}。', {
+                    btn: ['{{trans('home.login')}}','{{trans('home.see_others')}}'] //按钮
                 }, function(){
                     window.location.href='/login';
                 }, function(){
@@ -506,7 +546,7 @@
             var goods_id = "{{$good_info['goods_id']}}";
             $.post("/addCollectGoods",{'id':goods_id},function(res){
                 if(res.code==1){
-                    $.msg.success("收藏成功",1);
+                    $.msg.success("{{trans('home.collection_success')}}",1);
                     window.location.reload();
                 }else{
                     $.msg.alert(res.msg);
@@ -523,8 +563,8 @@
                     , count: "{{$total}}" //数据总数，从服务端得到
                     , limit: "{{$pageSize}}"   //每页显示的条数
                     , curr: "{{$currpage}}"  //当前页
-                    , prev: "上一页"
-                    , next: "下一页"
+                    , prev: "{{trans('home.prev')}}"
+                    , next: "{{trans('home.next')}}"
                     , theme: "#88be51"
                     , jump: function (obj, first) {
                         if (!first) {

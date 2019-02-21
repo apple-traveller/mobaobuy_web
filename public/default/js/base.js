@@ -57,3 +57,10 @@ function changeDeputy(obj){
         window.location.reload();
     },"POST", "JSON");
 }
+
+function jqGetLangData(locale,arr,field) {
+    if (locale == 'zh-cn') {
+        return arr[field];
+    }
+    return (arr[field + '_' + locale] != 'undefined' && arr[field + '_' + locale] != '') ? arr[field + '_' + locale] : arr[field];
+}

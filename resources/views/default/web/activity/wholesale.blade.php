@@ -66,34 +66,34 @@
 	</div>
 	<div class="collect_bg ovh">
 		<div class="collect_main">
-			<div class="collect_title">集采火拼</div>
+			<div class="collect_title">{{trans('home.wholesale')}}</div>
 			<div class="w1200 ovh">
 
 					@if(empty($wholesaleInfo))
-						<ul><li class="nodata">暂无活动 敬请期待</li></ul>
+						<ul><li class="nodata">{{trans('home.none_activity')}}</li></ul>
 					@else
 					<ul class="ms_list">
 						@foreach($wholesaleInfo as $v)
 							<li>
 								@if($v['is_over'])
 									<div class="collect_end_time " id="collect_end_time"  >
-										距离结束：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
+										{{trans('home.distance_end')}}：<span id="End_time" class="count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span>
 									</div>
 								@elseif($v['is_soon'])
 									<div class="collect_end_time count-down" id="collect_end_time" data-endtime="{{strtotime($v['begin_time'])*1000}}">
-										距离开始：<span id="End_time" class="count-down-text">0天0小时0分钟0秒</span>
+										{{trans('home.distance_begin')}}：<span id="End_time" class="count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span>
 									</div>
 								@else
 									<div class="collect_end_time count-down" data-endtime="{{strtotime($v['end_time'])*1000}}">
-										距离结束：<span class="count-down-text">0天0小时0分钟0秒</span>
+										{{trans('home.distance_end')}}：<span class="count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span>
 									</div>
 								@endif
 								<div class="ms_list_center">
 									<div class="ovh">
-										<h2 class="fs20 ovhwp" style="height: 36px;" title="{{$v['goods_name']}}">{{$v['goods_name']}}</h2>
+										<h2 class="fs20 ovhwp" style="height: 36px;" title="{{getLangData($v,'goods_name')}}">{{getLangData($v,'goods_name')}}</h2>
 									</div>
 									<div class="ovh mt10">
-										<div class="mx_addr fl">{{$v['shop_name']}}</div>
+										<div class="mx_addr fl">{{getLangData($v,'shop_name')}}</div>
 										{{--<div class="mx_addr fl ml15" style="width: 117px;">自提</div>--}}
 									</div>
 									<div class="ovh mt20 ">
@@ -109,31 +109,31 @@
 											@endif
 										</div>
 										@if((float)$v['partake_quantity'] <= 0)
-											<span class="fl fs16 gray">已参与0%</span>
+											<span class="fl fs16 gray">{{trans('home.partake')}} 0%</span>
 										@elseif((float)$v['num'] <= 0)
-											<span class="fl fs16 gray">已参与100%</span>
+											<span class="fl fs16 gray">{{trans('home.partake')}} 100%</span>
 
 										@else
-											<span class="fl fs16 gray">已参与{{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%</span>
+											<span class="fl fs16 gray">{{trans('home.partake')}} {{(int)((float)$v['partake_quantity']*100/(float)$v['num'])}}%</span>
 										@endif
 
 									</div>
 									<div class="tac mt20 ovh">
 										<span class="fr pt10 ovh di gray">
-											<span style="margin: 0 20px 0 0">目标：{{$v['num']}}{{$v['unit_name']}}</span>
-											<font class="orange">{{$v['click_count']}}</font>次浏览
+											<span style="margin: 0 20px 0 0">{{trans('home.target')}}：{{$v['num']}}{{$v['unit_name']}}</span>
+											<font class="orange">{{$v['click_count']}}</font>{{trans('home.browse')}}
 										</span>
 									</div>
 									<div class="mx_price">
-										<font class="gray">单价不超过</font>
+										<font class="gray">{{trans('home.exceed')}}</font>
 										<font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}
 									</div>
 									@if($v['is_over'])
-										<div class="mx_btn" style='background: #b1b1b1;'>已结束</div>
+										<div class="mx_btn" style='background: #b1b1b1;'>{{trans('home.sold_out')}}</div>
 									@elseif($v['is_soon'])
-										<div class="mx_btn" style='background: #b1b1b1;'>敬请期待</div>
+										<div class="mx_btn" style='background: #b1b1b1;'>{{trans('home.expect')}}</div>
 									@else
-										<a href="/wholesale/detail/{{encrypt($v['id'])}}"><div class="mx_btn">立即参与</div></a>
+										<a href="/wholesale/detail/{{encrypt($v['id'])}}"><div class="mx_btn">{{trans('home.partaking')}}</div></a>
 									@endif
 								</div>
 							</li>
@@ -146,11 +146,11 @@
 
 		<div class="w1200 collect_active_bg ovh" style="margin-bottom: 30px;">
 
-			<div class="Rules_activity">活动规则</div>
+			<div class="Rules_activity">{{trans('home.rules')}}</div>
 			<ul class="Rules_text">
-				<li>1.本活动对所有会员开放</li>
-				<li>2.集采火拼活动订单需要在30分钟内完成支付，逾期未付款，系统将自动取消订单</li>
-				<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：{{getConfig('service_phone')}}</li>
+				<li>1.{{trans('home.rules_1')}}</li>
+				<li>2.{{trans('home.rules_2')}}</li>
+				<li>3.{{trans('home.rules_3')}}：{{getConfig('service_phone')}}</li>
 			</ul>
 		</div>
 

@@ -20,9 +20,6 @@
                 <div class="mian-info">
                     <form action="/admin/inquire/save" method="post" enctype="multipart/form-data" name="theForm" id="article_form" novalidate="novalidate">
                         <div class="switch_info" style="display: block;">
-
-
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;商品名称：</div>
                                 <div class="label_value">
@@ -66,6 +63,14 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_time" class="text" value="{{$inquire['delivery_time']}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div style="margin-left: 10px" class="form_prompt"></div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time_en" class="text" value="{{$inquire['delivery_time_en']}}" maxlength="40" autocomplete="off" id="delivery_time_en">
                                     <div style="margin-left: 10px" class="form_prompt"></div>
                                 </div>
                             </div>
@@ -148,6 +153,12 @@
                     delivery_area:{
                         required:true,
                     },
+                    delivery_time:{
+                        required:true,
+                    },
+                    delivery_time_en:{
+                        required:true,
+                    },
                     contacts:{
                         required:true,
                     },
@@ -167,6 +178,12 @@
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_area :{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_time:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_time_en:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     contacts:{

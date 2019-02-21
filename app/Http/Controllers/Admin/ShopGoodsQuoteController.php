@@ -137,6 +137,11 @@ class ShopGoodsQuoteController extends Controller
             $data['type'] = 2;
         }
 
+        if(!empty($data['delivery_method']) && $data['delivery_method'] == '自提'){
+            $data['delivery_method_en'] = 'Self delivery';
+        }else{
+            $data['delivery_method_en'] = 'Delivery';
+        }
         try{
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);

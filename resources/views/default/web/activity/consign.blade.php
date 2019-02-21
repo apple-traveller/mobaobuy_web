@@ -55,15 +55,14 @@
 			<div class="ClearSale_seize"><img src="/default/img/seize.png"/></div>
 			@if(!empty($consignInfo))
 				<ul class="ms_list">
-
 						@foreach($consignInfo as $v)
 							<li>
 								<div class="ms_list_center">
 									<div class="ovh">
-										<h2 class="fs20" title="{{$v['goods_name']}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{$v['goods_name']}}</h2>
+										<h2 class="fs20" title="{{getLangData($v,'goods_name')}}" style="height: 36px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{getLangData($v,'goods_name')}}</h2>
 									</div>
 									<div class="ovh mt10">
-										<div class="bq__addr fl">{{$v['shop_name']}}</div>
+										<div class="bq__addr fl">{{getLangData($v,'shop_name')}}</div>
 									</div>
 									<div class="ovh mt10 ">
 										<div class="mx_progress">
@@ -77,25 +76,25 @@
 
 										</div>
 										@if((int)((float)$v['total_number']-(float)$v['goods_number']) == 0)
-											<span class="fl fs16 gray">已售0%</span>
+											<span class="fl fs16 gray">{{trans('home.sold')}} 0%</span>
 										@else
-											<span class="fl fs16 gray">已售{{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
+											<span class="fl fs16 gray">{{trans('home.sold')}} {{(int)(((float)$v['total_number']-(float)$v['goods_number'])*100/(float)$v['total_number'])}}%</span>
 										@endif
 									</div>
 									<div class="tac mt30 ovh" style="text-align: left !important;">
 										<span class="addr_dw">{{$v['delivery_place']}}</span>
-										<span class="fr ovh di gray">可售 @if($v['goods_number']>0) {{$v['goods_number']}} @else 0 @endif{{$v['unit_name']}}</span>
+										<span class="fr ovh di gray">{{trans('home.stock')}} @if($v['goods_number']>0) {{$v['goods_number']}} @else 0 @endif{{$v['unit_name']}}</span>
 									</div>
 									<div class="bq_price">
-										<font class="gray">单价</font>
+										<font class="gray">{{trans('home.price')}}</font>
 										<font class="orange fs24">￥{{$v['shop_price']}}</font>/{{$v['unit_name']}}
 									</div>
 									@if($v['goods_number']>0)
 										<a href="/consign/detail/{{encrypt($v['id'])}}">
-											<div class="mx_btn">立即抢购</div>
+											<div class="mx_btn">{{trans('home.rush_buy')}}</div>
 										</a>
 									@else
-										<div class="mx_btn" style='background: #b1b1b1;'>已结束</div>
+										<div class="mx_btn" style='background: #b1b1b1;'>{{trans('home.end')}}</div>
 									@endif
 								</div>
 							</li>
@@ -103,18 +102,18 @@
 					</ul>
 				@else
 					<ul>
-						<li class="nodata">暂无活动 敬请期待</li>
+						<li class="nodata">{{trans('home.none_activity')}}</li>
 					</ul>
 				@endif
 
 		</div>
 		<div class="w1200 collect_active_bg ovh" style="margin-bottom: 30px;">
 
-			<div class="Rules_activity">活动规则</div>
+			<div class="Rules_activity">{{trans('home.rules')}}</div>
 			<ul class="Rules_text">
-				<li>1.本活动对所有会员开放</li>
-				<li>2.集采火拼活动订单需要在30分钟内完成支付，逾期未付款，系统将自动取消订单</li>
-				<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：{{getConfig('service_phone')}}</li>
+				<li>1.{{trans('home.rules_1')}}</li>
+				<li>2.{{trans('home.rules_2')}}</li>
+				<li>3.{{trans('home.rules_3')}}：{{getConfig('service_phone')}}</li>
 			</ul>
 		</div>
 	</div>

@@ -42,12 +42,13 @@
                                 <tr>
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
                                     <th width="10%"><div class="tDiv">求购时间</div></th>
-                                    <th width="10%"><div class="tDiv">意向价格</div></th>
-                                    <th width="10%"><div class="tDiv">商品数量</div></th>
-                                    <th width="10%"><div class="tDiv">交货地</div></th>
-                                    <th width="10%"><div class="tDiv">联系人</div></th>
-                                    <th width="10%"><div class="tDiv">手机号</div></th>
+                                    <th width="8%"><div class="tDiv">意向价格</div></th>
+                                    <th width="8%"><div class="tDiv">商品数量</div></th>
+                                    <th width="8%"><div class="tDiv">交货地</div></th>
+                                    <th width="8%"><div class="tDiv">联系人</div></th>
+                                    <th width="8%"><div class="tDiv">手机号</div></th>
                                     <th width="10%"><div class="tDiv">交货时间</div></th>
+                                    <th width="10%"><div class="tDiv">英文交货时间</div></th>
                                     <th width="10%"><div class="tDiv">是否显示</div></th>
                                     <th width="10%" class="handle">操作</th>
                                 </tr>
@@ -64,6 +65,7 @@
                                 <td><div class="tDiv">{{$vo['contacts']}}</div></td>
                                 <td><div class="tDiv">{{$vo['contacts_mobile']}}</div></td>
                                 <td><div class="tDiv">{{$vo['delivery_time']}}</div></td>
+                                <td><div class="tDiv">{{$vo['delivery_time_en']}}</div></td>
                                 <td>
                                     <div class="tDiv">
                                         <div style="margin-left:25px;" class="switch @if($vo['is_show']) active @endif" title="@if($vo['is_show']) 是 @else 否 @endif" onclick="listTable.switchBt(this, '{{url('/admin/inquire/modifyShowStatus')}}','{{$vo['id']}}')">

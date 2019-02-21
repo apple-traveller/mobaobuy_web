@@ -200,24 +200,23 @@
 
 				<table align="center" style="width:1200px;margin:0 auto;text-align:center;">
 					<tr style="background-color: #ccc;height:30px;">
-						<td>职位名称</td>
-						<td>工作地点</td>
-						<td>职位类别</td>
-						<td>部门名称</td>
+						<td>{{trans('home.recruit_job')}}</td>
+						<td>{{trans('home.recruit_place')}}</td>
+						<td>{{trans('home.job_type')}}</td>
+						<td>{{trans('home.recruit_branch')}}</td>
 					</tr>
 
 					@foreach($recruitInfo['list'] as $v)
-
-						<tr style="height:50px;margin-top:20px;width:1200px;line-height:30px;">
-							<td><a href="/recruit/list/{{$v['id']}}" style="font-weight: bold;">{{$v['recruit_job']}}</a></td>
-							<td>{{$v['recruit_place']}}</td>
-							<td>{{$v['job_type']}}</td>
-							<td>{{$v['recruit_branch']}}</td>
-
-						</tr>
-						<tr><td class="job_desc" colspan="4" style="text-align: left;padding-left: 130px;padding-right: 130px;">{{strip_tags($v['job_desc'])}}</td></tr>
-						<tr><td colspan="4" style="border-bottom: 0.1px solid #efeded;margin-top: 13px;padding-top: 12px;"></td></tr>
-						{{--<p style="width:1200px;height:2px;color:red;"></p>--}}
+						@if((App::getLocale() == 'zh-cn' && $v['is_en'] == 0) || (App::getLocale() == 'en' && $v['is_en'] == 1) )
+							<tr style="height:50px;margin-top:20px;width:1200px;line-height:30px;">
+								<td><a href="/recruit/list/{{$v['id']}}" style="font-weight: bold;">{{$v['recruit_job']}}</a></td>
+								<td>{{$v['recruit_place']}}</td>
+								<td>{{$v['job_type']}}</td>
+								<td>{{$v['recruit_branch']}}</td>
+							</tr>
+							<tr><td class="job_desc" colspan="4" style="text-align: left;padding-left: 130px;padding-right: 130px;">{{strip_tags($v['job_desc'])}}</td></tr>
+							<tr><td colspan="4" style="border-bottom: 0.1px solid #efeded;margin-top: 13px;padding-top: 12px;"></td></tr>
+						@endif
 					@endforeach
 				</table>
 				<div style="margin:0 auto;width:1200px;" id="recruit">
@@ -232,13 +231,13 @@
 
 			</div>
 		@else
-			<div class="nodata">暂无招聘信息</div>
+			<div class="nodata">{{trans('home.none_recruit_tips')}}</div>
 		@endif
 		<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 		<script>
 			$(function(){
                 paginate();
-			})
+			});
 
 			function getInfo(currpage,place) {
                 $.ajax({
@@ -255,7 +254,19 @@
                             var list = data.list;
                             var strHtml = '';
                             for(var i = 0; i < list.length; i++){
-                                strHtml += '<section class="recruitment_item wrap_style " data-e="false"><div class="position_info"> <dl class="company_dl"> <dd> <p class="dd_top"> <a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">'+list[i]['recruit_job']+'</a><a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:'+list[i]['recruit_place']+']</a><span class="ud_time" style="margin-left: 20px;color: #aaa;">'+list[i]['add_time']+'发布</span> </p> <div class="dd_bot"> <span class="salary">职位薪资:'+list[i]['recruit_pay']+'</span> <div class="info"> <span>经验:'+list[i]['working_experience']+'</span> <em class="line"></em> <span>学历:'+list[i]['education']+'</span> <em class="line"></em> <span>类型:'+list[i]['recruit_type']+'</span> </div> </div> </dd> </dl> </div> <div class="obligation"> <p>岗位说明：;'+list[i]['job_desc']+'</p> </div> </section>';
+                                strHtml += '<section class="recruitment_item wrap_style " data-e="false">' +
+									'<div class="position_info">' +
+									'<dl class="company_dl"> <dd>' +
+									'<p class="dd_top">' +
+									'<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">'+list[i]['recruit_job']+'</a>' +
+									'<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[{{trans('home.recruit_place')}}:'+list[i]['recruit_place']+']</a>' +
+									'<span class="ud_time" style="margin-left: 20px;color: #aaa;">'+list[i]['add_time']+'{{trans('home.release')}}</span>' +
+									'</p> <div class="dd_bot">' +
+									'<span class="salary">{{trans('home.recruit_pay')}}:'+list[i]['recruit_pay']+'</span>' +
+									'<div class="info"> <span>{{trans('home.working_experience')}}:'+list[i]['working_experience']+'</span> <em class="line"></em>' +
+									'<span>{{trans('home.education')}}:'+list[i]['education']+'</span> <em class="line"></em>' +
+									'<span>{{trans('home.recruit_type')}}:'+list[i]['recruit_type']+'</span> </div> </div> </dd> </dl> </div>' +
+									'<div class="obligation"> <p>{{trans('home.job_desc')}}：;'+list[i]['job_desc']+'</p> </div> </section>';
                             }
                             $('#recruit').children('section').remove();
                             $('#recruit').prepend(strHtml);
@@ -266,8 +277,8 @@
                                     , count: total //数据总数，从服务端得到
                                     , limit: pageSize   //每页显示的条数
                                     , curr: currpage  //当前页
-                                    , prev: "上一页"
-                                    , next: "下一页"
+                                    , prev: "{{trans('home.prev')}}"
+                                    , next: "{{trans('home.next')}}"
                                     , theme: "#88be51" //样式
                                     , jump: function (obj, first) {
                                         if (!first) {
@@ -301,8 +312,8 @@
                         , count: "{{$recruitInfo['total']}}" //数据总数，从服务端得到
                         , limit: "{{$pageSize}}"   //每页显示的条数
                         , curr: "{{$currpage}}"  //当前页
-                        , prev: "上一页"
-                        , next: "下一页"
+                        , prev: "{{trans('home.prev')}}"
+                        , next: "{{trans('home.next')}}"
                         , theme: "#88be51" //样式
                         , jump: function (obj, first) {
                             if (!first) {

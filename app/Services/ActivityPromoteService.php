@@ -49,6 +49,9 @@ class ActivityPromoteService
         foreach($info_list as &$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $v['unit_name'] = $goodsInfo['unit_name'];
+            $v['goods_name_en'] = $goodsInfo['goods_full_name_en'];
+            $shopInfo = ShopService::getShopById($v['shop_id']);
+            $v['shop_name_en'] = $shopInfo['shop_name_en'];
         }
         unset($v);
 

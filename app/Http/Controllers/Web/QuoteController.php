@@ -97,7 +97,13 @@ class QuoteController extends Controller
         $condition['b.is_delete'] = 0;
         //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition,$t);
-
+        if(!empty($goodsList)){
+            foreach ($goodsList['list'] as $k=>$v){
+                if($v['shop_store_id'] == 0){
+                    $goodsList['list'][$k]['store_name_en'] = !empty($v['shop_name_en']) ? $v['shop_name_en'] : $v['company_name_en'];
+                }
+            }
+        }
         #热门推荐
         if (!empty($keyword)) {
             $hot_search = HotSearchService::getInfoByFields(['search_key' => $keyword]);
@@ -222,6 +228,11 @@ class QuoteController extends Controller
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');
         } else {
+            foreach ($goodsList['list'] as $k=>$v){
+                if($v['shop_store_id'] == 0){
+                    $goodsList['list'][$k]['store_name_en'] = !empty($v['shop_name_en']) ? $v['shop_name_en'] : $v['company_name_en'];
+                }
+            }
             return $this->result([
                 'list' => $goodsList['list'],
                 'currpage' => $currpage,

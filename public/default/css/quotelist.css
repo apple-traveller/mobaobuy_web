@@ -62,7 +62,7 @@
 .page_rightbg{background: #fff url(/images/page_mode.png)no-repeat -28px 4px;}
 .page_border_right:hover.page_rightbg{background: #f1f1f1 url(/images/page_mode.png)no-repeat -28px -63px;}
 
-.sequence-bar .min-max { width: 70px; border: solid 1px #cccccc; font-size: 12px; padding: 4px 0px 3px 4px;
+.sequence-bar .min-max { width: 85px; border: solid 1px #cccccc; font-size: 12px; padding: 4px 0px 3px 4px;
     box-sizing: border-box; height: 26px; background: #fff;  text-align: left; text-indent: 3px; outline: 0;}
 .sequence-bar .line {padding: 0px;font-size: 14px;font-family: monospace;color: #888;}
 .sequence-bar .confirm { border: 0 none; background: none;  font-size: 12px; cursor: pointer; height: 26px; line-height: 26px;

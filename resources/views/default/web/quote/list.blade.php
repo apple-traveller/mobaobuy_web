@@ -88,15 +88,15 @@
 	<div class="clearfix" style="background-color: #FFF;">
 	<div class="w1200 pr">
 		<div class="crumbs mt5 mb5">
-            <span class="fl">当前位置：</span>
+            <span class="fl">{{trans('home.curr')}}：</span>
             @if($t == 1)
-                <a class="fl" href="/goodsList/1">自营报价</a>
+                <a class="fl" href="/goodsList/1">{{trans('home.self_quote')}}</a>
             @elseif($t == 2)
-                <a class="fl" href="/goodsList/2">品牌直售</a>
+                <a class="fl" href="/goodsList/2">{{trans('home.direct_sale')}}</a>
             @elseif($t == 3)
-                <a class="fl" href="/goodsList/3">供应商报价</a>
+                <a class="fl" href="/goodsList/3">{{trans('home.supplier')}}</a>
             @else
-                <a class="fl" href="/goodsList">报价列表</a>
+                <a class="fl" href="/goodsList">{{trans('home.quote')}}</a>
             @endif
 
             <div class="condition">
@@ -116,7 +116,7 @@
 
             @if(!empty($search_data['list']))
                 <div class="pro_Open pro_Open_up"></div>
-			    <div class="fr">共<font class="green" id="relevant_total">{{$search_data['total']}}</font>个相关商品</div>
+			    <div class="fr">{{trans('home.self_quote_prefix')}}<font class="green" id="relevant_total"> {{$search_data['total']}} </font>{{trans('home.quote_suffix')}}</div>
             @endif
         </div>
         @if(!empty($search_data['list']))
@@ -124,10 +124,10 @@
                 @if(!empty($search_data['filter']['brands']))
                 <div class="pro_brand">
                     <dl class="fl filter_item">
-                        <dt class="fl">品牌:</dt>
+                        <dt class="fl">{{trans('home.brand')}}:</dt>
                         <dd class="pro_brand_list ml30">
                             @foreach($search_data['filter']['brands'] as $vo)
-                                <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{$vo['brand_name']}}</a>
+                                <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{getLangData($vo,'brand_name')}}</a>
                             @endforeach
                         </dd>
                         {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
@@ -138,10 +138,10 @@
                 @if(!empty($search_data['filter']['cates']))
                 <div class="pro_brand">
                     <dl class="fl filter_item">
-                        <dt class="fl">种类:</dt>
+                        <dt class="fl">{{trans('home.cate')}}:</dt>
                         <dd class="pro_brand_list ml30">
                             @foreach($search_data['filter']['cates'] as $vo)
-                                <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{$vo['cat_name']}}</a>
+                                <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{getLangData($vo,'cat_name')}}</a>
                             @endforeach
                         </dd>
                         {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
@@ -151,7 +151,7 @@
                 @endif
                 @if(!empty($search_data['filter']['city_list']))
                 <div class="pro_brand" style="border-bottom: none;">
-                    <dl class="fl filter_item"><dt class="fl">地区:</dt>
+                    <dl class="fl filter_item"><dt class="fl">{{trans('home.area')}}:</dt>
                         <dd class="pro_brand_list" style="width: 850px;margin-left:25px;">
                             @foreach($search_data['filter']['city_list'] as $vo)
                                 <label class=" check_box region">
@@ -160,8 +160,8 @@
                                 </label>
                             @endforeach
                         </dd>
-                        <div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">确定</div>
-                        <div class="fl pro_brand_btn region_btn ml20 cancel_region">取消</div>
+                        <div onclick="getInfo(1)"  class="fl pro_brand_btn region_btn ml20">{{trans('home.ok')}}</div>
+                        <div class="fl pro_brand_btn region_btn ml20 cancel_region">{{trans('home.cancel')}}</div>
                     </dl>
                 </div>
                 @endif
@@ -171,37 +171,37 @@
 	</div>
         @if(!empty($search_data['list']))
             <div class="w1200 mt20 " style="margin-top: 20px;">
-                <h2 class="product_title">报价列表</h2>
+                <h2 class="product_title">{{trans('home.quote')}}</h2>
                 <div class="scr">
                     <div class="width1200">
                         <div class="sequence-bar" style="padding:0;padding-right:10px;">
                             <div class="fl">
                                 @if($t == 1)
-                                    <a class="choose default bggreen" href="/goodsList/1" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                    <a class="choose default bggreen" href="/goodsList/1" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
                                 @elseif($t == 2)
-                                    <a class="choose default bggreen" href="/goodsList/2" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                    <a class="choose default bggreen" href="/goodsList/2" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
                                 @elseif($t == 3)
-                                    <a class="choose default bggreen" href="/goodsList/3" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                    <a class="choose default bggreen" href="/goodsList/3" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
                                 @else
-                                    <a class="choose default bggreen" href="/goodsList" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">综合</a>
+                                    <a class="choose default bggreen" href="/goodsList" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
                                 @endif
 
                             </div>
                             <div class="fl">
                                 <ul id="sort" sort_name="" class="chooselist">
-                                    <li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">数量</span></li>
-                                    <li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">价格</span></li>
-                                    <li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">上架时间</span></li>
+                                    <li class="sm_breed goods_number" sort=""><span class="sm_breed_span sort_down_up">{{trans('home.num')}}</span></li>
+                                    <li class="sm_breed shop_price" sort=""><span class="sm_breed_span sort_down_up">{{trans('home.price')}}</span></li>
+                                    <li class="sm_breed add_time" sort=""><span class="sm_breed_span sort_down_up" style="width: 113px;">{{trans('home.shelf_time')}}</span></li>
                                 </ul>
                             </div>
                             <div class="fr">
 
                             </div>
                             <form class="fl" id="formid">
-                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="￥最低价" style="margin-left: 5px">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="Lowest price" style="margin-left: 5px">
                                 <span class="line">-</span>
-                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="￥最高价" style="margin-left: 5px">
-                                <input class="confirm active inline-block" id="btnSearchPrice" value="确定" type="button" style="margin-left: 5px">
+                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="Highest price" style="margin-left: 5px">
+                                <input class="confirm active inline-block" id="btnSearchPrice" value="{{trans('home.ok')}}" type="button" style="margin-left: 5px">
                             </form>
 
                         </div>
@@ -211,41 +211,41 @@
                 <ul class="Self-product-list">
 
                     <li class="table_title">
-                        <span style="width:12%" class="num_bg1">店铺</span>
-                        <span style="width:10%;">品种</span>
-                        <span style="width:9%">品牌</span>
-                        <span style="width:12%">规格</span>
+                        <span style="width:12%" class="num_bg1">{{trans('home.store')}}</span>
+                        <span style="width:10%;">{{trans('home.cate')}}</span>
+                        <span style="width:9%">{{trans('home.brand')}}</span>
+                        <span style="width:12%">{{trans('home.spec')}}</span>
                         {{--<span style="width:7%;">数量</span>--}}
-                        <span style="width:8%;">单价（元）</span>
-                        <span style="width:8%;">交货时间</span>
-                        <span style="width:8%;">发货地址</span>
-                        <span style="width:8%;">交货方式</span>
-                        <span style="width:15%;">联系人</span>
-                        <span style="width:10%;float:right;">操作</span>
+                        <span style="width:8%;">{{trans('home.price')}}</span>
+                        <span style="width:8%;">{{trans('home.delivery_time')}}</span>
+                        <span style="width:8%;">{{trans('home.delivery_area')}}</span>
+                        <span style="width:8%;">{{trans('home.delivery_method')}}</span>
+                        <span style="width:15%;">{{trans('home.contact')}}</span>
+                        <span style="width:10%;float:right;">{{trans('home.operation')}}</span>
                     </li>
                     @if(!empty($search_data['list']))
                         @foreach($search_data['list'] as $vo)
                             <li>
-                                <span style="width:12%" title="{{$vo['store_name']}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{$vo['store_name']}}@else无@endif</span>
-                                <span style="width:10%;" title="{{$vo['cat_top_name']}}" class="ovh">{{$vo['cat_top_name']}}</span>
-                                <span style="width:9%" title="{{$vo['brand_name']}}">{{$vo['brand_name']}}</span>
-                                <span style="width:12%" title="{{$vo['goods_content'].' '.$vo['simple_goods_name']}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{$vo['goods_content'].' '.$vo['simple_goods_name']}}</a></span>
+                                <span style="width:12%" title="{{getLangData($vo,'store_name')}}" data-id="{{$vo['packing_spec']}}" id="packing_spec">@if(!empty($vo['store_name'])){{getLangData($vo,'store_name')}}@else无@endif</span>
+                                <span style="width:10%;" title="{{getLangData($vo,'cat_top_name')}}" class="ovh">{{getLangData($vo,'cat_top_name')}}</span>
+                                <span style="width:9%" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
+                                <span style="width:12%" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
-                                <span style="width:8%;">{{$vo['delivery_time']}}</span>
+                                <span style="width:8%;">{{getLangData($vo,'delivery_time')}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
-                                <span style="width:8%;">{{$vo['delivery_method']}}</span>
+                                <span style="width:8%;">{{getLangData($vo,'delivery_method')}}</span>
                                 <span style="width:15%">{{$vo['salesman']}}/{{$vo['contact_info']}}
                                     <img onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
                                 </span>
 
                                 <span style="width:10%;float:right;">
                                     @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                            <button data-id="{{$vo['id']}}" class="P_cart_btn">加入购物车</button>
+                                            <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
                                     @elseif($vo['goods_number'] <= 0)
-                                            <button class="trade-close-btn">已售完</button>
+                                            <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
                                     @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
-                                            <button class="trade-close-btn">已过期</button>
+                                            <button class="trade-close-btn">{{trans('home.overdue')}}</button>
                                     @endif
                                 </span>
                             </li>
@@ -259,9 +259,9 @@
             </div>
         @else
             @if(!empty($t))
-                <li class="nodata1">近期上市 敬请期待</li>
+                <li class="nodata1">{{trans('home.none_quoted')}}</li>
             @else
-                <li class="nodata">暂无最新报价数据。如需订购，请点击联系人工找货</li>
+                <li class="nodata">{{trans('home.quote_list_tips')}}</li>
             @endif
         @endif
     </div>
@@ -373,8 +373,8 @@
                 , count: "{{$search_data['total']}}" //数据总数，从服务端得到
                 , limit: "{{$pageSize}}"   //每页显示的条数
                 , curr: "{{$currpage}}"  //当前页
-                , prev: "上一页"
-                , next: "下一页"
+                , prev: "{{trans('home.prev')}}"
+                , next: "{{trans('home.next')}}"
                 , theme: "#88be51" //样式
                 , jump: function (obj, first) {
                     if (!first) {
@@ -471,6 +471,7 @@
                     var pageSize = data.pageSize;
                     var total = data.total;
                     var list = data.list;
+                    var locale = "{{App::getLocale()}}";
 //                    console.log(list);
                     $('#t').val(res.data.t);
                     $(".table_title").nextAll().remove();//去除已经出现的数据
@@ -482,26 +483,26 @@
                     {
                         var _store_name = '无';
                         if(list[i].store_name){
-                            _store_name = list[i].store_name;
+                            _store_name = jqGetLangData(locale,list[i],'store_name');
                         }
                         if(list[i].goods_number && list[i].expiry_time > '{{\Carbon\Carbon::now()}}' || (list[i].goods_number && list[i].expiry_time == '0000-00-00 00:00:00') || (list[i].goods_number && list[i].expiry_time == null)){
-                            var _add_cart = '<button data-id="'+list[i].id+'" class="P_cart_btn">加入购物车</button>';
+                            var _add_cart = '<button data-id="'+list[i].id+'" class="P_cart_btn">{{trans('home.add_cart')}}</button>';
                         }else if(list[i].goods_number <= 0){
-                            var _add_cart = '<button class="trade-close-btn">已售完</button>';
+                            var _add_cart = '<button class="trade-close-btn">{{trans('home.sold_out')}}</button>';
                         }else if(list[i].expiry_time < '{{\Carbon\Carbon::now()}}'){
-                            var _add_cart = '<button class="trade-close-btn">已结束</button>';
+                            var _add_cart = '<button class="trade-close-btn">{{trans('home.overdue')}}</button>';
                         }
 
                         _html += '<li>' +
                             '<span data-id="'+list[i].packing_spec+'" id="packing_spec" style="width:12%;">'+_store_name+'</span>' +
-                            '<span style="width:10%;" class="ovh">'+list[i].cat_top_name+'</span>' +
-                            '<span  style="width:9%;">'+list[i].brand_name+'</span>' +
-                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+list[i].goods_content+' '+list[i].simple_goods_name+'</a></span>' +
+                            '<span style="width:10%;" class="ovh">'+jqGetLangData(locale,list[i],'cat_top_name')+'</span>' +
+                            '<span  style="width:9%;">'+jqGetLangData(locale,list[i],'brand_name')+'</span>' +
+                            '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+jqGetLangData(locale,list[i],'goods_content')+' '+jqGetLangData(locale,list[i],'simple_goods_name')+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
-                            '<span style="width:8%;">'+list[i].delivery_time+'</span>' +
+                            '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_time')+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
-                            '<span style="width:8%;">'+list[i].delivery_method+'</span>' +
+                            '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_method')+'</span>' +
 
                             '<span style="width:15%;">'+list[i].salesman+'/'+list[i].contact_info+imgUrlLeft+'http://wpa.qq.com/msgrd?v=3&uin='+list[i].QQ+imgUrlRight+';" style="margin-left:5px;" class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" /></span>' +
                             '<span style="width:10%;float:right;">'+_add_cart+'</span>' +
@@ -518,8 +519,8 @@
                             , count: total //数据总数，从服务端得到
                             , limit: pageSize //每页显示的条数
                             , curr: currpage //当前页
-                            , prev: "上一页"
-                            , next: "下一页"
+                            , prev: "{{trans('home.prev')}}"
+                            , next: "{{trans('home.next')}}"
                             , theme: "#88be51" //样式
                             , jump: function (obj, first) {
                                 if (!first) {

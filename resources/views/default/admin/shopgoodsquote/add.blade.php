@@ -132,8 +132,8 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
-                                        <option value="自提">自提</option>
-                                        <option value="配送">配送</option>
+                                        <option value="自提">自提(Self delivery)</option>
+                                        <option value="配送">配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -143,6 +143,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_time" class="text" value="现货" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time_en" class="text" value="spot goods" maxlength="40" autocomplete="off" id="delivery_time_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -266,7 +273,10 @@
                         required:true,
                     },
                     delivery_time:{
-                       required:true,
+                        required:true,
+                    },
+                    delivery_time_en:{
+                        required:true,
                     },
                     delivery_method:{
                         required:true,
@@ -301,7 +311,10 @@
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_time:{
-                       required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    delivery_time_en:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_method:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'

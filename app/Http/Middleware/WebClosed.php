@@ -87,6 +87,11 @@ class WebClosed extends Controller
         if($request->session()->exists("lang")){
 
             App::setLocale(session("lang"));
+        if(App::getLocale() == 'en'){
+            \Carbon\Carbon::setLocale('en');
+        }else{
+            \Carbon\Carbon::setLocale('zh');
+        }
         }
 
         return $next($request);

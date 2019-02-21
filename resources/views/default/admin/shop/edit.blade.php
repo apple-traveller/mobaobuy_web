@@ -18,9 +18,16 @@
 
 
                             <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺名称：</div>
+                                <div class="label"><span class="require-field">*</span>&nbsp;企业简称：</div>
                                 <div class="label_value">
                                     <input type="text" name="shop_name" class="text" value="{{$shop['shop_name']}}" maxlength="40" autocomplete="off" id="shop_name">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;企业英文简称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="shop_name_en" class="text" value="{{$shop['shop_name_en']}}" maxlength="40" autocomplete="off" id="shop_name_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -29,6 +36,14 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;企业全称：</div>
                                 <div class="label_value">
                                     <input type="text" name="company_name" class="text" value="{{$shop['company_name']}}" maxlength="40" autocomplete="off" id="company_name">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;企业英文全称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="company_name_en" class="text" value="{{$shop['company_name_en']}}" maxlength="40" autocomplete="off" id="company_name_en">
                                     <div class="form_prompt"></div>
                                     <div class="notic"></div>
                                 </div>

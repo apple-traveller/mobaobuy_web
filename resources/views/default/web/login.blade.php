@@ -15,7 +15,6 @@
             text-align: center;
         }
     </style>
-   
 </head>
 <body>
     <div class="clearfix">
@@ -25,7 +24,7 @@
                     <img src="{{getFileUrl(getConfig('shop_logo', asset('images/logo.png')))}}">
                 </a>
             </div>
-            <div class="service-tel">全国免费服务热线 : {{getConfig('service_phone')}}</div>
+            <div class="service-tel">{{trans('home.hotline')}} : {{getConfig('service_phone')}}</div>
         </div>
     </div>
 
@@ -35,19 +34,19 @@
                 <li>
                     <div class="login-box">
                         <div style="padding: 30px;">
-                            <div class="login-title">会员登录  <a class="messLogin" style="float:right;">短信登陆</a></div>
+                            <div class="login-title">{{trans('home.member_login')}}  <a class="messLogin" style="float:right;">{{trans('home.sms_login')}}</a></div>
 
-                            <div class="login-item"><input type="text" id="user_name" name="user_name" class="login_input" placeholder="输入您的账户名"/></div>
-                            <div class="login-item"><input type="password" id="password" name="password" class="login_input" placeholder="输入您的密码"/></div>
+                            <div class="login-item"><input type="text" id="user_name" name="user_name" class="login_input" placeholder="{{trans('home.login_account')}}"/></div>
+                            <div class="login-item"><input type="password" id="password" name="password" class="login_input" placeholder="{{trans('home.login_password')}}"/></div>
 
-                            <div class="login-item"><button class="login_btn fs16" onclick="userLogin()">登录</button></div>
-                            <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
+                            <div class="login-item"><button class="login_btn fs16" onclick="userLogin()">{{trans('home.login')}}</button></div>
+                            <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">{{trans('home.forget_password')}}？</a><a class="fr" href="{{route('register')}}">{{trans('home.register')}}</a></div>
                             <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
                             <div>
-                                <h3 class="login-sd"><i>第三方账号登录</i></h3>
+                                <h3 class="login-sd"><i>{{trans('home.third_login')}}</i></h3>
                                 <p class="login-sdn">
                                     {{--<a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>--}}
-                                    <a href="/login/wxLogin" target="_blank" class="ml5p" title="微信登录"><img src="/img/wx.jpg"/></a>
+                                    <a href="/login/wxLogin" target="_blank" class="ml5p" title="{{trans('home.wx_login')}}"><img src="/img/wx.jpg"/></a>
                                 </p>
                             </div>
                         </div>
@@ -56,17 +55,19 @@
                 <li style="display: none;">
                     <div class="login-box">
                         <div style="padding: 30px;">
-                            <div class="login-title">短信登陆 <a class="login" style="float:right;">会员登陆</a></div>
-                            <div class="login-item"><input type="text" id="account" name="user_name" class="login_input" placeholder="输入您的手机号"/></div>
-                            <div class="login-item"><input type="password" id="apassword" name="password" class="login_input" placeholder="输入您的短信验证码" style="width:64%;margin-right: 2%" /><input type="button" value="获取验证码" style="height:42px;width:102px;" id="messCode_but"></div>
-                            <div class="login-item"><button class="login_btn fs16" onclick="messLogin()">登录</button></div>
-                            <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">忘记密码？</a><a class="fr" href="{{route('register')}}">注册新账号</a></div>
+                            <div class="login-title">{{trans('home.sms_login')}} <a class="login" style="float:right;">{{trans('home.member_login')}}</a></div>
+                            <div class="login-item"><input type="text" id="account" name="user_name" class="login_input" placeholder="{{trans('home.login_mobile')}}"/></div>
+                            <div class="login-item"><input type="password" id="apassword" name="password" class="login_input" placeholder="{{trans('home.login_code')}}" style="width:62%;margin-right: 2%" />
+                                <input type="button" value="{{trans('home.get_code')}}" style="height:42px;width:102px;" id="messCode_but">
+                            </div>
+                            <div class="login-item"><button class="login_btn fs16" onclick="messLogin()">{{trans('home.login')}}</button></div>
+                            <div style="margin: 7px auto;overflow: hidden;"><a class="fl" href="{{url('findPwd')}}">{{trans('home.forget_password')}}？</a><a class="fr" href="{{route('register')}}">{{trans('home.register')}}</a></div>
                             <div class="login-error"><i class="iconfont icon-minus-circle-fill"></i><span class="error-content"></span></div>
                             <div>
-                                <h3 class="login-sd"><i>第三方账号登录123</i></h3>
+                                <h3 class="login-sd"><i>{{trans('home.third_login')}}</i></h3>
                                 <p class="login-sdn">
                                     {{--<a rel="nofollow" style="padding-right:15px;" href="/login/qqLogin" class="ml5p" title="QQ登录"><img src="/img/qq.jpg" alt="QQ登录" /></a>--}}
-                                    <a href="/login/wxLogin" target="_blank" class="ml5p" title="微信登录"><img src="/img/wx.jpg"/></a>
+                                    <a href="/login/wxLogin" target="_blank" class="ml5p" title="{{trans('home.wx_login')}}"><img src="/img/wx.jpg"/></a>
                                 </p>
                             </div>
                         </div>
@@ -181,7 +182,7 @@
         }
         function Settime(type) {
             if (countdown == 0) {
-                $("#messCode_but").val("获取手机验证码");
+                $("#messCode_but").val("{{trans('home.get_code')}}");
                 $("#messCode_but").attr("class", "messCode_but");
                 countdown = 60;
                 msType = true;
@@ -193,7 +194,7 @@
                 msType = false;
                 msType02 = false;
 
-                $("#messCode_but").val(countdown + "s重新获取");
+                $("#messCode_but").val(countdown + "s {{trans('home.regain')}}");
                 countdown--;
                 setTimeout(function() {
                     Settime(type);

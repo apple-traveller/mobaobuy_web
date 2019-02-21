@@ -74,6 +74,7 @@ class RecruitController extends Controller
             'id'=>$request->input('id',""),
             'recruit_branch'=>$request->input('recruit_branch'),
             'job_type'=>$request->input('job_type'),
+            'is_en'=>$request->input('is_en',0),
             'currpage'=>$request->input('currpage',1),
         ];
 

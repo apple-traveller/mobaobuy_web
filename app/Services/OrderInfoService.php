@@ -1172,8 +1172,14 @@ class OrderInfoService
         if(!empty($params['goods_name'])){
             $condition['goods_name'] = '%'.$params['goods_name'].'%';
         }
-
-        return OrderGoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+        $res = OrderGoodsRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['add_time'=>'desc']],$condition);
+        if(!empty($res)){
+            foreach ($res['list'] as $k=>$v){
+                $goods_info = GoodsService::getGoodInfo($v['goods_id']);
+                $res['list'][$k]['goods_name_en'] = $goods_info['goods_full_name_en'];
+            }
+        }
+        return $res;
     }
 
     //获取收货地址信息

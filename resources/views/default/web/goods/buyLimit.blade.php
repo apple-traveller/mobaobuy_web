@@ -46,30 +46,24 @@
 				$(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
 			});
 		})
-
-
 	</script>
 @endsection
 @section('content')
 	<div class="limit_bg">
 		<div class="ms_title"></div>
-		{{--<div class="limit_date">2018年10月1日-2018年10月31日</div>--}}
-		
-		
 		<div class="w1200 ovh">
-		
 			@if(empty($promoteInfo))
-				<li class="nodata" style="font-size:30px;">暂无活动 敬请期待</li>
+				<li class="nodata" style="font-size:30px;">{{trans('home.none_activity')}}</li>
 			@else
 			<ul class="ms_list">
 				@foreach($promoteInfo as $v)
 				<li>
 					<div class="ms_list_center">
 						<div class="ovh">
-							<h2 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{$v['goods_name']}}</h2><span class=" ovh di"><font class="orange">{{$v['click_count']}}</font>次浏览</span>
+							<h2 class="fs18 fl ovhwp" style="height: 36px;width:250px;">{{getLangData($v,'goods_name')}}</h2><span class=" ovh di"><font class="orange"> {{$v['click_count']}} </font>{{trans('home.browse')}}</span>
 						</div>
 						<div class="ovh mt10">
-							<div class="mx_addr fl" style="width: 117px;">{{$v['shop_name']}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}{{$v['unit_name']}}</div>
+							<div class="mx_addr fl" style="width: 117px;">{{getLangData($v,'shop_name')}}</div><div class="mx_addr fl ml15" style="width: 117px;">{{$v['num']}}{{$v['unit_name']}}</div>
 						</div>
 						<div class="ovh mt10 ">
 							<div class="mx_progress" style="width:250px;">
@@ -81,30 +75,30 @@
 									<div class="mx_progress_com" style="width: {{(int)(((float)$v['available_quantity'])*100/(float)$v['num'])}}%"></div>
 								@endif
 							</div>
-							<span class="fl fs16 gray">可售@if($v['available_quantity']>0) {{$v['available_quantity']}} @else 0 @endif{{$v['unit_name']}}</span>
+							<span class="fl fs16 gray">{{trans('home.stock')}}@if($v['available_quantity']>0) {{$v['available_quantity']}} @else 0 @endif{{$v['unit_name']}}</span>
 						</div>
 						<!-- <div class="tac mt40 ovh"><span class="addr_dw">上海  浦东新区</span></div> -->
-						<div class="mx_price"><font class="gray">单价</font> <font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}</div>
+						<div class="mx_price"><font class="gray">{{trans('home.price')}}</font> <font class="orange fs24">￥{{$v['price']}}</font>/{{$v['unit_name']}}</div>
 
 						@if($v['is_over'])
 							<div class="graybg">
-								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已结束</div>
+								<div class="bottom_time"><p>{{trans('home.distance_end')}}：</p><span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">{{trans('home.end')}}</div>
 							</div>
 						@elseif($v['is_soon'])
 							<div class="graybg count-down" data-endtime="{{strtotime($v['begin_time'])*1000}}">
-								<div class="bottom_time"><p>距离开始：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">敬请期待</div>
+								<div class="bottom_time"><p>{{trans('home.distance_begin')}}：</p><span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color:#ccc;">{{trans('home.expect')}}</div>
 							</div>
 						@elseif($v['available_quantity'] == 0)
 							<div class="graybg">
-								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">已售完</div>
+								<div class="bottom_time"><p>{{trans('home.distance_end')}}：</p><span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+								<div class="bottom_btn b1b1b1bg fs16 white cp" style="background-color: #ccc;">{{trans('home.sold_out')}}</div>
 							</div>
 						@else
 							<div class="graybg count-down" data-endtime="{{strtotime($v['end_time'])*1000}}">
-								<div class="bottom_time"><p>距离结束：</p><span class="orange count-down-text">0天0小时0分钟0秒</span></div>
-								<a href="/buyLimitDetails/{{encrypt($v['id'])}}"><div class="bottom_btn redbg fs16 white cp">参与秒杀</div></a>
+								<div class="bottom_time"><p>{{trans('home.distance_end')}}：</p><span class="orange count-down-text">0{{trans('home.day')}}0{{trans('home.hour')}}0{{trans('home.minute')}}0{{trans('home.second')}}</span></div>
+								<a href="/buyLimitDetails/{{encrypt($v['id'])}}"><div class="bottom_btn redbg fs16 white cp">{{trans('home.partaking')}}</div></a>
 							</div>
 						@endif
 						{{--<div class="mx_btn"><a href="/buyLimitDetails/{{encrypt($v['id'])}}">立即抢购</a></div>--}}
@@ -117,11 +111,11 @@
 	</div>
 	<div class="w1200 redbg ovh" style="margin-bottom: 30px;">
 		
-		<div class="Rules_activity">活动规则</div>
+		<div class="Rules_activity">{{trans('home.rules')}}</div>
 		<ul class="Rules_text">
-			<li>1.本活动对所有会员开放</li>
-			<li>2.秒杀订单需要在30分钟内完成支付，逾期未付款，系统将自动取消订单</li>
-			<li>3.如有任何疑问，请联系在线客服或拨打免费服务热线：{{getConfig('service_phone')}}</li>
+			<li>1.{{trans('home.rules_1')}}</li>
+			<li>2.{{trans('home.rules_2')}}</li>
+			<li>3.{{trans('home.rules_3')}}：{{getConfig('service_phone')}}</li>
 		</ul>
 	</div>
 	</div>

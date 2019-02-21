@@ -18,7 +18,15 @@ class InquireService
      * 求购列表
      */
     public static function inquireList($pager,$condition){
-        return InquireRepo::getListBySearch($pager,$condition);
+//        return InquireRepo::getListBySearch($pager,$condition);
+        $res = InquireRepo::getListBySearch($pager,$condition);
+        if(!empty($res['list'])){
+            foreach ($res['list'] as $k=>$v){
+                $goodsInfo = GoodsService::getGoodInfo($v['goods_id']);
+                $res['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
+            }
+        }
+        return $res;
     }
 
 

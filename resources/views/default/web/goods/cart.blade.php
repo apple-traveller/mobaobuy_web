@@ -25,8 +25,7 @@
 		.mr5{margin-right:5px;}
 		.mt25{margin-top:25px;}
 		.fl{float:left;}
-		.shop_good{width: 300px;}.shop_price{width: 130px;}.shop_num{width: 150px;}.shop_add{width: 130px;}.shop_sub{width: 125px;}
-		.shop_price{width: 130px;}.shop_num{width: 150px;}.shop_add{width: 130px;}.shop_sub{width: 125px;}
+		.shop_good{width: 300px;}.shop_price{width: 150px;}.shop_num{width: 170px;}.shop_add{width: 160px;}.shop_sub{width: 155px;}
 		.shop_oper{width: 120px; }
 		.shop_list{width:1138px;margin:0 auto;overflow: hidden;}
 		.shop_list li {line-height: 115px;border-bottom: 1px solid #DEDEDE;overflow: hidden;}
@@ -34,10 +33,10 @@
 		.mr5{margin-right:5px;}
 		.mt10{margin-top:10px;}
 		.shop_good_title{width: 323px;}
-		.shop_price_t{width: 130px;}
+		.shop_price_t{width: 150px;}
 		.orange,a.orange,a.orange:hover{color:#ff6600;}
 		.tac{text-align:center !important;}
-		.shop_num_t{width: 150px;}
+		.shop_num_t{width: 170px;}
 		.shop_nienb{width: 138px;height: 40px;border: 1px solid #DEDEDE;border-radius:3px;margin-top: 37px;}
 		.shop_num_reduce {cursor:pointer;float: left;display: block;width: 40px; height: 40px;text-align: center;line-height: 40px;color: #444;}
 		.num_nim:hover{background-color: #eeeeee;}
@@ -46,7 +45,7 @@
 		.shop_num_plus {float: left;display: block; width: 40px;height: 40px;text-align: center;line-height: 40px;color: #444;
 				cursor: pointer;}
 		.num_nim:hover{background-color: #eeeeee;}
-		.shop_price_d{width: 125px;}
+		.shop_price_d{width: 155px;}
 		.shop_oper_icon{width: 20px;height: 20px;margin:47px auto;display: block;}
 		.shop_oper_bg{background: url(../img/cart_rash.png)no-repeat 0px 0px;}
 		.shop_oper_bg:hover{background: url(../img/cart_rash.png)no-repeat 0px -82px;}
@@ -82,19 +81,12 @@
 			var NumNew=1;
 			$(document).delegate('.shop_num_plus','click',function(){
 				var thisMul = $(this).attr('data-id');//规格
-				MaxNum = $(this).parent().parent().siblings('.shop_price').text();//可售
+				MaxNum = $(this).parent().parent().siblings('.shop_price').attr('goods_number');//可售
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');//点击加号后input的值
 				var id = $(this).attr('id');//数据库cart自增id
 				var thisDom = $(this);
-				// console.log(thisMul);
-				// console.log(MaxNum);
-				// console.log(ipts);
-				// console.log(iptsVal);
-				// console.log(id);
-				// console.log(thisDom);
-				//console.log(ipts.val()); //cart表的goods_number
-				// return;
+
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
                     layer.msg('不能大于可售', {icon: 5});
 					return;
@@ -396,7 +388,7 @@
 					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
 					<!-- <span class="">{{$v['brand_name']}}</span> -->
 					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
-{{--					<span class="shop_price fl tac">@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>--}}
+					<span class="shop_price fl tac" style="display: none;" @if(count($cartInfo['quoteInfo'])) goods_number="{{$cartInfo['quoteInfo'][$k]['goods_number']}}" @else goods_number="0" @endif>@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
 							<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
@@ -406,7 +398,7 @@
 					</div>
 				    
 				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
 				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{encrypt($v['id'])}}" onclick="del(this)"></a></span>
 				</li>
 			</ul>

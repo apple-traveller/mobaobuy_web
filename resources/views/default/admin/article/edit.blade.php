@@ -110,14 +110,14 @@
                             <div class="item">
                                 <div class="label" style="width:5%">中文：</div>
                                 <div class="label_value">
-                                    <script id="container" name="content" type="text/plain"><?php echo html_entity_decode($article['content']);?></script>
+                                    <script id="container" name="content" type="text/plain">{!! $article['content'] !!}</script>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
                             <div class="item">
                                 <div class="label" style="width:5%">英文：</div>
                                 <div class="label_value">
-                                    <script id="content_en" name="content_en" type="text/plain"><?php echo html_entity_decode($article['content_en']);?></script>
+                                    <script id="container_en" name="content_en" type="text/plain">{!! $article['content_en'] !!}</script>
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -136,14 +136,14 @@
     </div>
 
     <script type="text/javascript">
-        var ue = UE.getEditor('container',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
-        });
-        var ue2 = UE.getEditor('content_en',{
-            initialFrameWidth : '100%',//宽度
-            initialFrameHeight: 500//高度
-        });
+            var ue = UE.getEditor('container',{
+                initialFrameWidth : '100%',//宽度
+                initialFrameHeight: 500//高度
+            });
+            var ue2 = UE.getEditor('container_en',{
+                initialFrameWidth : '100%',//宽度
+                initialFrameHeight: 500//高度
+            });
     </script>
     <script type="text/javascript">
         var tag_token = $("#_token").val();

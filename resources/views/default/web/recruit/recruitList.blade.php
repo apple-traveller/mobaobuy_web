@@ -219,7 +219,7 @@
         function resumeSave(id){
             var resume_path = $('input[name=resume_path]').val();
             if(id == '' || resume_path == ''){
-                $.msg.alert('上传简历不能为空');
+                $.msg.alert('{{trans('home.upload_resume_no_empty')}}');
                 return;
             }
             $.ajax({
@@ -229,7 +229,7 @@
                 dataType:'json',
                 success:function(res){
                     if(res.code){
-                        $.msg.alert('上传成功');
+                        $.msg.alert('success');
                         window.location.reload();
                     }else{
                         $.msg.alert(res.msg);
@@ -251,22 +251,12 @@
 									<dd>
 										<p class="dd_top">
 											<a class="name" ka="job-godetail1" href="javascript:(0);" target="_blank" style="font-size: 18px;">{{$recruitInfo['recruit_job']}}</a>
-											<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$recruitInfo['recruit_place']}}]</a>
-											<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$recruitInfo['add_time']}}发布</span>
-										<a href="/recruit/page" style="float:right; font-size:15px;margin-top:5px;color:red; cursor: pointer;">返回职位列表</a>
+											<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[{{trans('home.recruit_place')}}:{{$recruitInfo['recruit_place']}}]</a>
+											<span class="ud_time" style="margin-left: 20px;color: #aaa;">{{$recruitInfo['add_time']}} {{trans('home.release')}}</span>
+											<a href="/recruit/page" style="float:right; font-size:15px;margin-top:5px;color:red; cursor: pointer;">{{trans('home.recruit_return_list')}}</a>
 										</p>
 										<div class="dd_bot">
-											{{--<a href="javascript:(0);" class="city" target="_blank" style="margin-left: 15px;">[工作地点:{{$recruitInfo['recruit_place']}}]</a>--}}
-											<span class="salary">类型:{{$recruitInfo['recruit_type']}}</span>
-											{{--<span class="salary">职位薪资:{{$recruitInfo['recruit_pay']}}</span>--}}
-											{{--<div class="info">--}}
-												{{--<span>经验:{{$recruitInfo['working_experience']}}</span>--}}
-												{{--<em class="line"></em>--}}
-												{{--<span>学历:{{$recruitInfo['education']}}</span>--}}
-												{{--<em class="line"></em>--}}
-												{{--<span>类型:{{$recruitInfo['recruit_type']}}</span>--}}
-												{{--<span>类型:全职</span>--}}
-											{{--</div>--}}
+											<span class="salary">{{trans('home.recruit_type')}}:{{$recruitInfo['recruit_type']}}</span>
 										</div>
 									</dd>
 								</dl>
@@ -277,22 +267,22 @@
 								</p>
 							</div>
 							<p style="text-align: center;margin-top: 20px">
-								<input type="button" class="apply_btn" value="申请职位" onclick="openFrame();">
+								<input type="button" class="apply_btn" value="{{trans('home.recruit_apply')}}" onclick="openFrame();">
 							</p>
 						</section>
 				</div>
 			</div>
 		@else
-			<div class="nodata">暂无招聘信息</div>
+			<div class="nodata">{{trans('home.none_recruit_tips')}}</div>
 		@endif
 		<div class="clearfix whitebg ovh mt40" style="font-size: 0;"></div>
 
 		<div class="block_bg"></div>
 		<div class="power_edit whitebg" id="power_edit_frame" style="">
-			<div class="pay_title f4bg"><span class="fl pl30 gray fs16">上传简历</span><a class="fr frame_close mr15 mt15"><img src="/img/close.png" width="15" height="15"></a></div>
+			<div class="pay_title f4bg"><span class="fl pl30 gray fs16">{{trans('home.upload_resume')}}</span><a class="fr frame_close mr15 mt15"><img src="/img/close.png" width="15" height="15"></a></div>
 			<ul class="power_list ml30 mt25">
 				@component('widgets.upload_file',['upload_type'=>'file','upload_path'=>'user/resume_path','name'=>'resume_path'])@endcomponent
-				<li style="clear:both;margin-top:30px;margin-bottom:20px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="resumeSave({{$recruitInfo['id']}})">提 交</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">取消</div></li>
+				<li style="clear:both;margin-top:30px;margin-bottom:20px;"><div style="margin-top:20px; margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="resumeSave({{$recruitInfo['id']}})">{{trans('home.ok')}}</div><div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;margin-top: 20px;cursor: pointer;">{{trans('home.cancel')}}</div></li>
 			</ul>
 		</div>
 @endsection

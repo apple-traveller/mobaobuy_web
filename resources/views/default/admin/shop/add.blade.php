@@ -42,6 +42,14 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;企业英文全称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="company_name_en" class="text" value="" maxlength="40" autocomplete="off" id="company_name_en">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;负责人姓名：</div>
@@ -270,10 +278,13 @@
                 },
                 ignore : [],
                 rules:{
-                    shop_name :{
+//                    shop_name :{
+//                        required : true,
+//                    },
+                    company_name :{
                         required : true,
                     },
-                    company_name :{
+                    company_name_en :{
                         required : true,
                     },
                     contactName:{
@@ -305,10 +316,13 @@
                     }
                 },
                 messages:{
-                    shop_name:{
+//                    shop_name:{
+//                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+//                    },
+                    company_name :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
-                    company_name :{
+                    company_name_en :{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     contactName :{

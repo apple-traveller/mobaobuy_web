@@ -15,7 +15,16 @@
                     <div class="mian-info">
                         <form action="/admin/recruit/save" method="post" name="form" id="navigator_form" novalidate="novalidate">
                             <div class="switch_info">
-
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;显示位置：</div>
+                                    <div class="label_value">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;padding-left: 8px" name="is_en" id="is_en">
+                                            <option @if($recruit['is_en']=="0") selected @endif value="0">中文站</option>
+                                            <option @if($recruit['is_en']=="1") selected @endif value="1">英文站</option>
+                                        </select>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘职位：</div>
                                     <div class="label_value">
@@ -111,7 +120,7 @@
                                 <div class="item">
                                     <div class="label">部门名称：</div>
                                     <div class="label_value">
-                                        <input type="text" name="recruit_branch" value="" autocomplete="off" id="recruit_branch" size="40"  class="text">
+                                        <input type="text" name="recruit_branch" value="{{$recruit['recruit_branch']}}" autocomplete="off" id="recruit_branch" size="40"  class="text">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>
@@ -120,7 +129,7 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>职位类别：</div>
                                     <div class="label_value">
-                                        <input type="text" name="job_type" value="" autocomplete="off" id="job_type" size="40"  class="text">
+                                        <input type="text" name="job_type" value="{{$recruit['job_type']}}" autocomplete="off" id="job_type" size="40"  class="text">
                                         <div class="notic"></div>
                                         <div class="form_prompt"></div>
                                     </div>

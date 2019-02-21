@@ -15,7 +15,16 @@
                     <div class="mian-info">
                         <form action="/admin/recruit/save" method="post" name="form" id="navigator_form" novalidate="novalidate">
                             <div class="switch_info">
-
+                                <div class="item">
+                                    <div class="label"><span class="require-field">*</span>&nbsp;显示位置：</div>
+                                    <div class="label_value">
+                                        <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="is_en" id="is_en" >
+                                            <option value="0">中文站</option>
+                                            <option value="1">英文站</option>
+                                        </select>
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>招聘职位：</div>
                                     <div class="label_value">
