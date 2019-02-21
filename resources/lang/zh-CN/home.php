@@ -55,11 +55,12 @@ return [
     'second'=>'秒',
 
     'self_quote'=>'自营报价',
-    'direct_sale'=>'品牌直售',
+    'direct_sale'=>'品牌直营',
     'supplier'=>'供应商报价',
     'quote'=>'报价列表',
     'self_quote_prefix'=>'共',//A total of
     'self_quote_suffix'=>'条自营报价',//
+    'direct_sale_suffix'=>'条品牌直营',//
     'quote_suffix'=>'个相关商品',//
     'search_suffix'=>'条数据',//
     'goods_name'=>'商品名称',
@@ -164,6 +165,8 @@ return [
     'set_password'=>'设置密码',//Set password
     'read_agreed'=>'我已阅读并同意',//I have read and agreed to the
     'registration_agreement'=>'《秣宝平台用户注册协议》',//user registration agreement of Mobao Platform
+    'registered'=>'手机号已经注册',//Mobile phone number has been registered
+    'mobile_format_error'=>'手机号码格式不正确',
 
     #首页
     'home_firm_member'=>'企业用户',

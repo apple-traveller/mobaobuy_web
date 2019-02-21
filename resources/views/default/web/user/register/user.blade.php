@@ -89,12 +89,12 @@
     function phoneValidate() {
         $("#phone_error").html('');
         if (isNull.test($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入手机号");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.login_mobile')}}");
             checkAccount = false;
 
             return false;
         } else if (!Utils.isPhone($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.mobile_format_error')}}");
             checkAccount = false;
 
             return false;
@@ -106,7 +106,7 @@
     function checkNameExists() {
         Ajax.call("{{url('user/checkNameExists')}}", "accountName="+$("#phone").val(), function (result){
             if (result.msg) {
-                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
+                $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.registered')}}！");
                 checkAccount = false;
             } else {
                 checkAccount = true;
@@ -118,10 +118,10 @@
     function pwdValidate() {
         $("#pwd_error").html('');
         if (isNull.test($("#password").val())) {
-            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入密码");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.login_password')}}");
             return false;
         } else if (!pwdReg.test($("#password").val())) {
-            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>密码必须包含字母和数字长度8-16位字符");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.password_placeholder')}}");
             return false;
         }
         return true;
@@ -138,11 +138,11 @@
     function verifyValidate() {
         $("#verify_error").html("&nbsp;");
         if (isNull.test($("#verify").val())) {
-            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不能为空");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_required_tips')}}");
             registerCode = false;
             return false;
         } else if (!veriCodeExep.test($("#verify").val())) {
-            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的验证码有误");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             registerCode = false;
             return false;
         }
@@ -158,7 +158,7 @@
             } else {
                 registerCode = false;
                 gv();
-                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
+                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             }
         }, "POST", "JSON",false);
     }
@@ -166,10 +166,10 @@
     function msgCodeValidate() {
         $("#msgCode_error").html("");
         if (isNull.test($("#messCode").val())) {
-            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机验证码不能为空");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_required_tips')}}");
             return false;
         } else if (!verify.test($("#messCode").val())) {
-            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的手机验证码有误");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             return false;
         }
         return true;
@@ -204,7 +204,7 @@
     }
     function Settime(type) {
         if (countdown == 0) {
-            $("#messCode_but").val("获取手机验证码");
+            $("#messCode_but").val("{{trans('home.get_code')}}");
             $("#messCode_but").attr("class", "messCode_but");
             countdown = 60;
             msType = true;
@@ -213,7 +213,7 @@
             msType = false;
             msType02 = false;
 
-            $("#messCode_but").val(countdown + "s重新获取");
+            $("#messCode_but").val(countdown + "s {{trans('home.regain')}}");
             countdown--;
             setTimeout(function() {
                 Settime(type);

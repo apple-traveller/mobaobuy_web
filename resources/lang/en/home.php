@@ -60,6 +60,7 @@ return [
     'quote'=>'Quote',
     'self_quote_prefix'=>'A total of',//A total of
     'self_quote_suffix'=>'Self quotations',//
+    'direct_sale_suffix'=>'brands directly operated',//
     'quote_suffix'=>'related products',//
     'search_suffix'=>'data were searched',//
     'goods_name'=>'Goods name',
@@ -162,6 +163,8 @@ return [
     'set_password'=>'Set password',//Set password
     'read_agreed'=>'I have read and agreed to the',//
     'registration_agreement'=>'user registration agreement of Mobao Platform',//
+    'registered'=>'Mobile phone number has been registered',//
+    'mobile_format_error'=>'Incorrect format of mobile phone number',
 
     #首页
     'home_firm_member'=>'Enterprise user',

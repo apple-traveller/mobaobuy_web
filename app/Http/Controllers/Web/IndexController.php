@@ -86,7 +86,9 @@ class IndexController extends Controller
         array_multisort(array_column($merge_trans_list,'add_time'),SORT_DESC,$merge_trans_list);
 
         //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1|2','b.is_delete'=>0]);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1','b.is_delete'=>0]);
+        //品牌直营
+        $goodsList_brand = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'2','b.is_delete'=>0]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
@@ -96,7 +98,7 @@ class IndexController extends Controller
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1,'is_delete'=>0])['list'];
 
         $friend_link = FriendLinkService::getAllLink();
-        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList, 'promote_list'=>$promote_list['list'],
+        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList,'goodsList_brand'=>$goodsList_brand, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$merge_trans_list, 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'top_ad'=>$top_ad,'friend_link'=>$friend_link]);
     }
 
