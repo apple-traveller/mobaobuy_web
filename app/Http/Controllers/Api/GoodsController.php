@@ -218,7 +218,9 @@ class GoodsController extends ApiController
         //dd($shop_id);
         $condition = [
             'b.goods_id'=>$goods_id,
-            'b.shop_id'=>$shop_id
+            'b.shop_id'=>$shop_id,
+            'b.type'=>'1|2',
+            'b.is_delete'=>0
         ];
         $goods_quote_list = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>4,'page'=>1,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->success(['good_info'=>$good_info,'goods_quote_list'=>$goods_quote_list['list']],'success');
