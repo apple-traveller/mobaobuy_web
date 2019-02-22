@@ -59,7 +59,7 @@ function changeDeputy(obj){
 }
 
 function jqGetLangData(locale,arr,field) {
-    if (locale == 'zh-cn') {
+    if (locale == 'zh-CN') {
         return arr[field];
     }
     return (arr[field + '_' + locale] != 'undefined' && arr[field + '_' + locale] != '') ? arr[field + '_' + locale] : arr[field];

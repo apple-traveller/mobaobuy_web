@@ -207,7 +207,7 @@
 					</tr>
 
 					@foreach($recruitInfo['list'] as $v)
-						@if((App::getLocale() == 'zh-cn' && $v['is_en'] == 0) || (App::getLocale() == 'en' && $v['is_en'] == 1) )
+						@if((App::getLocale() == 'zh-CN' && $v['is_en'] == 0) || (App::getLocale() == 'en' && $v['is_en'] == 1) )
 							<tr style="height:50px;margin-top:20px;width:1200px;line-height:30px;">
 								<td><a href="/recruit/list/{{$v['id']}}" style="font-weight: bold;">{{$v['recruit_job']}}</a></td>
 								<td>{{$v['recruit_place']}}</td>

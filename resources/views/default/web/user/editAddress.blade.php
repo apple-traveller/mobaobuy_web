@@ -16,7 +16,7 @@
 		.news_addr{width: 65px;margin: 30px auto;}
 		.addr_list>li{height: 40px;line-height: 40px;}
 		.addr_list>li .pay_text{width: 343px;}
-		.addr_list>li .add_left{width: 75px;text-align: right;color: #666;}
+		.addr_list>li .add_left{width: 112px;text-align: right;color: #666;}
 		.pay_text {
 			width: 330px;
 			height: 40px;
@@ -83,23 +83,23 @@
 	<div class="pay_method whitebg " id="addr_frame">
 		<form  method="post" id="address_form">
 			<ul class="addr_list ml30 mt25">
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">收货人姓名:</span><input type="text" class="pay_text" value="@if(!empty($data)){{ $data['consignee'] }}@endif" name="consignee"/></div></li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">手机号码:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['mobile_phone'] }}@endif" name="mobile_phone"/></div></li>
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">{{trans('home.consignee_name')}}:</span><input type="text" class="pay_text" value="@if(!empty($data)){{ $data['consignee'] }}@endif" name="consignee"/></div></li>
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">{{trans('home.mobile')}}:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['mobile_phone'] }}@endif" name="mobile_phone"/></div></li>
 				<li>
 					<div class=" mt10 ml30">
-						<span class="add_left fl">收货地址:</span>
+						<span class="add_left fl">{{trans('home.address')}}:</span>
 						<input type="hidden" name="str_address" id="area2" value="@if(!empty($data)) {{ $data['str_address'] }} @endif">
 						<input type="hidden" name="id" value="@if(!empty($data)) {{ $data['id'] }} @endif "/>
 						<div class="ui-area fl" data-value-name="area1" data-value-id="area2" data-init-name="@if(!empty($data)) {{ $data['address_names'] }} @endif" style="width: 343px;margin-left: 20px" id="test">
 						</div>
 					</div>
 				</li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">详细地址:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['address'] }}@endif" name="address"/></div></li>
-				<li><div class="ovh mt10 ml30"><span class="add_left fl">邮政编码:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['zipcode'] }}@endif" name="zipcode"/></div></li>
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">{{trans('home.detailed_address')}}:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['address'] }}@endif" name="address"/></div></li>
+				<li><div class="ovh mt10 ml30"><span class="add_left fl">{{trans('home.postal_code')}}:</span><input type="text" class="pay_text"  value="@if(!empty($data)){{ $data['zipcode'] }}@endif" name="zipcode"/></div></li>
 
 				<li>
 					<div class="ovh mt10 ml30">
-						<span class="add_left fl">是否默认:</span>
+						<span class="add_left fl">{{trans('home.detailed_address')}}:</span>
 						<div>
 							<input name="default_address" class="" style="margin-left: 20px; margin-top: 10px;" type="checkbox" value="Y" @if(!empty($is_default) && $is_default == 1) checked disabled @endif/>
 							{{--<input name="default_address" class="" style="margin-left: 20px;" type="radio" value="N" @if(empty($is_default)) checked @endif/>否--}}
@@ -110,7 +110,7 @@
 
 		</form>
 		<div class="ovh mb30 mt20 whitebg" style="margin-left: 154px;">
-			<button type="submit" class="add_btn code_greenbg add_address">保 存</button><button type="button" class="add_btn cccbg ml35 cancel">取 消</button>
+			<button type="submit" class="add_btn code_greenbg add_address">{{trans('home.save')}}</button><button type="button" class="add_btn cccbg ml35 cancel">{{trans('home.cancel')}}</button>
 		</div>
 	</div>
 
@@ -130,16 +130,16 @@
 //                    $.msg.error('请输入邮政编码');return;
 //                }
                 if(!_consignee){
-                    $.msg.error('请输入收货人姓名');return;
+                    $.msg.error('{{trans('home.enter_name_tips')}}');return;
                 }
                 if(!_mobile){
-                    $.msg.error('请输入手机号码');return;
+                    $.msg.error('{{trans('home.login_mobile')}}');return;
                 }
                 if(!_str_address){
-                    $.msg.error('请选择地址');return;
+                    $.msg.error('{{trans('home.choose_address_tips')}}');return;
                 }
                 if(!_address){
-                    $.msg.error('请输入详细地址');return;
+                    $.msg.error('{{trans('home.enter_detail_address_tips')}}');return;
                 }
 //                if(!Utils.isPhone(_mobile)){
 //                    $.msg.error('请输入正确的手机号');return;

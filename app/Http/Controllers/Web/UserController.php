@@ -690,7 +690,8 @@ class UserController extends Controller
     public function userCollectGoodsList(Request $request){
         $firm_id = session('_web_user_id');
         if($request->isMethod('get')){
-            return $this->display('web.user.userCellectGoodsList',compact('collectGoods'));
+
+            return $this->display('web.user.userCellectGoodsList');
         }else{
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
             $page_size = $request->input('length', 10);

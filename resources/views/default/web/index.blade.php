@@ -159,9 +159,9 @@
 
                     <div>
                         <ul class="order-stute">
-                            <a rel="nofollow" href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>{{trans('home.home_wait_affirm')}}</span></a>
-                            <a rel="nofollow" href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>{{trans('home.home_wait_pay')}}</span></a>
-                            <a rel="nofollow" href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>{{trans('home.home_wait_confirm')}}</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitAffirm"><li class="tac"><span class="db red">{{$order_status['waitAffirm']}}</span><span>{{trans('home.wait_affirm')}}</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitPay"><li><span class="db red">{{$order_status['waitPay']}}</span><span>{{trans('home.wait_pay')}}</span></a>
+                            <a rel="nofollow" href="/order/list?tab_code=waitConfirm"><li><span class="db red">{{$order_status['waitConfirm']}}</span><span>{{trans('home.wait_confirm')}}</span></a>
                         </ul>
                     </div>
                     <input type="hidden" name="" id="demand-phone" value="{{session('_web_user')['user_name']}}">

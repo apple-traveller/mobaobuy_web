@@ -544,6 +544,12 @@ class UserService
 
         //商品推荐
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>3,'page'=>1],['is_self_run'=>1,'is_delete'=>0,'type'=>'1|2']);
+        if(!empty($shopGoodsInfo['list'])){
+            foreach ($shopGoodsInfo['list'] as $k=>$v){
+                $goodsInfo = GoodsService::getGoodInfo($v['goods_id']);
+                $shopGoodsInfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
+            }
+        }
 
         //企业和代理用户
         if(empty($userId)){

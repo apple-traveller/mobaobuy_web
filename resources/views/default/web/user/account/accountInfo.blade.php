@@ -86,25 +86,25 @@
         <div class="w1200">
                 <ul class="account_infor_list">
                     <input type="hidden" name="id" value="{{$userInfo['id']}}">
-                    <li><span class="infor_title">昵称：</span><span class="ml10"><input name="nick_name" type="text" @if(session('_web_user')['is_firm']) readonly="readonly" @endif class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
+                    <li><span class="infor_title">{{trans('home.nickname')}}：</span><span class="ml10"><input name="nick_name" type="text" @if(session('_web_user')['is_firm']) readonly="readonly" @endif class="infor_input" value="{{$userInfo['nick_name']}}"></span></li>
                   <!--   @if($userInfo['real_name'] == '') @else<li style="margin-top:20px;"><span class="infor_title">@if($userInfo['is_firm']==1)公司名称：@else真实姓名：@endif</span><span class="ml10"><input name="real_name" type="text" @if($userInfo['is_firm']==1) disabled="disabled" @endif class="infor_input nick_name" value="{{$userInfo['real_name']}}"></span></li>@endif -->
-                    <li class="mt25"><span class="infor_title">电子邮箱：</span><span class="ml10"><input name="email" type="text" value="{{$userInfo['email']}}" class="infor_input"></span></li>
+                    <li class="mt25"><span class="infor_title">{{trans('home.email')}}：</span><span class="ml10"><input name="email" type="text" value="{{$userInfo['email']}}" class="infor_input"></span></li>
                     @if($userInfo['is_firm']==1)
                         <li class="mt25">
-                            <span class="infor_title">订单是否需审批：</span>
+                            <span class="infor_title">{{trans('order_is_approval')}}：</span>
                             <span class="ml20 fl" style="margin-top: 10px;">
-                                <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0" id="no"> <label for="no">否</label>
-                                <input class="ml10" type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1" id="yes"> <label for="yes">是</label>
+                                <input type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==0) checked @endif name="need_approval" value="0" id="no"> <label for="no">{{trans('no')}}</label>
+                                <input class="ml10" type="radio" @if(!empty($userInfo)&&$userInfo['need_approval']==1) checked @endif name="need_approval" value="1" id="yes"> <label for="yes">{{trans('yes')}}</label>
                             </span>
                         </li>
                     @else
 
                     @endif
                 </ul>
-            <button class="account_infor_btn code_greenbg fs18 white">保 存</button>
+            <button class="account_infor_btn code_greenbg fs18 white">{{trans('home.save')}}</button>
             {{--未实名认证和 个人认证的时候可以注销账号 注销个人认证的账号要注意清除与企业的关联信息--}}
             @if(!$userInfo['is_firm'])
-                <button class="account_layout_btn redbg fs18 white">注销账号</button>
+                <button class="account_layout_btn redbg fs18 white">{{trans('home.cancellation_account')}}</button>
             @endif
         </div>
         </form>

@@ -63,6 +63,7 @@ return [
     'direct_sale_suffix'=>'条品牌直营',//
     'quote_suffix'=>'个相关商品',//
     'search_suffix'=>'条数据',//
+    'items_suffix'=>'件商品',//items
     'goods_name'=>'商品名称',
     'cate'=>'品种',
     'brand'=>'品牌',
@@ -122,6 +123,8 @@ return [
     'number'=>'编号',
     'salesman'=>'业务员',
     'mfg_date'=>'生产日期',//Mfg. date
+    'freight'=>'运费',//Freight
+    'carriage_free'=>'不含运费',//Carriage free
     'freight_description'=>'运费说明',//Freight description
     'logistics_description'=>'物流说明',//Logistics description
     'undetermined'=>'待定',
@@ -135,6 +138,18 @@ return [
     'price_index'=>'价格指数',
     'remaining_time'=>'剩余时间',
     'order_immediately'=>'立即下单',//Order immediately
+    'delete'=>'删除',
+    'is_delete'=>'是否确认删除',
+    'delete_error'=>'删除失败',
+    'user_info_error'=>'用户信息有误',//Error in User Information
+    'check_all'=>'全选',//check all
+    'subtotal'=>'小计',//Subtotal
+    'total'=>'总计',
+    'default'=>'默认',//default
+    'set_default'=>'默认',//default
+    'x'=>'是否默认',//Is it the default
+    'edit'=>'编辑',
+    'return'=>'返回',
 
     #登录注册找回密码
     'hotline'=>'全国免费服务热线',//National Free Service Hotline
@@ -171,9 +186,6 @@ return [
     #首页
     'home_firm_member'=>'企业用户',
     'home_personal_member'=>'个人用户',
-    'home_wait_affirm'=>'待确认',
-    'home_wait_pay'=>'待付款',
-    'home_wait_confirm'=>'待收货',
     'home_find_goods'=>'立即找货',
     'home_find_goods_placeholder'=>'填写您的真实需求，提交给我们',
     'home_find_goods_contact_placeholder'=>'请输入联系方式',
@@ -250,6 +262,7 @@ return [
     'upload_resume_no_empty'=>'上传简历不能为空',//Upload resume can not be empty
 
     #商品详情
+    'product_info'=>'商品信息',
     'product_list'=>'商品列表',//Product list
     'product_price_trend'=>'商品价格走势',//Commodity price trend
     'shop_recommend'=>'商家推荐',//shop recommend
@@ -258,4 +271,152 @@ return [
     'error_min_num_tips'=>'已经是最低的购买数量了',
     'error_max_num_tips'=>'不能大于可售数量',
     'error_max_limit_num_tips'=>'不能大于最大限购量',//Not greater than the maximum purchase quantity
+    'add_product'=>'添加商品',
+
+    #购物车
+    'add_error'=>'增加失败请重试',//Increase Failure Please Retry
+    'reduce_error'=>'减少失败请重试',//Reduce failure, try again
+    'is_empty_cart'=>'是否清空购物车',//Whether to empty the shopping cart
+    'empty_cart'=>'清空购物车',//empty cart
+    'empty_cart_error'=>'清空购物车失败',//Failure to empty the shopping cart
+    'choose_goods'=>'请选择商品',//Please choose the goods.
+    'improving_order_info'=>'订单信息完善',//Improving Order Information
+    'sub_order_success'=>'成功提交订单',//Successful submission of orders
+    'continue_shopping'=>'继续购买',//continue shopping
+    'selected_prefix'=>'已选择',//100 pieces have been selected
+    'selected_suffix'=>'件',//100 pieces have been selected
+    'settlement'=>'去结算',//Settlement
+    'cart_is_empty'=>'购物车没有任何商品',//The shopping cart is empty
+    'go_shopping'=>'去购物',//Go shopping
+
+    #开票
+    'invoice_information'=>'开票信息',//Invoice information
+    'invoice_title'=>'发票抬头',
+    'invoice_tax_id'=>'税        号',
+    'invoice_bank_of_deposit'=>'开  户  行',
+    'invoice_bank_account'=>'银行账号',
+    'invoice_company_telephone'=>'开票电话',
+    'invoice_company_address'=>'开票地址',
+
+    #发货地址
+    'shipping_address'=>'收货地址',//Shipping address
+    'address'=>'收货地址',//Address
+    'add_address'=>'添加新地址',//Add a new address
+    'add_address2'=>'新增地址',//Add a new address
+    'address_count_error_tips'=>'最多输入十个地址信息',//Enter up to ten address information
+    'consignee_name'=>'收货人姓名',//Consignee Name
+    'detailed_address'=>'详细地址',//Detailed address
+    'postal_code'=>'邮政编码',//Postal Code
+    'enter_name_tips'=>'请输入收货人姓名',//Please enter the name of the consignee
+    'choose_address_tips'=>'请选择地址',//Please choose the address.
+    'enter_detail_address_tips'=>'请输入详细地址',//Please enter a detailed address.
+
+
+    #确认订单页
+    'company_no_address_order_tips'=>'企业暂未维护地址,无法下单',//The company has not yet maintained its address and cannot place an order.
+    'company_no_address_tips'=>'暂未维护地址',
+    'click_add'=>'点击添加',//
+    'user_address'=>'用户地址',
+    'sub_order'=>'提交订单',
+    'to_shop_msg'=>'给卖家留言',//Leave a message to the seller
+    'to_shop_msg_info'=>'选填：对本次交易的说明',//Selection: Description of the transaction
+
+    #会员中心-左边栏
+    'member_center'=>'会员中心',//Member Center
+    'business_manage'=>'企业管理',//Business management
+    'staff_manage'=>'职员管理',//Staff management
+    'inventory_manage'=>'库存管理',//Inventory management
+    'warehousing_manage'=>'入库管理',//Warehousing management
+    'outgoing_manage'=>'出库管理',//Outgoing management
+    'stock_inquiry'=>'库存查询',//Stock inquiry
+    'order_manage'=>'订单管理',//Order management
+    'cart'=>'购物车',//Cart
+    'my_order'=>'我的订单',//My order
+    'my_invoice'=>'我的发票',//My invoice
+    'invoice_apply'=>'开票申请',//Invoice Apply
+    'account_management'=>'账号管理',//account management
+    'user_info'=>'用户信息',//User information
+    'certification'=>'实名认证',//certification
+    'change_pwd'=>'修改密码',//Change Password
+    'my_collection'=>'我的收藏',//My collection
+    'sell_goods'=>'我要卖货',//Sell goods
+    'activity_center'=>'活动中心',//Activity Center
+
+    #订单状态
+//    'home_wait_affirm'=>'待确认',
+//    'home_wait_pay'=>'待付款',
+//    'home_wait_confirm'=>'待收货',
+    'status'=>'状态',
+    'wait_affirm'=>'待确认',//
+    'wait_pay'=>'待付款',//
+    'paid'=>'已付款',//Paid
+    'unpaid'=>'未付款',//Unpaid
+    'partial_payment'=>'部分付款',//Partial payment
+    'wait_confirm'=>'待收货',//
+    'wait_audit'=>'待审核',//
+    'audit_failed'=>'审核不通过',//Audit failed
+
+    #会员中心首页
+    'enterprise'=>'企业会员',//enterprise
+    'staff'=>'企业职员',//Staff
+    'member_welcome'=>'欢迎来到会员中心',//Welcome to the Membership Center
+    'view_all_orders'=>'查看全部订单',//View all orders
+    'check_all_quotations'=>'查看全部报价',//Check all quotations
+    'order_number'=>'订单号',//Order number
+    'shop_name'=>'店铺名称',//Shop name
+    'order_amount'=>'订单金额',//Order amount
+    'no_order'=>'暂无订单',//No order
+    'goods_recommendation'=>'商品推荐',//goods recommendation
+    'view_details'=>'查看详情',//View details
+
+    #会员中心-用户信息
+    'nickname'=>'昵称',
+    'email'=>'电子邮箱',
+    'order_is_approval'=>'订单是否需要批准',
+    'no'=>'否',
+    'yes'=>'是',
+    'save'=>'保存',
+    'cancellation_account'=>'注销账号',
+
+    #我的收藏
+    'cancel_collection'=>'取消收藏',//Cancel collection
+    'is_cancel_collection'=>'是否确认取消收藏',//Confirmation of Cancellation of Collection
+    'error_cancel_collection'=>'取消收藏失败',//Failure to Cancel Collection
+    'collection_time'=>'时间',
+
+    #我要卖货
+    'sell_goods_success'=>'提交成功,请等待客服与您联系',//Successful submission, please wait for customer service to contact you
+    'sell_goods_tips_a'=>'用户可以把自己的商品信息提供给客服人员，由客服人员发布信息来帮助用户完成卖货。',//Users can provide their own commodity information to customer service personnel, and the customer service personnel can release information to help users complete the sale.
+    'sell_goods_tips_b'=>'提供信息的方式有三种,选择一种即可',//There are three ways to provide information. Choose one.
+    'contact_customer'=>'直接拨打电话联系客服',//Direct Call to Contact Customer Service
+    'fill_in_goods_info'=>'填写货物详细信息',//Fill in the cargo details
+    'upload_goods_tips'=>'上传货物内容文档(仅支持格式为zip,doc,docx,xlsx,pdf大小在2M以内的文件)',//Upload cargo content documents (only files with zip, doc, docx, xlsx, PDF size less than 2M are supported)
+    'sub'=>'提 交',//
+
+    #jq dataTable 的分页
+    'sProcessing'=>'处理中...',//In dealing with...
+    'sZeroRecords'=>'没有匹配结果',//No matching result
+    'sEmptyTable'=>'表中数据为空',//Data in the table is empty
+    'sLoadingRecords'=>'载入中...',//Loading...
+    'sFirst'=>'首页',//First
+    'sPrevious'=>'上页',//Previous
+    'sNext'=>'下页',//Next
+    'sLast'=>'末页',//Last
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

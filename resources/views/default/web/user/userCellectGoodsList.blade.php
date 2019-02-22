@@ -99,6 +99,19 @@
 		  var tbl;
         $(function () {
             tbl = $('#data-table').dataTable({
+                language: {
+                    "sProcessing": "{{trans('home.sProcessing')}}",
+                    "sZeroRecords": "{{trans('home.sZeroRecords')}}",
+                    "sEmptyTable": "{{trans('home.sEmptyTable')}}",
+                    "sLoadingRecords": "{{trans('home.sLoadingRecords')}}",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "{{trans('home.sFirst')}}",
+                        "sPrevious": "{{trans('home.sPrevious')}}",
+                        "sNext": "{{trans('home.sNext')}}",
+                        "sLast": "{{trans('home.sLast')}}"
+                    },
+                },
                 "ajax": {
                     url: "{{url('collectGoodsList')}}",
                     type: "post",
@@ -131,7 +144,7 @@
                     },
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, row, meta) {
-                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)" style="margin-left:50px;width:47%;">取消收藏</button>';
+                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="del(this)" style="margin-left:50px;width:47%;">{{trans('home.cancel_collection')}}</button>';
                         }
                     }
                
@@ -147,7 +160,7 @@
 
 	    function del(obj) {
             var id = $(obj).attr('id');
-	        $.msg.confirm("是否确认取消收藏?",
+	        $.msg.confirm("{{trans('home.is_cancel_collection')}}?",
                 function(){//点击确认
                     $.ajax({
                         'type':'post',
@@ -157,7 +170,7 @@
                             if(res.code){
                                 window.location.reload();
                             }else{
-                                $.msg.alert('取消收藏失败');
+                                $.msg.alert('{{trans('home.error_cancel_collection')}}');
                             }
                         }
                     })
@@ -177,9 +190,9 @@
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="50%">时间</th>
-                    <th width="20%">商品名称</th>
-                    <th width="">操作</th>
+                    <th width="50%">{{trans('home.collection_time')}}</th>
+                    <th width="20%">{{trans('home.goods_name')}}</th>
+                    <th width="">{{trans('home.operation')}}</th>
                 </tr>
                 </thead>
             </table>

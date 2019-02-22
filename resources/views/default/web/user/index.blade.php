@@ -54,14 +54,36 @@
 						<div class="fl ml30"><img src="img/per_logo.png"/></div>
 						<div class="fl ml15 ovh">
 							<span class="mt5 db">{{session('_web_user')['nick_name']}}</span>
-							<div class="member_Name member_Name_border tac mt10">@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1) 企业会员 @elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0) 企业职员 @elseif(empty($memberInfo['userRealInfo'])) <a href="/account/userRealInfo"><style>.member_Name{width:96px;}</style>前去实名认证</a> @elseif($memberInfo['userRealInfo']['review_status'] == 1)个人会员 @elseif($memberInfo['userRealInfo']['review_status'] == 0) 待审核 @elseif($memberInfo['userRealInfo']['review_status'] == 2) 审核不通过 @endif</div>
-							<span class="mt20 gray db">欢迎来到会员中心！</span>
+							<div class="member_Name member_Name_border tac mt10">
+								@if(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==1)
+									{{trans('home.enterprise')}}
+								@elseif(session('_curr_deputy_user')['is_firm'] && session('_curr_deputy_user')['is_self'] ==0)
+									{{trans('home.staff')}} @elseif(empty($memberInfo['userRealInfo']))
+									<a href="/account/userRealInfo"><style>.member_Name{width:96px;}</style>{{trans('home.go_real_name')}}</a>
+								@elseif($memberInfo['userRealInfo']['review_status'] == 1)
+									{{trans('home.header_personal')}}
+								@elseif($memberInfo['userRealInfo']['review_status'] == 0)
+									{{trans('home.wait_audit')}}
+								@elseif($memberInfo['userRealInfo']['review_status'] == 2)
+									{{trans('home.audit_failed')}}
+								@endif</div>
+							<span class="mt20 gray db">{{trans('home.member_welcome')}}！</span>
 						</div>
 					</li>
 					<li>
 						<div class="member_Name_stute">
-							<a href="/order/list?tab_code=waitPay"><div class="fl mem_stute Pend_payment cp"><span class="ml50">待付款</span><span class="green ml10">{{$memberInfo['nPayOrderTotalCount']}}</span></div></a>
-							<a href="/order/list?tab_code=waitPay"><div class="fr mem_stute Pend_goods cp"><span class="ml50">已付款</span><span class="green ml10">{{$memberInfo['yPayOrderTotalCount']}}</span></div></a>
+							<a href="/order/list?tab_code=waitPay">
+								<div class="fl mem_stute Pend_payment cp">
+									<span class="ml50">{{trans('home.wait_pay')}}</span>
+									<span class="green ml10">{{$memberInfo['nPayOrderTotalCount']}}</span>
+								</div>
+							</a>
+							<a href="/order/list?tab_code=waitPay">
+								<div class="fr mem_stute Pend_goods cp">
+									<span class="ml50">{{trans('home.paid')}}</span>
+									<span class="green ml10">{{$memberInfo['yPayOrderTotalCount']}}</span>
+								</div>
+							</a>
 						</div>
 					</li>
 				</ul>
@@ -70,22 +92,38 @@
 			<!--我的订单-->
 			<div class="member_index_right whitebg fl ml15 br1 pr mt15" style="margin-left: -31px;">
 				<!--标题-->
-				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;"><span>我的订单</span><span class="fr colr_blu mr35"><a href="/order/list">查看全部订单>></a></span></h1>
+				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;">
+					<span>{{trans('home.my_order')}}</span>
+					<span class="fr colr_blu mr35">
+						<a href="/order/list">{{trans('home.view_all_orders')}}>></a>
+					</span>
+				</h1>
 			
 			<table class="order_record">
 				<tr>
-					<th>订单号</th><th>店铺名称</th><th>订单金额</th><th>状态</th>
+					<th>{{trans('home.order_number')}}</th>
+					<th>{{trans('home.shop_name')}}</th>
+					<th>{{trans('home.order_amount')}}</th>
+					<th>{{trans('home.status')}}</th>
 				</tr>
 
 				@if(empty($memberInfo['orderInfo']))
-					<tr><td colspan="5">暂无订单</td></tr>
+					<tr><td colspan="5">{{trans('home.no_order')}}</td></tr>
 				@else
 					@foreach($memberInfo['orderInfo'] as $v)
 					<tr>
 						<td>{{$v['order_sn']}}</td>
 						<td>{{$v['shop_name']}}</td>
 						<td>￥{{$v['order_amount']}}</td>
-						<td class="green">@if($v['pay_status'] == 0) 未付款 @elseif($v['pay_status'] ==1) 已付款 @else部分付款 @endif</td>
+						<td class="green">
+							@if($v['pay_status'] == 0)
+								{{trans('home.unpaid')}}
+							@elseif($v['pay_status'] ==1)
+								{{trans('home.paid')}}
+							@else
+								{{trans('home.partial_payment')}}
+							@endif
+						</td>
 					</tr>
 					@endforeach
 				@endif
@@ -97,35 +135,35 @@
 			<div class="member_index_right whitebg fl ml15 br1 pr mt15" style="margin-left: -31px;">
 				<!--标题-->
 				<h1 class="member_right_title_icon mt25 ml30 pl20 fs16" style="width:910px;">
-					<span>商品推荐</span>
+					<span>{{trans('home.goods_recommendation')}}</span>
 					<span class="fr colr_blu mr35">
-						<a href="/goodsList/1">查看全部报价>></a>
+						<a href="/goodsList/1">{{trans('home.check_all_quotations')}}>></a>
 					</span>
 				</h1>
 		
 			<table class="order_record">
 				<tr>
-					<th>商品名称</th>
-					<th>单价</th>
-					<th>数量（公斤）</th>
-					<th>发货地</th>
-					<th>操作</th>
+					<th>{{trans('home.goods_name')}}</th>
+					<th>{{trans('home.price')}}</th>
+					<th>{{trans('home.num')}}</th>
+					<th>{{trans('home.delivery_area')}}</th>
+					<th>{{trans('home.operation')}}</th>
 				</tr>
 				@foreach($memberInfo['shopGoodsInfo'] as $v)
 				<tr>
-					<td>{{$v['goods_name']}}</td>
+					<td>{{getLangData($v,'goods_name')}}</td>
 					<td class="green">￥{{$v['shop_price']}}</td>
 					<td>{{$v['goods_number']}}</td>
 					<td>{{$v['delivery_place']}}</td>
-					<td><a class="or_re_btn" href="/goodsDetail/{{$v['id']}}/1"><span style="color: #fff;">查看详情</span></a></td>
+					<td><a class="or_re_btn" href="/goodsDetail/{{$v['id']}}/1"><span style="color: #fff;">{{trans('home.view_details')}}</span></a></td>
 				</tr>
 				@endforeach
 				
 			</table>
 			</div>
 			
-		</div>    
-	</div>  
+		{{--</div>    --}}
+	{{--</div>  --}}
 
 
 <!-- </div>

@@ -181,8 +181,9 @@ class GoodsService
             $quoteInfo[$k]['account'] =number_format($v['goods_number'] * $v['goods_price'],2,".","");
             //取goods表的规格
             $goodsData = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
-            $goodsInfo[] = $goodsData;
 
+            $goodsInfo[] = $goodsData;
+            $cartInfo[$k]['goods_name_en'] = $goodsData['goods_full_name_en'];
             $cartInfo[$k]['brand_name'] = $goodsData['brand_name'] ? $goodsData['brand_name'] : '';
         }
         return ['cartInfo'=>$cartInfo,'quoteInfo'=>$quoteInfo,'goodsInfo'=>$goodsInfo];

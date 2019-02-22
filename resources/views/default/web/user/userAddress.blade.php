@@ -23,7 +23,7 @@
 		.mr15{margin-right:15px;}
 		.mt40{margin-top:40px;}
 		.pay_title{height: 50px;line-height: 50px;}
-		.news_addr{width: 65px;margin: 30px auto;}
+		.news_addr{width: 100px;margin: 30px auto;}
 		.addr_list li{height: 40px;line-height: 40px;}
 		.addr_list li .pay_text{width: 343px;}
 		.addr_list li .add_left{width: 75px;text-align: right;color: #666;}
@@ -194,8 +194,8 @@
 				<div class="address_name mt10">
 					<span>{{ $v['consignee'] }}</span>
 					<div class="fr red">
-						<a class="edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}">修改</a>
-						<a class="ml10 del_address " data_id = {{ $v['id'] }}>删除</a>
+						<a class="edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}">{{trans('home.edit')}}</a>
+						<a class="ml10 del_address " data_id = {{ $v['id'] }}>{{trans('home.delete')}}</a>
 					</div>
 				</div>
 				<div class="address_info mt5"><span>{{ $v['address_names']}}</span></div>
@@ -203,9 +203,9 @@
 				<div class="address_default">
 					<div class="address_default_edit" align="right">
 						@if($v['is_default'] == 1)
-							<span class=" cp green">默认</span>
+							<span class=" cp green">{{trans('home.default')}}</span>
 						@else
-							<span class=" cp green" >设置默认</span>
+							<span class=" cp green" >{{trans('home.set_default')}}</span>
 						@endif
 					</div>
 				</div>
@@ -214,7 +214,7 @@
 			<li>
 				<a class="tac mt40 db news_addr" style="text-decoration: none;">
 					<div class="tac mt30"><img src="{{asset(themePath('/').'img/add_adr.png')}}"/></div>
-					<p class="fs16 gray">新增地址</p>
+					<p class="fs16 gray">{{trans('home.add_address2')}}</p>
 				</a>
 			</li>
 		</ul>
@@ -230,7 +230,7 @@
                 event.stopPropagation();
                 var io = $(this);
                 var id = $(this).attr('data_id');
-                $.msg.confirm("确认删除么？",
+                $.msg.confirm("{{trans('home.is_delete')}}？",
 					function(index, layero){
 						$.ajax({
 							url:'/deleteAddress',
@@ -257,7 +257,7 @@
                 var address_id = $(this).attr('data_id');
                 var is_default = $(this).attr('data_default_id');
                 layer.open({
-					title:'用户地址',
+					title:'{{trans('home.user_address')}}',
                     type: 2,
                     area: ['600px', '500px'],
                     maxmin: true,
@@ -293,11 +293,11 @@
 
                 var Rlength=$('.Receive_address li').length;
                 if (Rlength>10){
-                    $.msg.alert('最多输入十个地址信息');
+                    $.msg.alert('{{trans('home.address_count_error_tips')}}');
                     return false;
                 } else {
                     layer.open({
-                        title:'用户地址',
+                        title:'{{trans('home.user_address')}}',
                         type: 2,
                         area: ['600px', '500px'],
                         maxmin: true,
