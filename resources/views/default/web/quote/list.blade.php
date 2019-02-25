@@ -198,9 +198,9 @@
 
                             </div>
                             <form class="fl" id="formid">
-                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="Lowest price" style="margin-left: 5px">
+                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="{{trans('home.lowest_price')}}" style="margin-left: 5px">
                                 <span class="line">-</span>
-                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="Highest price" style="margin-left: 5px">
+                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="{{trans('home.highest_price')}}" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="{{trans('home.ok')}}" type="button" style="margin-left: 5px">
                             </form>
 

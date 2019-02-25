@@ -357,7 +357,7 @@ if(!function_exists('getInvoiceSn')){
 if(!function_exists('getLangData')){
     function getLangData($data,$field){
         $key = App::getLocale();
-        if($key == 'zh-cn'){
+        if($key == 'zh-CN'){
             return $data[$field];
         }
         return isset($data[$field.'_'.App::getLocale()]) && !empty($data[$field.'_'.App::getLocale()]) ? $data[$field.'_'.App::getLocale()] : $data[$field];

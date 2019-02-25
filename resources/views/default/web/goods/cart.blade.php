@@ -88,7 +88,7 @@
 				var thisDom = $(this);
 
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
-                    layer.msg('不能大于可售', {icon: 5});
+                    layer.msg('{{trans('home.error_max_num_tips')}}', {icon: 5});
 					return;
 				}else{
 					NumNew=Number(ipts.val())+Number(thisMul);
@@ -104,7 +104,7 @@
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 	                    }else{
-                            layer.msg('增加失败请重试', {icon: 5});
+                            layer.msg('{{trans('home.add_error')}}', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -119,7 +119,7 @@
 				var id = $(this).attr('id');
 				var thisDom = $(this);
 				if (Number(ipts.val())-Number(thisMul)<Number(thisMul)) {
-                    layer.msg('已经是最低的购买数量了', {icon: 5});
+                    layer.msg('{{trans('home.error_min_num_tips')}}', {icon: 5});
 					return;
 				}else{
 					
@@ -135,7 +135,7 @@
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 	                    }else{
-                            layer.msg('减少失败请重试', {icon: 5});
+                            layer.msg('{{trans('home.reduce_error')}}', {icon: 5});
 	                        window.location.reload();
 	                    }
                		}
@@ -176,13 +176,13 @@
 			                    if(res.code){
 			                    	thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 			                    }else{
-			                        layer.msg('输入的数量有误');
+			                        layer.msg('{{trans('home.error_tips_num')}}');
 			                        window.location.reload();
 			                    }
 		               		}
             			})
 		        	}else{
-		            	layer.msg('输入的数量有误');
+		            	layer.msg('{{trans('home.error_tips_num')}}');
 			             window.location.reload();
 		        	}
             });
@@ -210,7 +210,7 @@
     	//删除购物车某商品
     	function del(obj){
             var id = $(obj).attr('id');
-            $.msg.confirm("是否删除？",
+            $.msg.confirm("{{trans('home.is_delete')}}？",
 				function(){
                     $.ajax({
                         'type':'post',
@@ -223,7 +223,7 @@
                                 // alert('删除成功');
                                 window.location.reload();
                             }else{
-                                alert('删除失败');
+                                $.msg.alert('{{trans('home.delete_error')}}');
                                 window.location.reload();
                             }
                         }
@@ -237,7 +237,7 @@
 
     	//清空购物车
     	function clearCart(){
-            $.msg.confirm("是否清空购物车？",
+            $.msg.confirm("{{trans('home.is_empty_cart')}}？",
                 function(){
                     $.ajax({
                         url: "/clearCart",
@@ -251,7 +251,7 @@
 //	               		$.msg.alert('清空购物车成功');
                                 window.location.reload();
                             }else{
-                                alert('清空购物车失败');
+                                $.msg.alert('{{trans('home.empty_cart_error')}}');
                             }
                         }
                     })
@@ -283,7 +283,7 @@
 					}
 				})
 			}else{
-				$.msg.error('请选择商品');return;
+				$.msg.error('{{trans('home.choose_goods')}}');return;
 			}
 		}
 
@@ -301,8 +301,8 @@
 					type: "POST",
 					success: function (data) {
 						if(data.code == 0){
-							 layer.confirm('请先实名再进行操作。', {
-			                    btn: ['去实名','再看看'] //按钮
+							 layer.confirm('{{trans('home.no_real_name_msg')}}。', {
+			                    btn: ['{{trans('home.go_real_name')}}','{{trans('home.see_others')}}'] //按钮
 			                }, function(){
 			                    window.location.href='/account/userRealInfo';
 			                }, function(){
@@ -316,7 +316,7 @@
 				 })
 				 
 			 }else{
-			 	$.msg.error('用户信息有误');
+			 	$.msg.error('{{trans('home.user_info_error')}}');
 			 	window.location.href='/login';
 			 }
 		}
@@ -344,7 +344,7 @@
 					}
 				})
 			}else{
-                $.msg.error('请选择商品');return;
+                $.msg.error('{{trans('home.choose_goods')}}');return;
 			}
           }
     </script>
@@ -358,26 +358,24 @@
 			<div class="fr fs14 order_progress" >
 				<div class="cart_progress cart_progress_01"></div>
 				<div class="progress_text">
-					<div class="my_cart progress_text_curr">我的购物车</div>
-					<div class="order_information">订单信息完善</div>
-					<div class="order_submit">成功提交订单</div>
+					<div class="my_cart progress_text_curr">{{trans('home.header_cart')}}</div>
+					<div class="order_information">{{trans('home.improving_order_info')}}</div>
+					<div class="order_submit">{{trans('home.sub_order_success')}}</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	@if(count($cartInfo['cartInfo']))
 		<div class="w1200 whitebg" style="margin-top: 20px;">
 			<ul class="shop_title">
-				<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">全选</span></label></li>
-				<li class="shop_good">商品</li>
-				<!-- <li class="">品牌</li> -->
-				<li class="shop_price">单价</li>
+				<li class="check_all curr"><label class="check_box"><input class="check_box mr5 mt25 check_all fl" name="" type="checkbox" value="" id="check_all" onclick="check_all()"/><span class="fl ">{{trans('home.check_all')}}</span></label></li>
+				<li class="shop_good">{{trans('home.goods_name')}}</li>
+				<li class="shop_price">{{trans('home.price')}}</li>
 				{{--<li class="shop_price">可售数量</li>--}}
-				<li class="shop_num">购买数量</li>
-				<li class="shop_add">发货地址</li>
-				<li class="shop_sub">小计</li>
-				<li class="shop_oper">操作</li>
+				<li class="shop_num">{{trans('home.num')}}</li>
+				<li class="shop_add">{{trans('home.delivery_area')}}</li>
+				<li class="shop_sub">{{trans('home.subtotal')}}</li>
+				<li class="shop_oper">{{trans('home.operation')}}</li>
 			</ul>
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
 			<ul class="shop_list">
@@ -385,9 +383,8 @@
 					<span class="check_tick fl" style="margin: 33px 0px;">
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
 					</span>
-					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{$v['goods_name']}}</a>
-					<!-- <span class="">{{$v['brand_name']}}</span> -->
-					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}元/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{getLangData($v,'goods_name')}}</a>
+					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
 					<span class="shop_price fl tac" style="display: none;" @if(count($cartInfo['quoteInfo'])) goods_number="{{$cartInfo['quoteInfo'][$k]['goods_number']}}" @else goods_number="0" @endif>@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
 					<div class="shop_num_t fl">
 						<div class="shop_nienb">
@@ -405,19 +402,19 @@
 			@endforeach
 		</div>
 		<div class="sumbit_cart whitebg ovh mb30">
-			<span class="fl ml30 cp" onclick="clearCart();">清空购物车</span>
+			<span class="fl ml30 cp" onclick="clearCart();">{{trans('home.empty_cart')}}</span>
 			<span class="fl ml40 cp">
-				<a href="/goodsList">继续购买</a>
+				<a href="/goodsList">{{trans('home.continue_shopping')}}</a>
 			</span>
-			<span class="fl ml40">共<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>件商品，已选择<font class="orange" id="checkedSel">0</font>件</span>
-			<div class="sumbit_cart_btn" onclick="toBalance()">去结算</div>
+			<span class="fl ml40">{{trans('home.self_quote_prefix')}}<font class="orange" id="accountTotal">@if($cartInfo['cartInfo']) {{count($cartInfo['cartInfo'])}} @else 0 @endif</font>{{trans('home.items_suffix')}}，{{trans('home.selected_prefix')}}<font class="orange" id="checkedSel"> 0 </font>{{trans('home.selected_suffix')}}</span>
+			<div class="sumbit_cart_btn" onclick="toBalance()">{{trans('home.settlement')}}</div>
 		</div>
 	@else
 		<div class="w1200 whitebg" style="margin-top: 20px;">
 			<div style="height: 300px;text-align: center;">
 				<div style="padding-top: 130px">
-					<span style="font-size: 16px">购物车没有任何商品</span>
-					<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;padding: 4px;border-radius: 4px;">去购物</a>
+					<span style="font-size: 16px">{{trans('home.cart_is_empty')}}</span>
+					<a type="button" href="/goodsList" style="height: 20px;background-color: #75b335;color:#fff;padding: 4px;border-radius: 4px;">{{trans('home.go_shopping')}}</a>
 				</div>
 
 			</div>

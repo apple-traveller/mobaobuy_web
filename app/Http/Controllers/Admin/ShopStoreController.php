@@ -60,6 +60,14 @@ class ShopStoreController extends Controller
         $store_name = $request->get('store_name','');
         $id = $request->get('id','');
 
+        if(empty($shop_id)){
+            return $this->error('未选择商家');
+        }
+
+        if(empty($store_name)){
+            return $this->error('未输入店铺名称');
+        }
+
         $data = [
             'shop_id'=>$shop_id,
             'store_name'=>$store_name,

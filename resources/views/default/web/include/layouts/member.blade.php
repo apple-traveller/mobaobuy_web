@@ -14,9 +14,9 @@
                 @if(session('_curr_deputy_user')['is_self'] && session('_curr_deputy_user')['is_firm'])
                 {{--只有企业管理员才能进行企业管理--}}
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-46"></i>企业管理</h1>
+                    <h1 class=""><i class="iconfont icon-46"></i>{{trans('home.business_manage')}}</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == 'createFirmUser') class="curr" @endif><a href="/createFirmUser">职员管理</a></li>
+                        <li @if(request()->path() == 'createFirmUser') class="curr" @endif><a href="/createFirmUser">{{trans('home.staff_manage')}}</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
@@ -25,16 +25,16 @@
                 @if(session('_curr_deputy_user.is_firm') && (session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_in') || session('_curr_deputy_user.can_stock_out') || session('_curr_deputy_user.can_stock_view')))
                 {{--只有企业才能进行库存管理--}}
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-icons_goods"></i>库存管理</h1>
+                    <h1 class=""><i class="iconfont icon-icons_goods"></i>{{trans('home.inventory_manage')}}</h1>
                     <ul class="member_left_list">
                         @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_in'))
-                        <li @if(request()->path() == 'stockIn') class="curr" @endif><a href="/stockIn">入库管理</a></li>
+                        <li @if(request()->path() == 'stockIn') class="curr" @endif><a href="/stockIn">{{trans('home.warehousing_manage')}}</a></li>
                         @endif
                         @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_out'))
-                        <li @if(request()->path() == 'stockOut' || request()->path() == 'canStockOut' ) class="curr" @endif><a href="/stockOut">出库管理</a></li>
+                        <li @if(request()->path() == 'stockOut' || request()->path() == 'canStockOut' ) class="curr" @endif><a href="/stockOut">{{trans('home.outgoing_manage')}}</a></li>
                         @endif
                         @if(session('_curr_deputy_user.is_self') || session('_curr_deputy_user.can_stock_view'))
-                        <li @if(request()->path() == 'stock/list') class="curr" @endif><a href="/stock/list">库存查询</a></li>
+                        <li @if(request()->path() == 'stock/list') class="curr" @endif><a href="/stock/list">{{trans('home.stock_inquiry')}}</a></li>
                         @endif
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
@@ -50,19 +50,19 @@
                      代表公司，如果用户有平台开启了企业交易
                   --}}
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-svgorder"></i>订单管理</h1>
+                    <h1 class=""><i class="iconfont icon-svgorder"></i>{{trans('home.order_manage')}}</h1>
                     <ul class="member_left_list">
                         @if(getRealNameBool(session('_web_user_id')))
-                            <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">购物车</a></li>
+                            <li @if(request()->path() == 'cart') class="curr" @endif><a href="/cart">{{trans('home.cart')}}</a></li>
                         @endif
-                        <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">我的订单</a></li>
+                        <li @if(request()->path() == 'order/list') class="curr" @endif><a href="/order/list">{{trans('home.my_order')}}</a></li>
 
                         {{--<li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>--}}
                             @if(session('_curr_deputy_user.is_self') == 0 && session('_curr_deputy_user.can_invoice') == 0)
 
                             @else
-                                <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">我的发票</a></li>
-                                <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">开票申请</a></li>
+                                <li @if(request()->path() == 'invoice/myInvoice') class="curr" @endif><a href="/invoice/myInvoice">{{trans('home.my_invoice')}}</a></li>
+                                <li @if(request()->path() == 'invoice') class="curr" @endif><a href="/invoice">{{trans('home.invoice_apply')}}</a></li>
                             @endif
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
@@ -71,23 +71,23 @@
 
                 @if(session('_curr_deputy_user.is_self'))
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-userset"></i>账号管理</h1>
+                    <h1 class=""><i class="iconfont icon-userset"></i>{{trans('home.account_management')}}</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == 'account/userInfo') class="curr" @endif><a href="/account/userInfo">用户信息</a></li>
-                        <li @if(request()->path() == 'account/userRealInfo') class="curr" @endif><a href="/account/userRealInfo">实名认证</a></li>
-                        <li @if(request()->path() == 'updatePwd') class="curr" @endif><a href="/updatePwd">修改密码</a></li>
+                        <li @if(request()->path() == 'account/userInfo') class="curr" @endif><a href="/account/userInfo">{{trans('home.user_info')}}</a></li>
+                        <li @if(request()->path() == 'account/userRealInfo') class="curr" @endif><a href="/account/userRealInfo">{{trans('home.certification')}}</a></li>
+                        <li @if(request()->path() == 'updatePwd') class="curr" @endif><a href="/updatePwd">{{trans('home.change_pwd')}}</a></li>
                         {{--<li @if(request()->path() == 'account/editPayPassword') class="curr" @endif><a href="/account/editPayPassword">支付密码</a></li>--}}
-                        <li @if(request()->path() == 'collectGoodsList') class="curr" @endif><a href="/collectGoodsList">我的收藏</a></li>
-                        <li @if(request()->path() == 'addressList') class="curr" @endif><a href="/addressList">收货地址</a></li>
-                        <li @if(request()->path() == 'sale') class="curr" @endif><a href="/sale">我要卖货</a></li>
+                        <li @if(request()->path() == 'collectGoodsList') class="curr" @endif><a href="/collectGoodsList">{{trans('home.my_collection')}}</a></li>
+                        <li @if(request()->path() == 'addressList') class="curr" @endif><a href="/addressList">{{trans('home.shipping_address')}}</a></li>
+                        <li @if(request()->path() == 'sale') class="curr" @endif><a href="/sale">{{trans('home.sell_goods')}}</a></li>
                         <li><div class="bottom"></div><div class="line"></div></li>
                     </ul>
                 </div>
                 @endif
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-huodong"></i>活动中心</h1>
+                    <h1 class=""><i class="iconfont icon-huodong"></i>{{trans('home.activity_center')}}</h1>
                     <ul class="member_left_list">
-                        <li @if(request()->path() == 'buyLimit') class="curr" @endif><a href="/buyLimit">限时抢购</a></li>
+                        <li @if(request()->path() == 'buyLimit') class="curr" @endif><a href="/buyLimit">{{trans('home.buy_limit')}}</a></li>
                         <li></li>
                     </ul>
                 </div>

@@ -342,14 +342,14 @@
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
-				<span class="ml15 fl pro_detail_title" style="letter-spacing: 2px; height: 28px;line-height: 28px;">{{trans('home.purchase_num')}}</span>
+				<span class="ml15 fl pro_detail_title" style="height: 28px;line-height: 28px;width:120px">{{trans('home.purchase_num')}}</span>
                 <div class="pur_volume ml15 fl">
                     <span class="pur shop_num_reduce">-</span>
                     <input type="text" cid="{{$good_info['id']}}" can_num="{{$good_info['goods_number']}}" packing_spec="{{$good_info['packing_spec']}}" min_limit="{{$good_info['min_limit']}}" id="pur_num" class="pur_num" @if($good_info['packing_spec']>$good_info['min_limit']) value="{{$good_info['packing_spec']}}" @else value="{{$good_info['min_limit']}}" @endif/>
                     <span class="pur shop_num_plus">+</span>
                 </div>
-                <span class="fl" style="line-height: 28px;margin-left: 5px">{{$good_info['unit_name']}}</span>
-                <span class="fl" style="line-height: 28px;margin-left: 50px">{{trans('home.min_purchase_num')}}：</span>
+                <span class="fl" style="line-height: 28px;margin-left: 3px">{{$good_info['unit_name']}}</span>
+                <span class="fl" style="line-height: 28px;margin-left: 10px">{{trans('home.min_purchase_num')}}：</span>
                 <span  class="ml5 fl ovhwp" style="width: 150px;line-height: 28px;margin-left: 5px">{{$good_info['min_limit'] ? $good_info['min_limit'] : $good_info['packing_spec']}}{{$good_info['unit_name']}}</span>
 			</div>
 

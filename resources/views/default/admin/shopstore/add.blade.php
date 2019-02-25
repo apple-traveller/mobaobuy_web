@@ -64,11 +64,17 @@
                 },
                 ignore : [],
                 rules:{
+                    shop_name :{
+                        required : true,
+                    },
                     store_name :{
                         required : true,
                     },
                 },
                 messages:{
+                    shop_name:{
+                        required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
                     store_name:{
                         required : '<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },

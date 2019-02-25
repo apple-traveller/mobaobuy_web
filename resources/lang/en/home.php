@@ -63,6 +63,7 @@ return [
     'direct_sale_suffix'=>'brands directly operated',//
     'quote_suffix'=>'related products',//
     'search_suffix'=>'data were searched',//
+    'items_suffix'=>'items',//items
     'goods_name'=>'Goods name',
     'cate'=>'category',
     'brand'=>'brand',
@@ -122,6 +123,8 @@ return [
     'number'=>'Number',
     'salesman'=>'Salesman',
     'mfg_date'=>'Mfg. date',
+    'freight'=>'Freight',
+    'carriage_free'=>'Carriage free',//
     'freight_description'=>'Freight description',
     'logistics_description'=>'Logistics description',
     'undetermined'=>'Undetermined',
@@ -135,6 +138,18 @@ return [
     'price_index'=>'Price index',
     'remaining_time'=>'Remaining time',
     'order_immediately'=>'Order immediately',
+    'delete'=>'Delete',
+    'is_delete'=>'Whether to confirm deletion',
+    'delete_error'=>'Delete failed',
+    'user_info_error'=>'Error in User Information',
+    'check_all'=>'check all',//
+    'subtotal'=>'Subtotal',//
+    'total'=>'Total',
+    'default'=>'Default',//default
+    'set_default'=>'Set Default',//default
+    'is_default'=>'Is it the default',//
+    'edit'=>'Edit',
+    'return'=>'Return',
 
     #登录
     'hotline'=>'National Free Service Hotline',
@@ -147,6 +162,8 @@ return [
     'login_password'=>'Please enter your password.',//
     'login_mobile'=>'Please enter your mobile phone number.',//
     'login_code'=>'SMS Verification Code.',//
+    'code_required_tips'=>'Verification code cannot be empty',//
+    'code_error_tips'=>'Error in the validation code you entered',//
     'register'=>'Register',//Register a new account
     'get_code'=>'Get Code',
     'regain'=>'Regain',
@@ -169,9 +186,6 @@ return [
     #首页
     'home_firm_member'=>'Enterprise user',
     'home_personal_member'=>'Individual user',
-    'home_wait_affirm'=>'To be confirmed',
-    'home_wait_pay'=>'Pending payment',
-    'home_wait_confirm'=>'Goods to be received',
     'home_find_goods'=>'Find Goods',
     'home_find_goods_placeholder'=>'Fill in your real needs and submit them to us',
     'home_find_goods_contact_placeholder'=>'Please enter your contact information.',
@@ -248,9 +262,143 @@ return [
     'upload_resume_no_empty'=>'Upload resume can not be empty',
 
     #商品详情
+    'product_info'=>'Product info',
     'product_list'=>'Product list',
     'product_price_trend'=>'Commodity price trend',
     'shop_recommend'=>'Shop recommend',
     'historical_quotation'=>'Historical',
     'product_details'=>'Details',
+    'error_min_num_tips'=>"It's already the lowest number of purchases.",
+    'error_max_num_tips'=>'Not greater than the saleable quantity',
+    'error_max_limit_num_tips'=>'Not greater than the maximum purchase quantity',//
+    'add_product'=>'Add product',
+
+    #购物车
+    'add_error'=>'Increase Failure Please Retry',//
+    'reduce_error'=>'Reduce failure, try again',//
+    'is_empty_cart'=>'Whether to empty the shopping cart',//
+    'empty_cart'=>'empty cart',//
+    'empty_cart_error'=>'Failure to empty the shopping cart',//
+    'choose_goods'=>'Please choose the goods.',//
+    'improving_order_info'=>'Improving info',//Improving Order Information
+    'sub_order_success'=>'Submit success',//Successful submission of orders
+    'continue_shopping'=>'continue shopping',//
+    'selected_prefix'=>'',//100 pieces have been selected
+    'selected_suffix'=>'pieces have been selected',//
+    'settlement'=>'Settlement',//
+    'cart_is_empty'=>'The shopping cart is empty',//
+    'go_shopping'=>'Go shopping',//
+
+    #开票
+    'invoice_information'=>'Invoice information',//Invoice information
+    'invoice_title'=>'invoice title',
+    'invoice_tax_id'=>'Duty paragraph',
+    'invoice_bank_of_deposit'=>'Opening bank',
+    'invoice_bank_account'=>'Bank account',
+    'invoice_company_telephone'=>'Billing Telephone',
+    'invoice_company_address'=>'Billing address',
+
+    #发货地址
+    'shipping_address'=>'Shipping',//
+    'address'=>'Address',//
+    'add_address'=>'Add a new address',//
+    'add_address2'=>'Add address',//
+    'address_count_error_tips'=>'Enter up to ten address information',//
+    'consignee_name'=>'Consignee Name',//
+    'detailed_address'=>'Detailed address',//
+    'postal_code'=>'Postal Code',//
+    'enter_name_tips'=>'Please enter the name of the consignee',//
+    'choose_address_tips'=>'Please choose the address.',//
+    'enter_detail_address_tips'=>'Please enter a detailed address.',//
+
+    #确认订单页
+    'company_no_address_order_tips'=>'The company has not yet maintained its address and cannot place an order.',//
+    'no_address_tips'=>'Address not yet maintained',
+    'click_add'=>'Click add',//
+    'user_address'=>'User address',
+    'sub_order'=>'place order',
+    'to_shop_msg'=>'Leave a message to the seller',//
+    'to_shop_msg_info'=>'Selection: Description of the transaction',//
+
+    #会员中心-左边栏
+    'member_center'=>'Member Center',//
+    'business_manage'=>'Business manage',//
+    'staff_manage'=>'Staff manage',//
+    'inventory_manage'=>'Inventory manage',//
+    'warehousing_manage'=>'Warehousing manage',//
+    'outgoing_manage'=>'Outgoing manage',//
+    'stock_inquiry'=>'Stock inquiry',//
+    'order_manage'=>'Order manage',//
+    'cart'=>'Cart',//
+    'my_order'=>'My order',//
+    'my_invoice'=>'My invoice',//
+    'invoice_apply'=>'Invoice Apply',//
+    'account_management'=>'Account manage',//
+    'user_info'=>'User information',//
+    'certification'=>'Certification',//
+    'change_pwd'=>'Change Password',//
+    'my_collection'=>'My collection',//
+    'sell_goods'=>'Sell goods',//
+    'activity_center'=>'Activity Center',//
+
+    #订单状态
+//    'home_wait_affirm'=>'To be confirmed',
+//    'home_wait_pay'=>'Pending payment',
+//    'home_wait_confirm'=>'Goods to be received',
+    'status'=>'Status',
+    'wait_affirm'=>'To be confirmed',//
+    'wait_pay'=>'Pending payment',//
+    'paid'=>'Paid',//Paid
+    'unpaid'=>'Unpaid',//Unpaid
+    'partial_payment'=>'Partial payment',//Partial payment
+    'wait_confirm'=>'To be received',//
+    'wait_audit'=>'To be audited',//
+    'audit_failed'=>'Audit failed',//Audit failed
+
+    #会员中心首页
+    'enterprise'=>'Enterprise',//enterprise
+    'staff'=>'Staff',//Staff
+    'member_welcome'=>'Welcome to the Membership Center',//
+    'view_all_orders'=>'View all orders',//
+    'check_all_quotations'=>'Check all quotations',//
+    'order_number'=>'Order number',//
+    'shop_name'=>'Shop name',//
+    'order_amount'=>'Order amount',//
+    'no_order'=>'No order',//
+    'goods_recommendation'=>'goods recommendation',//
+    'view_details'=>'View details',//
+
+    #会员中心-用户信息
+    'nickname'=>'Nickname',
+    'email'=>'Email',
+    'order_is_approval'=>'Does the order need approval',
+    'no'=>'No',
+    'yes'=>'Yes',
+    'save'=>'Save',
+    'cancellation_account'=>'Cancellation account',
+
+    #我的收藏
+    'cancel_collection'=>'Cancel collection',//Cancel collection
+    'is_cancel_collection'=>'Confirmation of Cancellation of Collection',
+    'error_cancel_collection'=>'Failure to Cancel Collection',//
+    'collection_time'=>'Collection time',
+
+    #我要卖货
+    'sell_goods_success'=>'Successful submission, please wait for customer service to contact you',//
+    'sell_goods_tips_a'=>'Users can provide their own commodity information to customer service personnel, and the customer service personnel can release information to help users complete the sale.',//
+    'sell_goods_tips_b'=>'There are three ways to provide information. Choose one.',//
+    'contact_customer'=>'Direct Call to Contact Customer Service',//
+    'fill_in_goods_info'=>'Fill in the cargo details',//Fill in the cargo details
+    'upload_goods_tips'=>'Upload cargo content documents (only files with zip, doc, docx, xlsx, PDF size less than 2M are supported)',//
+    'sub'=>'submit',//
+
+    #jq dataTable 的分页
+    'sProcessing'=>'In dealing with...',//
+    'sZeroRecords'=>'No matching result',//
+    'sEmptyTable'=>'Data in the table is empty',//
+    'sLoadingRecords'=>'Loading...',//
+    'sFirst'=>'First',//
+    'sPrevious'=>'Previous',//
+    'sNext'=>'Next',//
+    'sLast'=>'Last',//
 ];

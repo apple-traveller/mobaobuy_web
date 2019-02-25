@@ -25,7 +25,7 @@
             var img = $(this).attr('data-img');
             index = layer.open({
                 type: 1,
-                title: '添加商品',
+                title: '{{trans('home.add_product')}}',
                 area: ['500px', '300px'],
                 content: '<img src="'+img+'">'
             });
@@ -49,7 +49,7 @@
                 // console.log(res.data);
                 console.log(res);
                 if (res.code == 1) {
-                    $.msg.alert('提交成功,请等待客服与您联系！');
+                    $.msg.alert('{{trans('home.sell_goods_success')}}！');
                     $('textarea[name=content]').val('');
                     $('input[name=bill_file]').val('');
                 } else {
@@ -62,32 +62,31 @@
 @endsection
 
 @section('content')
-    <div class="clearfix mt25">
+    <div class="clearfix">
         <form method="post" action="javascript:void(0);" id="user_real_form">
         <div class="w1200">
-                <ul class="account_infor_list">
+                <ul class="account_infor_list" style="width: 700px">
                     <li>
-                        用户可以把自己的商品信息提供给客服人员，由客服人员发布信息来帮助用户完成卖货。<br/>
-                        提供信息的方式有三种,选择一种即可：
+                        {{trans('home.sell_goods_tips_a')}} {{trans('home.sell_goods_tips_b')}}：
                     </li>
                     <li class="mt25">
-                        1.直接拨打电话联系客服：<span class="ml10">{{getConfig('service_phone')}}</span>
+                        1.{{trans('home.contact_customer')}}：<span class="ml10">{{getConfig('service_phone')}}</span>
                     </li>
                     <li class="mt25">
-                        2.填写货物详细信息：
+                        2.{{trans('home.fill_in_goods_info')}}：
                         <p>
                             <textarea name="content" style="max-width:800px;width:400px;min-height:200px;margin: 10px 0 0 12px;"></textarea>
                         </p>
                     </li>
                     <li class="mt25">
-                        3.上传货物内容文档(仅支持格式为zip,doc,docx,xlsx,pdf大小在2M以内的文件)：
+                        3.{{trans('home.upload_goods_tips')}}：
                         <div style="margin: 10px 0 0 12px;">
                             <span class="ml10">@component('widgets.upload_file',['upload_type'=>'file','upload_path'=>'user/userSale/','name'=>'bill_file'])@endcomponent</span>
                         </div>
                     </li>
 
                 </ul>
-            <button class="account_infor_btn code_greenbg fs18 white">提 交</button>
+            <button class="account_infor_btn code_greenbg fs18 white">{{trans('home.sub')}}</button>
         </div>
         </form>
     </div>
