@@ -146,7 +146,7 @@ class GoodsController extends ApiController
         }
 
         $condition['b.is_delete'] = 0;
-        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
+        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteListApi(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         foreach($goodsList['list'] as &$item){
             if($item['expiry_time']<\Carbon\Carbon::now()){
                 $item['is_expire'] = true;
@@ -158,6 +158,7 @@ class GoodsController extends ApiController
             }else{
                 $item['is_sale'] = false;
             }
+            $item['add_time_format'] = \Carbon\Carbon::parse($item['add_time'])->diffForHumans();
         }
         if(empty($goodsList['list'])){
             return $this->success('','无数据');
