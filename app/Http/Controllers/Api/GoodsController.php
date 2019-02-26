@@ -92,10 +92,6 @@ class GoodsController extends ApiController
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-//        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
-//            $t = explode(":",$orderType);
-//            $orderBy[$t[0]] = $t[1];
-//        }
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }

@@ -91,6 +91,10 @@ class ShopGoodsQuoteService
     //分页
     public static function getShopGoodsQuoteListApi($pager, $condition)
     {
+        #先获取最近有数据的两天的日期
+        $dates = ShopGoodsQuoteRepo::getHotDates($condition);
+        //dd($dates);
+        $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearchApi($pager, $condition);
         foreach ($result['list'] as $k => $vo) {
             $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
