@@ -73,7 +73,6 @@ class GoodsController extends ApiController
         $sort_goods_number = $request->input("sort_goods_number",'');
         $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
-//        $orderType = $request->input("orderType","b.add_time:desc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
@@ -142,7 +141,7 @@ class GoodsController extends ApiController
         }
 
         $condition['b.is_delete'] = 0;
-        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteListApi(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteListApi(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         foreach($goodsList['list'] as &$item){
             if($item['expiry_time']<\Carbon\Carbon::now()){
                 $item['is_expire'] = true;

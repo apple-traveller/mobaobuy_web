@@ -147,6 +147,16 @@ class ShopGoodsQuoteRepo
     //根据条件获取报价列表 分页
     public static function getQuoteInfoBySearchApi($pager,$condition)
     {
+        $condition_1 = [
+            'b.is_roof' => 1,
+            'b.is_delete' => 0,
+            'b.is_self_run' => 1,
+            'b.type' => '1|2',
+        ];
+        #先获取最近有数据的两天的日期
+        $dates = ShopGoodsQuoteRepo::getHotDates($condition_1);
+        //dd($dates);
+        $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
         $clazz_name = self::getBaseModel();
         $clazz = new $clazz_name();
         $query = \DB::table($clazz->getTable().' as b')
@@ -164,6 +174,8 @@ class ShopGoodsQuoteRepo
                 DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid'),
                 'shop.shop_name_en','shop.company_name_en','shop_store.store_name_en'
             );
+
+
 
         $query = self::setCondition($query, $condition);
 
