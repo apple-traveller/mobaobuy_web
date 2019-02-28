@@ -144,6 +144,79 @@ class ShopGoodsQuoteRepo
         $rs['totalPage'] = ceil($rs['total'] / $page_size);
         return $rs;
     }
+
+    //根据条件获取报价列表 分页
+    public static function getQuoteInfoBySearchApi($pager,$condition)
+    {
+        $condition_1 = [
+            'b.is_roof' => 1,
+            'b.is_delete' => 0,
+            'b.is_self_run' => 1,
+            'b.type' => '1|2',
+        ];
+        #先获取最近有数据的两天的日期
+        $dates = ShopGoodsQuoteRepo::getHotDates($condition_1);
+        //dd($dates);
+        $condition['|raw'] = "(b.add_time like '%{$dates[0]['t']}%' or b.add_time like '%{$dates[1]['t']}%')";
+        $clazz_name = self::getBaseModel();
+        $clazz = new $clazz_name();
+        $query = \DB::table($clazz->getTable().' as b')
+            ->leftJoin('goods as g', 'b.goods_id', '=', 'g.id')
+            ->leftJoin('brand', 'g.brand_id', '=', 'brand.id')
+            ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
+            ->leftJoin('goods_category as cat2', 'cat.parent_id', '=', 'cat2.id')
+            ->leftJoin('shop', 'b.shop_id', '=', 'shop.id')
+            ->leftJoin('shop_store', 'b.shop_store_id', '=', 'shop_store.id')
+            ->select(
+                'b.*','g.goods_name as simple_goods_name','g.goods_name_en as simple_goods_name_en',
+                'g.brand_name','g.packing_spec','cat.cat_name','cat.cat_name_en','brand.brand_name_en',
+                'g.goods_full_name','g.goods_full_name_en','g.unit_name','g.goods_content','g.goods_content_en','g.cat_id',
+                DB::raw('date_format(b.add_time,"%Y-%m-%d") as t'),
+                DB::raw('case when b.expiry_time > now() and b.goods_number > 0 then 1 else 0 end as valid'),
+                'shop.shop_name_en','shop.company_name_en','shop_store.store_name_en'
+            );
+
+
+
+        $query = self::setCondition($query, $condition);
+
+        $page = 1;
+        $page_size = -1;
+
+        if (isset($pager['pageSize']) || isset($pager['page'])) {
+            if (!isset($pager['pageSize']) || intval($pager['pageSize']) <= 0) {
+                $page_size = 10;
+            } else {
+                $page_size = intval($pager['pageSize']);
+            }
+
+            if (isset($pager['page']) && intval($pager['page']) > 0) {
+                $page = $pager['page'];
+            }
+        }
+        //总条数
+        $rs['total'] = $query->count();
+        //处理排序
+        if (isset($pager['orderType']) && !empty($pager['orderType'])) {
+            foreach ($pager['orderType'] as $c => $d) {
+                $query = $query->orderBy($c, $d);
+            }
+        }else{//有效的报价（没过期、没售罄的报价）在前无效的在后，置顶的在前未置顶的在后，时间倒序
+            $query = $query->orderBy('valid','desc')->orderBy('t','desc')->orderBy('b.is_roof','desc')->orderBy('b.add_time','desc');
+        }
+//        dd($query->toSql());
+        if ($page_size > 0) {
+            $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
+        } else {
+            $rs['list'] = $query->get()->toArray();
+        }
+        $rs['list'] = object_array($rs['list']);
+        $rs['page'] = $page;
+        $rs['pageSize'] = $page_size;
+        $rs['totalPage'] = ceil($rs['total'] / $page_size);
+        return $rs;
+    }
+
     //根据条件获取报价列表 不分页
     public static function getQuoteInfoByFields($order,$condition)
     {

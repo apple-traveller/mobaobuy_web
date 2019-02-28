@@ -169,7 +169,6 @@ class IndexController extends ApiController
                 $item['is_sale'] = false;
             }
             $item['add_time'] = Carbon::parse($item['add_time'])->diffForHumans();
-
         }
         return $this->success($list,'success');
     }

@@ -73,7 +73,6 @@ class GoodsController extends ApiController
         $sort_goods_number = $request->input("sort_goods_number",'');
         $sort_add_time = $request->input("sort_add_time",'');
         $sort_shop_price = $request->input("sort_shop_price",'');
-//        $orderType = $request->input("orderType","b.add_time:desc");
         $brand_id = $request->input("brand_id","");
         $cate_id = $request->input('cate_id',"");
         $place_id = $request->input('place_id',"");
@@ -92,10 +91,6 @@ class GoodsController extends ApiController
         if(!empty($sort_shop_price)){
             $orderBy['b.shop_price'] = $sort_shop_price;
         }
-//        if(empty($sort_goods_number) && empty($sort_add_time) && empty($sort_shop_price) && !empty($orderType)){
-//            $t = explode(":",$orderType);
-//            $orderBy[$t[0]] = $t[1];
-//        }
         if(empty($lowest)&&empty($highest)){
             $condition = [];
         }
@@ -146,7 +141,7 @@ class GoodsController extends ApiController
         }
 
         $condition['b.is_delete'] = 0;
-        $goodsList= ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
+        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteListApi(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>$orderBy],$condition);
         foreach($goodsList['list'] as &$item){
             if($item['expiry_time']<\Carbon\Carbon::now()){
                 $item['is_expire'] = true;
@@ -158,6 +153,7 @@ class GoodsController extends ApiController
             }else{
                 $item['is_sale'] = false;
             }
+            $item['add_time_format'] = \Carbon\Carbon::parse($item['add_time'])->diffForHumans();
         }
         if(empty($goodsList['list'])){
             return $this->success('','无数据');
