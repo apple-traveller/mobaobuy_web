@@ -30,35 +30,35 @@
 @section('content')
     <div class="mt20">
         <ul class="order_list_state">
-            <li @if(empty($tab_code)) class="curr" @endif><a href="/invoice/myInvoice">所有</a></li>
-            <li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/invoice/myInvoice?tab_code=waitInvoice">待开票<em id="waitInvoice"></em></a></li>
-            <li @if($tab_code == 'Completed') class="curr" @endif><a href="/invoice/myInvoice?tab_code=Completed">已开票<em id="Completed"></em></a></li>
+            <li @if(empty($tab_code)) class="curr" @endif><a href="/invoice/myInvoice">{{trans('home.all_status')}}</a></li>
+            <li @if($tab_code == 'waitInvoice') class="curr" @endif><a href="/invoice/myInvoice?tab_code=waitInvoice">{{trans('home.wait_open_ticket')}}<em id="waitInvoice"></em></a></li>
+            <li @if($tab_code == 'Completed') class="curr" @endif><a href="/invoice/myInvoice?tab_code=Completed">{{trans('home.invoiced')}}<em id="Completed"></em></a></li>
         </ul>
     </div>
 
     <div class="data-table-box">
         <div class="table-condition">
             <div class="item">
-                <input type="text" class="text" id="invoice_numbers" placeholder="开票流水号">
+                <input type="text" class="text" id="invoice_numbers" placeholder="{{trans('home.invoice_number')}}">
             </div>
             <div class="item">
-                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="申请时间从">
+                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
             </div>
             <div class="item">
-                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="申请时间至">
+                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
             </div>
-            <button id="on-search" class="search-btn">查询</button>
-            <a href="/invoice"><button class="search-btn">新增开票</button></a>
+            <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
+            <a href="/invoice"><button class="search-btn">{{trans('home.add_new_invoice')}}</button></a>
         </div>
 
         <div class="table-body">
             <table class="table table-border table-bordered table-bg table-hover dataTable" style="border: 1px solid #DEDEDE;">
                 <thead>
                 <tr>
-                    <th width="40%">开票信息</th>
-                    <th width="20%">开票金额</th>
-                    <th width="20%">物流跟踪</th>
-                    <th>状态</th>
+                    <th width="40%">{{trans('home.invoice_information')}}</th>
+                    <th width="20%">{{trans('home.invoice_amount')}}</th>
+                    <th width="20%">{{trans('home.logistics_tracking')}}</th>
+                    <th>{{trans('home.status')}}</th>
                 </tr>
                 </thead>
             </table>
@@ -74,6 +74,7 @@
     <script type="text/javascript">
         var tbl;
         $(function () {
+            var locale = '{{App::getLocale()}}';
             tbl = $('#data-table').dataTable({
                 "ajax": {
                     url: "{{url('invoice/myInvoice')}}",
@@ -105,23 +106,23 @@
 
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';
                             html += '<tr  class="tal"><td colspan="4">';
-                            html += '<p><span class="pl10 fl" style="width:30%">开票流水号：<a>' + full.invoice_numbers +'</a></span><span class="fl">店铺：'+ full.shop_name +'</span><span class="fr">下单时间：'+ full.created_at +'</span></p></td></tr>';
+                            html += '<p><span class="pl10 fl" style="width:30%">{{trans('home.invoice_number')}}：<a>' + full.invoice_numbers +'</a></span><span class="fl">{{trans('home.shop_name')}}：'+ jqGetLangData(locale,full,'shop_name') +'</span><span class="fr">{{trans('home.order_time')}}：'+ full.created_at +'</span></p></td></tr>';
                             if (full.shipping_billno){
-                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：' + full.shipping_billno + '</span></p></div></td>';
+                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">{{trans('home.num')}}：' + full.order_quantity + '</span><span style="width:50%;">；{{trans('home.logistics_number')}}：' + full.shipping_billno + '</span></p></div></td>';
                             } else {
-                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">订单数量：' + full.order_quantity + '</span><span style="width:50%;">；物流号：暂无</span></p></div></td>';
+                                html += '<tr><td class="tal" width="40%"><div style="margin: 15px 10px;line-height: 21px;"><p><span style="width:50%;">{{trans('home.num')}}：' + full.order_quantity + '</span><span style="width:50%;">；{{trans('home.logistics_number')}}：{{trans('home.no_logistics_number')}}</span></p></div></td>';
                             }
 
-                            html += '<td width="20%"><p>发票总金额:￥'+ full.invoice_amount +'</p></td>';
-                            html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">发票详情</a></span></p></td>';
+                            html += '<td width="20%"><p>{{trans('home.total_invoice_amount')}}:￥'+ full.invoice_amount +'</p></td>';
+                            html += '<td width="20%"><p><span><a href="/invoiceDetail/'+full.id+'">{{trans('home.invoice_details')}}</a></span></p></td>';
                             html += '<td>';
 
                             if(full.status == 0){
-                                 html += '<p>已取消</p></td>';
+                                 html += '<p>{{trans('home.cancelled')}}</p></td>';
                             }else if(full.status == 1){
-                                 html += '<p>待开票</p></td>';
+                                 html += '<p>{{trans('home.wait_open_ticket')}}</p></td>';
                             } else if (full.status == 2){
-                                html += '<p>已开票</p></td>';
+                                html += '<p>{{trans('home.invoiced')}}</p></td>';
                             }
                             var strhtml = '';
                             for(var i in full.auth){

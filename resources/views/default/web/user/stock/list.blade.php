@@ -75,12 +75,22 @@
 
                 },
                 "columns": [
-                    {"data": "cat_name", "bSortable": false},
-                    {"data": "goods_name", "bSortable": false},
+                    {"data": "cat_name", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            var locale = '{{App::getLocale()}}';
+                            return jqGetLangData(locale,row,'cat_name');
+                        }
+                    },
+                    {"data": "goods_name", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            var locale = '{{App::getLocale()}}';
+                            return jqGetLangData(locale,row,'goods_name');
+                        }
+                    },
                     {"data": "number", "bSortable": false},
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, full, meta) {
-                            return '<a href="/stock/flow?id='+ data +'" class="opt-btn">查看</a>';
+                            return '<a href="/stock/flow?id='+ data +'" class="opt-btn">{{trans('home.query')}}</a>';
                         }
                     }
                 ]
@@ -108,11 +118,18 @@
     <!--标题-->
     <div class="data-table-box">
         <div class="pro_brand" style="border-bottom: none;">
-                <dl class="fl filter_item"><dt class="fl">分类:</dt>
+                <dl class="fl filter_item"><dt class="fl">{{trans('home.cate')}}:</dt>
                     <dd class="pro_brand_list" style="width: 770px;">
                         @if($catInfo)
                             @foreach($catInfo['catInfo'] as $k=>$v)
-                                <label class=" check_box region"><input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value="{{$v}}"><span class="fl">{{$catInfo['catName'][$k]}}</span></label>
+                                <label class=" check_box region">
+                                    <input class="check_box mr5 check_all fl mt10" name="" type="checkbox" value="{{$v}}">
+                                    @if(App::getLocale() == 'en')
+                                        <span class="fl">{{!empty($catInfo['catNameEn'][$k]) ? $catInfo['catNameEn'][$k] : $catInfo['catName'][$k]}}</span>
+                                    @else
+                                        <span class="fl">{{$catInfo['catName'][$k]}}</span>
+                                    @endif
+                                </label>
                             @endforeach
                         @endif
                     </dd>
@@ -121,18 +138,18 @@
          </div>
 
         <div class="table-condition" style="clear:both;">
-            <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
-            <button id="on-search" class="search-btn">查询</button>
+            <div class="item"><input type="text" class="text" id="goods_name" placeholder="{{trans('home.goods_name')}}"></div>
+            <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
         </div>
 
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="20%">分类名称</th>
-                    <th width="40%">名称</th>
-                    <th width="25%">库存剩余数量</th>
-                    <th width="15%">操作</th>
+                    <th width="20%">{{trans('home.cate')}}</th>
+                    <th width="40%">{{trans('home.name')}}</th>
+                    <th width="25%">{{trans('home.stock_surplus')}}</th>
+                    <th width="15%">{{trans('home.operation')}}</th>
                 </tr>
                 </thead>
 

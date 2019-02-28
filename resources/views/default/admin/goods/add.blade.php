@@ -159,7 +159,14 @@
                                     <div class="notic"></div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;保质期（月）：</div>
+                                <div class="label_value">
+                                    <input type="number" min="0" name="expiry_date" class="text" value="" maxlength="40" autocomplete="off" id="expiry_date">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;商品属性：</div>
                                 <div class="label_value">

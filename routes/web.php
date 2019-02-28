@@ -389,6 +389,10 @@ Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
     Route::any('/goodsList/{t?}', 'QuoteController@goodsList');//商品列表
     Route::get('/condition/goodsList', 'QuoteController@goodsListByCondition');//商品列表
     Route::get('/goodsDetail/{id}/{shop_id}', 'QuoteController@goodsDetail');//商品详情
+
+    Route::get('/storeList', 'QuoteController@storeList');//品牌直营
+    Route::get('/getSupplierInfo/{shop_id}', 'QuoteController@getSupplierInfo');//
+    Route::get('/supplier/download/{shop_id}', 'QuoteController@download');//
     /********************************************************************/
 
     Route::get('/buyLimit', 'ActivityPromoteController@buyLimit');//限时抢购

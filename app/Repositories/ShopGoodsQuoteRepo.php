@@ -94,6 +94,7 @@ class ShopGoodsQuoteRepo
             ->leftJoin('brand', 'g.brand_id', '=', 'brand.id')
             ->leftJoin('goods_category as cat', 'g.cat_id', '=', 'cat.id')
             ->leftJoin('goods_category as cat2', 'cat.parent_id', '=', 'cat2.id')
+            ->leftJoin('goods_category as cat3', 'cat3.id', '=', 'cat2.parent_id')
             ->leftJoin('shop', 'b.shop_id', '=', 'shop.id')
             ->leftJoin('shop_store', 'b.shop_store_id', '=', 'shop_store.id')
             ->select(

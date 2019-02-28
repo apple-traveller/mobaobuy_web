@@ -10,4 +10,11 @@ namespace App\Repositories;
 class ShopRepo
 {
     use CommonRepo;
+
+    public static function addVisitCount($shop_id)
+    {
+        $clazz = self::getBaseModel();
+        $query = $clazz::query();
+        return $query->where('id',$shop_id)->increment('visit_count');
+    }
 }

@@ -20,15 +20,27 @@ class ShopGoodsQuoteController extends Controller
         $currpage = $request->input('currpage',1);
         $pageSize = $request->input('pagesize',10);
         $shop_name = $request->input('shop_name',"");
+        $store_name = $request->input('store_name',"");
         $goods_name = $request->input('goods_name',"");
+        $type = $request->input('type',0);
         $condition = [];
+        if(!empty($store_name)){
+            $condition['b.store_name']="%".$store_name."%";
+        }
         if(!empty($shop_name)){
             $condition['b.shop_name']="%".$shop_name."%";
         }
         if(!empty($goods_name)){
             $condition['g.goods_full_name']="%".$goods_name."%";
         }
-        $condition['b.type'] = '1|2';
+        if(!empty($type)){
+            $condition['b.type'] = $type;
+            $condition['b.is_self_run'] = 1;
+        }else{
+            $condition['b.type'] = '1|2';
+        }
+
+
         $condition['b.is_delete'] = 0;
         $shops = ShopService::getShopList([],['is_freeze'=>0]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
@@ -38,9 +50,11 @@ class ShopGoodsQuoteController extends Controller
             'shopGoodsQuote'=>$shopGoodsQuote['list'],
             'currpage'=>$currpage,
             'shop_name'=>$shop_name,
+            'store_name'=>$store_name,
             'pageSize'=>$pageSize,
             'shops'=>$shops['list'],
-            'goods_name'=>$goods_name
+            'goods_name'=>$goods_name,
+            'type'=>$type
         ]);
     }
 

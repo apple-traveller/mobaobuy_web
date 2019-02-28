@@ -88,5 +88,8 @@ class ShopService
         return ShopRepo::getTotalCount($condition);
     }
 
-
+    public static function addVisitCount($shop_id)
+    {
+        return ShopRepo::addVisitCount($shop_id);
+    }
 }

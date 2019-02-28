@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>物性表 - {{getSeoInfoByType('goods')['title']}}</title>
+    <title>{{trans('home.physical_table')}} - {{getSeoInfoByType('goods')['title']}}</title>
 	<meta name="description" content="{{getSeoInfoByType('goods')['description']}}" />
 	<meta name="keywords" content="{{getSeoInfoByType('goods')['keywords']}}" />
     @include(themePath('.','web').'web.include.partials.base')
@@ -22,54 +22,41 @@
 		<a href="/" ><div class="phy_serach_logo"></div></a>
 	<div class="phy_serach  mt40">
 		<form>
-			<input type="text" class="phy_serach_text fl" name="goods_name" placeholder="请输入 品牌、种类、商品名称如 : 海大" id="goodsAttribute">
-			<input type="submit" class="phy_search_btn white fs16 fl" id="on-search" value="搜 索">
+			<input type="text" class="phy_serach_text fl" name="goods_name" placeholder="{{trans('home.enter_brand_cate_tips')}}" id="goodsAttribute">
+			<input type="submit" class="phy_search_btn white fs16 fl" id="on-search" value="{{trans('home.header_search')}}">
 		</form>
-			<div class="hot_search_m white mt3">热门推荐：
-				@foreach(explode(',',getConfig('search_keywords')) as $item)
-					<a href="/goodsList?keyword={{$item}}" target="_blank">{{$item}}</a>
-				@endforeach
-
-				{{--@if(!empty(getHotSearch()))--}}
-					{{--<div class="hot_search_m">热门推荐：--}}
-						{{--@foreach(getHotSearch() as $item)--}}
-							{{--<a href="/goodsList?keyword={{$item['search_key']}}" target="_blank">{{$item['search_key']}}</a>--}}
-						{{--@endforeach--}}
-					{{--</div>--}}
-				{{--@endif--}}
-            </div>
-
+		<div class="hot_search_m white mt3">{{trans('home.header_hot')}}：
+			@foreach(explode(',',getConfig('search_keywords')) as $item)
+				<a href="/goodsList?keyword={{$item}}" target="_blank">{{$item}}</a>
+			@endforeach
+		</div>
 	</div>
 	</div>
-	
 	<ul class="phy_serach_list">
 		<table id="data-table" class="table table-border table-bordered table-bg table-hover dataTable order-table">
 			@if(isset($list))
 				@foreach($list as $v)
-				<li>
-					<div  class="phy_serach_Name gray">
-						<h1 class="fs16 black fwb">{{$v['goods_full_name']}}</h1>
-						<div class="db mt5">
-							<span> 品牌 : {{$v['brand_name']}}</span>
-							<span class="ml20"> 含量：{{$v['goods_content']}}</span>
-							<span class="ml20">包装单位 :<font class="blue">{{$v['packing_unit']}}</font></span>
-							<span class="ml20"> 包装规格 : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}/{{$v['packing_unit']}}</font></span>
+					<li>
+						<div  class="phy_serach_Name gray">
+							<h1 class="fs16 black fwb">{{getLangData($v,'goods_full_name')}}</h1>
+							<div class="db mt5">
+								<span> {{trans('home.brand')}} : {{getLangData($v,'brand_name')}}</span>
+								<span class="ml20"> {{trans('home.content')}}：{{getLangData($v,'goods_content')}}</span>
+								<span class="ml20">{{trans('home.packaging_unit')}} :<font class="blue">{{getLangData($v,'packing_unit')}}</font></span>
+								<span class="ml20"> {{trans('home.spec2')}} : <font class="lcolor">{{$v['packing_spec']}}{{$v['unit_name']}}/{{getLangData($v,'packing_unit')}}</font></span>
+							</div>
+							<!-- <span class="db mt5">属       性 : </span> -->
 						</div>
-						<!-- <span class="db mt5">属       性 : </span> -->
-					</div>
-					<div class="phy_serach_line"></div>
-					<a href="/goodsAttributeDetails/{{encrypt($v['id'])}}"><div class="phy_search_list_btn">查看供应商</div></a>
-				</li>
+						<div class="phy_serach_line"></div>
+						<a href="/goodsAttributeDetails/{{encrypt($v['id'])}}"><div class="phy_search_list_btn">{{trans('home.view_suppliers')}}</div></a>
+					</li>
 				@endforeach
 			@else
-			无商品
+				{{trans('home.no_goods')}}
 			@endif
 		</table>
 	</ul>
-	 {!! $linker !!}
-	<!--页码-->	
-
-	<!--底部-->
+	{!! $linker !!}
 	@include(themePath('.','web').'web.include.partials.footer_service')
     @include(themePath('.','web').'web.include.partials.footer_new')
     @include(themePath('.','web').'web.include.partials.copyright')

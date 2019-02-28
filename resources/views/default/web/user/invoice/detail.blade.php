@@ -40,7 +40,7 @@
                                 _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
                             }
                             if(_html === ''){
-                                _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                                _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                             }
                             $('.wlxx').append(_html);
                         }else{
@@ -49,11 +49,11 @@
                         }
                     },
                     error:function(){
-                        $('.wlxx').append('<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>');
+                        $('.wlxx').append('<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>');
                     }
                 })
             }else{
-                $('.wlxx').append('<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>');
+                $('.wlxx').append('<li><i class="external-cir"></i>{{trans('home.not_shipped_tips')}}<div class="gray"></div></li>');
             }
 
         }
@@ -80,23 +80,23 @@
                             }
                             console.log(_html);
                             if(_html == ''){
-                                _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                                _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                             }
                             $('.wlxx').append(_html);
                         }else{
                             //物流单第三方查询失败 查询站内维护物流信息
-                            var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                            var _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>';
                             $('.wlxx').append(_html);
                             // $.msg.alert(data.msg);
                         }
                     },
                     error:function(){
-                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                        var _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>';
                         $('.wlxx').append(_html);
                     }
                 })
             }else{
-                var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+                var _html = '<li><i class="external-cir"></i>{{trans('home.not_shipped_tips')}}<div class="gray"></div></li>';
                 $('.wlxx').append(_html);
             }
 
@@ -130,22 +130,22 @@
 <div class="clearfix whitebg">
     <div class="w1200 ovh">
         <div class="mb30 mt10 ovh">
-            <div class="logo fl"></div><div class="w_name fs24 gray fl mt20 ml20">会员中心</div>
+            <div class="logo fl"></div><div class="w_name fs24 gray fl mt20 ml20">{{trans('home.member_center')}}</div>
         </div>
     </div>
 </div>
 <div class=" clearfix mt5">
     <div class="w1200">
-        <div class="crumbs">当前位置：<a href="/member">会员中心</a> &gt; <a href="/invoice/myInvoice">我的开票</a> &gt;<span class="gray">发票详情</span></div>
+        <div class="crumbs">{{trans('home.curr')}}：<a href="/member">{{trans('home.member_center')}}</a> &gt; <a href="/invoice/myInvoice">{{trans('home.my_invoice')}}</a> &gt;<span class="gray">{{trans('home.invoice_details')}}</span></div>
         <div class="order_pro_progress whitebg mt5">
             <div class="order_pro_">
-                <span class="invoice_number">开票流水号：{{$invoiceInfo['invoice_numbers']}}</span>
+                <span class="invoice_number">{{trans('home.invoice_number')}}：{{$invoiceInfo['invoice_numbers']}}</span>
                 @if($invoiceInfo['status'] == 0)
-                    <span class="tac db fs24 fwb red mt15">已取消</span>
+                    <span class="tac db fs24 fwb red mt15">{{trans('home.cancelled')}}</span>
                 @elseif($invoiceInfo['status'] == 1)
-                    <span class="tac db fs24 fwb red mt15">待开票</span>
+                    <span class="tac db fs24 fwb red mt15">{{trans('home.wait_open_ticket')}}</span>
                 @elseif($invoiceInfo['status'] == 2)
-                    <span class="tac db fs24 fwb red mt15">已开票</span>
+                    <span class="tac db fs24 fwb red mt15">{{trans('home.invoiced')}}</span>
                 @endif
             </div>
         </div>
@@ -153,12 +153,12 @@
         <div class="whitebg br1 mt20 ovh">
             @if(!empty($invoiceInfo))
                 <div class="order_pro_stute" @if(!empty($invoiceInfo['id'])) data-id="{{$invoiceInfo['id']}}" @else data-id="0" @endif>
-                    <span class="ml30 db mt20">物流公司：@if(!empty($invoiceInfo['shipping_name'])) {{ $invoiceInfo['shipping_name'] }} @else 暂无物流公司 @endif </span>
-                    <span class="ml30 db mt20">物流单号：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else 暂无物流单号 @endif </span>
+                    <span class="ml30 db mt20">{{trans('home.logistics_company')}}：@if(!empty($invoiceInfo['shipping_name'])) {{ $invoiceInfo['shipping_name'] }} @else {{trans('home.no_logistics_company')}} @endif </span>
+                    <span class="ml30 db mt20">{{trans('home.logistics_number')}}：@if(!empty($invoiceInfo['shipping_billno'])) {{ $invoiceInfo['shipping_billno'] }} @else {{trans('home.no_logistics_number')}} @endif </span>
                 </div>
             @else
                 <div class="order_pro_stute" data-id="0">
-                    <span class="ml30 db mt20">请等待商家发货</span>
+                    <span class="ml30 db mt20">{{trans('home.wait_shop_open_invoice')}}</span>
                 </div>
             @endif
             <div class="fl wlgz_text">
@@ -171,33 +171,52 @@
         <div class="whitebg br1 mt20 ovh">
             <!--收货人信息-->
             <div class="consignee bbright">
-                <h1>收票人信息</h1>
-                <span class="ml20 db mt20"><span class="fl">收  货  人:</span> <span class="ml20">{{$invoiceInfo['consignee']}}</span></span>
-                <span class="ml20 ovh db mt5"><span class="fl">收货地址:</span><span class="fl consignee_addr">{{$invoiceInfo['address_str']}}</span></span>
-                <span class="ml20 db mt20"><span class="fl">手机号码: </span><span class="ml10">{{$invoiceInfo['mobile_phone']}}</span></span>
+                <h1>{{trans('home.receiver_info')}}</h1>
+                <span class="ml20 db mt20"><span class="fl">{{trans('home.receiver')}}:</span> <span class="ml20">{{$invoiceInfo['consignee']}}</span></span>
+                <span class="ml20 ovh db mt5"><span class="fl">{{trans('home.ticket_collection_address')}}:</span><span class="fl consignee_addr">{{$invoiceInfo['address_str']}}</span></span>
+                <span class="ml20 db mt20"><span class="fl">{{trans('home.mobile')}}: </span><span class="ml10">{{$invoiceInfo['mobile_phone']}}</span></span>
             </div>
             <!--商家信息-->
             <div class="consignee bbright">
-                <h1>商家信息</h1>
-                <span class="ml20 db mt20" style="margin-right: 266px;"><span class="fl">公司名称 :</span> <span class="ml10">{{$invoiceInfo['shop_name']}}</span></span>
-                <span class="ml20 db "><span class="fl">联系方式 :</span> <span class="ml10">{{ $invoiceInfo['member_phone'] }}</span></span>
+                <h1>{{trans('home.business_info')}}</h1>
+                <span class="ml20 db mt20" style="margin-right: 266px;"><span class="fl">{{trans('home.company')}} :</span> <span class="ml10">{{$invoiceInfo['shop_name']}}</span></span>
+                <span class="ml20 db "><span class="fl">{{trans('home.contact_way')}} :</span> <span class="ml10">{{ $invoiceInfo['member_phone'] }}</span></span>
             </div>
             <!--发票信息-->
             <div class="consignee ">
-                <h1>发票信息</h1>
-                <span class="ml20 db mt20" ><span class="fl">发票类型：</span> <span class="ml10">@if($invoiceInfo['invoice_type'] == 1)普通发票 @elseif($invoiceInfo['invoice_type']==2) 专用增值发票 @endif</span></span>
+                <h1>{{trans('home.invoice_info')}}</h1>
+                <span class="ml20 db mt20" >
+                    <span class="fl">{{trans('home.invoice_type')}}：</span>
+                    <span class="ml10">
+                        @if($invoiceInfo['invoice_type'] == 1)
+                            {{trans('home.general_invoice')}}
+                        @elseif($invoiceInfo['invoice_type']==2)
+                            {{trans('home.special_invoice')}}
+                        @endif
+                    </span>
+                </span>
             </div>
         </div>
         <!--订单列表-->
         <div class="whitebg br1 mt20 ovh">
             <ul class="order-list-brand">
-                <li><span>订单流水号</span><span>商品名称</span><span >单价</span><span>数量</span></li>
+                <li>
+                    <span>{{trans('home.order_number')}}</span>
+                    <span>{{trans('home.goods_name')}}</span>
+                    <span>{{trans('home.price')}}</span>
+                    <span>{{trans('home.num')}}</span>
+                </li>
                 @foreach($invoiceGoods as $v)
-                    <li><span>{{$v['order_sn']}}</span><span class="ovhwp" style="height: 40px;">{{$v['goods_name']}}</span><span>￥{{$v['goods_price']}} </span><span>{{$v['invoice_num']}}KG</span><span></span><span></span></li>
+                    <li>
+                        <span>{{$v['order_sn']}}</span>
+                        <span class="ovhwp" style="height: 40px;">{{$v['goods_name']}}</span>
+                        <span>￥{{$v['goods_price']}} </span>
+                        <span>{{$v['invoice_num']}}KG</span>
+                    </li>
                 @endforeach
             </ul>
             <div class="Amount_money">
-                <div class="db"><span>开票总额：</span><span class="fr ml20">￥{{ $invoiceInfo['invoice_amount'] }}</span></div>
+                <div class="db"><span>{{trans('home.total_invoice')}}：</span><span class="fr ml20">￥{{ $invoiceInfo['invoice_amount'] }}</span></div>
             </div>
         </div>
     </div>

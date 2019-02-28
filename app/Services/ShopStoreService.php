@@ -13,7 +13,9 @@ class ShopStoreService
         $store_list = ShopStoreRepo::getListBySearch($pager,$condition);
         foreach ($store_list['list'] as $k=>$v){
             $shop_info = ShopService::getShopById($v['shop_id']);
-            $store_list['list'][$k]['company_name'] = $shop_info['company_name'];
+            if(!empty($shop_info)){
+                $store_list['list'][$k]['company_name'] = $shop_info['company_name'];
+            }
         }
         return $store_list;
     }

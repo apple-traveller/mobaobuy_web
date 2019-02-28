@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\BrandRepo;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
 use App\Repositories\GoodsCategoryRepo;
@@ -140,6 +141,7 @@ class FirmStockService
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
                 $firmStockFlowInfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
                 $firmStockFlowInfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+                $firmStockFlowInfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
             }
         }
         return $firmStockFlowInfo;
@@ -164,6 +166,7 @@ class FirmStockService
         if(!empty($firmStockFlowOutfo['list'])){
             foreach ($firmStockFlowOutfo['list'] as $k=>$v){
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+                $firmStockFlowOutfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
                 $firmStockFlowOutfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
                 $firmStockFlowOutfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
                 $stock_info = FirmStockRepo::getInfoByFields(['goods_id'=>$v['goods_id'],'firm_id'=>$v['firm_id']]);
@@ -186,11 +189,15 @@ class FirmStockService
         $firmStockInfo = FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
         $catInfo = [];
         $catName = [];
+        $catNameEn = [];
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $firmStockInfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
+            $firmStockInfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
 
             $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
+            $firmStockInfo['list'][$k]['cat_name_en'] = $goodsCatInfo['cat_name'];
+
             if(empty($goodsCatInfo)){
                 self::throwBizError('找不到对应的分类');
             }
@@ -200,6 +207,7 @@ class FirmStockService
 //                $catInfo[$k]['cat_name'] = $goodsCatInfo['cat_name'];
 //                $catInfo[$k]['cat_id'] = $goodsCatInfo['id'];
                 $catName[] = $goodsCatInfo['cat_name'];
+                $catNameEn[] = $goodsCatInfo['cat_name_en'];
                 $catInfo[] = $goodsCatInfo['id'];
             }
 
@@ -228,7 +236,7 @@ class FirmStockService
             return $firmStockInfo;
         }
         //get返回分类列表
-        return ['catName'=>$catName,'catInfo'=>$catInfo];
+        return ['catName'=>$catName,'catNameEn'=>$catNameEn,'catInfo'=>$catInfo];
     }
 
     //出库记录详情

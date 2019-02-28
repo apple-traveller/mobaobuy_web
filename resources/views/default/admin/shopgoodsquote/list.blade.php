@@ -34,7 +34,17 @@
                         <form action="/admin/shopgoodsquote/list" name="searchForm" >
                             <input type="hidden" name="pagesize" value="{{$pageSize}}"/>
                             <div class="input" style="margin-right: 20px">
+                                <select style="height:30px;float:left;border:0;line-height:30px;width:100px" name="type" id="type">
+                                    <option value="0">全部</option>
+                                    <option value="1" @if($type == 1) selected="selected" @endif>沫宝自营</option>
+                                    <option value="2" @if($type == 2) selected="selected" @endif>品牌直营</option>
+                                </select>
+                            </div>
+                            <div class="input" style="margin-right: 20px">
                                 <input style="height:30px;" type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
+                            </div>
+                            <div class="input" style="margin-right: 20px">
+                                <input style="height:30px;" type="text" name="store_name" value="{{$store_name}}" class="text nofocus goods_name" placeholder="店铺名称" autocomplete="off">
                             </div>
                             <div class="input">
                                 <select style="height:30px;float:left;border:0;border-right: 1px solid #dbdbdb;line-height:30px;width:220px;" name="shop_name" id="cat_id">

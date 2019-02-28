@@ -504,7 +504,7 @@
                     @foreach($shops as $shop)
                     <li>
                         <div class="clearfix">
-                            <span>{{getLangData($shop,'company_name')}}</span>
+                            <span><a href="/getSupplierInfo/{{$shop['id']}}" >{{getLangData($shop,'company_name')}}</a></span>
                             <span>{{$shop['contactName']}}</span>
                             <span>{{$shop['contactPhone']}}</span>
                             <span>{{$shop['major_business']}}</span>

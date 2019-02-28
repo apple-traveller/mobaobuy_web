@@ -36,44 +36,38 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($storeList as $vo)
-                                    <tr class="">
-                                        <td><div class="tDiv">{{$vo['id']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['add_time']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['company_name']}}</div></td>
-                                        <td><div class="tDiv">{{$vo['store_name']}}</div></td>
-                                        <td class="handle">
-                                            <div class="tDiv a3">
-                                                <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
-                                                <a href="/admin/shop/store/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                    @foreach($storeList as $vo)
+                                        <tr class="">
+                                            <td><div class="tDiv">{{$vo['id']}}</div></td>
+                                            <td><div class="tDiv">{{$vo['add_time']}}</div></td>
+                                            <td><div class="tDiv">{{$vo['company_name']}}</div></td>
+                                            <td><div class="tDiv">{{$vo['store_name']}}</div></td>
+                                            <td class="handle">
+                                                <div class="tDiv a3">
+                                                    <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                                    <a href="/admin/shop/store/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                                 <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}">
                                 <tfoot>
-                                <tr>
-                                    <td colspan="12">
-                                        <div class="tDiv">
-
-                                            <div class="list-page">
-                                                <!-- $Id: page.lbi 14216 2008-03-10 02:27:21Z testyang $ -->
-
-                                                <ul id="page"></ul>
-
-                                                <style>
-                                                    .pagination li{
-                                                        float: left;
-                                                        width: 30px;
-                                                        line-height: 30px;}
-                                                </style>
-
-
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="tDiv">
+                                                <div class="list-page">
+                                                    <ul id="page"></ul>
+                                                    <style>
+                                                        .pagination li{
+                                                            float: left;
+                                                            width: 30px;
+                                                            line-height: 30px;}
+                                                    </style>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>

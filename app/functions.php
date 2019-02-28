@@ -271,7 +271,7 @@ if(!function_exists('getSeoInfoByType')){
     }
 }
 if(!function_exists('createPage')){
-    function  createPage($url,$currentPage, $totalPage, $delta = 2, $target = '_self'){
+    function  createPage($url,$currentPage, $totalPage, $delta = 2, $target = '_self',$lang=[]){
 
         $high = $currentPage + $delta;
         $low = $currentPage - $delta;
@@ -287,11 +287,11 @@ if(!function_exists('createPage')){
         $ret_string ='<div class="news_pages"><ul class="pagination">';
         if($currentPage > 1)
         {
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', 1, $url). "' target='{$target}'>首页</a></li>";
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage - 1, $url) . "' target='{$target}'>上一页</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', 1, $url). "' target='{$target}'>{$lang['sFirst']}</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage - 1, $url) . "' target='{$target}'>{$lang['sPrevious']}</a></li>";
         }else {
-            $ret_string .= '<li><a class="" style="color: #ccc">首页</a></li>';
-            $ret_string .= '<li><a class="" style="color: #ccc">上一页</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang["sFirst"].'</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sPrevious'].'</a></li>';
         }
         $links = array();
         for (;$low <= $high; $low++)
@@ -302,11 +302,11 @@ if(!function_exists('createPage')){
         $links = implode('', $links);
         $ret_string .= "\r\n" . $links;
         if($currentPage < $totalPage){
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage + 1, $url) . "' target='{$target}'>下一页</a></li>";
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $totalPage, $url) . '\' target=\'' . $target . '\'>尾页</a></li>';
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage + 1, $url) . "' target='{$target}'>{$lang['sNext']}</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $totalPage, $url) . '\' target=\'' . $target . '\'>'.$lang['sLast'].'</a></li>';
         }else{
-            $ret_string .= '<li><a class="" style="color: #ccc">下一页</a></li>';
-            $ret_string .= '<li><a class="" style="color: #ccc">尾页</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sNext'].'</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sLast'].'</a></li>';
         }
         return $ret_string . '</ul></div>';
     }

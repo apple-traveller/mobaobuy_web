@@ -173,6 +173,17 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="goods_source" id="goods_source" >
+                                        <option value="0" @if($goodsQuote['goods_source'] == 0) selected="selected" @endif>现货</option>
+                                        <option value="1" @if($goodsQuote['goods_source'] == 1) selected="selected" @endif>紧张</option>
+                                        <option value="2" @if($goodsQuote['goods_source'] == 2) selected="selected" @endif>厂家直发</option>
+                                    </select>
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
                                     <input type="submit" value="确定" class="button" id="submitBtn">
@@ -291,7 +302,9 @@
                     salesman:{
                         required:true,
                     },
-
+                    goods_source:{
+                        required:true,
+                    }
                 },
                 messages:{
                     shop_id :{
@@ -322,6 +335,9 @@
                     salesman:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
+                    goods_source:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    }
                 }
             });
 

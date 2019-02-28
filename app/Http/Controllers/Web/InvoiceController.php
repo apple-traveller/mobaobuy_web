@@ -71,7 +71,6 @@ class InvoiceController extends Controller
                 'recordsFiltered' => $rs_list['total'], //数据总行数
                 'data' => $rs_list['list']
             ];
-
             return $this->success('', '', $data);
         }
     }

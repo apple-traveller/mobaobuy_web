@@ -94,14 +94,14 @@
             <div class="clearfix bb1 f4bg">
                 @if(!empty($user_real))
                     @if($user_real['is_firm'] == '0')
-                        <ul class="accounts"><li class="account_curr">个人账户</li></ul> 
+                        <ul class="accounts"><li class="account_curr">{{trans('home.individual_account')}}</li></ul>
                     @elseif($user_real['is_firm'] == '1')
-                         <ul class="accounts"><li id="firm">企业账户</li></ul>
+                         <ul class="accounts"><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                      @else
-                        <ul class="accounts"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                        <ul class="accounts"><li class="account_curr">{{trans('home.individual_account')}}</li><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                     @endif
                 @else
-                    <ul class="accounts"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                    <ul class="accounts"><li class="account_curr">{{trans('home.individual_account')}}</li><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                 @endif
             </div>
                 
@@ -111,7 +111,7 @@
                      <li>
                         <ul class="account_infor_list">
                             <li>
-                                <span class="infor_title">账号：</span>
+                                <span class="infor_title">{{trans('home.account_number')}}：</span>
                                 <span class="ml10">
                                     {{$user_name}}
                                 </span>
@@ -119,22 +119,22 @@
                             <input type="hidden" name="user_id"  value="{{$user_id}}" >
 
                             <li class="mt25">
-                                <span class="infor_title">真实姓名：</span>
+                                <span class="infor_title">{{trans('home.real_name')}}：</span>
                                 <span class=" fl">
                                     <input type="text" style="width:182px;" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                                 </span>
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">身份证正面：</span>
+                                <span class="infor_title">{{trans('home.front_card')}}：</span>
                                 <span class="ml10 fl">
                                     @if(!empty($user_real['front_of_id_card']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                         @endif
                                     @else
@@ -143,15 +143,15 @@
                                 </span>
                             </li>
                             <li class="mt25">
-                                <span class="infor_title">身份证反面：</span>
+                                <span class="infor_title">{{trans('home.back_card')}}：</span>
                                 <span class="ml10 fl">
                                     @if(!empty($user_real['reverse_of_id_card']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                         @endif
                                     @else
@@ -159,18 +159,18 @@
                                     @endif
                                 </span>
                             </li>
-                            <li class="mt25"><span class="infor_title">注意：</span>
+                            <li class="mt25"><span class="infor_title">{{trans('home.be_careful')}}：</span>
                                 <span class="fl">
-                                上传的身份证正反面照可以为png,jpg,jpeg,gif,PNG格式
+                                    {{trans('home.upload_tips')}}
                                 </span>
                             </li>
-                        <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
+                        <button class="account_infor_btn code_greenbg fs18 white" id="1">{{trans('home.save')}}</button>
                         </ul>
                     </li>
 
                     <li style="display: none;">
                         <ul class="account_infor_list">
-                            <li><span class="infor_title" style="margin-left:-8px;">账号：</span>
+                            <li><span class="infor_title" style="margin-left:-8px;">{{trans('home.account_number')}}：</span>
                                 <span class="ml10">
                                     {{$user_name}}
                                 </span>
@@ -178,22 +178,22 @@
                             <input type="hidden" name="user_id"  value="{{$user_id}}" >
 
                             <li class="mt25">
-                                 <span class="infor_title">企业全称：</span>
+                                 <span class="infor_title">{{trans('home.enterprise_name')}}：</span>
                                 <span class=" fl" style="margin-left:-8px;">
                                     <input type="text" name="real_name_firm" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif />
                                 </span>
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">授权委托书电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_authorization')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['attorney_letter_fileImg']))
                                             @if($user_real['review_status']==1)
-                                                已经上传，审核已经通过
+                                                {{trans('home.uploaded_audited_tips')}}
                                             @elseif($user_real['review_status']==0)
-                                                已经上传，审核中
+                                                {{trans('home.uploaded_auditing_tips')}}
                                             @else
-                                                <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                                <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                             @endif
                                     @else
@@ -203,22 +203,22 @@
                             </li>
 
                             <li class="mt25">
-                                 <span class="infor_title">授权委托书模板下载：</span>
+                                 <span class="infor_title">{{trans('home.authorization_download')}}：</span>
                                 <span class=" fl" style="width:60px;height: 40px;">
-                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="点击下载">
+                                    <input type="button" download="{{trans('home.electronic_authorization')}}.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="{{trans('home.click_download')}}">
                                 </span>
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">开票资料电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_invoice')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['invoice_fileImg']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                         @endif
 
@@ -229,15 +229,15 @@
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">营业执照电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_license')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['license_fileImg']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                                         @endif
                                     @else
@@ -245,12 +245,12 @@
                                     @endif
                                 </span>
                             </li>
-                            <li class="mt25"><span class="infor_title">注意：</span>
+                            <li class="mt25"><span class="infor_title">{{trans('home.be_careful')}}：</span>
                                 <span class="fl">
-                                上传的文件可以为png,jpg,jpeg,gif,PNG格式
+                                    {{trans('home.upload_tips')}}
                                 </span>
                             </li>
-                            <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
+                            <button class="account_infor_btn code_greenbg fs18 white" id="2">{{trans('home.save')}}</button>
                         </ul>
                     </li>
           
@@ -258,7 +258,7 @@
                     @if($user_real['review_status'] == 2 && $user_real['is_firm'] == 0)
                         <li>
                         <ul class="account_infor_list">
-                        <li><span class="infor_title">账号：</span>
+                        <li><span class="infor_title">{{trans('home.account_number')}}：</span>
                             <span class="ml10">
                                 {{$user_name}}
                             </span>
@@ -266,22 +266,22 @@
                         <input type="hidden" name="user_id"  value="{{$user_id}}" >
                     
                         <li class="mt25">
-                            <span class="infor_title">真实姓名：</span>
+                            <span class="infor_title">{{trans('home.real_name')}}：</span>
                             <span class=" fl">
                                 <input type="text" style="width:182px;" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif/>
                             </span>
                         </li>
                 
                         <li class="mt25">
-                            <span class="infor_title">身份证正面：</span>
+                            <span class="infor_title">{{trans('home.front_card')}}：</span>
                             <span class="ml10 fl">
                                 @if(!empty($user_real['front_of_id_card']))
                                     @if($user_real['review_status']==1)
-                                        已经上传，审核已经通过
+                                        {{trans('home.uploaded_audited_tips')}}
                                     @elseif($user_real['review_status']==0)
-                                        已经上传，审核中
+                                        {{trans('home.uploaded_auditing_tips')}}
                                     @else
-                                        <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                        <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                     @endif
                                 @else
@@ -290,15 +290,15 @@
                             </span>
                         </li>
                         <li class="mt25">
-                            <span class="infor_title">身份证反面：</span>
+                            <span class="infor_title">{{trans('home.back_card')}}：</span>
                             <span class="ml10 fl">
                                 @if(!empty($user_real['reverse_of_id_card']))
                                     @if($user_real['review_status']==1)
-                                        已经上传，审核已经通过
+                                        {{trans('home.uploaded_audited_tips')}}
                                     @elseif($user_real['review_status']==0)
-                                        已经上传，审核中
+                                        {{trans('home.uploaded_auditing_tips')}}
                                     @else
-                                        <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                        <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                         @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                     @endif
                                 @else
@@ -306,12 +306,12 @@
                                 @endif
                             </span>
                         </li>
-                        <li class="mt25"><span class="infor_title">注意：</span>
+                        <li class="mt25"><span class="infor_title">{{trans('home.be_careful')}}：</span>
                             <span class="fl">
-                                上传的身份证正反面照可以为png,jpg,jpeg,gif,PNG格式
+                                {{trans('home.upload_tips')}}
                             </span>
                         </li>
-                        <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button>
+                        <button class="account_infor_btn code_greenbg fs18 white" id="1">{{trans('home.save')}}</button>
                         </ul>
                         </li>
                 
@@ -322,7 +322,7 @@
                         <!-- 企业账户 -->
                         <li>
                             <ul class="account_infor_list">
-                            <li class="mt25"><span class="infor_title">账号：</span>
+                            <li class="mt25"><span class="infor_title">{{trans('home.account_number')}}：</span>
                                 <span class="fl">
                                     {{$user_name}}
                                 </span>
@@ -330,22 +330,22 @@
                             <input type="hidden" name="user_id"  value="{{$user_id}}" >
 
                             <li class="mt25">
-                                 <span class="infor_title">企业全称：</span>
+                                 <span class="infor_title">{{trans('home.enterprise_name')}}：</span>
                                 <span class=" fl" style="margin-left:-8px;">
                                     <input type="text" name="real_name_firm" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" @else value="" @endif />
                                 </span>
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">授权委托书电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_authorization')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['attorney_letter_fileImg']))
                                             @if($user_real['review_status']==1)
-                                                已经上传，审核已经通过
+                                                {{trans('home.uploaded_audited_tips')}}
                                             @elseif($user_real['review_status']==0)
-                                                已经上传，审核中
+                                                {{trans('home.uploaded_auditing_tips')}}
                                             @else
-                                                <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                                <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                                 @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                             @endif
                                     @else
@@ -355,23 +355,23 @@
                                  </span>
                             </li>
                             <li class="mt25">
-                                <span class="infor_title">授权委托书模板下载：</span>
+                                <span class="infor_title">{{trans('home.authorization_download')}}：</span>
                                 <span class=" fl" style="width:60px;height: 40px;">
-                                    <input type="button" download="授权委托书电子档.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="点击下载">
+                                    <input type="button" download="{{trans('home.electronic_authorization')}}.docx" style="border:none;width:82px;height:40px;" onclick="window.open('{{asset("letterFile/公司授权委托书.docx")}}')" value="{{trans('home.click_download')}}">
 
                                 </span>
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">开票资料电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_invoice')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['invoice_fileImg']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/invoiceFile','name'=>'invoice_fileImg'])@endcomponent
                                         @endif
 
@@ -383,15 +383,15 @@
                             </li>
 
                             <li class="mt25">
-                                <span class="infor_title">营业执照电子版：</span>
+                                <span class="infor_title">{{trans('home.electronic_license')}}：</span>
                                 <span class=" fl">
                                     @if(!empty($user_real['license_fileImg']))
                                         @if($user_real['review_status']==1)
-                                            已经上传，审核已经通过
+                                            {{trans('home.uploaded_audited_tips')}}
                                         @elseif($user_real['review_status']==0)
-                                            已经上传，审核中
+                                            {{trans('home.uploaded_auditing_tips')}}
                                         @else
-                                            <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                            <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                             @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/licenseFile','name'=>'license_fileImg'])@endcomponent
                                         @endif
                                     @else
@@ -400,12 +400,12 @@
 
                                 </span>
                             </li>
-                            <li class="mt25"><span class="infor_title">注意：</span>
+                            <li class="mt25"><span class="infor_title">{{trans('home.be_careful')}}：</span>
                                 <span class="fl">
-                                    上传的图片可以为png,jpg,jpeg,gif,PNG格式
+                                    {{trans('home.upload_tips')}}
                                 </span>
                             </li>
-                            <button class="account_infor_btn code_greenbg fs18 white" id="2">保 存</button>
+                            <button class="account_infor_btn code_greenbg fs18 white" id="2">{{trans('home.save')}}</button>
                             </ul>
                         </li>
                     @endif

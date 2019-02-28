@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+use App\Models\X_Shop;
 use App\Repositories\CartRepo;
 use App\Repositories\UserCollectGoodsRepo;
 use App\Services\CartService;
 use App\Services\GoodsService;
 use App\Services\HotSearchService;
+use App\Services\ShopService;
+use App\Services\ShopStoreService;
 use App\Services\UserAddressService;
 use App\Services\UserInvoicesService;
 use App\Services\UserService;
@@ -16,6 +19,8 @@ use Illuminate\Support\Facades\Session;
 use App\Services\GoodsCategoryService;
 use App\Services\BrandService;
 use App\Services\RegionService;
+use Maatwebsite\Excel\Facades\Excel;
+
 class QuoteController extends Controller
 {
     /**
@@ -76,6 +81,8 @@ class QuoteController extends Controller
             $con['opt'] = 'OR';
             $con['b.goods_name'] = '%' . $keyword . '%';
             $con['cat.cat_name'] = '%' . $keyword . '%';
+            $con['cat2.cat_name'] = '%' . $keyword . '%';
+            $con['cat3.cat_name'] = '%' . $keyword . '%';
             $condition[] = $con;
         }
 //        $orderBy = [];
@@ -141,6 +148,31 @@ class QuoteController extends Controller
         ]);
     }
 
+//    public function getSupplierInfo()
+//    {
+//        dd(X_Shop::all()->toArray());
+//    }
+    public function getSupplierInfo(Request $request,$shop_id)
+    {
+        $currpage = $request->input("currpage", 1);
+
+        $pageSize = 10;
+        #先获取供应商信息
+        $shop_info = ShopService::getShopById($shop_id);
+        #获取供应商的所有报价
+        $condition['b.is_delete'] = 0;
+        $condition['b.type'] = 3;
+        $condition['b.is_self_run'] = 0;
+        $condition['b.shop_id'] = $shop_id;
+        $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition,3);
+
+        return $this->display("web.quote.supplier", [
+            'search_data' => $goodsList,
+            'shop_info' => $shop_info,
+            'currpage' => $currpage,
+            'pageSize' => $pageSize,
+        ]);
+    }
     /**
      * 根据条件范围收索报价(ajax)
      * goodsListByCondition
@@ -162,6 +194,7 @@ class QuoteController extends Controller
         $place_id = $request->input('place_id', "");
         $keyword = $request->input('keyword', "");
         $t = $request->input('t', "1|2");
+        $shop_id = $request->input('shop_id', "0");
         $condition = [];
 
         $orderBy = [];
@@ -220,7 +253,12 @@ class QuoteController extends Controller
             $con['opt'] = 'OR';
             $con['b.goods_name'] = '%' . $keyword . '%';
             $con['cat.cat_name'] = '%' . $keyword . '%';
+            $con['cat2.cat_name'] = '%' . $keyword . '%';
+            $con['cat3.cat_name'] = '%' . $keyword . '%';
             $condition[] = $con;
+        }
+        if(!empty($shop_id)){
+            $condition['b.shop_id'] = $shop_id;
         }
         $pageSize = 20;
         $condition['b.is_delete'] = 0;
@@ -291,5 +329,62 @@ class QuoteController extends Controller
             'collectGoods' => $collectGoods,
             'quoteList' => $quoteList['list']
         ]);
+    }
+
+    public function storeList(Request $request)
+    {
+        $pager = [
+            'page'=>$request->input('page',0),
+            'pageSize'=>6,
+            'orderType'=>['add_time'=>'desc']
+        ];
+        $condition['is_delete'] = 0;
+        $store_list = ShopStoreService::getShopStoreList($pager,$condition);
+
+        return $this->display("web.quote.shop_store", [
+            'storeList' => $store_list['list'],
+            'total' => $store_list['total'],
+            'currpage' => $pager['page'],
+            'pageSize' => $pager['pageSize'],
+        ]);
+    }
+
+    public function download($shop_id){
+        ob_end_clean();
+
+        if(empty($shop_id)){
+            return;
+        }
+        //todo 增加下载次数
+        ShopService::addVisitCount($shop_id);
+
+        #先获取供应商信息
+        $shop_info = ShopService::getShopById($shop_id);
+        #获取供应商的所有报价
+        $condition['b.is_delete'] = 0;
+        $condition['b.type'] = 3;
+        $condition['b.is_self_run'] = 0;
+        $condition['b.shop_id'] = $shop_id;
+        $info = ShopGoodsQuoteService::getQuoteByWebSearch([], $condition,3);
+        if(!empty($info['list'])){
+            foreach ($info['list'] as $k=>$v){
+                $export[] = array(
+                    '店铺(*)'=>getLangData($v,'store_name'),
+                    '品种(*)'=>getLangData($v,'cat_top_name'),
+                    '品牌 (*)'=>getLangData($v,'brand_name'),
+                    '规格(*)'=>getLangData($v,'goods_content').' '.getLangData($v,'simple_goods_name'),
+                    '价格（元）(*)'=>$v['shop_price'].'/'.$v['unit_name'],
+                    '交货时间(*)'=>getLangData($v,'delivery_time'),
+                    '交货地(*)'=>$v['delivery_place'],
+                    '交货方式(*)'=>getLangData($v,'delivery_method'),
+                    '联系人(*)'=>$v['salesman'].'/'.$v['contact_info'],
+                );
+            }
+        }
+        Excel::create($shop_info['shop_name'], function($excel) use ($export) {
+            $excel->sheet('export', function($sheet) use ($export) {
+                $sheet->fromArray($export);
+            });
+        })->export('xls');
     }
 }

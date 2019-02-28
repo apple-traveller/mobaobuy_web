@@ -71,13 +71,16 @@ class ShopStoreController extends Controller
         $data = [
             'shop_id'=>$shop_id,
             'store_name'=>$store_name,
+            'store_img'=>$request->get('store_img',''),
+            'main_cat'=>$request->get('main_cat',''),
+            'main_brand'=>$request->get('main_brand',''),
+            'spec'=>$request->get('spec',''),
+            'delivery_area'=>$request->get('delivery_area',''),
+            'delivery_method'=>$request->get('delivery_method',''),
         ];
         #先验证唯一性
         try{
-            $validate_res = ShopStoreService::uniqueValidate($data);
-            if($validate_res){
-                return $this->error('该店铺已经存在');
-            }
+
             if(!empty($id)){
                 $exist_res = ShopStoreService::getShopStoreById($id);
                 if(empty($exist_res)){
@@ -86,6 +89,10 @@ class ShopStoreController extends Controller
                 $data['id'] = $id;
                 $res = ShopStoreService::modify($data);
             }else{
+                $validate_res = ShopStoreService::uniqueValidate($data);
+                if($validate_res){
+                    return $this->error('该店铺已经存在');
+                }
                 $data['add_time'] = date('Y-m-d H:i:s');
                 $data['is_delete'] = 0;
 

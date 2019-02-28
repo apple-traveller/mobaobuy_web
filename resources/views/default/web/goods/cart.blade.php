@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>购物车 - @yield('title')</title>
+    <title>{{trans('home.cart')}}</title>
     @include(themePath('.','web').'web.include.partials.base')
     <style type="text/css">
     	.fr{float:right;}

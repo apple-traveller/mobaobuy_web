@@ -39,9 +39,9 @@ class ShopGoodsQuoteService
             $con['b.type'] = $condition['b.type'];
         }else{
             $con['b.type'] = '1|2';
-            if($t == 3){
-                $con['b.is_self_run'] = 0;
-            }
+        }
+        if($t == 3){
+            $con['b.is_self_run'] = 0;
         }
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);

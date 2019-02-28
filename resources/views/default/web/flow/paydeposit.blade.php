@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>收银台</title>
+    <title>{{trans('home.cashier')}}</title>
     @include(themePath('.','web').'web.include.partials.base')
 
     <script type="text/javascript">
         $(function(){
             var pay_voucher = '{{$order_info['deposit_pay_voucher']}}';
             if(pay_voucher){
-                layer.confirm('您已上传过支付定金凭证，可以在订单详情中进行查看,是否更新？', {
-                    btn: ['是','否'] //按钮
+                layer.confirm('{{trans('home.uploaded_deposit_tips')}}', {
+                    btn: ['{{trans('home.yes')}}','{{trans('home.no')}}'] //按钮
                 }, function(){
                     layer.closeAll();
                 }, function(){
@@ -35,7 +35,7 @@
              var orderSn = $('input[type=hidden]').val();
              var payVoucher = $('input[name=pay_voucher]').val();
              if(orderSn == '' || payVoucher == ''){
-                $.msg.alert('上传凭证不能为空');
+                $.msg.alert('{{trans('home.voucher_cannot_empty')}}');
                 return;
              }
              $.ajax({
@@ -45,7 +45,7 @@
                 dataType:'json',
                 success:function(res){
                     if(res.code){
-                        $.msg.alert('上传成功');
+                        $.msg.alert('{{trans('home.upload_success')}}');
                         window.location.reload();
                     }else{
                         $.msg.alert(res.msg);
@@ -107,22 +107,22 @@
 
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
-@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '收银台'])@endcomponent
+@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => trans('home.cashier')])@endcomponent
 
 <div class="clearfix mt25">
     <div class="w1200 whitebg">
         <div class="payment-order-box">
             <div class="box-info">
-                订单号：{{$order_info['order_sn']}}
+                {{trans('home.order_number')}}：{{$order_info['order_sn']}}
             </div>
             <div class="box-info">
-                寄送至：{{$order_info['region']}}
+                {{trans('home.send_to')}}：{{$order_info['region']}}
             </div>
             <div class="box-info">
-                收货人：{{$order_info['consignee']}} {{$order_info['mobile_phone']}}
+                {{trans('home.consignee_name')}}：{{$order_info['consignee']}} {{$order_info['mobile_phone']}}
             </div>
             <div class="box-info">
-                支付订金：{{$order_info['deposit']}}元
+                {{trans('home.deposit_payment')}}：￥{{$order_info['deposit']}}
             </div>
         </div>
     </div>
@@ -133,7 +133,7 @@
     <div class="w1200 whitebg">
         <div class="payment-box">
             <div class="payment-list">
-                <div class="p-mode-tit"><h3>线下支付</h3></div>
+                <div class="p-mode-tit"><h3>{{trans('home.offline_payment')}}</h3></div>
                 <div class="p-mode-list">
                     <div style="width:200px;" class="p-mode-item enterprise_transfer"><input style="width:200px;" type="button" onclick="openFrame()" /></div>
                 </div>
@@ -153,25 +153,25 @@
     <!--编辑框-->
     <div class="power_edit whitebg" id="power_edit_frame" style="">
         <div class="pay_title f4bg">
-            <span class="fl pl30 gray fs16">支付信息</span>
+            <span class="fl pl30 gray fs16">{{trans('home.payment_info')}}</span>
             <a class="fr frame_close mr15 mt15">
                 <img src="img/close.png" width="15" height="15">
             </a>
         </div>
         <ul class="power_list ml30 mt25">
             <li>
-                <div class="ovh mt10"><span class="mr5">商家信息 : </span>{{$sellerInfo['company_name']}}</div>
-                <div class="ovh mt15"><span class="mr5">开户银行 : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
-                <div class="ovh mt15"><span class="mr5">银行账户 : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
-                <div class="ovh mt15"><span class="fl mr10">上传付款凭证 : </span>
+                <div class="ovh mt10"><span class="mr5">{{trans('home.business_info')}} : </span>{{$sellerInfo['company_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">{{trans('home.deposit_bank')}} : </span>{{$sellerInfo['settlement_bank_account_name']}}</div>
+                <div class="ovh mt15"><span class="mr5">{{trans('home.bank_account')}} : </span>{{$sellerInfo['settlement_bank_account_number']}}</div>
+                <div class="ovh mt15"><span class="fl mr10">{{trans('home.upload_payment_voucher')}} : </span>
                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/payVoucher','name'=>'pay_voucher'])@endcomponent
                 </div>
 
             </li>
 
             <li style="clear:both;margin-top:30px; margin-bottom: 35px;">
-                <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">提 交</div>
-                <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">取消</div>
+                <div style="margin-left: 80px;cursor: pointer;" class="til_btn fl tac  code_greenbg" onclick="payVoucherSave()">{{trans('home.save')}}</div>
+                <div class="til_btn tac  blackgraybg fl cancel" style="margin-left: 45px;cursor: pointer;">{{trans('home.cancel')}}</div>
             </li>
         </ul>
     </div>

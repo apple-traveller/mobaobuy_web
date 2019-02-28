@@ -233,9 +233,9 @@
             $(this).addClass('titlecurr').siblings().removeClass('titlecurr');
             $('.proitemlist>li').eq($(this).index()).show().siblings().hide();
         });
-        var tipindex
+        var tipindex;
         $('#show_yf_tips').hover(function(){
-            tipindex = layer.tips('秣宝网产品报价均不含运费，运费价格需联系客服人员确认。', '#show_yf_tips', {
+            tipindex = layer.tips('{{trans('home.logistics_description_tips')}}', '#show_yf_tips', {
                 tips: [1, '#75b335'],
                 time: 0
             });

@@ -39,13 +39,35 @@
 
         .supply_quote_list li{height: 89px;overflow: initial;}
         .bggreen{background-color: #75b335;color:#fff;}
+        .company_title_link{  width: 1150px;margin: 0 auto;border-bottom: 1px solid #DDDDDD; overflow: hidden;}
+        .company_title{float: left;    margin:15px auto;height:25px;line-height:25px;font-size: 22px;padding-left: 10px;border-left: 5px solid #75b335;}
+        .company_link{float: right; margin:15px auto;height:25px;line-height:25px;color: #999;}
+
+        .contact_business{float: left;background: url(img/phy_qq.png)no-repeat 0px 5px;padding-left: 20px;font-size: 14px;}
+        .company_detail{width: 1150px;margin: 20px auto;border: 1px solid #75b335;background-color: #f7fcf2; }
+        .company_detail li{overflow: hidden; margin-left: 20px;margin-top: 15px;}
+        .company_detail li:last-child{margin-bottom: 15px;}
+        .company_detail li .detail_list{ float: left; color: #666;margin-left: 5px;}
+        .addr_page{margin-left: 20px; line-height: 30px; margin-bottom: 30px;overflow: hidden;}
+        .text_copy{padding-left:10px; box-sizing: border-box; float: left; width: 433px; height: 30px;border: 1px solid #DEDEDE; box-sizing: border-box;}
+        .copy_addr{float: left;color: #fff;width: 95px;height: 30px;border: none;background-color: #75b335;}
+        .file_down_bg{ margin-left: 20px; float: left; width: 150px; height: 30px; background: url(img/xiazai.png)no-repeat 13px 7px; background-color: #ff6f17;position: relative;text-align: center; color: #FFFFFF;}
+        .file_down{opacity: 0; position: absolute;width: 150px;height: 30px;}
 	</style>
 @endsection
 @section('js')
     <script src="{{asset('/plugs/jquery/jquery.marquee.min.js')}}" ></script>
     <script src="{{asset(themePath('/', 'web').'js/index.js')}}" ></script>
+    <script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=430926"></script>
+    <script rel="nofollow" type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+    <script rel="nofollow" type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
 	<script>
         $(function(){
+            //复制地址
+            $('.copy_addr').click(function(){
+                $('#addr_file').select();
+                document.execCommand("copy");
+            });
             //$(".nav-div .nav-cate .ass_menu").css("display: none");
             $(".nav-cate").hover(function(){
                 $(this).children('.ass_menu').toggle();// 鼠标悬浮时触发
@@ -89,15 +111,7 @@
 	<div class="w1200 pr">
 		<div class="crumbs mt5 mb5">
             <span class="fl">{{trans('home.curr')}}：</span>
-            @if($t == 1)
-                <a class="fl" href="/goodsList/1">{{trans('home.self_quote')}}</a>
-            @elseif($t == 2)
-                <a class="fl" href="/goodsList/2">{{trans('home.direct_sale')}}</a>
-            @elseif($t == 3)
-                <a class="fl" href="/goodsList/3">{{trans('home.supplier')}}</a>
-            @else
-                <a class="fl" href="/goodsList">{{trans('home.quote')}}</a>
-            @endif
+            <a class="fl" href="/getSupplierInfo/{{$shop_info['id']}}">{{trans('home.supplier')}}</a>
 
             <div class="condition">
                 <div style="margin-left:20px;display: none;" class="mode_add tac ml10 condition_tag" id="brand_tag" brand_id="">
@@ -118,6 +132,62 @@
                 <div class="pro_Open pro_Open_up"></div>
 			    <div class="fr">{{trans('home.self_quote_prefix')}}<font class="green" id="relevant_total"> {{$search_data['total']}} </font>{{trans('home.quote_suffix')}}</div>
             @endif
+        </div>
+        <!--公司详情-->
+        <div class="clearfix mt15">
+            <div class="w1200 graybg ovh">
+                <!--公司标题-->
+                <div class="company_title_link">
+                    <div class="company_title">{{getLangData($shop_info,'company_name')}}</div>
+                    <div class="company_link">
+                        <a class="contact_business"> {{trans('home.contact_merchant')}}</a>
+                        <div class="bshare-custom" style="line-height:25px !important; display: inline-block;margin-left: 10px; border-left: 1px solid #acacac;padding-left: 10px;"><div class="bsPromo bsPromo2"></div>
+                            <div class="bsPromo bsPromo2"></div>
+                            {{trans('home.share_to')}}：
+                            <a title="{{trans('home.share_qq')}}" class="bshare-qzone"></a>
+                            <a title="{{trans('home.share_sina')}}" class="bshare-sinaminiblog"></a>
+                            <a title="{{trans('home.share_renren')}}" class="bshare-renren"></a>
+                            <a title="{{trans('home.share_tencent')}}" class="bshare-qqmb"></a>
+                            <a title="{{trans('home.share_netease')}}" class="bshare-neteasemb"></a>
+                            <a title="{{trans('home.more_platforms')}}" class="bshare-more bshare-more-icon more-style-addthis"></a>
+                        </div>
+                    </div>
+                </div>
+                <!--公司详情-->
+                <ul class="company_detail">
+                    <li>
+                        <dl>
+                            <dt class="fl gray">{{trans('home.contact')}}：</dt>
+                            <dd class="detail_list">
+                                <span>{{$shop_info['contactName']}}</span>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl>
+                            <dt class="fl gray">{{trans('home.contact_way')}}：</dt>
+                            <dd class="detail_list">
+                                <span>{{$shop_info['contactPhone']}}</span>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl>
+                            <dt class="fl gray">{{trans('home.main_business')}}：</dt>
+                            <dd class="detail_list">
+                                <span>{{$shop_info['major_business']}}</span>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+                <!--页面地址-->
+                <div class="addr_page">
+                    <div class="gray fl">{{trans('home.page_address')}}：</div>
+                    <div class="fl"><input type="text" value="http://www.mobaobuy.com/getsupplierInfo/{{$shop_info['id']}}" class="text_copy" id='addr_file' ><button class="copy_addr" >{{trans('home.copy_address')}}</button></div>
+                    <a href="/supplier/download/{{$shop_info['id']}}"><div class="file_down_bg">{{trans('home.download_product_list')}}</div></a>
+                    <div class="fl ml20 gray">{{trans('home.download_amount')}}：<span class="orange">{{$shop_info['visit_count']}}</span> {{trans('home.times')}}</div>
+                </div>
+            </div>
         </div>
         @if(!empty($search_data['list']))
             <div class="pro_screen">
@@ -176,16 +246,7 @@
                     <div class="width1200">
                         <div class="sequence-bar" style="padding:0;padding-right:10px;">
                             <div class="fl">
-                                @if($t == 1)
-                                    <a class="choose default bggreen" href="/goodsList/1" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
-                                @elseif($t == 2)
-                                    <a class="choose default bggreen" href="/goodsList/2" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
-                                @elseif($t == 3)
-                                    <a class="choose default bggreen" href="/goodsList/3" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
-                                @else
-                                    <a class="choose default bggreen" href="/goodsList" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
-                                @endif
-
+                                <a class="choose default bggreen" href="/getSupplierInfo/{{$shop_info['id']}}" style="height:39px;line-height:39px;margin-top:0;border:0;border-right: solid 1px #e3e3e3;">{{trans('home.all')}}</a>
                             </div>
                             <div class="fl">
                                 <ul id="sort" sort_name="" class="chooselist">
@@ -198,16 +259,16 @@
 
                             </div>
                             <form class="fl" id="formid">
-                                <input class="min-max" name="lowest" id="minPrice" @if($lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="{{trans('home.lowest_price')}}" style="margin-left: 5px">
+                                <input class="min-max" name="lowest" id="minPrice" @if(isset($lowest) && $lowest!="") value="{{$lowest}}" @else value=""  @endif placeholder="{{trans('home.lowest_price')}}" style="margin-left: 5px">
                                 <span class="line">-</span>
-                                <input class="min-max" name="highest" id="maxPrice" @if($highest!="") value="{{$highest}}" @else value=""  @endif placeholder="{{trans('home.highest_price')}}" style="margin-left: 5px">
+                                <input class="min-max" name="highest" id="maxPrice" @if(isset($highest) && $highest!="") value="{{$highest}}" @else value=""  @endif placeholder="{{trans('home.highest_price')}}" style="margin-left: 5px">
                                 <input class="confirm active inline-block" id="btnSearchPrice" value="{{trans('home.ok')}}" type="button" style="margin-left: 5px">
                             </form>
 
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="t" value="{{$t}}" />
+                <input type="hidden" id="shop_id" value="{{$shop_info['id']}}" />
                 <ul class="Self-product-list">
 
                     <li class="table_title">
@@ -258,11 +319,8 @@
                 </div>
             </div>
         @else
-            @if(!empty($t))
-                <li class="nodata1">{{trans('home.none_quoted')}}</li>
-            @else
-                <li class="nodata">{{trans('home.quote_list_tips')}}</li>
-            @endif
+            <li class="nodata1">{{trans('home.none_quoted')}}</li>
+
         @endif
     </div>
 @endsection
@@ -324,12 +382,13 @@
             $('#brand_tag').hide();
             $('#brand_tag').empty();
             $('#brand_tag').attr('brand_id','');
-            var _t = $('#t').val();
-            if(_t == 1 || _t == 2){
-                getInfo(1);
-            }else{
-                window.location.href = '/goodsList'
-            }
+            getInfo(1);
+//            var _t = $('#t').val();
+//            if(_t == 1 || _t == 2){
+//                getInfo(1);
+//            }else{
+//                window.location.href = '/goodsList'
+//            }
 
         });
         $(document).delegate('.close_cate','click',function(){
@@ -338,13 +397,14 @@
             $('#cate_tag').hide();
             $('#cate_tag').empty();
             $('#cate_tag').attr('cate_id','');
+            getInfo(1);
+//            var _t = $('#t').val();
+//            if(_t == 1 || _t == 2){
+//                getInfo(1);
+//            }else{
+//                window.location.href = '/goodsList'
+//            }
 
-            var _t = $('#t').val();
-            if(_t == 1 || _t == 2){
-                getInfo(1);
-            }else{
-                window.location.href = '/goodsList'
-            }
         });
 
         //公司名称
@@ -441,7 +501,7 @@
             $('.shop_price span').attr('class','sm_breed_span sort_down_up');
         }
 
-        var _t = $('#t').val();
+        var _shop_id = $('#shop_id').val();
         $.ajax({
             type: "get",
             url: "/condition/goodsList",
@@ -457,7 +517,8 @@
                 'sort_shop_price':_shop_price,//价格排序
                 'sort_add_time':_add_time,//时间排序
                 'keyword':_keyword,//时间排序
-                't':_t //时间排序
+                't':3, //报价类型
+                'shop_id':_shop_id //供应商id
             },
             dataType: "json",
             success: function(res){
@@ -499,7 +560,7 @@
                             '<span  style="width:9%;">'+jqGetLangData(locale,list[i],'brand_name')+'</span>' +
                             '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+jqGetLangData(locale,list[i],'goods_content')+' '+jqGetLangData(locale,list[i],'simple_goods_name')+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
-                            '<span style="color:red;width:8%;">'+list[i].shop_price+'</span>' +
+                            '<span style="color:red;width:8%;">'+list[i].shop_price+'/'+list[i].unit_name+'</span>' +
                             '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_time')+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_method')+'</span>' +
