@@ -37,10 +37,17 @@ class NewsController extends Controller
 
             $url = '/news/'.$cat_id.'/%d.html';
 
+            $lang = [
+                'sFirst'=>trans('home.sFirst'),
+                'sPrevious'=>trans('home.sPrevious'),
+                'sNext'=>trans('home.sNext'),
+                'sLast'=>trans('home.sLast')
+            ];
+
             if(!empty($list['list'])){
-                $linker = createPage($url, $page,$list['totalPage']);
+                $linker = createPage($url, $page,$list['totalPage'],2,'_self',$lang);
             }else{
-                $linker = createPage($url, 1, 1);
+                $linker = createPage($url, 1, 1,2,'_self',$lang);
             }
             return $this->display('web.news.index',['cat'=>$cat_info,'list'=>$list,'linker'=>$linker,'title'=>$title]);
         } else {
