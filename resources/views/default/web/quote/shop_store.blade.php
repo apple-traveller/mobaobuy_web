@@ -107,10 +107,10 @@
 @endsection
 
 @section('content')
-	<div class="clearfix good" style="background-color: #FFF;">
-        @if(true)
+	<div class="clearfix good">
+        @if(!empty($storeList))
             <div class="w1200 mt20 good_l" style="margin-top: 20px;">
-                <h2 class="product_title">
+                <h2 class="product_title" style="background-color: #fff;">
                     {{trans('home.direct_stores_list')}}
                     <div class="fr mr20" style="font-size: 14px">
                         <span>{{trans('home.self_quote_prefix')}} <font class="green"> {{$total}} </font>{{trans('home.stationed')}}</span>
