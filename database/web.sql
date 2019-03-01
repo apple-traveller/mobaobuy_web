@@ -1281,16 +1281,22 @@ CREATE TABLE `shop_store` (
   `shop_id` int(11) DEFAULT NULL COMMENT '商家ID',
   `store_name` varchar(255) NOT NULL COMMENT '店铺名称',
   `store_name_en` varchar(255) NOT NULL COMMENT '店铺英文名称',
-  `store_img` varchar(255) DEFAULT NULL,
+  `store_img` varchar(255) DEFAULT NULL COMMENT '店铺图片',
   `main_cat` varchar(255) DEFAULT NULL COMMENT '主营类型',
+  `main_cat_en` varchar(255) DEFAULT NULL COMMENT '英文主营类型',
   `main_brand` varchar(255) DEFAULT NULL COMMENT '主营品牌',
+  `main_brand_en` varchar(255) DEFAULT NULL COMMENT '英文主营品牌',
   `spec` varchar(255) DEFAULT NULL COMMENT '规格',
+  `spec_en` varchar(255) DEFAULT NULL COMMENT '规格英文',
   `delivery_area` varchar(255) DEFAULT NULL COMMENT '交货地',
+  `delivery_area_en` varchar(255) DEFAULT NULL COMMENT '英文交货地',
   `delivery_method` varchar(50) DEFAULT NULL COMMENT '交货方式',
+  `delivery_method_en` varchar(50) DEFAULT NULL COMMENT '英文交货方式',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+
 
 DROP TABLE IF EXISTS `hot_search`;
 CREATE TABLE `hot_search` (

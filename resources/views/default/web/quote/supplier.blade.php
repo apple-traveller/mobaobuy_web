@@ -278,7 +278,7 @@
                         <span style="width:12%">{{trans('home.spec')}}</span>
                         {{--<span style="width:7%;">数量</span>--}}
                         <span style="width:8%;">{{trans('home.price')}}</span>
-                        <span style="width:8%;">{{trans('home.delivery_time')}}</span>
+                        <span style="width:8%;">{{trans('home.goods_source')}}</span>
                         <span style="width:8%;">{{trans('home.delivery_area')}}</span>
                         <span style="width:8%;">{{trans('home.delivery_method')}}</span>
                         <span style="width:15%;">{{trans('home.contact')}}</span>
@@ -293,7 +293,7 @@
                                 <span style="width:12%" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
                                 <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
-                                <span style="width:8%;">{{getLangData($vo,'delivery_time')}}</span>
+                                <span style="width:8%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{getLangData($vo,'delivery_method')}}</span>
                                 <span style="width:15%">{{$vo['salesman']}}/{{$vo['contact_info']}}
@@ -561,7 +561,7 @@
                             '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+jqGetLangData(locale,list[i],'goods_content')+' '+jqGetLangData(locale,list[i],'simple_goods_name')+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
                             '<span style="color:red;width:8%;">'+list[i].shop_price+'/'+list[i].unit_name+'</span>' +
-                            '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_time')+'</span>' +
+                            '<span style="width:8%;">'+jqGetLangGoodsSource(locale,list[i].goods_source)+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_method')+'</span>' +
 

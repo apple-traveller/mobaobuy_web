@@ -41,7 +41,7 @@ class QuoteController extends Controller
         $cat_name = $request->input('cat_name', "");
         $place_id = $request->input('place_id', "");
         $keyword = $request->input('keyword', "");//搜索关键字
-//        $t = $request->input('t', "");//搜索关键字
+        $store_id = $request->input('store_id', "");//店铺id
         $condition = [];
         if (!empty($orderType)) {
             $order = explode(":", $orderType);
@@ -85,11 +85,11 @@ class QuoteController extends Controller
             $con['cat3.cat_name'] = '%' . $keyword . '%';
             $condition[] = $con;
         }
-//        $orderBy = [];
-//        if (!empty($orderType)) {
-//            $type = explode(":", $orderType);
-//            $orderBy[$type[0]] = $type[1];
-//        }
+        $store_info = [];
+        if($store_id){
+            $condition['b.shop_store_id'] = $store_id;
+            $store_info = ShopStoreService::getShopStoreById($store_id);
+        }
         $pageSize = 20;
         if(!empty($t)){
             if($t == 3){
@@ -99,7 +99,7 @@ class QuoteController extends Controller
                 $condition['b.is_self_run'] = 1;
             }
         }else{
-            //            $condition['b.type'] = '1|2';
+            //$condition['b.type'] = '1|2';
         }
         $condition['b.is_delete'] = 0;
         //商品报价列表
@@ -144,14 +144,18 @@ class QuoteController extends Controller
             'cat_name' => $cat_name,
             'place_id' => $place_id,
             'keyword' => $keyword,
+            'store_info' => $store_info,
             't' => $t,
         ]);
     }
 
-//    public function getSupplierInfo()
-//    {
-//        dd(X_Shop::all()->toArray());
-//    }
+    /**
+     * 获取供应商信息
+     * getSupplierInfo
+     * @param Request $request
+     * @param $shop_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getSupplierInfo(Request $request,$shop_id)
     {
         $currpage = $request->input("currpage", 1);
@@ -195,6 +199,7 @@ class QuoteController extends Controller
         $keyword = $request->input('keyword', "");
         $t = $request->input('t', "1|2");
         $shop_id = $request->input('shop_id', "0");
+        $store_id = $request->input('store_id', "0");
         $condition = [];
 
         $orderBy = [];
@@ -259,6 +264,9 @@ class QuoteController extends Controller
         }
         if(!empty($shop_id)){
             $condition['b.shop_id'] = $shop_id;
+        }
+        if(!empty($store_id)){
+            $condition['b.shop_store_id'] = $store_id;
         }
         $pageSize = 20;
         $condition['b.is_delete'] = 0;
@@ -331,6 +339,12 @@ class QuoteController extends Controller
         ]);
     }
 
+    /**
+     * 品牌直营
+     * storeList
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function storeList(Request $request)
     {
         $pager = [

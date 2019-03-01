@@ -26,14 +26,19 @@
                     <li class="site-nav-menu"><div><a rel="nofollow" href="{{route('register')}}">{{trans('home.header_register')}}</a></div></li>
                 @endif
                     {{trans('home.header_working_day')}} : 9:00-17:00
-                {{--<select onchange="changelang(this.value)">--}}
-                    {{--<option value='zh-cn'@if(App::getLocale() == 'zh-cn') selected @endif>简体中文</option>--}}
-                    {{--<option value="en" @if(App::getLocale() =='en')selected @endif> English </option>--}}
-                {{--</select>--}}
+
             </ul>
         </div>
         <div class="fr quick-menu">
-
+                {{--<select onchange="changelang(this.value)" style="border: 1px solid #dedede;border-radius: 3px;">--}}
+                    {{--<option value='zh-CN'@if(App::getLocale() == 'zh-CN') selected @endif>简体中文</option>--}}
+                    {{--<option value="en" @if(App::getLocale() =='en')selected @endif> English </option>--}}
+                {{--</select>--}}
+            @if(App::getLocale() == 'zh-CN')
+                <a rel="nofollow" href="javascript:" onclick="changelang('en')" >In English</a>
+            @else
+                <a rel="nofollow" href="javascript:" onclick="changelang('zh-CN')">中文版</a>
+            @endif
 
             @foreach(getPositionNav('top') as $item)
                 <a rel="nofollow" href="{{$item['url']}}" @if($item['opennew'])target="_blank"@else target="_self"@endif>{{getLangData($item,'name')}}</a>

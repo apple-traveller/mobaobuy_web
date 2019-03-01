@@ -83,6 +83,9 @@
             margin-right: 10px;
             margin-top: -27px;
         }
+        .gd_btns:hover{
+            color:#fff;
+        }
 	</style>
 @endsection
 @section('js')
@@ -108,9 +111,9 @@
         @if(true)
             <div class="w1200 mt20 good_l" style="margin-top: 20px;">
                 <h2 class="product_title">
-                    直营店铺列表
+                    {{trans('home.direct_stores_list')}}
                     <div class="fr mr20" style="font-size: 14px">
-                        <span>共 <font class="green"> {{$total}} </font>个知名品牌入驻</span>
+                        <span>{{trans('home.self_quote_prefix')}} <font class="green"> {{$total}} </font>{{trans('home.stationed')}}</span>
                     </div>
                 </h2>
                 <ul class="bd_wrap_items">
@@ -118,17 +121,17 @@
                         <li>
                             <div class="logo_img fl gcolor"><img width="50" height="57" src="http://img.sumibuy.com/brand/20171227094915_8553.png"></div>
                             <div class="fl detail fs14">
-                                <div style="font-weight: 400">店铺：{{$v['store_name']}}</div>
-                                <div>经营品类：VA、VE、氨基酸 </div>
+                                <div style="font-weight: 400">{{trans('home.shop_name')}}：{{getLangData($v,'store_name')}}</div>
+                                <div>{{trans('home.business_category')}}：{{getLangData($v,'main_cat')}}</div>
                                 <div style="width: 800px">
-                                    <div style="float: left;width:65%">主营品牌：新和成 、生物科技、沫宝科技</div>
-                                    <div style="float: left;width:35%">交货地：上海市、北京市、广州市</div>
+                                    <div style="float: left;width:65%">{{trans('home.main_brand')}}：{{getLangData($v,'main_brand')}}</div>
+                                    <div style="float: left;width:35%">{{trans('home.delivery_area')}}：{{getLangData($v,'delivery_area')}}</div>
                                 </div>
                                 <div style="width: 800px">
-                                    <div style="float: left;width:65%">规格：50万IU VA、50万IU VE</div>
-                                    <div style="float: left;width:35%">交货方式：自提</div>
+                                    <div style="float: left;width:65%">{{trans('home.spec')}}：{{getLangData($v,'spec')}}</div>
+                                    <div style="float: left;width:35%">{{trans('home.delivery_method')}}：{{getLangData($v,'delivery_method')}}</div>
                                 </div>
-                                <a class="gd_btns" href="javascript:" target="_blank">进入直营专区</a>
+                                <a class="gd_btns" href="/goodsList/2?store_id={{$v['id']}}" href="javascript:" target="_blank">{{trans('home.entry')}}</a>
                             </div>
                         </li>
                     @endforeach

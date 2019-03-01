@@ -364,4 +364,26 @@ if(!function_exists('getLangData')){
     }
 }
 
+if(!function_exists('getLangGoodsSource')){
+    function getLangGoodsSource($goods_source){
+        $key = App::getLocale();
+        if($key == 'zh-CN'){
+            switch($goods_source){
+                case 0:$res = '现货';break;
+                case 1:$res = '紧张';break;
+                case 2:$res = '厂家直发';break;
+                default:$res = '现货';
+            }
+        }else{
+            switch($goods_source){
+                case 0:$res = 'spot goods';break;
+                case 1:$res = 'Tight supply';break;
+                case 2:$res = 'Straight hair';break;
+                default:$res = 'spot goods';
+            }
+        }
+        return $res;
+    }
+}
+
 

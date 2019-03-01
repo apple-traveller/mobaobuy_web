@@ -118,6 +118,7 @@ class ShopGoodsQuoteController extends Controller
         $goods_id = $request->input('goods_id','');
         $delivery_method = $request->input('delivery_method','');
         $delivery_time = $request->input('delivery_time','');
+        $delivery_time_en = $request->input('delivery_time_en','');
         $delivery_place = $request->input('place_id_LABELS','');
         $place_id = $request->input('place_id','');
         $production_date = $request->input('production_date','');
@@ -126,6 +127,7 @@ class ShopGoodsQuoteController extends Controller
         $salesman_id = $request->input('salesman_id','');
         $type = $request->input('type','');
         $min_limit = $request->input('min_limit','');
+        $goods_source = $request->input('goods_source','');
 
         if($goods_id==0||!$goods_id){
             return $this->error('商品不能为空');
@@ -161,6 +163,7 @@ class ShopGoodsQuoteController extends Controller
         if(!$shop_price){
             return $this->error('店铺售价不能为空');
         }
+
         if(!$salesman_id){
             return $this->error('业务员不能为空');
         } else {
@@ -186,7 +189,9 @@ class ShopGoodsQuoteController extends Controller
             'goods_number' => $goods['packing_spec']*10000,
             'min_limit' => $min_limit,
             'delivery_method' => $delivery_method,
+            'delivery_method_en' => $delivery_method == '配送' ? 'Delivery' : 'Self delivery',
             'delivery_time' => $delivery_time,
+            'delivery_time_en' => $delivery_time_en,
             'shop_price' => $shop_price,
             'expiry_time' => date('Y-m-d H:i:s',strtotime(Carbon::now()->toDateString().' '.getConfig('close_quote'))),
             'goods_sn' => $goods['goods_sn'],
@@ -197,6 +202,7 @@ class ShopGoodsQuoteController extends Controller
             'type' => $type,
             'consign_status'=>1,
             'is_self_run' => $shopInfo['shop_info']['is_self_run'],
+            'goods_source' => $goods_source
         ];
         try{
             if($id){

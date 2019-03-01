@@ -71,6 +71,7 @@ return [
     'spec2'=>'spec',
     'area'=>'area',
     'delivery_time'=>'Delivery time',//Delivery time
+    'goods_source'=>'Source of supply',//
     'delivery_area'=>'Area',
     'delivery_method'=>'Method',
     'update_time'=>'Update time',
@@ -431,7 +432,10 @@ return [
     'no'=>'No',
     'yes'=>'Yes',
     'save'=>'Save',
+    'save_success'=>'Save successfully',
     'cancellation_account'=>'Cancellation account',
+    'cancellation_account_success'=>'Cancellation account successfully',
+    'cancellation_account_tips'=>'After the account is cancelled, the account will be deleted and cannot be retrieved. Confirm that the account will continue to be cancelled?',
 
     #我的收藏
     'cancel_collection'=>'Cancel collection',//Cancel collection
@@ -654,4 +658,11 @@ return [
     'times'=>'times',//
     'no_login'=>'Not logged in',//
     'copy_address'=>'Copy address',//
+
+    #品牌直营
+    'direct_stores_list'=>'List of Direct Stores',//
+    'stationed'=>'well-known brands are stationed',//
+    'business_category'=>'Business category',//
+    'main_brand'=>'Main brand',//
+    'entry'=>'Entry',//
 ];

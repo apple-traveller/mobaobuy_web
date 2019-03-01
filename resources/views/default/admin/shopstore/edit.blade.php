@@ -35,9 +35,23 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文店铺名称：</div>
+                                <div class="label_value">
+                                    <input type="text" name="store_name_en" class="text" value="{{$storeInfo['store_name_en']}}" maxlength="40" autocomplete="off" id="store_name_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;主营品类：</div>
                                 <div class="label_value">
                                     <input type="text" name="main_cat" class="text" value="{{$storeInfo['main_cat']}}" maxlength="40" autocomplete="off" id="main_cat">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;英文主营品类：</div>
+                                <div class="label_value">
+                                    <input type="text" name="main_cat_en" class="text" value="{{$storeInfo['main_cat_en']}}" maxlength="40" autocomplete="off" id="main_cat_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -49,9 +63,23 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label">&nbsp;英文主营品牌：</div>
+                                <div class="label_value">
+                                    <input type="text" name="main_brand_en" class="text" value="{{$storeInfo['main_brand_en']}}" maxlength="40" autocomplete="off" id="main_brand_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;规格：</div>
                                 <div class="label_value">
                                     <input type="text" name="spec" class="text" value="{{$storeInfo['spec']}}" maxlength="40" autocomplete="off" id="spec">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;英文规格：</div>
+                                <div class="label_value">
+                                    <input type="text" name="spec_en" class="text" value="{{$storeInfo['spec_en']}}" maxlength="40" autocomplete="off" id="spec_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -63,9 +91,23 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label">&nbsp;英文交货地：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_area_en" class="text" value="{{$storeInfo['delivery_area_en']}}" maxlength="40" autocomplete="off" id="delivery_area_en">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;交货方式：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_method" class="text" value="{{$storeInfo['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;英文交货方式：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_method_en" class="text" value="{{$storeInfo['delivery_method_en']}}" maxlength="40" autocomplete="off" id="delivery_method_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>

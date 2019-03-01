@@ -95,8 +95,8 @@
                                 <div class="label_value">
                                     {{--<input type="text" name="delivery_method" class="text" value="{{old('delivery_method')}}" maxlength="40" autocomplete="off" id="delivery_method">--}}
                                     <select name="delivery_method" id="" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
-                                        <option value="自提" @if(old('delivery_method')=='自提') selected @endif >自提</option>
-                                        <option value="现货" @if(old('delivery_method')=='现货') selected @endif >配送</option>
+                                        <option value="自提" @if(old('delivery_method')=='自提') selected @endif >自提(Self delivery)</option>
+                                        <option value="现货" @if(old('delivery_method')=='现货') selected @endif >配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -106,6 +106,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_time" class="text" value="{{old('delivery_time')?old('delivery_time'):'现货'}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time_en" class="text" value="{{old('delivery_time_en')?old('delivery_time_en'):'spot goods'}}" maxlength="40" autocomplete="off" id="delivery_time_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -142,8 +149,20 @@
                                     {{--<input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">--}}
                                     <select name="salesman_id" id="salesman_id" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
                                         @foreach($salesman as $v)
-                                        <option value="{{$v['id']}}" @if(old('salesman')==$v['name']) selected @endif >{{$v['name']}}</option>
+                                            <option value="{{$v['id']}}" @if(old('salesman')==$v['name']) selected @endif >{{$v['name']}}</option>
                                         @endforeach
+                                    </select>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
+                                <div class="label_value">
+                                    {{--<input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">--}}
+                                    <select name="salesman_id" id="salesman_id" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
+                                        <option value="0" @if(old('goods_source')==0) selected="selected" @endif >现货</option>
+                                        <option value="1" @if(old('goods_source')==1) selected="selected" @endif >紧张</option>
+                                        <option value="2" @if(old('goods_source')==2) selected="selected" @endif >厂家直发</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>

@@ -91,8 +91,8 @@
                                 <div class="label_value">
                                     {{--<input type="text" name="delivery_method" class="text" value="{{$goodsQuote['delivery_method']}}" maxlength="40" autocomplete="off" id="delivery_method">--}}
                                     <select name="delivery_method" id="" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
-                                        <option value="自提" @if($goodsQuote['delivery_method']=='自提') selected @endif >自提</option>
-                                        <option value="现货" @if($goodsQuote['delivery_method']=='现货') selected @endif >配送</option>
+                                        <option value="自提" @if($goodsQuote['delivery_method']=='自提') selected @endif >自提(Self delivery)</option>
+                                        <option value="现货" @if($goodsQuote['delivery_method']=='现货') selected @endif >配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>
@@ -102,6 +102,13 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货时间：</div>
                                 <div class="label_value">
                                     <input type="text" name="delivery_time" class="text" value="{{$goodsQuote['delivery_time']}}" maxlength="40" autocomplete="off" id="delivery_time">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;英文交货时间：</div>
+                                <div class="label_value">
+                                    <input type="text" name="delivery_time_en" class="text" value="{{$goodsQuote['delivery_time_en']}}" maxlength="40" autocomplete="off" id="delivery_time_en">
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
@@ -144,7 +151,18 @@
                                     <div class="form_prompt"></div>
                                 </div>
                             </div>
-
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
+                                <div class="label_value">
+                                    {{--<input type="text" name="salesman" value="{{old('salesman')}}" id="salesman" class=" text" maxlength="10" autocomplete="off">--}}
+                                    <select name="goods_source" id="goods_source" style="line-height: 25px;height: 28px;padding: 0 10px;border: 1px solid #d2d2d2;outline: 0;">
+                                        <option value="0" @if($goodsQuote['goods_source']==0) selected="selected" @endif >现货</option>
+                                        <option value="1" @if($goodsQuote['goods_source']==1) selected="selected" @endif >紧张</option>
+                                        <option value="2" @if($goodsQuote['goods_source']==2) selected="selected" @endif >厂家直发</option>
+                                    </select>
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
                             <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
@@ -186,16 +204,16 @@
             }
             $("#submitBtn").click(function(){
                 if($("#article_form").valid()){
-                    let salesman_id = $("#salesman_id").find("option:selected").text();
-                    if (salesman_id===null||salesman_id===''){
-                        layer.confirm('没有业务员，是否前去维护?', {icon: 3, title:'提示'}, function(index){
-                            addTab('业务员','/seller/salesman/list','S042');
-                            parent.location.reload();
-                            layer.close(index);
-                        },function () {
-                            history.back();
-                        });
-                    }
+//                    let salesman_id = $("#salesman_id").find("option:selected").text();alert(salesman_id);
+//                    if (salesman_id===null||salesman_id===''){
+//                        layer.confirm('没有业务员，是否前去维护?', {icon: 3, title:'提示'}, function(index){
+//                            addTab('业务员','/seller/salesman/list','S042');
+//                            parent.location.reload();
+//                            layer.close(index);
+//                        },function () {
+//                            history.back();
+//                        });
+//                    }
 
                     $("#article_form").submit();
                 }

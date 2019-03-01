@@ -71,6 +71,7 @@ return [
     'spec2'=>'包装规格',
     'area'=>'地区',
     'delivery_time'=>'交货时间',//Delivery time
+    'goods_source'=>'货源',//Source of supply
     'delivery_area'=>'交货地',
     'delivery_method'=>'交货方式',
     'update_time'=>'更新时间',
@@ -431,7 +432,10 @@ return [
     'no'=>'否',
     'yes'=>'是',
     'save'=>'保存',
+    'save_success'=>'保存成功',
     'cancellation_account'=>'注销账号',
+    'cancellation_account_success'=>'注销成功',
+    'cancellation_account_tips'=>'注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
 
     #我的收藏
     'cancel_collection'=>'取消收藏',//Cancel collection
@@ -654,4 +658,11 @@ return [
     'times'=>'次',//times
     'no_login'=>'未登录',//Not logged in
     'copy_address'=>'复制地址',//Copy address
+
+    #品牌直营
+    'direct_stores_list'=>'直营店铺列表',//List of Direct Stores
+    'stationed'=>'个知名品牌入驻',//well-known brands are stationed
+    'business_category'=>'经营品类',//Business category
+    'main_brand'=>'主营品牌',//Main brand
+    'entry'=>'进入直营专区',//Entry
 ];
