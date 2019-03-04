@@ -660,9 +660,14 @@ return [
     'copy_address'=>'复制地址',//Copy address
 
     #品牌直营
-    'direct_stores_list'=>'直营店铺列表',//List of Direct Stores
-    'stationed'=>'个知名品牌入驻',//well-known brands are stationed
+    'direct_stores_list'=>'直营品牌商列表',//List of Direct Stores
+    'stationed'=>'个知名品牌商入驻',//well-known brands are stationed
     'business_category'=>'经营品类',//Business category
     'main_brand'=>'主营品牌',//Main brand
     'entry'=>'进入直营专区',//Entry
+    'brand_dealer'=>'品牌商',//Brand dealer
+
+    #404 505
+    'error_404_tips'=>'对不起，您访问的页面未找到！',//Sorry, the page you visited is not found!
+
 ];

@@ -25,7 +25,7 @@ class FirmUserController extends Controller
         $firmId = session('_web_user_id');
         $user = session('_web_user');
         if(!$user['is_firm']){
-            return $this->error('个人会员并无此功能！');
+            return $this->error(trans('error.not_have_func_tips'));
         }
         if($request->isMethod('get')){
             $firmUserInfo = FirmUserService::firmUserList($user['id']);
@@ -36,7 +36,7 @@ class FirmUserController extends Controller
             try{
                 $userInfo = FirmUserService::search($firmId,$userName);
                 return json_encode(array('code'=>1,'info'=>$userInfo));
-                return $this->success('','',$userInfo);
+//                return $this->success('','',$userInfo);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }

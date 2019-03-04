@@ -44,10 +44,10 @@ class LoginController extends Controller
         }
         $params['flag'] = $flag;
         if(empty($username)){
-            return $this->error('用户名不能为空');
+            return $this->error(trans('error.user_name_cannot_empty'));
         }
         if(empty($password)){
-            return $this->error('密码不能为空');
+            return $this->error(trans('error.password_cannot_empty'));
         }
 
         $other_params = [
@@ -56,7 +56,7 @@ class LoginController extends Controller
         try{
             $user_id = UserService::loginValidate($username, $password, $other_params,$params);
             session()->put('_web_user_id', $user_id);
-            return $this->success('登录成功，正在进入系统...');
+            return $this->success(trans('error.login_success'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
@@ -143,7 +143,7 @@ class LoginController extends Controller
             $type = 'W';
             $user['third_type'] = $type;
             session()->put('third_info',$user);
-            $title ="账号绑定";
+            $title = trans('error.bind_account');
             return $this->display('web.user.register.third',compact('type','title'));//返回第三方登录类型参数$type 标记Q:qq W:微信
         }
     }
@@ -162,7 +162,7 @@ class LoginController extends Controller
         $source_type = $request->get('third_type','');//登录来源 Q：qq W：微信
         $third_info = session('third_info');
         if(empty($username) || empty($password)){
-            return $this->error('用户名或密码参数错误！');
+            return $this->error(trans('error.user_name_and_password_error'));
         }
         $other_params = [
             'ip'  => $request->getClientIp()
@@ -181,9 +181,9 @@ class LoginController extends Controller
             if($result){
                 #登录更新
                 session()->put('_web_user_id', $user_id);
-                return $this->success('登录成功，正在进入系统...');
+                return $this->success(trans('error.login_success'));
             }else{
-                return $this->error('绑定失败！请联系客服处理。');
+                return $this->error(trans('error.bind_failed'));
             }
         }catch (Exception $e){
             return $this->error($e->getMessage());
@@ -208,7 +208,7 @@ class LoginController extends Controller
 
         //手机验证码是否正确
         if(Cache::get(session()->getId().$type.$username) != $messCode){
-            return $this->error('手机验证码不正确');
+            return $this->error(trans('error.mobile_verification_error'));
         }
         $data=[
             'user_name' => $username,
@@ -227,15 +227,15 @@ class LoginController extends Controller
                 $result = UserService::createAppUserInfo($app_data);
                 if($result){
                     if(getConfig('individual_reg_check')) {
-                        return $this->success('提交成功，请等待审核！', url('/verifyReg'));
+                        return $this->success(trans('error.sub_success'), url('/verifyReg'));
                     }else{
                         #登录更新
                         session()->put('_web_user_id', $user_id);
-                        return $this->success('登录成功，正在进入系统...');
+                        return $this->success(trans('error.login_success'));
                     }
                 }
             }
-            return $this->error('注册失败！');
+            return $this->error(trans('error.register_failed'));
         }catch (Exception $e){
             return $this->error($e->getMessage());
         }

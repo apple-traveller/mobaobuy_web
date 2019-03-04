@@ -315,7 +315,7 @@ class ShopGoodsQuoteRepo
         if($type == 3){
             $param = 'left(add_time,7) as t';
         }elseif($type == 2){
-            $param = "concat(year(add_time),'（第',week(add_time),'周）') as t";
+            $param = "concat(year(add_time),'（".trans('error.the')."',week(add_time),'".trans('error.week')."）') as t";
         }else{
             $param = 'left(add_time,10) as t';
         }

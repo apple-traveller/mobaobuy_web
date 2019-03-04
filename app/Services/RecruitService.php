@@ -87,7 +87,7 @@ class RecruitService
     public static function resumeSave($data){
         $data['add_time'] = Carbon::now();
         if(empty($data['resume_path'])){
-            self::throwBizError('上传简历不能为空');
+            self::throwBizError(trans('error.upload_resume_cannot_empty'));
         }
         return ResumeRepo::create($data);
     }

@@ -397,7 +397,7 @@ class GoodsService
         }
 
         if($id<0){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_tips'));
         }
         $goodsInfo = GoodsRepo::getInfo($id);
         if(!empty($goodsInfo)){
@@ -407,7 +407,7 @@ class GoodsService
             }
         }
         if(empty($goodsInfo)){
-            self::throwBizError('商品信息不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
         $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
         if(!empty($shopGoodsInfo)){
@@ -463,7 +463,7 @@ class GoodsService
     public static function productTrend($goodsId,$type=1,$condition){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         if(empty($goodsInfo)){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_tips'));
         }
 
         $goodsList = ShopGoodsQuoteRepo::getList(['add_time'=>'asc'],['goods_id'=>$goodsId]);

@@ -86,6 +86,12 @@
         .gd_btns:hover{
             color:#fff;
         }
+        .wrap_bargain {
+            background: url(/default/img/shop_store_bg.jpg) no-repeat center top rgb(244, 244, 244);
+            overflow: hidden;
+            clear: both;
+            height: 350px;
+        }
 	</style>
 @endsection
 @section('js')
@@ -107,9 +113,12 @@
 @endsection
 
 @section('content')
+    {{--<div><img src="/default/img/shop_store_bg.jpg" style="width: 100%;"/></div>--}}
+    <div class="wrap_bargain"></div>
 	<div class="clearfix good">
         @if(!empty($storeList))
             <div class="w1200 mt20 good_l" style="margin-top: 20px;">
+
                 <h2 class="product_title" style="background-color: #fff;">
                     {{trans('home.direct_stores_list')}}
                     <div class="fr mr20" style="font-size: 14px">
@@ -121,7 +130,7 @@
                         <li>
                             <div class="logo_img fl gcolor"><img width="50" height="57" src="http://img.sumibuy.com/brand/20171227094915_8553.png"></div>
                             <div class="fl detail fs14">
-                                <div style="font-weight: 400">{{trans('home.shop_name')}}：{{getLangData($v,'store_name')}}</div>
+                                <div style="font-weight: 400">{{trans('home.brand_dealer')}}：{{getLangData($v,'store_name')}}</div>
                                 <div>{{trans('home.business_category')}}：{{getLangData($v,'main_cat')}}</div>
                                 <div style="width: 800px">
                                     <div style="float: left;width:65%">{{trans('home.main_brand')}}：{{getLangData($v,'main_brand')}}</div>

@@ -20,8 +20,8 @@
 @endsection
 @section('content')
 <div class="not_found">
-    <p class="not_found_p">对不起，您访问的页面未找到！</p>
-    <p><a class="not_found_a" href="/">返回首页</a></p>
+    <p class="not_found_p">{{trans('home.error_404_tips')}}</p>
+    <p><a class="not_found_a" href="/">{{trans('home.back_home')}}</a></p>
 </div>
 @endsection
 

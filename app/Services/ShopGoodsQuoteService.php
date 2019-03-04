@@ -27,7 +27,7 @@ class ShopGoodsQuoteService
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
 
         foreach ($result['list'] as $k => $vo) {
-            $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
+            $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : trans('error.no_brand');
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
             $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
@@ -79,7 +79,7 @@ class ShopGoodsQuoteService
     {
         $result = ShopGoodsQuoteRepo::getQuoteInfoBySearch($pager, $condition);
         foreach ($result['list'] as $k => $vo) {
-            $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : "无品牌";
+            $result['list'][$k]['brand_name'] = $vo['brand_name'] ? $vo['brand_name'] : trans('error.no_brand');
 //            $result['list'][$k]['brand_name_en'] = $vo['brand_name_en'] ? $vo['brand_name_en'] : "No brand";
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
@@ -384,11 +384,11 @@ class ShopGoodsQuoteService
         $id = decrypt($id);
         $ActivityInfo =  ShopGoodsQuoteRepo::getInfo($id);
         if(empty($ActivityInfo)){
-            self::throwBizError('清仓商品不存在');
+            self::throwBizError(trans('error.clear_goods_not_exist'));
         }
         $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
 
         //自定义属性分割
@@ -469,7 +469,7 @@ class ShopGoodsQuoteService
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         $activityInfo = ShopGoodsQuoteRepo::getInfo($activityId);
         if($activityInfo['goods_number'] <= 0){
-            self::throwBizError('可售数量为0,无法下单');
+            self::throwBizError(trans('error.insufficient_stock_tips'));
         }
 
         if($goodsNum % $goodsInfo['packing_spec'] == 0){

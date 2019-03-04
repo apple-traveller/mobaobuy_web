@@ -30,7 +30,7 @@ class FirmUserService
         //查询此手机号是否存在，
         $userInfo = UserRepo::getInfoByFields(['user_name'=>$phone, 'is_firm'=>0]);
         if(empty($userInfo)){
-            self::throwBizError('手机用户不存在!');
+            self::throwBizError(trans('error.user_not_exist'));
         }
         $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userInfo['id']]);
         $userPermi = [];
@@ -99,16 +99,16 @@ class FirmUserService
                 return FirmUserRepo::modify($firmUserInfo['id'],$userPermi);
 
             }
-            self::throwBizError('用户未绑定企业');
+            self::throwBizError(trans('error.user_unbound_enterprise'));
         }else{
             //新增
 
             if($firmUserInfo){
-                self::throwBizError('企业用户已绑定!');
+                self::throwBizError(trans('error.bound_enterprise_tips'));
             }
 
             if($userInfo['is_firm'] == 1){
-                self::throwBizError('企业账户不能被添加!');
+                self::throwBizError(trans('error.enterprise_cannot_add'));
             }
 
             $userPermi['firm_id'] = $firmId;
@@ -162,30 +162,30 @@ class FirmUserService
     //企业根据手机号码查询需要绑定的员工
     public static function search($firmId,$name){
         if(!preg_match("/^1[345789]{1}\\d{9}$/",$name)){
-            self::throwBizError('手机号码格式不正确!');
+            self::throwBizError(trans('error.mobile_error_tips'));
         }
 
         $userInfo = UserRepo::getInfoByFields(['user_name'=>$name]);
         if($userInfo){
             $firmUserInfo = FirmUserRepo::getInfoByFields(['firm_id'=>$firmId,'user_id'=>$userInfo['id']]);
             if($firmUserInfo){
-                self::throwBizError('用户已经绑定过本企业了');
+                self::throwBizError(trans('error.bound_enterprise_tips'));
             }
             return $userInfo;
         }
-        self::throwBizError('未找到该用户');
+        self::throwBizError(trans('error.user_not_found'));
     }
     //编辑企业会员弹层获取数据
     public static function editFirmUser($id){
         //获取firmuser表数据
         $firmUserInfo = FirmUserRepo::getInfo($id);
         if(empty($firmUserInfo)){
-            self::throwBizError('企业用户不存在');
+            self::throwBizError(trans('error.enterprise_not_exist'));
         }
         //获取user表user_name
         $userInfo = UserRepo::getInfo($firmUserInfo['user_id']);
         if(empty($userInfo)){
-            self::throwBizError('用户不存在');
+            self::throwBizError(trans('error.user_not_exist'));
         }
         return ['firm_user_info'=>$firmUserInfo,'user_phone'=>$userInfo['user_name']];
     }

@@ -23,19 +23,19 @@ class InquireQuoteService
     public static function savebuy($buyQuote){
         $buyQuote['add_time'] = Carbon::now();
         if(empty($buyQuote['inquire_id'])){
-            self::throwBizError('求购信息有误');
+            self::throwBizError(trans('error.inquire_info_error'));
         }
 
         if(empty($buyQuote['price'])){
-            self::throwBizError('报价价格不能为空');
+            self::throwBizError(trans('error.quote_price_cannot_empty'));
         }
 
         if(empty($buyQuote['num'])){
-            self::throwBizError('报价数量不能为空');
+            self::throwBizError(trans('error.quote_num_cannot_empty'));
         }
 
         if(empty($buyQuote['delivery_area'])){
-            self::throwBizError('交货地不能为空');
+            self::throwBizError(trans('error.delivery_area_cannot_empty'));
         }
 
         $inquireInfo = InquireRepo::getInfo($buyQuote['inquire_id']);

@@ -76,7 +76,7 @@ class NewsController extends Controller
     {
 //        $check_id = ArticleService::check_cat($id,$cat_id);
         if (empty($id)){
-            return $this->error('没有这个页面');
+            return $this->error(trans('error.unable_get_id'));
         }
 
         $article = ArticleService::getInfo($id);

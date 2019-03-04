@@ -16,7 +16,7 @@ class OrderContractController extends Controller
         $orderContractInfo['ip'] = $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '';
         try{
             OrderContractService::checkOrderContract($orderContractInfo);
-            return $this->success('上传成功');
+            return $this->success(trans('error.upload_success'));
         }catch (\Exception $e){
             return $this->error($e->getMessage());
         }

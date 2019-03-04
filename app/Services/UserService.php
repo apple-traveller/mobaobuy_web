@@ -76,7 +76,7 @@ class UserService
     public static function userRegister($data)
     {
         if(self::checkNameExists($data['user_name'])){
-            self::throwBizError('手机号已经注册');
+            self::throwBizError(trans('error.mobile_registered'));
         }
 
         $data['reg_time'] = Carbon::now();
@@ -91,11 +91,11 @@ class UserService
             //查找黑名单表是否存在
             $firmBlack = FirmBlacklistRepo::getInfoByFields(['firm_name' => $data['nick_name']]);
             if ($firmBlack) {
-                self::throwBizError('企业已被冻结');
+                self::throwBizError(trans('error.enterprises_frozen'));
             }
             $data['nick_name'] = $data['company_name'];
             if(!self::checkCompanyNameCanAdd($data['company_name'])){
-                self::throwBizError('企业名称不对或已被注册!');
+                self::throwBizError(trans('error.business_name_error_tips'));
             }
             if(getConfig('firm_reg_check')){
                 $data['is_validated'] = 0;
@@ -160,7 +160,7 @@ class UserService
         //查用户表
         $info = UserRepo::getInfoByFields(['user_name'=>$username]);
         if(empty($info)){
-            self::throwBizError('用户名或密码不正确！');
+            self::throwBizError(trans('error.user_name_and_password_error'));
         }
         if(isset($params['mobile_code'])){
 //            if(!Hash::check($psw, $params['mobile_code'])){
@@ -168,19 +168,19 @@ class UserService
 //                self::throwBizError('用户名或密码不正确！');
 //            }
             if($params['mobile_code'] != $psw){
-                self::throwBizError('用户名或密码不正确');
+                self::throwBizError(trans('error.user_name_and_password_error'));
             }
         }else{
             if(!Hash::check($psw, $info['password'])){
-                self::throwBizError('用户名或密码不正确！');
+                self::throwBizError(trans('error.user_name_and_password_error'));
             }
         }
 
         if ($info['is_freeze']) {
-            self::throwBizError('用户名或密码不正确！');
+            self::throwBizError(trans('error.user_name_and_password_error'));
         }
         if (!$info['is_validated']) {
-            self::throwBizError('账号需待审核通过后才可登录！');
+            self::throwBizError(trans('error.need_audit_can_login_tips'));
         }
         UserRepo::modify($info['id'],['is_logout'=>0]);
         unset($info['password']);

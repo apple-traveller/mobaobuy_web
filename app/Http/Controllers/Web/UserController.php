@@ -70,20 +70,20 @@ class UserController extends Controller
     {
         $mobile = $request->input('mobile');
         if(!$mobile){
-            return $this->error('参数错误！');
+            return $this->error(trans('error.param_error'));
         }
         $userInfo = UserService::getUserInfoByUserName($mobile);
         if(empty($userInfo)){
-            return $this->error('该用户不存在！');
+            return $this->error(trans('error.user_not_exist'));
         }
         if($userInfo['is_firm'] == 1){
-            return $this->error('企业账号不能被添加！');
+            return $this->error(trans('error.enterprise_cannot_add'));
         }
         $res = getRealNameBool($userInfo['id']);
         if($res){
-            return $this->success('验证成功！');
+            return $this->success(trans('error.verification_success'));
         }else{
-            return $this->error('该用户未实名认证！');
+            return $this->error(trans('error.user_not_real_name'));
         }
     }
 
@@ -94,8 +94,12 @@ class UserController extends Controller
 
         return $this->success($rs);
     }
-
-    //注册获取手机验证码
+    /**
+     * 注册获取手机验证码**************************************************
+     * sendRegisterSms
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function sendRegisterSms(Request $request){
         $accountName = $request->input('accountName');
 

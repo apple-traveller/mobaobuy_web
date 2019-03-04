@@ -45,12 +45,12 @@ class ActivityPromoteController extends Controller
         $userInfo = session('_web_user');
 
         if(session('_curr_deputy_user')['is_self'] && (session('_curr_deputy_user')['is_firm'] == 0)){
-            return $this->error('抢购只能是企业用户下单');
+            return $this->error(trans('error.only_enterprise_users_tips'));
         }
 
         if((session('_curr_deputy_user')['is_firm'] == 1) && (session('_curr_deputy_user')['is_self'] == 0)){
             if(!session('_curr_deputy_user')['can_po']){
-                return $this->error('您没有权限为该企业下单');
+                return $this->error(trans('error.no_right_place_tips'));
             }
         }
 

@@ -1562,7 +1562,7 @@ class OrderInfoService
         }
 
         if(empty($orderInfo)){
-            self::throwBizError('订单详情有误!');
+            self::throwBizError(trans('error.order_detail_error'));
         }
         if($orderInfo['firm_id'] && $orderInfo['user_id']){
             if($firmId != $orderInfo['firm_id']){
@@ -1618,7 +1618,7 @@ class OrderInfoService
     public static function getShopInfoByShopId($shopId){
         $shopInfo = ShopRepo::getInfo($shopId);
         if(empty($shopInfo) || $shopId <=0){
-            self::throwBizError('商家信息不存在');
+            self::throwBizError(trans('error.shop_info_not_exist'));
         }
         return $shopInfo;
     }
@@ -1632,7 +1632,7 @@ class OrderInfoService
             $orderInfo = self::getOrderInfoById($id);
             $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
             if(empty($orderInfo)){
-                self::throwBizError('订单信息不存在');
+                self::throwBizError(trans('error.order_info_not_exist'));
             }
 
             //已确认订单取消返库存
@@ -1677,11 +1677,11 @@ class OrderInfoService
         $flow_time = Carbon::now();
         $orderInfo = OrderInfoRepo::getInfo($id);
         if (empty($orderInfo)){
-            self::throwBizError('订单信息不存在');
+            self::throwBizError(trans('error.order_info_not_exist'));
         }
         $orderGoodsInfo = OrderGoodsRepo::getList([],['order_id'=>$orderInfo['id']]);
         if(empty($orderGoodsInfo)){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_tips'));
         }
 
         //企业存库表
@@ -1830,10 +1830,10 @@ class OrderInfoService
                     //限时抢购生产订单
                     $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
                     if($activityPromoteInfo['available_quantity'] < $v['goods_number']){
-                        self::throwBizError('可售数量不足');
+                        self::throwBizError(trans('error.insufficient_stock_tips'));
                     }
                     if (empty($activityPromoteInfo)) {
-                        self::throwBizError('商品不存在！');
+                        self::throwBizError(trans('error.goods_not_exist'));
                     }
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
@@ -1854,7 +1854,7 @@ class OrderInfoService
                     //集采火拼生产订单
                     $activityWholesaleInfo = ActivityWholesaleRepo::getInfo($id);
                     if (empty($activityWholesaleInfo)) {
-                        self::throwBizError('商品不存在！');
+                        self::throwBizError(trans('error.goods_not_exist'));
                     }
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
@@ -1874,10 +1874,10 @@ class OrderInfoService
                 } elseif ($type == 'consign') {
                     $activityConsignInfo = ShopGoodsQuoteRepo::getInfo($id);
                     if (empty($activityConsignInfo)) {
-                        self::throwBizError('商品不存在！');
+                        self::throwBizError(trans('error.goods_not_exist'));
                     }
                     if($activityConsignInfo['goods_number'] < $v['goods_number']){
-                        self::throwBizError('库存数量不足');
+                        self::throwBizError(trans('error.insufficient_stock_tips'));
                     }
 
                     $orderGoods = [
@@ -1897,15 +1897,15 @@ class OrderInfoService
                 } else {
                     $cartInfo = CartRepo::getInfo($id);
                     if (empty($cartInfo)) {
-                        self::throwBizError('商品不存在！');
+                        self::throwBizError(trans('error.goods_not_exist'));
                     }
                     $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
 
                     if($cartInfo['goods_number'] > $shopGoodsQuoteInfo['goods_number']){
-                        self::throwBizError('库存数量不足');
+                        self::throwBizError(trans('error.insufficient_stock_tips'));
                     }
                     if($shopGoodsQuoteInfo['expiry_time'] < date('Y-m-d H:i:s')){
-                        self::throwBizError('存在已过期商品【'.$shopGoodsQuoteInfo['goods_name'].'】,不能下单');
+                        self::throwBizError(trans('error.expired_goods').' 【'.$shopGoodsQuoteInfo['goods_name'].'】, '.trans('error.no_order'));
                     }
                     $orderGoods = [
                         'order_id' => $orderInfoResult['id'],
@@ -2000,7 +2000,7 @@ class OrderInfoService
         $orderSn = decrypt($orderSn);
         $orderInfo = OrderInfoRepo::getInfoByFields(['order_sn'=>$orderSn]);
         if(empty($orderInfo)){
-            self::throwBizError('订单信息不存在');
+            self::throwBizError(trans('error.order_info_not_exist'));
         }
         if($deposit){
             return OrderInfoRepo::modify($orderInfo['id'],['deposit_pay_voucher'=>$payVoucher]);
