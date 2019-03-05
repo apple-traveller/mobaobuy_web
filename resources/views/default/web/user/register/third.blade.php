@@ -54,8 +54,15 @@
                     </div>
                 </div>
             </div>
-            <div class="register-checkbox">
-                <label class="check_box"><input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />{{trans('home.read_agreed')}}<a class="orange">{{trans('home.registration_agreement')}}</a></label>
+            <div class="register-checkbox" style="width:300px;margin: 0 auto">
+                <label class="check_box">
+                    <p style="width:20px; height:20px;overflow: hidden;float:left;margin-top: 1px;">
+                        <input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />
+                    </p>
+                    {{--<input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />--}}
+                    {{trans('home.read_agreed')}}
+                    <a class="orange">{{trans('home.registration_agreement')}}</a>
+                </label>
             </div>
             <button class="register-button" id="sub-btn">{{trans('home.bind_account')}}</button>
         </div>
@@ -288,7 +295,7 @@
         }
         phoneValidateBool();
         verifyValidate ();
-        if (!checkAccount || !pwdValidate()) {
+        if (checkAccount || !pwdValidate()) {
             return false;
         }
         params = {
