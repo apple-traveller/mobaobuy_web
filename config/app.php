@@ -79,7 +79,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-    'locale' => strrpos(strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), 'zh-cn') !== false ? 'zh-CN' : 'en',
+    'locale' => strrpos(strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), 'zh-cn') !== false || isMobile() ? 'zh-CN' : 'en',
 
     /*
     |--------------------------------------------------------------------------
