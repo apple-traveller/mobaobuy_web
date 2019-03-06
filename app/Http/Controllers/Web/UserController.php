@@ -69,7 +69,7 @@ class UserController extends Controller
     //检查账号用户是否绑定过微信
     public function checkNameIsBindWx(Request $request){
         $accountName = $request->input('accountName');
-        $rs = UserService::checkNameIsBindWx($accountName);
+        $rs = checkNameIsBindWx($accountName);
         if($rs){
             return $this->success($rs);
         }else{
@@ -1129,12 +1129,14 @@ class UserController extends Controller
     public function untying()
     {
         $userInfo = session('_web_user');
-        $res = AppUsersRepo::deleteByFields(['user_id'=>$userInfo['id']]);
-        if($res){
-            return $this->success(trans('error.success'));
-        }else{
-            return $this->error(trans('error.fail'));
+        #先检测是否绑定了微信
+        if(checkNameIsBindWx($userInfo['user_name'])){
+            $res = AppUsersRepo::deleteByFields(['user_id'=>$userInfo['id']]);
+            if($res){
+                return $this->success(trans('error.success'));
+            }
         }
+        return $this->error(trans('error.fail'));
 
     }
 }

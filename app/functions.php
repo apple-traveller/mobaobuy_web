@@ -416,5 +416,17 @@ if(!function_exists('isMobile')){
         return false;
     }
 }
+//验证用户是否绑定过微信
+if(!function_exists('checkNameIsBindWx')){
+    function checkNameIsBindWx($name){
+        #获取用户id
+        $userInfo = \App\Repositories\UserRepo::getInfoByFields(['user_name'=>$name]);
+        #检查user_id是否绑定过wx
+        if(\App\Repositories\AppUsersRepo::getTotalCount(['user_id'=>$userInfo['id']])){
+            return true;
+        }
+        return false;
+    }
+}
 
 

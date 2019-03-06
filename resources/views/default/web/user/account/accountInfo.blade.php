@@ -127,7 +127,9 @@
             @if(!$userInfo['is_firm'])
                 <button class="account_layout_btn redbg fs18 white">{{trans('home.cancellation_account')}}</button>
             @endif
-            <button class="account_untying_btn redbg fs18 white">解绑微信</button>
+            @if(checkNameIsBindWx($userInfo['user_name']))
+                <button class="account_untying_btn redbg fs18 white">解绑微信</button>
+            @endif
         </div>
         </form>
     </div>
