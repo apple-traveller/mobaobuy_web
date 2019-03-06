@@ -346,10 +346,12 @@ Route::get('/logistics/instation','KuaidiController@searchInstation');//查站�
 Route::group(['namespace'=>'Web','middleware' => 'web.closed'],function() {
 
     Route::get('/', 'IndexController@index'); //首页
-    Route::get('/edit_language', 'IndexController@edit_language'); //首页
+    Route::get('/edit_language', 'IndexController@edit_language'); //切换语言
     Route::post('/user/checkNameExists', 'UserController@checkNameExists');//验证用户名是否存在
+    Route::post('/user/checkNameIsBindWx', 'UserController@checkNameIsBindWx');//验证用户是否绑定过微信
     Route::post('/user/checkCanRegister', 'UserController@checkCompanyNameCanAdd');//验证公司是否存在
     Route::get('/register/sendSms', 'UserController@sendRegisterSms');//发送注册短信
+    Route::get('/untying', 'UserController@untying');//解绑微信
 
     Route::get('/userRegister', 'UserController@userRegister')->name('register');//个人注册
     Route::post('/userRegister', 'UserController@userRegister');

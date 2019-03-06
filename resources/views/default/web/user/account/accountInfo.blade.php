@@ -7,8 +7,9 @@
         .account_infor_list li .infor_title{width: 150px;float: left; text-align: right;height:40px;line-height: 40px;}
         .account_infor_list li .infor_title_input{width: 85px;float: left; text-align: right;height: 40px;line-height: 40px;}
         .infor_input{width: 260px;height: 40px;line-height: 40px;border: 1px solid #DEDEDE;margin-left: 10px;padding: 10px;box-sizing: border-box;}
-        .account_infor_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
-        .account_layout_btn{width: 140px;height: 40px;line-height: 40px;border: none; border-radius:3px;margin-left: 35px;margin-top: 30px;background-color: red;}
+        .account_infor_btn{width: 70px;height: 30px;line-height: 30px;border: none; border-radius:3px;margin-left: 135px;margin-top: 30px;background-color: #75b335;}
+        .account_layout_btn{width: 100px;height: 30px;line-height: 30px;border: none; border-radius:3px;margin-left: 20px;margin-top: 30px;background-color: red;}
+        .account_untying_btn{width: 100px;height: 30px;line-height: 30px;border: none; border-radius:3px;margin-left: 20px;margin-top: 30px;background-color: red;}
     </style>
 @endsection
 @section('js')
@@ -64,8 +65,27 @@
                     Ajax.call('/account/accountLogout',{},function(res){
                         console.log(res.data);
                         if (res.code == 1) {
-                            $.msg.alert('{{trans('home.cancellation_account_success')}}');
-                            window.location.href = '/';
+                            layer.msg('{{trans('home.cancellation_account_success')}}',{time:2000});
+                            setTimeout(function () {window.location.href = '/';}, 2000);
+                        } else {
+                            $.msg.alert(res.msg);
+                        }
+                    },'GET','JSON');
+                },
+                function(){
+
+                }
+            )
+        });
+        //解绑账号
+        $('.account_untying_btn').click(function(){
+            $.msg.confirm('确定要解除该账号与微信的绑定么？',
+                function(){
+                    Ajax.call('/untying',{},function(res){
+                        console.log(res.data);
+                        if (res.code == 1) {
+                            layer.msg('解绑成功！',{time:2000});
+                            setTimeout(function () {window.location.href = '/';}, 2000);
                         } else {
                             $.msg.alert(res.msg);
                         }
@@ -102,10 +122,12 @@
                     @endif
                 </ul>
             <button class="account_infor_btn code_greenbg fs18 white">{{trans('home.save')}}</button>
+
             {{--未实名认证和 个人认证的时候可以注销账号 注销个人认证的账号要注意清除与企业的关联信息--}}
             @if(!$userInfo['is_firm'])
                 <button class="account_layout_btn redbg fs18 white">{{trans('home.cancellation_account')}}</button>
             @endif
+            <button class="account_untying_btn redbg fs18 white">解绑微信</button>
         </div>
         </form>
     </div>

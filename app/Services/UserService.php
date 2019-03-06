@@ -37,6 +37,21 @@ class UserService
     }
 
     /**
+     * 验证用户是否绑定过微信
+     * @param $name
+     * @return bool
+     */
+    public static function checkNameIsBindWx($name){
+        #获取用户id
+        $userInfo = UserRepo::getInfoByFields(['user_name'=>$name]);
+        #检查user_id是否绑定过wx
+        if(AppUsersRepo::getTotalCount(['user_id'=>$userInfo['id']])){
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @param $name
      * @return bool
      * 验证用户id是否实名并通过

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 
+use App\Repositories\AppUsersRepo;
 use App\Repositories\RegionRepo;
 use App\Services\CartService;
 use App\Services\OrderInfoService;
@@ -58,6 +59,17 @@ class UserController extends Controller
     public function checkNameExists(Request $request){
         $accountName = $request->input('accountName');
         $rs = UserService::checkNameExists($accountName);
+        if($rs){
+            return $this->success($rs);
+        }else{
+            return $this->error($rs);
+        }
+
+    }
+    //检查账号用户是否绑定过微信
+    public function checkNameIsBindWx(Request $request){
+        $accountName = $request->input('accountName');
+        $rs = UserService::checkNameIsBindWx($accountName);
         if($rs){
             return $this->success($rs);
         }else{
@@ -1104,13 +1116,25 @@ class UserController extends Controller
         ];
         $res = UserService::modify($userInfo['id'],$user_data);
         if($res){
-//            session()->forget('_web_user_id');
-//            session()->forget('_web_user');
-//            session()->forget('_curr_deputy_user');
             session()->flush();
             return $this->success(trans('error.user_logout_success'));
         }else{
             return $this->error(trans('error.user_logout_fail'));
         }
+    }
+
+    /**
+     * 解绑微信
+     */
+    public function untying()
+    {
+        $userInfo = session('_web_user');
+        $res = AppUsersRepo::deleteByFields(['user_id'=>$userInfo['id']]);
+        if($res){
+            return $this->success(trans('error.success'));
+        }else{
+            return $this->error(trans('error.fail'));
+        }
+
     }
 }

@@ -85,6 +85,7 @@
     var verify = /^\d{6}$/; // 正则短信验证码
     var veriCodeExep = /^\w{4}$/; // 正则图形验证
     var checkAccount = false;
+    var checkIsBindWx = false;
     var msType = false;
     var msType02 = true;
     var registerCode = false;
@@ -93,14 +94,27 @@
     gv();
     // 手机格式验证
     function phoneValidate() {
+        if (isNull.test($("#phone").val())) {
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.login_mobile')}}");
+            return false;
+        }
         phoneValidateBool();
         //验证手机
         if(!checkNameExists()){//手机号已经注册  直接输入密码绑定第三方账号
-            $('.b_password').show();
-            $('.b_img_code').hide();
-            $('.b_mobile_code').hide();
-            $('.b_msg').hide();
-            $('#sub-btn').attr('class','register-button sub-btn')
+            if(!checkNameIsBindWx()){//账号已经绑定了
+                $('.b_password').hide();
+                $('.b_img_code').hide();
+                $('.b_mobile_code').hide();
+                $('.b_msg').hide();
+                $('#sub-btn').attr('class','register-button')
+            }else{//没有绑定
+                $('.b_password').show();
+                $('.b_img_code').hide();
+                $('.b_mobile_code').hide();
+                $('.b_msg').hide();
+                $('#sub-btn').attr('class','register-button sub-btn')
+            }
+
         }else{//手机号未注册 注册新账号并绑定第三方账号
             $('.b_msg').show();
             $('.b_password').hide();
@@ -139,7 +153,7 @@
             type: "POST",
             async:false,
             success: function (data) {
-                if(data.code == 1){
+                if(data.code == 1){//注册过
                     $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.registered')}}！");
                     checkAccount = false;
                 }else{
@@ -148,6 +162,27 @@
             }
         })
         return checkAccount;
+    }
+    // 验证手机是否绑定过
+    function checkNameIsBindWx() {
+        $.ajax({
+            url: "{{url('user/checkNameIsBindWx')}}",
+            dataType: "json",
+            data: {
+                'accountName':$("#phone").val()
+            },
+            type: "POST",
+            async:false,
+            success: function (data) {
+                if(data.code == 1){//绑定过
+                    $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>该账号已绑定过其他微信，无法重复绑定！");
+                    checkIsBindWx = false;
+                }else{//未绑定
+                    checkIsBindWx = true;
+                }
+            }
+        });
+        return checkIsBindWx;
     }
 
     // 密码格式检查
@@ -295,7 +330,7 @@
         }
         phoneValidateBool();
         verifyValidate ();
-        if (checkAccount || !pwdValidate()) {
+        if (checkAccount || !checkIsBindWx || !pwdValidate()) {
             return false;
         }
         params = {
