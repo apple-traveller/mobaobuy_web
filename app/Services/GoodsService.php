@@ -286,9 +286,9 @@ class GoodsService
                 self::throwBizError('购物车商品不存在！');
             }
             $shopGoodsInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
-            if($cartInfo['goods_number'] > $shopGoodsInfo['goods_number']){
-                self::throwBizError('购买数量不能大于库存数量！');
-            }
+//            if($cartInfo['goods_number'] > $shopGoodsInfo['goods_number']){
+//                self::throwBizError('购买数量不能大于库存数量！');
+//            }
             $cartSession[] = $cartInfo;
         }
         return $cartSession;
