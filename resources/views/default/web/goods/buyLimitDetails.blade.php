@@ -10,7 +10,7 @@
 	<style>
 		.nav-div .nav-cate .ass_menu {display: none;}
 		.top-search-div .search-div .logo{background:none;}
-        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:145px}
+        .input_data{ padding-left: 5px;   border: 1px solid #dedede; height: 27px; box-sizing: border-box;width:144px}
         .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
         .chart_btn:hover{background-color: #75b335; color: #fff;}
         .chart_btn.currlight{background-color: #75b335; color: #fff;}

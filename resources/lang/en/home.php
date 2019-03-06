@@ -49,8 +49,8 @@ return [
     'sold_out'=>'Sold out',
     'overdue'=>'be overdue',//be overdue
     'partaking'=>'partaking',
-    'day'=>'day',
-    'hour'=>'hour',
+    'day'=>'d',
+    'hour'=>'h',
     'minute'=>'m',
     'second'=>'s',
 

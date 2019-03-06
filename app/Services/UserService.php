@@ -44,7 +44,7 @@ class UserService
     public static function isReal($userId){
         $userRealInfo = UserRealRepo::getInfoByFields(['user_id'=>$userId,'review_status'=>1]);
         if(empty($userRealInfo)){
-            self::throwBizError('实名认证通过后才能下单');
+            self::throwBizError(trans('error.passed_real_name_can_order'));
         }
     }
 
@@ -380,7 +380,7 @@ class UserService
         if(!$userCollect){
             return UserCollectGoodsRepo::create(['user_id'=>$userId,'goods_id'=>$goodsId,'add_time'=>Carbon::now()]);
         }
-        self::throwBizError('已收藏过此商品！');
+        self::throwBizError(trans('error.collected'));
     }
 
     //删除搜藏商品
