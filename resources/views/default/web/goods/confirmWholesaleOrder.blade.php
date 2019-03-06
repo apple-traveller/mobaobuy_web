@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>购物车 - @yield('title')</title>
+	<title>{{trans('home.confirm_order')}}</title>
 	@include(themePath('.','web').'web.include.partials.base')
-	@yield('css')
 	<style type="text/css">
 		.logo {
 			width: 170px;

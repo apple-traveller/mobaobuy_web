@@ -205,7 +205,7 @@ class OrderController extends Controller
         $id = $request->input('id');
         try {
             OrderInfoService::egis($id);
-            return $this->success('审核成功');
+            return $this->success(trans('error.audit_success'));
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -218,7 +218,7 @@ class OrderController extends Controller
         $type = $request->input('waitAffirm');
         try {
             OrderInfoService::orderCancel($id,$type);
-            return $this->success('取消成功');
+            return $this->success(trans('error.cancel_success'));
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -260,10 +260,10 @@ class OrderController extends Controller
 
         $invoiceInfo = UserRealService::getInfoByUserId($info['firm_id']);
         if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能下单');
+            return $this->error(trans('error.no_real_name_no_order_tips'));
         }
         if ($invoiceInfo['review_status'] != 1) {
-            return $this->error('您的实名认证还未通过，不能下单');
+            return $this->error(trans('error.real_name_no_pass_no_order_tips'));
         }
 
         //取地址信息的时候 要先判断是否是以公司职员的身份为公司下单 是则取公司账户的地址
@@ -390,20 +390,20 @@ class OrderController extends Controller
         // 判断是否有开票信息 地址可用
         $invoiceInfo = UserRealService::getInfoByUserId($userIds['user_id']);
         if (empty($invoiceInfo)) {
-            return $this->error('您还没有实名认证，不能下单');
+            return $this->error(trans('error.no_real_name_no_order_tips'));
         }
         if ($invoiceInfo['review_status'] != 1) {
-            return $this->error('您的实名认证还未通过，不能下单');
+            return $this->error(trans('error.real_name_no_pass_no_order_tips'));
         }
         $addressList = UserAddressService::getInfoByUserId($u_id);
         if (empty($addressList)) {
-            return $this->error('无地址信息请前去维护');
+            return $this->error(trans('error.no_address_info'));
         }
 
         $cartSession = session('cartSession');
         $carList = $cartSession['goods_list'];
         if ($cartSession['address_id'] == '') {
-            return $this->error('请选择收货地址');
+            return $this->error(trans('error.select_address'));
         }
         //限时抢购下单
         if ($cartSession['from'] == 'promote') {
@@ -412,9 +412,9 @@ class OrderController extends Controller
                 if (!empty($re)) {
 
                     Session::forget('cartSession');
-                    return $this->success('订单提交成功', '', $re);
+                    return $this->success(trans('error.sub_order_success'), '', $re);
                 } else {
-                    return $this->error('订单提交失败');
+                    return $this->error(trans('error.sub_order_error'));
                 }
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -426,9 +426,9 @@ class OrderController extends Controller
                 $re[] = OrderInfoService::createOrder($carList, $userIds, $cartSession['address_id'], $words, $cartSession['from'],$smsType);
                 if (!empty($re)) {
                     Session::forget('cartSession');
-                    return $this->success('订单提交成功', '', $re);
+                    return $this->success(trans('error.sub_order_success'), '', $re);
                 } else {
-                    return $this->error('订单提交失败');
+                    return $this->error(trans('error.sub_order_error'));
                 }
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -458,9 +458,9 @@ class OrderController extends Controller
                 }
                 if (!empty($re)) {
                     Session::forget('cartSession');
-                    return $this->success('订单提交成功', '', $re);
+                    return $this->success(trans('error.sub_order_success'), '', $re);
                 } else {
-                    return $this->error('订单提交失败');
+                    return $this->error(trans('error.sub_order_error'));
                 }
             } catch (\Exception $e) {
                 return $this->error($e->getMessage());
@@ -483,7 +483,7 @@ class OrderController extends Controller
         if (!empty($re)) {
             $re = json_decode($re);
         } else {
-            return $this->error('参数错误');
+            return $this->error(trans('error.param_error'));
         }
         return $this->display('web.user.order.orderSubmission', ['re' => $re]);
     }

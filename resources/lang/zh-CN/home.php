@@ -71,6 +71,7 @@ return [
     'spec2'=>'包装规格',
     'area'=>'地区',
     'delivery_time'=>'交货时间',//Delivery time
+    'goods_source'=>'货源',//Source of supply
     'delivery_area'=>'交货地',
     'delivery_method'=>'交货方式',
     'update_time'=>'更新时间',
@@ -127,6 +128,7 @@ return [
     'carriage_free'=>'不含运费',//Carriage free
     'freight_description'=>'运费说明',//Freight description
     'logistics_description'=>'物流说明',//Logistics description
+    'logistics_description_tips'=>'秣宝网产品报价均不含运费，运费价格需联系客服人员确认。',//No freight is included in the price quoted by MOBAO. The freight price should be confirmed by the customer service personnel.
     'undetermined'=>'待定',
     'purchase_num'=>'采  购  量',//Purchase volume
     'min_purchase_num'=>'最小采购数量',//Minimum Purchase Quantity
@@ -141,15 +143,18 @@ return [
     'delete'=>'删除',
     'is_delete'=>'是否确认删除',
     'delete_error'=>'删除失败',
+    'delete_success'=>'删除成功',
     'user_info_error'=>'用户信息有误',//Error in User Information
     'check_all'=>'全选',//check all
     'subtotal'=>'小计',//Subtotal
     'total'=>'总计',
     'default'=>'默认',//default
     'set_default'=>'默认',//default
-    'x'=>'是否默认',//Is it the default
+    'is_default'=>'是否默认',//Is it the default
     'edit'=>'编辑',
     'return'=>'返回',
+    'not_available'=>'暂无',//Not available
+    'download'=>'下载',//download
 
     #登录注册找回密码
     'hotline'=>'全国免费服务热线',//National Free Service Hotline
@@ -182,6 +187,16 @@ return [
     'registration_agreement'=>'《秣宝平台用户注册协议》',//user registration agreement of Mobao Platform
     'registered'=>'手机号已经注册',//Mobile phone number has been registered
     'mobile_format_error'=>'手机号码格式不正确',
+
+    'account_register'=>'账号注册',//Account registration
+    'register_success'=>'恭喜您，注册申请提交成功！',//Congratulations on your successful registration application!
+    'register_success_tips'=>'请等待客服人员审核，如有问题请咨询客服',//Please wait for the customer service personnel to review. If you have any questions, please consult the customer service.
+    'enter_home'=>'进入平台首页',//Enter the Home Page of the Platform
+
+    'third_login_tips'=>'手机号未注册！是否',//Mobile phone number is not registered! Whether
+    'continue_bind'=>'继续绑定',//to continue binding
+    'or'=>'或者',//or
+    'bind_account'=>'绑定账号',//Bind the account
 
     #首页
     'home_firm_member'=>'企业用户',
@@ -262,6 +277,8 @@ return [
     'upload_resume_no_empty'=>'上传简历不能为空',//Upload resume can not be empty
 
     #商品详情
+    'product'=>'商品',//Goods
+    'product_sn'=>'商品编码',//Goods code
     'product_info'=>'商品信息',
     'product_list'=>'商品列表',//Product list
     'product_price_trend'=>'商品价格走势',//Commodity price trend
@@ -311,8 +328,8 @@ return [
     'choose_address_tips'=>'请选择地址',//Please choose the address.
     'enter_detail_address_tips'=>'请输入详细地址',//Please enter a detailed address.
 
-
     #确认订单页
+    'confirm_order'=>'确认订单',//Confirmation of order
     'company_no_address_order_tips'=>'企业暂未维护地址,无法下单',//The company has not yet maintained its address and cannot place an order.
     'company_no_address_tips'=>'暂未维护地址',
     'click_add'=>'点击添加',//
@@ -320,6 +337,26 @@ return [
     'sub_order'=>'提交订单',
     'to_shop_msg'=>'给卖家留言',//Leave a message to the seller
     'to_shop_msg_info'=>'选填：对本次交易的说明',//Selection: Description of the transaction
+    'ticket_collection_address'=>'收票地址',//Ticket collection address
+    'quantity_shipped'=>'已发货数量',//Quantity shipped
+    'total_invoice_amount'=>'开票总金额',//Total invoice amount
+
+    #提交订单成功页
+    'order_wait_confirm'=>'订单等待确认',//Order awaiting confirmation
+    'track_order'=>'查询订单',//Track Order
+    'sub_order_success_tips'=>'由于行情波动、库存变化等原因、订单需要客服人员确认。',//Due to fluctuations in the market, inventory changes and other reasons, orders need to be confirmed by customer service personnel.
+    'sub_order_success_contact_tips'=>'您也可以通过以下联系方式与客服取得联系',//You can also contact customer service through the following contact methods
+    'telephone'=>'电话',//Telephone
+    'back_home'=>'返回首页',//Back home
+
+    #开票申请成功页
+    'choose_order'=>'选择订单',//Choose order
+    'confirm_info'=>'确认信息',//Confirmation information
+    'sub_success'=>'成功提交',//Submit successfully
+    'invoice_wait_review'=>'发票等待审核',//Invoices awaiting review
+    'invoice_number'=>'发票流水号',//Invoice Streamline Number
+    'query_invoice'=>'查询发票',//Query invoice
+    'sub_invoice_success_tips'=>'由于行情波动、库存变化等原因、发票需要客服人员确认。',//Due to fluctuations in the market, inventory changes and other reasons, invoices need to be confirmed by customer service personnel.
 
     #会员中心-左边栏
     'member_center'=>'会员中心',//Member Center
@@ -355,6 +392,24 @@ return [
     'wait_confirm'=>'待收货',//
     'wait_audit'=>'待审核',//
     'audit_failed'=>'审核不通过',//Audit failed
+    'all_status'=>'所有',
+    'deposit_payable'=>'待付定金',//Deposit payable
+    'wait_shipped'=>'待发货',//To be shipped
+    'wait_open_ticket'=>'待开票',//Open ticket
+    'invoicing'=>'开票中',//Invoicing
+    'completed'=>'已完成',//Completed
+    'cancelled'=>'已取消',//Cancelled
+    'invalid'=>'已作废',//Invalid
+    'wait_enterprise_audit'=>'待企业审核',//Waiting for enterprise audit
+    'business_confirm'=>'待商家确认',//Business confirmation
+    'confirmed'=>'已确认',//Confirmed
+    'invoiced'=>'已开票',//Invoiced
+    'shipped'=>'已发货',//Shipped
+    'partial_shipment'=>'部分发货',//Partial shipment
+    'received_goods'=>'已收货',//Received goods
+    'deposit_paid'=>'已付定金',//Deposit paid
+    'approval'=>'审批',//Approval
+    'wait_approval'=>'待审批',//Pending approval
 
     #会员中心首页
     'enterprise'=>'企业会员',//enterprise
@@ -368,6 +423,7 @@ return [
     'no_order'=>'暂无订单',//No order
     'goods_recommendation'=>'商品推荐',//goods recommendation
     'view_details'=>'查看详情',//View details
+    'order_details'=>'订单详情',
 
     #会员中心-用户信息
     'nickname'=>'昵称',
@@ -376,7 +432,10 @@ return [
     'no'=>'否',
     'yes'=>'是',
     'save'=>'保存',
+    'save_success'=>'保存成功',
     'cancellation_account'=>'注销账号',
+    'cancellation_account_success'=>'注销成功',
+    'cancellation_account_tips'=>'注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
 
     #我的收藏
     'cancel_collection'=>'取消收藏',//Cancel collection
@@ -403,20 +462,212 @@ return [
     'sNext'=>'下页',//Next
     'sLast'=>'末页',//Last
 
+    #会员中心-实名认证
+    'individual_account'=>'个人账户',//individual account
+    'enterprise_account'=>'企业账户',//Enterprise account
+    'account_number'=>'账号',//Account number
+    'real_name'=>'真实姓名',//Real name
+    'front_card'=>'身份证正面',//Front of ID Card
+    'uploaded_audited_tips'=>'已经上传，审核已经通过',//Uploaded and audited
+    'uploaded_auditing_tips'=>'已经上传，审核中',//Uploaded, awaiting review
+    'uploaded_audit_failed_tips'=>'审核不通过，请重新上传',//Audit failed, please re-upload
+    'back_card'=>'身份证反面',//back of an ID card
+    'be_careful'=>'注意',//Be careful
+    'upload_tips'=>'上传的身份证正反面照可以为png,jpg,jpeg,gif,PNG格式',//Uploaded ID cards can be in png, jpg, jpeg, gif, PNG format
+    'enterprise_name'=>'企业全称',//Enterprise Name
+    'electronic_authorization'=>'授权委托书电子版',//Electronic version of power of attorney
+    'authorization_download'=>'授权委托书模板下载',//Authorization Letter Download
+    'electronic_invoice'=>'开票资料电子版',//Electronic version of invoice information
+    'electronic_license'=>'营业执照电子版',//Electronic version of business license
+    'click_download'=>'点击下载',//Click to download
+    'taxpayer_identification_number'=>'纳税人识别号',//Taxpayer identification number
+    'tax_id'=>'税号',//Taxpayer identification number
 
+    #会员中心-订单列表
+    'amount_to_be_paid'=>'待支付订金',//Amount to be paid
+    'total_payable'=>'应付总额',//Total payable
+    'amount_paid'=>'已付款',//Amount paid
+    'view_contract'=>'查看合同',//View the contract
+    'contract'=>'合同',//Contract
+    'return_contract'=>'回传合同',//Return contract
+    'is_confirm_audit_pass'=>'是否确认审核通过',//Whether to confirm the approval of the audit
+    'is_confirm_cancel'=>'是否确认取消',//Confirmation of Cancellation
+    'cancel_success_tips'=>'取消成功',//Cancellation of success
+    'is_confirm_receipt'=>'是否确认收货',//Confirmation of receipt
+    'logistics_tracking'=>'物流跟踪',//Logistics tracking
+    'deposit_payment'=>'支付订金',//Deposit payment
+    'to_pay'=>'去支付',//To pay
+    'confirm_receipt'=>'确认收货',//Confirm receipt
+    'apply_ticket'=>'申请开票',//Apply for a ticket
 
+    #会员中心-订单详情
+    'order_source'=>'订单来源',//Order source
+    'seller_confirm'=>'卖家确认',//
+    'payment_time'=>'付款时间',//Payment time
+    'delivery_time2'=>'发货时间',//Delivery time
+    'in_transit'=>'运输中',//in transit
+    'confirm_receipt_time'=>'确认收货时间',//Confirmation of time of receipt
+    'order_detail_delivery_tips'=>'本订单由第三方卖家为您发货',//This order will be delivered to you by a third-party seller.
+    'logistics_company'=>'物流公司',//Logistics company
+    'logistics_number'=>'物流单号',//Logistics number
+    'wait_shop_delivery'=>'等待商家发货',//Waiting for Merchant Delivery
+    'consignee_info'=>'收货人信息',//consignee info
+    'buyer_message'=>'买家留言',//Buyer message
+    'seller_message'=>'卖家留言',//Seller message
+    'business_info'=>'商家信息',//Business Information
+    'order_detail_enterprise'=>'企业',//Enterprise
+    'payment_voucher'=>'付款凭证',//Payment voucher
+    'deposit_voucher'=>'定金凭证',//Deposit voucher
+    'choose_contract'=>'请选择合同',//Please choose the contract.
+    'system_busy'=>'系统繁忙，请重试',//The system is busy. Please try again.
+    'no_logistics_info_tips'=>'暂时无法获取到该订单物流跟踪信息，请于商家联系。',//The order logistics tracking information is not available for the time being, please contact the merchant.
+    'not_shipped_tips'=>'商家还未发货，暂无物流信息。',//Businessmen have not yet shipped goods, there is no logistics information.
 
+    #会员中心-开票详情
+    'invoice_details'=>'发票详情',//Invoice details
+    'no_logistics_company'=>'暂无物流公司',//No Logistics Company
+    'no_logistics_number'=>'暂无物流单号',//No Logistics Number
+    'wait_shop_open_invoice'=>'等待商家开票',//Waiting for business invoice
+    'receiver_info'=>'收票人信息',//Receiver information
+    'receiver'=>'收  票  人',//Ticket collector
+    'invoice_info'=>'发票信息',//Invoice information
+    'invoice_type'=>'发票类型',//Invoice type
+    'general_invoice'=>'普通发票',//General invoice
+    'special_invoice'=>'专用增值发票',//Special Value-added Invoice
+    'total_invoice'=>'开票总额',//Total invoice
 
+    #会员中心-发票列表
+    'goods_amount'=>'商品总金额',
+    'details'=>'详情',
+    'order_status'=>'订单状态',
+    'order_list'=>'订单列表',
+    'no_qualified_order'=>'暂时没有符合条件的订单',//No qualified order for the time being
+    'choose_order_tips1'=>'个订单，已选择',//orders,
+    'choose_order_tips2'=>'个,共',//have been selected, a total of
+    'choose_order_tips3'=>'元',//yuan
+    'only_apply_one_shop'=>'一次只能申请同店铺的订单',//At the same time can only apply for shop orders
+    'no_submitted'=>'订单已完成，无法提交申请',//The order has been completed and no application can be submitted.
+    'please_choose_order'=>'请选择订单',//Please select the order
+    'add_new_invoice'=>'新增开票',//New invoice
+    'invoice_amount'=>'开票金额',//Amount of invoice
+    'order_time'=>'下单时间',//Order time
 
+    #可出库
+    'out_stock'=>'出库',//Out of stock
+    'no_supplier_info'=>'无此供应商数据信息',//No data information from this vendor
+    'no_goods_info'=>'无此商品数据信息',//No such commodity data information
+    'out_stock_num_error_tips'=>'出库数量有误,请重新填写',//There is a mistake in the quantity out of the warehouse. Please fill it in again.
+    'add_out_stock_success'=>'添加出库记录成功',//Successful addition of library records
+    'name'=>'名称',//
+    'stock_surplus'=>'库存剩余数量',//Stock surplus
+    'new_outgoing_records'=>'新增出库记录',//New Outgoing Records
+    'odd_numbers'=>'单号',//Odd Numbers
+    'receiving_customer'=>'收料客户',//Receiving customer
 
+    #入库单
+    'cannot_delete'=>'订单生成的入库单，无法删除',//Input order generated by order cannot be deleted
+    'cannot_edit'=>'订单生成的入库单，无法编辑',//Input order generated by order cannot be edited
+    'no_remark_info'=>'无备注信息',//No Remarks Information
+    'choose_goods_tips'=>'商品必须从检索的下拉列表中点击选择',//Goods must be selected by clicking from the search drop-down list
+    'storage_num_error'=>'入库数量有误',//Incorrect storage quantity
+    'add_new_warehouse'=>'新增入库',//New warehousing
+    'storage_date'=>'入库日期',//Date of storage
+    'add_new_storage_record'=>'新增入库记录',//New Storage Records
+//    'godown_entry_number'=>'入库单号',//godown entry number
 
+    #出库单
+    'out_cannot_delete'=>'订单生成的出库单，无法删除',//Outbound order generated by order cannot be deleted
+    'out_num_error'=>'出库数量有误,请重新填写',//There is a mistake in the quantity out of the warehouse. Please fill it in again.
+    'edit_out_success'=>'编辑出库记录成功',//Successful editing of out-of-library records
+    'add_new_out_stock'=>'新增出库',//New outbound
+    'out_date'=>'出库日期',//outdate
+    'out_number'=>'出库单号',//Outgoing single number
+    'edit_out_record'=>'编辑出库记录',//Editing Out-of-Library Records
 
+    #库存流水
+    'platform_warehouse'=>'平台采购入库',//Platform procurement warehousing
+    'other_warehouse'=>'其它采购入库',//Other purchases are warehoused
+    'sales_outlet'=>'销售出库',//Sales outlet
+    'date'=>'日期',
+    'type'=>'类型',
+    'customer_supplier'=>'客户/供应商',//Customer/supplier
 
+    #职员管理
+    'name_mobile_required'=>'名字和手机号码为必填项',//Name and mobile phone number are required
+    'add_new_staff'=>'新增职员',//New staff
+    'staff_name'=>'职员姓名',//Staff name
+    'no_member_info'=>'暂无会员信息',//No membership information yet
+    'add_and_edit'=>'新增/编辑',//Add/Edit
+    'enter_staff_mobile'=>'请输入员工手机号码',//Please enter the employee's mobile phone number.
+    'note'=>'注：职员必须先用手机号在平台注册个人账号并实名认证',//Note: Employees must first register their personal accounts on the platform with their mobile phone numbers and authenticate their real names.
+    'enter_staff_name'=>'请输入员工姓名',//Please enter the employee's name
+    'audit_order'=>'审核订单',//Audit order
+    'order_payment'=>'订单支付',//Order payment
+    'view_inventory'=>'查看库存',//View inventory
 
+    #整单采购
+    'whole_single'=>'整单采购',//Whole single purchase
+    'sub_purchase_require'=>'提交采购需求',//Submitting Purchasing Requirements
+    'fill_purchase_require'=>'填写整单采购需求',//Fill in the Purchasing Requirements of the Whole Order
+    'contact_online_sub_require'=>'您还可以联系在线客服提交采购需求',//You can also contact online customer service to submit purchasing requirements.
+    'online_service'=>'在线客服',//Online Service
+    'file_format_tips'=>'仅支持格式为zip,doc,docx,xlsx,pdf大小在2M以内的文件。',//Only files with zip, doc, docx, xlsx and PDF sizes less than 2M are supported.
+    'upload_purchase_list'=>'上传采购清单',//Upload purchase list
+    'whole_single_require'=>'整单采购需求',//Purchasing Requirements for Whole Order
+    'fill_whole_single_require'=>'请填写整单采购需求',//Please fill in the whole purchase order.
+    'sub_not_empty'=>'提交内容不能为空',//Submission cannot be empty
+    'sub_purchase_require_success_tips'=>'提交成功,请等待客服与您联系！',//Successful submission, please wait for customer service to contact you!
 
+    #收银台
+    'cashier'=>'收银台',//Cashier
+    'uploaded_deposit_tips'=>'您已上传过支付定金凭证，可以在订单详情中进行查看,是否更新？',//You have uploaded the deposit payment voucher, which can be checked in the order details. Is it updated?
+    'uploaded_tips'=>'您已上传过支付凭证，可以在订单详情中进行查看,是否更新？',//You have uploaded payment vouchers, which can be checked in the order details. Are they updated?
+    'voucher_cannot_empty'=>'上传凭证不能为空',//Uploading vouchers cannot be empty
+    'upload_success'=>'上传成功',//Upload success
+    'send_to'=>'寄送至',//Send to
+    'offline_payment'=>'线下支付',//Offline payment
+    'payment_info'=>'支付信息',//Payment information
+    'deposit_bank'=>'开户银行',//Bank of deposit
+    'bank_account'=>'银行账户',//Bank account
+    'upload_payment_voucher'=>'上传付款凭证',//Upload payment vouchers
 
+    #物性表
+    'physical_table'=>'物性表',//Physical property table
+    'enter_brand_cate_tips'=>'请输入 品牌、种类、商品名称如 : 海大',//Please enter the brand, category and commodity name such as Haida.
+    'packaging_unit'=>'包装单位',//Packaging unit
+    'view_suppliers'=>'查看供应商',//View suppliers
+    'no_goods'=>'无商品',//No goods
+    'goods_property'=>'商品物性',//Goods property
+    'goods_model'=>'商品型号',//Goods model
+    'enquiry_at_once'=>'立即询价',//Enquiry at once
+    'package'=>'包装规格',//Package
 
+    #供应商
+    'contact_merchant'=>'联系商家',//Contact merchant
+    'share_to'=>'分享到',//Share to
+    'share_qq'=>'分享到QQ空间',//Share QQ space
+    'share_sina'=>'分享到新浪微博',//Share with Sina Weibo
+    'share_renren'=>'分享到人人网',//Share it with Renren.com
+    'share_tencent'=>'分享到腾讯微博',//Share with Tencent Weibo
+    'share_netease'=>'分享到网易微博',//Share on Netease Weibo
+    'more_platforms'=>'更多平台',//More platforms
+    'main_business'=>'主营业务',//Main business
+    'page_address'=>'页面地址',//Page address
+    'download_product_list'=>'下载产品列表',//Download Product List
+    'download_amount'=>'下载次数',//Amount of Downloads
+    'times'=>'次',//times
+    'no_login'=>'未登录',//Not logged in
+    'copy_address'=>'复制地址',//Copy address
 
+    #品牌直营
+    'direct_stores_list'=>'直营品牌商列表',//List of Direct Stores
+    'stationed'=>'个知名品牌商入驻',//well-known brands are stationed
+    'business_category'=>'经营品类',//Business category
+    'main_brand'=>'主营品牌',//Main brand
+    'entry'=>'进入直营专区',//Entry
+    'brand_dealer'=>'品牌商',//Brand dealer
 
+    #404 505
+    'error_404_tips'=>'对不起，您访问的页面未找到！',//Sorry, the page you visited is not found!
 
 ];

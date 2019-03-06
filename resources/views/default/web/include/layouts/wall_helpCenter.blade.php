@@ -24,10 +24,10 @@
             @foreach(getSidebar() as $k1=>$v1)
                 @if(!empty($v1['_child']))
                 <div class="member_list_mode">
-                    <h1 class=""><i class="iconfont icon-svgorder"></i>{{$v1['cat_name']}}</h1>
+                    <h1 class=""><i class="iconfont icon-svgorder"></i>{{getLangData($v1,'cat_name')}}</h1>
                     <ul class="member_left_list">
                         @foreach($v1['_child'] as $k2=>$v2)
-                            <li class="ovhwp" title="{{$v2['title']}}"><a @if($id == $v2['id']) class="green" @endif href="/{{$v2['id']}}/helpCenter.html">{{$v2['title']}}</a></li>
+                            <li class="ovhwp" title="{{getLangData($v2,'title')}}"><a @if($id == $v2['id']) class="green" @endif href="/{{$v2['id']}}/helpCenter.html">{{getLangData($v2,'title')}}</a></li>
                         @endforeach
                         <li class="its">
                             <div class="bottom"></div>

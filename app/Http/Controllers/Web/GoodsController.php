@@ -140,6 +140,12 @@ class GoodsController extends Controller
     //物性表
     public function goodsAttribute(Request $request){
 
+        $lang = [
+            'sFirst'=>trans('home.sFirst'),
+            'sPrevious'=>trans('home.sPrevious'),
+            'sNext'=>trans('home.sNext'),
+            'sLast'=>trans('home.sLast')
+        ];
         if($request->isMethod('get')){
             $page = $request->input('page', 0);
             $page_size = $request->input('length', 6);
@@ -154,9 +160,9 @@ class GoodsController extends Controller
             try{
                 $goodsInfo = GoodsService::goodsAttribute($condition,$page,$page_size);
                 if(!empty($goodsInfo['list'])){
-                    $linker = createPage($url, $page,$goodsInfo['totalPage']);
+                    $linker = createPage($url, $page,$goodsInfo['totalPage'],2,'_self',$lang);
                 }else{
-                    $linker = createPage($url, 1, 1);
+                    $linker = createPage($url, 1, 1,2,'_self',$lang);
                 }
                 return $this->display('web.goods.goodsAttribute',['list'=>$goodsInfo['list'],'linker'=>$linker]);
             }catch (\Exception $e){
@@ -172,6 +178,12 @@ class GoodsController extends Controller
         $page = $request->input('page',0);
         $page_size = $request->input('length',6);
         $url = '/goodsAttributeDetails/'.$id .'?page=%d';
+        $lang = [
+            'sFirst'=>trans('home.sFirst'),
+            'sPrevious'=>trans('home.sPrevious'),
+            'sNext'=>trans('home.sNext'),
+            'sLast'=>trans('home.sLast')
+        ];
         try{
             $shopGoodsInfo = GoodsService::goodsAttributeDetails($id,$page,$page_size);
             $goods_attr = [];
@@ -184,9 +196,9 @@ class GoodsController extends Controller
                 }
             }
             if(!empty($shopGoodsInfo['list'])){
-                $linker = createPage($url, $page,$shopGoodsInfo['totalPage']);
+                $linker = createPage($url, $page,$shopGoodsInfo['totalPage'],2,'_self',$lang);
             }else{
-                $linker = createPage($url, 1, 1);
+                $linker = createPage($url, 1, 1,2,'_self',$lang);
             }
             return $this->display('web.goods.goodsAttributeDetails',[
                 'goodsInfo'=>$shopGoodsInfo['goodsInfo'],

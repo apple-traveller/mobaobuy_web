@@ -70,20 +70,20 @@ class UserController extends Controller
     {
         $mobile = $request->input('mobile');
         if(!$mobile){
-            return $this->error('参数错误！');
+            return $this->error(trans('error.param_error'));
         }
         $userInfo = UserService::getUserInfoByUserName($mobile);
         if(empty($userInfo)){
-            return $this->error('该用户不存在！');
+            return $this->error(trans('error.user_not_exist'));
         }
         if($userInfo['is_firm'] == 1){
-            return $this->error('企业账号不能被添加！');
+            return $this->error(trans('error.enterprise_cannot_add'));
         }
         $res = getRealNameBool($userInfo['id']);
         if($res){
-            return $this->success('验证成功！');
+            return $this->success(trans('error.verification_success'));
         }else{
-            return $this->error('该用户未实名认证！');
+            return $this->error(trans('error.user_not_real_name'));
         }
     }
 
@@ -94,8 +94,12 @@ class UserController extends Controller
 
         return $this->success($rs);
     }
-
-    //注册获取手机验证码
+    /**
+     * 注册获取手机验证码**************************************************
+     * sendRegisterSms
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function sendRegisterSms(Request $request){
         $accountName = $request->input('accountName');
 
@@ -103,10 +107,10 @@ class UserController extends Controller
         $code = $request->input('verifyCode');
         $s_code = Cache::get(session()->getId().'captcha'.$t, '');
         if($s_code != $code){
-            return $this->error('图形验证有误');
+            return $this->error(trans('error.graphic_verify_error'));
         }
         if(UserService::checkNameExists($accountName)){
-            return $this->error('手机号已经注册');
+            return $this->error(trans('error.mobile_registered'));
         }
 
         $type = 'sms_signup';
@@ -136,7 +140,7 @@ class UserController extends Controller
 
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.$accountName) != $messCode){
-                return $this->error('手机验证码不正确');
+                return $this->error(trans('error.mobile_verification_error'));
             }
 
             $data=[
@@ -149,9 +153,9 @@ class UserController extends Controller
                 UserService::userRegister($data);
                 $this->sms_listen_register($accountName);
                 if(getConfig('individual_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
+                    return $this->success(trans('error.sub_success'), url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', route('login'));
+                    return $this->success(trans('error.register_success'), route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -181,7 +185,7 @@ class UserController extends Controller
 
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.$accountName) != $messCode){
-                return $this->error('手机验证码不正确');
+                return $this->error(trans('error.mobile_verification_error'));
             }
 
             $data=[
@@ -197,9 +201,9 @@ class UserController extends Controller
                 UserService::userRegister($data);
 
                 if(getConfig('firm_reg_check')) {
-                    return $this->success('提交成功，请等待审核！', url('/verifyReg'));
+                    return $this->success(trans('error.sub_success'), url('/verifyReg'));
                 }else{
-                    return $this->success('注册成功！', route('login'));
+                    return $this->success(trans('error.register_success'), route('login'));
                 }
             } catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -220,7 +224,7 @@ class UserController extends Controller
 //        session()->forget('_web_user');
 //        session()->forget('_curr_deputy_user');
         session()->flush();
-        return $this->success('退出登录成功！',  route('login'), '', 0);
+        return $this->success(trans('error.logout_success'),  route('login'), '', 0);
     }
 
     //获取用户购物车商品数
@@ -281,19 +285,19 @@ class UserController extends Controller
             $mobile_phone = $request->input('mobile','');
             $default = $request->input('default_address','');
             if (empty($str_address)){
-                return $this->error('请选择地址');
+                return $this->error(trans('error.choose_address'));
             }
             if (empty($address)){
-                return $this->error('请输入详细地址');
+                return $this->error(trans('error.enter_address_detail'));
             }
 //            if (empty($zipcode)){
 //                return $this->error('请输入邮政编码');
 //            }
             if (empty($consignee)){
-                return $this->error('请填写收货人');
+                return $this->error(trans('error.enter_consignee'));
             }
             if (empty($mobile_phone)){
-                return $this->error('请填写收货电话');
+                return $this->error(trans('error.enter_mobile'));
             }
             $address_ids = explode('|',$str_address);
             $data = [
@@ -319,7 +323,7 @@ class UserController extends Controller
                         session()->forget('_web_user');
                         UserService::updateDefaultAddress($data);
                     }
-                    return $this->success('修改成功');
+                    return $this->success(trans('error.edit_success'));
                 } else{
                     $re =  UserService::addShopAddress($data);
                     if(!empty($default) && $default == 'Y'){//设为默认地址
@@ -330,7 +334,7 @@ class UserController extends Controller
                         session()->forget('_web_user');
                         UserService::updateDefaultAddress($data);
                     }
-                    return $this->success('添加收获地址成功');
+                    return $this->success(trans('error.add_address_success'));
                 }
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
@@ -389,15 +393,15 @@ class UserController extends Controller
     {
         $id = $request->input('id','');
         if (empty($id)){
-            return $this->error('参数错误');
+            return $this->error(trans('error.param_error'));
         }
         try{
             $re = UserAddressService::delete($id);
 
             if ($re){
-                return $this->success('删除成功');
+                return $this->success(trans('error.delete_success'));
             } else {
-                return $this->error('删除失败');
+                return $this->error(trans('error.delete_failed'));
             }
         }catch (Exception $e){
             return $this->error($e->getMessage());
@@ -426,16 +430,16 @@ class UserController extends Controller
 
         if ($current_user['is_firm']==1){
             if (empty($company_name)){
-                return $this->error('请填写公司抬头');
+                return $this->error(trans('error.fill_title'));
             }
             if (empty($tax_id)){
-                return $this->error('请填写税号');
+                return $this->error(trans('error.fill_tax_number'));
             }
             if (empty($bank_of_deposit)){
-                return $this->error('请填写开户银行');
+                return $this->error(trans('error.fill_open_bank'));
             }
             if (empty($bank_account)){
-                return $this->error('请填写银行账号');
+                return $this->error(trans('error.fill_bank_account'));
             }
         }
 
@@ -464,9 +468,9 @@ class UserController extends Controller
                 $re =  UserInvoicesService::create($data);
             }
             if ($re){
-                return $this->success('成功');
+                return $this->success(trans('error.success'));
             } else {
-                return $this->error('失败');
+                return $this->error(trans('error.fail'));
             }
 
         }catch (\Exception $e){
@@ -495,14 +499,14 @@ class UserController extends Controller
     {
         $id = $request->input('id','');
         if (empty($id)){
-            return $this->error('参数错误');
+            return $this->error(trans('error.param_error'));
         }
         $re = UserInvoicesService::delete($id);
 
         if ($re){
-            return $this->success('删除成功');
+            return $this->success(trans('error.delete_success'));
         } else {
-            return $this->error('删除失败');
+            return $this->error(trans('error.delete_failed'));
         }
     }
 
@@ -549,7 +553,7 @@ class UserController extends Controller
            $data['reverse_of_id_card'] = $request->file('reverse_of_id_card');
             try{
                 UserService::updateUserInfo(session('_web_user_id'),$data);
-                return $this->success('实名信息添加成功，等待审核...','/');
+                return $this->success(trans('error.add_real_name_success'),'/');
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -566,10 +570,10 @@ class UserController extends Controller
         $code = $request->input('verifyCode');
         $s_code = Cache::get(session()->getId().'captcha'.$t, '');
         if($s_code != $code){
-            return $this->error('图形验证有误');
+            return $this->error(trans('error.graphic_verify_error'));
         }
         if(!UserService::checkNameExists(session('_web_user.user_name'))){
-            return $this->error('手机号未注册');
+            return $this->error(trans('error.mobile_not_register'));
         }
 
 
@@ -598,14 +602,14 @@ class UserController extends Controller
 
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.session('_web_user.user_name')) != $messCode){
-                return $this->error('手机验证码不正确');
+                return $this->error(trans('error.mobile_verification_error'));
             }
 
             $id = session('_web_user.id');
 
             try{
                 UserService::userUpdatePwd($id, ['newPassword' => $password]);
-                return $this->success('修改密码成功','/');
+                return $this->success(trans('error.edit_success'),'/');
             }catch(\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -619,10 +623,10 @@ class UserController extends Controller
         $code = $request->input('verifyCode');
         $s_code = Cache::get(session()->getId().'captcha'.$t, '');
         if($s_code != $code){
-            return $this->error('图形验证有误');
+            return $this->error(trans('error.graphic_verify_error'));
         }
         if(!UserService::checkNameExists($accountName)){
-            return $this->error('手机号未注册');
+            return $this->error(trans('error.mobile_not_register'));
         }
 
         $type = 'sms_find_signin';
@@ -646,12 +650,12 @@ class UserController extends Controller
 
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.$accountName) != $messCode){
-                return $this->error('手机验证码不正确');
+                return $this->error(trans('error.mobile_verification_error'));
             }
 
             try{
                 UserService::userFindPwd($accountName, $password);
-                return $this->success('修改密码成功','/');
+                return $this->success(trans('error.edit_success'),'/');
             }catch(\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -663,7 +667,7 @@ class UserController extends Controller
     public function sendMessLoginSms(Request $request){
         $accountName = $request->input('user_name');
         if(!UserService::checkNameExists($accountName)){
-            return $this->error('账号不存在');
+            return $this->error(trans('error.user_not_exist'));
         }
         $type = 'sms_signin';
         if (Cache::has(session()->getId().$type.$accountName)) {
@@ -773,7 +777,7 @@ class UserController extends Controller
             $pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
             if(!empty($data['email'])){
                 if(!preg_match($pattern,$data['email'])){
-                    return $this->error('邮箱格式有误!');
+                    return $this->error(trans('error.mail_format_error'));
                 }
             }
 
@@ -784,7 +788,7 @@ class UserController extends Controller
                 if(!$data['need_approval']){
                     $approvalStatus =  OrderInfoService::checkApprovalByOrderCount(session('_web_user_id'));
                     if($approvalStatus){
-                        return $this->error('请先处理未审批的订单');
+                        return $this->error(trans('error.process_unapproved_order'));
                     }
                 }
 
@@ -801,14 +805,14 @@ class UserController extends Controller
                 }else{
                     session()->put('_web_user', $flag);
                 }
-                return $this->success('保存成功', '', $flag);
+                return $this->success(trans('error.success'), '', $flag);
             }else{
                 session()->put('_web_user', $flag);
 //                dd(session('_web_user'));
-                return $this->success('保存成功', '', $flag);
+                return $this->success(trans('error.success'), '', $flag);
             }
         }catch(\Exception $e){
-            return $this->success('保存失败', '', $flag);
+            return $this->success(trans('error.fail'), '', $flag);
         }
 
     }
@@ -869,15 +873,15 @@ class UserController extends Controller
 
        if($is_self == 1){
            if(empty($dataArr['real_name'])){
-               $errorMsg[] = "请输入真实姓名";
+               $errorMsg[] = trans('error.enter_real_name');
                return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['front_of_id_card'])){
-               $errorMsg[] = "请上传身份证正面";
+               $errorMsg[] = trans('error.enter_card_front');
                return $this->result("",0,implode("|",$errorMsg));
            }
            if(empty($dataArr['reverse_of_id_card'])){
-               $errorMsg[] = "请上传身份证反面";
+               $errorMsg[] = trans('error.enter_card_reverse');
                return $this->result("",0,implode("|",$errorMsg));
            }
            if(!empty($errorMsg)){
@@ -885,7 +889,7 @@ class UserController extends Controller
            }
        }elseif($is_self == 2){
            if(empty($dataArr['real_name_firm'])){
-               $errorMsg[] = "请输入企业全称";
+               $errorMsg[] = trans('error.enter_company_name');
                return $this->result("",0,implode("|",$errorMsg));
            }
 
@@ -895,17 +899,17 @@ class UserController extends Controller
 //           }
 
            if(empty($dataArr['attorney_letter_fileImg'])){
-               $errorMsg[] = "请上传授权委托书电子版";
+               $errorMsg[] = trans('error.upload_electronic_attorney');
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['invoice_fileImg'])){
-               $errorMsg[] = "请上传开票资料电子版";
+               $errorMsg[] = trans('error.upload_electronic_invoice');
                return $this->result("",0,implode("|",$errorMsg));
            }
 
            if(empty($dataArr['license_fileImg'])){
-               $errorMsg[] = "请上传营业执照电子版";
+               $errorMsg[] = trans('error.upload_electronic_license');
                return $this->result("",0,implode("|",$errorMsg));
            }
 
@@ -938,16 +942,16 @@ class UserController extends Controller
                return $this->result("",0,implode("|",$errorMsg));
            }
        }else{
-           return $this->result("",0,'非法操作');
+           return $this->result("",0,trans('error.illegal_operation'));
        }
 
         try{
                 $flag = UserRealService::saveUserReal($dataArr,$is_self,$user_id);
                 if($flag){
                     $this->sms_listen_real(session('_web_user')['user_name'],$is_self);
-                    return $this->result("",1,"保存成功");
+                    return $this->result("",1,trans('error.success'));
                 }
-            return $this->result('',0,"保存失败");
+            return $this->result('',0,trans('error.fail'));
         }catch(\Exception $e){
             return $this->result('',0,$e->getMessage());
         }
@@ -971,10 +975,10 @@ class UserController extends Controller
         $code = $request->input('verifyCode');
         $s_code = Cache::get(session()->getId().'captcha'.$t, '');
         if($s_code != $code){
-            return $this->error('图形验证有误');
+            return $this->error(trans('error.graphic_verify_error'));
         }
         if(!UserService::checkNameExists(session('_web_user.user_name'))){
-            return $this->error('手机号未注册');
+            return $this->error(trans('error.mobile_not_register'));
         }
 
         $type = 'sms_pay_pwd';
@@ -996,14 +1000,14 @@ class UserController extends Controller
             $type = 'sms_pay_pwd';
             //手机验证码是否正确
             if(Cache::get(session()->getId().$type.session('_web_user.user_name')) != $messCode){
-                return $this->error('手机验证码不正确');
+                return $this->error(trans('error.mobile_verification_error'));
             }
 
             $id = session('_web_user.id');
 
             try{
                 UserService::modifyPayPwd($id,$password);
-                return $this->success('设置支付密码成功','/');
+                return $this->success(trans('error.set_pay_password_success'),'/');
             }catch(\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -1020,7 +1024,7 @@ class UserController extends Controller
     {
         $invoice_id = $request->input('invoice_id','');
         if (empty($invoice_id)){
-            return $this->error('参数错误');
+            return $this->error(trans('error.param_error'));
         }
         $userInfo  = session('_web_user');
         $data = [
@@ -1031,9 +1035,9 @@ class UserController extends Controller
         $re = UserService::modify($data);
         if ($re){
             session()->forget('_web_user');
-            return $this->success('修改成功');
+            return $this->success(trans('error.edit_success'));
         } else {
-            return $this->error('修改失败');
+            return $this->error(trans('error.fail'));
         }
     }
 
@@ -1046,7 +1050,7 @@ class UserController extends Controller
     {
         $address_id = $request->input('address_id','');
         if (empty($address_id)){
-            return $this->error('参数错误');
+            return $this->error(trans('error.param_error'));
         }
         $userInfo  = session('_web_user');
         $data = [
@@ -1057,9 +1061,9 @@ class UserController extends Controller
         $re = UserService::updateDefaultAddress($data);
         if ($re){
             session()->forget('_web_user');
-            return $this->success('修改成功');
+            return $this->success(trans('error.edit_success'));
         } else {
-            return $this->error('修改失败');
+            return $this->error(trans('error.fail'));
         }
     }
 
@@ -1092,7 +1096,7 @@ class UserController extends Controller
         $realInfo = UserRealService::getInfoByUserId($userInfo['id']);
         //已经实名认证的企业用户不能注销账号
         if($realInfo && $realInfo['review_status'] == 1 && $realInfo['is_firm'] == 1){
-            return $this->error('已经实名认证的企业用户不能注销账号');
+            return $this->error(trans('error.passed_real_name_cannot_cancel'));
         }
         $user_data = [
             'user_name'=>$userInfo['user_name'].'_'.time().'_logout',
@@ -1104,9 +1108,9 @@ class UserController extends Controller
 //            session()->forget('_web_user');
 //            session()->forget('_curr_deputy_user');
             session()->flush();
-            return $this->success('注销成功！');
+            return $this->success(trans('error.user_logout_success'));
         }else{
-            return $this->error('注销失败！请联系管理员。');
+            return $this->error(trans('error.user_logout_fail'));
         }
     }
 }

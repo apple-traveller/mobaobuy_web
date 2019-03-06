@@ -11,12 +11,11 @@
     </style>
 @endsection
 @section('content')
-
     <div class="today_news whitebg fl">
         <div class="w800p">
             <h1 class="info-detail-title" align="center" style="width: 900px;">
 
-                {{ $detail['title'] }}
+                {{ getLangData($detail,'title') }}
             </h1>
             <div class="info-detail-bq gray">
                 <div class="bshare-custom" style="line-height:38px !important;display: inline-block;margin-left: 40px;"><div class="bsPromo bsPromo2"></div>
@@ -25,7 +24,7 @@
 
             </div>
             <div class="info-detail-content">
-                {!! $detail['content'] !!}
+                {!! getLangData($detail,'content') !!}
             </div>
         </div>
     </div>

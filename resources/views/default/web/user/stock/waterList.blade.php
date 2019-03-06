@@ -31,9 +31,9 @@
                     {"data": "order_sn", "bSortable": false},
                     {"data": "flow_type", "bSortable": false,
                         "render": function (data, type, full, meta) {
-                            if(data == 1) return '平台采购入库';
-                            if(data == 2) return '其它采购入库';
-                            if(data == 3) return '销售出库';
+                            if(data == 1) return '{{trans('home.platform_warehouse')}}';
+                            if(data == 2) return '{{trans('home.other_warehouse')}}';
+                            if(data == 3) return '{{trans('home.sales_outlet')}}';
                         }
                     },
                     {"data": "partner_name", "bSortable": false},
@@ -63,21 +63,21 @@
     <!--标题-->
     <div class="data-table-box">
         <div class="table-condition" >
-            <div class="item fl" style="font-size: 16px;height: 40px;line-height: 40px;"><span class="pr20 pl15">商品名称：{{$firmStockInfo['goods_name']}}</span>库存数：<span class="fs18 orange fwb">{{$firmStockInfo['number']}}</span>
+            <div class="item fl" style="font-size: 16px;height: 40px;line-height: 40px;"><span class="pr20 pl15">{{trans('home.goods_name')}}：{{$firmStockInfo['goods_name']}}</span>{{trans('home.stock')}}：<span class="fs18 orange fwb">{{$firmStockInfo['number']}}</span>
             </div>
-            <div class="fr back_btn "><a href="{{url('stock/list')}}" style="color:#fff">返回</a></div>
+            <div class="fr back_btn "><a href="{{url('stock/list')}}" style="color:#fff">{{trans('home.return')}}</a></div>
         </div>
 
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="20%">日期</th>
-                    <th width="15%">单号</th>
-                    <th width="13%">类型</th>
-                    <th width="">客户/供应商</th>
-                    <th width="12%">数量</th>
-                    <th width="12%">单价(元)</th>
+                    <th width="20%">{{trans('home.date')}}</th>
+                    <th width="15%">{{trans('home.odd_numbers')}}</th>
+                    <th width="13%">{{trans('home.type')}}</th>
+                    <th width="">{{trans('home.customer_supplier')}}</th>
+                    <th width="12%">{{trans('home.num')}}</th>
+                    <th width="12%">{{trans('home.price')}}</th>
                 </tr>
                 </thead>
             </table>

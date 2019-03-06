@@ -175,9 +175,9 @@
 		<div class="fr fs14 order_progress" >
 			<div class="cart_progress cart_progress_02"></div>
 			<div class="progress_text">
-				<div class="my_cart progress_text_curr">选择订单</div>
-				<div class="order_information">确认信息</div>
-				<div class="order_submit">成功提交</div>
+				<div class="my_cart progress_text_curr">{{trans('home.choose_order')}}</div>
+				<div class="order_information">{{trans('home.confirm_info')}}</div>
+				<div class="order_submit">{{trans('home.sub_success')}}</div>
 			</div>
 		</div>
 	</div>
@@ -186,16 +186,16 @@
 	<!--公司信息-->
 	@if($invoiceInfo['is_firm'])
 		<div class="whitebg mt20 ovh">
-			<h1 class="ml30 fs18 mt40">开票信息</h1>
+			<h1 class="ml30 fs18 mt40">{{trans('home.invoice_information')}}</h1>
 				<div class="company_information" id="invoiceInfo">
 					<ul class="company_list">
-						<li><span class="company_title">公司名称 :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
-						<li><span class="company_title" style="letter-spacing: 5.0px;">税        号 :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
+						<li><span class="company_title">{{trans('home.company')}} :</span><span class="ml5">{{ $invoiceInfo['company_name'] }}</span></li>
+						<li><span class="company_title" style="letter-spacing: 5.0px;">{{trans('home.invoice_tax_id')}} :</span><span class="ml5">{{ $invoiceInfo['tax_id'] }}</span></li>
 						@if($invoiceInfo['is_special'])
-							<li><span class="company_title">开  户  行 :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
-							<li><span class="company_title">银行账号 :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
-							<li><span class="company_title">开票电话 :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
-							<li><span class="company_title">开票地址 :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
+							<li><span class="company_title">{{trans('home.invoice_bank_of_deposit')}} :</span><span class="ml5">{{ $invoiceInfo['bank_of_deposit'] }}</span></li>
+							<li><span class="company_title">{{trans('home.invoice_bank_account')}} :</span><span class="ml5">{{ $invoiceInfo['bank_account'] }}</span></li>
+							<li><span class="company_title">{{trans('home.invoice_company_telephone')}} :</span><span class="ml5">{{ $invoiceInfo['company_telephone'] }}</span></li>
+							<li><span class="company_title">{{trans('home.invoice_company_address')}} :</span><span class="ml5">{{ $invoiceInfo['company_address'] }}</span></li>
 							@else
 						@endif
 					</ul>
@@ -203,20 +203,20 @@
 		</div>
 	@else
 		<div class="whitebg mt20 ovh">
-			<h1 class="ml30 fs18 mt40">开票信息</h1>
+			<h1 class="ml30 fs18 mt40">{{trans('home.invoice_information')}}</h1>
 				<div class="company_information" id="invoiceInfo">
 					<ul class="company_list">
-						<li><span class="company_title">发票抬头 :</span><span class="ml5">个人</span></li>
+						<li><span class="company_title">{{trans('home.invoice_title')}} :</span><span class="ml5">{{trans('home.header_personal')}}</span></li>
 					</ul>
 				</div>
 		</div>
 	@endif
 	<div class="address whitebg ovh mt20 ">
-		<div class="ml30 fs18 mt30">收票地址
+		<div class="ml30 fs18 mt30">{{trans('home.ticket_collection_address')}}
 			@if(session('_curr_deputy_user')['is_self'] == 0 && session('_curr_deputy_user')['is_firm'] == 1)
 			@else
 				<div class="fr mr20" style="font-size: 14px;">
-					<a rel="nofollow" class="ml30 news_addr" href="javascript:">添加新地址&gt;</a>
+					<a rel="nofollow" class="ml30 news_addr" href="javascript:">{{trans('home.add_address')}}&gt;</a>
 				</div>
 			@endif
 		</div>
@@ -229,10 +229,10 @@
 				<span class="address_detail ml20 mr20 mt10">{{ $v['address_names'] }}</span>
 				<div class="address_default">
 					<div class="address_default_edit">
-						<span class="mr20 cp edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}" style="color: #74b334">编辑</span>
-						<span class="mr20 cp del_address " data_id = '{{ $v['id'] }}' style="color: #999">删除</span>
+						<span class="mr20 cp edit_address" data_id ={{ $v['id'] }} data_default_id="{{$v['is_default']}}" style="color: #74b334">{{trans('home.edit')}}</span>
+						<span class="mr20 cp del_address " data_id = '{{ $v['id'] }}' style="color: #999">{{trans('home.delete')}}</span>
 						@if($v['is_default'] == 1)
-							<span class="mr20 cp " style="color: #74b334">默认</span>
+							<span class="mr20 cp " style="color: #74b334">{{trans('home.default')}}</span>
 						@else
 							<span class="mr20 cp " ></span>
 						@endif
@@ -243,20 +243,20 @@
 		</ul>
 			@else
 			<div class="ml300 ">
-			暂无地址信息 <a href="/addressList" style="color: #74b334">前去维护地址信息</a>
+			{{trans('home.company_no_address_tips')}} <a href="/addressList" style="color: #74b334">{{trans('home.click_add')}}</a>
 			</div>
 			@endif
 	</div>
 	<div class="address whitebg ovh mt20">
-		<h1 class="ml30 fs18 mt30">商品信息</h1>
+		<h1 class="ml30 fs18 mt30">{{trans('home.product_info')}}</h1>
 		<ul class="supply_list mt15" style="width: 1140px; margin: 20px auto; border-bottom:1px solid #DEDEDE;">
 			<li class="graybg">
-				<span>商品</span>
-				<span>商品编码</span>
-				<span>单价（元）</span>
-				<span>已发货数量</span>
+				<span>{{trans('home.product')}}</span>
+				<span>{{trans('home.product_sn')}}</span>
+				<span>{{trans('home.price')}}</span>
+				<span>{{trans('home.quantity_shipped')}}</span>
 				<span></span>
-				<span>小计</span>
+				<span>{{trans('home.subtotal')}}</span>
 			</li>
 
 			@foreach($goodsList['list'] as $k =>$v)
@@ -281,10 +281,10 @@
 					<input type="hidden" name="total_amount" value="{{ $total_amount }}" style="display: none" id="total_amount">
 					<input type="hidden" name="goodsList" value="{{ json_encode( $goodsList['list'])  }}" style="display: none">
 				</div>
-				<div class="fr mr20">开票总金额<span class="orange">{{ amount_format($total_amount) }}</span></div>
+				<div class="fr mr20">{{trans('home.total_invoice_amount')}}<span class="orange">{{ amount_format($total_amount) }}</span></div>
 			</div>
 			<div class="address_line cccbg" style="height: 1px;"></div>
-			<a href="javascript:void(0);"><div class="address_sumb fr mr30 cp">提交申请</div></a>
+			<a href="javascript:void(0);"><div class="address_sumb fr mr30 cp">{{trans('home.sub')}}</div></a>
 		</form>
 	</div>
 </div>
@@ -407,11 +407,11 @@
 
         var Rlength=$('.Collect_goods_address li').length;
         if (Rlength>10){
-            $.msg.alert('最多输入十个地址信息');
+            $.msg.alert('{{trans('home.address_count_error_tips')}}');
             return false;
         } else {
             layer.open({
-                title:'用户地址',
+                title:'{{trans('home.user_address')}}',
                 type: 2,
                 area: ['600px', '500px'],
                 maxmin: true,
@@ -433,7 +433,7 @@
         var address_id = $(this).attr('data_id');
         var is_default = $(this).attr('data_default_id');
         layer.open({
-            title:'用户地址',
+            title:'{{trans('home.user_address')}}',
             type: 2,
             area: ['600px', '500px'],
             maxmin: true,
@@ -446,7 +446,7 @@
         event.stopPropagation();
         var io = $(this);
         var id = $(this).attr('data_id');
-        $.msg.confirm("确认删除么？",
+        $.msg.confirm("{{trans('home.is_delete')}}？",
             function(index, layero){
                 $.ajax({
                     url:'/deleteAddress',

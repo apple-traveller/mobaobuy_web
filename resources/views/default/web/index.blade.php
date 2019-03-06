@@ -297,7 +297,7 @@
                     <span style="width:15%;">{{trans('home.brand')}}</span>
                     <span style="width:12%;">{{trans('home.spec')}}</span>
                     <span style="width:10%;">{{trans('home.price')}}</span>
-                    <span style="width:10%;">{{trans('home.delivery_time')}}</span>
+                    <span style="width:10%;">{{trans('home.goods_source')}}</span>
                     <span style="width:7%;">{{trans('home.delivery_area')}}</span>
                     <span style="width:7%;">{{trans('home.delivery_method')}}</span>
                     <span style="width:10%;">{{trans('home.update_time')}}</span>
@@ -316,7 +316,7 @@
                             </span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
-                            <span style="width:10%;">{{getLangData($vo,'delivery_time')}}</span>
+                            <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
                             <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
                             <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
@@ -368,7 +368,7 @@
                     <span style="width:15%;">{{trans('home.brand')}}</span>
                     <span style="width:12%;">{{trans('home.spec')}}</span>
                     <span style="width:10%;">{{trans('home.price')}}</span>
-                    <span style="width:10%;">{{trans('home.delivery_time')}}</span>
+                    <span style="width:10%;">{{trans('home.goods_source')}}</span>
                     <span style="width:7%;">{{trans('home.delivery_area')}}</span>
                     <span style="width:7%;">{{trans('home.delivery_method')}}</span>
                     <span style="width:10%;">{{trans('home.update_time')}}</span>
@@ -387,7 +387,7 @@
                             </span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
                             <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
-                            <span style="width:10%;">{{getLangData($vo,'delivery_time')}}</span>
+                            <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
                             <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
                             <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
@@ -504,7 +504,7 @@
                     @foreach($shops as $shop)
                     <li>
                         <div class="clearfix">
-                            <span>{{getLangData($shop,'company_name')}}</span>
+                            <span><a href="/getSupplierInfo/{{$shop['id']}}" >{{getLangData($shop,'company_name')}}</a></span>
                             <span>{{$shop['contactName']}}</span>
                             <span>{{$shop['contactPhone']}}</span>
                             <span>{{$shop['major_business']}}</span>
@@ -525,7 +525,7 @@
                                             <span style="width:12%;" class="ovhwp" title="{{$quote['goods_content']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_content']}}</a></span>
 {{--                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>--}}
                                             <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}/{{$quote['unit_name']}}</span>
-                                            <span style="width:10%;">{{getLangData($quote,'delivery_time')}}</span>
+                                            <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                             <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                             <span style="width:7%;">{{getLangData($quote,'delivery_method')}}</span>

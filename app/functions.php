@@ -271,7 +271,7 @@ if(!function_exists('getSeoInfoByType')){
     }
 }
 if(!function_exists('createPage')){
-    function  createPage($url,$currentPage, $totalPage, $delta = 2, $target = '_self'){
+    function  createPage($url,$currentPage, $totalPage, $delta = 2, $target = '_self',$lang=[]){
 
         $high = $currentPage + $delta;
         $low = $currentPage - $delta;
@@ -287,11 +287,11 @@ if(!function_exists('createPage')){
         $ret_string ='<div class="news_pages"><ul class="pagination">';
         if($currentPage > 1)
         {
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', 1, $url). "' target='{$target}'>首页</a></li>";
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage - 1, $url) . "' target='{$target}'>上一页</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', 1, $url). "' target='{$target}'>{$lang['sFirst']}</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage - 1, $url) . "' target='{$target}'>{$lang['sPrevious']}</a></li>";
         }else {
-            $ret_string .= '<li><a class="" style="color: #ccc">首页</a></li>';
-            $ret_string .= '<li><a class="" style="color: #ccc">上一页</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang["sFirst"].'</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sPrevious'].'</a></li>';
         }
         $links = array();
         for (;$low <= $high; $low++)
@@ -302,11 +302,11 @@ if(!function_exists('createPage')){
         $links = implode('', $links);
         $ret_string .= "\r\n" . $links;
         if($currentPage < $totalPage){
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage + 1, $url) . "' target='{$target}'>下一页</a></li>";
-            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $totalPage, $url) . '\' target=\'' . $target . '\'>尾页</a></li>';
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $currentPage + 1, $url) . "' target='{$target}'>{$lang['sNext']}</a></li>";
+            $ret_string .= '<li><a style="cursor:pointer" href=\'' . str_replace('%d', $totalPage, $url) . '\' target=\'' . $target . '\'>'.$lang['sLast'].'</a></li>';
         }else{
-            $ret_string .= '<li><a class="" style="color: #ccc">下一页</a></li>';
-            $ret_string .= '<li><a class="" style="color: #ccc">尾页</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sNext'].'</a></li>';
+            $ret_string .= '<li><a class="" style="color: #ccc">'.$lang['sLast'].'</a></li>';
         }
         return $ret_string . '</ul></div>';
     }
@@ -361,6 +361,59 @@ if(!function_exists('getLangData')){
             return $data[$field];
         }
         return isset($data[$field.'_'.App::getLocale()]) && !empty($data[$field.'_'.App::getLocale()]) ? $data[$field.'_'.App::getLocale()] : $data[$field];
+    }
+}
+
+if(!function_exists('getLangGoodsSource')){
+    function getLangGoodsSource($goods_source){
+        $key = App::getLocale();
+        if($key == 'zh-CN'){
+            switch($goods_source){
+                case 0:$res = '现货';break;
+                case 1:$res = '紧张';break;
+                case 2:$res = '厂家直发';break;
+                default:$res = '现货';
+            }
+        }else{
+            switch($goods_source){
+                case 0:$res = 'spot goods';break;
+                case 1:$res = 'Tight supply';break;
+                case 2:$res = 'Straight hair';break;
+                default:$res = 'spot goods';
+            }
+        }
+        return $res;
+    }
+}
+
+if(!function_exists('isMobile')){
+    function isMobile() {
+        // 如果有HTTP_X_WAP_PROFILE则一定是移动设备
+        if (isset($_SERVER['HTTP_X_WAP_PROFILE'])) {
+            return true;
+        }
+        // 如果via信息含有wap则一定是移动设备,部分服务商会屏蔽该信息
+        if (isset($_SERVER['HTTP_VIA'])) {
+            // 找不到为flase,否则为true
+            return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
+        }
+        // 脑残法，判断手机发送的客户端标志,兼容性有待提高。其中'MicroMessenger'是电脑微信
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $clientkeywords = array('nokia','sony','ericsson','mot','samsung','htc','sgh','lg','sharp','sie-','philips','panasonic','alcatel','lenovo','iphone','ipod','blackberry','meizu','android','netfront','symbian','ucweb','windowsce','palm','operamini','operamobi','openwave','nexusone','cldc','midp','wap','mobile','MicroMessenger');
+            // 从HTTP_USER_AGENT中查找手机浏览器的关键字
+            if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT']))) {
+                return true;
+            }
+        }
+        // 协议法，因为有可能不准确，放到最后判断
+        if (isset ($_SERVER['HTTP_ACCEPT'])) {
+            // 如果只支持wml并且不支持html那一定是移动设备
+            // 如果支持wml和html但是wml在html之前则是移动设备
+            if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html')))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

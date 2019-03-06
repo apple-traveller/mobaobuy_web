@@ -204,14 +204,14 @@ class ArticleService
             $up_news_title = $up_page['list'][0]['title'];
             $up_news_id = $up_page['list'][0]['id'];
         }else{
-            $up_news_title = '没有了哦';
+            $up_news_title = trans('error.nothing');
             $up_news_id = '';
         }
         if(!empty($down_page['list'])){
             $down_news_title = $down_page['list'][0]['title'];
             $down_news_id = $down_page['list'][0]['id'];
         }else{
-            $down_news_title = '没有了哦';
+            $down_news_title = trans('error.nothing');
             $down_news_id = '';
         }
         $data = [

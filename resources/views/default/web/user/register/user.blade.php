@@ -22,7 +22,7 @@
             <div class="register-form">
                 <div class="form">
                     <div class="item">
-                        <div class="item-libel">{{trans('home.user_name')}}</div>
+                        <div class="item-libel">{{trans('home.account_name')}}</div>
                         <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="{{trans('home.login_mobile')}}" onblur="phoneValidate()"></div>
                         <div class="input-tip"><label id="phone_error" class="error" for="phone"></label></div>
                     </div>

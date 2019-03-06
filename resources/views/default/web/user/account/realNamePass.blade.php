@@ -70,7 +70,7 @@
             $.post('/account/saveUserReal',{jsonData,'is_self':is_self},function(res){
                 console.log(res.data);
                 if (res.code == 1) {
-                    $.msg.success('保存成功');
+                    $.msg.success('{{trans('home.save_success')}}');
                     window.location.href="/account/userRealInfo";
                 } else {
                     console.log(res.data);
@@ -89,16 +89,16 @@
 
                 @if(!empty($user_real))
                     @if($user_real['is_firm'] == '0')
-                        <ul class="account_tab"><li class="account_curr">个人账户</li></ul>
+                        <ul class="account_tab"><li class="account_curr">{{trans('home.individual_account')}}</li></ul>
                     @elseif($user_real['is_firm'] == '1')
-                         <ul class="account_tab"><li id="firm">企业账户</li></ul>
+                         <ul class="account_tab"><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                      @else
-                        <ul class="account_tab"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                        <ul class="account_tab"><li class="account_curr">{{trans('home.individual_account')}}</li><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                     @endif
 
 
                 @else
-                 <ul class="account_tab"><li class="account_curr">个人账户</li><li id="firm">企业账户</li></ul>
+                 <ul class="account_tab"><li class="account_curr">{{trans('home.individual_account')}}</li><li id="firm">{{trans('home.enterprise_account')}}</li></ul>
                 @endif
              </div>
             
@@ -108,7 +108,7 @@
                  @if($user_real['is_firm'] == '0')
                  <li>
                      <ul class="account_infor_list">
-                    <li><span class="infor_title">账号：</span>
+                    <li><span class="infor_title">{{trans('home.account_number')}}：</span>
                         <span class="ml10">
                             {{$user_name}}
                         </span>
@@ -116,29 +116,29 @@
                     <input type="hidden" name="user_id"  value="{{$user_id}}" >
                 
                     <li class="mt25">
-                        <span class="infor_title">真实姓名：</span>
+                        <span class="infor_title">{{trans('home.real_name')}}：</span>
                         <span class=" fl">
                             <input type="text" name="real_name" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" disabled="disabled" @else value="" @endif/>
                         </span>
                     </li>
 
                     <li class="mt25">
-                        <span class="infor_title">身份证正面：</span>
+                        <span class="infor_title">{{trans('home.front_card')}}：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['front_of_id_card']))
                                 @if($user_real['review_status']==1)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['front_of_id_card']) }}" alt="身份证正面">--}}
-                                         <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="身份证正面">
-                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                         <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="{{trans('home.front_card')}}">
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_audited_tips')}}</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="身份证正面">
-                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['front_of_id_card']) }}" src="{{ getFileUrl($user_real['front_of_id_card']) }}" alt="{{trans('home.front_card')}}">
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_auditing_tips')}}……</span>
                                     </div>
                                 @else
-                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'front_of_id_card'])@endcomponent
                                 @endif
                             @else
@@ -147,23 +147,23 @@
                         </span>
                     </li>
                     <li class="mt25">
-                        <span class="infor_title">身份证反面：</span>
+                        <span class="infor_title">{{trans('home.back_card')}}：</span>
                         <span class="ml10 fl">
                             @if(!empty($user_real['reverse_of_id_card']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="身份证反面">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="{{trans('home.back_card')}}">
                                          {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">--}}
-                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_audited_tips')}}</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" src="{{ URL::asset('storage/'.$user_real['reverse_of_id_card']) }}" alt="身份证反面">--}}
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="身份证反面">
-                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" src="{{ getFileUrl($user_real['reverse_of_id_card']) }}" alt="{{trans('home.back_card')}}">
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_auditing_tips')}}……</span>
                                     </div>
                                 @else
-                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'reverse_of_id_card'])@endcomponent
                                 @endif
                             @else
@@ -175,10 +175,10 @@
                     @if($user_real['review_status'] == 0 || $user_real['review_status'] == 1)
                         
                     @else
-                    <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
+                    <button class="account_infor_btn code_greenbg fs18 white" id="1">{{trans('home.save')}}</button>
                     @endif
                 @else
-                    <button class="account_infor_btn code_greenbg fs18 white" id="1">保 存</button> 
+                    <button class="account_infor_btn code_greenbg fs18 white" id="1">{{trans('home.save')}}</button>
                 @endif
                 </ul>
                 </li>
@@ -189,7 +189,7 @@
                  <!-- 企业账户 -->
                        <li>
                      <ul class="account_infor_list">
-                    <li><span class="infor_title">账号：</span>
+                    <li><span class="infor_title">{{trans('home.account_number')}}：</span>
                         <span class="ml10">
                             {{$user_name}}
                         </span>
@@ -198,14 +198,14 @@
                    
                
                     <li class="mt25">
-                         <span class="infor_title">企业全称：</span>
+                         <span class="infor_title">{{trans('home.enterprise_name')}}：</span>
                         <span class=" fl">
                             <input type="text" name="real_name_firm" class="infor_input" @if(!empty($user_real['real_name'])) value="{{$user_real['real_name']}}" disabled="disabled" @else value="" @endif />
                         </span>
                     </li>
 
                     <li class="mt25">
-                       <span class="infor_title">纳税人识别号：</span>
+                       <span class="infor_title">{{trans('home.taxpayer_identification_number')}}：</span>
                         <span class=" fl">
                             <input type="text" name="tax_id" class="infor_input" @if(!empty($user_real['tax_id'])) value="{{$user_real['tax_id']}}" disabled="disabled" @else value="" @endif />
                         </span>
@@ -213,23 +213,23 @@
 
 
                       <li class="mt25">
-                         <span class="infor_title">授权委托书电子版：</span>
+                         <span class="infor_title">{{trans('home.electronic_authorization')}}：</span>
                         <span class=" fl">
                             @if(!empty($user_real['attorney_letter_fileImg']))               
                                 @if($user_real['review_status']==1)
                                     <div id="layer-photos-demo" class="layer-photos-demo">
                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">--}}
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
-                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="{{trans('home.electronic_authorization')}}">
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_audited_tips')}}</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" src="{{ getFileUrl($user_real['attorney_letter_fileImg']) }}" alt="{{trans('home.electronic_authorization')}}">
                                         {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['attorney_letter_fileImg']) }}" alt="授权委托书电子版">--}}
-                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_auditing_tips')}}……</span>
                                     </div>
                                 @else
-                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/letterFile','name'=>'attorney_letter_fileImg'])@endcomponent
                                 @endif
                             @else
@@ -239,22 +239,22 @@
                     </li>
 
                     <li class="mt25">
-                         <span class="infor_title">开票资料电子版：</span>
+                         <span class="infor_title">{{trans('home.electronic_invoice')}}：</span>
                         <span class=" fl">
                              @if(!empty($user_real['invoice_fileImg']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="开票资料电子版">
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="{{trans('home.electronic_invoice')}}">
                                          {{--<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" src="{{ URL::asset('storage/'.$user_real['invoice_fileImg']) }}" alt="开票资料电子版">--}}
-                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_audited_tips')}}</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
-                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="开票资料电子版">
-                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                        <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['invoice_fileImg']) }}" src="{{ getFileUrl($user_real['invoice_fileImg']) }}" alt="{{trans('home.electronic_invoice')}}">
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_auditing_tips')}}……</span>
                                     </div>
                                 @else
-                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'invoice_fileImg'])@endcomponent
                                 @endif
                             @else
@@ -263,21 +263,21 @@
                         </span>
                     </li>
                     <li class="mt25">
-                         <span class="infor_title">营业执照电子版：</span>
+                         <span class="infor_title">{{trans('home.electronic_license')}}：</span>
                         <span class=" fl">
                             @if(!empty($user_real['license_fileImg']))
                                 @if($user_real['review_status']==1)
                                     <div class="layer-photos-demo">
                                         <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['license_fileImg']) }}" src="{{ getFileUrl($user_real['license_fileImg']) }}" alt="营业执照电子版">
-                                        <span style="margin: 0 0 0 10px;">审核已经通过</span>
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_audited_tips')}}</span>
                                     </div>
                                 @elseif($user_real['review_status']==0)
                                     <div class="layer-photos-demo">
                                         <img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($user_real['license_fileImg']) }}" src="{{ getFileUrl($user_real['license_fileImg']) }}" alt="营业执照电子版">
-                                        <span style="margin: 0 0 0 10px;">正在审核中……</span>
+                                        <span style="margin: 0 0 0 10px;">{{trans('home.uploaded_auditing_tips')}}……</span>
                                     </div>
                                 @else
-                                    <span style="float:left;color:red;margin-right:10px;">审核不通过，请重新上传</span>
+                                    <span style="float:left;color:red;margin-right:10px;">{{trans('home.uploaded_audit_failed_tips')}}</span>
                                     @component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/idcard','name'=>'license_fileImg'])@endcomponent
                                 @endif
                             @else
@@ -286,15 +286,15 @@
                         </span>
                     </li>
                     <li class="mt25">
-                        <span class="infor_title">审核状态：</span>
+                        <span class="infor_title">审核状态{{trans('home.account_number')}}：</span>
                         <span class=" fl">
                             @if(!empty($user_real))  
                                  @if($user_real['review_status'] == 0)
-                                    待审核
+                                    待审核{{trans('home.account_number')}}
                                 @elseif($user_real['review_status'] == 1)
-                                    已审核
+                                    已审核{{trans('home.account_number')}}
                                 @else
-                                    审核不通过
+                                    审核不通过{{trans('home.account_number')}}
                                 @endif
                             @else
 

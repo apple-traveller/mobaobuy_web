@@ -22,18 +22,18 @@ class DemandController extends Controller
             ];
         }
         if(empty($data['contact_info'])){
-            return $this->error('联系方法不能为空!');
+            return $this->error(trans('error.contact_info_cannot_empty_tips'));
         }
         if(!preg_match("/^1[34578]{1}\\d{9}$/",$data['contact_info'])){
-            return $this->error('手机号码有误!');
+            return $this->error(trans('error.mobile_error_tips'));
         }
         if(empty($data['desc'])){
-            return $this->error('需求内容不能为空!');
+            return $this->error(trans('error.need_content_cannot_empty_tips'));
         }
 
         DemandService::create($data);
         $this->sms_listen_demand($data['contact_info']);
-        return $this->success('需求信息提交成功，请耐心等待客服联系！');
+        return $this->success(trans('error.wait_service_contact_tips'));
     }
 
     //短信通知(用户提交需求)

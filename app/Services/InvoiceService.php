@@ -11,6 +11,7 @@ use App\Repositories\InvoiceGoodsRepo;
 use App\Repositories\InvoiceRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\OrderInfoRepo;
+use App\Repositories\ShopRepo;
 use App\Repositories\UserRepo;
 use Illuminate\Support\Carbon;
 use phpDocumentor\Reflection\Types\Self_;
@@ -29,10 +30,15 @@ class InvoiceService
     public static function getListBySearch($page,$condition)
     {
         $res = InvoiceRepo::getListBySearch(['pageSize'=>$page['pageSize'],'page'=>$page['page'],'orderType'=>['id'=>'desc']],$condition);
+
         foreach ($res['list'] as $k=>$v){
             $userInfo = UserRepo::getInfo($v['user_id']);
             $res['list'][$k]['username'] = $userInfo['user_name'];
             $res['list'][$k]['nickname'] = $userInfo['nick_name'];
+            $shopInfo = ShopService::getShopById($v['shop_id']);
+            if(!empty($shopInfo)){
+                $res['list'][$k]['shop_name_en'] = $shopInfo['shop_name_en'];
+            }
         }
         return $res;
     }

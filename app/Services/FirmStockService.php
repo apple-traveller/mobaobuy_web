@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Repositories\BrandRepo;
 use App\Repositories\FirmStockFlowRepo;
 use App\Repositories\FirmStockRepo;
 use App\Repositories\GoodsCategoryRepo;
@@ -14,7 +15,7 @@ class FirmStockService
     public static function createFirmStock($data){
         $goodsInfo = GoodsRepo::getInfo($data['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_tips'));
         }
         $data['goods_name']  = $goodsInfo['goods_full_name'];
         $data['flow_time'] = Carbon::now();
@@ -56,7 +57,7 @@ class FirmStockService
     public static function createFirmStockOut($data){
         $currStockInfo = FirmStockRepo::getInfo($data['id']);
         if(empty($currStockInfo)){
-            self::throwBizError('库存商品不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
         $firmStockData = [];
         $firmStockData['flow_time'] = Carbon::now();
@@ -74,7 +75,7 @@ class FirmStockService
         //更新库存表，新增库存流水记录
         if($currStockInfo){
             if($currStockInfo['number'] < $data['currStockNum']){
-                self::throwBizError('出库数量不能大于库存数量！');
+                self::throwBizError(trans('error.out_stock_num_error_tips'));
             }
 
             try{
@@ -140,6 +141,7 @@ class FirmStockService
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
                 $firmStockFlowInfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
                 $firmStockFlowInfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
+                $firmStockFlowInfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
             }
         }
         return $firmStockFlowInfo;
@@ -164,6 +166,7 @@ class FirmStockService
         if(!empty($firmStockFlowOutfo['list'])){
             foreach ($firmStockFlowOutfo['list'] as $k=>$v){
                 $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
+                $firmStockFlowOutfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
                 $firmStockFlowOutfo['list'][$k]['number_full'] = $v['number'].$goodsInfo['unit_name'];
                 $firmStockFlowOutfo['list'][$k]['price_full'] = '￥'.$v['price'].'/'.$goodsInfo['unit_name'];
                 $stock_info = FirmStockRepo::getInfoByFields(['goods_id'=>$v['goods_id'],'firm_id'=>$v['firm_id']]);
@@ -186,13 +189,17 @@ class FirmStockService
         $firmStockInfo = FirmStockRepo::getListBySearch(['pageSize'=>$pageSize, 'page'=>$page, 'orderType'=>['number'=>'desc']],$condition);
         $catInfo = [];
         $catName = [];
+        $catNameEn = [];
         foreach($firmStockInfo['list'] as $k=>$v){
             $goodsInfo = GoodsRepo::getInfo($v['goods_id']);
             $firmStockInfo['list'][$k]['number'] .= $goodsInfo['unit_name'];
+            $firmStockInfo['list'][$k]['goods_name_en'] = $goodsInfo['goods_full_name_en'];
 
             $goodsCatInfo = GoodsCategoryRepo::getInfo($goodsInfo['cat_id']);
+            $firmStockInfo['list'][$k]['cat_name_en'] = $goodsCatInfo['cat_name'];
+
             if(empty($goodsCatInfo)){
-                self::throwBizError('找不到对应的分类');
+                self::throwBizError(trans('error.cat_not_found_tips'));
             }
 
             //顶部多选框分类名
@@ -200,6 +207,7 @@ class FirmStockService
 //                $catInfo[$k]['cat_name'] = $goodsCatInfo['cat_name'];
 //                $catInfo[$k]['cat_id'] = $goodsCatInfo['id'];
                 $catName[] = $goodsCatInfo['cat_name'];
+                $catNameEn[] = $goodsCatInfo['cat_name_en'];
                 $catInfo[] = $goodsCatInfo['id'];
             }
 
@@ -228,7 +236,7 @@ class FirmStockService
             return $firmStockInfo;
         }
         //get返回分类列表
-        return ['catName'=>$catName,'catInfo'=>$catInfo];
+        return ['catName'=>$catName,'catNameEn'=>$catNameEn,'catInfo'=>$catInfo];
     }
 
     //出库记录详情
@@ -326,7 +334,7 @@ class FirmStockService
                 return $firmStockFlowInfo;
             }
         }else{
-            self::throwBizError('没有对应的出入库信息');
+            self::throwBizError(trans('error.no_out_stock_info'));
         }
     }
 
@@ -384,10 +392,10 @@ class FirmStockService
     {
         $currStockInfo = FirmStockRepo::getInfo($data['id']);
         if(empty($currStockInfo)){
-            self::throwBizError('库存商品不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
         if($currStockInfo['number'] < $data['currStockNum']){
-            self::throwBizError('出库数量不能大于库存数量！');
+            self::throwBizError(trans('error.out_stock_num_error_tips'));
         }
         $firmStockData['flow_type'] = 3 ;
         $firmStockData['order_sn'] = $data['order_sn'];

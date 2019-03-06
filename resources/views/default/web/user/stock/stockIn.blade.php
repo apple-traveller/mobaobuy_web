@@ -95,7 +95,12 @@
                 "columns": [
                     {"data": "flow_time", "bSortable": false},
                     {"data": "order_sn", "bSortable": false},
-                    {"data": "goods_name", "bSortable": false},
+                    {"data": "goods_name", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            var locale = '{{App::getLocale()}}';
+                            return jqGetLangData(locale,row,'goods_name');
+                        }
+                    },
                     {"data": "number_full", "bSortable": false},
                     {"data": "price_full", "bSortable": false},
 //                    {"data": "flow_desc", "bSortable": false}
@@ -144,7 +149,7 @@
                         $('#appendGoodsName').append(strHtml);
                     }else{
                         $('#appendGoodsName ul').remove();
-                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>无此商品数据信息</li></ul>';
+                        var strHtml = '<ul id="pointUl" id="0" class="pro_select" ><li>{{trans('home.no_goods_info')}}</li></ul>';
                         $('#appendGoodsName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -166,7 +171,7 @@
                         $('#appendPartnerName').append(strHtml);
                     }else{
                         $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此供应商数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>{{trans('home.no_supplier_info')}}</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -193,7 +198,7 @@
                        
                     }else{
                          $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>{{trans('home.no_goods_info')}}</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -203,9 +208,9 @@
 
         function delBtn(obj,row){
             if(row.order_sn != ''){
-                layer.msg('订单生成的入库单，无法删除');return;
+                layer.msg('{{trans('home.cannot_delete')}}');return;
             }
-            $.msg.confirm('是否确认删除？',
+            $.msg.confirm('{{trans('home.is_delete')}}？',
                 function () {
                     $.ajax({
                         url: "/delFirmStockFlow",
@@ -216,7 +221,7 @@
                         type: "GET",
                         success: function (data) {
                             if(data.code){
-                                $.msg.alert('删除成功！',{time:2000});
+                                $.msg.alert('{{trans('home.delete_success')}}！',{time:2000});
                                 setTimeout(function () { window.location.reload(); }, 2000);
                             }else{
                                 $.msg.error(data.msg);
@@ -233,7 +238,7 @@
         }
         function editBtn(obj,row){
             if(row.order_sn != ''){
-                layer.msg('订单生成的入库单，无法编辑');return;
+                layer.msg('{{trans('home.cannot_edit')}}');return;
             }
             console.log(row);
             $('#stork_in_id').val(row.id);
@@ -249,7 +254,7 @@
         }
         function remarkBtn(obj,res){
             if(res == ''){
-                res = '无备注信息'
+                res = '{{trans('home.no_remark_info')}}'
             }
             layer.tips(res, obj, {
                 tips: [1, '#3595CC'],
@@ -289,11 +294,11 @@
             var price = $('input[name=price]').val();
             var flow_desc = $('textarea[name=flow_desc]').val();
             if(goods_id == '' || goods_id <= 0){
-                $.msg.error('商品必须从检索的下拉列表中点击选择');
+                $.msg.error('{{trans('home.choose_goods_tips')}}');
                 return false;
             }
             if(number == '' || number <= 0){
-                $.msg.error('入库数量有误');
+                $.msg.error('{{trans('home.storage_num_error')}}');
                 return false;
             }
             
@@ -313,7 +318,7 @@
                 type: "POST",
                 success: function (data) {
                     if(data.code){
-                        $.msg.alert('提交成功！',{time:2000});
+                        $.msg.alert('{{trans('home.sub_success')}}！',{time:2000});
                         setTimeout(function () { window.location.reload(); }, 2000);
                     }else{
                         $.msg.error(data.msg);
@@ -329,25 +334,25 @@
     <!--标题-->
     <div class="data-table-box">
         <div class="table-condition">
-            <div class="item"><input type="text" name="goods_name" class="text" id="goods_name" placeholder="商品名称"></div>
+            <div class="item"><input type="text" name="goods_name" class="text" id="goods_name" placeholder="{{trans('home.goods_name')}}"></div>
             <div class="fl ml20 item">
-                <input type="text" class="text Wdate" name="begin_time" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
-                <input type="text" class="text Wdate" name="end_time" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
+                <input type="text" class="text Wdate" name="begin_time" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
+                <input type="text" class="text Wdate" name="end_time" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
             </div>
-            <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white">+新增入库</div>
+            <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
+            <div class="fr add_stock tac white">+ {{trans('home.add_new_warehouse')}}</div>
         </div>
 
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="15%">入库日期</th>
-                    <th width="15%">订单编号</th>
-                    <th width="20%">商品名称</th>
-                    <th width="15%">入库数量</th>
-                    <th width="15%">入库单价(元)</th>
-                    <th width="20%">操作</th>
+                    <th width="15%">{{trans('home.storage_date')}}</th>
+                    <th width="15%">{{trans('home.order_number')}}</th>
+                    <th width="20%">{{trans('home.goods_name')}}</th>
+                    <th width="15%">{{trans('home.num')}}</th>
+                    <th width="15%">{{trans('home.price')}}</th>
+                    <th width="20%">{{trans('home.operation')}}</th>
                 </tr>
                 </thead>
             </table>
@@ -357,19 +362,19 @@
     <!--遮罩-->
     <div class="block_bg" style="display:none;"></div>
     <div class="pay_method whitebg putIn"  style="display:none;">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增入库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
+        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">{{trans('home.add_new_storage_record')}}</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
         <ul class="pay_content" style="margin-top: 35px;">
-            <li><div class="ovh mt10" id="appendPartnerName"><span>供应商:</span><input type="text" class="pay_text" name="partner_name" id="partner_name" /></div></li>
-            <li><div class="ovh mt10"><span>订单编号:</span><input type="text" class="pay_text" name="order_sn" id="order_sn"/></div></li>
-            <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="goodName" goodsId="" /><i class="red ml5">*</i>
+            <li><div class="ovh mt10" id="appendPartnerName"><span>{{trans('home.home_supplier')}}:</span><input type="text" class="pay_text" name="partner_name" id="partner_name" /></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.order_number')}}:</span><input type="text" class="pay_text" name="order_sn" id="order_sn"/></div></li>
+            <li><div class=" mt10 pr" id="appendGoodsName" style="position: relative;"><span>{{trans('home.goods_name')}}:</span><input type="text" class="pay_text" name="goods_name" id="goodName" goodsId="" /><i class="red ml5">*</i>
                 </div>
             </li>
-            <li><div class="ovh mt10"><span>入库数量:</span><input type="number" class="pay_text" name="number" id="number"/><i class="red ml5">*</i></div></li>
-            <li><div class="ovh mt10"><span>入库单价:</span><input type="number" name="price" class="pay_text" id="pay_text"/></div></li>
-            <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" name="flow_desc" id="flow_desc"></textarea></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.num')}}:</span><input type="number" class="pay_text" name="number" id="number"/><i class="red ml5">*</i></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.price')}}:</span><input type="number" name="price" class="pay_text" id="pay_text"/></div></li>
+            <li><div class="ovh mt10"><span class="fl">{{trans('home.remark')}}:</span><textarea class="pay_textarea" name="flow_desc" id="flow_desc"></textarea></div></li>
             <input type="hidden" name="id" id="stork_in_id" value="" />
             <input type="hidden" name="number_old" id="number_old" value="" />
-            <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();" style="margin-bottom: 30px">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;margin-bottom: 30px">取消</div></li>
+            <li><div class="til_btn fl tac mt10 code_greenbg" onclick="addStockSave();" style="margin-bottom: 30px">{{trans('home.save')}}</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;margin-bottom: 30px">{{trans('home.cancel')}}</div></li>
         </ul>
     </div>
 @endsection

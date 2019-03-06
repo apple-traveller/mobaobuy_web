@@ -26,7 +26,7 @@ class InvoiceController extends Controller
     public function myInvoice(Request $request)
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         $tab_code = $request->input('tab_code', '');
         if ($request->isMethod('get')){
@@ -71,7 +71,6 @@ class InvoiceController extends Controller
                 'recordsFiltered' => $rs_list['total'], //数据总行数
                 'data' => $rs_list['list']
             ];
-
             return $this->success('', '', $data);
         }
     }
@@ -102,15 +101,15 @@ class InvoiceController extends Controller
     {
 
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         if (empty($invoice_id)){
-            return $this->error('该开票信息不存在');
+            return $this->error(trans('error.invoice_info_not_exist'));
         }
         $invoiceDetail = InvoiceService::getInvoiceDetail($invoice_id);
         if (!empty($invoiceDetail)){
             if ($invoiceDetail['invoiceInfo']['id'] != $invoice_id){
-                return $this->error('网络错误');
+                return $this->error(trans('error.network_error'));
             }
         }
 
@@ -128,7 +127,7 @@ class InvoiceController extends Controller
     public function invoiceList(Request $request)
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         $shop_name = $request->input('shop_name','');
         $order_sn = $request->input('order_sn','');
@@ -187,7 +186,7 @@ class InvoiceController extends Controller
     public function confirm(Request $request)
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         $invoiceSession = session('invoiceSession');
 
@@ -200,16 +199,16 @@ class InvoiceController extends Controller
         $total_amount = $request->input('total_amount','');
 
         if (empty($order_ids)){
-            return $this->error('请选择订单');
+            return $this->error(trans('error.select_order_tips'));
         }
 
         $order_ids = explode(',',$order_ids);
         $invoiceInfo = UserRealService::getInfoByUserId($user_info['id']);
         if (empty($invoiceInfo)){
-            return $this->error('您还没有实名认证，不能申请发票');
+            return $this->error(trans('error.no_real_name_tips'));
         }
         if ($invoiceInfo['review_status'] != 1 ){
-            return $this->error('您的实名认证还未通过，不能申请发票');
+            return $this->error(trans('error.real_name_no_pass_tips'));
         }
         // 判断默认地址 和当前选择地址
         $invoice_type = $invoiceSession['invoice_type'];
@@ -261,21 +260,21 @@ class InvoiceController extends Controller
     public function editInvoiceAddress(Request $request)
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         $address_id = $request->input('address_id','');
         if(!$address_id){
-            return $this->error('缺少地址ID！');
+            return $this->error(trans('error.lack_address_id'));
         }
         $address_info = UserAddressService::getAddressInfo($address_id);
         if(!$address_info){
-            return $this->error('地址信息不存在！');
+            return $this->error(trans('error.address_info_not_exist'));
         }
         $invoiceSession = session('invoiceSession');
         $invoiceSession['address_id'] = $address_id;
 
         session()->put('invoiceSession',$invoiceSession);
-        return $this->success('选择成功');
+        return $this->success(trans('error.select_success'));
     }
     /**
      * 选择开票类型地址
@@ -287,13 +286,13 @@ class InvoiceController extends Controller
     {
         $invoice_type = $request->input('invoice_type','');
         if(!$invoice_type){
-            return $this->error('缺少开票类型参数！');
+            return $this->error(trans('error.lack_invoice_type_parameter'));
         }
         $invoiceSession = session('invoiceSession');
         $invoiceSession['invoice_type'] = $invoice_type;
 
         session()->put('invoiceSession',$invoiceSession);
-        return $this->success('选择成功');
+        return $this->success(trans('error.select_success'));
     }
 
     /**
@@ -304,14 +303,14 @@ class InvoiceController extends Controller
     public function applyInvoice()
     {
         if (isset(session('_curr_deputy_user')['can_invoice']) && session('_curr_deputy_user')['can_invoice']==0){
-            return $this->error('您没有申请开票的权限');
+            return $this->error(trans('error.no_have_right_apply_invoice'));
         }
         $user_info = UserService::getInfo(session('_curr_deputy_user')['firm_id']);
         $invoiceSession = session('invoiceSession');
         $goodsList = $invoiceSession['goods_list'];
         $user_real = UserRealService::getInfoByUserId($user_info['id']);
         if ($invoiceSession['invoice_type']==2 && $user_real['is_special']==0){
-            return $this->error('您不符合开增值专用发票的条件');
+            return $this->error(trans('error.not_meet_special_invoice_tips'));
         }
         // 通过订单商品获取订单详情->店铺信息
         $orderInfo = OrderInfoService::getOrderInfoById($goodsList[0]['order_id']);
@@ -352,9 +351,9 @@ class InvoiceController extends Controller
         $invoice_data['invoice_numbers'] = getInvoiceSn();
         $re = InvoiceService::applyInvoice($invoice_data,$goodsList);
         if ($re){
-            return $this->success('提交成功','',$re['invoice_numbers']);
+            return $this->success(trans('error.apply_success'),'',$re['invoice_numbers']);
         } else{
-            return $this->error('申请失败');
+            return $this->error(trans('error.apply_error'));
         }
     }
 
@@ -367,7 +366,7 @@ class InvoiceController extends Controller
     {
         $re = $request->input('re','');
         if (empty($re)){
-            return $this->error('缺少参数');
+            return $this->error(trans('error.miss_parameter'));
         }
         return $this->display('web.user.invoice.alreadyInvoice',compact('re'));
     }

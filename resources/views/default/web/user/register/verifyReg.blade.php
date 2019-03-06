@@ -31,9 +31,9 @@
 	@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '账户注册'])@endcomponent
 	<div class="clearfix mt30">
 		<div class="succes_main ovh">
-			<div class="succes_main_til fs18">恭喜您，注册申请提交成功！</div>
-			<p class="tac mt35">请等待客服人员审核，如有问题请咨询客服：<font class="orange">{{getConfig('service_phone')}}</font></p>
-			<a class="enter_index db white" href="/">进入平台首页</a>
+			<div class="succes_main_til fs18">{{trans('home.register_success')}}</div>
+			<p class="tac mt35">{{trans('home.register_success_tips')}}：<font class="orange">{{getConfig('service_phone')}}</font></p>
+			<a class="enter_index db white" href="/">{{trans('home.enter_home')}}</a>
 		</div>
 	</div>
 	@include(themePath('.','web').'web.include.partials.footer_service')

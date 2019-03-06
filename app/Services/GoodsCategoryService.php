@@ -175,7 +175,7 @@ class GoodsCategoryService
     {
         $good = GoodsRepo::getInfoByFields(['cat_id'=>$id]);
         if(!empty($good)){
-            self::throwBizError('该分类下有商品不能删除');
+            self::throwBizError(trans('error.cat_cannot_delete'));
             return false;
         }
         return GoodsCategoryRepo::modify($id,['is_delete'=>1]);

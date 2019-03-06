@@ -104,11 +104,11 @@ class ActivityPromoteService
         $id = decrypt($id);
         $ActivityInfo =  ActivityPromoteRepo::getInfo($id);
         if(empty($ActivityInfo)){
-            self::throwBizError('促销商品不存在');
+            self::throwBizError(trans('error.promote_goods_not_exist'));
         }
         $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
 
         //自定义属性分割
@@ -190,14 +190,14 @@ class ActivityPromoteService
         $activityInfo = ActivityPromoteRepo::getInfo($activityId);
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
-            self::throwBizError('该活动已结束！');
+            self::throwBizError(trans('error.activity_over_tips'));
         }
         //规格判断处理
         if($goodsNum > $activityInfo['available_quantity']){
-            self::throwBizError('超出当前可售数量');
+            self::throwBizError(trans('error.insufficient_stock_tips'));
         }
         if($goodsNum < $activityInfo['min_limit']){
-            self::throwBizError('不能低于起售数量');
+            self::throwBizError(trans('error.no_less_num_tips'));
         }
         $goodsInfo = GoodsRepo::getInfo($activityInfo['goods_id']);
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
@@ -228,7 +228,7 @@ class ActivityPromoteService
         $id = decrypt($id);
         $activityPromoteInfo = ActivityPromoteRepo::getInfo($id);
         if(empty($activityPromoteInfo)){
-            self::throwBizError('不存在的商品信息');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
     }
 
@@ -258,7 +258,7 @@ class ActivityPromoteService
         $id = decrypt($id);
         $activityInfo = ActivityPromoteRepo::getInfo($id);
         if(empty($activityInfo)){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_tips'));
         }
         if($activityInfo['max_limit'] != 0){
             $orderList = OrderInfoRepo::getList([],['firm_id'=>$userId,'extension_id'=>$id]);
@@ -268,7 +268,7 @@ class ActivityPromoteService
             }
             $goodsCount += $goodsNumber;
             if($goodsCount > $activityInfo['max_limit']){
-                self::throwBizError('超出最大限量');
+                self::throwBizError(trans('error.beyond_maximum'));
             }
             $data['max_limit'] = $activityInfo['max_limit'];
             $data['can_buy_num'] = $activityInfo['max_limit'] - $goodsCount;

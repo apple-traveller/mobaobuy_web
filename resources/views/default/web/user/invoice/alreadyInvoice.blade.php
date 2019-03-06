@@ -87,31 +87,31 @@
         <div class="fr fs14 order_progress" >
             <div class="cart_progress cart_progress_02"></div>
             <div class="progress_text">
-                <div class="my_cart progress_text_curr">选择订单</div>
-                <div class="order_information">确认信息</div>
-                <div class="order_submit">成功提交</div>
+                <div class="my_cart progress_text_curr">{{trans('home.choose_order')}}</div>
+                <div class="order_information">{{trans('home.confirm_info')}}</div>
+                <div class="order_submit">{{trans('home.sub_success')}}</div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="w1200 whitebg ovh" style="margin-top: 20px;">
-    <div class="til_bg tac fs26" style="margin-top: 75px;">发票等待审核</div>
+    <div class="til_bg tac fs26" style="margin-top: 75px;">{{trans('home.invoice_wait_review')}}</div>
 
-    <div class=" til_text fs16" >发票流水号： {{ $re }}  <a href="/invoice/myInvoice" class="blue">【查询发票】</a><br/>由于行情波动、库存变化等原因、发票需要客服人员确认。</div>
+    <div class=" til_text fs16" >{{trans('home.invoice_number')}}： {{ $re }}  <a href="/invoice/myInvoice" class="blue">【{{trans('home.query_invoice')}}】</a><br/>{{trans('home.sub_invoice_success_tips')}}</div>
 
 </div>
 <div class="w1200 graybg ovh" style="color: #666;">
-    <div class="tac mt30 fs16">您也可以通过以下联系方式与客服取得联系</div>
-    <div class="mt15 tac fs16"><span class="ml15">电话 : <font class="orange">{{getConfig('service_phone')}}</font></span><span class="ml15">QQ :<font class="orange">{{getConfig('service_qq')}}</font></span></div>
+    <div class="tac mt30 fs16">{{trans('home.sub_order_success_contact_tips')}}</div>
+    <div class="mt15 tac fs16"><span class="ml15">{{trans('home.telephone')}} : <font class="orange">{{getConfig('service_phone')}}</font></span><span class="ml15">QQ :<font class="orange">{{getConfig('service_qq')}}</font></span></div>
     <div class="comfirm ovh">
         <a href="/member" >
-            <div class="comfirm_btn code_greenbg">会员中心
+            <div class="comfirm_btn code_greenbg">{{trans('home.member_center')}}
         </div>
         </a>
         <a href="/">
         <div class="comfirm_btn comfirm_btn_blue ml20">
-            返回首页
+            {{trans('home.back_home')}}
         </div>
         </a>
     </div>

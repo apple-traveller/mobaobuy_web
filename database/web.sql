@@ -356,28 +356,32 @@ CREATE TABLE `friend_link` (
   `link_url` varchar(255) NOT NULL DEFAULT '' COMMENT '链接URL',
   `link_logo` varchar(255) NOT NULL DEFAULT '' COMMENT '链接logo',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '排序',
+  `link_name_en` varchar(255) NOT NULL COMMENT '友情链接英文',
   PRIMARY KEY (`id`),
-  KEY `sort_order` (`sort_order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='友情链接';
+  KEY `sort_order` (`sort_order`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='友情链接';
 insert into friend_link(link_name,link_url,link_logo)
 VALUE('塑米城','http://www.sumibuy.com','');
 
+DROP TABLE IF EXISTS `nav`;
 CREATE TABLE `nav` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(255) NOT NULL COMMENT '名称',
+  `name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `name_en` varchar(255) DEFAULT NULL COMMENT '英文名称',
   `is_show` tinyint(1) NOT NULL COMMENT '是否显示 0-否 1-是',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '排序',
-  `opennew` tinyint(1) NOT NULL COMMENT '是否新窗口 0-否 1-是',
-  `url` varchar(255) NOT NULL COMMENT '链接地址',
-  `type` varchar(10) NOT NULL COMMENT '显示位置 top-顶部 middle-中间 bottom-底部',
-  `is_nofollow` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认0不加，1的话加nofollow',
+  `opennew` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否新窗口 0-否 1-是',
+  `url` varchar(255) DEFAULT NULL COMMENT '链接地址',
+  `type` varchar(10) DEFAULT NULL COMMENT '显示位置 top-顶部 middle-中间 bottom-底部',
+  `is_nofollow` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `type` (`type`),
-  KEY `is_show` (`is_show`),
-  KEY `sort_order` (`sort_order`),
-  KEY `opennew` (`opennew`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='导航栏设置表';
+  KEY `type` (`type`) USING BTREE,
+  KEY `is_show` (`is_show`) USING BTREE,
+  KEY `sort_order` (`sort_order`) USING BTREE,
+  KEY `opennew` (`opennew`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='导航栏设置表';
 
+DROP TABLE IF EXISTS `seo`;
 CREATE TABLE `seo` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(255) NOT NULL COMMENT '标题',
@@ -410,10 +414,12 @@ CREATE TABLE `article` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `sort_order` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `click` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
+  `title_en` varchar(150) NOT NULL COMMENT '英文标题',
+  `content_en` longtext NOT NULL COMMENT '文章英文内容',
   PRIMARY KEY (`id`),
-  KEY `cat_id` (`cat_id`),
-  KEY `is_show` (`is_show`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章表';
+  KEY `cat_id` (`cat_id`) USING BTREE,
+  KEY `is_show` (`is_show`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 COMMENT='文章表';
 insert into article(cat_id,title,content,author,keywords,add_time,file_url) VALUES
 (4,'订购方式','','','', now(), 'http://'),
 (4,'购物流程','','','', now(), 'http://'),
@@ -433,23 +439,24 @@ insert into article(cat_id,title,content,author,keywords,add_time,file_url) VALU
 CREATE TABLE `article_cat` (
   `id` mediumint(8) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cat_name` varchar(255) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `cat_name_en` varchar(255) NOT NULL COMMENT '分类英文名称',
   `sort_order` tinyint(3) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `parent_id` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
   PRIMARY KEY (`id`),
-  KEY `sort_order` (`sort_order`),
-  KEY `parent_id` (`parent_id`),
-  KEY `cat_name` (`cat_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章分类表';
+  KEY `sort_order` (`sort_order`) USING BTREE,
+  KEY `parent_id` (`parent_id`) USING BTREE,
+  KEY `cat_name` (`cat_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='文章分类表';
 insert into article_cat(cat_name,sort_order,parent_id) VALUES
-('帮助中心', '1','0'),
-('新闻中心', '1','0'),
-('系统分类', '1','1'),
-('新手上路', '1','3'),
-('配送与支付', '2','3'),
-('联系我们', '3','3'),
-('会员中心', '4','3'),
-('服务保证', '5','3'),
-('发票问题', '1','1');
+('帮助中心','', '1','0'),
+('新闻中心','', '1','0'),
+('系统分类','', '1','1'),
+('新手上路','', '1','3'),
+('配送与支付','', '2','3'),
+('联系我们','', '3','3'),
+('会员中心','', '4','3'),
+('服务保证','', '5','3'),
+('发票问题','', '1','1');
 
 DROP TABLE IF EXISTS `demand`;
 CREATE TABLE `demand` (
@@ -469,6 +476,7 @@ DROP TABLE IF EXISTS `goods_category`;
 CREATE TABLE `goods_category` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `cat_name` varchar(90) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `cat_name_en` varchar(255) NOT NULL COMMENT '分类英文名称',
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级分类ID',
   `sort_order` smallint(8) unsigned NOT NULL DEFAULT '50' COMMENT '排序',
   `is_nav_show` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否显示在导航条 0-否 1-是',
@@ -480,37 +488,38 @@ CREATE TABLE `goods_category` (
   `cat_alias_name` varchar(90) NOT NULL DEFAULT '' COMMENT '分类别名，多个之间用|分隔',
   `cat_img` varchar(255) DEFAULT NULL COMMENT '分类图片',
   PRIMARY KEY (`id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `is_show` (`is_show`),
-  KEY `cat_name` (`cat_name`),
-  KEY `is_nav_show` (`is_nav_show`),
-  KEY `is_top_show` (`is_top_show`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类表';
+  KEY `parent_id` (`parent_id`) USING BTREE,
+  KEY `is_show` (`is_show`) USING BTREE,
+  KEY `cat_name` (`cat_name`) USING BTREE,
+  KEY `is_nav_show` (`is_nav_show`) USING BTREE,
+  KEY `is_top_show` (`is_top_show`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8 COMMENT='商品分类表';
 INSERT INTO goods_category(id, cat_name, parent_id) VALUES
-(1, '维生素', 0),
-(2, '微量元素', 0),
-(3, '氨基酸', 0),
-(4, '饲料添加剂', 0),
-(5, '复合维生素', 1),
-(6, '维生素A', 1),
-(7, '维生素B1', 1),
-(8, '维生素C', 1),
-(9, '维生素D3', 1),
-(10, '维生素E', 1),
-(11, '维生素K3', 1),
-(12, '氯化胆碱', 1),
-(13, '氧化镁', 2),
-(14, '氧化锌', 2),
-(15, '赖氨基', 3),
-(16, '蛋氨基', 3),
-(17, '苏氨基', 3),
-(18, '催情剂', 4),
-(19, '代乳剂', 4);
+(1, '维生素','', 0),
+(2, '微量元素','', 0),
+(3, '氨基酸','', 0),
+(4, '饲料添加剂','', 0),
+(5, '复合维生素','', 1),
+(6, '维生素A','', 1),
+(7, '维生素B1','', 1),
+(8, '维生素C','', 1),
+(9, '维生素D3','', 1),
+(10, '维生素E','', 1),
+(11, '维生素K3','', 1),
+(12, '氯化胆碱','', 1),
+(13, '氧化镁','', 2),
+(14, '氧化锌','', 2),
+(15, '赖氨基','', 3),
+(16, '蛋氨基','', 3),
+(17, '苏氨基','', 3),
+(18, '催情剂','', 4),
+(19, '代乳剂','', 4);
 
 DROP TABLE IF EXISTS `brand`;
 CREATE TABLE `brand` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `brand_name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
+  `brand_name_en` varchar(60) NOT NULL COMMENT '英文名称',
   `brand_first_char` char(1) NOT NULL COMMENT '品牌首字母',
   `brand_logo` varchar(80) NOT NULL DEFAULT '' COMMENT '品牌logo',
   `brand_desc` text NOT NULL COMMENT '品牌简介',
@@ -519,14 +528,14 @@ CREATE TABLE `brand` (
   `is_recommend` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否推荐',
   `add_time` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
-  KEY `brand_name` (`brand_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品品牌表';
+  KEY `brand_name` (`brand_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='商品品牌表';
 INSERT INTO brand(id, brand_name, brand_first_char, brand_desc, add_time) VALUES
-(1, '新和成', 'X', '', now()),
-(2, '花园', 'H', '', now()),
-(3, '天力兴农', 'T', '', now()),
-(4, '优利宝', 'Y', '', now()),
-(5, '天新', '', '', now());
+(1, '新和成','', 'X', '', now()),
+(2, '花园','', 'H', '', now()),
+(3, '天力兴农','', 'T', '', now()),
+(4, '优利宝','', 'Y', '', now()),
+(5, '天新','', '', '', now());
 
 DROP TABLE IF EXISTS `unit`;
 CREATE TABLE `unit` (
@@ -571,22 +580,27 @@ CREATE TABLE `goods` (
   `cat_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
   `goods_sn` varchar(60) NOT NULL DEFAULT '' COMMENT '商品编码',
   `goods_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_name_en` varchar(120) NOT NULL COMMENT '商品英文名称',
   `goods_full_name` varchar(120) NOT NULL DEFAULT '' COMMENT '商品全称',
+  `goods_full_name_en` varchar(120) NOT NULL COMMENT '商品英文全称',
   `goods_content` varchar(120) NOT NULL DEFAULT '' COMMENT '含量',
+  `goods_content_en` varchar(120) NOT NULL COMMENT '英文含量',
   `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键词，多个用|分隔',
   `brand_id` smallint(5) unsigned DEFAULT '0' COMMENT '品牌ID',
   `brand_name` varchar(60) DEFAULT '' COMMENT '品牌名称',
   `unit_id` smallint(5) unsigned DEFAULT '0' COMMENT '单位ID',
-  `unit_name` varchar(15) DEFAULT 'KG' COMMENT '单位名称',
+  `unit_name` varchar(15) DEFAULT 'kg' COMMENT '单位名称',
   `goods_model` varchar(50) DEFAULT '' COMMENT '商品型号',
   `packing_spec` int(11) NOT NULL DEFAULT '1' COMMENT '包装规格',
   `packing_unit` varchar(20) NOT NULL DEFAULT '包' COMMENT '包装单位',
+  `packing_unit_en` varchar(20) NOT NULL COMMENT '英文包装单位',
   `goods_thumb` varchar(255) DEFAULT '' COMMENT '商品小图',
   `goods_img` varchar(255) DEFAULT '' COMMENT '商品大图',
   `original_img` varchar(255) DEFAULT '' COMMENT '商品原图',
   `goods_attr_ids` varchar(255) DEFAULT '' COMMENT '商品属性id值 属性名_属性值，多个之间用;分隔 如:1_12',
   `goods_attr` varchar(255) DEFAULT '' COMMENT '商品属性,中文，颜色:红， 多个之间用;分隔',
   `goods_desc` text COMMENT 'PC商品详情',
+  `goods_desc_en` text NOT NULL COMMENT 'pc商品英文详情',
   `desc_mobile` text COMMENT '移动端商品详情',
   `market_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '市场价',
   `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点击次数',
@@ -596,24 +610,22 @@ CREATE TABLE `goods` (
   `last_update` datetime NOT NULL COMMENT '更新时间',
   `min_limit` int(11) NOT NULL COMMENT '最小起订量',
   `is_special` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否特殊 0否 1是',
+  `expiry_date` tinyint(4) NOT NULL DEFAULT '0' COMMENT '保质期（月）',
   PRIMARY KEY (`id`),
-  KEY `goods_sn` (`goods_sn`),
-  KEY `cat_id` (`cat_id`),
-  KEY `brand_id` (`brand_id`),
-  KEY `is_delete` (`is_delete`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='商品表';
-INSERT INTO goods(id, cat_id, goods_sn, goods_name, brand_id, brand_name, unit_id, unit_name, goods_model, packing_spec, packing_unit, goods_attr_ids, goods_attr, goods_desc, desc_mobile, market_price, add_time, last_update) VALUES
-(1, 5, 'P000001', '蛋鸡维生素', 4, '优利保', 1, 'KG', '', '10', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now(),'10'),
-(2, 6, 'P000002', '饲料级维生素A', 1, '新和成', 1, 'KG', '', '25', '箱', ';1_2;', '含量:50万 IU/g', 'PC详情', '移动端详情','800', now(), now(),'25'),
-(3, 7, 'P000003', '饲料级维生素B1', 5, '天新', 1, 'KG', '', '25', '箱', ';1_6;', '含量:99%', 'PC详情', '移动端详情','600', now(), now(),'25'),
-(4, 8, 'P000001', '饲料级维生素C', 3, '天力兴农', 1, 'KG', '', '25', '桶', ';1_1;', '含量:100%', 'PC详情', '移动端详情','1500', now(), now(),'25');
+  KEY `goods_sn` (`goods_sn`) USING BTREE,
+  KEY `cat_id` (`cat_id`) USING BTREE,
+  KEY `brand_id` (`brand_id`) USING BTREE,
+  KEY `is_delete` (`is_delete`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COMMENT='商品表';
 
 DROP TABLE IF EXISTS `shop`;
 CREATE TABLE `shop` (
-	`id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-	`user_id` int(10) NOT NULL DEFAULT '0' COMMENT '会员ID',
-	`shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
-	`company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '企业全称',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `shop_name` varchar(60) NOT NULL DEFAULT '' COMMENT '店铺名称',
+  `shop_name_en` varchar(60) NOT NULL,
+  `company_name` varchar(60) NOT NULL DEFAULT '' COMMENT '企业全称',
+  `company_name_en` varchar(60) NOT NULL,
   `contactName` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人姓名',
   `contactPhone` varchar(255) NOT NULL DEFAULT '' COMMENT '负责人手机',
   `attorney_letter_fileImg` varchar(255) NOT NULL DEFAULT '' COMMENT '授权委托书电子版',
@@ -630,11 +642,9 @@ CREATE TABLE `shop` (
   `is_validated` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否通过审核 0-否 1-是',
   `is_freeze` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否冻结 0-否 1-是',
   `is_self_run` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否自营 0-否 1-是',
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `company_name` (`company_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入驻店铺表';
-INSERT INTO shop(id, shop_name, company_name, reg_time, is_validated, is_self_run)
-VALUE(1, '塑创电商', '上海塑创电子商务有限公司', now(), 1, 1);
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `company_name` (`company_name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='入驻店铺表';
 
 DROP TABLE IF EXISTS `shop_user`;
 CREATE TABLE `shop_user` (
@@ -698,7 +708,6 @@ CREATE TABLE `shop_goods_quote` (
   `place_id` int(10) NOT NULL DEFAULT '0' COMMENT '发货地ID',
   `goods_number` int(10) NOT NULL DEFAULT '0' COMMENT '库存数量',
   `total_number` int(10) NOT NULL COMMENT '报价总数',
-  `min_limit` int(11) NOT NULL COMMENT '报价最小采购量',
   `shop_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '店铺售价',
   `shop_user_id` int(10) NOT NULL DEFAULT '0' COMMENT '店铺职员ID',
   `outer_user_id` varchar(10) NOT NULL DEFAULT '0' COMMENT '外部业务员ID',
@@ -714,13 +723,17 @@ CREATE TABLE `shop_goods_quote` (
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   `consign_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '清仓特卖状态 0 待审核 1已审核 2审核不通过',
   `delivery_method` varchar(10) NOT NULL COMMENT '交货方式',
+  `delivery_method_en` varchar(60) NOT NULL COMMENT '英文交货方式',
   `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
-  `is_roof` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否置顶 0否 1是',
+  `delivery_time_en` varchar(60) NOT NULL COMMENT '英文交货时间',
+  `is_roof` tinyint(4) NOT NULL COMMENT '是否置顶 0否 1是',
+  `min_limit` int(11) NOT NULL COMMENT '最小采购量',
+  `goods_source` tinyint(4) NOT NULL DEFAULT '0' COMMENT '货源 0现货 1紧张 2厂家直发 3',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE,
   KEY `shop_store_id` (`shop_store_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
+) ENGINE=InnoDB AUTO_INCREMENT=1567 DEFAULT CHARSET=utf8 COMMENT='店铺商品报价表';
 
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
@@ -1267,10 +1280,23 @@ CREATE TABLE `shop_store` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shop_id` int(11) DEFAULT NULL COMMENT '商家ID',
   `store_name` varchar(255) NOT NULL COMMENT '店铺名称',
-  `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
+  `store_name_en` varchar(255) NOT NULL COMMENT '店铺英文名称',
+  `store_img` varchar(255) DEFAULT NULL COMMENT '店铺图片',
+  `main_cat` varchar(255) DEFAULT NULL COMMENT '主营类型',
+  `main_cat_en` varchar(255) DEFAULT NULL COMMENT '英文主营类型',
+  `main_brand` varchar(255) DEFAULT NULL COMMENT '主营品牌',
+  `main_brand_en` varchar(255) DEFAULT NULL COMMENT '英文主营品牌',
+  `spec` varchar(255) DEFAULT NULL COMMENT '规格',
+  `spec_en` varchar(255) DEFAULT NULL COMMENT '规格英文',
+  `delivery_area` varchar(255) DEFAULT NULL COMMENT '交货地',
+  `delivery_area_en` varchar(255) DEFAULT NULL COMMENT '英文交货地',
+  `delivery_method` varchar(50) DEFAULT NULL COMMENT '交货方式',
+  `delivery_method_en` varchar(50) DEFAULT NULL COMMENT '英文交货方式',
   `add_time` datetime NOT NULL COMMENT '添加时间',
+  `is_delete` tinyint(4) NOT NULL COMMENT '是否删除 0未删除 1已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='商家店铺表';
+
 
 DROP TABLE IF EXISTS `hot_search`;
 CREATE TABLE `hot_search` (
@@ -1440,11 +1466,13 @@ CREATE TABLE `inquire` (
   `contacts_mobile` varchar(11) NOT NULL COMMENT '手机号',
   `qq` varchar(20) DEFAULT NULL COMMENT 'qq',
   `delivery_method` varchar(20) DEFAULT NULL COMMENT '交货方式',
+  `delivery_method_en` varchar(20) DEFAULT NULL COMMENT '英文交货方式',
   `delivery_time` varchar(50) NOT NULL COMMENT '交货时间',
+  `delivery_time_en` varchar(50) NOT NULL COMMENT '英文交货时间',
   `is_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示 0否 1是',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除 0否 1是',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求购表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='求购表';
 
 DROP TABLE IF EXISTS `inquire_quote`;
 CREATE TABLE `inquire_quote` (
@@ -1484,8 +1512,9 @@ CREATE TABLE `recruit` (
   `recruit_type` varchar(50) DEFAULT NULL COMMENT '工作类型',
   `recruit_branch` varchar(255) DEFAULT NULL COMMENT '部门名称',
   `job_type` varchar(255) NOT NULL COMMENT '职位类别',
+  `is_en` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0中文站显示 1英文站显示',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `resume`;
 CREATE TABLE `resume` (

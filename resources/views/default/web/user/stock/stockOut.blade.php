@@ -98,7 +98,11 @@
                 "columns": [
                     {"data": "flow_time", "bSortable": false},
                     {"data": "order_sn", "bSortable": false},
-                    {"data": "goods_name", "bSortable": false},
+                    {"data": "goods_name", "bSortable": false,
+                        "render": function (data, type, row, meta) {
+                            var locale = '{{App::getLocale()}}';
+                            return jqGetLangData(locale,row,'goods_name');
+                        }},
                     {"data": "number_full", "bSortable": false},
                     {"data": "price_full", "bSortable": false},
                     {"data": "flow_desc", "bSortable": false,
@@ -122,9 +126,9 @@
         });
         function delBtn(obj,row){
             if(row.order_sn != ''){
-                layer.msg('订单生成的入库单，无法删除');return;
+                layer.msg('{{trans('home.out_cannot_delete')}}');return;
             }
-            $.msg.confirm('是否确认删除？',
+            $.msg.confirm('{{trans('home.is_delete')}}？',
                 function () {
                     $.ajax({
                         url: "/delFirmStockFlow",
@@ -135,7 +139,7 @@
                         type: "GET",
                         success: function (data) {
                             if(data.code){
-                                $.msg.alert('删除成功！',{time:2000});
+                                $.msg.alert('{{trans('home.delete_success')}}！',{time:2000});
                                 setTimeout(function () { window.location.reload(); }, 2000);
                             }else{
                                 $.msg.error(data.msg);
@@ -165,7 +169,7 @@
         }
         function remarkBtn(obj,res){
             if(res == ''){
-                res = '无备注信息'
+                res = '{{trans('home.no_remark_info')}}'
             }
             layer.tips(res, obj, {
                 tips: [1, '#3595CC'],
@@ -182,7 +186,7 @@
             var number_old = $('#number_old').val();
             var id = $('#num').attr('stockId');
             if(currStockNum == '' || currStockNum <= 0){
-                $.msg.alert('出库数量有误,请重新填写');
+                $.msg.alert('{{trans('home.out_num_error')}}');
                 return;
             }
             Ajax.call('/curStockSave',{
@@ -196,7 +200,7 @@
                 number_old:number_old
             }, function(data){
                 if(data.code){
-                    $.msg.tips('编辑出库记录成功');
+                    $.msg.tips('{{trans('home.edit_out_success')}}');
                     setTimeout(function () { window.location.reload(); }, 2000);
                 }else{
                     $.msg.error(data.msg);
@@ -210,25 +214,25 @@
 @section('content')
     <div class="data-table-box">
         <div class="table-condition">
-            <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
+            <div class="item"><input type="text" class="text" id="goods_name" placeholder="{{trans('home.goods_name')}}"></div>
             <div class="fl ml20 item">
-                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="入库时间从">
-                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="入库时间至">
+                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
+                <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
             </div>
-            <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}" style="color:#fff">+新增出库</a></div>
+            <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
+            <div class="fr add_stock tac white"><a href="{{url('canStockOut')}}" style="color:#fff">+ {{trans('home.add_new_out_stock')}}</a></div>
         </div>
         
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                     <tr class="text-c">
-                        <th width="15%">出库日期</th>
-                        <th width="15%">出库单号</th>
-                        <th width="20">商品名称</th>
-                        <th width="15%">出库数量</th>
-                        <th width="15%">出库单价(元)</th>
-                        <th width="20%">备注</th>
+                        <th width="15%">{{trans('home.out_date')}}</th>
+                        <th width="15%">{{trans('home.out_number')}}</th>
+                        <th width="20">{{trans('home.goods_name')}}</th>
+                        <th width="15%">{{trans('home.num')}}</th>
+                        <th width="15%">{{trans('home.price')}}</th>
+                        <th width="20%">{{trans('home.remark')}}</th>
                     </tr>
                 </thead>
 
@@ -238,18 +242,18 @@
     <!--遮罩-->
     <div class="block_bg" style="display:none;"></div>
     <div class="pay_method whitebg putIn"  style="display:none;">
-        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">编辑出库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
+        <div class="pay_title f4bg"><span class="fl pl30 gray fs16">{{trans('home.edit_out_record')}}</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
         <ul class="pay_content ovh" style="margin-top: 35px;">
-            <li><div class="ovh mt10"><span>商品名称:</span><input type="text" readonly="readonly" class="pay_text" name="goods_name" id="good_name"/></div></li>
-            <li><div class="ovh mt10"><span>库存数量:</span><input type="text" readonly="readonly" class="pay_text" name="num" id="num" stockId="" /></div></li>
-            <li><div class="ovh mt10"><span>单号:</span><input type="text" class="pay_text" id="order_sn" name="order_sn" /></div></li>
-            <li><div class="ovh mt10" id="appendPartnerName"><span>收料客户:</span><input type="text" class="pay_text" id="partner_name" name="partner_name" /></div></li>
-            <li><div class="ovh mt10"><span>出库数量:</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
-            <li><div class="ovh mt10"><span>出库单价:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
-            <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.goods_name')}}:</span><input type="text" readonly="readonly" class="pay_text" name="goods_name" id="good_name"/></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.stock')}}:</span><input type="text" readonly="readonly" class="pay_text" name="num" id="num" stockId="" /></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.odd_numbers')}}:</span><input type="text" class="pay_text" id="order_sn" name="order_sn" /></div></li>
+            <li><div class="ovh mt10" id="appendPartnerName"><span>{{trans('home.receiving_customer')}}:</span><input type="text" class="pay_text" id="partner_name" name="partner_name" /></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.num')}}:</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
+            <li><div class="ovh mt10"><span>{{trans('home.price')}}:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
+            <li><div class="ovh mt10"><span class="fl">{{trans('home.remark')}}:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></div></li>
             <input type="hidden" name="stock_out_id" id="stock_out_id" value="" />
             <input type="hidden" name="number_old" id="number_old" value="" />
-            <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
+            <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">{{trans('home.save')}}</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">{{trans('home.cancel')}}</div></li>
         </ul>
     </div>
 @endsection

@@ -64,3 +64,29 @@ function jqGetLangData(locale,arr,field) {
     }
     return (arr[field + '_' + locale] != 'undefined' && arr[field + '_' + locale] != '') ? arr[field + '_' + locale] : arr[field];
 }
+
+function jqGetLangGoodsSource(locale,goods_source) {
+    var res = '';
+    if (locale == 'zh-CN') {
+        if(goods_source == 0){
+            res = '现货';
+        }else if(goods_source == 1){
+            res = '紧张';
+        }else if(goods_source == 2){
+            res = '厂家直发';
+        }else{
+            res = '现货';
+        }
+    }else{
+        if(goods_source == 0){
+            res = 'spot goods';
+        }else if(goods_source == 1){
+            res = 'Tight supply';
+        }else if(goods_source == 2){
+            res = 'Straight hair';
+        }else{
+            res = 'spot goods';
+        }
+    }
+    return res;
+}

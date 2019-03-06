@@ -82,13 +82,13 @@
             </a>
         </div>
 
-        <div class="title-name">开票申请</div>
+        <div class="title-name">{{trans('home.invoice_apply')}}</div>
         <div class="fr fs14 order_progress" >
             <div class="cart_progress cart_progress_02"></div>
             <div class="progress_text">
-                <div class="my_cart progress_text_curr">申请发票</div>
-                <div class="order_information">选择订单</div>
-                <div class="order_submit">成功提交</div>
+                <div class="my_cart progress_text_curr">{{trans('home.choose_order')}}</div>
+                <div class="order_information">{{trans('home.confirm_info')}}</div>
+                <div class="order_submit">{{trans('home.sub_success')}}</div>
             </div>
         </div>
     </div>
@@ -96,18 +96,18 @@
 <div class="data-table-box w1200">
     <div class="table-condition" >
         <div class="item">
-            <input type="text" class="text" id="shop_name" placeholder="店铺名称">
+            <input type="text" class="text" id="shop_name" placeholder="{{trans('home.shop_name')}}">
         </div>
         <div class="item">
-            <input type="text" class="text" id="order_no" placeholder="订单单号">
+            <input type="text" class="text" id="order_no" placeholder="{{trans('home.order_number')}}">
         </div>
         <div class="item">
-            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="下单时间从">
+            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'end_time\')||\'%y-%M-%d\'}'})" id="begin_time" placeholder="{{trans('home.start_time')}}">
         </div>
         <div class="item">
-            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="下单时间至">
+            <input type="text" class="text Wdate" autocomplete="off" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'begin_time\')}',maxDate:'%y-%M-%d'})" id="end_time" placeholder="{{trans('home.end_time')}}">
         </div>
-        <button id="on-search" class="search-btn">查询</button>
+        <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
     </div>
 </div>
 <div class="w1200 whitebg" style="margin-top: 20px;max-height:500px;overflow-y: auto">
@@ -118,12 +118,12 @@
                 <span class="mr5 mt25 check_all fl"></span>
             </label>
         </li>
-        <li class="shop_good">订单编号</li>
-        <li class="w200">店铺名称</li>
-        <li class="w130">商品总金额</li>
-        <li class="w130">详情</li>
-        <li class="w130">订单状态</li>
-        <li class="w130">操作</li>
+        <li class="shop_good">{{trans('home.order_number')}}</li>
+        <li class="w200">{{trans('home.shop_name')}}</li>
+        <li class="w130">{{trans('home.goods_amount')}}</li>
+        <li class="w130">{{trans('home.details')}}</li>
+        <li class="w130">{{trans('home.order_status')}}</li>
+        <li class="w130">{{trans('home.operation')}}</li>
     </ul>
     @if(count($orderList))
         @foreach($orderList as $k=>$v)
@@ -133,25 +133,25 @@
 						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" data-id="{{ $v['shop_id'] }}" name="" type="checkbox" @if($v['order_status']==4) disabled @endif value="{{$v['id']}}"/> </label>
 					</span>
                     <a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;">{{$v['order_sn']}}</a>
-                    <span class="fl tac" style="line-height: 20px;margin-top: 45px;width: 170px">{{$v['shop_name']}}</span>
+                    <span class="fl tac" style="line-height: 20px;margin-top: 45px;width: 170px">{{getLangData($v,'shop_name')}}</span>
                     <span class="orange fl tac goods_amount" style="width: 160px">{{$v['goods_amount']}}</span>
-                    <a href="/orderDetails/{{ $v['order_sn'] }}" class="orange fl tac " style="width: 105px">订单详情</a>
-                    <span class="w130 fl tac" style="width: 150px">@if($v['order_status']==5) 待开票 @elseif($v['order_status']==4) 已完成  @endif </span>
+                    <a href="/orderDetails/{{ $v['order_sn'] }}" class="orange fl tac " style="width: 105px">{{trans('home.order_details')}}</a>
+                    <span class="w130 fl tac" style="width: 150px">@if($v['order_status']==5) {{trans('home.wait_open_ticket')}} @elseif($v['order_status']==4) {{trans('home.completed')}}  @endif </span>
                     <span class="w130 orange fl tac">
-                        <a href="javascript:void(0);" style="cursor: pointer" data-id="{{$v['id']}}" data-status="{{$v['order_status']}}" onclick="_apply(this)">申请开票</a>
+                        <a href="javascript:void(0);" style="cursor: pointer" data-id="{{$v['id']}}" data-status="{{$v['order_status']}}" onclick="_apply(this)">{{trans('home.invoice_apply')}}</a>
                     </span>
                 </li>
             </ul>
         @endforeach
     @else
         <div class="w1200 whitebg" style="height: 100px;vertical-align:center;padding-top: 60px">
-        <div style="align-content:center;width: auto " align="center">暂时没有符合条件的订单<a type="button" href="/order/list" style="height: 20px;background-color: #75b335;color:#fff;"  align="center">订单列表</a></div>
+        <div style="align-content:center;width: auto " align="center">{{trans('home.no_qualified_order')}}<a type="button" href="/order/list" style="height: 20px;background-color: #75b335;color:#fff;"  align="center">{{trans('home.order_list')}}</a></div>
         </div>
     @endif
 </div>
 <div class="sumbit_cart whitebg ovh mb30">
-    <span class="fl ml40">共<font class="orange" id="accountTotal">@if($orderList) {{count($orderList)}} @else 0 @endif</font>个订单，已选择<font class="orange" id="checkedSel">0</font>个,共<font class="orange" id="total_amount">0</font>元</span>
-    <div class="sumbit_cart_btn" onclick="toBalance()">申请开票</div>
+    <span class="fl ml40">{{trans('home.self_quote_prefix')}}<font class="orange" id="accountTotal">@if($orderList) {{count($orderList)}} @else 0 @endif</font>{{trans('home.choose_order_tips1')}} <font class="orange" id="checkedSel"> 0 </font> {{trans('home.choose_order_tips2')}} <font class="orange" id="total_amount"> 0 </font> {{trans('home.choose_order_tips3')}}</span>
+    <div class="sumbit_cart_btn" onclick="toBalance()">{{trans('home.invoice_apply')}}</div>
 </div>
 <div class="clearfix" style="height: 28px;"></div>
 @include(themePath('.','web').'web.include.partials.footer_service')
@@ -178,7 +178,7 @@
             }else{
                 if ($(this).attr('data-id') != shop){
                     $(this).attr('checked',false);
-                    layer.msg('一次只能申请同店铺的订单');
+                    layer.msg('{{trans('home.only_apply_one_shop')}}');
                     return;
                 } else {
                     check_arr.push($(this).val());
@@ -216,7 +216,7 @@
         var order_status = $(obj).attr('data-status');
         var total_amount = parseInt($(obj).parent().siblings('.goods_amount').text());
         if (order_status==4){
-            layer.msg('订单已完成，无法提交申请');
+            layer.msg('{{trans('home.no_submitted')}}');
         }
             order_ids.push(order_id);
 
@@ -254,7 +254,7 @@
                 }
             })
         }else{
-            layer.msg('请选择商品');return;
+            layer.msg('{{trans('home.')}}');return;
         }
     }
 

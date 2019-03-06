@@ -162,6 +162,17 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
+                                <div class="label_value">
+                                    <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="goods_source" id="goods_source" >
+                                        <option value="0">现货</option>
+                                        <option value="1">紧张</option>
+                                        <option value="2">厂家直发</option>
+                                    </select>
+                                    <div style="margin-left: 10px;" class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
                                     <input type="submit" value="确定" class="button" id="submitBtn">
@@ -281,6 +292,9 @@
                     delivery_method:{
                         required:true,
                     },
+                    goods_source:{
+                        required:true,
+                    }
 
                 },
                 messages:{
@@ -317,6 +331,9 @@
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     },
                     delivery_method:{
+                        required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
+                    },
+                    goods_source:{
                         required :'<i class="icon icon-exclamation-sign"></i>'+'必填项'
                     }
                 }

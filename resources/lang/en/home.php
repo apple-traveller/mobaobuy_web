@@ -49,8 +49,8 @@ return [
     'sold_out'=>'Sold out',
     'overdue'=>'be overdue',//be overdue
     'partaking'=>'partaking',
-    'day'=>'day',
-    'hour'=>'hour',
+    'day'=>'d',
+    'hour'=>'h',
     'minute'=>'m',
     'second'=>'s',
 
@@ -71,6 +71,7 @@ return [
     'spec2'=>'spec',
     'area'=>'area',
     'delivery_time'=>'Delivery time',//Delivery time
+    'goods_source'=>'Source of supply',//
     'delivery_area'=>'Area',
     'delivery_method'=>'Method',
     'update_time'=>'Update time',
@@ -127,6 +128,7 @@ return [
     'carriage_free'=>'Carriage free',//
     'freight_description'=>'Freight description',
     'logistics_description'=>'Logistics description',
+    'logistics_description_tips'=>'No freight is included in the price quoted by MOBAO. The freight price should be confirmed by the customer service personnel.',//
     'undetermined'=>'Undetermined',
     'purchase_num'=>'Purchase volume',//
     'min_purchase_num'=>'Minimum Purchase Quantity',//
@@ -141,6 +143,7 @@ return [
     'delete'=>'Delete',
     'is_delete'=>'Whether to confirm deletion',
     'delete_error'=>'Delete failed',
+    'delete_success'=>'Delete successful',
     'user_info_error'=>'Error in User Information',
     'check_all'=>'check all',//
     'subtotal'=>'Subtotal',//
@@ -150,6 +153,8 @@ return [
     'is_default'=>'Is it the default',//
     'edit'=>'Edit',
     'return'=>'Return',
+    'not_available'=>'Not available',//
+    'download'=>'Download',//download
 
     #登录
     'hotline'=>'National Free Service Hotline',
@@ -170,7 +175,7 @@ return [
     'login_prefix'=>'Existing account,',//
     'login_suffix'=>'can be directly logged in',//
     'mobile'=>'Mobile',
-    'user_name'=>'User name',
+    'account_name'=>'User name',
     'graphic_code'=>'Graphic code',
     'code'=>'Code',
     'change_code'=>'Click to change a check code',
@@ -182,6 +187,16 @@ return [
     'registration_agreement'=>'user registration agreement of Mobao Platform',//
     'registered'=>'Mobile phone number has been registered',//
     'mobile_format_error'=>'Incorrect format of mobile phone number',
+
+    'account_register'=>'Account registration',//
+    'register_success'=>'Congratulations on your successful registration application!',//
+    'register_success_tips'=>'Please wait for the customer service personnel to review. If you have any questions, please consult the customer service.',//
+    'enter_home'=>'Enter the Home Page of the Platform',//
+
+    'third_login_tips'=>'Mobile phone number is not registered! Whether',//
+    'continue_bind'=>'To continue binding',//
+    'or'=>'Or',//or
+    'bind_account'=>'Bind the account',//
 
     #首页
     'home_firm_member'=>'Enterprise user',
@@ -262,6 +277,8 @@ return [
     'upload_resume_no_empty'=>'Upload resume can not be empty',
 
     #商品详情
+    'product'=>'Goods',//
+    'product_sn'=>'Goods code',//
     'product_info'=>'Product info',
     'product_list'=>'Product list',
     'product_price_trend'=>'Commodity price trend',
@@ -312,6 +329,7 @@ return [
     'enter_detail_address_tips'=>'Please enter a detailed address.',//
 
     #确认订单页
+    'confirm_order'=>'Confirmation of order',//
     'company_no_address_order_tips'=>'The company has not yet maintained its address and cannot place an order.',//
     'no_address_tips'=>'Address not yet maintained',
     'click_add'=>'Click add',//
@@ -319,6 +337,26 @@ return [
     'sub_order'=>'place order',
     'to_shop_msg'=>'Leave a message to the seller',//
     'to_shop_msg_info'=>'Selection: Description of the transaction',//
+    'ticket_collection_address'=>'Ticket collection address',//
+    'quantity_shipped'=>'Quantity shipped',//
+    'total_invoice_amount'=>'Total invoice amount',//
+
+    #提交订单成功页
+    'order_wait_confirm'=>'Order awaiting confirmation',//
+    'track_order'=>'Track Order',//
+    'sub_order_success_tips'=>'Due to fluctuations in the market, inventory changes and other reasons, orders need to be confirmed by customer service personnel.',//
+    'sub_order_success_contact_tips'=>'You can also contact customer service through the following contact methods',//
+    'telephone'=>'Telephone',//
+    'back_home'=>'Back home',//
+
+    #开票申请成功页
+    'choose_order'=>'Choose order',//
+    'confirm_info'=>'Confirmation information',//
+    'sub_success'=>'Submit successfully',//
+    'invoice_wait_review'=>'Invoices awaiting review',//
+    'invoice_number'=>'Invoice Streamline Number',//
+    'query_invoice'=>'Query invoice',//
+    'sub_invoice_success_tips'=>'Due to fluctuations in the market, inventory changes and other reasons, invoices need to be confirmed by customer service personnel.',//
 
     #会员中心-左边栏
     'member_center'=>'Member Center',//
@@ -351,9 +389,27 @@ return [
     'paid'=>'Paid',//Paid
     'unpaid'=>'Unpaid',//Unpaid
     'partial_payment'=>'Partial payment',//Partial payment
-    'wait_confirm'=>'To be received',//
+    'wait_confirm'=>'Shipped',//
     'wait_audit'=>'To be audited',//
     'audit_failed'=>'Audit failed',//Audit failed
+    'all_status'=>'All',
+    'deposit_payable'=>'Deposit payable',//
+    'wait_shipped'=>'To be shipped',//
+    'wait_open_ticket'=>'Open ticket',//Open ticket
+    'invoicing'=>'Invoicing',//Invoicing
+    'completed'=>'Completed',//Completed
+    'cancelled'=>'Cancelled',//Cancelled
+    'invalid'=>'Invalid',//
+    'wait_enterprise_audit'=>'Waiting for enterprise audit',//
+    'business_confirm'=>'Business confirmation',//
+    'confirmed'=>'Confirmed',//
+    'invoiced'=>'Invoiced',//
+    'shipped'=>'Shipped',//
+    'partial_shipment'=>'Partial shipment',//
+    'received_goods'=>'Received goods',//
+    'deposit_paid'=>'Deposit paid',//
+    'approval'=>'Approval',//
+    'wait_approval'=>'Pending approval',//
 
     #会员中心首页
     'enterprise'=>'Enterprise',//enterprise
@@ -367,6 +423,7 @@ return [
     'no_order'=>'No order',//
     'goods_recommendation'=>'goods recommendation',//
     'view_details'=>'View details',//
+    'order_details'=>'Order details',
 
     #会员中心-用户信息
     'nickname'=>'Nickname',
@@ -375,7 +432,10 @@ return [
     'no'=>'No',
     'yes'=>'Yes',
     'save'=>'Save',
+    'save_success'=>'Save successfully',
     'cancellation_account'=>'Cancellation account',
+    'cancellation_account_success'=>'Cancellation account successfully',
+    'cancellation_account_tips'=>'After the account is cancelled, the account will be deleted and cannot be retrieved. Confirm that the account will continue to be cancelled?',
 
     #我的收藏
     'cancel_collection'=>'Cancel collection',//Cancel collection
@@ -401,4 +461,208 @@ return [
     'sPrevious'=>'Previous',//
     'sNext'=>'Next',//
     'sLast'=>'Last',//
+
+    #会员中心-实名认证
+    'individual_account'=>'Individual account',
+    'enterprise_account'=>'Enterprise account',//
+    'account_number'=>'Account number',//
+    'real_name'=>'Real name',//
+    'front_card'=>'Front of ID Card',//
+    'uploaded_audited_tips'=>'Uploaded and audited',//
+    'uploaded_auditing_tips'=>'Uploaded, awaiting review',//
+    'uploaded_audit_failed_tips'=>'Audit failed, please re-upload',//
+    'back_card'=>'back of an ID card',//
+    'be_careful'=>'Be careful',//
+    'upload_tips'=>'Uploaded ID cards can be in png, jpg, jpeg, gif, PNG format',//
+    'enterprise_name'=>'Enterprise Name',//
+    'electronic_authorization'=>'Electronic version of power of attorney',//
+    'authorization_download'=>'Authorization Letter Download',//
+    'electronic_invoice'=>'Electronic version of invoice information',//
+    'electronic_license'=>'Electronic version of business license',//
+    'click_download'=>'Click to download',//
+    'taxpayer_identification_number'=>'Taxpayer identification number',//
+    'tax_id'=>'Taxpayer identification number',//
+
+    #会员中心-订单列表
+    'amount_to_be_paid'=>'Amount to be paid',//
+    'total_payable'=>'Total payable',//
+    'amount_paid'=>'Amount paid',//
+    'view_contract'=>'View the contract',//
+    'return_contract'=>'Return contract',//
+    'contract'=>'Contract',//
+    'is_confirm_audit_pass'=>'Whether to confirm the approval of the audit',//
+    'is_confirm_cancel'=>'Confirmation of Cancellation',//
+    'cancel_success_tips'=>'Cancellation of success',//
+    'is_confirm_receipt'=>'Confirmation of receipt',//
+    'logistics_tracking'=>'Logistics tracking',//
+    'deposit_payment'=>'Deposit payment',//
+    'to_pay'=>'To pay',//
+    'confirm_receipt'=>'Confirm receipt',//
+    'apply_ticket'=>'Apply for a ticket',//
+
+    #会员中心-订单详情
+    'order_source'=>'Order source',//
+    'seller_confirm'=>'Seller confirm',//
+    'payment_time'=>'Payment time',//
+    'delivery_time2'=>'Delivery time',//
+    'in_transit'=>'In transit',//
+    'confirm_receipt_time'=>'Confirmation of time of receipt',//
+    'order_detail_delivery_tips'=>'This order will be delivered to you by a third-party seller.',//
+    'logistics_company'=>'Logistics company',//
+    'logistics_number'=>'Logistics number',//
+    'wait_shop_delivery'=>'Waiting for Merchant Delivery',//
+    'consignee_info'=>'Consignee info',//
+    'buyer_message'=>'Buyer message',//Buyer message
+    'seller_message'=>'Seller message',//
+    'business_info'=>'Business Information',//
+    'order_detail_enterprise'=>'Enterprise',//
+    'payment_voucher'=>'Payment voucher',//
+    'deposit_voucher'=>'Deposit voucher',//
+    'choose_contract'=>'Please choose the contract.',//
+    'system_busy'=>'The system is busy. Please try again.',//
+    'no_logistics_info_tips'=>'The order logistics tracking information is not available for the time being, please contact the merchant.',//
+    'not_shipped_tips'=>'Businessmen have not yet shipped goods, there is no logistics information.',//
+
+    #会员中心-开票详情
+    'invoice_details'=>'Invoice details',//
+    'no_logistics_company'=>'No Logistics Company',//
+    'no_logistics_number'=>'No Logistics Number',//
+    'wait_shop_open_invoice'=>'Waiting for business invoice',//
+    'receiver_info'=>'Receiver information',//
+    'receiver'=>'Ticket collector',//
+    'invoice_info'=>'Invoice information',//
+    'invoice_type'=>'Invoice type',//
+    'general_invoice'=>'General invoice',//
+    'special_invoice'=>'Special Value-added Invoice',//
+    'total_invoice'=>'Total invoice',//
+
+    #会员中心-发票列表
+    'goods_amount'=>'Goods amount',
+    'details'=>'Details',
+    'order_status'=>'Order status',
+    'order_list'=>'Order list',
+    'no_qualified_order'=>'No qualified order for the time being',//
+    'choose_order_tips1'=>'orders,',//
+    'choose_order_tips2'=>'have been selected, a total of',//
+    'choose_order_tips3'=>'yuan',//
+    'only_apply_one_shop'=>'At the same time can only apply for shop orders',//
+    'no_submitted'=>'The order has been completed and no application can be submitted.',//
+    'please_choose_order'=>'Please select the order',//
+    'add_new_invoice'=>'New invoice',//
+    'invoice_amount'=>'Amount of invoice',//
+    'order_time'=>'Order time',//
+
+    #可出库
+    'out_stock'=>'Out of stock',//
+    'no_supplier_info'=>'No data information from this vendor',//
+    'no_goods_info'=>'No such commodity data information',//
+    'out_stock_num_error_tips'=>'There is a mistake in the quantity out of the warehouse. Please fill it in again.',//
+    'add_out_stock_success'=>'Successful addition of library records',//
+    'name'=>'Name',//
+    'stock_surplus'=>'Stock surplus',//
+    'new_outgoing_records'=>'New Outgoing Records',//
+    'odd_numbers'=>'Odd Numbers',//
+    'receiving_customer'=>'Receiving customer',//
+
+    #入库单
+    'cannot_delete'=>'Input order generated by order cannot be deleted',//
+    'cannot_edit'=>'Input order generated by order cannot be edited',//
+    'no_remark_info'=>'No Remarks Information',//
+    'choose_goods_tips'=>'Goods must be selected by clicking from the search drop-down list',//
+    'storage_num_error'=>'Incorrect storage quantity',//
+    'add_new_warehouse'=>'New warehousing',//
+    'storage_date'=>'Date of storage',//
+    'add_new_storage_record'=>'New Storage Records',//
+//    'godown_entry_number'=>'入库单号',//godown entry number
+
+    #出库单
+    'out_cannot_delete'=>'Outbound order generated by order cannot be deleted',//
+    'out_num_error'=>'There is a mistake in the quantity out of the warehouse. Please fill it in again.',//
+    'edit_out_success'=>'Successful editing of out-of-library records',//
+    'add_new_out_stock'=>'New outbound',//
+    'out_date'=>'outdate',//
+    'out_number'=>'Outgoing single number',//
+    'edit_out_record'=>'Editing Out-of-Library Records',//
+
+    #库存流水
+    'platform_warehouse'=>'Platform procurement warehousing',//
+    'other_warehouse'=>'Other purchases are warehoused',//
+    'sales_outlet'=>'Sales outlet',//
+    'date'=>'Date',
+    'type'=>'Type',
+    'customer_supplier'=>'Customer/supplier',
+
+    #职员管理
+    'name_mobile_required'=>'Name and mobile phone number are required',//
+    'add_new_staff'=>'New staff',//
+    'staff_name'=>'Staff name',//
+    'no_member_info'=>'No membership information yet',//
+    'add_and_edit'=>'Add/Edit',//
+    "enter_staff_mobile'=>'Please enter the employee's mobile phone number.",//
+    'note'=>'Note: Employees must first register their personal accounts on the platform with their mobile phone numbers and authenticate their real names.',//
+    "enter_staff_name'=>'Please enter the employee's name",//
+    'audit_order'=>'Audit order',//
+    'order_payment'=>'Order payment',//
+    'view_inventory'=>'View inventory',//
+
+    #整单采购
+    'whole_single'=>'Whole single purchase',//
+    'sub_purchase_require'=>'Submitting Purchasing Requirements',//
+    'fill_purchase_require'=>'Fill in the Purchasing Requirements of the Whole Order',//
+    'contact_online_sub_require'=>'You can also contact online customer service to submit purchasing requirements.',//
+    'online_service'=>'Online Service',//
+    'file_format_tips'=>'Only files with zip, doc, docx, xlsx and PDF sizes less than 2M are supported.',//
+    'upload_purchase_list'=>'Upload purchase list',//
+    'whole_single_require'=>'Purchasing Requirements for Whole Order',//
+    'fill_whole_single_require'=>'Please fill in the whole purchase order.',//
+    'sub_not_empty'=>'Submission cannot be empty',//
+    'sub_purchase_require_success_tips'=>'Successful submission, please wait for customer service to contact you!',//
+
+    #收银台
+    'cashier'=>'Cashier',//
+    'uploaded_deposit_tips'=>'You have uploaded the deposit payment voucher, which can be checked in the order details. Is it updated?',//
+    'uploaded_tips'=>'You have uploaded the deposit payment voucher, which can be checked in the order details. Is it updated?',//
+    'voucher_cannot_empty'=>'Uploading vouchers cannot be empty',//
+    'upload_success'=>'Upload success',//
+    'send_to'=>'Send to',//
+    'offline_payment'=>'Offline payment',//
+    'payment_info'=>'Payment information',//
+    'deposit_bank'=>'Bank of deposit',//
+    'bank_account'=>'Bank account',//
+    'upload_payment_voucher'=>'Upload payment vouchers',//
+
+    #物性表
+    'physical_table'=>'Physical property table',//
+    'enter_brand_cate_tips'=>'Please enter the brand, category and commodity name such as Haida.',//
+    'packaging_unit'=>'Packaging unit',//
+    'view_suppliers'=>'View suppliers',//
+    'no_goods'=>'No goods',//
+    'goods_property'=>'Goods property',//
+    'goods_model'=>'Goods model',//
+    'enquiry_at_once'=>'Enquiry at once',//
+    'package'=>'Package',//
+
+    #供应商
+    'contact_merchant'=>'Contact merchant',//
+    'share_to'=>'Share to',//
+    'share_qq'=>'Share QQ space',//
+    'share_sina'=>'Share with Sina Weibo',//
+    'share_renren'=>'Share it with Renren.com',//
+    'share_tencent'=>'Share with Tencent Weibo',//
+    'share_netease'=>'Share on Netease Weibo',//
+    'more_platforms'=>'More platforms',//
+    'main_business'=>'Main business',//
+    'page_address'=>'Page address',//
+    'download_product_list'=>'Download Product List',//
+    'download_amount'=>'Amount of Downloads',//
+    'times'=>'times',//
+    'no_login'=>'Not logged in',//
+    'copy_address'=>'Copy address',//
+
+    #品牌直营
+    'direct_stores_list'=>'List of Direct Stores',//
+    'stationed'=>'well-known brands are stationed',//
+    'business_category'=>'Business category',//
+    'main_brand'=>'Main brand',//
+    'entry'=>'Entry',//
 ];

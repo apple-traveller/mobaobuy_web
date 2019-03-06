@@ -58,6 +58,7 @@ class ShopStoreController extends Controller
     {
         $shop_id = $request->get('shop_id','');
         $store_name = $request->get('store_name','');
+        $store_name_en = $request->get('store_name_en','');
         $id = $request->get('id','');
 
         if(empty($shop_id)){
@@ -67,17 +68,29 @@ class ShopStoreController extends Controller
         if(empty($store_name)){
             return $this->error('未输入店铺名称');
         }
+        if(empty($store_name_en)){
+            return $this->error('未输入英文店铺名称');
+        }
 
         $data = [
             'shop_id'=>$shop_id,
             'store_name'=>$store_name,
+            'store_name_en'=>$store_name_en,
+            'store_img'=>$request->get('store_img',''),
+            'main_cat'=>$request->get('main_cat',''),
+            'main_brand'=>$request->get('main_brand',''),
+            'spec'=>$request->get('spec',''),
+            'delivery_area'=>$request->get('delivery_area',''),
+            'delivery_method'=>$request->get('delivery_method',''),
+            'main_cat_en'=>$request->get('main_cat_en',''),
+            'main_brand_en'=>$request->get('main_brand_en',''),
+            'spec_en'=>$request->get('spec_en',''),
+            'delivery_area_en'=>$request->get('delivery_area_en',''),
+            'delivery_method_en'=>$request->get('delivery_method_en',''),
         ];
         #先验证唯一性
         try{
-            $validate_res = ShopStoreService::uniqueValidate($data);
-            if($validate_res){
-                return $this->error('该店铺已经存在');
-            }
+
             if(!empty($id)){
                 $exist_res = ShopStoreService::getShopStoreById($id);
                 if(empty($exist_res)){
@@ -86,6 +99,10 @@ class ShopStoreController extends Controller
                 $data['id'] = $id;
                 $res = ShopStoreService::modify($data);
             }else{
+                $validate_res = ShopStoreService::uniqueValidate($data);
+                if($validate_res){
+                    return $this->error('该店铺已经存在');
+                }
                 $data['add_time'] = date('Y-m-d H:i:s');
                 $data['is_delete'] = 0;
 

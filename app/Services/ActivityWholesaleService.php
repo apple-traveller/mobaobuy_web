@@ -165,11 +165,11 @@ class ActivityWholesaleService
         $id = decrypt($id);
         $ActivityInfo =  ActivityWholesaleRepo::getInfo($id);
         if(empty($ActivityInfo)){
-            self::throwBizError('集采商品不存在');
+            self::throwBizError(trans('error.collect_goods_not_exist'));
         }
         $goodsInfo = GoodsRepo::getInfo($ActivityInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品不存在');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
 
         $goodsInfo['activity_price'] = $ActivityInfo['price'];
@@ -238,14 +238,14 @@ class ActivityWholesaleService
 
         //先判断活动有效期
         if(strtotime($activityInfo['end_time']) < time()){
-            self::throwBizError('该活动已结束！');
+            self::throwBizError(trans('error.activity_over_tips'));
         }
         //规格判断处理
 //        if($goodsNum > $activityInfo['available_quantity']){
 //            self::throwBizError('超出当前可售数量');
 //        }
         if($goodsNum < $activityInfo['min_limit']){
-            self::throwBizError('不能低于起售数量');
+            self::throwBizError(trans('error.no_less_num_tips'));
         }
 
         if($goodsNum % $goodsInfo['packing_spec'] == 0){
@@ -275,7 +275,7 @@ class ActivityWholesaleService
         $id = decrypt($id);
         $activityPromoteInfo = ActivityWholesaleRepo::getInfo($id);
         if(empty($activityPromoteInfo)){
-            self::throwBizError('不存在的商品信息');
+            self::throwBizError(trans('error.goods_not_exist'));
         }
     }
 
@@ -292,7 +292,7 @@ class ActivityWholesaleService
     public static function DemandSubmission($userId,$demandFile,$demandText){
         $userInfo = UserRepo::getInfo($userId);
         if(empty($userInfo)){
-            self::throwBizError('用户信息有误!');
+            self::throwBizError(trans('error.user_info_error_tips'));
         }
         $demand = [];
         $demand['user_id'] = $userId;

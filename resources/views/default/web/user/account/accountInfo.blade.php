@@ -48,7 +48,7 @@
             Ajax.call('/account/saveUser',data,function(res){
                 console.log(res.data);
                 if (res.code == 1) {
-                    $.msg.alert('保存成功');
+                    $.msg.alert('{{trans('home.save_success')}}');
                     window.location.reload();
                 } else {
                     $.msg.alert(res.msg);
@@ -59,12 +59,12 @@
         @if(!$userInfo['is_firm'])
         //注销账号
         $('.account_layout_btn').click(function(){
-            $.msg.confirm('注销账号之后账号将被删除，且无法找回。确认继续注销该账号？',
+            $.msg.confirm('{{trans('home.cancellation_account_tips')}}',
                 function(){
                     Ajax.call('/account/accountLogout',{},function(res){
                         console.log(res.data);
                         if (res.code == 1) {
-                            $.msg.alert('注销成功');
+                            $.msg.alert('{{trans('home.cancellation_account_success')}}');
                             window.location.href = '/';
                         } else {
                             $.msg.alert(res.msg);

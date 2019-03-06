@@ -18,7 +18,7 @@ class FirmStockController extends Controller
     public function FirmStockIn(Request $request){
         if(session('_curr_deputy_user')['is_firm']) {
             if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_in']){
-                return $this->error('无权访问');
+                return $this->error(trans('error.no_right'));
             }
             if ($request->isMethod('get')) {
                 return $this->display('web.user.stock.stockIn');
@@ -52,14 +52,14 @@ class FirmStockController extends Controller
 
             }
         }
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //出库记录列表
     public function firmStockOut(Request $request,$goodsName='',$beginTime='',$endTime=''){
         if(session('_curr_deputy_user')['is_firm']) {
             if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_out']){
-                return $this->error('无权访问');
+                return $this->error(trans('error.no_right'));
             }
             if ($request->isMethod('get')) {
                 return $this->display('web.user.stock.stockOut');
@@ -83,7 +83,7 @@ class FirmStockController extends Controller
                 return $this->success('', '', $data);
             }
         }
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //新增入库记录
@@ -117,7 +117,7 @@ class FirmStockController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //企业库存商品流水
@@ -126,7 +126,7 @@ class FirmStockController extends Controller
         $firm_id = session('_curr_deputy_user.firm_id');
         $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
         if(empty($firmStockInfo)){
-            return $this->error('非法访问操作！');
+            return $this->error(trans('error.illegal_visits'));
         }
         $goods_id = $firmStockInfo['goods_id'];
         if($request->isMethod('get')){
@@ -154,7 +154,7 @@ class FirmStockController extends Controller
     public function stockList(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
             if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_view']){
-                return $this->error('无权访问');
+                return $this->error(trans('error.no_right'));
             }
             $firm_id = session('_curr_deputy_user')['firm_id'];
             $page = $request->input('start', 0) / $request->input('length', 10) + 1;
@@ -176,14 +176,14 @@ class FirmStockController extends Controller
             }
         }
 
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //企业可出库列表
     public function canStockOut(Request $request){
         if(session('_curr_deputy_user')['is_firm']){
             if(session('_curr_deputy_user')['is_self'] == 0 && !session('_curr_deputy_user')['can_stock_out']){
-                return $this->error('无权访问');
+                return $this->error(trans('error.no_right'));
             }
             if($request->isMethod('get')){
                 return $this->display('web.user.stock.canStockOut');
@@ -204,7 +204,7 @@ class FirmStockController extends Controller
             }
         }
 
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //获取单条可出库数据
@@ -215,7 +215,7 @@ class FirmStockController extends Controller
                 $firmStockInfo = FirmStockService::stockInfo($id, $firm_id);
                 return $this->success('', '', $firmStockInfo);
         }
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //出库更新
@@ -246,7 +246,7 @@ class FirmStockController extends Controller
                 return $this->error($e->getMessage());
             }
         }
-        return $this->error('非法访问');
+        return $this->error(trans('error.illegal_visits'));
     }
 
     //入库检索商品名称
@@ -285,7 +285,7 @@ class FirmStockController extends Controller
     {
         $id = $request->input('id',0);
         if(!$id){
-            return $this->error('无法获取参数ID');
+            return $this->error(trans('error.unable_get_id'));
         }
         try{
             FirmStockService::deleteFlow($id);

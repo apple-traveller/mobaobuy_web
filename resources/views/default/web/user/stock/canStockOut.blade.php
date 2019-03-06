@@ -75,7 +75,7 @@
                     {"data": "number", "bSortable": false},
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, row, meta) {
-                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="add_stock_toggle(this)">出库</button>';
+                            return '<button class="opt-btn add_stock" id="'+row.id+'" onclick="add_stock_toggle(this)">{{trans('home.out_stock')}}</button>';
                         }
                     }
                 ]
@@ -103,7 +103,7 @@
                         $('#appendPartnerName').append(strHtml);
                     }else{
                         $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此供应商数据信息</li></ul>';
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>{{trans('home.no_supplier_info')}}</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -129,8 +129,8 @@
                         $('#appendPartnerName').append(strHtml);
                        
                     }else{
-                         $('#appendPartnerName ul').remove();
-                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>无此商品数据信息</li></ul>';
+                        $('#appendPartnerName ul').remove();
+                        var strHtml = '<ul id="partnerUl" id="0" class="partner_select" ><li>{{trans('home.no_goods_info')}}</li></ul>';
                         $('#appendPartnerName').append(strHtml);
                     }
                 },"POST", "JSON");
@@ -181,12 +181,12 @@
             var flow_desc = $('#flow_desc').val();
             var id = $('.currStockOut').attr('id');
             if(currStockNum == '' || currStockNum <= 0){
-                $.msg.alert('出库数量有误,请重新填写');
+                $.msg.alert('{{trans('home.out_stock_num_error_tips')}}');
                 return;
             }
             Ajax.call('/curStockSave',{currStockNum:currStockNum,flow_desc:flow_desc,id:id,price:price,partner_name:partner_name,order_sn:order_sn}, function(data){
                 if(data.code){
-                    $.msg.tips('添加出库记录成功');
+                    $.msg.tips('{{trans('home.add_out_stock_success')}}');
                     window.location.reload();
                 }else{
                     $.msg.error(data.msg);
@@ -200,18 +200,18 @@
     <!--标题-->
     <div class="data-table-box">
         <div class="table-condition">
-            <div class="item"><input type="text" class="text" id="goods_name" placeholder="商品名称"></div>
-            <button id="on-search" class="search-btn">查询</button>
-            <div class="fr add_stock tac white"><a href="{{url('stockOut')}}" style="color:#fff">返回</a></div>
+            <div class="item"><input type="text" class="text" id="goods_name" placeholder="{{trans('home.goods_name')}}"></div>
+            <button id="on-search" class="search-btn">{{trans('home.query')}}</button>
+            <div class="fr add_stock tac white"><a href="{{url('stockOut')}}" style="color:#fff">{{trans('home.return')}}</a></div>
         </div>
 
         <div class="table-body">
             <table id="data-table" class="table table-border table-bordered table-bg table-hover">
                 <thead>
                 <tr class="text-c">
-                    <th width="50%">名称</th>
-                    <th width="25%">库存剩余数量</th>
-                    <th>操作</th>
+                    <th width="50%">{{trans('home.name')}}</th>
+                    <th width="25%">{{trans('home.stock_surplus')}}</th>
+                    <th>{{trans('home.operation')}}</th>
                 </tr>
                 </thead>
             </table>
@@ -222,16 +222,16 @@
      <!--遮罩-->
         <div class="block_bg" style="display:none;"></div>
         <div class="pay_method whitebg putIn"  style="display:none;">
-            <div class="pay_title f4bg"><span class="fl pl30 gray fs16">新增出库记录</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
+            <div class="pay_title f4bg"><span class="fl pl30 gray fs16">{{trans('home.new_outgoing_records')}}</span><a class="fr pr20 close"><img src="img/close.png" width="16" height="16"></a></div>
             <ul class="pay_content ovh" style="margin-top: 35px;">
-                <li><div class="ovh mt10"><span>商品名称:</span><input type="text" class="pay_text" name="goods_name" id="good_name"/></div></li>
-                <li><div class="ovh mt10"><span>库存数量:</span><input type="text" class="pay_text" name="number" id="number" /></div></li>
-                <li><div class="ovh mt10"><span>单号:</span><input type="text" class="pay_text" id="order_sn" name="order_sn" /></div></li>
-                <li><div class="ovh mt10" id="appendPartnerName"><span>收料客户:</span><input type="text" class="pay_text" id="partner_name" name="partner_name" /></div></li>
-                <li><div class="ovh mt10"><span>出库数量:</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
-                <li><div class="ovh mt10"><span>出库单价:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
-                <li><div class="ovh mt10"><span class="fl">备注:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></li>
-                <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">保 存</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">取消</div></li>
+                <li><div class="ovh mt10"><span>{{trans('home.goods_name')}}:</span><input type="text" class="pay_text" name="goods_name" id="good_name"/></div></li>
+                <li><div class="ovh mt10"><span>{{trans('home.stock')}}:</span><input type="text" class="pay_text" name="number" id="number" /></div></li>
+                <li><div class="ovh mt10"><span>{{trans('home.odd_numbers')}}:</span><input type="text" class="pay_text" id="order_sn" name="order_sn" /></div></li>
+                <li><div class="ovh mt10" id="appendPartnerName"><span>{{trans('home.receiving_customer')}}:</span><input type="text" class="pay_text" id="partner_name" name="partner_name" /></div></li>
+                <li><div class="ovh mt10"><span>{{trans('home.num')}}:</span><input type="number" class="pay_text" id="currStockNum" name="currStockNum" /><i class="red ml5">*</i></div></li>
+                <li><div class="ovh mt10"><span>{{trans('home.price')}}:</span><input type="number" name="price" id="price" class="pay_text"/></div></li>
+                <li><div class="ovh mt10"><span class="fl">{{trans('home.remark')}}:</span><textarea class="pay_textarea" id="flow_desc" name="flow_desc"></textarea></div></li>
+                <li><div class="til_btn fl tac mt10 code_greenbg currStockOut" id="" onclick="addStockOutSave();">{{trans('home.save')}}</div><div class="til_btn tac mt10 blackgraybg fl cancel" style="margin-left: 45px;">{{trans('home.cancel')}}</div></li>
             </ul>
         </div>
 @endsection

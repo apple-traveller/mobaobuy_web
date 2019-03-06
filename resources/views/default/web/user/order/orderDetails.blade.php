@@ -46,25 +46,25 @@
 </head>
 <body style="background-color: rgb(244, 244, 244);">
 @include(themePath('.','web').'web.include.partials.top')
-@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => '会员中心'])@endcomponent
+@component(themePath('.','web').'web.include.partials.top_title', ['title_name' => trans('home.member_center')])@endcomponent
 <div class="w1200" style="margin-bottom: 40px;">
-	<div class="crumbs" style="margin: 15px 0;">当前位置：<a href="/member">会员中心</a> &gt;<a href="/order/list">我的订单</a> &gt;<span class="gray">订单详情</span></div>
+	<div class="crumbs" style="margin: 15px 0;">{{trans('home.curr')}}：<a href="/member">{{trans('home.member_center')}}</a> &gt;<a href="/order/list">{{trans('home.my_order')}}</a> &gt;<span class="gray">{{trans('home.order_details')}}</span></div>
 	<div class="order_pro_progress whitebg mt5">
 		<div class="order_pro_stute">
-			<span class="Order_number">订单单号：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
-			<span class="Order_number">订单来源：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
+			<span class="Order_number">{{trans('home.order_number')}}：{{$orderDetailsInfo['orderInfo']['order_sn']}}</span>
+			<span class="Order_number">{{trans('home.order_source')}}：{{ getOrderFromText($orderDetailsInfo['orderInfo']['extension_code']) }}</span>
 			@if($orderDetailsInfo['orderInfo']['order_status'] == 0)
-				<span class="tac db fs24 fwb red mt30">已作废</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.invalid')}}</span>
 			@elseif($orderDetailsInfo['orderInfo']['order_status'] == 1)
-				<span class="tac db fs24 fwb red mt30">待企业审核</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.wait_enterprise_audit')}}</span>
 			@elseif($orderDetailsInfo['orderInfo']['order_status'] == 2)
-				<span class="tac db fs24 fwb red mt30">待商家确认</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.business_confirm')}}</span>
 			@elseif($orderDetailsInfo['orderInfo']['order_status'] == 3)
-				<span class="tac db fs24 fwb red mt30">已确认</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.confirmed')}}</span>
 			@elseif($orderDetailsInfo['orderInfo']['order_status'] == 4)
-				<span class="tac db fs24 fwb red mt30">已完成</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.completed')}}</span>
 			@elseif($orderDetailsInfo['orderInfo']['order_status'] == 5)
-				<span class="tac db fs24 fwb red mt30">待开票</span>
+				<span class="tac db fs24 fwb red mt30">{{trans('home.wait_open_ticket')}}</span>
 			@endif
 		</div>
 		<div class="order_pro_jd fl">
@@ -72,17 +72,14 @@
 			<ul  class="order_jd_text">
 				<li>
 					<img class="imgInfor" src="{{asset('/img/status_pay00.png')}}">
-
-					<span class="jd_text_con black">提交订单</span>
+					<span class="jd_text_con black">{{trans('home.sub_order')}}</span>
 					<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['add_time']}}</span>
-
-
 				</li>
 
 				@if(!empty($orderDetailsInfo['orderInfo']['confirm_time']))
 					<li>
 						<img  class="imgInfor" src="{{asset('/img/status_pay01.png')}}">
-						<span class="jd_text_con black">卖家确认</span>
+						<span class="jd_text_con black">{{trans('home.seller_confirm')}}</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_time']}}</span>
 					</li>
 				@endif
@@ -90,7 +87,7 @@
 				@if(!empty($orderDetailsInfo['orderInfo']['pay_time']))
 					<li>
 						<img class="imgInfor" src="{{asset('/img/status_pay02.png')}}">
-						<span class="jd_text_con black">付款时间</span>
+						<span class="jd_text_con black">{{trans('home.payment_time')}}</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['pay_time']}}</span>
 					</li>
 				@endif
@@ -98,7 +95,7 @@
 				@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
 					<li>
 						<img class="imgInfor" src="{{asset('/img/status_pay03.png')}}">
-						<span class="jd_text_con black">发货时间</span>
+						<span class="jd_text_con black">{{trans('home.delivery_time2')}}</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['shipping_time']}}</span>
 					</li>
 				@endif
@@ -106,7 +103,7 @@
 				@if(!empty($orderDetailsInfo['orderInfo']['shipping_time']))
 					<li>
 						<img class="imgInfor" src="{{asset('/img/status_pay04.png')}}">
-						<span class="jd_text_con black">运输中</span>
+						<span class="jd_text_con black">{{trans('home.in_transit')}}</span>
 						<span class="jd_text_date"></span>
 					</li>
 				@endif
@@ -115,7 +112,7 @@
 
 					<li>
 						<img class="imgInfor" src="{{asset('/img/status_pay05.png')}}">
-						<span class="jd_text_con black">确认收货时间</span>
+						<span class="jd_text_con black">{{trans('home.confirm_receipt_time')}}</span>
 						<span class="jd_text_date">{{$orderDetailsInfo['orderInfo']['confirm_take_time']}}</span>
 					</li>
 				@endif
@@ -128,13 +125,13 @@
 			<div class="whitebg br1 mt20 ovh getLogistics">
 				<div class="order_pro_stute">
 					@if(!empty($v))
-						<span class="ml30 mt10 db" >本订单由第三方卖家为您发货</span>
+						<span class="ml30 mt10 db" >{{trans('home.order_detail_delivery_tips')}}</span>
 						<span class="ml30 db mt20">
-							物流公司：<span>{{$v['shipping_name']}}</span><br>
-							物流单号：<span>{{$v['shipping_billno']}}</span><br>
+							{{trans('home.logistics_company')}}：<span>{{$v['shipping_name']}}</span><br>
+							{{trans('home.logistics_number')}}：<span>{{$v['shipping_billno']}}</span><br>
 						</span>
 					@else
-						<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+						<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">{{trans('home.wait_shop_delivery')}}</span>
 					@endif
 				</div>
 				<div class="fl wlgz_text">
@@ -147,7 +144,7 @@
 	@else
 		<div class="whitebg br1 mt20 ovh getLogistics">
 			<div class="order_pro_stute">
-				<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">等待商家发货</span>
+				<span class="ml30 mt10 db" id="delivery_id" data-delivery_id="0">{{trans('home.wait_shop_delivery')}}</span>
 			</div>
 			<div class="fl wlgz_text">
 				<ul class="wlxx" data-delivery_id="0">
@@ -161,23 +158,23 @@
 	<div class="whitebg br1 mt20 ovh">
 		<!--收货人信息-->
 		<div class="consignee bbright">
-			<h1 style="font-size:16px;">收货人信息</h1>
+			<h1 style="font-size:16px;">{{trans('home.consignee_info')}}</h1>
 			<span class="ml20 db mt20">
-			<span class="fl">收  货  人:</span>
+			<span class="fl">{{trans('home.consignee_name')}}:</span>
 			<span class="ml20">{{$orderDetailsInfo['orderInfo']['consignee']}}</span>
 		</span>
 			<span class="ml20 db mt5">
-			<span class="fl">手机号码: </span>
+			<span class="fl">{{trans('home.mobile')}}: </span>
 			<span class="ml10">{{$orderDetailsInfo['orderInfo']['mobile_phone']}}</span>
 		</span>
 			<span class="ml20 ovh db mt5">
-			<span class="fl">收货地址:</span>
+			<span class="fl">{{trans('home.shipping_address')}}:</span>
 			<span class="fl consignee_addr">
 				{{$orderDetailsInfo['country']}}{{$orderDetailsInfo['province']}}{{$orderDetailsInfo['city']}}{{$orderDetailsInfo['district']}}<br>{{$orderDetailsInfo['orderInfo']['address']}}
 			</span>
 		</span>
 			<span class="ml20 db mt5">
-			<span class="fl">买家留言: </span>
+			<span class="fl">{{trans('home.buyer_message')}}: </span>
 			<span class="ml10">{{$orderDetailsInfo['orderInfo']['postscript']}}</span>
 		</span>
 		</div>
@@ -185,13 +182,13 @@
 		<div class="consignee bbright">
 			<!-- 商家信息 -->
 
-			<h1 style="font-size:16px;">商家信息</h1>
+			<h1 style="font-size:16px;">{{trans('home.business_info')}}</h1>
 			<span class="ml20 db mt20" style="width: 410px" >
-			<span class="fl">公司名称 :</span>
+			<span class="fl">{{trans('home.company')}} :</span>
 			<span class="ml10">{{$orderDetailsInfo['orderInfo']['shop_name']}}</span>
 		</span>
 			<span class="ml20 db ">
-			<span class="fl">卖家留言 :</span>
+			<span class="fl">{{trans('home.seller_message')}} :</span>
 			<span class="ml10">{{$orderDetailsInfo['orderInfo']['to_buyer']}}</span>
 		</span>
 
@@ -200,24 +197,24 @@
 
 		<!--发票信息-->
 		<div class="consignee ">
-			<h1 style="font-size:16px;">发票信息</h1>
+			<h1 style="font-size:16px;">{{trans('home.invoice_information')}}</h1>
 			<span class="ml20 db mt20" >
-			<span class="fl">发票抬头：</span>
+			<span class="fl">{{trans('home.invoice_title')}}：</span>
 			<span class="ml10">
 				@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
-					企业
+					{{trans('home.order_detail_enterprise')}}
 				@else
-					个人
+					{{trans('home.header_personal')}}
 				@endif
 			</span>
 		</span>
 			@if($orderDetailsInfo['userInvoceInfo']['is_firm'])
 				<span class="ml20 db ">
-				<span class="fl">公司名称 :</span>
+				<span class="fl">{{trans('home.company')}} :</span>
 				<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['company_name']}}</span>
 			</span>
 				<span class="ml20 db ">
-				<span class="fl">税号 :</span>
+				<span class="fl">{{trans('home.tax_id')}} :</span>
 				<span class="ml10">{{$orderDetailsInfo['userInvoceInfo']['tax_id']}}</span>
 			</span>
 			@endif
@@ -230,51 +227,51 @@
 		<div  class="consignee "  style="margin-top: 10px;">
 
 			<div class="payImg bbright" style="margin-top:20px;">
-				<h1 style="font-size:16px;margin-left: 0;">付款凭证</h1>
+				<h1 style="font-size:16px;margin-left: 0;">{{trans('home.payment_voucher')}}</h1>
 				<div class="mt10">
-					<span class="fl">支付凭证:</span>
+					<span class="fl">{{trans('home.payment_voucher')}}:</span>
 					@if(!empty($orderDetailsInfo['orderInfo']['pay_voucher']))
 						<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
 							<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['pay_voucher']) }}">
 						</div>
 					@else
-						暂无
+						{{trans('home.not_available')}}
 					@endif
 					<br>
 					@if($orderDetailsInfo['orderInfo']['extension_code'] == 'wholesale')
 						<div class="" style="float:left;margin-top:25px;">
-						<span class="fl" style="margin-top:10px;">定金凭证:</span>
+						<span class="fl" style="margin-top:10px;">{{trans('home.deposit_voucher')}}:</span>
 						@if(!empty($orderDetailsInfo['orderInfo']['deposit_pay_voucher']))
 							<div id="layer-photos-demo" class="layer-photos-demo" style="float:left;margin-left:10px;">
 								<img style="width:60px;height: 50px;" layer-pid="" layer-src="{{ getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']) }}" src="{{ getFileUrl($orderDetailsInfo['orderInfo']['deposit_pay_voucher']) }}">
 							</div>
 						@else
-							暂无
+							{{trans('home.not_available')}}
 						@endif
 						</div>
 					@endif
 				</div>
 			</div>
 			<div class="fl mt20">
-				<h1 style="font-size:16px;margin-left: 0;">合同</h1>
+				<h1 style="font-size:16px;margin-left: 0;">{{trans('home.contract')}}</h1>
 				<div class="payImg" style="margin-top: 10px; margin-left: 0px;">
-					<span style="margin-top:2px;">合同:</span>
+					<span style="margin-top:2px;">{{trans('home.contract')}}:</span>
 					@if(!empty($orderDetailsInfo['orderInfo']['contract']))
 						<div style="float:right;margin-left:10px;">
-							<a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">下载
+							<a href="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}" target="_blank">{{trans('home.download')}}
 								<img style="width:100px;" src="{{getFileUrl($orderDetailsInfo['orderInfo']['contract'])}}">
 							</a>
 						</div>
 					@else
-						暂无
+						{{trans('home.not_available')}}
 					@endif
 				</div>
 				<div class="payImg" style="margin-top:10px;margin-left: 0px;width: 277px;">
-					<span style="margin-top:2px; float: left;width: 25%;">回传合同:</span>
+					<span style="margin-top:2px; float: left;width: 25%;">{{trans('home.return_contract')}}:</span>
 					@component('widgets.upload_file',['upload_type'=>'','upload_path'=>'user/contract','name'=>'contract'])@endcomponent
 
 				</div>
-				<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="提交"></div>
+				<div class="payBtn"><input class="payImgSubmit" type="button" name="" value="{{trans('home.sub')}}"></div>
 
 			</div>
 
@@ -287,10 +284,10 @@
 	<div class="whitebg br1 mt20 ovh">
 		<ul class="order-list-brand">
 			<li>
-				<span style="width:29%">商品名称</span>
-				<span style="width:20%">单价</span>
-				<span style="width:20%">数量</span>
-				<span style="width:29%">金额</span>
+				<span style="width:29%">{{trans('home.goods_name')}}</span>
+				<span style="width:20%">{{trans('home.price')}}</span>
+				<span style="width:20%">{{trans('home.num')}}</span>
+				<span style="width:29%">{{trans('home.order_amount')}}</span>
 				<!-- <span>操作</span> -->
 			</li>
 			@foreach($orderDetailsInfo['goodsInfo'] as $v)
@@ -305,15 +302,15 @@
 		</ul>
 		<div class="Amount_money">
 			<div class="db">
-				<span>商品总额：</span>
+				<span>{{trans('home.total')}}：</span>
 				<span class="fr ml20">{{amount_format($orderDetailsInfo['orderInfo']['goods_amount'],2)}}</span>
 			</div>
 			<div class="db mt15">
-				<span class="di">运       费：</span>
+				<span class="di">{{trans('home.freight')}}：</span>
 				<span class="fr ml20">￥{{$orderDetailsInfo['orderInfo']['shipping_fee']}}</span>
 			</div>
 			<div class="db mt20 red">
-				<span class="lh35">应付总额：</span>
+				<span class="lh35">{{trans('home.total_payable')}}：</span>
 				<span class="fr ml20 fs22">{{amount_format($orderDetailsInfo['orderInfo']['order_amount'],2)}}</span>
 			</div>
 		</div>
@@ -343,7 +340,7 @@
             var contract = $('input[name=contract]').val();
             var orderno = '{{$orderDetailsInfo['orderInfo']['id']}}';
             if(contract == '' || orderno == ''){
-                $.msg.alert('请选择合同后提交');
+                $.msg.alert('{{trans('home.choose_contract')}}');
                 return;
             }
             $.ajax({
@@ -360,7 +357,7 @@
                     }
                 },
                 error:function(){
-                    $.msg.alert('系统繁忙，请重试');
+                    $.msg.alert('{{trans('home.system_busy')}}');
                 }
             })
         })
@@ -387,7 +384,7 @@
                         }
                         console.log(_html);
                         if(_html == ''){
-                            _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                            _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                         }
                         $(obj).find('.wlxx').append(_html);
                     }else{
@@ -396,12 +393,12 @@
                     }
                 },
                 error:function(){
-                    var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                    var _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>';
                     $(obj).find('.wlxx').append(_html);
                 }
             })
         }else{
-            var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+            var _html = '<li><i class="external-cir"></i>{{trans('home.not_shipped_tips')}}<div class="gray"></div></li>';
             $(obj).find('.wlxx').append(_html);
         }
 
@@ -427,23 +424,23 @@
                         }
                         console.log(_html);
                         if(_html == ''){
-                            _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>'
+                            _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                         }
                         $(obj).find('.wlxx').append(_html);
                     }else{
                         //物流单第三方查询失败 查询站内维护物流信息
-                        var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                        var _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>';
                         $(obj).find('.wlxx').append(_html);
                         // $.msg.alert(data.msg);
                     }
                 },
                 error:function(){
-                    var _html = '<li><i class="external-cir"></i>暂时无法获取到该订单物流跟踪信息，请于商家联系。<div class="gray"></div></li>';
+                    var _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>';
                     $(obj).find('.wlxx').append(_html);
                 }
             })
         }else{
-            var _html = '<li><i class="external-cir"></i>商家还未发货，暂无物流信息。<div class="gray"></div></li>';
+            var _html = '<li><i class="external-cir"></i>{{trans('home.not_shipped_tips')}}<div class="gray"></div></li>';
             $(obj).find('.wlxx').append(_html);
         }
 

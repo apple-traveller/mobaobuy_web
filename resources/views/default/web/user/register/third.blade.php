@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{{getConfig('shop_name')}}_绑定账号</title>
+    <title>{{getConfig('shop_name')}}_{{trans('home.bind_account')}}</title>
     @include(themePath('.','web').'web.include.partials.base')
 </head>
 <body style="background-color: #f4f4f4;">
@@ -13,7 +13,7 @@
                 </a>
             </div>
 
-            <div class="go-login">已有账号，可 <a href="{{route('login')}}" style="color:#36a3ef">直接登录</a></div>
+            <div class="go-login">{{trans('home.login_prefix')}} <a href="{{route('login')}}" style="color:#36a3ef">{{trans('home.login_suffix')}}</a></div>
         </div>
     </div>
 
@@ -23,41 +23,48 @@
                 <div class="form">
                     <input type="hidden" name="third_type" id="third_type" value="{{$type}}" />
                     <div class="item">
-                        <div class="item-libel">用户名</div>
-                        <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="请输入手机号码" onblur="phoneValidate()"></div>
+                        <div class="item-libel">{{trans('home.account_name')}}</div>
+                        <div class="item-info"><input type="text" class="text" autocomplete="false" maxlength="11" id="phone" name="phone" placeholder="{{trans('home.login_mobile')}}" onblur="phoneValidate()"></div>
                         <div class="input-tip"><label id="phone_error" class="error" for="phone"></label></div>
                     </div>
                     <div class="item b_msg" style="display: none">
-                        手机号未注册！是否
-                        <a class="next_banding" style='color:#ff6600'>继续绑定</a>，或者<a href='/' style='color:#ff6600'>返回首页</a>
+                        {{trans('home.third_login_tips')}}
+                        <a class="next_banding" style='color:#ff6600'>{{trans('home.continue_bind')}}</a>，{{trans('home.or')}}<a href='/' style='color:#ff6600'>{{trans('home.back_home')}}</a>
                     </div>
                     <div class="item b_password" style="display: none">
-                        <div class="item-libel">输入密码</div>
-                        <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="密码由8-16个字符(字母+数字组成)" id="password" onblur="pwdValidate()"></div>
+                        <div class="item-libel">{{trans('home.login_password')}}</div>
+                        <div class="item-info"><input type="password" class="text" name="password" maxlength="16" placeholder="{{trans('home.password_placeholder')}}" id="password" onblur="pwdValidate()"></div>
                         <div class="input-tip"><label id="pwd_error" class="error" for="password"></label></div>
                     </div>
                     <div class="item b_img_code" style="display: none">
-                        <div class="item-libel">图形验证码</div>
+                        <div class="item-libel">{{trans('home.graphic_code')}}</div>
                         <div class="item-info" style="width: 178px;">
-                            <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="图形验证码" id="verify" onblur="verifyValidate();">
+                            <input style="width: 158px;" type="text" class="text" maxlength="4" placeholder="{{trans('home.graphic_code')}}" id="verify" onblur="verifyValidate();">
                         </div>
-                        <img src="" title="点击换一个校验码" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="点击换一个校验码" id="imVcode">
+                        <img src="" title="{{trans('home.change_code')}}" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" alt="{{trans('home.change_code')}}" id="imVcode">
                         <div class="input-tip"><label id="verify_error" class="error" for="phone"></label></div>
                     </div>
                     <div class="item b_mobile_code" style="display: none">
-                        <div class="item-libel">手机验证码</div>
+                        <div class="item-libel">{{trans('home.code')}}</div>
                         <div class="item-info msgCode-swap blackgraybg" style="width: 178px;">
                             <input style="width: 158px;background-color: transparent;" name="msgCode" id="messCode" type="text" class="text" maxlength="6" readonly onblur="msgCodeValidate();">
                         </div>
-                        <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="获取手机验证码">
+                        <input type="button" class="messCode_but" style="margin-left: 10px;line-height: 35px;height: 43px; width: 130px;" id="messCode_but" value="{{trans('home.get_code')}}">
                         <div class="input-tip"><label id="msgCode_error" class="error" for="phone"></label></div>
                     </div>
                 </div>
             </div>
-            <div class="register-checkbox">
-                <label class="check_box"><input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />我已阅读并同意<a class="orange">《秣宝平台用户注册协议》</a></label>
+            <div class="register-checkbox" style="width:300px;margin: 0 auto">
+                <label class="check_box">
+                    <p style="width:20px; height:20px;overflow: hidden;float:left;margin-top: 1px;">
+                        <input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />
+                    </p>
+                    {{--<input name="" id="action" onchange="genreCheck();" type="checkbox" checked="checked" />--}}
+                    {{trans('home.read_agreed')}}
+                    <a class="orange">{{trans('home.registration_agreement')}}</a>
+                </label>
             </div>
-            <button class="register-button" id="sub-btn">绑定该账号</button>
+            <button class="register-button" id="sub-btn">{{trans('home.bind_account')}}</button>
         </div>
     </div>
     <div class="clearfix" style="height: 35px;"></div>
@@ -103,12 +110,12 @@
     function phoneValidateBool(){
         $("#phone_error").html('');
         if (isNull.test($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入手机号");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.login_mobile')}}");
             checkAccount = false;
 
             return false;
         } else if (!Utils.isPhone($("#phone").val())) {
-            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确");
+            $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.mobile_format_error')}}");
             checkAccount = false;
 
             return false;
@@ -133,7 +140,7 @@
             async:false,
             success: function (data) {
                 if(data.code == 1){
-                    $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号已经注册！");
+                    $("#phone_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.registered')}}！");
                     checkAccount = false;
                 }else{
                     checkAccount = true;
@@ -147,10 +154,10 @@
     function pwdValidate() {
         $("#pwd_error").html('');
         if (isNull.test($("#password").val())) {
-            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>请输入密码");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.login_password')}}");
             return false;
         } else if (!pwdReg.test($("#password").val())) {
-            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>密码必须包含字母和数字长度8-16位字符");
+            $("#pwd_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.password_placeholder')}}");
             return false;
         }
         return true;
@@ -167,11 +174,11 @@
     function verifyValidate() {
         $("#verify_error").html("&nbsp;");
         if (isNull.test($("#verify").val())) {
-            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不能为空");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_required_tips')}}");
             registerCode = false;
             return false;
         } else if (!veriCodeExep.test($("#verify").val())) {
-            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的验证码有误");
+            $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             registerCode = false;
             return false;
         }
@@ -187,7 +194,7 @@
             } else {
                 registerCode = false;
                 gv();
-                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>验证码不正确");
+                $("#verify_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             }
         }, "POST", "JSON");
     }
@@ -195,10 +202,10 @@
     function msgCodeValidate() {
         $("#msgCode_error").html("");
         if (isNull.test($("#messCode").val())) {
-            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机验证码不能为空");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_required_tips')}}");
             return false;
         } else if (!verify.test($("#messCode").val())) {
-            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>您输入的手机验证码有误");
+            $("#msgCode_error").html("<i class='iconfont icon-minus-circle-fill'></i>{{trans('home.code_error_tips')}}");
             return false;
         }
         return true;
@@ -232,7 +239,7 @@
     }
     function Settime(type) {
         if (countdown == 0) {
-            $("#messCode_but").val("获取手机验证码");
+            $("#messCode_but").val("{{trans('home.get_code')}}");
             $("#messCode_but").attr("class", "messCode_but");
             countdown = 60;
             msType = true;
@@ -241,7 +248,7 @@
             msType = false;
             msType02 = false;
 
-            $("#messCode_but").val(countdown + "s重新获取");
+            $("#messCode_but").val(countdown + "s {{trans('home.regain')}}");
             countdown--;
             setTimeout(function() {
                 Settime(type);
@@ -288,7 +295,7 @@
         }
         phoneValidateBool();
         verifyValidate ();
-        if (!checkAccount || !pwdValidate()) {
+        if (checkAccount || !pwdValidate()) {
             return false;
         }
         params = {
