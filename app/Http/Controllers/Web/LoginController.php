@@ -185,7 +185,7 @@ class LoginController extends Controller
             }else{
                 return $this->error(trans('error.bind_failed'));
             }
-        }catch (Exception $e){
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
 
