@@ -51,14 +51,13 @@
         .chart_btn{    cursor: pointer;border: none; background-color: #dcdcdc; padding: 3.5px 10px; color: #807b7b;font-size: 13px;}
         .chart_btn:hover{background-color: #75b335; color: #fff;}
         .chart_btn.currlight{background-color: #75b335; color: #fff;}
-    </style>
-    <style type="text/css">
         .detail_table{table-layout: fixed; }
         .detail_table tr{height: 40px;color: #666;}
         .detail_table tr td{white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;}
         .detail_table tr td:nth-child(odd){width: 90px; display: inline-block; margin-top: 9px; margin-right: 15px;
             text-align: right;}
         .detail_table tr td:nth-child(even){width: 210px;}
+        em, i, u { font-style: italic;}
     </style>
 @endsection
 @section('js')
@@ -277,26 +276,6 @@
 			<div class="pro_price f4bg mt10">
 				<div class="pro_price_dj fl"><span class="ml15">{{trans('home.price')}}</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}</font>/{{$good_info['unit_name']}}</span></div>
 			</div>
-			{{--<div class="pro_detail">--}}
-				{{--<span class="ml15 pro_detail_title letter-space fl" style="letter-spacing:0px;">{{trans('home.delivery_time')}}</span>--}}
-                {{--<span  class="pro_value">{{$good_info['delivery_time']}}</span>--}}
-                {{--<span class="fl ">{{trans('home.spec2')}}</span>--}}
-                {{--<span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}">{{$good_info['packing_spec'].$good_info['unit_name']}}/{{getLangData($good_info,'packing_unit')}}</span>--}}
-			{{--</div>--}}
-			{{--<div class="pro_detail">--}}
-				{{--<span class="ml15 letter-space fl">{{trans('home.number')}}</span><span  class="pro_value">{{$good_info['goods_sn']}}</span>--}}
-                {{--<span class="fl letter-space">{{trans('home.brand')}}</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{getLangData($good_info,'brand_name')}}">{{getLangData($good_info,'brand_name')}}</span>--}}
-			{{--</div>--}}
-
-            {{--<div class="pro_detail">--}}
-                {{--<span class="ml15 pro_detail_title fl" style="letter-spacing:8px;">{{trans('home.salesman')}}</span><span  class="pro_value">{{$good_info['salesman']}}</span>--}}
-                {{--<span class="fl">{{trans('home.contact_way')}}</span><span  class="ml35 fl ovhwp" style="width: 150px;" title="{{$good_info['contact_info']}}">{{$good_info['contact_info']}}</span>--}}
-            {{--</div>--}}
-
-            {{--<div class="pro_detail">--}}
-                {{--<span class="ml15 pro_detail_title fl">{{trans('home.mfg_date')}}</span><span  class="pro_value">{{$good_info['production_date']}}</span>--}}
-                 {{--<span class="fl letter-space">{{trans('home.content')}}</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{getLangData($good_info,'goods_content')}}">{{getLangData($good_info,'goods_content')}}</span>--}}
-            {{--</div>--}}
 
             <table class="detail_table mt10 ">
                 <tbody>
@@ -446,7 +425,7 @@
                             {{--</ul>--}}
                         {{--</div>--}}
                     {{--</li>--}}
-                    <li style="display: block"><ul class="History-product-list br1">
+                    <li style="display: block"><ul class="br1">
                             <li>
                                 {!! getLangData($good_info,'goods_desc') !!}
 
