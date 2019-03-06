@@ -229,10 +229,10 @@
 	</script>
 <script>
     $(function(){
-        $('.HistoryLi li').hover(function(){
-            $(this).addClass('titlecurr').siblings().removeClass('titlecurr');
-            $('.proitemlist>li').eq($(this).index()).show().siblings().hide();
-        });
+//        $('.HistoryLi li').hover(function(){
+//            $(this).addClass('titlecurr').siblings().removeClass('titlecurr');
+//            $('.proitemlist>li').eq($(this).index()).show().siblings().hide();
+//        });
         var tipindex;
         $('#show_yf_tips').hover(function(){
             tipindex = layer.tips('{{trans('home.logistics_description_tips')}}', '#show_yf_tips', {
@@ -332,13 +332,6 @@
                     </tr>
                 </tbody>
             </table>
-
-
-            {{--<div class="pro_detail">--}}
-                {{--<span class="ml15 pro_detail_title fl">{{trans('home.freight_description')}}</span>--}}
-                {{--<span  class="pro_value">{{trans('home.undetermined')}} <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></span>--}}
-                {{--<span class="fl letter-space">含量</span><span  class="ml5 fl ovhwp" style="width: 150px;" title="{{$good_info['goods_content']}}">{{$good_info['goods_content']}}</span>--}}
-            {{--</div>--}}
 			<div class="pro_detail bd1"></div>
 			<div class="pro_detail">
 
@@ -416,52 +409,52 @@
         <div class="w1200" style="margin-top: 20px;">
             <div class="History_offo">
                 <ul class="HistoryLi">
-                    <li style="margin-left:25px;text-align:center;" class="titlecurr"><h2 style="font-weight: bold;">{{trans('home.historical_quotation')}}</h2></li>
+{{--                    <li style="margin-left:25px;text-align:center;" class="titlecurr"><h2 style="font-weight: bold;">{{trans('home.historical_quotation')}}</h2></li>--}}
                     <li style="text-align: center;"><h2 style="font-weight: bold;">{{trans('home.product_details')}}</h2></li>
                 </ul>
             </div>
             <div>
-    <ul class="proitemlist">
-        <li>
-            <ul class="History-product-list br1">
-                <li style="background-color: #cccccc">
-                    <span style="width: 18%;">{{trans('home.update_time')}}</span>
-                    <span style="width: 16%;">{{trans('home.cate')}}</span>
-                    <span style="width:15%">{{trans('home.brand')}}</span>
-                    <span style="width:17%">{{trans('home.spec')}}</span>
-                    {{--<span style="width: 11%;">数量</span>--}}
-                    <span style="width: 11%;">{{trans('home.price')}}</span>
-                    <span style="width:10%">{{trans('home.delivery_area')}}</span>
-                    <span style="width: 13%;">{{trans('home.contact')}}</span>
-                </li>
-                @foreach($goodsList as $vo)
-                    <li>
-                        <span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>
-                        <span style="width:16%" class="ovhwp" title="{{getLangData($vo,'cat_top_name')}}">{{getLangData($vo,'cat_top_name')}}</span>
-                        <span style="width:15%" class="ovhwp" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
-                        <span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</span>
-                        {{--<span style="width:11%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>--}}
-                        <span style="width:11%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
-                        <span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
-                        <span style="width:13%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
+                <ul class="proitemlist">
+                    {{--<li>--}}
+                        {{--<ul class="History-product-list br1">--}}
+                            {{--<li style="background-color: #cccccc">--}}
+                                {{--<span style="width: 18%;">{{trans('home.update_time')}}</span>--}}
+                                {{--<span style="width: 16%;">{{trans('home.cate')}}</span>--}}
+                                {{--<span style="width:15%">{{trans('home.brand')}}</span>--}}
+                                {{--<span style="width:17%">{{trans('home.spec')}}</span>--}}
+                                {{--<span style="width: 11%;">数量</span>--}}
+                                {{--<span style="width: 11%;">{{trans('home.price')}}</span>--}}
+                                {{--<span style="width:10%">{{trans('home.delivery_area')}}</span>--}}
+                                {{--<span style="width: 13%;">{{trans('home.contact')}}</span>--}}
+                            {{--</li>--}}
+                            {{--@foreach($goodsList as $vo)--}}
+                                {{--<li>--}}
+                                    {{--<span style="width:18%" class="ovhwp" title="{{$vo['add_time']}}">{{$vo['add_time']}}</span>--}}
+                                    {{--<span style="width:16%" class="ovhwp" title="{{getLangData($vo,'cat_top_name')}}">{{getLangData($vo,'cat_top_name')}}</span>--}}
+                                    {{--<span style="width:15%" class="ovhwp" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>--}}
+                                    {{--<span style="width:17%;color:#00a1e9;" class="ovhwp" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</span>--}}
+                                    {{--<span style="width:11%">@if($vo['goods_number'] < 0) 0 @else {{$vo['goods_number']}} @endif{{$vo['unit_name']}}</span>--}}
+                                    {{--<span style="width:11%">￥{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>--}}
+                                    {{--<span style="width:10%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>--}}
+                                    {{--<span style="width:13%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>--}}
+                                {{--</li>--}}
+                            {{--@endforeach--}}
+                        {{--</ul>--}}
+                        {{--<div class="news_pages">--}}
+                            {{--<ul id="page" class="pagination">--}}
+            {{----}}
+                            {{--</ul>--}}
+                        {{--</div>--}}
+                    {{--</li>--}}
+                    <li style="display: block"><ul class="History-product-list br1">
+                            <li>
+                                {!! getLangData($good_info,'goods_desc') !!}
+
+                            </li>
+                        </ul>
                     </li>
-                @endforeach
-            </ul>
-            {{--<div class="news_pages">--}}
-                {{--<ul id="page" class="pagination">--}}
-
-                {{--</ul>--}}
-            {{--</div>--}}
-        </li>
-        <li style="display: none"><ul class="History-product-list br1">
-                <li>
-                    {!! getLangData($good_info,'goods_desc') !!}
-
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
+                </ul>
+            </div>
             <div class="clearfix whitebg ovh mt10" style="font-size: 0;"></div>
         </div>
 
