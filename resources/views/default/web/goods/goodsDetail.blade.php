@@ -58,6 +58,8 @@
             text-align: right;}
         .detail_table tr td:nth-child(even){width: 210px;}
         em, i, u { font-style: italic;}
+        .desc_style{font-size: 18px;margin: 0 25px;}
+        .desc_style p{line-height: 25px;}
     </style>
 @endsection
 @section('js')
@@ -425,7 +427,8 @@
                             {{--</ul>--}}
                         {{--</div>--}}
                     {{--</li>--}}
-                    <li style="display: block"><ul class="br1">
+                    <li style="display: block">
+                        <ul class="br1 desc_style">
                             <li>
                                 {!! getLangData($good_info,'goods_desc') !!}
 
