@@ -175,8 +175,6 @@ class ShopGoodsQuoteRepo
                 'shop.shop_name_en','shop.company_name_en','shop_store.store_name_en'
             );
 
-
-
         $query = self::setCondition($query, $condition);
 
         $page = 1;
@@ -203,7 +201,7 @@ class ShopGoodsQuoteRepo
         }else{//有效的报价（没过期、没售罄的报价）在前无效的在后，置顶的在前未置顶的在后，时间倒序
             $query = $query->orderBy('valid','desc')->orderBy('t','desc')->orderBy('b.is_roof','desc')->orderBy('b.add_time','desc');
         }
-//        dd($query->toSql());
+//      dd($query->toSql());
         if ($page_size > 0) {
             $rs['list'] = $query->forPage($page, $page_size)->get()->toArray();
         } else {
