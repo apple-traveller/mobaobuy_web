@@ -66,7 +66,7 @@ class AutoCancelOrder extends Command
                 //执行取消操作
                 OrderInfoService::orderCancel($v['id'],'waitAffirm');
             }
-        }catch (Exception $e){
+        }catch (\Exception $e){
             Log::info($e->getMessage());
         }
     }

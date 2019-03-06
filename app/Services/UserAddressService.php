@@ -80,7 +80,7 @@ class UserAddressService
             }
             self::commit();
             return true;
-        }catch (Exception $e){
+        }catch (\Exception $e){
             self::rollBack();
             self::throwBizError($e->getMessage());
         }
@@ -102,7 +102,7 @@ class UserAddressService
             }
             self::commit();
             return true;
-        }catch (Exception $e){
+        }catch (\Exception $e){
             self::rollBack();
             self::throwBizError($e->getMessage());
         }

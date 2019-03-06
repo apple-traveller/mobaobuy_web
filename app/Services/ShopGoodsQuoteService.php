@@ -186,7 +186,7 @@ class ShopGoodsQuoteService
                 }
             self::commit();
             return true;
-        }catch (Exception $e){
+        }catch (\Exception $e){
             self::rollBack();
             return $e->getMessage();
         }
@@ -520,7 +520,7 @@ class ShopGoodsQuoteService
             }
             self::commit();
             return 'success';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             self::rollBack();
             return $e->getMessage();
         }

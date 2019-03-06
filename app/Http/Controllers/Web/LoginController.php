@@ -236,7 +236,7 @@ class LoginController extends Controller
                 }
             }
             return $this->error(trans('error.register_failed'));
-        }catch (Exception $e){
+        }catch (\Exception $e){
             return $this->error($e->getMessage());
         }
 
