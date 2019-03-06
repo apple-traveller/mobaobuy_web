@@ -308,7 +308,7 @@ class QuoteController extends Controller
             'b.type'=>'1|2',
             'b.is_delete'=>0
         ];
-        $pageSize = 15;
+        $pageSize = 5;
         $userId = session('_web_user_id');
         $cart_count = GoodsService::getCartCount($userId);
         $goodList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => ['add_time' => 'desc']], $condition);
