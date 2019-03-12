@@ -137,11 +137,11 @@
 
     <script type="text/javascript">
             var ue = UE.getEditor('container',{
-                initialFrameWidth : '100%',//宽度
+                initialFrameWidth : 800,//宽度
                 initialFrameHeight: 500//高度
             });
             var ue2 = UE.getEditor('container_en',{
-                initialFrameWidth : '100%',//宽度
+                initialFrameWidth : 800,//宽度
                 initialFrameHeight: 500//高度
             });
     </script>
