@@ -728,7 +728,7 @@ CREATE TABLE `shop_goods_quote` (
   `delivery_time_en` varchar(60) NOT NULL COMMENT '英文交货时间',
   `is_roof` tinyint(4) NOT NULL COMMENT '是否置顶 0否 1是',
   `min_limit` int(11) NOT NULL COMMENT '最小采购量',
-  `goods_source` tinyint(4) NOT NULL DEFAULT '0' COMMENT '货源 0现货 1紧张 2厂家直发 3',
+  `goods_source` tinyint(4) NOT NULL DEFAULT '0' COMMENT '货源 0现货 1紧张 2厂家直发 3少量',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`) USING BTREE,
   KEY `goods_id` (`goods_id`) USING BTREE,

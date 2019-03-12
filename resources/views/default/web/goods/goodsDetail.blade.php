@@ -81,7 +81,7 @@
                     $(this).text('收起');
                     $(this).prev('.pro_brand_list').addClass('heightcurr');
                 }
-            })
+            });
             //更多选项
             $('.more_filter_box').click(function(){
                 var mText = $(this).text();

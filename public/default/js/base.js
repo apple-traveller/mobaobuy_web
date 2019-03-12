@@ -74,6 +74,8 @@ function jqGetLangGoodsSource(locale,goods_source) {
             res = '紧张';
         }else if(goods_source == 2){
             res = '厂家直发';
+        }else if(goods_source == 3){
+            res = '少量';
         }else{
             res = '现货';
         }
@@ -84,6 +86,8 @@ function jqGetLangGoodsSource(locale,goods_source) {
             res = 'Tight supply';
         }else if(goods_source == 2){
             res = 'Straight hair';
+        }else if(goods_source == 3){
+            res = 'A few';
         }else{
             res = 'spot goods';
         }

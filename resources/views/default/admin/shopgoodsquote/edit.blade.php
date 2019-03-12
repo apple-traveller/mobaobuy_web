@@ -179,6 +179,7 @@
                                         <option value="0" @if($goodsQuote['goods_source'] == 0) selected="selected" @endif>现货</option>
                                         <option value="1" @if($goodsQuote['goods_source'] == 1) selected="selected" @endif>紧张</option>
                                         <option value="2" @if($goodsQuote['goods_source'] == 2) selected="selected" @endif>厂家直发</option>
+                                        <option value="3" @if($goodsQuote['goods_source'] == 3) selected="selected" @endif>少量</option>
                                     </select>
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
                                 </div>

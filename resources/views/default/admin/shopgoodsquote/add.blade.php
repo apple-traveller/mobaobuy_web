@@ -168,6 +168,7 @@
                                         <option value="0">现货</option>
                                         <option value="1">紧张</option>
                                         <option value="2">厂家直发</option>
+                                        <option value="3">少量</option>
                                     </select>
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
                                 </div>
