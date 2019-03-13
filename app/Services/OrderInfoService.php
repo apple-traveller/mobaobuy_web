@@ -1394,20 +1394,6 @@ class OrderInfoService
     public static function orderDetails($id,$firmId,$deputy_user=[]){
         $orderInfo =  OrderInfoRepo::getInfoByFields(['order_sn'=>$id]);
 
-        if ($deputy_user['is_firm']) {
-            $condition['firm_id'] = $deputy_user['firm_id'];
-        } else {
-            $condition['user_id'] = $deputy_user['firm_id'];
-            $condition['firm_id'] = 0;
-        }
-        //企业会员权限
-        if($deputy_user['is_firm']){
-            $needApproval = UserRepo::getInfo($deputy_user['firm_id'])['need_approval'];
-            if($condition['firm_id'] && $deputy_user['is_self'] == 0){
-                $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$deputy_user['user_id']);
-                $currUserAuth[0]['need_approval'] = $needApproval;
-            }
-        }
 
         $auth = [
             'can_del'=>0,//删除
@@ -1418,134 +1404,150 @@ class OrderInfoService
             'can_confirm'=>0,//收货
             'wait_invoice'=>0,//申请开票
         ];
-
-        //企业
-        if(($deputy_user['is_self'] == 1) && $deputy_user['is_firm']){
-            if($orderInfo['order_status'] == 0){
-                $auth['can_del']=1;
-                $orderInfo['auth'] = $auth;
+        if(!empty($deputy_user)){
+            if ($deputy_user['is_firm']) {
+                $condition['firm_id'] = $deputy_user['firm_id'];
+            } else {
+                $condition['user_id'] = $deputy_user['firm_id'];
+                $condition['firm_id'] = 0;
             }
-            if($orderInfo['order_status'] == 1){
-                if($needApproval){
-                    $auth['can_approval']=1;
-                }
-                $auth['can_cancel']=1;
-                $orderInfo['auth'] = $auth;
-            }
-            if ($orderInfo['order_status'] == 2) {
-                if ($orderInfo['deposit_status'] == 1) {
-                    $auth['can_cancel']=1;
-                    $orderInfo['auth'] = $auth;
-                } elseif ($orderInfo['deposit_status'] == 0) {
-                    $auth['can_cancel']=1;
-                    $auth['can_pay_deposite']=1;
-                    $orderInfo['auth'] = $auth;
-                }
-
-            }
-
-            if($orderInfo['order_status'] == 3){
-                if($orderInfo['pay_status'] == 0){
-                    $auth['can_cancel']=1;
-                    $auth['can_pay']=1;
-                    $orderInfo['auth'] = $auth;
-                }
-
-                //未发货
-                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
-                    $orderInfo['auth'] = $auth;
-                }
-                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
-                    $auth['can_confirm']=1;
-                    $orderInfo['auth'] = $auth;
+            //企业会员权限
+            if($deputy_user['is_firm']){
+                $needApproval = UserRepo::getInfo($deputy_user['firm_id'])['need_approval'];
+                if($condition['firm_id'] && $deputy_user['is_self'] == 0){
+                    $currUserAuth = FirmUserService::getAuthByCurrUser($condition['firm_id'],$deputy_user['user_id']);
+                    $currUserAuth[0]['need_approval'] = $needApproval;
                 }
             }
-
-
-        }
-
-        //企业会员
-        if(($deputy_user['is_self'] == 0) && $deputy_user['is_firm'] == 1){
-            if($currUserAuth){
-                //待企业审核订单
+            //企业
+            if(($deputy_user['is_self'] == 1) && $deputy_user['is_firm']){
+                if($orderInfo['order_status'] == 0){
+                    $auth['can_del']=1;
+                    $orderInfo['auth'] = $auth;
+                }
                 if($orderInfo['order_status'] == 1){
                     if($needApproval){
-                        if($currUserAuth[0]['can_approval']){
-                            $auth['can_approval']=1;
-                            $orderInfo['auth'] = $auth;
-                        }else{
-                            $orderInfo['auth'] = $auth;
-                        }
-                    }else{
-                        $orderInfo['auth'] = $auth;
+                        $auth['can_approval']=1;
                     }
+                    $auth['can_cancel']=1;
+                    $orderInfo['auth'] = $auth;
                 }
-
-                //待商家确认
-                if ($orderInfo['order_status'] == 2){
-                    if ($orderInfo['deposit_status'] == 1){
+                if ($orderInfo['order_status'] == 2) {
+                    if ($orderInfo['deposit_status'] == 1) {
+                        $auth['can_cancel']=1;
                         $orderInfo['auth'] = $auth;
                     } elseif ($orderInfo['deposit_status'] == 0) {
-                        if($currUserAuth[0]['can_pay']){
-                            $auth['can_pay_deposite']=1;
-                            $orderInfo['auth'] = $auth;
-                        }
+                        $auth['can_cancel']=1;
+                        $auth['can_pay_deposite']=1;
+                        $orderInfo['auth'] = $auth;
                     }
+
                 }
-                //已确认
+
                 if($orderInfo['order_status'] == 3){
-                    if($orderInfo['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
+                    if($orderInfo['pay_status'] == 0){
+                        $auth['can_cancel']=1;
                         $auth['can_pay']=1;
                         $orderInfo['auth'] = $auth;
                     }
+
                     //未发货
                     if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
                         $orderInfo['auth'] = $auth;
-                    }elseif($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
-                        if($currUserAuth[0]['can_confirm']){
-                            $auth['can_confirm']=1;
+                    }
+                    if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                        $auth['can_confirm']=1;
+                        $orderInfo['auth'] = $auth;
+                    }
+                }
+
+
+            }
+
+            //企业会员
+            if(($deputy_user['is_self'] == 0) && $deputy_user['is_firm'] == 1){
+                if($currUserAuth){
+                    //待企业审核订单
+                    if($orderInfo['order_status'] == 1){
+                        if($needApproval){
+                            if($currUserAuth[0]['can_approval']){
+                                $auth['can_approval']=1;
+                                $orderInfo['auth'] = $auth;
+                            }else{
+                                $orderInfo['auth'] = $auth;
+                            }
+                        }else{
                             $orderInfo['auth'] = $auth;
+                        }
+                    }
+
+                    //待商家确认
+                    if ($orderInfo['order_status'] == 2){
+                        if ($orderInfo['deposit_status'] == 1){
+                            $orderInfo['auth'] = $auth;
+                        } elseif ($orderInfo['deposit_status'] == 0) {
+                            if($currUserAuth[0]['can_pay']){
+                                $auth['can_pay_deposite']=1;
+                                $orderInfo['auth'] = $auth;
+                            }
+                        }
+                    }
+                    //已确认
+                    if($orderInfo['order_status'] == 3){
+                        if($orderInfo['pay_status'] == 0 && $currUserAuth[0]['can_pay']){
+                            $auth['can_pay']=1;
+                            $orderInfo['auth'] = $auth;
+                        }
+                        //未发货
+                        if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
+                            $orderInfo['auth'] = $auth;
+                        }elseif($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                            if($currUserAuth[0]['can_confirm']){
+                                $auth['can_confirm']=1;
+                                $orderInfo['auth'] = $auth;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        //个人
-        if ($deputy_user['is_firm'] == 0){
             //个人
-            if ($orderInfo['order_status'] == 0){
-                $auth['can_del']=1;
-                $orderInfo['auth'] = $auth;
-            }
-
-            if ($orderInfo['order_status'] == 2){
-                if ($orderInfo['deposit_status'] == 1){
-                    $auth['can_cancel']=1;
-                    $orderInfo['auth'] = $auth;
-                } elseif ($orderInfo['deposit_status'] == 0){
-                    $auth['can_cancel']=1;
-                    $auth['can_pay_deposite']=1;
-                    $orderInfo['auth'] = $auth;
-                }
-            }
-
-            if ($orderInfo['order_status'] == 3){
-                if ($orderInfo['pay_status'] == 0){
-                    $auth['can_cancel']=1;
-                    $auth['can_pay']=1;
+            if ($deputy_user['is_firm'] == 0){
+                //个人
+                if ($orderInfo['order_status'] == 0){
+                    $auth['can_del']=1;
                     $orderInfo['auth'] = $auth;
                 }
 
-                //未发货
-                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
-                    $orderInfo['auth'] = $auth;
+                if ($orderInfo['order_status'] == 2){
+                    if ($orderInfo['deposit_status'] == 1){
+                        $auth['can_cancel']=1;
+                        $orderInfo['auth'] = $auth;
+                    } elseif ($orderInfo['deposit_status'] == 0){
+                        $auth['can_cancel']=1;
+                        $auth['can_pay_deposite']=1;
+                        $orderInfo['auth'] = $auth;
+                    }
                 }
-                if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
-                    $auth['can_confirm']=1;
-                    $orderInfo['auth'] = $auth;
+
+                if ($orderInfo['order_status'] == 3){
+                    if ($orderInfo['pay_status'] == 0){
+                        $auth['can_cancel']=1;
+                        $auth['can_pay']=1;
+                        $orderInfo['auth'] = $auth;
+                    }
+
+                    //未发货
+                    if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 0){
+                        $orderInfo['auth'] = $auth;
+                    }
+                    if($orderInfo['pay_status'] == 1 && $orderInfo['shipping_status'] == 1){
+                        $auth['can_confirm']=1;
+                        $orderInfo['auth'] = $auth;
+                    }
                 }
             }
+
         }
 
         if ($orderInfo['order_status'] == 4){
