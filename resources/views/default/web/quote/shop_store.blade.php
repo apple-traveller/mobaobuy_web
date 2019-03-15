@@ -128,7 +128,7 @@
                 <ul class="bd_wrap_items">
                     @foreach($storeList as $k=>$v)
                         <li>
-                            <div class="logo_img fl gcolor"><img width="50" height="57" src="http://img.sumibuy.com/brand/20171227094915_8553.png"></div>
+                            <div class="logo_img fl gcolor"><img width="50" height="57" src="{{getFileUrl($v['store_img'])}}"></div>
                             <div class="fl detail fs14">
                                 <div style="font-weight: 400">{{trans('home.brand_dealer')}}：{{getLangData($v,'store_name')}}</div>
                                 <div>{{trans('home.business_category')}}：{{getLangData($v,'main_cat')}}</div>
