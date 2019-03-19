@@ -16,7 +16,7 @@ class BrandController extends Controller
             'is_delete'=>0
         ];
         if(!empty($brand_name)){
-            $condition['brand_name']=$brand_name;
+            $condition['brand_name']= '%'.$brand_name.'%';
         }
         $currpage = $request->input('currpage',1);
         $pageSize = 10;
