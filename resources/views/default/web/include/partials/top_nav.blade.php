@@ -23,19 +23,19 @@
                                                 </li>
                                             @endforeach
                                         @endif
-                                        {{--@if(isset(getSpecialGoods()[$level1_item['id']]['goods']) && !empty(getSpecialGoods()[$level1_item['id']]['goods']))--}}
-                                            {{--<li>--}}
-                                                {{--<h1 class="fn_title fl">--}}
-                                                    {{--<i class="iconfont fr icon-right fr mr20"></i>--}}
-                                                    {{--<a class="fr" href="#" title="特殊规格">特殊规格</a>--}}
-                                                {{--</h1>--}}
-                                                {{--<div class="ass_fn_list_that ovh fl">--}}
-                                                    {{--@foreach(getSpecialGoods()[$level1_item['id']]['goods']??[] as $v)--}}
-                                                        {{--<span><a href="/goods/special/detail/{{$v['id']}}" title="{{$v['goods_name']}}">{{$v['goods_name']}}</a></span>--}}
-                                                    {{--@endforeach--}}
-                                                {{--</div>--}}
-                                            {{--</li>--}}
-                                        {{--@endif--}}
+                                        @if(isset(getSpecialGoods()[$level1_item['id']]['goods']) && !empty(getSpecialGoods()[$level1_item['id']]['goods']))
+                                            <li>
+                                                <h1 class="fn_title fl">
+                                                    <i class="iconfont fr icon-right fr mr20"></i>
+                                                    <a class="fr" href="#" title="特殊规格">特殊规格</a>
+                                                </h1>
+                                                <div class="ass_fn_list_that ovh fl">
+                                                    @foreach(getSpecialGoods()[$level1_item['id']]['goods']??[] as $v)
+                                                        <span><a href="/goods/special/detail/{{$v['id']}}" title="{{$v['goods_name']}}">{{$v['goods_name']}}</a></span>
+                                                    @endforeach
+                                                </div>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </li>
