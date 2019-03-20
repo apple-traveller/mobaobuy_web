@@ -22,6 +22,7 @@ class ShopGoodsQuoteController extends Controller
         $shop_name = $request->input('shop_name',"");
         $store_name = $request->input('store_name',"");
         $goods_name = $request->input('goods_name',"");
+        $cat_id = $request->input('cat_id',0);
         $type = $request->input('type',0);
         $condition = [];
         if(!empty($store_name)){
@@ -32,6 +33,16 @@ class ShopGoodsQuoteController extends Controller
         }
         if(!empty($goods_name)){
             $condition['g.goods_full_name']="%".$goods_name."%";
+        }
+        if(!empty($cat_id)){
+            if (!empty($cat_id)) {
+                $c['opt'] = 'OR';
+                $c['g.cat_id'] = $cat_id;
+                $c['cat.parent_id'] = $cat_id;
+                $c['cat2.id'] = $cat_id;
+                $c['cat3.id'] = $cat_id;
+                $condition[] = $c;
+            }
         }
         if(!empty($type)){
             $condition['b.type'] = $type;
@@ -44,6 +55,10 @@ class ShopGoodsQuoteController extends Controller
         $condition['b.is_delete'] = 0;
         $shops = ShopService::getShopList([],['is_freeze'=>0]);
         $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage],$condition);
+
+        #获取所有一级分类
+        $catList = GoodsCategoryService::getList(0);
+
 //        $shopGoodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>$pageSize,'page'=>$currpage,'orderType'=>['add_time'=>'desc']],$condition);
         return $this->display('admin.shopgoodsquote.list',[
             'total'=>$shopGoodsQuote['total'],
@@ -54,6 +69,8 @@ class ShopGoodsQuoteController extends Controller
             'pageSize'=>$pageSize,
             'shops'=>$shops['list'],
             'goods_name'=>$goods_name,
+            'catList'=>$catList,
+            'cat_id'=>$cat_id,
             'type'=>$type
         ]);
     }

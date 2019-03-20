@@ -41,6 +41,14 @@
                                 </select>
                             </div>
                             <div class="input" style="margin-right: 20px">
+                                <select style="height:30px;float:left;border:0;line-height:30px;width:150px" name="cat_id" id="cat_id">
+                                    <option value="0">全部分类</option>
+                                    @foreach($catList as $k=>$v)
+                                        <option value="{{$v['id']}}" @if($cat_id == $v['id']) selected="selected" @endif>{{$v['cat_name']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="input" style="margin-right: 20px">
                                 <input style="height:30px;" type="text" name="goods_name" value="{{$goods_name}}" class="text nofocus goods_name" placeholder="商品名称" autocomplete="off">
                             </div>
                             <div class="input" style="margin-right: 20px">
@@ -69,12 +77,13 @@
                                     <th width="8%"><div class="tDiv">店铺名称</div></th>
                                     <th width="6%"><div class="tDiv">商品编码</div></th>
                                     <th width="10%"><div class="tDiv">商品名称</div></th>
+                                    <th width="5%"><div class="tDiv">品类</div></th>
                                     {{--<th width="5%"><div class="tDiv">库存数量</div></th>--}}
-                                    <th width="6%"><div class="tDiv">店铺售价</div></th>
-                                    <th width="6%"><div class="tDiv">交货地</div></th>
-                                    <th width="6%"><div class="tDiv">业务员</div></th>
-                                    <th width="6%"><div class="tDiv">联系方式</div></th>
-                                    <th width="8%"><div class="tDiv">发布时间</div></th>
+                                    <th width="5%"><div class="tDiv">店铺售价</div></th>
+                                    <th width="5%"><div class="tDiv">交货地</div></th>
+                                    <th width="5%"><div class="tDiv">业务员</div></th>
+                                    <th width="5%"><div class="tDiv">联系方式</div></th>
+                                    <th width="7%"><div class="tDiv">发布时间</div></th>
                                     <th width="4%"><div class="tDiv">是否置顶</div></th>
                                     <th width="4%"><div class="tDiv">状态</div></th>
                                     <th width="22%"><div class="tDiv">操作</div></th>
@@ -88,6 +97,7 @@
                                     <td><div class="tDiv">{{$vo['store_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_sn']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_name']}}</div></td>
+                                    <td><div class="tDiv">{{$vo['cat_top_name']}}</div></td>
                                     {{--<td><div class="tDiv">{{$vo['goods_number']}}</div></td>--}}
                                     <td><div class="tDiv">￥{{$vo['shop_price']}}</div></td>
                                     <td><div class="tDiv">{{$vo['delivery_place']}}</div></td>
