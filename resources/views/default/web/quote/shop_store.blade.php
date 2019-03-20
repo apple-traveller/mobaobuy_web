@@ -60,6 +60,7 @@
             margin-top: 30px;
             margin-left: 25px;
             width: 1020px;
+            line-height: 30px;
         }
         .detail span {
             float: left;
@@ -131,9 +132,8 @@
                             <div class="logo_img fl gcolor"><img width="50" height="57" src="{{getFileUrl($v['store_img'])}}"></div>
                             <div class="fl detail fs14">
                                 <div style="font-weight: 400">{{trans('home.brand_dealer')}}：{{getLangData($v,'store_name')}}</div>
-                                <div>{{trans('home.business_category')}}：{{getLangData($v,'main_cat')}}</div>
                                 <div style="width: 800px">
-                                    <div style="float: left;width:65%">{{trans('home.main_brand')}}：{{getLangData($v,'main_brand')}}</div>
+                                    <div style="float: left;width:65%">{{trans('home.business_category')}}：{{getLangData($v,'main_cat')}}</div>
                                     <div style="float: left;width:35%">{{trans('home.delivery_area')}}：{{getLangData($v,'delivery_area')}}</div>
                                 </div>
                                 <div style="width: 800px">
