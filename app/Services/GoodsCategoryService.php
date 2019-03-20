@@ -13,8 +13,8 @@ class GoodsCategoryService
         $condition = [];
         if($only_show){
             $condition['is_show'] = 1;
-            $condition['is_delete'] = 0;
         }
+        $condition['is_delete'] = 0;
         $all_list = GoodsCategoryRepo::getList(['sort_order'=>'asc'],$condition);
         return make_treeTable($all_list, 'id', 'parent_id','_child');
     }
@@ -24,11 +24,12 @@ class GoodsCategoryService
         if($only_show){
             $condition['is_show'] = 1;
         }
+        $condition['is_delete'] = 0;
         $condition['parent_id'] = $id;
         $all_list = GoodsCategoryRepo::getList('',$condition,['*','cat_name as name']);
         foreach ($all_list as $k=>$v){
             //检测是否存在下级分类
-            $res = GoodsCategoryRepo::getTotalCount(['parent_id'=>$v['id']]);
+            $res = GoodsCategoryRepo::getTotalCount(['parent_id'=>$v['id'],'is_delete'=>0]);
             if($res > 0){//有子分类
                 $all_list[$k]['isParent'] = true;
             }
