@@ -353,6 +353,7 @@ class QuoteController extends Controller
             'orderType'=>['add_time'=>'desc']
         ];
         $condition['is_delete'] = 0;
+        $condition['is_forbidden'] = 0;
         $store_list = ShopStoreService::getShopStoreList($pager,$condition);
 
         return $this->display("web.quote.shop_store", [

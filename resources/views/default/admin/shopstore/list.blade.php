@@ -28,10 +28,11 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <thead>
                                 <tr>
-                                    <th width="10%"><div class="tDiv">ID</div></th>
-                                    <th width="20%"><div class="tDiv">注册时间</div></th>
+                                    <th width="5%"><div class="tDiv">ID</div></th>
+                                    <th width="15%"><div class="tDiv">注册时间</div></th>
                                     <th width="25%"><div class="tDiv">所属商家</div></th>
                                     <th width="25%"><div class="tDiv">店铺名称</div></th>
+                                    <th width="10"><div class="tDiv">状态</div></th>
                                     <th width="20%" class="handle">操作</th>
                                 </tr>
                                 </thead>
@@ -42,9 +43,24 @@
                                             <td><div class="tDiv">{{$vo['add_time']}}</div></td>
                                             <td><div class="tDiv">{{$vo['company_name']}}</div></td>
                                             <td><div class="tDiv">{{$vo['store_name']}}</div></td>
+                                            <td>
+                                                <div class="tDiv">
+                                                    @if($vo['is_forbidden'] == 1)
+                                                        <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>已禁用</div>
+                                                    @else
+                                                        <div class='layui-btn layui-btn-sm layui-btn-radius'>已启用</div>
+                                                    @endif
+                                                </div>
+                                            </td>
                                             <td class="handle">
                                                 <div class="tDiv a3">
                                                     <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                                    @if($vo['is_forbidden'] == 1)
+                                                        <a href="javascript:void(0);" onclick="setStatus('{{$vo['id']}}',0)" title="启用" class="btn_trash"><i class="layui-icon layui-icon-ok-circle"></i>启用</a>
+                                                    @else
+                                                        <a href="javascript:void(0);" onclick="setStatus('{{$vo['id']}}',1)" title="禁用" class="btn_trash"><i class="layui-icon layui-icon-close-fill"></i>禁用</a>
+                                                    @endif
+
                                                     <a href="/admin/shop/store/edit?id={{$vo['id']}}&currentPage={{$currentPage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                                 </div>
                                             </td>
@@ -92,6 +108,32 @@
             });
 
         });
+        //启用、禁用
+        function setStatus(id,is_forbidden){
+            var _info = is_forbidden == 0 ? '启用' : '禁用';
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定要'+_info+'该店铺吗?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        'url':'/admin/shop/store/setStatus',
+                        'data':{
+                            'id':id,
+                            'is_forbidden':is_forbidden
+                        },
+                        'type':'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:1000});
+                                layer.close(index);
+                                window.location.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
+                });
+            });
+        }
         //删除
         function remove(id)
         {

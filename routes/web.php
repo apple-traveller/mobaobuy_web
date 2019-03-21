@@ -173,6 +173,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/shop/store/edit', 'ShopStoreController@edit');// 修改
         Route::post('/shop/store/save', 'ShopStoreController@save');// 保存
         Route::post('/shop/store/delete', 'ShopStoreController@delete');// 删除
+        Route::post('/shop/store/setStatus', 'ShopStoreController@setStatus');// 设置启用禁用
 
         Route::get('/shopuser/list', 'ShopUserController@getList');//店铺职员列表
         Route::get('/shopuser/addForm', 'ShopUserController@addForm');//添加职员

@@ -158,4 +158,26 @@ class ShopStoreController extends Controller
             return $this->success('删除失败！');
         }
     }
+
+    public function setStatus(Request $request)
+    {
+        $id = $request->get('id',0);
+        if(!$id){
+            return $this->error('无法获取店铺ID');
+        }
+
+        $check = ShopStoreService::getShopStoreById($id);
+        if(empty($check)){
+            return $this->error('店铺信息不存在');
+        }
+        $is_forbidden = $request->get('is_forbidden',0);
+        $tips =  $is_forbidden == 0 ? '启用' : '禁用';
+
+        $res = ShopStoreService::modify(['id'=>$id,'is_forbidden'=>$is_forbidden]);
+        if($res){
+            return $this->success($tips.'成功！');
+        }else{
+            return $this->success($tips.'失败！');
+        }
+    }
 }
