@@ -22,6 +22,7 @@ class ShopStoreController extends Controller
 //        $shop_id = session('_seller_id')['shop_id'];
 
         $condition['is_delete']= 0;
+        $condition['is_forbidden']= 0;
         $pageSize =5;
         $shopStoreList = ShopStoreService::getShopStoreList(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
         return $this->display('admin.shopstore.list',[
