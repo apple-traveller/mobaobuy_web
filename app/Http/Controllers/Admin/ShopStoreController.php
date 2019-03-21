@@ -22,7 +22,7 @@ class ShopStoreController extends Controller
 //        $shop_id = session('_seller_id')['shop_id'];
 
         $condition['is_delete']= 0;
-        $condition['is_forbidden']= 0;
+
         $pageSize =5;
         $shopStoreList = ShopStoreService::getShopStoreList(['pageSize'=>$pageSize,'page'=>$currentPage],$condition);
         return $this->display('admin.shopstore.list',[
@@ -39,6 +39,7 @@ class ShopStoreController extends Controller
         $store_name = $request->get('store_name','');
 
         $condition['is_delete']= 0;
+        $condition['is_forbidden']= 0;
         $condition['shop_id']= $shop_id;
         $condition['store_name']= '%'.$store_name.'%';
 
