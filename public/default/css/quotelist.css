@@ -11,7 +11,7 @@
 .pro_brand{border-bottom: 1px dashed #DEDEDE;overflow: hidden;margin-left: 25px;margin-top: 20px;}
 .filter_item{line-height: 40px; }
 .pro_brand dt{width: 50px; text-align: right;}
-.pro_brand_list{float: left;  margin-bottom: 10px;width: 845px;overflow: hidden;}
+.pro_brand_list{float: left;  margin-bottom: 10px;width: 93%;overflow: hidden;}
 .pro_brand_list  a{float: left;margin-right:30px;}
 .pro_brand_btn{width: 80px;height: 32px;line-height: 32px;text-align: center;border: 1px solid #DEDEDE;cursor: pointer;}
 .region_btn:hover{border: 1px solid #75b335;color: #75b335;}

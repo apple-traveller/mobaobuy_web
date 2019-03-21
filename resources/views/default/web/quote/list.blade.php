@@ -85,7 +85,7 @@
 @endsection
 
 @section('content')
-	<div class="clearfix" style="background-color: #FFF;">
+	<div class="clearfix" style="background-color: rgb(248,248,248);">
 	<div class="w1200 pr">
 		<div class="crumbs mt5 mb5">
             <span class="fl">{{trans('home.curr')}}：</span>

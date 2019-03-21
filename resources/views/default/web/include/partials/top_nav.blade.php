@@ -1,12 +1,18 @@
-
+<style>
+    .ass_menu li a{color:#fff; display: block;}.ass_menu li:hover a{color:#333;}
+</style>
         <div class="clearfix nav-div">
             <div class="nav-cate">
                 <div class="cate_title"><span class="ml30">{{trans('home.header_material_cate')}}</span><i class="iconfont icon-menu mr20 fr fs22"></i></div>
                 <ul class="ass_menu">
                     @foreach(getCategoryTree() as $k=>$level1_item)
                         @if($k<=5)
-                            <li><span class="ass_title" title="{{getLangData($level1_item,'cat_name')}}">{{getLangData($level1_item,'cat_name')}}</span>
-                                <i class="iconfont icon-right fr mr20"></i>
+                            <li>
+                                <a href="/goodsList?cate_id={{$level1_item['id']}}&cat_name={{$level1_item['cat_name']}}" >
+                                    <span class="ass_title" title="{{getLangData($level1_item,'cat_name')}}">{{getLangData($level1_item,'cat_name')}}</span>
+                                    <i class="iconfont icon-right fr mr20"></i>
+                                </a>
+
                                 <div class="ass_fn whitebg">
                                     <ul class="ass_fn_list">
                                         @if(isset($level1_item['_child']))

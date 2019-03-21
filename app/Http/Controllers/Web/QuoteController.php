@@ -67,10 +67,11 @@ class QuoteController extends Controller
         if (!empty($brand_id)) {
             $condition['g.brand_id'] = $brand_id;
         }
-        if (!empty($cate_id)) {
+        if(!empty($cate_id)){
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
+            $c['cat2.parent_id'] = $cate_id;
             $condition[] = $c;
         }
         if (!empty($place_id)) {
@@ -245,10 +246,11 @@ class QuoteController extends Controller
                 $condition['b.is_self_run'] = 1;
             }
         }
-        if (!empty($cate_id)) {
+        if(!empty($cate_id)){
             $c['opt'] = 'OR';
             $c['g.cat_id'] = $cate_id;
             $c['cat.parent_id'] = $cate_id;
+            $c['cat2.parent_id'] = $cate_id;
             $condition[] = $c;
         }
         if (!empty($place_id)) {
