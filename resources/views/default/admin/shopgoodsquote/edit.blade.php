@@ -142,8 +142,8 @@
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
-                                        <option @if($goodsQuote['delivery_method']=="自提") selected @endif value="自提">自提(Self delivery)</option>
-                                        <option @if($goodsQuote['delivery_method']=="配送") selected @endif value="配送">配送(Delivery)</option>
+                                        <option @if($goodsQuote['delivery_method'] == "自提") selected="selected" @endif value="自提">自提(Self delivery)</option>
+                                        <option @if($goodsQuote['delivery_method'] != "自提") selected="selected" @endif value="配送">配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>

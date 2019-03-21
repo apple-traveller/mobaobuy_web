@@ -133,7 +133,7 @@
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="delivery_method" id="delivery_method" >
                                         <option value="自提">自提(Self delivery)</option>
-                                        <option value="配送">配送(Delivery)</option>
+                                        <option value="配送" selected="selected">配送(Delivery)</option>
                                     </select>
                                     <div class="form_prompt"></div>
                                 </div>
