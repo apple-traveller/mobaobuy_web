@@ -19,21 +19,21 @@
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;分类名称：</div>
                                     <div class="label_value">
-                                        <input type="text" name="cat_name" class="text" id="cat_name" maxlength="20" value="{{$cate['cat_name']}}" size="27">
+                                        <input type="text" name="cat_name" class="text" id="cat_name" maxlength="100" value="{{$cate['cat_name']}}">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>&nbsp;分类英文名称：</div>
                                     <div class="label_value">
-                                        <input type="text" name="cat_name_en" class="text" id="cat_name_en" maxlength="20" value="{{$cate['cat_name_en']}}" size="27">
+                                        <input type="text" name="cat_name_en" class="text" id="cat_name_en" maxlength="100" value="{{$cate['cat_name_en']}}">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
                                 <div class="item">
                                     <div class="label"><span class="require-field">*</span>分类别名：</div>
                                     <div class="label_value">
-                                        <input type="text" name="cat_alias_name" class="text" id="cat_alias_name" maxlength="20" value="{{$cate['cat_alias_name']}}" size="27">
+                                        <input type="text" name="cat_alias_name" class="text" id="cat_alias_name" maxlength="100" value="{{$cate['cat_alias_name']}}">
                                         <div class="form_prompt"></div>
                                     </div>
                                 </div>
