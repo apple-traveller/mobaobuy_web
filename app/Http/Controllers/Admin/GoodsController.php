@@ -110,7 +110,10 @@ class GoodsController extends Controller
             $errorMsg[] = '市场价不能为空';
         }
         if(empty($data['goods_content'])){
-            $errorMsg[] = '含量不能为空';
+            $data['goods_content'] = '';
+        }
+        if(empty($data['goods_content_en'])){
+            $data['goods_content_en'] = '';
         }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
