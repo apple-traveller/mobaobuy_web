@@ -113,6 +113,9 @@ class GoodsCategoryController extends Controller
         if($data['parent_id']==""){
             $errorMsg[] = '上级分类不能为空';
         }
+        if($data['cat_img']==""){
+            unset($data['cat_img']);
+        }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
