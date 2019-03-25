@@ -115,6 +115,12 @@ class GoodsController extends Controller
         if(empty($data['goods_content_en'])){
             $data['goods_content_en'] = '';
         }
+        if(empty($data['unit_id'])){
+            $errorMsg[] = '单位不能为空';
+        }
+        if(empty($data['unit_name'])){
+            $errorMsg[] = '单位不能为空';
+        }
         if(!empty($errorMsg)){
             return $this->error(implode('<br/>',$errorMsg));
         }
