@@ -139,6 +139,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::get('/goods/delete', 'GoodsController@delete');//商品列表
         Route::post('/goods/getAttrs', 'GoodsController@getAttrs');//获取属性名
         Route::post('/goods/getAttrValues', 'GoodsController@getAttrValues');//获取属性值
+        Route::post('/goods/setStatus', 'ShopGoodsController@setStatus');// 设置商品上下架
 
         //重新发布报价参数配置 根据商品分类
         Route::get('/goodscategoryquoteconfig/list', 'GoodsCategoryQuoteConfigController@getList');

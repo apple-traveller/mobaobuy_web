@@ -89,11 +89,11 @@ class GoodsService
     public static function checkGoodsExistOtherInfo($id)
     {
         //检测报价列表
-        $quote_res = ShopGoodsQuoteRepo::getTotalCount(['goods_id'=>$id]);
+        $quote_res = ShopGoodsQuoteRepo::getTotalCount(['goods_id'=>$id,'is_delete'=>0]);
         //检测限时抢购活动
-        $promote_res = ActivityPromoteRepo::getTotalCount(['goods_id'=>$id]);
+        $promote_res = ActivityPromoteRepo::getTotalCount(['goods_id'=>$id,'is_delete'=>0]);
         //检测集采火拼活动
-        $wholesale_res = ActivityWholesaleRepo::getTotalCount(['goods_id'=>$id]);
+        $wholesale_res = ActivityWholesaleRepo::getTotalCount(['goods_id'=>$id,'is_delete'=>0]);
         if($quote_res > 0 || $promote_res > 0 || $wholesale_res > 0){
             return false;
         }
@@ -409,7 +409,7 @@ class GoodsService
         if(empty($goodsInfo)){
             self::throwBizError(trans('error.goods_not_exist'));
         }
-        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id]);
+        $shopGoodsInfo = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>$pageSize,'page'=>$page],['goods_id'=>$id,'is_delete'=>0]);
         if(!empty($shopGoodsInfo)){
             foreach ($shopGoodsInfo['list'] as $k=>$v){
                 $shopInfo = ShopService::getShopById($v['shop_id']);

@@ -210,7 +210,9 @@ class PromoteController extends Controller
     public function getGoodsCat(Request $request)
     {
         $cat_name = $request->input('cat_name');
-        $condition = [];
+        $condition = [
+            'is_delete'=>0
+        ];
         if($cat_name!=""){
             $condition['cat_name'] = "%".$cat_name."%";
         }
@@ -224,6 +226,7 @@ class PromoteController extends Controller
         $cat_id = trim($request->input('cat_id'));
         $goods_name = $request->input('goods_name');
         $condition['is_delete'] = 0;
+        $condition['is_upper_shelf'] = 0;
         if($cat_id!="" && $cat_id!=0){
             $cates = GoodsCategoryService::getCates(['is_delete'=>0]);
             $cate_ids = GoodsCategoryService::getChilds($cates,$cat_id);

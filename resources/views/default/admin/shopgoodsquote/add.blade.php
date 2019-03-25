@@ -154,6 +154,14 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field"></span>&nbsp;地域：</div>
+                                <div class="label_value">
+                                    <input type="text" name="effective_area" class="text" value="" maxlength="40" autocomplete="off" id="effective_area">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">多个地区用分号（；）隔开</div>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">

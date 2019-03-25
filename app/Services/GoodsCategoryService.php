@@ -174,7 +174,7 @@ class GoodsCategoryService
     //删除
     public static function delete($id)
     {
-        $good = GoodsRepo::getInfoByFields(['cat_id'=>$id]);
+        $good = GoodsRepo::getInfoByFields(['cat_id'=>$id,'is_delete'=>0]);
         if(!empty($good)){
             self::throwBizError(trans('error.cat_cannot_delete'));
             return false;

@@ -147,7 +147,27 @@ class ShopGoodsController extends Controller
         }
     }
 
+    public function setStatus(Request $request)
+    {
+        $id = $request->get('id',0);
+        if(!$id){
+            return $this->error('无法获取商品ID');
+        }
 
+        $check = GoodsService::getGoodInfo($id);
+        if(empty($check)){
+            return $this->error('商品信息不存在');
+        }
+        $is_upper_shelf = $request->get('is_upper_shelf',0);
+        $tips =  $is_upper_shelf == 0 ? '上架' : '下架';
+
+        $res = GoodsService::modify(['id'=>$id,'is_upper_shelf'=>$is_upper_shelf]);
+        if($res){
+            return $this->success($tips.'成功！');
+        }else{
+            return $this->success($tips.'失败！');
+        }
+    }
 
 
 }

@@ -36,13 +36,14 @@
                                 <tr>
                                     <th width="5%"><div class="tDiv">编号</div></th>
                                     <th width="5%"><div class="tDiv">商品编码</div></th>
-                                    <th width="15%"><div class="tDiv">商品全称</div></th>
-                                    <th width="15%"><div class="tDiv">商品英文全称</div></th>
-                                    <th width="10%"><div class="tDiv">所属品牌</div></th>
+                                    <th width="14%"><div class="tDiv">商品全称</div></th>
+                                    <th width="14%"><div class="tDiv">商品英文全称</div></th>
+                                    <th width="8%"><div class="tDiv">所属品牌</div></th>
                                     <th width="1%"><div class="tDiv">单位</div></th>
-                                    <th width="8%"><div class="tDiv">商品型号</div></th>
+                                    <th width="6%"><div class="tDiv">商品型号</div></th>
                                     <th width="8%"><div class="tDiv">包装规格</div></th>
-                                    <th width="20%" class="handle">操作</th>
+                                    <th width="4%"><div class="tDiv">状态</div></th>
+                                    <th width="22%" class="handle">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -56,9 +57,25 @@
                                     <td><div class="tDiv">{{$vo['unit_name']}}</div></td>
                                     <td><div class="tDiv">{{$vo['goods_model']}}</div></td>
                                     <td><div class="tDiv">{{$vo['packing_spec']}}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            @if($vo['is_upper_shelf'] == 1)
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius layui-btn-primary'>已下架</div>
+                                            @else
+                                                <div class='layui-btn layui-btn-sm layui-btn-radius'>销售中</div>
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td class="handle">
                                         <div class="tDiv a3">
                                             <a href="/admin/goods/detail?id={{$vo['id']}}&currpage={{$currpage}}" title="查看" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+
+                                            @if($vo['is_upper_shelf'] == 1)
+                                                <a href="javascript:void(0);" onclick="setStatus('{{$vo['id']}}',0)" title="上架" class="btn_trash"><i class="layui-icon layui-icon-ok-circle"></i>上架</a>
+                                            @else
+                                                <a href="javascript:void(0);" onclick="setStatus('{{$vo['id']}}',1)" title="下架" class="btn_trash"><i class="layui-icon layui-icon-close-fill"></i>下架</a>
+                                            @endif
+
                                             <a href="/admin/goods/editForm?id={{$vo['id']}}&currpage={{$currpage}}" title="编辑" class="btn_edit"><i class="icon icon-edit"></i>编辑</a>
                                             <a href="javascript:void(0);" onclick="remove({{$vo['id']}})" title="移除" class="btn_trash"><i class="icon icon-trash"></i>删除</a><!---->
                                         </div>
@@ -128,7 +145,32 @@
                 });
             });
         }
-
+        //启用、禁用
+        function setStatus(id,is_upper_shelf){
+            var _info = is_upper_shelf == 0 ? '上架' : '下架';
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定要'+_info+'该产品吗?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        'url':'/admin/goods/setStatus',
+                        'data':{
+                            'id':id,
+                            'is_upper_shelf':is_upper_shelf
+                        },
+                        'type':'post',
+                        success: function (res) {
+                            if (res.code == 1){
+                                layer.msg(res.msg, {icon: 1,time:1000});
+                                layer.close(index);
+                                window.location.reload();
+                            } else {
+                                layer.msg(res.msg, {icon: 5,time:2000});
+                            }
+                        }
+                    });
+                });
+            });
+        }
 
     </script>
 @stop

@@ -152,7 +152,10 @@ class GoodsController extends Controller
 
             $goods_name= $request->input('goods_name', '');
 
-            $condition = [];
+            $condition = [
+                'is_delete'=>0,
+                'is_upper_shelf'=>0
+            ];
             if(!empty($goods_name)){
                 $condition['goods_name'] = '%' . $goods_name . '%';
             }
