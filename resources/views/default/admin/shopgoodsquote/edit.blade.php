@@ -185,6 +185,47 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label"><span class="require-field"></span>&nbsp;地域：</div>
+                                <div class="label_value">
+                                    <input type="text" name="effective_area" class="text" value="{{$goodsQuote['effective_area']}}" maxlength="40" autocomplete="off" id="effective_area">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">多个地区用英文分号（;）隔开</div>
+                                </div>
+                            </div>
+                            <div class="item bor_top_das pt20">
+                                <div class="label">价格：</div>
+                                <div id="price-div" class="label_value">
+                                    <table class="table_item">
+                                        <tbody>
+                                        @if(!empty($goodsQuote['prices']))
+                                            @foreach($goodsQuote['prices'] as $k=>$v)
+                                            <tr>
+                                                <td>
+                                                    <label class="fl lh">最小数量：</label><input name="prices[{{$k}}][min_num]" type="text" class="text text_2 mr10 w100 valid" value="{{$v['min_num']}}" autocomplete="off" aria-invalid="false">
+                                                    <label class="fl lh">价格：</label><input name="prices[{{$k}}][price]" type="text" class="text text_2 mr10 w100 valid" value="{{$v['price']}}" autocomplete="off" aria-invalid="false">
+                                                    <input type="hidden" name="prices[{{$k}}][id]" value="{{$v['id']}}"/>
+                                                    @if($k == 0)
+                                                        <input type="button" class="button valid" value="添加" onclick="addPrice()" aria-invalid="false">
+                                                    @else
+                                                        <input type="button" class="button red_button" value="删除" onclick="dropPrice(this)">
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td>
+                                                    <label class="fl lh">最小数量：</label><input name="prices[0][min_num]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
+                                                    <label class="fl lh">价格：</label><input name="prices[0][price]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
+                                                    <input type="button" class="button valid" value="添加" onclick="addPrice()" aria-invalid="false">
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">&nbsp;</div>
                                 <div class="label_value info_btn">
                                     <input type="submit" value="确定" class="button" id="submitBtn">
@@ -532,6 +573,20 @@
                     }
                 }
             })
+        }
+        //
+        function addPrice(){
+            var _count = $(".table_item tbody tr").length;//这个就是子元素的个数
+            var _html = '';
+            _html += '<tr><td>' +
+                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<input type="button" class="button red_button" value="删除" onclick="dropPrice(this)"></td></tr>';
+            $('.table_item tbody').append(_html);
+        }
+        //
+        function dropPrice(obj){
+            $(obj).parent().parent().remove();
         }
     </script>
 

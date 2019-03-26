@@ -252,7 +252,7 @@
 @section('content')
     <div class="clearfix" style="background-color:white;">
 	<div class="w1200 pr ovh">
-		<div class="crumbs mt5">{{trans('home.curr')}}：<a href="/goodsList">{{trans('home.product_list')}}</a> &gt;<span class="gray">{{getLangData($good_info,'goods_name')}}</span></div>
+		<div class="crumbs mt5">{{trans('home.curr')}}：<a href="/goodsList">{{trans('home.product_list')}}</a> &gt;<span class="gray">{{getLangData($good_info,'goods_full_name')}}</span></div>
 		<div class="pro_chart mt5" style="position:relative">
             <div style="position:absolute;left:110px;top:200px;"><img src="/images/mobao_logo1.png" style="opacity:0.8;" width="250"/></div>
 			<h2 class="pro_chart_title">
@@ -378,7 +378,7 @@
                     <span style="width:18%;" class="ovhwp" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
                     <span style="width:20%;" class="ovhwp" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a style="color:#00a1e9;" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
 {{--                    <span style="width:12%">@if($vo['goods_number'] < 0) 0{{$good_info['unit_name']}} @else {{$vo['goods_number']}}{{$good_info['unit_name']}} @endif</span>--}}
-                    <span style="width:15%" class="ovhwp" title="￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}">￥{{$vo['shop_price']}}/{{$good_info['unit_name']}}</span>
+                    <span style="width:15%" class="ovhwp" title="￥{{$vo['min_price']}}/{{$good_info['unit_name']}}">￥{{$vo['min_price']}}/{{$good_info['unit_name']}}</span>
                     <span style="width:16%" class="ovhwp" title="{{$vo['delivery_place']}}">{{$vo['delivery_place']}}</span>
                     <span style="width:13%" class="ovhwp" title="{{$vo['salesman']}}/{{$vo['contact_info']}}">{{$vo['salesman']}}/{{$vo['contact_info']}}</span>
                 </li>

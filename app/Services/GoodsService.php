@@ -244,7 +244,8 @@ class GoodsService
                 'goods_id'=>$shopGoodsQuoteInfo['goods_id'],
                 'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],
                 'goods_name'=>$shopGoodsQuoteInfo['goods_name'],
-                'goods_price'=>$shopGoodsQuoteInfo['shop_price'],
+                'goods_price'=> ShopGoodsQuotePriceService::getPriceByNum($shopGoodsQuoteId,$goodsNumber),
+//                'goods_price'=>$shopGoodsQuoteInfo['shop_price'],
                 'goods_number'=>$goodsNumber,
                 'add_time'=>$addTime
             ];
@@ -342,7 +343,7 @@ class GoodsService
             }
             $account =  number_format($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2,".","");
             CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
-            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];;
+            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];
         }catch (\Exception $e){
             self::throwBizError($e->getMessage());
         }
@@ -451,6 +452,7 @@ class GoodsService
         }else{
             self::throwBizError('数量有误，请重新输入');
         }
+        
         $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
         if($cartResult){
             $cartResult['account'] = $cartResult['goods_number'] * $cartResult['goods_price'];

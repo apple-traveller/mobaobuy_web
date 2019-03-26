@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use App\Repositories\BrandRepo;
+use App\Repositories\ShopGoodsQuotePriceRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\ShopGoodsRepo;
 use App\Repositories\GoodsRepo;
@@ -31,6 +32,7 @@ class ShopGoodsQuoteService
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
             $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
+            $result['list'][$k]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
         }
         //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
         $con['b.is_self_run'] = 1;
@@ -46,7 +48,14 @@ class ShopGoodsQuoteService
         //1、获取分类
         $cates = ShopGoodsQuoteRepo::getQuoteCategory($con);
         if (!empty($cates)) {
-            $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates),'is_delete'=>0]);
+            $last_cat = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $cates),'is_delete'=>0]);
+            #取上一级分类并去重
+            $new_cat = [];
+            foreach($last_cat as $k=>$v){
+                $new_cat[] = $v['parent_id'];
+            }
+            $new_cat = array_unique($new_cat);
+            $filter['cates'] = GoodsCategoryService::getCatesByCondition(['id' => implode('|', $new_cat),'is_delete'=>0]);
         } else {
             $filter['cates'] = [];
         }
@@ -84,6 +93,7 @@ class ShopGoodsQuoteService
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
             $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
+            $result['list'][$k]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
         }
         return $result;
     }
@@ -149,6 +159,7 @@ class ShopGoodsQuoteService
                     $top_cat = getTopCatByCatId($goodsInfo['cat_id']);
                     $quotes['list'][$va]['cat_top_name'] = $top_cat['top_id'] == $goodsInfo['cat_id'] ? $cateInfo['cat_name'] : $top_cat['top_name'];
                     $quotes['list'][$va]['cat_top_name_en'] = $top_cat['top_id'] == $goodsInfo['cat_id'] ? $cateInfo['cat_name_en'] : $top_cat['top_name_en'];
+                    $quotes['list'][$va]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($value['id']);
                 }
                 $shopInfo['list'][$k]['quotes'] = $quotes['list'];
         }
@@ -245,6 +256,7 @@ class ShopGoodsQuoteService
         $info['cat_id'] = $goods_detail['cat_id'];//商品类型id
         $info['cat_name'] = $cat_detail['cat_name'];//商品类型
         $info['cat_name_en'] = $cat_detail['cat_name_en'];//商品类型英文
+        $info['prices'] = ShopGoodsQuotePriceRepo::getList(['min_num'=>'asc'],['quote_id'=>$id]);
         return $info;
     }
 

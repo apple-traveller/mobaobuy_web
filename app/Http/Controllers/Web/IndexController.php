@@ -31,7 +31,7 @@ class IndexController extends Controller
      */
     protected $redirectTo = '/';
 
-    public function  index(Request $request){
+    public function index(Request $request){
         $now = Carbon::now();
         //获取顶部广告
         $top_ad = AdService::getAdvertList(
@@ -85,8 +85,26 @@ class IndexController extends Controller
         //把合并的数据按照
         array_multisort(array_column($merge_trans_list,'add_time'),SORT_DESC,$merge_trans_list);
 
-        //自营报价
-        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1','b.is_delete'=>0]);
+        //自营报价 取分类排序前三
+        $cat_info = GoodsCategoryService::getCatesThree(['is_delete'=>0,'parent_id'=>0]);
+        if(!empty($cat_info)){
+            foreach ($cat_info as $k=>$v){
+                $condition = [];
+                $c = [];
+                $c['opt'] = 'OR';
+                $c['g.cat_id'] = $v['id'];
+                $c['cat.parent_id'] = $v['id'];
+                $c['cat2.parent_id'] = $v['id'];
+                $condition[] = $c;
+                $condition['b.is_self_run'] = 1;
+                $condition['b.type'] = 1;
+                $condition['b.is_delete'] = 0;
+                $cat_info[$k]['quote'] = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],$condition);
+            }
+        }
+
+//        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1','b.is_delete'=>0]);
+
         //品牌直营
         $goodsList_brand = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'2','b.is_delete'=>0]);
         //获取供应商
@@ -98,7 +116,7 @@ class IndexController extends Controller
         $brand_list = BrandService::getBrandList(['pageSize'=>12, 'page'=>1,'orderType'=>['sort_order'=>'desc']], ['is_recommend'=> 1,'is_delete'=>0])['list'];
 
         $friend_link = FriendLinkService::getAllLink();
-        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'goodsList'=>$goodsList,'goodsList_brand'=>$goodsList_brand, 'promote_list'=>$promote_list['list'],
+        return $this->display('web.index',['banner_ad' => $banner_ad, 'order_status'=>$status, 'cat_info'=>$cat_info,'goodsList_brand'=>$goodsList_brand, 'promote_list'=>$promote_list['list'],
             'trans_list'=>$merge_trans_list, 'shops'=>$shops,'article_list'=>$article_list, 'brand_list'=>$brand_list,'top_ad'=>$top_ad,'friend_link'=>$friend_link]);
     }
 

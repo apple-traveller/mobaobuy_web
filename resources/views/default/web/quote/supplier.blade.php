@@ -11,14 +11,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
 	<style>
-        .trade-close-btn {
-            border: 1px solid #efefef;
-            background: #efefef;
-            color: #656565;
-            border-radius: 3px;
-            padding: 4px 10px;
-            cursor: default;
-        }
+        .trade-close-btn {border: 1px solid #efefef;background: #efefef;color: #656565;border-radius: 3px;padding: 4px 10px;cursor: default;}
 		.nav-div .nav-cate .ass_menu {display: none;}
         .sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
@@ -26,23 +19,13 @@
         .add_time .sort_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
         .add_time .sort_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
-        .Self-product-list li span{
-            display: block;
-            height:55px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .Self-product-list li:first-child span{
-            height:40px;
-        }
-
+        .Self-product-list li span{display: block;height:55px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+        .Self-product-list li:first-child span{height:40px;}
         .supply_quote_list li{height: 89px;overflow: initial;}
         .bggreen{background-color: #75b335;color:#fff;}
         .company_title_link{  width: 1150px;margin: 0 auto;border-bottom: 1px solid #DDDDDD; overflow: hidden;}
         .company_title{float: left;    margin:15px auto;height:25px;line-height:25px;font-size: 22px;padding-left: 10px;border-left: 5px solid #75b335;}
         .company_link{float: right; margin:15px auto;height:25px;line-height:25px;color: #999;}
-
         .contact_business{float: left;background: url(img/phy_qq.png)no-repeat 0px 5px;padding-left: 20px;font-size: 14px;}
         .company_detail{width: 1150px;margin: 20px auto;border: 1px solid #75b335;background-color: #f7fcf2; }
         .company_detail li{overflow: hidden; margin-left: 20px;margin-top: 15px;}
@@ -292,7 +275,7 @@
                                 <span style="width:9%" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
                                 <span style="width:12%" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
-                                <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
+                                <span style="width:8%;color:red">{{$vo['min_price']}}/{{$vo['unit_name']}}</span>
                                 <span style="width:8%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{getLangData($vo,'delivery_method')}}</span>

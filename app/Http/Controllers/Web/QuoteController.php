@@ -317,10 +317,15 @@ class QuoteController extends Controller
 
         //商家推荐
         $condi = [];
-        $condi['b.shop_id'] = $shop_id;
         $condi['b.consign_status'] = 1;
         $condi['b.is_delete'] = 0;
         $condi['b.id'] = '!'.$id;
+
+        $c['opt'] = 'OR';
+        $c['g.cat_id'] = $good_info['cat_id'];
+        $c['cat.parent_id'] = $good_info['cat_id'];
+        $c['cat2.parent_id'] = $good_info['cat_id'];
+        $condi[] = $c;
 
         $quoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage], $condi);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\OrderInfoService;
+use App\Services\ShopGoodsQuotePriceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ShopGoodsService;
@@ -174,12 +175,17 @@ class ShopGoodsQuoteController extends Controller
             $data['delivery_method_en'] = 'Delivery';
         }
         try{
+            //todo 处理报价的阶梯价格
+            $prices = $data['prices'];
+            unset($data['prices']);
+
             if(key_exists('id',$data)){
                 $goodsQuote = ShopGoodsQuoteService::getShopGoodsQuoteById($data['id']);
                 if(empty($goodsQuote)){
                     return $this->error('报价信息不存在');
                 }
                 $flag = ShopGoodsQuoteService::modify($data);
+                ShopGoodsQuotePriceService::operation($prices,$data['id']);
                 if(!empty($flag)){
                     return $this->success('修改成功',url('/admin/shopgoodsquote/list')."?currpage=".$currpage);
                 }
@@ -190,6 +196,7 @@ class ShopGoodsQuoteController extends Controller
                 $data['outer_id'] = 0;
                 $data['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
                 $flag = ShopGoodsQuoteService::create($data);
+                ShopGoodsQuotePriceService::operation($prices,$flag['id']);
                 if(!empty($flag)){
                     return $this->success('添加成功',url('/admin/shopgoodsquote/list'));
                 }

@@ -11,14 +11,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
 	<style>
-        .trade-close-btn {
-            border: 1px solid #efefef;
-            background: #efefef;
-            color: #656565;
-            border-radius: 3px;
-            padding: 4px 10px;
-            cursor: default;
-        }
+        .trade-close-btn {border: 1px solid #efefef;background: #efefef;color: #656565;border-radius: 3px;padding: 4px 10px;cursor: default;}
 		.nav-div .nav-cate .ass_menu {display: none;}
         .sort_down{background: url(/images/common_icon.png)no-repeat 64px 17px;}
         .sort_up{background: url(/images/common_icon.png)no-repeat 64px -10px}
@@ -26,19 +19,11 @@
         .add_time .sort_down_up{background: url(/images/down_up.png)no-repeat 92px 13px;}
         .add_time .sort_down{background: url(/images/common_icon.png)no-repeat 92px 17px;}
         .add_time .sort_up{background: url(/images/common_icon.png)no-repeat 92px -10px;}
-        .Self-product-list li span{
-            display: block;
-            height:55px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .Self-product-list li:first-child span{
-            height:40px;
-        }
-
+        .Self-product-list li span{display: block;height:55px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+        .Self-product-list li:first-child span{height:40px;}
         .supply_quote_list li{height: 89px;overflow: initial;}
         .bggreen{background-color: #75b335;color:#fff;}
+        .heightold{height:80px}
 	</style>
 @endsection
 @section('js')
@@ -57,9 +42,11 @@
                 if (mPro=='收起') {
                     $(this).text('更多');
                     $(this).prev('.pro_brand_list').removeClass('heightcurr');
+                    $(this).prev('.pro_brand_list').addClass('heightold');
                 } else{
                     $(this).text('收起');
                     $(this).prev('.pro_brand_list').addClass('heightcurr');
+                    $(this).prev('.pro_brand_list').removeClass('heightold');
                 }
             })
             //更多选项
@@ -130,12 +117,12 @@
                 <div class="pro_brand">
                     <dl class="fl filter_item">
                         <dt class="fl">{{trans('home.brand')}}:</dt>
-                        <dd class="pro_brand_list ml30">
+                        <dd class="pro_brand_list ml30 heightold">
                             @foreach($search_data['filter']['brands'] as $vo)
                                 <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{getLangData($vo,'brand_name')}}</a>
                             @endforeach
                         </dd>
-                        {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+                        <div class="fl pro_brand_btn ml20 pro_more">更多</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -144,12 +131,12 @@
                 <div class="pro_brand">
                     <dl class="fl filter_item">
                         <dt class="fl">{{trans('home.cate')}}:</dt>
-                        <dd class="pro_brand_list ml30">
+                        <dd class="pro_brand_list ml30 heightold">
                             @foreach($search_data['filter']['cates'] as $vo)
                                 <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{getLangData($vo,'cat_name')}}</a>
                             @endforeach
                         </dd>
-                        {{--<div class="fl pro_brand_btn ml20 pro_more">更多</div>--}}
+                        <div class="fl pro_brand_btn ml20 pro_more">更多</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -236,7 +223,7 @@
                                 <span style="width:9%" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
                                 <span style="width:12%" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
-                                <span style="width:8%;color:red">{{$vo['shop_price']}}/{{$vo['unit_name']}}</span>
+                                <span style="width:8%;color:red">{{$vo['min_price']}}/{{$vo['unit_name']}}</span>
                                 <span style="width:8%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{getLangData($vo,'delivery_method')}}</span>
@@ -506,7 +493,7 @@
                             '<span  style="width:9%;">'+jqGetLangData(locale,list[i],'brand_name')+'</span>' +
                             '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+jqGetLangData(locale,list[i],'goods_content')+' '+jqGetLangData(locale,list[i],'simple_goods_name')+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
-                            '<span style="color:red;width:8%;">'+list[i].shop_price+'/'+list[i].unit_name+'</span>' +
+                            '<span style="color:red;width:8%;">'+list[i].min_price+'/'+list[i].unit_name+'</span>' +
                             '<span style="width:8%;">'+jqGetLangGoodsSource(locale,list[i].goods_source)+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_method')+'</span>' +

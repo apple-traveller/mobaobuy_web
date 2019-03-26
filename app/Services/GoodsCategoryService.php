@@ -119,6 +119,13 @@ class GoodsCategoryService
         return $res['list'];
     }
 
+    //
+    public static function getCatesThree($condition=[])
+    {
+        $res = GoodsCategoryRepo::getListBySearch(['pageSize'=>3, 'page'=>1,'orderType'=>['sort_order'=>'asc']],$condition);
+        return $res['list'];
+    }
+
     //获取所有分类
     public static function getCatesByCondition($condition)
     {

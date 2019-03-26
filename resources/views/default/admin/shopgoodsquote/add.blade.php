@@ -154,14 +154,6 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label"><span class="require-field"></span>&nbsp;地域：</div>
-                                <div class="label_value">
-                                    <input type="text" name="effective_area" class="text" value="" maxlength="40" autocomplete="off" id="effective_area">
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">多个地区用分号（；）隔开</div>
-                                </div>
-                            </div>
-                            <div class="item">
                                 <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
                                 <div class="label_value">
                                     <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
@@ -179,6 +171,30 @@
                                         <option value="3">少量</option>
                                     </select>
                                     <div style="margin-left: 10px;" class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field"></span>&nbsp;地域：</div>
+                                <div class="label_value">
+                                    <input type="text" name="effective_area" class="text" value="" maxlength="40" autocomplete="off" id="effective_area">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">多个地区用英文分号（;）隔开</div>
+                                </div>
+                            </div>
+                            <div class="item bor_top_das pt20">
+                                <div class="label">价格：</div>
+                                <div id="price-div" class="label_value">
+                                    <table class="table_item">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label class="fl lh">最小数量：</label><input name="prices[0][min_num]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
+                                                    <label class="fl lh">价格：</label><input name="prices[0][price]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
+                                                    <input type="button" class="button valid" value="添加" onclick="addPrice(this, '0')" aria-invalid="false">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="item">
@@ -511,6 +527,21 @@
                     }
                 }
             })
+        }
+
+        //
+        function addPrice(){
+            var _count = $(".table_item tbody tr").length;//这个就是子元素的个数
+            var _html = '';
+            _html += '<tr><td>' +
+                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<input type="button" class="button red_button" value="删除" onclick="dropPrice(this)"></td></tr>';
+            $('.table_item tbody').append(_html);
+        }
+        //
+        function dropPrice(obj){
+            $(obj).parent().parent().remove();
         }
     </script>
 

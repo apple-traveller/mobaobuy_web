@@ -18,59 +18,15 @@
         .ys_banner_icon span {float: left; margin: 0 5px;border-radius: 25px;background: #fff;cursor: pointer;width: 14px;height: 14px;text-indent: -9999px;}
         .ys_banner_icon span.on {border-radius: 15px;background: #75b335}
 
-        .in_box {
-            margin: 0 auto;
-            overflow: hidden;
-            padding-top: 1px;
-            width: 1200px;
-        }
-        .box4 {
-            margin-top: -1px;
-            float: left;
-            width: 1198px;
-
-        }
-        .box4 .s {
-            float: left;
-            width: 81px;
-            height: 39px;
-            font-size: 14px;
-            line-height: 39px;
-            text-align: right;
-        }
-        .box4 .list {
-            overflow: hidden;
-            float: left;
-            width: 1082px;
-            height: 39px;
-        }
-        .box4 .list.all{
-            height: auto;
-        }
-        .box4 .list .list_div {
-            padding: 0;
-            float: left;
-            width: 1082px;
-        }
-        .box4 .list a {
-            float: left;
-            margin-right: 15px;
-            height: 39px;
-            font-size: 14px;
-            line-height: 39px;
-            color: #666;
-            white-space: nowrap;
-        }
-        .box4 .close, .box4 .open {
-            float: left;
-            margin: 7px 9px 0 0;
-            width: 26px;
-            height: 26px;
-            background: url(images/footer_close.png) no-repeat 0 0px;
-        }
-        .box4 .open{
-            background-position: 0 -51px;
-        }
+        .in_box {margin: 0 auto;overflow: hidden;padding-top: 1px;width: 1200px;}
+        .box4 {margin-top: -1px;float: left;width: 1198px;}
+        .box4 .s {float: left;width: 81px;height: 39px;font-size: 14px;line-height: 39px;text-align: right;}
+        .box4 .list {overflow: hidden;float: left;width: 1082px;height: 39px;}
+        .box4 .list.all{height: auto;}
+        .box4 .list .list_div {padding: 0;float: left;width: 1082px;}
+        .box4 .list a {float: left;margin-right: 15px;height: 39px;font-size: 14px;line-height: 39px;color: #666;white-space: nowrap;}
+        .box4 .close, .box4 .open {float: left;margin: 7px 9px 0 0;width: 26px;height: 26px;background: url(images/footer_close.png) no-repeat 0 0px;}
+        .box4 .open{background-position: 0 -51px;}
     </style>
 @endsection
 @section('js')
@@ -286,76 +242,79 @@
             </div>
         </div>
         <!--自营报价-->
-        <div class="Self-support mt30">
-            <div class="ovh">
-                {{--<h1 class="Self-support-title">自营报价</h1>--}}
-                <div class="Self-support-title">{{trans('home.self_quote')}}</div>
-                <div class="fr mr20"><span>{{trans('home.self_quote_prefix')}}<font class="green"> {{$goodsList['total']}} </font>{{trans('home.self_quote_suffix')}}</span><a rel="nofollow" class="ml30" href="/goodsList/1">{{trans('home.more')}}></a></div></div>
-            <ul class="Self-product-list quote_list">
-                <li>
-                    <span style="width:12%;">{{trans('home.cate')}}</span>
-                    <span style="width:15%;">{{trans('home.brand')}}</span>
-                    <span style="width:12%;">{{trans('home.spec')}}</span>
-                    <span style="width:10%;">{{trans('home.price')}}</span>
-                    <span style="width:10%;">{{trans('home.goods_source')}}</span>
-                    <span style="width:7%;">{{trans('home.delivery_area')}}</span>
-                    <span style="width:7%;">{{trans('home.delivery_method')}}</span>
-                    <span style="width:10%;">{{trans('home.update_time')}}</span>
-                    <span style="width:6%;">{{trans('home.contact')}}</span>
-                    <span style="width:10%;">{{trans('home.operation')}}</span>
-                </li>
-                @if(!empty($goodsList['list']))
-                    @foreach($goodsList['list'] as $vo)
-                        <li>
-                            <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{ getLangData($vo, 'cat_top_name') }}">{{ getLangData($vo, 'cat_top_name') }}</span>
-                            <span style="width:12%;" title="{{ getLangData($vo, 'brand_name') }}">{{ getLangData($vo, 'brand_name') }}</span>
-                            <span style="width:15%;" title="{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">
-                                <i class="space_hidden" style="width:100%;line-height: 55px;">
-                                    <a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a>
-                                </i>
-                            </span>
-                            {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
-                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
-                            <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
-                            <span style="width:7%;">{{$vo['delivery_place']}}</span>
-                            <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
-                            <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
-                            <span style="width:6%;">
-                                <div class="custom_service">
-                                    <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
-                                    <div class="custom_service_popup" style="display: none;">
-                                        <p class="custom_service_popup_p">{{trans('home.contact_way')}}</p>
-                                        <div class="custom_service_popup_text">
-                                            <p>
-                                                <span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>
-                                            <p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">
-                                                <span style="width:60px;text-align: right">
-                                                    <img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
-                                                </span>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}
-                                            </p>
+        @if(!empty($cat_info))
+            @foreach($cat_info as $k=>$v)
+            <div class="Self-support mt30">
+                <div class="ovh">
+                    {{--<h1 class="Self-support-title">自营报价</h1>--}}
+                    <div class="Self-support-title">{{ getLangData($v,'cat_name')}}</div>
+                    <div class="fr mr20"><span>{{trans('home.self_quote_prefix')}}<font class="green"> {{$v['quote']['total']}} </font>{{trans('home.search_suffix')}}</span><a rel="nofollow" class="ml30" href="/goodsList?cate_id={{$v['id']}}&cat_name={{$v['cat_name']}}">{{trans('home.more')}}></a></div></div>
+                <ul class="Self-product-list quote_list">
+                    <li>
+                        <span style="width:12%;">{{trans('home.cate')}}</span>
+                        <span style="width:15%;">{{trans('home.brand')}}</span>
+                        <span style="width:12%;">{{trans('home.spec')}}</span>
+                        <span style="width:10%;">{{trans('home.price')}}</span>
+                        <span style="width:10%;">{{trans('home.goods_source')}}</span>
+                        <span style="width:7%;">{{trans('home.delivery_area')}}</span>
+                        <span style="width:7%;">{{trans('home.delivery_method')}}</span>
+                        <span style="width:10%;">{{trans('home.update_time')}}</span>
+                        <span style="width:6%;">{{trans('home.contact')}}</span>
+                        <span style="width:10%;">{{trans('home.operation')}}</span>
+                    </li>
+                    @if(!empty($v['quote']['list']))
+                        @foreach($v['quote']['list'] as $vo)
+                            <li>
+                                <span class="ovhwp" data-id="{{$vo['packing_spec']}}" id="packing_spec" style="width:12%;" title="{{ getLangData($vo, 'cat_top_name') }}">{{ getLangData($vo, 'cat_top_name') }}</span>
+                                <span style="width:12%;" title="{{ getLangData($vo, 'brand_name') }}">{{ getLangData($vo, 'brand_name') }}</span>
+                                <span style="width:15%;" title="{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}">
+                                    <i class="space_hidden" style="width:100%;line-height: 55px;">
+                                        <a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{ getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a>
+                                    </i>
+                                </span>
+                                {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
+                                <span style="width:10%;color:red;">{{'￥'.number_format($vo['min_price'], 2)}}/{{$vo['unit_name']}}</span>
+                                <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
+                                <span style="width:7%;">{{$vo['delivery_place']}}</span>
+                                <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
+                                <span style="width:10%;">{{ \Carbon\Carbon::parse($vo['add_time'])->diffForHumans()}}</span>
+                                <span style="width:6%;">
+                                    <div class="custom_service">
+                                        <p class="custom_service_p"><img src="{{asset(themePath('/','web').'img/custom_service.png')}}"></p>
+                                        <div class="custom_service_popup" style="display: none;">
+                                            <p class="custom_service_popup_p">{{trans('home.contact_way')}}</p>
+                                            <div class="custom_service_popup_text">
+                                                <p>
+                                                    <span style="width:60px;text-align: right">{{$vo['salesman']}}</span>&nbsp;&nbsp;&nbsp;&nbsp;{{$vo['contact_info']}}</p>
+                                                <p class="blue" style="cursor: pointer" onclick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin={{$vo['QQ']}}&site=qq&menu=yes');">
+                                                    <span style="width:60px;text-align: right">
+                                                        <img class="sc_img" src="{{asset(themePath('/','web').'img/login_qq.gif')}}" />
+                                                    </span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;{{$vo['QQ']}}
+                                                </p>
+                                            </div>
+                                            <i></i>
                                         </div>
-                                        <i></i>
                                     </div>
-                                </div>
-                            </span>
-                            <span style="width:10%;">
-                                @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                    <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
-                                @elseif($vo['goods_number'] <= 0)
-                                    <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
-                                @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
-                                    <button class="trade-close-btn">{{trans('home.overdue')}}</button>
-                                @endif
-                            </span>
-                        </li>
-                    @endforeach
-                @else
-                    <li class="nodata">{{trans('home.no_data')}}</li>
-                @endif
-            </ul>
-        </div>
-
+                                </span>
+                                <span style="width:10%;">
+                                    @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
+                                        <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
+                                    @elseif($vo['goods_number'] <= 0)
+                                        <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
+                                    @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
+                                        <button class="trade-close-btn">{{trans('home.overdue')}}</button>
+                                    @endif
+                                </span>
+                            </li>
+                        @endforeach
+                    @else
+                        <li class="nodata">{{trans('home.no_data')}}</li>
+                    @endif
+                </ul>
+            </div>
+            @endforeach
+        @endif
         <!--品牌直营-->
         <div class="Self-support mt30">
             <div class="ovh">
@@ -386,7 +345,7 @@
                                 </i>
                             </span>
                             {{--<span style="width:12%;">@if($vo['goods_number'] < 0) 0{{$vo['unit_name']}} @else {{$vo['goods_number']}}{{$vo['unit_name']}} @endif</span>--}}
-                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['shop_price'], 2)}}/{{$vo['unit_name']}}</span>
+                            <span style="width:10%;color:red;">{{'￥'.number_format($vo['min_price'], 2)}}/{{$vo['unit_name']}}</span>
                             <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                             <span style="width:7%;">{{$vo['delivery_place']}}</span>
                             <span style="width:7%;">{{getLangData($vo,'delivery_method')}}</span>
@@ -524,7 +483,7 @@
                                             <span style="width:15%;" class="ovhwp" title="{{getLangData($quote,'brand_name')}}">{{getLangData($quote,'brand_name')}}</span>
                                             <span style="width:12%;" class="ovhwp" title="{{$quote['goods_content']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_content']}}</a></span>
 {{--                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>--}}
-                                            <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['shop_price'],2)}}/{{$quote['unit_name']}}</span>
+                                            <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['min_price'],2)}}/{{$quote['unit_name']}}</span>
                                             <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                             <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
