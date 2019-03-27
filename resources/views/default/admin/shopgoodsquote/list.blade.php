@@ -184,7 +184,7 @@
                     ,layout: ['count', 'prev', 'page', 'next', 'limit']
                     , jump: function (obj, first) {
                         if (!first) {
-                            window.location.href="/admin/shopgoodsquote/list?currpage="+obj.curr+"&pagesize="+obj.limit+"&shop_name="+"{{$shop_name}}";
+                            window.location.href="/admin/shopgoodsquote/list?currpage="+obj.curr+"&pagesize="+obj.limit+"&shop_name="+"{{$shop_name}}"+"&store_name="+"{{$store_name}}"+"&cat_id="+"{{$cat_id}}"+"&type="+"{{$type}}"+"&goods_name="+"{{$goods_name}}";
                         }
                     }
                 });
