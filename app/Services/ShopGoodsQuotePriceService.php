@@ -17,13 +17,21 @@ class ShopGoodsQuotePriceService
     {
         if(!empty($data)){
             foreach ($data as $k=>$v){//先判断存不存在id 存在则更新 不存在插入
-                $v['quote_id'] = $quote_id;
-                if(isset($v['id']) && !empty($v['id'])){
-                    $id = $v['id'];
-                    unset($v['id']);
-                    ShopGoodsQuotePriceRepo::modify($id,$v);
-                }else{//插入数据
-                    self::create($v);
+                if(!empty($v['price']) || !empty($v['min_num'])) {
+                    $v['quote_id'] = $quote_id;
+                    if (isset($v['id']) && !empty($v['id'])) {
+                        $id = $v['id'];
+                        unset($v['id']);
+                        if (!empty($v['price']) || !empty($v['min_num'])) {
+                            ShopGoodsQuotePriceRepo::modify($id, $v);
+                        }else{
+                            ShopGoodsQuotePriceRepo::delete($id);
+                        }
+                    } else {//插入数据
+                        if (!empty($v['price']) || !empty($v['min_num'])) {
+                            self::create($v);
+                        }
+                    }
                 }
             }
         }
