@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\GoodsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\UnitService;
@@ -43,8 +44,14 @@ class UnitController extends Controller
         }
         try{
             if(key_exists('id',$data)){
+                //先获取原信息
+                $old_info = UnitService::getUnitById($data['id']);
                 $flag = UnitService::modify($data);
                 if(!empty($flag)){
+                    //如果单位名称改变则同步商品表
+                    if($old_info['unit_name'] != $data['unit_name']){
+                        GoodsService::syncGoodsByUnit($data['id'],$data['unit_name']);
+                    }
                     return $this->success('修改成功',url('/admin/unit/list'));
                 }
             }else{

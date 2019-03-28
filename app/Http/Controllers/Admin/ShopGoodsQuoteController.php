@@ -176,7 +176,7 @@ class ShopGoodsQuoteController extends Controller
         }
         try{
             //todo 处理报价的阶梯价格
-            $prices = $data['prices'];
+            $prices = !empty($data['prices']) ? $data['prices'] : [];
             unset($data['prices']);
 
             if(key_exists('id',$data)){
@@ -267,6 +267,23 @@ class ShopGoodsQuoteController extends Controller
             return $this->result($goods,200,'获取商品成功');
         }else{
             return $this->result('',400,'获取商品失败');
+        }
+    }
+
+    public function deletePrice(Request $request)
+    {
+        $id = $request->input('id');
+        if(!$id){
+            return $this->error('无法获取参数ID');
+        }
+        try{
+            $res = ShopGoodsQuotePriceService::delete($id);
+            if($res){
+                return $this->success('删除成功');
+            }
+            return  $this->error('删除失败');
+        }catch(\Exception $e){
+            return $this->error($e->getMessage());
         }
     }
 

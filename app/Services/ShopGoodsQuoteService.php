@@ -32,7 +32,9 @@ class ShopGoodsQuoteService
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
             $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
-            $result['list'][$k]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
+            $quote_min_price_info = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
+            $result['list'][$k]['min_price'] = $quote_min_price_info['price'];
+            $result['list'][$k]['min_price_num'] = $quote_min_price_info['num'];
         }
         //获取筛选过滤信息 $t 1自营报价 2品牌直售   is_self_run = 1自营
         $con['b.is_self_run'] = 1;
@@ -93,7 +95,9 @@ class ShopGoodsQuoteService
             $top_cat = getTopCatByCatId($vo['cat_id']);
             $result['list'][$k]['cat_top_name'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name'] : $top_cat['top_name'];
             $result['list'][$k]['cat_top_name_en'] = $top_cat['top_id'] == $vo['cat_id'] ? $vo['cat_name_en'] : $top_cat['top_name_en'];
-            $result['list'][$k]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
+            $quote_min_price_info = ShopGoodsQuotePriceService::getMinPriceByQuoteId($vo['id']);
+            $result['list'][$k]['min_price'] = $quote_min_price_info['price'];
+            $result['list'][$k]['min_price_num'] = $quote_min_price_info['num'];
         }
         return $result;
     }
@@ -159,7 +163,9 @@ class ShopGoodsQuoteService
                     $top_cat = getTopCatByCatId($goodsInfo['cat_id']);
                     $quotes['list'][$va]['cat_top_name'] = $top_cat['top_id'] == $goodsInfo['cat_id'] ? $cateInfo['cat_name'] : $top_cat['top_name'];
                     $quotes['list'][$va]['cat_top_name_en'] = $top_cat['top_id'] == $goodsInfo['cat_id'] ? $cateInfo['cat_name_en'] : $top_cat['top_name_en'];
-                    $quotes['list'][$va]['min_price'] = ShopGoodsQuotePriceService::getMinPriceByQuoteId($value['id']);
+                    $quote_min_price_info = ShopGoodsQuotePriceService::getMinPriceByQuoteId($value['id']);
+                    $quotes['list'][$va]['min_price'] = $quote_min_price_info['price'];
+                    $quotes['list'][$va]['min_price_num'] = $quote_min_price_info['num'];
                 }
                 $shopInfo['list'][$k]['quotes'] = $quotes['list'];
         }

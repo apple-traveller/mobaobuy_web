@@ -36,6 +36,8 @@ return [
     'footer_service_4'=>'阳光采购 一站式服务',
 
     'more'=>'查看更多',
+    'more2'=>'更多',
+    'retract'=>'收起',
     'pace'=>'进度',
     'browse'=>'次浏览',
     'none_activity'=>'暂无活动 敬请期待',

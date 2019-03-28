@@ -103,6 +103,8 @@ class QuoteController extends Controller
             //$condition['b.type'] = '1|2';
         }
         $condition['b.is_delete'] = 0;
+        //取最近两天的数据
+        $condition['b.add_time|>='] = date("Y-m-d",strtotime("-1 day"));
         //商品报价列表
         $goodsList = ShopGoodsQuoteService::getQuoteByWebSearch(['pageSize' => $pageSize, 'page' => $currpage], $condition,$t);
         if(!empty($goodsList)){
@@ -272,6 +274,8 @@ class QuoteController extends Controller
         }
         $pageSize = 20;
         $condition['b.is_delete'] = 0;
+        //取最近两天的数据
+        $condition['b.add_time|>='] = date("Y-m-d",strtotime("-1 day"));
         $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage, 'orderType' => $orderBy], $condition);
         if (empty($goodsList['list'])) {
             return $this->result("", 400, 'error');
@@ -326,11 +330,19 @@ class QuoteController extends Controller
         $c['cat.parent_id'] = $good_info['cat_id'];
         $c['cat2.parent_id'] = $good_info['cat_id'];
         $condi[] = $c;
-
         $quoteList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize' => $pageSize, 'page' => $currpage], $condi);
 
         //是否收藏
         $collectGoods = UserService::checkUserIsCollect($userId, $good_info['goods_id']);
+
+        //处理地域
+        if(!empty($good_info['effective_area'])){
+            $effective_area = explode(';',$good_info['effective_area']);
+            if(empty(end($effective_area))){
+                array_pop($effective_area);
+            }
+            $good_info['effective_area'] = $effective_area;
+        }
 
         return $this->display("web.goods.goodsDetail", [
             'good_info' => $good_info,

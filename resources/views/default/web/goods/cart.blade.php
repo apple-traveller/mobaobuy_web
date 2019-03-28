@@ -63,7 +63,24 @@
 		    background: url(../img/mobao_logo.png)no-repeat;
 		    background-size: 100% 100%;
 		}
-    </style>
+
+		.pro_price{position:relative;display:flex;align-items:center; height: 90px;line-height: 32px;overflow: hidden;background-color: #fff5ec;border-radius: 4px;}
+		.prv{transition: opacity 1s;opacity:0;display: flex; align-items: center;justify-content: center; position: absolute; width: 23px;height: 70px;background-color: rgba(113,113,113,0.3); cursor: pointer;}
+		.prv_left{left: 0; border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+		.prv_right{right: 0; border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
+		.pro_price_start{height: 58px;color:#777;display: flex;flex-direction: column;width: 40px;}
+		.pro_price_color{color: #ff7000;font-size: 16px; }
+		.pro_price_num{height:125px;display: flex;flex-direction: column;}
+		.pro_priceList{display: flex; justify-content: center;}
+		.pro_priceList li{ margin:0 12px;height:62px;display: flex;flex-direction: column;}
+		#imgBox{width: 456px;overflow: hidden;position: relative;height: 40px;}
+		#imgBox ul{transition: left 1s;
+			/*动画就是改变ul的left值的效果，所以一定要有定位*/
+			position:absolute;/*必须有*/
+			left:0;/*必须有*/
+		}
+		.pro_price_initial{color: #555;}
+	</style>
     <script type="text/javascript">
     	//数字千分位
     	function formatNum(num){
@@ -79,6 +96,7 @@
     		var accountTotal = $('#accountTotal').text();
     		var MaxNum;
 			var NumNew=1;
+			//加数量
 			$(document).delegate('.shop_num_plus','click',function(){
 				var thisMul = $(this).attr('data-id');//规格
 				MaxNum = $(this).parent().parent().siblings('.shop_price').attr('goods_number');//可售
@@ -86,7 +104,8 @@
 				var iptsVal=ipts.attr('value');//点击加号后input的值
 				var id = $(this).attr('id');//数据库cart自增id
 				var thisDom = $(this);
-
+				//取单位
+                var unit_name = thisDom.parent().find('.shop_num_amount').attr('unit_name');
 				if(Number(ipts.val())+Number(thisMul)>Number(MaxNum)){
                     layer.msg('{{trans('home.error_max_num_tips')}}', {icon: 5});
 					return;
@@ -103,6 +122,7 @@
 	                     // console.log(res);
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
+                            thisDom.parent().parent().prevAll('.shop_price_t').find('.show_quote_prices').html('￥'+formatNum(res['data']['goods_price'])+'/'+unit_name);
 	                    }else{
                             layer.msg('{{trans('home.add_error')}}', {icon: 5});
 	                        window.location.reload();
@@ -111,13 +131,15 @@
      			})
 
 			});
-
+			//减数量
 			$(document).delegate('.shop_num_reduce','click',function(){
 				var thisMul = $(this).attr('data-id');
 				var ipts=$(this).siblings('input.Bidders_record_text');
 				var iptsVal=ipts.attr('value');
 				var id = $(this).attr('id');
 				var thisDom = $(this);
+				//取单位
+				var unit_name = thisDom.parent().find('.shop_num_amount').attr('unit_name');
 				if (Number(ipts.val())-Number(thisMul)<Number(thisMul)) {
                     layer.msg('{{trans('home.error_min_num_tips')}}', {icon: 5});
 					return;
@@ -134,6 +156,7 @@
 	                    // var result = JSON.parse(res);
 	                    if(res.code){
 	                        thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
+                            thisDom.parent().parent().prevAll('.shop_price_t').find('.show_quote_prices').html('￥'+formatNum(res['data']['goods_price'])+'/'+unit_name);
 	                    }else{
                             layer.msg('{{trans('home.reduce_error')}}', {icon: 5});
 	                        window.location.reload();
@@ -162,6 +185,8 @@
 			//数量输入检测
 			$(document).find('input:text').blur(function(){  
 				var thisDom = $(this);
+				//单位
+				var unit_name = thisDom.attr('unit_name');
 				//数量
 				var goodsNumber = $(this).val();
 				//当前购物车数据id
@@ -173,8 +198,10 @@
 			                'data':{'id':id,'goodsNumber':goodsNumber},
 			                'url':'{{url('/checkListenCartInput')}}',
 			                success:function(res){
+			                    console.log(res);
 			                    if(res.code){
 			                    	thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
+			                    	thisDom.parent().parent().prevAll('.shop_price_t').find('.show_quote_prices').html('￥'+formatNum(res['data']['goods_price'])+'/'+unit_name);
 			                    }else{
 			                        layer.msg('{{trans('home.error_tips_num')}}');
 			                        window.location.reload();
@@ -186,7 +213,21 @@
 			             window.location.reload();
 		        	}
             });
-		})
+
+			var _index = '';
+            //鼠标的移入移出  价格显示
+            $(".show_quote_prices").mouseover(function (){
+                var _obj = $(this);
+                var _html = _obj.parent().parent().parent().nextAll('.pro_price_box').html();
+                _index = layer.tips(_html, this, {
+                    tips: [1, '#75b335'],
+					time: 0,
+                    area: ['auto', 'auto']//这个属性可以设置宽高  auto 表示自动
+                });
+            }).mouseout(function (){
+                layer.close(_index);
+            });
+        })
 
 		//全选
 		function check_all(){
@@ -205,7 +246,6 @@
 				}
 			})
 		}
-
 
     	//删除购物车某商品
     	function del(obj){
@@ -262,7 +302,6 @@
             )
 		}
 
-		
 		//checkbox框
 		function checkListen(){
 			var arr = new Array();
@@ -321,32 +360,33 @@
 			 }
 		}
 			
-          function toBalances(){
-          	check_arr = [];
-            $('.shop_list .check_all span label input:checked').each(function(){
+		function toBalances() {
+            check_arr = [];
+            $('.shop_list .check_all span label input:checked').each(function () {
                 check_arr.push($(this).val());
             });
-			if(check_arr.length>0){
-				$.ajax({
-					url: "/toBalance",
-					dataType: "json",
-					data: {
-					'cartId':check_arr
-					},
-					type: "POST",
-					success: function (data) {
-					    // console.log(data);
-						if(data.code){
-							window.location.href='/confirmOrder';
-						}else{
+            if (check_arr.length > 0) {
+                $.ajax({
+                    url: "/toBalance",
+                    dataType: "json",
+                    data: {
+                        'cartId': check_arr
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.code) {
+                            window.location.href = '/confirmOrder';
+                        } else {
                             $.msg.error(data.msg);
-						}
-					}
-				})
-			}else{
-                $.msg.error('{{trans('home.choose_goods')}}');return;
-			}
-          }
+                        }
+                    }
+                })
+            } else {
+                $.msg.error('{{trans('home.choose_goods')}}');
+                return;
+            }
+        }
     </script>
 </head>
 <body style="background-color: rgb(244, 244, 244);">
@@ -365,6 +405,7 @@
 			</div>
 		</div>
 	</div>
+
 	@if(count($cartInfo['cartInfo']))
 		<div class="w1200 whitebg" style="margin-top: 20px;">
 			<ul class="shop_title">
@@ -378,27 +419,75 @@
 				<li class="shop_oper">{{trans('home.operation')}}</li>
 			</ul>
 			@foreach($cartInfo['cartInfo'] as $k=>$v)
-			<ul class="shop_list">
-				<li class="check_all">
-					<span class="check_tick fl" style="margin: 33px 0px;">
-						<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
-					</span>
-					<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{getLangData($v,'goods_name')}}</a>
-					<span class="shop_price_t green fl tac">￥{{$v['goods_price']}}/{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
-					<span class="shop_price fl tac" style="display: none;" @if(count($cartInfo['quoteInfo'])) goods_number="{{$cartInfo['quoteInfo'][$k]['goods_number']}}" @else goods_number="0" @endif>@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
-					<div class="shop_num_t fl">
-						<div class="shop_nienb">
-							<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
-							<input type="text" class="shop_num_amount Bidders_record_text goods_numberListen" id="{{$v['id']}}" value="{{$v['goods_number']}}"/>
-							<a class="shop_num_plus num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
+				<ul class="shop_list">
+					<li class="check_all">
+						<span class="check_tick fl" style="margin: 33px 0px;">
+							<label class="check_box"><input class="check_box mr5 mt10 check_all fl" name="" type="checkbox" value="{{$v['id']}}"/> </label>
+						</span>
+						<a class="shop_good_title fl tac" style="line-height: 20px;margin-top: 45px;" href="/goodsAttributeDetails/{{encrypt($v['goods_id'])}}">{{getLangData($v,'goods_name')}}</a>
+						<span class="shop_price_t green fl tac">
+							<span class="show_quote_prices">
+								￥{{$v['goods_price']}}/{{$cartInfo['goodsInfo'][$k]['unit_name']}}
+							</span>
+
+						</span>
+						<span class="shop_price fl tac" style="display: none;" @if(count($cartInfo['quoteInfo'])) goods_number="{{$cartInfo['quoteInfo'][$k]['goods_number']}}" @else goods_number="0" @endif>@if(count($cartInfo['quoteInfo'])) {{$cartInfo['quoteInfo'][$k]['goods_number']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}} @else @endif </span>
+						<div class="shop_num_t fl">
+							<div class="shop_nienb">
+								<a class="shop_num_reduce num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">-</a>
+								<input type="text" class="shop_num_amount Bidders_record_text goods_numberListen" id="{{$v['id']}}" value="{{$v['goods_number']}}" unit_name="{{$cartInfo['goodsInfo'][$k]['unit_name']}}"/>
+								<a class="shop_num_plus num_nim" id="{{$v['id']}}" data-id="{{$cartInfo['goodsInfo'][$k]['packing_spec']}}">+</a>
+							</div>
 						</div>
+
+						<span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
+						<span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
+						<span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{encrypt($v['id'])}}" onclick="del(this)"></a></span>
+					</li>
+				</ul>
+				{{--提示价格信息--}}
+				<div class="pro_price_box" style="display: none;">
+					<div class="pro_price">
+
+						<div class="pro_price_start">
+							<span class="tar">价格</span>
+							<span class="tar">数量</span>
+						</div>
+
+							{{--≤ ≥--}}
+							<ul class="pro_priceList" id='ul' style="transition: all 1s;">
+								@if(!empty($cartInfo['quoteInfo'][$k]['prices']))
+									@foreach($cartInfo['quoteInfo'][$k]['prices'] as $key=>$value)
+										@if($loop->first)
+											<li>
+												<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$cartInfo['quoteInfo'][$k]['shop_price']}}</span>
+												<span class="pro_price_initial">{{$cartInfo['quoteInfo'][$k]['min_limit']}}-{{$value['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+											</li>
+										@else
+											<li>
+												<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$cartInfo['quoteInfo'][$k]['prices'][$key-1]['price']}}</span>
+												<span class="pro_price_initial">{{$cartInfo['quoteInfo'][$k]['prices'][$key-1]['min_num']}}-{{$value['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+											</li>
+											@if($loop->last)
+												<li>
+													<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$value['price']}}</span>
+													<span class="pro_price_initial">≥{{$cartInfo['quoteInfo'][$k]['prices'][$key]['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+												</li>
+											@endif
+										@endif
+									@endforeach
+								@else
+									<li>
+										<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$cartInfo['quoteInfo'][$k]['shop_price']}}</span>
+										<span class="pro_price_initial">≥{{$cartInfo['quoteInfo'][$k]['min_limit']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+									</li>
+								@endif
+							</ul>
+
+
 					</div>
-				    
-				    <span class="shop_add fl tac">{{$cartInfo['quoteInfo'][$k]['delivery_place']}}</span>
-				    <span class="shop_price_d fl tac">{{amount_format($cartInfo['quoteInfo'][$k]['account'],2)}}</span>
-				    <span class="shop_oper fl"><a class="shop_oper_icon shop_oper_bg" id="{{encrypt($v['id'])}}" onclick="del(this)"></a></span>
-				</li>
-			</ul>
+				</div>
+
 			@endforeach
 		</div>
 		<div class="sumbit_cart whitebg ovh mb30">

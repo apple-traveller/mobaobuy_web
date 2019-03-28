@@ -13,6 +13,11 @@ class ShopGoodsQuotePriceService
         return ShopGoodsQuotePriceRepo::create($data);
     }
 
+    public static function delete($id)
+    {
+        return ShopGoodsQuotePriceRepo::delete($id);
+    }
+
     public static function operation($data,$quote_id)
     {
         if(!empty($data)){
@@ -39,19 +44,25 @@ class ShopGoodsQuotePriceService
     }
 
     /**
-     * 根据报价id获取最低价格
+     * 根据报价id获取最低价格和对应数量
      * getMinPriceByQuoteId
      * @param $quote_id
-     * @return bool
+     * @return array
      */
     public static function getMinPriceByQuoteId($quote_id)
     {
-        $res = ShopGoodsQuotePriceRepo::getList(['price'=>'asc'],['quote_id'=>$quote_id],['price']);
+        $res = ShopGoodsQuotePriceRepo::getList(['price'=>'asc'],['quote_id'=>$quote_id],['price','min_num']);
         if(!empty($res)){
-            return $res[0]['price'];
+            return [
+                'price'=>$res[0]['price'],
+                'num'=>$res[0]['min_num']
+            ];
         }
         $quote_info = ShopGoodsQuoteRepo::getInfo($quote_id);
-        return $quote_info['shop_price'];
+        return [
+            'price'=>$quote_info['shop_price'],
+            'num'=>$quote_info['min_limit']
+        ];
     }
 
     /**
@@ -63,7 +74,7 @@ class ShopGoodsQuotePriceService
      */
     public static function getPriceByNum($quote_id,$num)
     {
-        $res = ShopGoodsQuotePriceRepo::getList(['min_num'=>'desc'],['min_num|<'=>$num,'quote_id'=>$quote_id],['price']);
+        $res = ShopGoodsQuotePriceRepo::getList(['min_num'=>'desc'],['min_num|<='=>$num,'quote_id'=>$quote_id],['price']);
         if(!empty($res)){
             return $res[0]['price'];
         }

@@ -85,7 +85,7 @@
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;选择商品：</div>
                                 <div class="label_value">
-                                    <input type="text" data-goodsname="" data-packing-spec="0" value="{{$goodsQuote['goods_name']}}"  autocomplete="off" id="goods_name" size="40"  class="text">
+                                    <input type="text" data-goodsname="" data-packing-spec="{{$goodsQuote['packing_spec']}}" value="{{$goodsQuote['goods_name']}}"  autocomplete="off" id="goods_name" size="40"  class="text">
                                     <div style="margin-left: 10px;color:red;" class="notic">包装规格为：{{$goodsQuote['packing_spec'].$goodsQuote['unit_name'].'/'.$goodsQuote['packing_unit'] }}</div>
                                     <input type="hidden" value="{{$goodsQuote['goods_id']}}" name="goods_id"  id="goods_id">
                                     <div class="form_prompt"></div>
@@ -129,14 +129,6 @@
                             <input type="hidden" name="currpage" value="{{$currpage}}">
                             <input type="hidden" name="id" value="{{$goodsQuote['id']}}">
 
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
 
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
@@ -164,15 +156,6 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="min_limit" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
-                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
-                                </div>
-                            </div>
-                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="goods_source" id="goods_source" >
@@ -192,35 +175,48 @@
                                     <div style="" class="notic">多个地区用英文分号（;）隔开</div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="shop_price" class="text" value="{{$goodsQuote['shop_price']}}" maxlength="40" autocomplete="off" id="shop_price">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" data-packing_spec="{{$goodsQuote['packing_spec']}}"  class="text" value="{{$goodsQuote['min_limit']}}" maxlength="40" autocomplete="off" id="min_limit">
+                                    {{--<span style="margin-left: 10px;color:red;font-size: 12px;">库存数量必须是商品规格的整数倍</span>--}}
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
                             <div class="item bor_top_das pt20">
-                                <div class="label">价格：</div>
+                                <div class="label">阶梯价格：</div>
                                 <div id="price-div" class="label_value">
                                     <table class="table_item">
                                         <tbody>
-                                        @if(!empty($goodsQuote['prices']))
-                                            @foreach($goodsQuote['prices'] as $k=>$v)
                                             <tr>
                                                 <td>
-                                                    <label class="fl lh">最小数量：</label><input name="prices[{{$k}}][min_num]" type="text" class="text text_2 mr10 w100 valid" value="{{$v['min_num']}}" autocomplete="off" aria-invalid="false">
-                                                    <label class="fl lh">价格：</label><input name="prices[{{$k}}][price]" type="text" class="text text_2 mr10 w100 valid" value="{{$v['price']}}" autocomplete="off" aria-invalid="false">
-                                                    <input type="hidden" name="prices[{{$k}}][id]" value="{{$v['id']}}"/>
-                                                    @if($k == 0)
-                                                        <input type="button" class="button valid" value="添加" onclick="addPrice()" aria-invalid="false">
-                                                    @else
-                                                        <input type="button" class="button red_button" value="删除" onclick="dropPrice(this)">
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
-                                                <td>
-                                                    <label class="fl lh">最小数量：</label><input name="prices[0][min_num]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
-                                                    <label class="fl lh">价格：</label><input name="prices[0][price]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
+                                                    {{--<label class="fl lh">最小采购数量：</label>--}}
+                                                    {{--<input name="min_limit" id="min_limit" type="text" class="quote_min_num text text_2 mr10 w100 valid" value="{{$goodsQuote['min_limit']}}" autocomplete="off" aria-invalid="false">--}}
+                                                    {{--<label class="fl lh">价格：</label>--}}
+                                                    {{--<input name="shop_price" id="shop_price" type="text" class="quote_price text text_2 mr10 w100 valid" data-packing_spec="{{$goodsQuote['packing_spec']}}" value="{{$goodsQuote['shop_price']}}" autocomplete="off" aria-invalid="false">--}}
                                                     <input type="button" class="button valid" value="添加" onclick="addPrice()" aria-invalid="false">
                                                 </td>
                                             </tr>
-                                        @endif
+                                            @if(!empty($goodsQuote['prices']))
+                                                @foreach($goodsQuote['prices'] as $k=>$v)
+                                                <tr>
+                                                    <td>
+                                                        <label class="fl lh">最小数量：</label><input name="prices[{{$k}}][min_num]" type="text" onblur="checkMinNum(this)" class="quote_min_num text text_2 mr10 w100 valid" value="{{$v['min_num']}}" autocomplete="off" aria-invalid="false">
+                                                        <label class="fl lh">价格：</label><input name="prices[{{$k}}][price]" type="text" class="quote_price text text_2 mr10 w100 valid" value="{{$v['price']}}" autocomplete="off" aria-invalid="false">
+                                                        <input type="hidden" class="quote_price_id" name="prices[{{$k}}][id]" value="{{$v['id']}}"/>
+                                                        <input type="button" class="button red_button" value="删除" onclick="dropPrice(this,'{{$v['id']}}')">
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -579,14 +575,61 @@
             var _count = $(".table_item tbody tr").length;//这个就是子元素的个数
             var _html = '';
             _html += '<tr><td>' +
-                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
-                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
-                '<input type="button" class="button red_button" value="删除" onclick="dropPrice(this)"></td></tr>';
+                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" onblur="checkMinNum(this)" data-packing_spec=" " class="quote_min_num text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="quote_price text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<input type="button" class="button red_button" value="删除" onclick="dropPrice(this,0)"></td></tr>';
             $('.table_item tbody').append(_html);
         }
         //
-        function dropPrice(obj){
-            $(obj).parent().parent().remove();
+        function dropPrice(obj,_id){
+            if(_id == 0){
+                //删除对应标签
+                $(obj).parent().parent().remove();
+            }else{
+                //删除数据库内容
+                $.ajax({
+                    url: "/admin/shopgoodsquote/price/delete",
+                    dataType: "json",
+                    data:{id:_id},
+                    type:"get",
+                    success:function(res){
+                        if(res.code==1){
+                            //删除对应标签
+                            $(obj).parent().parent().remove();
+                        }
+                    }
+                });
+            }
+
+        }
+        function checkMinNum(_obj){
+            //获取输入的最小数量
+            var _num = Number($(_obj).val());
+
+            //获取规格
+            var _packing_spec = Number($('#goods_name').attr("data-packing-spec"));
+            var goods_id = Number($("#goods_id").val());
+            if(!goods_id){
+                layer.alert("请先选择商品");
+                $(this).val("");
+                return ;
+            }
+            //获取最小起售量
+            var _min_limit = Number($('#min_limit').val());
+
+            if(_min_limit == '' || _min_limit == 'undefined'){
+                layer.alert("请先输入最小起售量");
+                return;
+            }
+            if(!_num){
+                $(_obj).val(_min_limit);
+                return ;
+            }
+            if(_num <= _min_limit){
+                $(_obj).val(_min_limit);
+                return ;
+            }
+            $(_obj).val(Math.floor(_num/_packing_spec)*_packing_spec);
         }
     </script>
 

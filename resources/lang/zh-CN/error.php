@@ -135,4 +135,17 @@ return [
     'passed_real_name_cannot_cancel'=>'已经实名认证的企业用户不能注销账号',//Enterprise users who have been authenticated by their real names cannot cancel their accounts
     'user_logout_success'=>'注销成功！',//Cancellation success!
     'user_logout_fail'=>'注销失败！请联系管理员。',//Cancellation failed! Please contact the administrator.
+
+    //购物车
+    'join_cart_success'=>'加入购物车成功',//Join the shopping cart successfully
+    'cart_goods_not_exist'=>'购物车商品不存在!',//Shopping cart merchandise does not exist!
+    'quote_info_not_exist'=>'报价信息不存在!',//Quotation information does not exist!
+    'cannot_add_cart_tips'=>'商品数量为零,无法加入购物车',//The number of goods is zero and cannot be added to the shopping cart.
+    'quote_expired'=>'报价已过期',//The quotation has expired
+    'goods_info_not_exist'=>'商品信息不存在',//Commodity information does not exist
+    'not_greater_inventory'=>'不能大于库存数量',//Not greater than inventory
+    'goods_cannot_reduced'=>'该商品不能减少了',//This commodity cannot be reduced.
+    'num_is_positive_int'=>'数量只能输入正整数',//Quantity can only be entered in positive integers
+    'num_not_less_spec'=>'数量不能小于商品规格',//Quantity should not be less than commodity specifications
+    'num_wrong_tips'=>'数量有误，请重新输入',//The quantity is wrong. Please re-enter it.
 ];

@@ -198,6 +198,7 @@ Route::group(['namespace'=>'Admin', 'prefix'=>'admin'],function() {
         Route::post('/shopgoodsquote/getGoods', 'ShopGoodsQuoteController@getGoods');//ajax获取商品
         Route::get('/shopgoodsquote/reRelease', 'ShopGoodsQuoteController@reRelease');//更新发布
         Route::get('/shopgoodsquote/roof', 'ShopGoodsQuoteController@roof');//更新发布
+        Route::get('/shopgoodsquote/price/delete', 'ShopGoodsQuoteController@deletePrice');//删除报价价格
 
         Route::any('/orderinfo/list', 'OrderInfoController@getList');//订单列表
         Route::get('/orderinfo/detail', 'OrderInfoController@detail');//订单详情

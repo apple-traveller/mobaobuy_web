@@ -36,6 +36,8 @@ return [
     'footer_service_4'=>'Sunshine Purchase One-stop Service',
 
     'more'=>'more',
+    'more2'=>'more',
+    'retract'=>'retract',
     'pace'=>'pace',
     'browse'=>'browse',
     'none_activity'=>'No activity yet. Stay tuned.',

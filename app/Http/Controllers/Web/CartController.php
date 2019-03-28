@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 use App\Services\GoodsService;
+use App\Services\ShopGoodsQuotePriceService;
 use App\Services\UserAddressService;
 use App\Services\UserRealService;
 use Illuminate\Http\Request;
@@ -42,7 +43,7 @@ class CartController extends Controller
             try{
                 GoodsService::searchGoodsQuote($userId,$id,$number);
                 $count = GoodsService::getCartCount($userId);
-                return $this->success('加入购物车成功',"",$count);
+                return $this->success(trans('error.join_cart_success'),"",$count);
             }catch (\Exception $e){
                 return $this->error($e->getMessage());
             }
@@ -151,17 +152,17 @@ class CartController extends Controller
     {
         $address_id = $request->input('address_id','');
         if(!$address_id){
-            return $this->error('缺少参数地址ID！');
+            return $this->error(trans('error.lack_address_id'));
         }
         $address_info = UserAddressService::getAddressInfo($address_id);
         if(!$address_info){
-            return $this->error('地址信息不存在！');
+            return $this->error(trans('error.address_info_not_exist'));
         }
         $cartSession = session('cartSession');
         $cartSession['address_id'] = $address_id;
 
         session()->put('cartSession',$cartSession);
-        return $this->success('选择成功');
+        return $this->success(trans('error.select_success'));
     }
 
     /**
@@ -191,9 +192,9 @@ class CartController extends Controller
         $id = $request->input('id');
         $goodsNumber = $request->input('goodsNumber');
 
-
         try{
             $goods_number = GoodsService::checkListenCartInput($id,$goodsNumber);
+
             return $this->success('','',$goods_number);
         }catch (\Exception $e){
             return $this->error($e->getMessage());

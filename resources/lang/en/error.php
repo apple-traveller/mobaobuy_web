@@ -135,4 +135,17 @@ return [
     'passed_real_name_cannot_cancel'=>'Enterprise users who have been authenticated by their real names cannot cancel their accounts',//
     'user_logout_success'=>'Cancellation success!',//
     'user_logout_fail'=>'Cancellation failed! Please contact the administrator.',//
+
+    //购物车
+    'join_cart_success'=>'Join the shopping cart successfully',//
+    'cart_goods_not_exist'=>'Shopping cart merchandise does not exist!',//
+    'quote_info_not_exist'=>'Quotation information does not exist!',//!
+    'cannot_add_cart_tips'=>'The number of goods is zero and cannot be added to the shopping cart.',//
+    'quote_expired'=>'The quotation has expired',//
+    'goods_info_not_exist'=>'Commodity information does not exist',//
+    'not_greater_inventory'=>'Not greater than inventory',//
+    'goods_cannot_reduced'=>'This commodity cannot be reduced.',//
+    'num_is_positive_int'=>'Quantity can only be entered in positive integers',//
+    'num_not_less_spec'=>'Quantity should not be less than commodity specifications',//
+    'num_wrong_tips'=>'The quantity is wrong. Please re-enter it.',//
 ];

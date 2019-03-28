@@ -118,16 +118,6 @@
                                 </div>
                             </div>
 
-
-
-                            <div class="item">
-                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="shop_price" class="text" value="" maxlength="40" autocomplete="off" id="shop_price">
-                                    <div class="form_prompt"></div>
-                                </div>
-                            </div>
-
                             <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;交货方式：</div>
                                 <div class="label_value">
@@ -154,14 +144,6 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
-                                <div class="label_value">
-                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
-                                    <div class="form_prompt"></div>
-                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
-                                </div>
-                            </div>
-                            <div class="item">
                                 <div class="label"><span class="require-field">*</span>&nbsp;货源：</div>
                                 <div class="label_value">
                                     <select style="height:30px;border:1px solid #dbdbdb;line-height:30px;float:left;" name="goods_source" id="goods_source" >
@@ -181,16 +163,33 @@
                                     <div style="" class="notic">多个地区用英文分号（;）隔开</div>
                                 </div>
                             </div>
+                            <div class="item">
+                                <div class="label"><span class="require-field">*</span>&nbsp;店铺售价(<span style="color:#909090;" >元</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="shop_price" class="text" value="" maxlength="40" autocomplete="off" id="shop_price">
+                                    <div class="form_prompt"></div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">&nbsp;商品最小采购数量(<span style="color:#909090;" class="unit-name">KG</span>)：</div>
+                                <div class="label_value">
+                                    <input type="text" name="min_limit" class="text" value="" maxlength="40" autocomplete="off" id="min_limit">
+                                    <div class="form_prompt"></div>
+                                    <div style="" class="notic">包装规格的整数倍，向下取整</div>
+                                </div>
+                            </div>
                             <div class="item bor_top_das pt20">
-                                <div class="label">价格：</div>
+                                <div class="label">阶梯价格：</div>
                                 <div id="price-div" class="label_value">
                                     <table class="table_item">
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <label class="fl lh">最小数量：</label><input name="prices[0][min_num]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
-                                                    <label class="fl lh">价格：</label><input name="prices[0][price]" type="text" class="text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false">
-                                                    <input type="button" class="button valid" value="添加" onclick="addPrice(this, '0')" aria-invalid="false">
+                                                    {{--<label class="fl lh"><span class="require-field">*</span>最小采购数量：</label>--}}
+                                                    {{--<input name="min_limit" id="min_limit" type="text" class="quote_min_num text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false"><div class="form_prompt"></div>--}}
+                                                    {{--<label class="fl lh"><span class="require-field">*</span>价格：</label>--}}
+                                                    {{--<input name="shop_price" id="shop_price" type="text" class="quote_price text text_2 mr10 w100 valid" value="0" autocomplete="off" aria-invalid="false"><div class="form_prompt"></div>--}}
+                                                    <input type="button" class="button valid" value="添加" onclick="addPrice()" aria-invalid="false">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -276,6 +275,8 @@
 
             $('#article_form').validate({
                 errorPlacement:function(error, element){
+                    console.log(error);
+                    console.log(element);
                     var error_div = element.parents('div.label_value').find('div.form_prompt');
                     element.parents('div.label_value').find(".notic").hide();
                     error_div.append(error);
@@ -534,14 +535,44 @@
             var _count = $(".table_item tbody tr").length;//这个就是子元素的个数
             var _html = '';
             _html += '<tr><td>' +
-                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
-                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<label class="fl lh">最小数量：</label><input name="prices['+_count+'][min_num]" type="text" onblur="checkMinNum(this)" class="quote_min_num text text_2 mr10 w100" value="0" autocomplete="off">' +
+                '<label class="fl lh">价格：</label><input name="prices['+_count+'][price]" type="text" class="quote_price text text_2 mr10 w100" value="0" autocomplete="off">' +
                 '<input type="button" class="button red_button" value="删除" onclick="dropPrice(this)"></td></tr>';
             $('.table_item tbody').append(_html);
         }
         //
         function dropPrice(obj){
             $(obj).parent().parent().remove();
+        }
+
+        function checkMinNum(_obj){
+            //获取输入的最小数量
+            var _num = Number($(_obj).val());
+
+            //获取规格
+            var _packing_spec = Number($('#goods_name').attr("data-packing-spec"));
+            var goods_id = Number($("#goods_id").val());
+            if(!goods_id){
+                layer.alert("请先选择商品");
+                $(this).val("");
+                return ;
+            }
+            //获取最小起售量
+            var _min_limit = Number($('#min_limit').val());
+
+            if(_min_limit == '' || _min_limit == 'undefined'){
+                layer.alert("请先输入最小起售量");
+                return;
+            }
+            if(!_num){
+                $(_obj).val(_min_limit);
+                return ;
+            }
+            if(_num <= _min_limit){
+                $(_obj).val(_min_limit);
+                return ;
+            }
+            $(_obj).val(Math.floor(_num/_packing_spec)*_packing_spec);
         }
     </script>
 

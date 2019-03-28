@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\BrandRepo;
+use App\Services\GoodsService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\BrandService;
@@ -51,40 +53,48 @@ class BrandController extends Controller
     {
         $data = $request->all();
         $currpage = 1;
-        if(!empty($data['currpage'])){
+        if (!empty($data['currpage'])) {
             $currpage = $data['currpage'];
             unset($data['currpage']);
         }
-        $errorMsg=[];
-        if(empty($data['brand_name'])){
+        $errorMsg = [];
+        if (empty($data['brand_name'])) {
             $errorMsg[] = "品牌名称不能为空";
         }
-        if(empty($data['brand_first_char'])){
+        if (empty($data['brand_first_char'])) {
             $errorMsg[] = "品牌首字母不能为空";
         }
-        if(empty($data['brand_logo'])){
+        if (empty($data['brand_logo'])) {
             $errorMsg[] = "品牌Logo不能为空";
         }
-        if(!empty($errorMsg)){
-            return $this->error(implode("|",$errorMsg));
+        if (!empty($errorMsg)) {
+            return $this->error(implode("|", $errorMsg));
         }
-        try{
-            if(!key_exists('id',$data)){
+        try {
+            if (!key_exists('id', $data)) {
                 BrandService::uniqueValidate($data['brand_name']);//唯一性验证
-                $data['add_time']=Carbon::now();
+                $data['add_time'] = Carbon::now();
                 $info = BrandService::create($data);
-                if(!empty($info)){
-                    return $this->success('添加成功',url('/admin/brand/list'));
+                if (!empty($info)) {
+                    return $this->success('添加成功', url('/admin/brand/list'));
                 }
-            }else{
+            } else {//修改品牌
+                //先获取原数据
+                $old_info = BrandRepo::getInfo($data['id']);
                 $info = BrandService::modify($data);
-                if(!empty($info))
-                {
-                    return $this->success('保存成功！',url("/admin/brand/list")."?currpage=".$currpage);
+                if (!empty($info)) {
+                    //同步修改商品表冗余字段
+                    if($old_info['brand_name'] != $data['brand_name'] || $old_info['brand_name_en'] != $data['brand_name_en']){
+                        $brand_name = $old_info['brand_name'] != $data['brand_name'] ? $data['brand_name'] : '';
+                        $brand_name_en = $old_info['brand_name_en'] != $data['brand_name_en'] ? $data['brand_name_en'] : '';
+                        GoodsService::syncGoodsByBrand($info['id'],$brand_name,$brand_name_en);
+                    }
+
+                    return $this->success('保存成功！', url("/admin/brand/list") . "?currpage=" . $currpage);
                 }
             }
             return $this->error('保存失败');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
 

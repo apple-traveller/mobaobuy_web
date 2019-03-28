@@ -60,6 +60,23 @@
         em, i, u { font-style: italic;}
         .desc_style{font-size: 18px;margin: 0 25px;}
         .desc_style p{line-height: 25px;}
+        .pro_price{position:relative;display:flex;align-items:center;width: 635px;height: 130px;line-height: 56px;overflow: hidden;background-color: #fff5ec;border-radius: 4px;}
+
+        .prv{transition: opacity 1s;opacity:0;display: flex; align-items: center;justify-content: center; position: absolute; width: 23px;height: 70px;background-color: rgba(113,113,113,0.3); cursor: pointer;}
+        .prv_left{left: 0; border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+        .prv_right{right: 0; border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
+        .pro_price_start{height: 113px;color:#777;display: flex;flex-direction: column;width: 105px;}
+        .pro_price_color{color: #ff7000;font-size: 20px; }
+        .pro_price_num{height:125px;display: flex;flex-direction: column;}
+        .pro_priceList{display: flex; justify-content: center;}
+        .pro_priceList li{ margin:0 40px;height:125px;display: flex;flex-direction: column;}
+        #imgBox{width: 456px;overflow: hidden;position: relative;height: 125px;}
+        #imgBox ul{transition: left 1s;
+            /*动画就是改变ul的left值的效果，所以一定要有定位*/
+            position:absolute;/*必须有*/
+            left:0;/*必须有*/
+        }
+        .effective-area span{margin: 0 5px;}
     </style>
 @endsection
 @section('js')
@@ -272,12 +289,56 @@
 
 			</div>
 		</div>
+        {{--{{dd($good_info)}}--}}
 		<div class="fl ml35 mt5">
 			<h2 class="fwb fs16">{{getLangData($good_info,'goods_full_name')}}</h2>
 			<span class="red mt5 db"></span>
-			<div class="pro_price f4bg mt10">
-				<div class="pro_price_dj fl"><span class="ml15">{{trans('home.price')}}</span><span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}</font>/{{$good_info['unit_name']}}</span></div>
-			</div>
+            <div class="pro_price  mt10" id="parent">
+                <div class="prv prv_left" id='prev'><img src="/default/img/ass-lt-left.png"/></div>
+                <div class="pro_price_start">
+                    <span class="tar">价格</span>
+                    <span class="tar">数量</span>
+                </div>
+                <div id="imgBox">
+                    {{-- ≤ ≥ --}}
+                    <ul class="pro_priceList" id='ul' style="transition: all 1s;">
+                        @if(!empty($good_info['prices']))
+                            @foreach($good_info['prices'] as $k=>$v)
+                                @if($loop->first)
+                                    <li>
+                                        <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$good_info['shop_price']}}</span>
+                                        <span class="pro_price_initial">{{$good_info['min_limit']}}-{{$v['min_num']}}{{$good_info['unit_name']}}</span>
+                                    </li>
+                                @else
+                                    <li>
+                                        <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$good_info['prices'][$k-1]['price']}}</span>
+                                        <span class="pro_price_initial">{{$good_info['prices'][$k-1]['min_num']}}-{{$v['min_num']}}{{$good_info['unit_name']}}</span>
+                                    </li>
+                                    @if($loop->last)
+                                        <li>
+                                            <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$v['price']}}</span>
+                                            <span class="pro_price_initial">≥{{$good_info['prices'][$k]['min_num']}}{{$good_info['unit_name']}}</span>
+                                        </li>
+                                    @endif
+                                @endif
+                            @endforeach
+                        @else
+                            <li>
+                                <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$good_info['shop_price']}}</span>
+                                <span class="pro_price_initial">≥{{$good_info['min_limit']}}{{$good_info['unit_name']}}</span>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="prv prv_right" id='next'><img src="/default/img/ass-lt-right.png"/></div>
+            </div>
+			{{--<div class="pro_price f4bg mt10">--}}
+				{{--<div class="pro_price_dj fl">--}}
+                    {{--<span class="ml15">{{trans('home.price')}}</span>--}}
+                    {{--<span class="ml15 fwb"><font class="fs22 red">￥{{$good_info['shop_price']}}</font>/{{$good_info['unit_name']}}</span>--}}
+                {{--</div>--}}
+			{{--</div>--}}
 
             <table class="detail_table mt10 ">
                 <tbody>
@@ -310,6 +371,18 @@
                     <tr>
                         <td>{{trans('home.freight_description')}}</td>
                         <td colspan="3">{{trans('home.undetermined')}} <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>地域</td>
+                        <td colspan="3">
+                            <div class="effective-area">
+                                @if(!empty($good_info['effective_area']))
+                                    @foreach($good_info['effective_area'] as $k=>$v)
+                                        <span>{{$v}}</span>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -361,7 +434,7 @@
                     {{--<li style="margin-left:25px;text-align:center;"></li>--}}
                 {{--</ul>--}}
             {{--</div>--}}
-        <ul class="quoteList" style="overflow: hidden; height: auto;">
+            <ul class="quoteList" style="overflow: hidden; height: auto;">
             <li style="background-color: #F7F7F7">
                 <span style="width: 18%;">{{trans('home.update_time')}}</span>
 
@@ -451,7 +524,88 @@
 @endsection
 
 @section('bottom_js')
-	<script>
+    <script type="text/javascript">
+        var chefElement = {
+            minSpeed: 10,//每次移动的距离
+            //获取页面元素
+            prev:document.getElementById('prev'),
+            next:document.getElementById('next'),
+            parent:document.getElementById('parent'),
+            ul:document.getElementById('ul'),
+            li:document.getElementById('ul').getElementsByTagName('li'),
+            liWidth:document.getElementById('ul').getElementsByTagName('li')[0].offsetWidth,
+            type:true,
+            nextTimer:null,
+            prevTimer:null,
+            parent_n:null
+        };
+        var parent=document.getElementById('parent');
+        var prv=document.getElementsByClassName('prv');
+        var ul=document.getElementById('ul');
+        var li=ul.getElementsByTagName('li');
+        if(li.length>3){
+            chefElement.prev.onclick = function(){
+                if(chefElement.type){
+                    clearInterval(chefElement.prevTimer);
+                    chefElement.ul.insertBefore(chefElement.li[chefElement.li.length-1],chefElement.li[0]);
+                    chefElement.liWidth = chefElement.li[0].offsetWidth;
+                    chefElement.ul.style.left = '-'+chefElement.liWidth+'px';
+                    chefElement.prevTimer = setInterval(pre,chefElement.animationSpeed);
+                    chefElement.type = false;
+                }
+            };
+            next.onclick = function(){
+                if(chefElement.type){
+                    chefElement.liWidth = 0;
+                    clearInterval(chefElement.nextTimer);
+                    chefElement.nextTimer = setInterval(nex,chefElement.animationSpeed);
+                    chefElement.type = false;
+                }
+            };
+        }
+
+        //next动画函数
+        function nex(){
+            console.log('liWidth',chefElement.liWidth)
+            chefElement.ul.style.left = '-'+chefElement.liWidth+ 'px';
+            chefElement.liWidth += chefElement.minSpeed ;
+            if(chefElement.liWidth >= chefElement.li[0].offsetWidth){
+                clearInterval(chefElement.nextTimer);
+                chefElement.ul.appendChild(chefElement.li[0]);
+                chefElement.ul.style.left = 0;
+                chefElement.type = true;
+            }
+        }
+        //prev动画函数
+        function pre(){
+            console.log('liWidth',chefElement.liWidth)
+            chefElement.ul.style.left = '-'+chefElement.liWidth+'px';
+            chefElement.liWidth -= chefElement.minSpeed ;
+            if(chefElement.liWidth <= -1){
+                chefElement.ul.style.left = 0;
+                clearInterval(chefElement.prevTimer);
+                chefElement.type = true;
+            }
+        }
+
+        if(li.length>3){
+            parent.onmouseover=function(){
+                console.log('li',li.length)
+                for(var i=0;i<=prv.length;i++){
+                    prv[i].style.opacity = 1;
+                }
+            }
+            parent.onmouseout=function(){
+                for(var i=0;i<=prv.length;i++){
+                    prv[i].style.opacity = 0;
+                }
+            }
+        }else {
+            for(var i=0;i<=prv.length;i++){
+                prv[i].style.cursor ="initial";
+            }
+        }
+
         $(".shop_num_reduce").click(function(){
             var number = parseInt($(".pur_num").val());
             var packing_spec = parseInt("{{$good_info['packing_spec']}}");

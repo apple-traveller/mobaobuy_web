@@ -299,7 +299,7 @@
                                 </span>
                                 <span style="width:10%;">
                                     @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                        <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
+                                        <button data-id="{{$vo['id']}}" class="P_cart_btn" num="{{$vo['min_price_num']}}">{{trans('home.add_cart')}}</button>
                                     @elseif($vo['goods_number'] <= 0)
                                         <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
                                     @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
@@ -371,7 +371,7 @@
                             </span>
                             <span style="width:10%;">
                                 @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                    <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
+                                    <button data-id="{{$vo['id']}}" class="P_cart_btn" num="{{$vo['min_price_num']}}">{{trans('home.add_cart')}}</button>
                                 @elseif($vo['goods_number'] <= 0)
                                     <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
                                 @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
@@ -513,7 +513,7 @@
                                             <span style="width:10%;">
                                                 @if($quote['expiry_time'] > date('Y-m-d H:i:s'))
                                                     @if($quote['goods_number'])
-                                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" style="margin-top:-10px;">{{trans('home.add_cart')}}</button>
+                                                        <button data-id="{{$quote['id']}}" class="P_cart_btn" num="{{$quote['min_price_num']}}" style="margin-top:-10px;">{{trans('home.add_cart')}}</button>
                                                     @else
                                                         <button class="trade-close-btn" style="margin-top:-10px;">{{trans('home.sold_out')}}</button>
                                                     @endif
@@ -691,7 +691,8 @@
             }
             var id = $(this).attr("data-id");
 //            var number = $("#packing_spec").attr('data-id');
-            var number = $(this).parent().siblings().attr('data-id');
+//            var number = $(this).parent().siblings().attr('data-id');
+            var number = $(this).attr('num');
             $.post("/cart",{'id':id,'number':number},function(res){
                 if(res.code==1){
                     var cart_count = res.data;

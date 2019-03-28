@@ -39,12 +39,12 @@
             $('.pro_more').click(function(){
                 $(this).toggleClass('pro_up');
                 var mPro=$(this).text();
-                if (mPro=='收起') {
-                    $(this).text('更多');
+                if (mPro=='{{trans('home.retract')}}') {
+                    $(this).text('{{trans('home.more2')}}');
                     $(this).prev('.pro_brand_list').removeClass('heightcurr');
                     $(this).prev('.pro_brand_list').addClass('heightold');
                 } else{
-                    $(this).text('收起');
+                    $(this).text('{{trans('home.retract')}}');
                     $(this).prev('.pro_brand_list').addClass('heightcurr');
                     $(this).prev('.pro_brand_list').removeClass('heightold');
                 }
@@ -122,7 +122,7 @@
                                 <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{getLangData($vo,'brand_name')}}</a>
                             @endforeach
                         </dd>
-                        <div class="fl pro_brand_btn ml20 pro_more">更多</div>
+                        <div class="fl pro_brand_btn ml20 pro_more">{{trans('home.more2')}}</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -136,7 +136,7 @@
                                 <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{getLangData($vo,'cat_name')}}</a>
                             @endforeach
                         </dd>
-                        <div class="fl pro_brand_btn ml20 pro_more">更多</div>
+                        <div class="fl pro_brand_btn ml20 pro_more">{{trans('home.more2')}}</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -223,7 +223,7 @@
                                 <span style="width:9%" title="{{getLangData($vo,'brand_name')}}">{{getLangData($vo,'brand_name')}}</span>
                                 <span style="width:12%" title="{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}"><a class="blue" href="/goodsDetail/{{$vo['id']}}/{{$vo['shop_id']}}">{{getLangData($vo,'goods_content').' '.getLangData($vo,'simple_goods_name')}}</a></span>
                                 {{--<span style="width:7%">{{$vo['goods_number']}}{{$vo['unit_name']}}</span>--}}
-                                <span style="width:8%;color:red">{{$vo['min_price']}}/{{$vo['unit_name']}}</span>
+                                <span style="width:8%;color:red">￥{{$vo['min_price']}}/{{$vo['unit_name']}}</span>
                                 <span style="width:8%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
                                 <span style="width:8%;">{{$vo['delivery_place']}}</span>
                                 <span style="width:8%;">{{getLangData($vo,'delivery_method')}}</span>
@@ -233,7 +233,7 @@
 
                                 <span style="width:10%;float:right;">
                                     @if(($vo['goods_number'] && $vo['expiry_time'] > \Carbon\Carbon::now()) || ($vo['goods_number'] && $vo['expiry_time'] == '0000-00-00 00:00:00') || ($vo['goods_number'] && $vo['expiry_time'] == ''))
-                                            <button data-id="{{$vo['id']}}" class="P_cart_btn">{{trans('home.add_cart')}}</button>
+                                            <button data-id="{{$vo['id']}}" class="P_cart_btn" num="{{$vo['min_price_num']}}">{{trans('home.add_cart')}}</button>
                                     @elseif($vo['goods_number'] <= 0)
                                             <button class="trade-close-btn">{{trans('home.sold_out')}}</button>
                                     @elseif($vo['expiry_time'] < \Carbon\Carbon::now())
@@ -292,7 +292,8 @@
             return false;
         }
         var id = $(this).attr("data-id");
-        var number = $("#packing_spec").attr('data-id');
+//        var number = $("#packing_spec").attr('data-id');
+        var number = $(this).attr('data-id');
         $.post("/cart",{'id':id,'number':number},function(res){
             if(res.code==1){
                 var cart_count = res.data;
@@ -493,7 +494,7 @@
                             '<span  style="width:9%;">'+jqGetLangData(locale,list[i],'brand_name')+'</span>' +
                             '<span  style="width:12%;"><a class="blue" href="/goodsDetail/'+list[i].id+'/'+list[i].shop_id+'">'+jqGetLangData(locale,list[i],'goods_content')+' '+jqGetLangData(locale,list[i],'simple_goods_name')+'</a></span>' +
 //                            '<span style="width:8%;">'+list[i].goods_number+'</span>' +
-                            '<span style="color:red;width:8%;">'+list[i].min_price+'/'+list[i].unit_name+'</span>' +
+                            '<span style="color:red;width:8%;">￥'+list[i].min_price+'/'+list[i].unit_name+'</span>' +
                             '<span style="width:8%;">'+jqGetLangGoodsSource(locale,list[i].goods_source)+'</span>' +
                             '<span style="width:8%;">'+list[i].delivery_place+'</span>' +
                             '<span style="width:8%;">'+jqGetLangData(locale,list[i],'delivery_method')+'</span>' +

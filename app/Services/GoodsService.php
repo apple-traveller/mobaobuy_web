@@ -8,6 +8,7 @@ use App\Repositories\GoodsRepo;
 use App\Repositories\OrderInfoRepo;
 use App\Repositories\OrderGoodsRepo;
 use App\Repositories\RegionRepo;
+use App\Repositories\ShopGoodsQuotePriceRepo;
 use App\Repositories\ShopGoodsQuoteRepo;
 use App\Repositories\UnitRepo;
 use App\Repositories\AttributeRepo;
@@ -175,11 +176,14 @@ class GoodsService
         foreach($cartInfo as $k=>$v){
             $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($v['shop_goods_quote_id']);
             if(empty($shopGoodsQuoteInfo)){
-                self::throwBizError('购物车商品不存在');
+                self::throwBizError(trans('error.cart_goods_not_exist'));
             }
             $quoteInfo[$k]['goods_number'] = $shopGoodsQuoteInfo['goods_number'];
             $quoteInfo[$k]['delivery_place'] = $shopGoodsQuoteInfo['delivery_place'];
             $quoteInfo[$k]['account'] =number_format($v['goods_number'] * $v['goods_price'],2,".","");
+            $quoteInfo[$k]['shop_price'] = $shopGoodsQuoteInfo['shop_price'];//基础价格
+            $quoteInfo[$k]['min_limit'] = $shopGoodsQuoteInfo['min_limit'];//起售量
+            $quoteInfo[$k]['prices'] = ShopGoodsQuotePriceRepo::getList(['min_num'=>'asc'],['quote_id'=>$v['shop_goods_quote_id']]);;//所有阶梯价格
             //取goods表的规格
             $goodsData = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
 
@@ -197,24 +201,24 @@ class GoodsService
         $shopGoodsQuoteInfo =  ShopGoodsQuoteRepo::getInfo($shopGoodsQuoteId);
 
         if(empty($shopGoodsQuoteInfo)){
-            self::throwBizError('报价信息不存在！');
+            self::throwBizError(trans('error.quote_info_not_exist'));
         }
         if($shopGoodsQuoteInfo['goods_number'] <= 0){
-            self::throwBizError('商品数量为零,无法加入购物车');
+            self::throwBizError(trans('error.cannot_add_cart_tips'));
         }
         if(!empty($shopGoodsQuoteInfo['expiry_time']) &&  $shopGoodsQuoteInfo['expiry_time'] < Carbon::now()){
-            self::throwBizError('报价已过期');
+            self::throwBizError(trans('error.quote_expired'));
         }
         if($shopGoodsQuoteInfo['expiry_time'] != 0 &&  $shopGoodsQuoteInfo['expiry_time'] < Carbon::now()){
-            self::throwBizError('报价已过期');
+            self::throwBizError(trans('error.quote_expired'));
         }
         $goodsInfo = GoodsRepo::getInfo($shopGoodsQuoteInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品信息不存在！');
+            self::throwBizError(trans('error.goods_info_not_exist'));
         }
 
         if($number > $shopGoodsQuoteInfo['goods_number']){
-            self::throwBizError('不能大于库存数量');
+            self::throwBizError(trans('error.not_greater_inventory'));
         }
         //规格判断处理
         if($number % $goodsInfo['packing_spec'] == 0){
@@ -232,7 +236,7 @@ class GoodsService
 
         if($cartResult){
             if($shopGoodsQuoteInfo['goods_number'] < $cartResult['goods_number'] + $number){
-                self::throwBizError('购物车数量不能大于库存数量');
+                self::throwBizError(trans('error.not_greater_inventory'));
             }
             return CartRepo::modify($cartResult['id'],['goods_number'=>$cartResult['goods_number']+$number]);
         }else{
@@ -245,7 +249,6 @@ class GoodsService
                 'goods_sn'=>$shopGoodsQuoteInfo['goods_sn'],
                 'goods_name'=>$shopGoodsQuoteInfo['goods_name'],
                 'goods_price'=> ShopGoodsQuotePriceService::getPriceByNum($shopGoodsQuoteId,$goodsNumber),
-//                'goods_price'=>$shopGoodsQuoteInfo['shop_price'],
                 'goods_number'=>$goodsNumber,
                 'add_time'=>$addTime
             ];
@@ -284,7 +287,7 @@ class GoodsService
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
             $cartInfo['unit_name'] = $goodsInfo['unit_name'];
             if(empty($cartInfo)){
-                self::throwBizError('购物车商品不存在！');
+                self::throwBizError(trans('error.cart_goods_not_exist'));
             }
             $shopGoodsInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
 //            if($cartInfo['goods_number'] > $shopGoodsInfo['goods_number']){
@@ -303,7 +306,7 @@ class GoodsService
     public static function delCart($id){
         $cartInfo = CartRepo::getInfo($id);
         if(empty($cartInfo)){
-            self::throwBizError('购物车商品不存在');
+            self::throwBizError(trans('error.cart_goods_not_exist'));
         }
         return CartRepo::delete($id);
     }
@@ -313,15 +316,19 @@ class GoodsService
         try{
             $cartInfo = CartRepo::getInfo($id);
             if(empty($cartInfo)){
-                self::throwBizError('购物车信息不存在');
+                self::throwBizError(trans('error.cart_goods_not_exist'));
             }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
             if(empty($goodsInfo)){
-                self::throwBizError('商品信息不存在');
+                self::throwBizError(trans('error.goods_info_not_exist'));
             }
-            $account =  number_format($cartInfo['goods_number'] * $cartInfo['goods_price'] + $goodsInfo['packing_spec'] * $cartInfo['goods_price'],2,".","");
-            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']]);
-            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']+$goodsInfo['packing_spec']];
+            //判断数量对应的价格
+            $goods_number = $cartInfo['goods_number']+$goodsInfo['packing_spec'];
+            $price = ShopGoodsQuotePriceService::getPriceByNum($cartInfo['shop_goods_quote_id'],$goods_number);
+
+            $account =  number_format($goods_number*$price,2,".","");
+            CartRepo::modify($id,['goods_number'=>$goods_number,'goods_price'=>$price]);
+            return ['account'=>$account,'goods_number'=>$goods_number,'goods_price'=>$price];
         }catch (\Exception $e){
             self::throwBizError($e->getMessage());
         }
@@ -332,18 +339,22 @@ class GoodsService
         try{
             $cartInfo = CartRepo::getInfo($id);
             if(empty($cartInfo)){
-                self::throwBizError('商品信息不存在');
+                self::throwBizError(trans('error.goods_info_not_exist'));
             }
             $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
             if(empty($goodsInfo)){
-                self::throwBizError('商品信息不存在');
+                self::throwBizError(trans('error.goods_info_not_exist'));
             }
             if($cartInfo['goods_number']<=$goodsInfo['packing_spec']){
-                self::throwBizError('该商品不能减少了');
+                self::throwBizError(trans('error.goods_cannot_reduced'));
             }
-            $account =  number_format($cartInfo['goods_number'] * $cartInfo['goods_price'] - $cartInfo['goods_price'] * $goodsInfo['packing_spec'],2,".","");
-            CartRepo::modify($id,['goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']]);
-            return ['account'=>$account,'goods_number'=>$cartInfo['goods_number']-$goodsInfo['packing_spec']];
+            //判断数量对应的价格
+            $goods_number = $cartInfo['goods_number']-$goodsInfo['packing_spec'];
+            $price = ShopGoodsQuotePriceService::getPriceByNum($cartInfo['shop_goods_quote_id'],$goods_number);
+
+            $account =  number_format($goods_number*$price,2,".","");
+            CartRepo::modify($id,['goods_number'=>$goods_number,'goods_price'=>$price]);
+            return ['account'=>$account,'goods_number'=>$goods_number,'goods_price'=>$price];
         }catch (\Exception $e){
             self::throwBizError($e->getMessage());
         }
@@ -425,41 +436,45 @@ class GoodsService
     public static function checkListenCartInput($id,$goodsNumber){
         $cartInfo = CartRepo::getInfo($id);
         if(empty($cartInfo)){
-            self::throwBizError('购物车数据有误');
+            self::throwBizError(trans('error.cart_goods_not_exist'));
         }
         $shopGoodsQuoteInfo = ShopGoodsQuoteRepo::getInfo($cartInfo['shop_goods_quote_id']);
         if(empty($shopGoodsQuoteInfo)){
-            self::throwBizError('报价数据有误');
+            self::throwBizError(trans('error.quote_info_not_exist'));
         }
         $goodsInfo = GoodsRepo::getInfo($cartInfo['goods_id']);
         if(empty($goodsInfo)){
-            self::throwBizError('商品数据有误');
+            self::throwBizError(trans('error.quote_info_not_exist'));
         }
         if(!is_numeric($goodsNumber) || $goodsNumber < 0){
-            self::throwBizError('数量只能输入正整数');
+            self::throwBizError(trans('error.num_is_positive_int'));
         }
 
         if($goodsNumber > $shopGoodsQuoteInfo['goods_number']){
-            self::throwBizError('数量超过库存数');
+            self::throwBizError(trans('error.not_greater_inventory'));
         }
         if($goodsNumber < $goodsInfo['packing_spec']){
-            self::throwBizError('数量不能小于商品规格');
+            self::throwBizError(trans('error.num_not_less_spec'));
         }
 
         //规格判断处理
         if($goodsNumber % $goodsInfo['packing_spec'] == 0){
             $goods_number = $goodsNumber;
         }else{
-            self::throwBizError('数量有误，请重新输入');
+            self::throwBizError(trans('error.num_wrong_tips'));
         }
-        
-        $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number]);
+
+        //此时 数量已经经过判断 正确 判断该数量对应的价格
+        $price = ShopGoodsQuotePriceService::getPriceByNum($cartInfo['shop_goods_quote_id'],$goods_number);
+
+        $cartResult = CartRepo::modify($id,['goods_number'=>$goods_number,'goods_price'=>$price]);
+
         if($cartResult){
             $cartResult['account'] = $cartResult['goods_number'] * $cartResult['goods_price'];
+
             return $cartResult;
         }
-        self::throwBizError('修改数量失败');
-
+        self::throwBizError(trans('error.fail'));
     }
 
     public static function productTrend($goodsId,$type=1,$condition){
@@ -494,7 +509,7 @@ class GoodsService
     public static function productTrendApi($goodsId){
         $goodsInfo = GoodsRepo::getInfo($goodsId);
         if(empty($goodsInfo)){
-            self::throwBizError('商品信息有误');
+            self::throwBizError(trans('error.goods_info_not_exist'));
         }
         //$goodsList = ShopGoodsQuoteRepo::getList([],['goods_id'=>$goodsId]);
         $goodsList = ShopGoodsQuoteRepo::getListBySearch(['pageSize'=>7, 'page'=>1, 'orderType'=>['id'=>'desc']],['goods_id'=>$goodsId]);
@@ -518,6 +533,48 @@ class GoodsService
         return $res;
     }
 
+    /**
+     * 如果品牌名称改变同步修改品牌下所有商品的信息
+     * syncGoodsByBrand
+     * @param $brand_id
+     * @param string $brand_name
+     * @param string $brand_name_en
+     * @return bool
+     */
+    public static function syncGoodsByBrand($brand_id,$brand_name='',$brand_name_en='')
+    {
+        $goodsList = GoodsRepo::getList([],['brand_id'=>$brand_id,'is_delete'=>0]);
+        if(!empty($goodsList)){
+            foreach ($goodsList as $k=>$v){
+                $update_data = [];
+                $update_data['id'] = $v['id'];
+                if(!empty($brand_name)){
+                    $update_data['brand_name'] = $brand_name;
+                    $update_data['goods_full_name'] = $brand_name.' '.$v['goods_content'].' '.$v['goods_name'];
+                }
+                if(!empty($brand_name_en)){
+                    $update_data['goods_full_name_en'] = $brand_name_en." ".$v['goods_content_en']." ".$v['goods_name_en'];
+                }
+                self::modify($update_data);
+            }
+        }
+        return true;
+    }
+
+    public static function syncGoodsByUnit($unit_id,$unit_name)
+    {
+        $goodsList = GoodsRepo::getList([],['unit_id'=>$unit_id,'is_delete'=>0]);
+
+        if(!empty($goodsList)){
+            foreach ($goodsList as $k=>$v){
+                $update_data = [];
+                $update_data['id'] = $v['id'];
+                $update_data['unit_name'] = $unit_name;
+                self::modify($update_data);
+            }
+        }
+        return true;
+    }
 }
 
 
