@@ -368,20 +368,20 @@
                     </tr>
                     <tr>
                         <td>{{trans('home.freight_description')}}</td>
-                        <td colspan="3">{{trans('home.undetermined')}} <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></td>
+                        <td colspan="3"> <span style="color: #bbbbbb;" id="show_yf_tips">{{trans('home.logistics_description')}}</span></td>
                     </tr>
-                    <tr>
-                        <td>地域</td>
-                        <td colspan="3">
-                            <div class="effective-area">
-                                @if(!empty($good_info['effective_area']))
+                    @if(!empty($good_info['effective_area']))
+                        <tr>
+                            <td>地域</td>
+                            <td colspan="3">
+                                <div class="effective-area">
                                     @foreach($good_info['effective_area'] as $k=>$v)
                                         <span>{{$v}}</span>
                                     @endforeach
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
 			<div class="pro_detail bd1"></div>
@@ -394,8 +394,8 @@
                     <span class="pur shop_num_plus">+</span>
                 </div>
                 <span class="fl" style="line-height: 28px;margin-left: 3px">{{$good_info['unit_name']}}</span>
-                <span class="fl" style="line-height: 28px;margin-left: 10px">{{trans('home.min_purchase_num')}}：</span>
-                <span  class="ml5 fl ovhwp" style="width: 150px;line-height: 28px;margin-left: 5px">{{$good_info['min_limit'] ? $good_info['min_limit'] : $good_info['packing_spec']}}{{$good_info['unit_name']}}</span>
+{{--                <span class="fl" style="line-height: 28px;margin-left: 10px">{{trans('home.min_purchase_num')}}：</span>--}}
+                {{--<span  class="ml5 fl ovhwp" style="width: 150px;line-height: 28px;margin-left: 5px">{{$good_info['min_limit'] ? $good_info['min_limit'] : $good_info['packing_spec']}}{{$good_info['unit_name']}}</span>--}}
 			</div>
 
 			<div class="mt30" style="margin-left: 115px;">
