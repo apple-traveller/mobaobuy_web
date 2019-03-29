@@ -30,7 +30,7 @@ class QuoteController extends Controller
      * @param $t
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function goodsList(Request $request,$t='')
+    public function goodsList(Request $request,$t=1)
     {
         $currpage = $request->input("currpage", 1);
         $highest = $request->input("highest");

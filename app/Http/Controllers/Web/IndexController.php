@@ -99,6 +99,7 @@ class IndexController extends Controller
                 $condition['b.is_self_run'] = 1;
                 $condition['b.type'] = 1;
                 $condition['b.is_delete'] = 0;
+                $condition['b.add_time|>='] = date("Y-m-d",strtotime("-1 day"));
                 $cat_info[$k]['quote'] = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],$condition);
             }
         }
@@ -106,7 +107,7 @@ class IndexController extends Controller
 //        $goodsList = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'1','b.is_delete'=>0]);
 
         //品牌直营
-        $goodsList_brand = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>10,'page'=>1],['b.is_self_run'=>1,'b.type'=>'2','b.is_delete'=>0]);
+        $goodsList_brand = ShopGoodsQuoteService::getShopGoodsQuoteList(['pageSize'=>5,'page'=>1],['b.is_self_run'=>1,'b.type'=>'2','b.is_delete'=>0,'b.add_time|>='=>date("Y-m-d",strtotime("-1 day"))]);
         //获取供应商
         $shops = ShopGoodsQuoteService::getShopOrderByQuote(5);
         //获取资讯
