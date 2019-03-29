@@ -250,11 +250,13 @@
                 </div>
             </div>
         @else
+            <div class="w1200 mt20 " style="margin-top: 20px;">
             @if(!empty($t))
                 <li class="nodata1">{{trans('home.none_quoted')}}</li>
             @else
-                <li class="nodata">{{trans('home.quote_list_tips')}}</li>
+                <li class="nodata" style="margin-bottom: 20px;padding:0"><img src="/default/images/nodata.jpg" /></li>
             @endif
+            </div>
         @endif
     </div>
 @endsection
