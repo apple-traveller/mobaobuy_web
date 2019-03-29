@@ -14,8 +14,8 @@ return [
     */
 
     'home' => 'home',
-    'header_login'=>'Login',
-    'header_register'=>'Register',
+    'header_login'=>'Login in,',
+    'header_register'=>'free registration',
     'header_working_day'=>'Transaction time (working day)',
     'header_quit'=>'Sign out',
     'header_curr'=>'Current Operating Object',
@@ -37,15 +37,14 @@ return [
 
     'more'=>'more',
     'more2'=>'more',
-    'retract'=>'retract',
-    'pace'=>'pace',
-    'browse'=>'browse',
-    'none_activity'=>'No activity yet. Stay tuned.',
+    'pace'=>'In progress',
+    'browse'=>'Browse',
+    'none_activity'=>'Coming soon!',
     'none_quoted'=>'Please look forward to listing in the near future',//Please look forward to listing in the near future
     'expect'=>'stay tuned',
     'price'=>'price',
     'num'=>'num',
-    'distance_end'=>'Distance ends',
+    'distance_end'=>'Remaining time',
     'distance_begin'=>'Distance begins',
     'end'=>'end',
     'sold_out'=>'Sold out',
@@ -203,11 +202,11 @@ return [
     #首页
     'home_firm_member'=>'Enterprise user',
     'home_personal_member'=>'Individual user',
-    'home_find_goods'=>'Find Goods',
-    'home_find_goods_placeholder'=>'Fill in your real needs and submit them to us',
+    'home_find_goods'=>'Search now',
+    'home_find_goods_placeholder'=>'Please fill in the real needs, then submit to us',
     'home_find_goods_contact_placeholder'=>'Please enter your contact information.',
-    'home_welcome'=>'Respected users, welcome to Mobao!',
-    'home_dynamic'=>'Transaction dynamics',
+    'home_welcome'=>'Welcome to Mobaobuy.com!',
+    'home_dynamic'=>'Transaction status',
     'home_service'=>'One-stop service',//One-stop service
     'home_logistics'=>'Logistics',
     'home_finance'=>'Finance',
