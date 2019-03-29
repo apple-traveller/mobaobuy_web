@@ -23,7 +23,7 @@
         .Self-product-list li:first-child span{height:40px;}
         .supply_quote_list li{height: 89px;overflow: initial;}
         .bggreen{background-color: #75b335;color:#fff;}
-        .heightold{height:80px}
+        .heightold{height:40px}
 	</style>
 @endsection
 @section('js')
