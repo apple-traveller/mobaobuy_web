@@ -247,7 +247,6 @@
                         "sec_limit":tdArr.filter(".sec_limit").children("div").children("input").val(),
                     }
                 }
-                console.log(JSON.stringify(seckill_goods));
                 $("#seckill_goods").val(JSON.stringify(seckill_goods));
             })
 

@@ -328,7 +328,6 @@
 			data:{'invoice_id':invoice_id},
 			type:"POST",
 			success:function (res) {
-			    console.log(res);
 				if (res.code == 1){
 				    setTimeout(window.location.reload(),1000);
 				}else{
@@ -365,7 +364,6 @@
             data:{'address_id':address_id},
             type:"POST",
             success:function (res) {
-                console.log(res);
                 if (res.code == 1){
                     setTimeout(window.location.reload(),1000);
                 }else{

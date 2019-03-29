@@ -256,7 +256,7 @@
                 var goods_number = $(this).val();
                 var packing_spec = $(this).data("packing_spec");
                 var goods_id = $("#goods_id").val();
-                console.log(goods_id);
+
                 if(!goods_id){
                     layer.alert("请先选择商品");
                     $(this).val("");
@@ -276,7 +276,7 @@
                 var min_limit = $(this).val();
                 var packing_spec = $(this).data("packing_spec");
                 var goods_id = $("#goods_id").val();
-                console.log(goods_id);
+
                 if(!goods_id){
                     layer.alert("请先选择商品");
                     $(this).val("");
@@ -460,7 +460,7 @@
                     if(res.code==1){
                         $(".query_goods_name").show();
                         var data = res.data;
-                        console.log(data);
+
                         for(var i=0;i<data.length;i++){
                             $(".query_goods_name").append('<li data-unit-name="'+data[i].unit_name+'" data-min_limit="'+data[i].min_limit+'" data-packing-spec="'+data[i].packing_spec+'" data-packing-unit= "'+data[i].packing_unit+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                         }

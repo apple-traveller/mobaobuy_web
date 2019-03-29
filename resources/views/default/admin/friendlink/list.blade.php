@@ -126,7 +126,6 @@
             }
             var url = "/admin/link/sort";
             $.post(url, postData, function(res){
-                console.log(res);
                 if(res.code==1){
                     window.location.href=res.msg;
                 }else{

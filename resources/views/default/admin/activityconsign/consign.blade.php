@@ -167,7 +167,6 @@
                         },
                         'type':'get',
                         success: function (res) {
-                            console.log(res.code);
                             if (res.code == 1){
                                 layer.msg(res.msg, {icon: 1,time:1000});
                                 layer.close(index);

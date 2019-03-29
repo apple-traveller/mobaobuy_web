@@ -131,7 +131,6 @@
             if (data.length===0){
                 return false;
             }
-            console.log(data);
             $.ajax({
                 url:'/admin/updateCash',
                 data:data,

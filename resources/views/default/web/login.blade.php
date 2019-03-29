@@ -168,7 +168,6 @@
                 user_name:user_name
             };
             Ajax.call("{{url('/sendMessLoginSms')}}", params, function (result){
-                console.log(result);
                 if (result.code == 1) {
                     Settime (type);
                 }else{

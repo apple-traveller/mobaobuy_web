@@ -45,12 +45,11 @@
                 // console.log(data);
                 data  += '&is_self='+is_self;
                 $.post('/admin/user/addUserRealForm',data,function(res){
-                    console.log(res.data);
+
                     if (res.code == 1) {
                         $.msg.success('保存成功');
                        window.location.reload();
                     } else {
-                        console.log(res.data);
                         $.msg.alert(res.msg);
                     }
                 },"json");

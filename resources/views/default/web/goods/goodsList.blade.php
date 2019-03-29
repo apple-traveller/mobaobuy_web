@@ -205,7 +205,6 @@
             success: function(res){
                 if(res.code==200){
                     var data = res.data;
-                    console.log(data);
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;
                     var total = data.total;
@@ -257,7 +256,6 @@
             success: function(res){
                 if(res.code==200){
                     var data = res.data;
-                    console.log(data);
                     var currpage = data.currpage;
                     var pageSize = data.pageSize;
                     var total = data.total;

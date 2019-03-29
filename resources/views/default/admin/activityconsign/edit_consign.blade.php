@@ -331,7 +331,6 @@
                 if(res.code==1){
                     $(".query_goods_name").show();
                     var data = res.data;
-                    console.log(data);
                     for(var i=0;i<data.length;i++){
                         $(".query_goods_name").append('<li data-packing-spac="'+data[i].packing_spec+'" data-min_limit="'+data[i].min_limit+'" data-packing-unit= "'+data[i].packing_unit+'" data-unit_name= "'+data[i].unit_name+'" data-goods-id="'+data[i].id+'" class="created_goods_name" style="cursor:pointer;">'+data[i].goods_full_name+'</li>');
                     }
@@ -376,7 +375,6 @@
                     return false;
                 }
                 if (goods_number =="" || goods_number ==0 || goods_number<spac) {
-                    console.log('123');
                     $(this).val(spac);
                     return false;
                 }

@@ -67,7 +67,6 @@
                 var iptsVal=Number(ipts.val());//当前输入值
                 var packing_spec = Number($(this).attr('packing_spec'));//规格
                 var max_num = Number($(this).attr('max_limit'));//最大限购量
-                console.log(max_num);
                 if(max_num == 0){
                     ipts.val(iptsVal+packing_spec);
                 }else if(iptsVal+packing_spec > max_num){
@@ -168,8 +167,6 @@
                 var _begin_time = $('#begin_time').val();
                 var _end_time = $('#end_time').val();
                 $.get('/price/ajaxcharts?id='+_goods_id+'&type='+_type+'&begin_time='+_begin_time+'&end_time='+_end_time).done(function (data) {
-                    console.log(data);
-
                     myChart.setOption({
                         xAxis: {
                             data: data.data.time

@@ -47,7 +47,6 @@
             var data = $("#user_real_form").serialize();
             // var jsonData = formToJson(data);
             Ajax.call('/account/saveUser',data,function(res){
-                console.log(res.data);
                 if (res.code == 1) {
                     $.msg.alert('{{trans('home.save_success')}}');
                     window.location.reload();
@@ -63,7 +62,6 @@
             $.msg.confirm('{{trans('home.cancellation_account_tips')}}',
                 function(){
                     Ajax.call('/account/accountLogout',{},function(res){
-                        console.log(res.data);
                         if (res.code == 1) {
                             layer.msg('{{trans('home.cancellation_account_success')}}',{time:2000});
                             setTimeout(function () {window.location.href = '/';}, 2000);
@@ -82,7 +80,6 @@
             $.msg.confirm('确定要解除该账号与微信的绑定么？',
                 function(){
                     Ajax.call('/untying',{},function(res){
-                        console.log(res.data);
                         if (res.code == 1) {
                             layer.msg('解绑成功！',{time:2000});
                             setTimeout(function () {window.location.href = '/';}, 2000);

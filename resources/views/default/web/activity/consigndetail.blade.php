@@ -149,7 +149,6 @@
                 var _begin_time = $('#begin_time').val();
                 var _end_time = $('#end_time').val();
                 $.get('/price/ajaxcharts?id='+_goods_id+'&type='+_type+'&begin_time='+_begin_time+'&end_time='+_end_time).done(function (data) {
-                    console.log(data);
 
                     myChart.setOption({
                         xAxis: {

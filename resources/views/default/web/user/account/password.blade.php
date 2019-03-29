@@ -110,7 +110,6 @@
             var data = $("#user_real_form").serialize();
             var jsonData = formToJson(data);
             $.post('/account/editPassword',jsonData,function(res){
-                console.log(res.data);
                 if (res.code == 1) {
                     layer.msg(res.msg,{icon:1,time:3000,},function () {
                         window.location.href="/account/editPassword";

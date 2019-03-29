@@ -43,9 +43,7 @@
                 'data':{'region_id':regionId},
                 'url':'{{url('/getCity')}}',
                 success:function(res){
-                	  console.log(res);
                 	 var result = JSON.parse(res);
-                	   console.log(result);
                 	//return;
                 	if(result.status){
                 		var str = '';

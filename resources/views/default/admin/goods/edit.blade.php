@@ -435,7 +435,7 @@
                 var attrCollection = $("#goods_attr").val().split(";");//字符串转数组
                 attrCollection.splice($.inArray(currAttr,attrCollection),1);//删除
                 $("#goods_attr").val(attrCollection.join(';'));
-                console.log($("#goods_attr").val());
+
                 $(this).parent('div').remove();
             });
         });

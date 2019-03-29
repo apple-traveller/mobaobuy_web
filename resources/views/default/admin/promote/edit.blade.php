@@ -335,7 +335,6 @@
                     $(this).val(packing_spec);
                     return ;
                 }
-                console.log("促销总数量:"+num);
                 if(min_limit>num){
                     layer.msg("不能大于促销总数量", {icon: 5,time:1000});
                     $(this).val(packing_spec);

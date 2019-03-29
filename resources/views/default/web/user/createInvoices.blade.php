@@ -52,8 +52,6 @@
 					url:'/createInvoices',
 					data:$('form').serialize(),
 					success:function(res){
-						console.log(111);
-						console.log(res);
 						if(res.code){
 							alert('发票添加成功');
 							window.location.reload();
@@ -73,9 +71,7 @@
                 'data':{'region_id':regionId},
                 'url':'{{url('/getCity')}}',
                 success:function(res){
-                	  console.log(res);
                 	 var result = JSON.parse(res);
-                	   console.log(result);
                 	//return;
                 	if(result.status){
                 		var str = '';

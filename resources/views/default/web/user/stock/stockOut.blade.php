@@ -154,7 +154,6 @@
 
         }
         function editBtn(obj,row){
-            console.log(row);
             $('#stock_out_id').val(row.id);
             $('#partner_name').val(row.partner_name);
             $('#order_sn').val(row.order_sn);

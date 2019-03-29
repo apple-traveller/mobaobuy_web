@@ -382,7 +382,6 @@
                         for(var i=(_length-1); i>=0; i--){
                             _html += '<li><i class="external-cir"></i>'+_list[i].AcceptStation+'<div class="gray">'+_list[i].AcceptTime+'</div></li>';
                         }
-                        console.log(_html);
                         if(_html == ''){
                             _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                         }
@@ -422,7 +421,6 @@
                         for(var i=0; i<_length; i++){
                             _html += '<li><i class="external-cir"></i>'+_list[i].shipping_content+'<div class="gray">'+_list[i].add_time+'</div></li>';
                         }
-                        console.log(_html);
                         if(_html == ''){
                             _html = '<li><i class="external-cir"></i>{{trans('home.no_logistics_info_tips')}}<div class="gray"></div></li>'
                         }

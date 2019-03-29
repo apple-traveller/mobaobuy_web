@@ -111,7 +111,6 @@
                     'id': "{{$delivery['id']}}",
                     'status': status,
                 }, function (res) {
-                    console.log(res.data);
                     if (res.code == 200) {
                         layer.msg(res.msg, {
                             icon: 6,

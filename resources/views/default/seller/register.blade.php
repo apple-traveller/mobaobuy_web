@@ -172,7 +172,6 @@
     function phoneValidate(contactPhone) {
         $("#contactPhone_error").html('');
        if (!Utils.isPhone(contactPhone)) {
-           console.log(contactPhone);
             $("#contactPhone_error").html("<i class='iconfont icon-minus-circle-fill'></i>手机号码格式不正确！");
             checkAccount = false;
             return false;

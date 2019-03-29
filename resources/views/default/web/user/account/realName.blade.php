@@ -75,12 +75,10 @@
             // console.log(data);
             data  += '&is_self='+is_self;
             $.post('/account/saveUserReal',data,function(res){
-                console.log(res.data);
                 if (res.code == 1) {
                     $.msg.success('{{trans('home.save_success')}}');
                     window.location.href="/account/userRealInfo";
                 } else {
-                    console.log(res.data);
                     $.msg.alert(res.msg);
                 }
             },"json");

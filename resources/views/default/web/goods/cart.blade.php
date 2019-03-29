@@ -198,7 +198,6 @@
 			                'data':{'id':id,'goodsNumber':goodsNumber},
 			                'url':'{{url('/checkListenCartInput')}}',
 			                success:function(res){
-			                    console.log(res);
 			                    if(res.code){
 			                    	thisDom.parent().parent().nextAll('.shop_price_d').html('￥'+formatNum(res['data']['account']));
 			                    	thisDom.parent().parent().prevAll('.shop_price_t').find('.show_quote_prices').html('￥'+formatNum(res['data']['goods_price'])+'/'+unit_name);

@@ -228,8 +228,6 @@
                 var _begin_time = $('#begin_time').val();
                 var _end_time = $('#end_time').val();
                 $.get('/price/ajaxcharts?id='+_goods_id+'&type='+_type+'&begin_time='+_begin_time+'&end_time='+_end_time).done(function (data) {
-                    console.log(data);
-
                     myChart.setOption({
                         xAxis: {
                             data: data.data.time
@@ -566,7 +564,6 @@
 
         //next动画函数
         function nex(){
-            console.log('liWidth',chefElement.liWidth)
             chefElement.ul.style.left = '-'+chefElement.liWidth+ 'px';
             chefElement.liWidth += chefElement.minSpeed ;
             if(chefElement.liWidth >= chefElement.li[0].offsetWidth){
@@ -578,7 +575,6 @@
         }
         //prev动画函数
         function pre(){
-            console.log('liWidth',chefElement.liWidth)
             chefElement.ul.style.left = '-'+chefElement.liWidth+'px';
             chefElement.liWidth -= chefElement.minSpeed ;
             if(chefElement.liWidth <= -1){
@@ -590,7 +586,6 @@
 
         if(li.length>3){
             parent.onmouseover=function(){
-                console.log('li',li.length)
                 for(var i=0;i<prv.length;i++){
                     prv[i].style.opacity = 1;
                 }

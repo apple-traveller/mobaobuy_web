@@ -637,7 +637,6 @@
                 var to_buyer = $(".to_buyer").val();
                 $.post('/admin/orderinfo/modify',{'id':id,'to_buyer':to_buyer},function(res){
                     if(res.code==1){
-                        console.log(res.msg);
                         window.location.reload();
                     }else{
                         alert(res.msg);
@@ -794,7 +793,6 @@
                                 });
                             }
                         },"json");
-                                console.log('123');
                         layer.close(index3);
                         return false;
                     });

@@ -92,7 +92,6 @@
                 // $('#goodName').attr('goodsId', 0);
                  var partnerName = $('#partner_name').val();
                 Ajax.call('/searchPartnerName', {partnerName: partnerName,is_type:3}, function(data){
-                    console.log(data);
                     if(data['data'].length>0){
                         $('#appendPartnerName ul').remove();
                         var str = '';
@@ -112,13 +111,11 @@
             $('#partner_name').click(function(){
                 var partnerName = $('#partner_name').val();
                 Ajax.call('/searchPartnerName', {partnerName: partnerName,is_type:3}, function(data){
-                     console.log(typeof(data));
                      var arr = []
                     for (var i in data['data']) {
                         arr.push(data['data'][i]); //属性
                         //arr.push(object[i]); //值
                     }
-                    console.log(arr);
                     if(arr.length>0){
                         $('#appendPartnerName ul').remove();
                         var str = '';

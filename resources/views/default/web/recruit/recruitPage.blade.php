@@ -245,7 +245,6 @@
                     type: 'post',
                     data: {'place':place,'currpage':currpage},
                     success:function (res) {
-                        console.log(res);
                         if(res.code == 200){
                             var data = res.data;
                             var currpage = data.currpage;

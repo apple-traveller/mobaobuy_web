@@ -107,7 +107,6 @@
                     },
                     type: "POST",
                     success: function (data) {
-                        console.log(data);
                         $('#firmUserName').val(data['data']['firm_user_info']['real_name']);
                         $('#firmUserPhone').val(data['data']['user_phone']);
                         $('#firmUserPhone').attr('disabled','disabled');

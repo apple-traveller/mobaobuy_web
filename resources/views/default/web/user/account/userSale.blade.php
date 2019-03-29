@@ -46,8 +46,6 @@
             var data = $("#user_real_form").serialize();
             var jsonData = formToJson(data);
             Ajax.call('/sale',jsonData,function(res){
-                // console.log(res.data);
-                console.log(res);
                 if (res.code == 1) {
                     $.msg.alert('{{trans('home.sell_goods_success')}}！');
                     $('textarea[name=content]').val('');

@@ -136,7 +136,6 @@
             if (data.length==0){
                 return false;
             }
-            console.log(data);
             $.ajax({
                 url:'/seller/updateCash',
                 data:data,

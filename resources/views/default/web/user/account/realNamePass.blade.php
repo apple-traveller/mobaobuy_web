@@ -68,12 +68,10 @@
             // console.log(data);return;
             var jsonData = formToJson(data);
             $.post('/account/saveUserReal',{jsonData,'is_self':is_self},function(res){
-                console.log(res.data);
                 if (res.code == 1) {
                     $.msg.success('{{trans('home.save_success')}}');
                     window.location.href="/account/userRealInfo";
                 } else {
-                    console.log(res.data);
                     $.msg.alert(res.msg);
                 }
             },"json");

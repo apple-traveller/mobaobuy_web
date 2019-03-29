@@ -205,7 +205,6 @@ class ShopGoodsQuoteController extends Controller
         }catch(\Exception $e){
             return $this->error($e->getMessage());
         }
-
     }
 
     //删除

@@ -141,7 +141,6 @@
                         sec_limit: item['sec_limit'],
                     };
                 })
-                console.log(sec_data);
                 $.ajax({
                     url: '/seller/seckill/save',
                     data: {
@@ -149,7 +148,6 @@
                     },
                     type: 'post',
                     success: function (res) {
-                        console.log(res);
                         if (res.code == 1) {
                             window.location.href = "{{url('/seller/seckill/list')}}";
                         } else {

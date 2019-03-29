@@ -115,7 +115,6 @@
 
         function conf(id)
         {
-            console.log(3423);
             layui.use(['layer'], function(){
                 let layer = layui.layer;
                 let index =

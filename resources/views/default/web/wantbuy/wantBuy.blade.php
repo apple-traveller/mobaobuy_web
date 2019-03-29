@@ -166,7 +166,6 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
             }
             var data = $("#buyForm").serialize();
             Ajax.call('/demand/add',data,function(res){
-                console.log(res.data);
                 if (res.code == 1) {
                     $.msg.alert('{{trans('home.content_success_msg')}}');
                     window.location.reload();
@@ -402,7 +401,7 @@ a.overlay-close:hover{background:url(/images/tmclose.png) no-repeat -16px 0;}
 
                     $('#relevant_total').text('0');
                 }
-                console.log(res);return;
+                return;
             }
         });
     }

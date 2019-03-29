@@ -59,7 +59,7 @@
                         d.end_time = $('#end_time').val()
                     },
                     dataSrc:
-                        function (json) {console.log(json.data);
+                        function (json) {
                             json.draw = json.data.draw;
                             if (json.data.recordsTotal == null) {
                                 json.recordsTotal = 0;
@@ -74,7 +74,6 @@
                 "columns": [
                     {"data": "id", "bSortable": false,
                         "render": function (data, type, full, meta) {
-                             console.log(full);
                         	var html = '<div style="height: 15px;"></div>';
 
                             html += '<table class="table table-border table-bordered table-bg table-hover order-item-table">';

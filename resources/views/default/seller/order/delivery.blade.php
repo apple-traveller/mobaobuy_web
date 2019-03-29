@@ -102,7 +102,7 @@
                 // 获取选中的商品
                 $("#article_form").submit(function(e){
                     var data = table.checkStatus('idTest');
-                    console.log(data);
+
                     if (data.data.length<=0){
                         layer.alert('未选中商品');
 

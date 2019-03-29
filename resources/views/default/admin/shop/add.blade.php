@@ -216,7 +216,6 @@
                     dataType: "json",
                     type:"POST",
                     success: function(res){
-                        console.log(res);
                         if(res.code==400){
                             layer.msg("该企业不存在，请重新填写", {icon: 5,time:1000});
                             $("#company_name").val("");

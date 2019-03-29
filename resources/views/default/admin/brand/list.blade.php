@@ -150,7 +150,6 @@
                     'sort_order':sort_order,
                     '_token':tag_token,
                 }
-                console.log(postData);
                 var url = "/admin/brand/sort";
                 $.post(url,postData,function(res){
                     if(res.code==200){

@@ -110,12 +110,10 @@
                 '_token':$("#_token").val(),
                 'parent_id':"{{$parent_id}}"
             };
-            console.log(postData);
             var url = "{{url('/admin/region/modify')}}";
             // 抛送http
             $.post(url, postData, function(result){
                 // 逻辑
-                console.log(result);
                 if(result.code == 1) {
                     window.location.href=result.data;
                 }else {

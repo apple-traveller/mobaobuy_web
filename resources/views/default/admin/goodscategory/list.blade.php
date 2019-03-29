@@ -110,7 +110,6 @@
                     'id':id,
                     'sort_order':sort_order,
                 }
-                console.log(postData);
                 var url = "/admin/goodscategory/sort";
                 $.post(url,postData,function(res){
                     if(res.code==200){
