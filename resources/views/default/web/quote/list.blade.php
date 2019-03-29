@@ -117,12 +117,12 @@
                 <div class="pro_brand">
                     <dl class="fl filter_item">
                         <dt class="fl">{{trans('home.brand')}}:</dt>
-                        <dd class="pro_brand_list ml30 heightold">
+                        <dd class="pro_brand_list ml30 heightold pro_brand_width">
                             @foreach($search_data['filter']['brands'] as $vo)
                                 <a onclick="choseByBrand(1,this)" class="choseByBrand" data-id="{{$vo['id']}}">{{getLangData($vo,'brand_name')}}</a>
                             @endforeach
                         </dd>
-                        <div class="fl pro_brand_btn ml20 pro_more">{{trans('home.more2')}}</div>
+                        <div class="fl pro_brand_btn ml20 pro_more pro_more_brand" style="display: none">{{trans('home.more2')}}</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -131,12 +131,12 @@
                 <div class="pro_brand">
                     <dl class="fl filter_item">
                         <dt class="fl">{{trans('home.cate')}}:</dt>
-                        <dd class="pro_brand_list ml30 heightold">
+                        <dd class="pro_brand_list ml30 heightold pro_cate_width">
                             @foreach($search_data['filter']['cates'] as $vo)
                                 <a onclick="choseByCate(1,this)" data-id="{{$vo['id']}}">{{getLangData($vo,'cat_name')}}</a>
                             @endforeach
                         </dd>
-                        <div class="fl pro_brand_btn ml20 pro_more">{{trans('home.more2')}}</div>
+                        <div class="fl pro_brand_btn ml20 pro_more pro_more_cate" style="display: none">{{trans('home.more2')}}</div>
                         {{--<div class="fl pro_brand_btn ml20 pro_m_select">多选</div>--}}
                     </dl>
                 </div>
@@ -313,6 +313,23 @@
 
     //删除筛选条件
     $(function(){
+        var _cate_width = 0;
+        var _brand_width = 0;
+        //品牌更多按钮
+        $('.pro_brand_width a').each(function(){
+            _brand_width += $(this).width()+30;
+        });
+        if(_brand_width >= 920){
+            $('.pro_more_brand').show();
+        }
+        //类型更多按钮
+        $('.pro_cate_width a').each(function(){
+            _cate_width += $(this).width()+30;
+        });
+        if(_cate_width >= 920){
+            $('.pro_more_cate').show();
+        }
+
         $(document).delegate('.close_brand','click',function(){
             $('#brand_tag').hide();
             $('#brand_tag').empty();
@@ -339,23 +356,7 @@
                 window.location.href = '/goodsList'
             }
         });
-
-        //公司名称
-        // $('.storeName').hover(function(){
-        //     // var a = $(this).attr('stroreName');
-        //     // console.log(a);
-        //     // $(this).attr('stroreName').wrap("<h1>");
-        // },function(){
-        //     $(this).unwrap();
-        // });
     });
-
-
-	//无刷新改变url地址
-//    function changeURL(){
-//        window.history.pushState({},0,'https://'+window.location.host+'/goodsList');
-//    }
-
 
     //分页
     function paginate(){
