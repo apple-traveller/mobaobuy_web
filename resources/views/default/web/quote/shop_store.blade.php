@@ -1,13 +1,8 @@
 @extends(themePath('.','web').'web.include.layouts.home')
-@if(isset($t) && $t==2)
-    @section('title', getSeoInfoByType('brand_quote')['title'])
-    @section('keywords', getSeoInfoByType('brand_quote')['keywords'])
-    @section('description', getSeoInfoByType('brand_quote')['description'])
-@else
-    @section('title', getSeoInfoByType('quote')['title'])
-    @section('keywords', getSeoInfoByType('quote')['keywords'])
-    @section('description', getSeoInfoByType('quote')['description'])
-@endif
+
+@section('title', getSeoInfoByType('brand_quote')['title'])
+@section('keywords', getSeoInfoByType('brand_quote')['keywords'])
+@section('description', getSeoInfoByType('brand_quote')['description'])
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset(themePath('/','web').'css/quotelist.css')}}" />
 	<style>
