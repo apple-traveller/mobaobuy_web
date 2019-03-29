@@ -468,12 +468,12 @@
 												<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$cartInfo['quoteInfo'][$k]['prices'][$key-1]['price']}}</span>
 												<span class="pro_price_initial">{{$cartInfo['quoteInfo'][$k]['prices'][$key-1]['min_num']}}-{{$value['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
 											</li>
-											@if($loop->last)
-												<li>
-													<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$value['price']}}</span>
-													<span class="pro_price_initial">≥{{$cartInfo['quoteInfo'][$k]['prices'][$key]['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
-												</li>
-											@endif
+										@endif
+										@if($loop->last)
+											<li>
+												<span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$value['price']}}</span>
+												<span class="pro_price_initial">≥{{$cartInfo['quoteInfo'][$k]['prices'][$key]['min_num']}}{{$cartInfo['goodsInfo'][$k]['unit_name']}}</span>
+											</li>
 										@endif
 									@endforeach
 								@else

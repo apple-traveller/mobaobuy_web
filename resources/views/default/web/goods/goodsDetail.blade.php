@@ -314,12 +314,12 @@
                                         <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$good_info['prices'][$k-1]['price']}}</span>
                                         <span class="pro_price_initial">{{$good_info['prices'][$k-1]['min_num']}}-{{$v['min_num']}}{{$good_info['unit_name']}}</span>
                                     </li>
-                                    @if($loop->last)
-                                        <li>
-                                            <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$v['price']}}</span>
-                                            <span class="pro_price_initial">≥{{$good_info['prices'][$k]['min_num']}}{{$good_info['unit_name']}}</span>
-                                        </li>
-                                    @endif
+                                @endif
+                                @if($loop->last)
+                                    <li>
+                                        <span class="pro_price_color"><font style="font-size: 12px;">￥</font>{{$v['price']}}</span>
+                                        <span class="pro_price_initial">≥{{$good_info['prices'][$k]['min_num']}}{{$good_info['unit_name']}}</span>
+                                    </li>
                                 @endif
                             @endforeach
                         @else
@@ -591,18 +591,19 @@
         if(li.length>3){
             parent.onmouseover=function(){
                 console.log('li',li.length)
-                for(var i=0;i<=prv.length;i++){
+                for(var i=0;i<prv.length;i++){
                     prv[i].style.opacity = 1;
                 }
             }
             parent.onmouseout=function(){
-                for(var i=0;i<=prv.length;i++){
+                for(var i=0;i<prv.length;i++){
                     prv[i].style.opacity = 0;
                 }
             }
         }else {
-            for(var i=0;i<=prv.length;i++){
-                prv[i].style.cursor ="initial";
+            var prv=document.getElementsByClassName('prv');
+            for(var i=0;i<prv.length;i++){
+                prv[i].style.cursor ="default";
             }
         }
 
