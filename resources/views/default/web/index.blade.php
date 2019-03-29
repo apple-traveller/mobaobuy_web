@@ -328,8 +328,8 @@
             <ul class="Self-product-list quote_list">
                 <li>
                     <span style="width:12%;">{{trans('home.cate')}}</span>
-                    <span style="width:15%;">{{trans('home.brand')}}</span>
-                    <span style="width:12%;">{{trans('home.spec')}}</span>
+                    <span style="width:12%;">{{trans('home.brand')}}</span>
+                    <span style="width:15%;">{{trans('home.spec')}}</span>
                     <span style="width:10%;">{{trans('home.price')}}</span>
                     <span style="width:10%;">{{trans('home.goods_source')}}</span>
                     <span style="width:7%;">{{trans('home.delivery_area')}}</span>
