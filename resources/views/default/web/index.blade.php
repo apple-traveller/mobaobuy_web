@@ -488,7 +488,7 @@
                                             <span style="width:12%;" class="ovhwp" title="{{$quote['goods_content']}}"><a class="green" href="/goodsDetail/{{$quote['id']}}/{{$quote['shop_id']}}">{{$quote['goods_content']}}</a></span>
 {{--                                            <span style="width:12%;">{{$quote['goods_number']}}{{$quote['unit_name']}}</span>--}}
                                             <span style="width:10%;color:red;" class="lcolor fwb">{{amount_format($quote['min_price'],2)}}/{{$quote['unit_name']}}</span>
-                                            <span style="width:10%;">{{getLangGoodsSource($vo['goods_source'])}}</span>
+                                            <span style="width:10%;">{{getLangGoodsSource($quote['goods_source'])}}</span>
                                             <span style="width:7%;">{{$quote['delivery_place']}}</span>
                                             {{--<span><a class="Self-support-place ml-20">下单</a></span>--}}
                                             <span style="width:7%;">{{getLangData($quote,'delivery_method')}}</span>
