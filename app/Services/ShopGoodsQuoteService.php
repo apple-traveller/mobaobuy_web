@@ -199,7 +199,20 @@ class ShopGoodsQuoteService
                         $info['goods_number'] = $info['total_number'];
                     }
                     $info['expiry_time'] = Carbon::now()->toDateString()." ".getConfig("close_quote").':00';
-                    ShopGoodsQuoteRepo::create($info);
+                    $new_quote_info = ShopGoodsQuoteRepo::create($info);
+                    if($new_quote_info){
+                        #先获取所有的报价价格
+                        $quote_prices = ShopGoodsQuotePriceRepo::getList([],['quote_id'=>$id]);
+                        if(!empty($quote_prices)){
+                            foreach ($quote_prices as $k=>$v){
+                                $data['quote_id'] = $new_quote_info['id'];
+                                $data['price'] = $v['price'];
+                                $data['min_num'] = $v['min_num'];
+
+                                ShopGoodsQuotePriceService::create($data);
+                            }
+                        }
+                    }
                 }
             self::commit();
             return true;
